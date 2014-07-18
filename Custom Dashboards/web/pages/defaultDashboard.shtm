@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Default Dashboard</title>
+		
+		<!-- Meta -->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="Copyright"
+			content="&copy;2014 Infinite Automation Systems Inc." />
+		<meta name="DESCRIPTION"
+			content="Mango Automation from Infinite Automation Systems" />
+		<meta name="KEYWORDS"
+			content="Mango Automation from Infinite Automation Systems" />
+		
+		<!-- Optional Mango Style -->
+		<!-- <link rel="icon" href="/images/favicon.ico" />  -->
+		<!-- <link rel="shortcut icon" href="/images/favicon.ico" /> -->
+		<!-- <link href="/resources/common.css" type="text/css" rel="stylesheet" /> -->
+		
+		<!-- Page Style -->
+		<style type="text/css">
+	       .formItem {
+                clear: left;
+                margin-top:5px;
+            }
+            
+            label.formLabel {
+                font-style: normal;
+                display:block;
+                float:left;
+                white-space: normal;
+                padding-top: 0;
+                padding-right: 5px;
+            }
+            
+            label.formLabelRequred {
+                font-style: normal;
+                font-weight: bold;
+                display:block;
+                float:left;
+                white-space: normal;
+                padding-top: 0;
+                padding-right: 5px;
+            }
+		
+			.formField {
+			    font-style: normal;
+	            padding-top: 0;
+	        }
+
+		
+		</style>
+		
+        <!-- Scripts from Module Directory -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>        
+        <script type="text/javascript" src="/modules/dashboards/web/js/angular.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+       
+       
+                <script type="text/javascript">
+          var chart,chartCursor,chartData,graph;
+          var currentDataPoint; //Data point currently being viewed
+          
+          /**
+           * Run on page load‰
+           */
+          $( document ).ready(function(){
+              //Get the points
+              mangoRest.dataPoints.getAll(function(data){
+                  //Put them into our select list on success
+                  $.each(data, function() {
+                       $('#allDataPoints').append(
+                            $("<option></option>").text(this.deviceName + " - " + this.name).val(this.xid)
+                       );
+                  });
+                  
+                  //Load the default point
+                  if(data.length > 0)
+                   loadPointData(data[0].xid);
+              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                  //alert user on fail
+                  alert(errorThrown + " " + mangoMessage);
+              });
+              
+              
+          });
+          
+          function loadPointData(xid){
+              
+              //For an example load in the entire data point
+              mangoRest.dataPoints.get(xid, function(dataPoint){
+                  currentDataPoint = dataPoint;
+              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                  alert(errorThrown + " " + mangoMessage);
+              });
+              
+              
+              //Load in the Current Value
+              mangoRest.dataPoints.getCurrentValue(xid, function(currentValue){
+                  
+                  $('#pointXid').text(currentValue.xid);
+                  $('#pointName').text(currentValue.name);
+                  $('#deviceName').text(currentValue.deviceName);
+                  
+                  var value = currentValue.value;
+                  value += " " + currentValue.unit;
+                  $('#pointValue').text(value);
+                  
+                  var renderedValue = currentValue.renderedValue;
+                  renderedValue += " " + currentValue.unit;
+                  $('#pointRenderedValue').text(renderedValue);
+                  
+                  $('#pointPath').text(currentValue.path);
+                  $('#pointStatus').text(currentValue.status);
+                  
+              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                  //alert user on fail
+                  alert(errorThrown + " " + mangoMessage);
+              });
+              
+              //Load in the graph with the 200 latest point values
+              mangoRest.dataPoints.getLatest(xid, 200, function(data){
+                  $('#pointValueCount').text(data.length + " " + " samples");
+
+                  //TODO Deal with dates better in response
+                  chartData = new Array();
+                  for(var i=0; i<data.length; i++){
+                      chartData.push({
+                        date: new Date(data[i].time),
+                        value: data[i].value
+                      });
+                  }
+                  createSerialChart(chartData);
+                  
+              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                  //alert user on fail
+                  alert(errorThrown + " " + mangoMessage);
+              });
+              
+              
+          }
+          
+          function saveCurrentDataPoint(){
+              
+              //Un-comment to test error response 
+              //currentDataPoint.intervalLoggingPeriod = -1;
+              
+              mangoRest.dataPoints.put(currentDataPoint,function(data){
+                  alert('Point Saved');
+                  }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                      alert(errorThrown + " " + mangoMessage);
+                  });
+          }
+          
+          /**
+           * Example Chart
+           */         
+          function createSerialChart(chartData){
+              
+           // SERIAL CHART
+              chart = new AmCharts.AmSerialChart();
+              chart.pathToImages = "/modules/dashboards/web/js/amcharts/images/";
+              chart.dataProvider = chartData;
+              chart.categoryField = "date";
+              chart.balloon.bulletSize = 5;
+
+              // AXES
+              // category
+              var categoryAxis = chart.categoryAxis;
+              categoryAxis.parseDates = false; // This should be set to true to create labels automatically, but it doesn't work
+              categoryAxis.minPeriod = "ss"; // our data is daily, so we set minPeriod to DD
+              categoryAxis.dashLength = 1;
+              categoryAxis.minorGridEnabled = true;
+              categoryAxis.twoLineMode = true;
+              categoryAxis.labelFrequency = 10;
+              categoryAxis.dateFormats = [{
+                  period: 'fff',
+                  format: 'JJ:NN:SS'
+              }, {
+                  period: 'ss',
+                  format: 'JJ:NN:SS'
+              }, {
+                  period: 'mm',
+                  format: 'JJ:NN'
+              }, {
+                  period: 'hh',
+                  format: 'JJ:NN'
+              }, {
+                  period: 'DD',
+                  format: 'DD'
+              }, {
+                  period: 'WW',
+                  format: 'DD'
+              }, {
+                  period: 'MM',
+                  format: 'MMM'
+              }, {
+                  period: 'YYYY',
+                  format: 'YYYY'
+              }];
+
+              categoryAxis.axisColor = "#DADADA";
+
+              // value
+              var valueAxis = new AmCharts.ValueAxis();
+              valueAxis.axisAlpha = 0;
+              valueAxis.dashLength = 1;
+              chart.addValueAxis(valueAxis);
+
+              // GRAPH
+              var graph = new AmCharts.AmGraph();
+              graph.title = "red line";
+              graph.valueField = "value";
+              graph.bullet = "round";
+              graph.bulletBorderColor = "#FFFFFF";
+              graph.bulletBorderThickness = 2;
+              graph.bulletBorderAlpha = 1;
+              graph.lineThickness = 2;
+              graph.lineColor = "#5fb503";
+              graph.negativeLineColor = "#efcc26";
+              graph.hideBulletsCount = 50; // this makes the chart to hide bullets when there are more than 50 series in selection
+              chart.addGraph(graph);
+
+              // CURSOR
+              chartCursor = new AmCharts.ChartCursor();
+              chartCursor.cursorPosition = "mouse";
+              chartCursor.pan = true; // set it to fals if you want the cursor to work in "select" mode
+              chart.addChartCursor(chartCursor);
+
+              // SCROLLBAR
+              var chartScrollbar = new AmCharts.ChartScrollbar();
+              chart.addChartScrollbar(chartScrollbar);
+
+              chart.creditsPosition = "bottom-right";
+
+              // WRITE
+              chart.write("chartdiv");
+          }          
+        </script>
+       	
+	</head>
+<body>
+
+        <div id="pointSelection">
+            <div id="dataPointsLabel">Data Points</div>
+            <div id="dataPoints"><select id="allDataPoints" onchange="loadPointData(value)"></select></div>
+        </div>
+        <hr></hr>
+        <div id="pointDetails">
+            <h2>Point Details</h2>
+            <div class="formItem">
+                <label id="pointXidLabel" class="formLabel" for="pointXid">Xid:</label>
+                <div id="pointXid" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+	            <label id="pointNameLabel" class="formLabel" for="pointName">Point Name:</label>
+	            <div id="pointName" class="formField"></div>
+            </div>  
+                     
+            <div class="formItem">
+	            <label id="deviceNameLabel" class="formLabel" for="deviceName">Device Name:</label>
+	            <div id="deviceName" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+	            <label id="pointValueLabel" class="formLabel" for="pointValue">Value:</label>
+	            <div id="pointValue" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+	            <label id="pointRenderedValueLabel" class="formLabel" for="pointRenderedValue">Rendered Value:</label>
+	            <div id="pointRenderedValue" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+	            <label id="pointPathLabel" class="formLabel" for="pointPath">Path:</label>
+	            <div id="pointPath" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+	            <label id="pointStatusLabel"class="formLabel" for="pointStatus">Status:</label>
+	            <div id="pointStatus" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+                <label id="pointValueCountLabel"class="formLabel" for="pointValueCount">Showing latest</label>
+                <div id="pointValueCount" class="formField"></div>
+            </div>
+            
+            <div class="formItem">
+                <button id="saveButton" class="formField" onclick="saveCurrentDataPoint();">Save Data Point</button>
+            </div>
+            
+        </div>
+        <br>
+        <hr></hr>
+        <br>
+        <div id="chartdiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
+</body>
+</html>
