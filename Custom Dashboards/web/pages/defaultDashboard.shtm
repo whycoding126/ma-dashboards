@@ -52,11 +52,11 @@
 		</style>
 		
         <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>        
-        <script type="text/javascript" src="/modules/dashboards/web/js/angular.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+        <script type="text/javascript" src="/modules/customDashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/customDashboards/web/js/mangoApi.js"></script>        
+        <script type="text/javascript" src="/modules/customDashboards/web/js/angular.js"></script>
+        <script type="text/javascript" src="/modules/customDashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/customDashboards/web/js/amcharts/serial.js"></script>
        
        
                 <script type="text/javascript">
@@ -161,7 +161,7 @@
               
            // SERIAL CHART
               chart = new AmCharts.AmSerialChart();
-              chart.pathToImages = "/modules/dashboards/web/js/amcharts/images/";
+              chart.pathToImages = "/modules/customDashboards/web/js/amcharts/images/";
               chart.dataProvider = chartData;
               chart.categoryField = "date";
               chart.balloon.bulletSize = 5;
