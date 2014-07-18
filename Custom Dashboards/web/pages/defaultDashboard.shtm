@@ -128,7 +128,7 @@
 
                   //TODO Deal with dates better in response
                   chartData = new Array();
-                  for(var i=0; i<data.length; i++){
+                  for(var i=data.length-1; i>=0; i--){
                       chartData.push({
                         date: new Date(data[i].time),
                         value: data[i].value
@@ -213,8 +213,8 @@
               // AXES
               // category
               var categoryAxis = chart.categoryAxis;
-              categoryAxis.parseDates = false; // This should be set to true to create labels automatically, but it doesn't work
-              categoryAxis.minPeriod = "ss"; // our data is daily, so we set minPeriod to DD
+              categoryAxis.parseDates = true; // This should be set to true to create labels automatically, but it doesn't work
+              categoryAxis.minPeriod = "fff"; // our data is daily, so we set minPeriod to DD
               categoryAxis.dashLength = 1;
               categoryAxis.minorGridEnabled = true;
               categoryAxis.twoLineMode = true;

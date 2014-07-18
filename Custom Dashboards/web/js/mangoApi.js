@@ -101,7 +101,7 @@ var mangoRest = {
              * @param xid - for point desired
              * @param limit - number of results
              * 
-             * @param done(jsonData) callback with data
+             * @param done(jsonData) callback with data in reverse order, most recent first the going backwards
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
