@@ -10,12 +10,15 @@
  */
 var mangoRest = {
         
+        /**
+         * Data Point access
+         */
         dataPoints: {
             
             /**
              * 
              * Get All Data Points 
-             * done(jsonData) callback with data
+             * done(jsonData) callback with array of points as data
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
@@ -33,8 +36,8 @@ var mangoRest = {
             
             /**
              * 
-             * Get One Data Points
-             * done(jsonData) callback with data
+             * Get One Data Point
+             * done(jsonData) callback one point as data
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
@@ -51,8 +54,8 @@ var mangoRest = {
 
             /**
              * 
-             * Get One Data Points
-             * done(jsonData) callback with data
+             * Save Data Point
+             * done(jsonData) callback with saved point as data
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
@@ -70,30 +73,37 @@ var mangoRest = {
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
             },
+        },
+    
+        /**
+         * Historical Point Values Access
+         */
+        pointValues: {
             
             /**
-             * Get Current Value
-             * 
-             * done(jsonData) callback with data
-             * 
-             * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * Create a new point value object
              */
-            getCurrentValue: function(xid, done, fail){
-                $.ajax({
-                    url : "/rest/v1/realtime/" + xid + ".json",
-                }).done(function(data) {
-                    done(data);
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    var mangoMessage = jqXHR.getResponseHeader("errors");
-                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
-                });
+            createNew: function(){
+                //TODO setup new API Controller to create New objects
+                
+                return {
+                    annotation: null,
+                    dataType: null, //Fill from dataPoint.pointLocator.dataType,
+                    value: null,
+                    time: null};
+                
             },
+        
             
             /**
              * Get the latest limit number of values
-             * done(jsonData) callback with data
              * 
-             * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @param xid - for point desired
+             * @param limit - number of results
+             * 
+             * @param done(jsonData) callback with data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
              */
             getLatest: function(xid, limit, done, fail){
@@ -107,12 +117,61 @@ var mangoRest = {
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
             },
+            
+            /**
+             * 
+             * Save Point Value
+             * @param xid - for data point to save to
+             * @param value - Number, boolean or String
+             * @done(jsonData) callback with saved point as data
+             * 
+             * @fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * 
+             */
+            put: function(xid, pointValue, done, fail){
 
+                $.ajax({
+                    type: "PUT",
+                    url : "/rest/v1/pointValues/" + xid + ".json",
+                    contentType: "application/json",
+                    data: JSON.stringify(pointValue)
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            }
 
         },
+        
+        /**
+         * Realtime Values Access
+         */
+        realtime: {
+            /**
+             * Get Current Value
+             * 
+             * @param xid - for point desired
+             * 
+             * @param done(jsonData) callback with current point value as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             */
+            getCurrentValue: function(xid, done, fail){
+                $.ajax({
+                    url : "/rest/v1/realtime/" + xid + ".json",
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
 
+        },
     
-
-    
+        
+        
 
 };

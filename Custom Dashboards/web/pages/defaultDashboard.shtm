@@ -53,18 +53,19 @@
 		
         <!-- Scripts from Module Directory -->
         <script type="text/javascript" src="/modules/customDashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/customDashboards/web/js/mangoApi.js"></script>        
         <script type="text/javascript" src="/modules/customDashboards/web/js/angular.js"></script>
+        <!-- Charting Library -->
         <script type="text/javascript" src="/modules/customDashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/customDashboards/web/js/amcharts/serial.js"></script>
-       
+        <!-- Mango Rest API Helper -->
+        <script type="text/javascript" src="/modules/customDashboards/web/js/mangoApi.js"></script>         
        
                 <script type="text/javascript">
           var chart,chartCursor,chartData,graph;
           var currentDataPoint; //Data point currently being viewed
           
           /**
-           * Run on page load‰
+           * Run on page load
            */
           $( document ).ready(function(){
               //Get the points
@@ -87,6 +88,9 @@
               
           });
           
+          /**
+           *  Load Data Point with given XID onto page
+           */
           function loadPointData(xid){
               
               //For an example load in the entire data point
@@ -98,15 +102,13 @@
               
               
               //Load in the Current Value
-              mangoRest.dataPoints.getCurrentValue(xid, function(currentValue){
+              mangoRest.realtime.getCurrentValue(xid, function(currentValue){
                   
                   $('#pointXid').text(currentValue.xid);
                   $('#pointName').text(currentValue.name);
                   $('#deviceName').text(currentValue.deviceName);
                   
-                  var value = currentValue.value;
-                  value += " " + currentValue.unit;
-                  $('#pointValue').text(value);
+                  $('#pointValueInput').val(currentValue.value);
                   
                   var renderedValue = currentValue.renderedValue;
                   renderedValue += " " + currentValue.unit;
@@ -121,7 +123,7 @@
               });
               
               //Load in the graph with the 200 latest point values
-              mangoRest.dataPoints.getLatest(xid, 200, function(data){
+              mangoRest.pointValues.getLatest(xid, 200, function(data){
                   $('#pointValueCount').text(data.length + " " + " samples");
 
                   //TODO Deal with dates better in response
@@ -142,10 +144,15 @@
               
           }
           
+          /**
+           * Save Currently Loaded Data Point
+           */
           function saveCurrentDataPoint(){
               
               //Un-comment to test error response 
               //currentDataPoint.intervalLoggingPeriod = -1;
+              
+              //Normally we would create and or update a data point from page inputs here
               
               mangoRest.dataPoints.put(currentDataPoint,function(data){
                   alert('Point Saved');
@@ -153,6 +160,43 @@
                       alert(errorThrown + " " + mangoMessage);
                   });
           }
+          
+          /**
+           * Save Currently Loaded Data Point
+           */
+          function saveCurrentDataPointValue(){
+              
+              //Un-comment to test error response 
+              //currentDataPoint.intervalLoggingPeriod = -1;
+              
+              //Get a fresh point value object and fill it
+              var pointValue = mangoRest.pointValues.createNew();
+              pointValue.annotation = "Set by default dashboard";
+              pointValue.dataType = currentDataPoint.pointLocator.dataType;
+              
+              if((pointValue.dataType === "MULTISTATE")||(pointValue.dataType === "NUMERIC")){
+                  //Since the input is text type we must convert
+                  pointValue.value = new Number($('#pointValueInput').val());
+              }
+              else if(pointValue.dataType === "BINARY"){
+                  //Since the input is text type we must convert
+                  pointValue.value = new Boolean();
+              } 
+              else{
+                  //For Alphanumeric
+                  pointValue.value = $('#pointValueInput').val();
+              }
+              
+              pointValue.time = new Date().getTime();
+             
+              
+              mangoRest.pointValues.put(currentDataPoint.xid, pointValue,function(data){
+                  alert('Point Value Saved');
+                  }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                      alert(errorThrown + " " + mangoMessage);
+                  });
+          }
+          
           
           /**
            * Example Chart
@@ -267,7 +311,7 @@
             
             <div class="formItem">
 	            <label id="pointValueLabel" class="formLabel" for="pointValue">Value:</label>
-	            <div id="pointValue" class="formField"></div>
+	            <div id="pointValue" class="formField"><input id="pointValueInput" type="text"></input><button type="button" onclick="saveCurrentDataPointValue();">Update</button></div>
             </div>
             
             <div class="formItem">
