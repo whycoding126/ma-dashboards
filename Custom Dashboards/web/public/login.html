@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- 
+    This page is available at the URL: http://localhost:8080/modules/mangoApi/web/public/login.html 
+    
+    This example shows how to use the POST login API and use the default login URL assigned to that user
+
+-->
+<html>
+    <head>
+        <title>Login</title>
+        
+        <!-- Page Style -->
+        <style type="text/css">
+        </style>
+        
+        <!-- Scripts from Module Directory -->
+        <script type="text/javascript" src="/modules/mangoApi/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/mangoApi/web/js/mangoApi.js"></script>         
+       
+        <script type="text/javascript">
+        
+        /** User Login Code **/
+        function doLogin(){
+            
+            var username = $('#username').val();
+            var password = $('#password').val();
+            
+            //Make the login request to server
+            mangoRest.loginPost(username,password, function(user, defaultUrl){
+                
+                window.location = defaultUrl;
+                
+            }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                //alert user on fail
+                $('#loginError').text(errorThrown + " " + mangoMessage);
+            });
+            
+            
+        }
+        </script>
+        
+    </head>
+<body>
+
+    <div id="loginForm">
+        <div id="loginError"></div>
+        <label for="username">Username:</label><input type="text" id="username"/>
+        <label for="password">Password:</label><input type="password" id="password"/>
+        <button type="button" onclick="doLogin();">Login</button>
+        <button id="logout" style="display:none" type="button" onclick="doLogout();">Logout</button>
+    </div>
+
+</body>
+</html>

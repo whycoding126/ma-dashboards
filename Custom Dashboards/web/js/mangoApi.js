@@ -9,6 +9,71 @@
  * Mango Rest API Object
  */
 var mangoRest = {
+
+        /**
+         * 
+         * Login via PUT
+         * done(jsonData, defaultUrl) callback with logged In UserModel
+         * 
+         * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+         * 
+         */
+        loginPut: function(username, password, done, fail) {
+            $.ajax({
+                type: "PUT",
+                url : "/rest/v1/login/" + username + ".json?password=" + password,
+                contentType: "application/json"
+            }).done(function(data, status, jqXHR) {
+                var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
+                done(data, defaultUrl);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                var mangoMessage = jqXHR.getResponseHeader("errors");
+                fail(jqXHR, textStatus, errorThrown, mangoMessage);
+            });
+        },
+        
+        /**
+         * 
+         * Login via POST
+         * done(jsonData, defaultUrl) callback with logged In UserModel
+         * 
+         * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+         * 
+         */
+        loginPost: function(username, password, done, fail) {
+            $.ajax({
+                type: "POST",
+                url : "/rest/v1/login/" + username + ".json?password=" + password,
+                contentType: "application/json"
+            }).done(function(data, status, jqXHR) {
+                var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
+                done(data, defaultUrl);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                var mangoMessage = jqXHR.getResponseHeader("errors");
+                fail(jqXHR, textStatus, errorThrown, mangoMessage);
+            });
+        },
+        
+        /**
+         * 
+         * Logout via POST
+         * done(jsonData) callback with logged Out UserModel
+         * 
+         * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+         * 
+         */
+        logoutPost: function(username, done, fail) {
+            $.ajax({
+                type: "POST",
+                url : "/rest/v1/logout/" + username + ".json",
+                contentType: "application/json"
+            }).done(function(data, status, jqXHR) {
+                done(data);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                var mangoMessage = jqXHR.getResponseHeader("errors");
+                fail(jqXHR, textStatus, errorThrown, mangoMessage);
+            });
+        },
         
         /**
          * Data Point access
@@ -161,6 +226,26 @@ var mangoRest = {
             getCurrentValue: function(xid, done, fail){
                 $.ajax({
                     url : "/rest/v1/realtime/" + xid + ".json",
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
+            
+            /**
+             * Get All Current Values for running points
+             * 
+             * @param limit results too this
+             * 
+             * @param done(jsonData) callback with current point values as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             */
+            getAll: function(limit, done, fail){
+                $.ajax({
+                    url : "/rest/v1/realtime.json?limit=" + limit,
                 }).done(function(data) {
                     done(data);
                 }).fail(function(jqXHR, textStatus, errorThrown) {

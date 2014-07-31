@@ -8,8 +8,8 @@
         </style>
         
         <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/customDashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/customDashboards/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/modules/mangoApi/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/mangoApi/web/js/mangoApi.js"></script>         
        
         <script type="text/javascript">
           
