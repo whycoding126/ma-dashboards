@@ -176,7 +176,7 @@ var mangoRest = {
                     url : "/rest/v1/pointValues/" + xid + "/latest.json?limit=" + limit,
                     
                 }).done(function(data) {
-                    done(data);
+                    done(data, xid);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -255,8 +255,4 @@ var mangoRest = {
             },
 
         },
-    
-        
-        
-
 };

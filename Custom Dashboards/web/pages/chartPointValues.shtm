@@ -20,7 +20,7 @@
           var chart,chartCursor,chartData,graph; //Chart Globals
           
           //Configure the settings
-          var pointXid = "Test-watts"; //Data point xid to chart
+          var pointXid = "DP_544063"; //Data point xid to chart
           var numberOfSamples = 500; //Number of previous point values to chart (Will change to date range when the API tested further)
           
           /**
