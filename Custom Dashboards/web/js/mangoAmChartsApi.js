@@ -73,3 +73,44 @@ MangoAmChartHelper.prototype = {
         },
         
 };
+
+/* Gauge Helper */
+MangoAmGaugeHelper = function(options){
+    for(var i in options) {
+        this[i] = options[i];
+    }
+    
+};
+
+MangoAmGaugeHelper.prototype = {
+        
+        xid: null,
+        pollPeriodMs: 500,
+        gauge: null,
+        gaugeDivId: null,
+        units: " ", //Units label for bottom center of gauge
+        jsonConfig: null,
+        
+        
+        //Internals
+        chartData: null,
+        fetchCounter: 0,
+        
+        /**
+         * Start the gauge running
+         */
+        startGauge: function(){
+            
+            this.gauge = AmCharts.makeChart(this.gaugeDivId, this.jsonConfig);
+            
+            setInterval(this.updateGauge, this.pollPeriodMs);
+        },
+        
+        /**
+         * Update gauge Value
+         */
+        updateGauge: function(){
+            
+        }
+};
+
