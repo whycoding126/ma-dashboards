@@ -93,8 +93,21 @@
                   }
                   
               }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                  var msg = "";
+                  
+                  if(textStatus != null)
+                      msg += (textStatus + " ");
+                  if(errorThrown != null)
+                      msg += (errorThrown + " ");
+                  if(mangoMessage != null)
+                      msg += (mangoMessage + " ");
+                  
+                  msg += "\n";
+             
+                  
+                  $("#errors").text(msg);
                   //alert user on fail
-                  alert(errorThrown + " " + mangoMessage);
+                  //alert(errorThrown + " " + mangoMessage);
               });
               
               
@@ -119,6 +132,9 @@
     </head>
 <body>
     <div id="gauge1" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
-    </div>    
+    </div>
+    
+    <!-- Placeholder to log errors -->
+    <div id="errors" style="color: red"></div>    
 </body>
 </html>

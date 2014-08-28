@@ -21,20 +21,11 @@
         <script type="text/javascript">
           var chart1 = new MangoAmChartHelper({
                   chartDivId: "chart1",
-                  xids: ["DP_544063","DP_954927"],
-                  numberOfSamples: 50,
+                  xids: ["DP_552522"],
+                  numberOfSamples: 100,
                   //Operate on the PVT Object {time,value,...}
                   //this needs to return the value member or some representation of it
-                  dataOperation: function(pvt,xid){
-                      
-                      if(xid === "DP_544063"){
-                          return pvt.value * 0.01;
-                      }else if(xid === "DP_954927"){
-                          return pvt.value * 10;
-                      }else{
-                          return 0;
-                      }
-                  },
+           
                   chartJson: 
                   {
                       "type": "serial",
@@ -56,14 +47,8 @@
                           {
                               "bullet": "round",
                               "id": "AmGraph-1",
-                              "title": "DP_544063",
-                              "valueField": "DP_544063"
-                          },
-                          {
-                              "bullet": "square",
-                              "id": "AmGraph-2",
-                              "title": "DP_954927",
-                              "valueField": "DP_954927"
+                              "title": "DP_552522",
+                              "valueField": "DP_552522"
                           }
                       ],
                       "guides": [],
@@ -87,7 +72,7 @@
                       ],
                   }
           });
-        
+      /**  
           var chart2 = new MangoAmChartHelper({
               chartDivId: "chart2",
               xids: ["DP_544063","DP_954927"],
@@ -210,7 +195,7 @@
                       }
                   ],
               }
-      });
+      }); */
           
           
           
@@ -220,8 +205,8 @@
           $( document ).ready(function(){
               
               chart1.createChart();
-              chart2.createChart();
-              chart3.createChart();
+              //chart2.createChart();
+              //chart3.createChart();
                             
           });          
         </script>
