@@ -4,7 +4,7 @@ To create a dashboard file simply create an HTML file and place it into the web/
 
 Pages in the web/pages folder must be postfixed with .shtm (secure html).
 
-Pages in the web/public folder must be postfixed with .html
+Pages in the web/public folder must be postfixed with .htm
 
 Any private page can be accessed via:
 
@@ -16,4 +16,4 @@ localhost:8080/dashboards/helloWorld.shtm
 
 Public pages can be accessed via:
 
-http://localhost:8080/modules/dashboards/web/public/<your dashboard name>.html
+http://localhost:8080/public-dashboards/<your dashboard name>.htm

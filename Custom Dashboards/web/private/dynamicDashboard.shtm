@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dynamic Dashboard</title>
+        
+        
+        <!-- Page Style -->
+        <style type="text/css">
+        </style>
+        
+        <!-- Scripts from Module Directory -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        
+        <!-- Charting Library -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        
+        <!-- Mango Rest API Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        
+        <!-- Mango AM Charts Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
+        
+        <!-- JS For this page -->
+        <script type="text/javascript" src="/modules/dashboards/web/private/js/dynamicDashboard.js"></script>
+            
+    </head>
+    <body>
+    <p>This page will create a list of charts using a Point Hierarchy Folder's points</p>
+    
+    <div id="pointSelection">
+        <div id="folderLabel">Select Folder</div>
+        <div id="folders"><select id="allFolders" onchange="loadFolder(value)"></select></div>
+    </div>
+    
+    <hr></hr>
+    <!-- The Charts are created inside this div automatically -->
+    <div id="dashboard"></div>
+    
+    
+    <!-- Placeholder to log errors -->
+    <div id="errors" style="color: red"></div>    
+    </body>
+</html>

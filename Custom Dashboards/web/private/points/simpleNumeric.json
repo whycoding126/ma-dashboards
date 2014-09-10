@@ -1,0 +1,28 @@
+{
+        nameStartsWith: "volts",
+        nameEndsWith: null,
+        xidStartsWith: "METER",
+        xidEndsWith: null,
+        
+        date-range-type: "date OR previous count"
+        date-range: null OR dates
+        date-picker-id:
+        date-start:
+        date-end:
+        
+        interval-id:
+        interval-value:
+        
+        rollup-id:
+        rollup-value:
+        chart-div-id: "volts_chart",
+        chart-config: { type: "line, statistics, gaugue",
+                        line-color: "yellow",
+                        average-div-id: "volts-avg-div"
+                        
+                       },
+        
+        base-config: "simpleLine.json"
+        updatePeriod: 500,
+        
+}

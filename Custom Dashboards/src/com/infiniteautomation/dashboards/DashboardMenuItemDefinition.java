@@ -60,7 +60,7 @@ public class DashboardMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-        return "/dashboards/defaultDashboard.shtm";
+        return "/private-dashboards/defaultDashboard.shtm";
     }
     
     @Override

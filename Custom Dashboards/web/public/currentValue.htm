@@ -1,4 +1,4 @@
-<!-- This page is available at the URL: http://localhost:8080/modules/mangoApi/web/public/currentValue.html -->
+<!-- This page is available at the URL: http://localhost:8080/public-dashboards/currentValue.htm -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,8 +9,8 @@
         </style>
         
         <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/mangoApi/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/mangoApi/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
        
         <script type="text/javascript">
         var currentUsername; //Global to assist in logout
@@ -28,8 +28,15 @@
                 $('#main').css("display", "block"); //Display the Point Info
                 $('#loginForm').css("display", "none"); //Hide the login form
             }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-                //alert user on fail
-                $('#loginError').text(errorThrown + " " + mangoMessage);
+                var msg = "";
+                if(textStatus != null)
+                    msg += (textStatus + " ");
+                if(errorThrown != null)
+                    msg += (errorThrown + " ");
+                if(mangoMessage != null)
+                    msg += (mangoMessage + " ");
+                msg += "\n";
+                $("#errors").text(msg);
             });
             
             
@@ -42,8 +49,15 @@
             mangoRest.logoutPost(currentUsername, function(user){
                 window.location.reload();
             },function(jqXHR, textStatus, errorThrown, mangoMessage){
-                //alert user on fail
-                alert(errorThrown + " " + mangoMessage);
+                var msg = "";
+                if(textStatus != null)
+                    msg += (textStatus + " ");
+                if(errorThrown != null)
+                    msg += (errorThrown + " ");
+                if(mangoMessage != null)
+                    msg += (mangoMessage + " ");
+                msg += "\n";
+                $("#errors").text(msg);
             });
         }
         
@@ -70,8 +84,15 @@
 	              $('#pointValue').text(pointValueText);
 	              
 	          }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-	              //alert user on fail
-	              alert(errorThrown + " " + mangoMessage);
+	              var msg = "";
+	              if(textStatus != null)
+	                  msg += (textStatus + " ");
+	              if(errorThrown != null)
+	                  msg += (errorThrown + " ");
+	              if(mangoMessage != null)
+	                  msg += (mangoMessage + " ");
+	              msg += "\n";
+	              $("#errors").text(msg);
 	          });
           }
         </script>
@@ -85,6 +106,7 @@
         <button type="button" onclick="doLogin();">Login</button>
         <button id="logout" style="display:none" type="button" onclick="doLogout();">Logout</button>
     </div>
+    <br>
     <div id="main" style="display:none">
         <div id="loggedInAs"></div><button type="button" onclick="doLogout();">Logout</button></br>
         <label for="xid">Xid:</label><input type="text" id="xid"/></br>
@@ -94,5 +116,7 @@
         <button type="button" onclick="stopPoll();">Stop Poll</button>
         <div id="pointValue"></div>
     </div>
+        <!-- Placeholder to log errors -->
+    <div id="errors" style="color: red"></div>  
 </body>
 </html>

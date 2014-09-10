@@ -21,12 +21,12 @@ import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
  * @author Terry Packer
  *
  */
-public class DashboardUrlHandler implements UrlHandler{
+public class PublicDashboardUrlHandler implements UrlHandler{
 	
 	private String dashboardsBasePath;
 	
-	public DashboardUrlHandler(String modulePath){
-		this.dashboardsBasePath = modulePath + "/web/private/";
+	public PublicDashboardUrlHandler(String modulePath){
+		this.dashboardsBasePath = modulePath + "/web/public/";
 	}
 
 	/* (non-Javadoc)
@@ -40,7 +40,7 @@ public class DashboardUrlHandler implements UrlHandler{
 		//Here we would map to the pages by loading the view
 		String contextPath = request.getRequestURI();
 		//Load in the dashboard
-		String[] parts = contextPath.split("/private-dashboards");
+		String[] parts = contextPath.split("/public-dashboards");
 		
 		File dashboard = new File(Common.MA_HOME + dashboardsBasePath + parts[1]);
 		if(dashboard.exists()){

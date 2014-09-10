@@ -76,6 +76,23 @@ var mangoRest = {
         },
         
         /**
+         * Make a request for any JSON data
+         */
+        getJson: function(url, done, fail){
+            $.ajax({
+                type: "GET",
+                url : url,
+                contentType: "application/json"
+            }).done(function(data, status, jqXHR) {
+                done(data);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                var mangoMessage = jqXHR.getResponseHeader("errors");
+                fail(jqXHR, textStatus, errorThrown, mangoMessage);
+            });
+        },
+        
+        
+        /**
          * Data Point access
          */
         dataPoints: {
@@ -206,10 +223,56 @@ var mangoRest = {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
-            }
-
+            },
+            
+            /**
+             * Register for point value events
+             * @param xid - xid of data point
+             * @param events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
+             * @param onMessage(message) - method to call on message received evt.data
+             * @param onError(message) - method to call on error
+             * @param onOpen - method to call on Socket 
+             * @param onClose - method to call on Close
+             * @returns webSocket
+             */
+            registerForEvents: function(xid, events, onMessage, onError, onOpen, onClose){
+                if ('WebSocket' in window){
+                    var socket = new WebSocket('ws://localhost:8080/rest/v1/websocket/pointValue');
+                    socket.onopen = function(){
+                        console.log('Connection open!');
+                        //Register for recieving point values
+                        // using a PointValueRegistrationModel
+                        socket.send(JSON.stringify(
+                                {'xid': xid,
+                                 'eventTypes': events
+                                }));
+                        onOpen();
+                     }
+                     socket.onclose = onClose;
+                     socket.onmessage = function(event){
+                         onMessage(JSON.parse(event.data));
+                     };
+                    return socket;
+                }else{
+                    alert('Websockets not supported!');
+                }
+            },
+            
+            /**
+             * Modify the existing events for a point on a socket
+             * @param xid - xid of data point
+             * @param events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
+             * @returns
+             */
+            modifyRegisteredEvents: function(socket, xid, events){
+                socket.send(JSON.stringify(
+                        {'xid': xid,
+                         'eventTypes': events
+                        }));
+            }   
         },
-        
+
+     
         /**
          * Realtime Values Access
          */
@@ -225,7 +288,7 @@ var mangoRest = {
              */
             getCurrentValue: function(xid, done, fail){
                 $.ajax({
-                    url : "/rest/v1/realtime/" + xid + ".json",
+                    url : "/rest/v1/realtime/byXid/" + xid + ".json",
                 }).done(function(data) {
                     done(data);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -255,4 +318,71 @@ var mangoRest = {
             },
 
         },
+        
+        
+        /**
+         * Realtime Values Access
+         */
+        hierarchy: {
+            /**
+             * List Root 
+             * 
+             * 
+             * @param done(jsonData) callback with root contents as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             */
+            getRoot: function(done, fail){
+                $.ajax({
+                    url : "/rest/v1/hierarchy.json",
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
+            
+            /**
+             * Get Contents of a given folder
+             * 
+             * @param name of folder
+             * 
+             * @param done(jsonData) callback with folder contents as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             */
+            getFolderByName: function(name, done, fail){
+                $.ajax({
+                    url : "/rest/v1/hierarchy/byName/" + name + ".json",
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
+            
+            /**
+             * Get Contents of a given folder
+             * 
+             * @param id of folder
+             * 
+             * @param done(jsonData) callback with folder contents as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             */
+            getFolderById: function(id, done, fail){
+                $.ajax({
+                    url : "/rest/v1/hierarchy/byId/" + id + ".json",
+                }).done(function(data) {
+                    done(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
+        }, 
+        
+        
 };

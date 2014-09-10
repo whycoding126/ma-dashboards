@@ -9,14 +9,14 @@
         </style>
         
         <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/mangoApi/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
         <!-- Charting Library -->
-        <script type="text/javascript" src="/modules/mangoApi/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="http://www.amcharts.com/lib/3/gauge.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
         <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/modules/mangoApi/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
         <!-- Mango AM Charts Helper -->
-        <script type="text/javascript" src="/modules/mangoApi/web/js/mangoAmChartsApi.js"></script>         
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>         
        
         <script type="text/javascript">
           var gauge1 = new MangoAmGaugeHelper({

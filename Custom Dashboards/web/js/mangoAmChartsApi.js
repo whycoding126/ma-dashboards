@@ -85,7 +85,7 @@ MangoAmGaugeHelper = function(options){
 MangoAmGaugeHelper.prototype = {
         
         xid: null,
-        pollPeriodMs: 500,
+        pollPeriodMs: null,
         gauge: null,
         gaugeDivId: null,
         units: " ", //Units label for bottom center of gauge
@@ -103,14 +103,44 @@ MangoAmGaugeHelper.prototype = {
             
             this.gauge = AmCharts.makeChart(this.gaugeDivId, this.jsonConfig);
             
-            setInterval(this.updateGauge, this.pollPeriodMs);
+            //Collect the data for the first time
+            var _this = this;
+            mangoRest.pointValues.getLatest(_this.xid, 1, function(data, xid){
+                
+                if(data.length > 0){
+                    var value = data[0].value;
+                    _this.gauge.arrows[0].setValue(value);
+                    _this.gauge.axes[0].setBottomText(value + " " +  _this.units);
+                }
+                
+            }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+                var msg = "";
+                
+                if(textStatus != null)
+                    msg += (textStatus + " ");
+                if(errorThrown != null)
+                    msg += (errorThrown + " ");
+                if(mangoMessage != null)
+                    msg += (mangoMessage + " ");
+                
+                msg += "\n";
+           
+                
+                $("#errors").text(msg);
+                //alert user on fail
+                //alert(errorThrown + " " + mangoMessage);
+            });
+            
+            
+            
+            if((this.pollPeriodMs != null)&&(this.pollPeriodMs > 100))
+                setInterval(this.updateGauge, this.pollPeriodMs);
         },
         
         /**
          * Update gauge Value
          */
         updateGauge: function(){
-            
         }
 };
 
