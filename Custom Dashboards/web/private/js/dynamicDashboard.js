@@ -8,6 +8,9 @@
 //Global Chart Configurations
 var gaugeConfig;
 var lineConfig;
+var pointConfigs = new Array();
+
+
 
 /*
  * At page load setup the divs
@@ -19,29 +22,42 @@ $( document ).ready(function(){
         $('#allFolders').append(
                 $("<option></option>").text("Select One").val(0)
            )
-      //Put the sub folders into our select list on success
-      $.each(root.subfolders, function() {
-           $('#allFolders').append(
-                $("<option></option>").text(this.name).val(this.id)
-           )
-      });
+        loadSubfolders(root);
     });
     
     //Load in the Chart Configurations
     mangoRest.getJson("/modules/dashboards/web/private/charts/simpleGauge.json", function(data){
         gaugeConfig = data;
-    }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-        var msg = "";
-        if(textStatus != null)
-            msg += (textStatus + " ");
-        if(errorThrown != null)
-            msg += (errorThrown + " ");
-        if(mangoMessage != null)
-            msg += (mangoMessage + " ");
-        msg += "\n";
-        $("#errors").text(msg);
-    });
+    }, showError);
+    
+    
 });
+
+/**
+ * Recursive Load of folders
+ * @param folder
+ */
+function loadSubfolders(folder){
+    $.each(folder.subfolders, function() {
+        $('#allFolders').append(
+             $("<option></option>").text(this.name).val(this.id)
+        )
+        loadSubfolders(this);
+   });
+}
+
+
+function showError(jqXHR, textStatus, errorThrown, mangoMessage){
+    var msg = "";
+    if(textStatus != null)
+        msg += (textStatus + " ");
+    if(errorThrown != null)
+        msg += (errorThrown + " ");
+    if(mangoMessage != null)
+        msg += (mangoMessage + " ");
+    msg += "\n";
+    $("#errors").text(msg);
+}
 
 /**
  * Load a Folder's points into the view
@@ -56,6 +72,8 @@ function loadFolder(folderId){
         dashboard.empty();
         
         $.each(data.points, function() {
+            
+            
             //TODO Here we would select a chart type for the values
             //Create a chart for it
             createLineChart(this, dashboard);
@@ -74,18 +92,8 @@ function loadFolder(folderId){
         //Now create a full chart with all points on it
         createLineChartForAll(data.points, dashboard);
         
-    },function(jqXHR, textStatus, errorThrown, mangoMessage){
-        var msg = "";
-        if(textStatus != null)
-            msg += (textStatus + " ");
-        if(errorThrown != null)
-            msg += (errorThrown + " ");
-        if(mangoMessage != null)
-            msg += (mangoMessage + " ");
-        msg += "\n";
-        $("#errors").text(msg);
-    });
-    
+    }, showError);
+}
     /**
      * Helper to create a line chart from an XID
      * 
@@ -126,19 +134,8 @@ function loadFolder(folderId){
             
             
             
-        }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-            var msg = "";
-            if(textStatus != null)
-                msg += (textStatus + " ");
-            if(errorThrown != null)
-                msg += (errorThrown + " ");
-            if(mangoMessage != null)
-                msg += (mangoMessage + " ");
-            msg += "\n";
-            $("#errors").text(msg);
-        });
-        
-    }
+        }, showError);
+
 }
 
 function createLineChartForAll(dataPointSummaries, dashboard){
@@ -174,16 +171,6 @@ function createLineChartForAll(dataPointSummaries, dashboard){
         chart.createChart();
         
         
-    }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-        var msg = "";
-        if(textStatus != null)
-            msg += (textStatus + " ");
-        if(errorThrown != null)
-            msg += (errorThrown + " ");
-        if(mangoMessage != null)
-            msg += (mangoMessage + " ");
-        msg += "\n";
-        $("#errors").text(msg);
-    });
+    }, showError);
     
 }
