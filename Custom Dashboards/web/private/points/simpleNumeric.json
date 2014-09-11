@@ -8,13 +8,13 @@
     
     "chart": { 
                 "type": "LINE",
+                "pastPointCount": 100,
                 "divId": null,
                 "config": "simpleLine.json",
-                "bullet": "square",
-                "color": null,
                 "title": "Title",
                 "realtime": false,
-                "includeInSummary": true
+                "includeInSummary": true,
+                "graph": {}
              },
    
    "statistics": null

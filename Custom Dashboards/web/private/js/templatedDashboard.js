@@ -10,6 +10,63 @@ var gaugeConfig;
 var lineConfig;
 var pointConfigs = new Array();
 
+//Customize Your Points Here
+var numericPointOverrides = [
+        {
+            nameEndsWith: "in F",
+            chart: {
+                divId: "temperatureChart",
+                title: "Temperature",
+                pastPointCount: 25,
+                realtime: true,
+                valueAxis: {
+                    title: "Degrees F"
+                },            
+                graph: {
+                    balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                    bullet: "round",
+                    bulletSize: 6,
+                    lineColor: "#d1655d",
+                    lineThickness: 2,
+                    negativeLineColor: "#637bb6",
+                    type: "smoothedLine",
+                }
+                
+            },
+            statistics: {
+                averageId: "temperatureAverage",
+                integralId: "temperatureIntegral",
+                sumId: "temperatureSum",
+                firstId: "temperatureFirst",
+                lastId: "temperatureLast",
+                countId: "temperatureCount",
+                minimumId: "temperatureMinimum",
+                maximumId: "temperatureMaximum"
+                
+            }
+        },
+        {
+            nameEndsWith: "volts",
+            chart: {
+                divId: "voltageChart",
+                title: "Voltage",
+                valueAxis: {
+                    title: "Volts"
+                },
+                graph: {
+                    balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                    bullet: "square",
+                    bulletSize: 6,
+                    lineColor: "green",
+                    lineThickness: 1,
+                    negativeLineColor: "red",
+                    type: "smoothedLine",
+                }
+            }
+        }
+  ];
+
+
 /*
  * At page load setup the divs
  */
@@ -31,23 +88,8 @@ $( document ).ready(function(){
     
     //Load in the Point Configurations for Numeric Points
     mangoRest.getJson("/modules/dashboards/web/private/points/simpleNumeric.json", function(data){
-        //Modify the configuration for your page here
-        data.nameEndsWith = "in F";
-        data.chart.divId = "temperatureChart";
-        data.chart.title = "Temperature";
-        data.chart.bullet = "square";
-        data.chart.color = "green";
-        pointConfigs.push(data);
-        
-        //Duplicate for all points you want
-        var voltsPointConfig = {};
-        $.extend(true, voltsPointConfig,data);
-        voltsPointConfig.nameEndsWith = "volts";
-        voltsPointConfig.chart.divId = "voltageChart";
-        voltsPointConfig.chart.title = "Voltage";
-        voltsPointConfig.chart.bullet = "round";
-        voltsPointConfig.chart.color = "blue";
-        pointConfigs.push(voltsPointConfig);
+        for(i in numericPointOverrides)
+            pointConfigs.push(createNewPointConfig(numericPointOverrides[i], data));
         
     }, showError);
     
@@ -58,6 +100,22 @@ $( document ).ready(function(){
 //    }, showError);    
     
 });
+
+/**
+ * Using an existing point configuration and an override layer
+ * create a new config for that point
+ * 
+ * @param overrides
+ * @param config
+ * @returns New Merged Point Configuration
+ */
+function createNewPointConfig(overrides, config){
+    
+    var newConfig = {};
+    $.extend(true, newConfig, config, overrides);
+
+    return newConfig;
+}
 
 /**
  * Recursive Load of folders
@@ -113,108 +171,189 @@ function loadFolder(folderId){
     }, showError);
 }
 
-    /**
-     * Get the Point configuration by matching
-     * @param pointSummary
-     * @returns
-     */
-    function getPointConfig(pointSummary){
-        var pointConfig = null;
-        $.each(pointConfigs, function(){
-            var config = this;
-            var match = false;
-            //Does this point match this template
-            if(config.nameStartsWith != null){
-                if(pointSummary.name.indexOf(config.nameStartsWith) == 0)
-                    match = true;
-                else
-                    match = false;
-            }
-            if(config.nameEndsWith != null){
-                if(pointSummary.name.indexOf(config.nameEndsWith, pointSummary.name.length - config.nameEndsWith.length) !== -1)
-                    match = true;
-                else
-                    match = false;
-            }
-            if(config.xidStartsWith != null){
-                if(pointSummary.xid.indexOf(config.xidStartsWith) == 0)
-                    match = true;
-                else
-                    match = false;
-            }
+/**
+ * Get the Point configuration by matching
+ * @param pointSummary
+ * @returns
+ */
+function getPointConfig(pointSummary){
+    var pointConfig = null;
+    $.each(pointConfigs, function(){
+        var config = this;
+        var match = false;
+        //Does this point match this template
+        if(config.nameStartsWith != null){
+            if(pointSummary.name.indexOf(config.nameStartsWith) == 0)
+                match = true;
+            else
+                match = false;
+        }
+        if(config.nameEndsWith != null){
+            if(pointSummary.name.indexOf(config.nameEndsWith, pointSummary.name.length - config.nameEndsWith.length) !== -1)
+                match = true;
+            else
+                match = false;
+        }
+        if(config.xidStartsWith != null){
+            if(pointSummary.xid.indexOf(config.xidStartsWith) == 0)
+                match = true;
+            else
+                match = false;
+        }
 
-            if(config.xidEndsWith != null){
-                if(pointSummary.xid.indexOf(config.xidEndsWith, pointSummary.xid.length - config.xidEndsWith.length) !== -1)
-                    match = true;
-                else
-                    match = false;
-            }
-            //Return false when done
-            if(match == true){
-                pointConfig = config;
-                return false;
-            }
-            
-           
-        });
+        if(config.xidEndsWith != null){
+            if(pointSummary.xid.indexOf(config.xidEndsWith, pointSummary.xid.length - config.xidEndsWith.length) !== -1)
+                match = true;
+            else
+                match = false;
+        }
+        //Return false when done
+        if(match == true){
+            pointConfig = config;
+            return false;
+        }
         
-        return pointConfig;
-    }
+       
+    });
     
+    return pointConfig;
+}
+
+/**
+ * Create the statistics for the point
+ * 
+ * @param pointConfig
+ */
+function createStatistics(pointConfig){
+    var to = new Date();
+    var from = new Date(to.getTime() - 1000*60*60); //Last hour
+    mangoRest.pointValues.getStatistics(pointConfig.dataPointSummary.xid, formatLocalDate(from), formatLocalDate(to), function(data){
+
+        $("#" + pointConfig.statistics.minimumId).text(data.minimum.value + ' @ ' + data.minimum.time);
+        $("#" + pointConfig.statistics.maximumId).text(data.maximum.value + ' @ ' + data.maximum.time);
+        $("#" + pointConfig.statistics.averageId).text(data.average);
+        $("#" + pointConfig.statistics.integralId).text(data.integral);
+        $("#" + pointConfig.statistics.sumId).text(data.sum);
+        $("#" + pointConfig.statistics.firstId).text(data.first.value + ' @ ' + data.first.time);
+        $("#" + pointConfig.statistics.lastId).text(data.last.value + ' @ ' + data.last.time);
+        $("#" + pointConfig.statistics.countId).text(data.count);
+        
+    }, showError); 
+    
+}
+
+/**
+ * Format the date for use as a REST API URL parameter
+ * @param now
+ * @returns {String}
+ */
+function formatLocalDate(now) {
+        tzo = -now.getTimezoneOffset(),
+        dif = tzo >= 0 ? '+' : '-',
+        pad = function(num) {
+            norm = Math.abs(Math.floor(num));
+            return (norm < 10 ? '0' : '') + norm;
+        };
+    return now.getFullYear() 
+        + '-' + pad(now.getMonth()+1)
+        + '-' + pad(now.getDate())
+        + 'T' + pad(now.getHours())
+        + ':' + pad(now.getMinutes()) 
+        + ':' + pad(now.getSeconds())
+        + '.' + "000"
+        + dif + pad(tzo / 60) 
+        + ':' + pad(tzo % 60);
+}
+
+/**
+ * Create a chart for the point
+ * @param dataPointSummary
+ * @param pointConfig
+ */
+function createChart(pointConfig){
+    
+    if(pointConfig.chart.type == "LINE"){
+        createLineChart(pointConfig);
+    }else if(pointConfig.chart.type == "GAUGE"){
+        createGaugeChart(pointConfig);
+    }
+}
+    
+    
+/**
+ * Helper to create a line chart from an XID
+ * 
+ */
+function createLineChart(pointConfig){
+    
+  //Load in the Chart Configurations
+    mangoRest.getJson("/modules/dashboards/web/private/charts/" + pointConfig.chart.config, function(data){
+        //Modify the data to suit the point
+        data.titles[0].text = pointConfig.chart.title;
+        //Override and add additional Value Axis Info
+        $.extend(true, data.valueAxes[0], pointConfig.chart.valueAxis, data.valueAxes[0]);
+        //Add the chart to it
+        data.graphs[0] = 
+                   {
+                       id: "AmGraph-" + pointConfig.dataPointSummary.xid,
+                       title: pointConfig.dataPointSummary.name,
+                       valueField: pointConfig.dataPointSummary.xid
+                   };
+        //Override and add any additional features
+        $.extend(true, data.graphs[0], pointConfig.chart.graph, data.graphs[0]);
+        var chart = new MangoAmChartHelper({
+            chartDivId: pointConfig.chart.divId,
+            xids: [pointConfig.dataPointSummary.xid],
+            numberOfSamples: pointConfig.chart.pastPointCount,
+            chartJson: data
+        });
+        chart.createChart();
+
+        if(pointConfig.chart.realtime == true){
+            realtimeChart(pointConfig, chart);
+        }
+        
+    }, showError);
+    
+}
+
+/**
+ * 
+ * @param pointConfig
+ * @param chart
+ */
+function realtimeChart(pointConfig, chart){
+    //Add the socket to the point config
+    pointConfig.socket = mangoRest.pointValues.registerForEvents(pointConfig.dataPointSummary.xid,
+            ['UPDATE'],
+            function(message){ //On Message Received Method
+               document.getElementById('errors').innerHTML = "";
+               if(message.status == 'OK'){
+                   
+                    chart.amChart.dataProvider.shift();
+                    var data = {};
+                    data[pointConfig.dataPointSummary.xid] = message.payload.value.value;
+                    data.date = message.payload.value.time;
+                    chart.amChart.dataProvider.push(data);
+                    chart.amChart.validateData();
+                    
+               }else{
+                   document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+               }
+            },function(error){ //On Error Method
+                document.getElementById('errors').innerHTML = error;
+            },function(){ //On Open Method
+                document.getElementById('errors').innerHTML = '';
+            },function(){ //On Close Method
+                document.getElementById('errors').innerHTML = '';
+            });
+    
+}
+
     /**
-     * Create a chart for the point
-     * @param dataPointSummary
+     * 
      * @param pointConfig
      */
-    function createChart(pointConfig){
-        
-        if(pointConfig.chart.type == "LINE"){
-            createLineChart(pointConfig);
-        }else if(pointConfig.chart.type == "GAUGE"){
-            createGaugeChart(pointConfig);
-        }
-    }
-    
-    
-    /**
-     * Helper to create a line chart from an XID
-     * 
-     */
-    function createLineChart(pointConfig){
-        
-      //Load in the Chart Configurations
-        mangoRest.getJson("/modules/dashboards/web/private/charts/" + pointConfig.chart.config, function(data){
-            //Modify the data to suit the point
-            data.titles[0].text = pointConfig.chart.title;
-            //Add the chart to it
-            data.graphs[0] = 
-                       {
-                           id: "AmGraph-" + pointConfig.dataPointSummary.xid,
-                           bullet: pointConfig.chart.bullet,
-                           lineColor: pointConfig.chart.color,
-                           title: pointConfig.dataPointSummary.name,
-                           valueField: pointConfig.dataPointSummary.xid
-                       };
-            var chart = new MangoAmChartHelper({
-                chartDivId: pointConfig.chart.divId,
-                xids: [pointConfig.dataPointSummary.xid],
-                numberOfSamples: 50,
-                chartJson: data
-            });
-            chart.createChart();
-
-           //TODO Code for real time updating a chart
-//            chart.dataProvider.shift();
-//            chart.dataProvider.push({
-//                date: newDate,
-//                visits: visits
-//            });
-//            chart.validateData();
-            
-        }, showError);
-        
-    }
-
     function createGaugeChart(pointConfig){
       //Create a gauge for it
       var gauge = new MangoAmGaugeHelper({
@@ -243,21 +382,20 @@ function loadFolder(folderId){
                 var config = dataPointConfigs[i];
                 xids.push(config.dataPointSummary.xid);
                 //Add the chart to it
-                data.graphs.push( 
-                           {
-                               bullet: config.chart.bullet,
+                var graph = {
                                id: "AmGraph-" + i,
                                title: config.dataPointSummary.name,
-                               lineColor: config.chart.color,
                                valueField: config.dataPointSummary.xid
-                           });
-                
+                           };
+                //Override and add any additional features
+                $.extend(true, graph, config.chart.graph, graph);
+                data.graphs.push(graph);
                 
             }
             var chart = new MangoAmChartHelper({
                 chartDivId: "summary",
                 xids: xids,
-                numberOfSamples: 50,
+                numberOfSamples: 200,
                 chartJson: data
             });
             chart.createChart();

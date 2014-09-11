@@ -201,6 +201,30 @@ var mangoRest = {
             },
             
             /**
+             * Get the point statistics
+             * 
+             * @param xid - for point desired
+             * @param from - date from
+             * @param to - date to
+             * @param done(jsonData) callback with statistics object as data
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * 
+             */
+            getStatistics: function(xid, from, to, done, fail){
+                $.ajax({
+                    url : "/rest/v1/pointValues/" + xid + "/statistics.json?from=" 
+                    + from
+                    + "&to=" + to,
+                }).done(function(data) {
+                    done(data, xid);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
+            
+            /**
              * 
              * Save Point Value
              * @param xid - for data point to save to

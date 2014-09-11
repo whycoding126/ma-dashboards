@@ -28,7 +28,10 @@
         
     </head>
     <body>
-    <p>This page will create a dashboard from a JSON template </p>
+    <p>This page will create a dashboard from a JSON template that matches points in a Point Hierarchy Folder</p>
+    
+    <!-- Placeholder to log errors -->
+    <div id="errors" style="color: red"></div> 
     
     <div id="pointSelection">
         <div id="folderLabel">Select Folder</div>
@@ -37,15 +40,49 @@
     
     <hr></hr>
     <!-- The Temperature Chart -->
-    <div id="temperatureChart" style='width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    <div id="temperatureChart" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    <div id="temperatureStatistics">
+       <p>Statistics for the past Hour</p>
+        <!-- For Numeric Points -->
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Average: </div>
+          <div id="temperatureAverage" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Integral: </div>
+          <div id="temperatureIntegral" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Sum: </div>
+          <div id="temperatureSum" style="float:left"></div>
+        </div>        
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">First: </div>
+          <div id="temperatureFirst" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Last: </div>
+          <div id="temperatureLast" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Count: </div>
+          <div id="temperatureCount" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Maximum: </div>
+          <div id="temperatureMaximum" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Minimum: </div>
+          <div id="temperatureMinimum" style="float:left"></div>
+        </div>
+    </div>
+    
     <!-- The Voltage Chart -->
-    <div id="voltageChart" style='width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    <div id="voltageChart" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
     
     <!-- The Summary Chart Div -->
-    <div id="summary" style='width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
-    
-    
-    <!-- Placeholder to log errors -->
-    <div id="errors" style="color: red"></div>    
+    <div id="summary" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+   
     </body>
 </html>

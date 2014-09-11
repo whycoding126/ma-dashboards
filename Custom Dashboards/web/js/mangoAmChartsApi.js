@@ -12,7 +12,8 @@ MangoAmChartHelper = function(options){
 };
 
 MangoAmChartHelper.prototype = {
-  
+        
+        amChart: null,
         chartData: null,
         fetchCounter: 0,
         
@@ -28,6 +29,7 @@ MangoAmChartHelper.prototype = {
             for(var i=0; i<this.xids.length; i++){
                 var currentXid = this.xids[i];
                 //Load in the graph with the latest point values
+                //TODO Bug here where we should make a call to get ALL the data in one request!
                 mangoRest.pointValues.getLatest(currentXid, this.numberOfSamples, function(data, xid){
                       // Format data and re-order the values the way AM charts expects
                       var chartData = new Array();
@@ -67,7 +69,7 @@ MangoAmChartHelper.prototype = {
                 var chartJson = this.chartJson;
                 chartJson.dataProvider = this.chartData;
                 
-                AmCharts.makeChart(this.chartDivId,chartJson);
+                this.amChart = AmCharts.makeChart(this.chartDivId,chartJson);
             }
             
         },
