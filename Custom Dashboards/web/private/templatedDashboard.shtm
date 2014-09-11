@@ -7,6 +7,7 @@
         <!-- Page Style -->
         <style type="text/css">
         </style>
+        <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         
         <!-- Scripts from Module Directory -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
@@ -15,6 +16,10 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        
+        <!-- Bootstrap -->
+        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
+        
         
         <!-- Mango Rest API Helper -->
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
@@ -37,7 +42,7 @@
         <div id="folderLabel">Select Folder</div>
         <div id="folders"><select id="allFolders" onchange="loadFolder(value)"></select></div>
     </div>
-    
+
     <hr></hr>
     <!-- The Temperature Chart -->
     <div id="temperatureChart" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
