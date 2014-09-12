@@ -16,7 +16,6 @@ MangoAmChartHelper.prototype = {
         amChart: null,
         chartData: null,
         fetchCounter: 0,
-        
         /**
          * Gather the data, manipulate it and place it on the chart
          */
@@ -59,13 +58,14 @@ MangoAmChartHelper.prototype = {
          * Method to load data in and determine when we are ready
          */
         chartDataReady: function(data){
-            
+            console.log("Chart data ready");
             //Add the data to our existing chart data
             for(var i=0; i<data.length; i++){
                 this.chartData.push(data[i]);
             }
             
             if(this.fetchCounter == this.xids.length){
+                console.log("creating chart");
                 var chartJson = this.chartJson;
                 chartJson.dataProvider = this.chartData;
                 
@@ -87,16 +87,18 @@ MangoAmGaugeHelper = function(options){
 MangoAmGaugeHelper.prototype = {
         
         xid: null,
-        pollPeriodMs: null,
+        realtime: false,
         gauge: null,
         gaugeDivId: null,
         units: " ", //Units label for bottom center of gauge
         jsonConfig: null,
+        realtimeError: function(error){alert(error);},
         
         
         //Internals
         chartData: null,
         fetchCounter: 0,
+        socket: null,
         
         /**
          * Start the gauge running
@@ -133,10 +135,30 @@ MangoAmGaugeHelper.prototype = {
                 //alert(errorThrown + " " + mangoMessage);
             });
             
-            
-            
-            if((this.pollPeriodMs != null)&&(this.pollPeriodMs > 100))
-                setInterval(this.updateGauge, this.pollPeriodMs);
+            //Create realtime updates if necessary
+            if(this.realtime){
+                var _this = this;
+                this.socket = mangoRest.pointValues.registerForEvents(this.xid,
+                        ['UPDATE'],
+                        function(message){ //On Message Received Method
+                           if(message.status == 'OK'){
+                                _this.gauge.arrows[0].setValue(message.payload.value.value);
+                                _this.gauge.axes[0].setBottomText(message.payload.value.value + " " +  _this.units);
+                                
+                           }else{
+                               _this.realtimeError(message.payload.type + " - " + message.payload.message);
+                           }
+                        },function(error){ //On Error Method
+                            _this.realtimeError(error);
+                        },function(){ //On Open Method
+                            //document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            //document.getElementById('errors').innerHTML = '';
+                        });
+                
+                
+            }
+
         },
         
         /**

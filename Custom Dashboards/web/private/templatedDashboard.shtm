@@ -39,13 +39,18 @@
     <div id="errors" style="color: red"></div> 
     
     <div id="pointSelection">
-        <div id="folderLabel">Select Folder</div>
-        <div id="folders"><select id="allFolders" onchange="loadFolder(value)"></select></div>
+        <label for='allFolders' style="padding-right: 5px">Select Folder </label>
+        <select id="allFolders" onchange="loadFolderMatchAll(value)"></select>
+        
+         <label for='groups' style="padding-right: 5px">Select Group </label>
+        <select id="groups" onchange="loadGroupMatchAll(value)"></select>
     </div>
 
     <hr></hr>
     <!-- The Temperature Chart -->
-    <div id="temperatureChart" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    <div id="temperatureChart" style='width:44%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    <div id="temperatureGauge" style='width:44%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+    
     <div id="temperatureStatistics">
        <p>Statistics for the past Hour</p>
         <!-- For Numeric Points -->

@@ -7,7 +7,7 @@
     "dataPointSummary": null,
     
     "chart": { 
-                "type": "LINE",
+                "type": "line",
                 "pastPointCount": 100,
                 "divId": null,
                 "config": "simpleLine.json",
