@@ -263,7 +263,6 @@ var mangoRest = {
                 if ('WebSocket' in window){
                     var socket = new WebSocket('ws://localhost:8080/rest/v1/websocket/pointValue');
                     socket.onopen = function(){
-                        console.log('Connection open!');
                         //Register for recieving point values
                         // using a PointValueRegistrationModel
                         socket.send(JSON.stringify(
@@ -408,5 +407,26 @@ var mangoRest = {
             },
         }, 
         
-        
+        /**
+         * Format the date for use as a REST API URL parameter
+         * @param now
+         * @returns {String}
+         */
+        formatLocalDate: function(now) {
+                tzo = -now.getTimezoneOffset(),
+                dif = tzo >= 0 ? '+' : '-',
+                pad = function(num) {
+                    norm = Math.abs(Math.floor(num));
+                    return (norm < 10 ? '0' : '') + norm;
+                };
+            return now.getFullYear() 
+                + '-' + pad(now.getMonth()+1)
+                + '-' + pad(now.getDate())
+                + 'T' + pad(now.getHours())
+                + ':' + pad(now.getMinutes()) 
+                + ':' + pad(now.getSeconds())
+                + '.' + "000"
+                + dif + pad(tzo / 60) 
+                + ':' + pad(tzo % 60);
+        },
 };

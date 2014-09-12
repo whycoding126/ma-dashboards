@@ -58,14 +58,12 @@ MangoAmChartHelper.prototype = {
          * Method to load data in and determine when we are ready
          */
         chartDataReady: function(data){
-            console.log("Chart data ready");
             //Add the data to our existing chart data
             for(var i=0; i<data.length; i++){
                 this.chartData.push(data[i]);
             }
             
             if(this.fetchCounter == this.xids.length){
-                console.log("creating chart");
                 var chartJson = this.chartJson;
                 chartJson.dataProvider = this.chartData;
                 
@@ -91,6 +89,7 @@ MangoAmGaugeHelper.prototype = {
         gauge: null,
         gaugeDivId: null,
         units: " ", //Units label for bottom center of gauge
+        decimalPlaces: 2,
         jsonConfig: null,
         realtimeError: function(error){alert(error);},
         
@@ -114,7 +113,7 @@ MangoAmGaugeHelper.prototype = {
                 if(data.length > 0){
                     var value = data[0].value;
                     _this.gauge.arrows[0].setValue(value);
-                    _this.gauge.axes[0].setBottomText(value + " " +  _this.units);
+                    _this.gauge.axes[0].setBottomText(_this.renderValue(data[0]));
                 }
                 
             }, function(jqXHR, textStatus, errorThrown, mangoMessage){
@@ -143,7 +142,7 @@ MangoAmGaugeHelper.prototype = {
                         function(message){ //On Message Received Method
                            if(message.status == 'OK'){
                                 _this.gauge.arrows[0].setValue(message.payload.value.value);
-                                _this.gauge.axes[0].setBottomText(message.payload.value.value + " " +  _this.units);
+                                _this.gauge.axes[0].setBottomText(_this.renderValue(message.payload.value));
                                 
                            }else{
                                _this.realtimeError(message.payload.type + " - " + message.payload.message);
@@ -160,11 +159,13 @@ MangoAmGaugeHelper.prototype = {
             }
 
         },
-        
         /**
-         * Update gauge Value
+         * Render the value for the gauge
+         * @param value
+         * @returns
          */
-        updateGauge: function(){
+        renderValue: function(pvt){
+            return pvt.value.toFixed(this.decimalPlaces) + " " +  this.units;
         }
 };
 

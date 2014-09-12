@@ -8,10 +8,13 @@
         <style type="text/css">
         </style>
         <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
         
-        <!-- Scripts from Module Directory -->
+        
+        <!-- JQuery and Plugins -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
         <!-- Charting Library -->
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
@@ -27,6 +30,9 @@
         <!-- Mango AM Charts Helper -->
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
         
+        <!-- Mango Templating API -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoPointHierarchyTemplateApi.js"></script>
+        
         <!-- JS For this page -->
         <script type="text/javascript" src="/modules/dashboards/web/private/js/templatedDashboard.js"></script>
         
@@ -40,12 +46,13 @@
     
     <div id="pointSelection">
         <label for='allFolders' style="padding-right: 5px">Select Folder </label>
-        <select id="allFolders" onchange="loadFolderMatchAll(value)"></select>
+        <select id="allFolders" onchange="templater.loadFolderMatchAll(value)"></select>
         
          <label for='groups' style="padding-right: 5px">Select Group </label>
-        <select id="groups" onchange="loadGroupMatchAll(value)"></select>
+        <select id="groups" onchange="templater.loadGroupMatchAll(value)"></select>
     </div>
-
+    <label for="startDate">Start:</label><input id="startDate"/>
+    <label for="endDate">End:</label><input id="endDate"/>
     <hr></hr>
     <!-- The Temperature Chart -->
     <div id="temperatureChart" style='width:44%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
