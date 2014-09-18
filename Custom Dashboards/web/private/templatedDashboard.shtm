@@ -45,21 +45,27 @@
     <div id="errors" style="color: red"></div> 
     
     <div id="pointSelection">
-        <label for='allFolders' style="padding-right: 5px">Select Folder </label>
-        <select id="allFolders" onchange="templater.loadFolderMatchAll(value)"></select>
+<!--         <label for='allFolders' style="padding-right: 5px">Select Folder </label> -->
+<!--         <select id="allFolders"></select> -->
         
          <label for='groups' style="padding-right: 5px">Select Group </label>
-        <select id="groups" onchange="templater.loadGroupMatchAll(value)"></select>
+        <select id="groups"></select>
     </div>
     <label for="startDate">Start:</label><input id="startDate"/>
     <label for="endDate">End:</label><input id="endDate"/>
+    <br>
+    <label for="rollup">Rollup:</label><select id="rollup"></select>
+    <label for="timePeriodType">Time Period:</label><select id="timePeriodType"></select>
+    <label for="timePeriod">Periods:</label><input id="timePeriod" type="number" value="1"/>
+    
+    
     <hr></hr>
     <!-- The Temperature Chart -->
     <div id="temperatureChart" style='width:44%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
     <div id="temperatureGauge" style='width:44%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
     
     <div id="temperatureStatistics">
-       <p>Statistics for the past Hour</p>
+       <p><b>Statistics for the Period</b></p>
         <!-- For Numeric Points -->
         <div style="clear:both">
           <div style="float:left; padding-right:5px">Average: </div>
@@ -97,7 +103,48 @@
     
     <!-- The Voltage Chart -->
     <div id="voltageChart" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
-    
+    <!-- The Voltage Value -->
+    <div style="clear:both">
+      <div style="float:left; padding-right:5px">Current Voltage: </div>
+      <div id="voltageValue" style="float:left"></div>
+    </div>
+    <br>
+    <div id="voltageStatistics">
+       <p><b>Statistics for the Past Hour</b></p>
+        <!-- For Numeric Points -->
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Average: </div>
+          <div id="voltageAverage" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Integral: </div>
+          <div id="voltageIntegral" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Sum: </div>
+          <div id="voltageSum" style="float:left"></div>
+        </div>        
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">First: </div>
+          <div id="voltageFirst" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Last: </div>
+          <div id="voltageLast" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Count: </div>
+          <div id="voltageCount" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Maximum: </div>
+          <div id="voltageMaximum" style="float:left"></div>
+        </div>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Minimum: </div>
+          <div id="voltageMinimum" style="float:left"></div>
+        </div>
+    </div>    
     <!-- The Summary Chart Div -->
     <div id="summary" style='width:90%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
    

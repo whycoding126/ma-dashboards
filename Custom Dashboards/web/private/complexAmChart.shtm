@@ -35,6 +35,9 @@
                           return 0;
                       }
                   },
+                  timeOperation: function(pvt, xid){
+                    return pvt.time;  
+                  },
                   chartJson: 
                   {
                       "type": "serial",

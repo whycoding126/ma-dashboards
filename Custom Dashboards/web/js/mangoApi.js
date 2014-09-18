@@ -176,6 +176,40 @@ var mangoRest = {
                 
             },
         
+            /**
+             * Get values based on date ranges with optional rollup
+             * 
+             * @param xid - for point desired
+             * @param from - date from formatted using this.formatLocalDate
+             * @param to - date to formatted using this.formatLocalDate
+             * @param rollup - null or ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
+             * @param timePeriodType - null or ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']
+             * @param timePeriods - null or integer number of periods to use
+             * 
+             * @param done(jsonData) callback with data in time order, oldest first
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * 
+             */
+            get: function(xid, from, to, rollup, timePeriodType, timePeriods, done, fail){
+                //Create the parameter list
+                var params = "";
+                if(rollup != null)
+                    params += "&rollup=" + rollup;
+                if(timePeriodType != null)
+                    params += "&timePeriodType=" + timePeriodType;
+                if(timePeriods != null)
+                    params += "&timePeriods=" + timePeriods;
+                
+                $.ajax({
+                    url : "/rest/v1/pointValues/" + xid + ".json?from=" + from + "&to=" + to + params,
+                }).done(function(data) {
+                    done(data, xid);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    var mangoMessage = jqXHR.getResponseHeader("errors");
+                    fail(jqXHR, textStatus, errorThrown, mangoMessage);
+                });
+            },
             
             /**
              * Get the latest limit number of values
@@ -204,8 +238,8 @@ var mangoRest = {
              * Get the point statistics
              * 
              * @param xid - for point desired
-             * @param from - date from
-             * @param to - date to
+             * @param from - date from formatted using this.formatLocalDate
+             * @param to - date to formatted using this.formatLocalDate
              * @param done(jsonData) callback with statistics object as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
@@ -408,7 +442,11 @@ var mangoRest = {
         }, 
         
         /**
+         * 
          * Format the date for use as a REST API URL parameter
+         * Jan 1 2014 at midnight
+         * ie. 2014-01-01T00:00:00.000+10:00
+         * 
          * @param now
          * @returns {String}
          */

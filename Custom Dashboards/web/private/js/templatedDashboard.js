@@ -14,17 +14,6 @@
  * @author Terry Packer
  */
 
-
-
-//Global Chart Configurations
-var gaugeConfig;
-var lineConfig;
-var pointConfigs = new Array();
-var pointGroups = new Array();
-var root; //Point Hierarchy Root 
-var allDataPointSummaries = new Array(); //Holds all data points in Mango
-var pointHierarchyMap = {}; //Map of folder IDs to Folder
-
 //Customize Your Point Groupings Here to group via Point Hierarchy
 var groupConfigs = [
         {   //One group of all points
@@ -140,11 +129,19 @@ var numericPointOverrides = [
             chart: {
                 divId: "temperatureChart",
                 title: "Temperature",
-                pastPointCount: 25,
-                realtime: true,
+                pastPointCount: null, //Or number of previous samples to use 25,
+                useRollup: false,
+                realtime: false,
                 valueAxis: {
                     title: "Degrees F"
                 },            
+                dataOperation: function(allData, pvt ,xid){
+                    var value = pvt.value * 0.01;
+                    return value.toFixed(2);
+                 },
+                 timeOperation: function(allData, pvt, xid){
+                   return pvt.time;  
+                 },
                 graph: {
                     balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
                     bullet: "round",
@@ -157,6 +154,7 @@ var numericPointOverrides = [
                 
             },
             statistics: {
+                period: null, //Leave null to use templater dates (otherwise ms period prior to now)
                 averageId: "temperatureAverage",
                 integralId: "temperatureIntegral",
                 sumId: "temperatureSum",
@@ -178,12 +176,17 @@ var numericPointOverrides = [
                 config: "simpleGauge.json",
                 units: "Degrees F",
                 realtime: true,
-                includeInSummary: false
+                includeInSummary: false,
+                //Optionally add a render value method
+                renderValue: function(pvt){
+                    return pvt.value.toFixed(this.decimalPlaces) + " " +  this.units;
+                }
             }
         },
         {
             nameEndsWith: "volts",
             chart: {
+                type: "line",
                 divId: "voltageChart",
                 title: "Voltage",
                 valueAxis: {
@@ -199,7 +202,33 @@ var numericPointOverrides = [
                     type: "step",
                 }
             }
+        },
+        
+        {
+            nameEndsWith: "volts",
+            chart: {
+                type: "text", //Text Area Renderer type 
+                divId: "voltageValue",
+                realtime: true,
+                includeInSummary: false,
+                renderValue: function(pvt){
+                    return pvt.value.toFixed(2) + " Volts";
+                }
+            },
+            statistics: {
+                period: 1000*60*60, //Leave null to use templater dates (otherwise ms period prior to now)
+                averageId: "voltageAverage",
+                integralId: "voltageIntegral",
+                sumId: "voltageSum",
+                firstId: "voltageFirst",
+                lastId: "voltageLast",
+                countId: "voltageCount",
+                minimumId: "voltageMinimum",
+                maximumId: "voltageMaximum"
+                
+            }
         }
+        
   ];
 
 var templater; //The Core Templating Object
@@ -208,79 +237,47 @@ var templater; //The Core Templating Object
  */
 $( document ).ready(function(){
 
-    //Setup Time Picker
-    $('#startDate').datetimepicker({
-        inline:true,
-        onChangeDateTime:setStartDate,
-    });
-    $('#endDate').datetimepicker({
-        inline:true,
-        onChangeDateTime:setEndDate,
-    });
-    //First load the point Hierarchy to use on the page
-    mangoRest.hierarchy.getRoot(function(data){
-        
-        //Create the Templater
-        templater = new MangoPointHierarchyTemplate(
-                {
-                    root: data,
-                    summaryChartId: "summary",
-                    errorDivId: "errors",
-                    groupConfigs: groupConfigs,
-                    decimalPlaces: 2
-                }
-                
-            );
 
-        //Search for all points and save into a list
-        templater.loadAllPoints();
-        
-        
-        //Load the point hierarchy into some select lists
-        templater.createAllFoldersDropDown('allFolders');
-        templater.createGroupDropDown('groups');
-        
-        //TODO Chain these together so we are sure they are done prior to UI Engagement
-        //Load in the Chart Configurations
-        mangoRest.getJson("/modules/dashboards/web/private/charts/simpleGauge.json", function(data){
-            gaugeConfig = data;
-        }, showError);
-        
-        templater.loadNumericPointConfigs(numericPointOverrides);
-        
-//        mangoRest.getJson("/modules/dashboards/web/private/points/simpleMultistate.json", function(data){
-//          //Modify the configuration for your page here
-//            
-//            pointConfigs.push(data);
-//        }, showError);  
-        
-        
-    }, showError);
+    //Create the initial dates
+    var defaultEndDate = new Date(); //Now
+    var defaultStartDate = new Date(defaultEndDate.getTime() - 1000*60*60); //One Hour Ago
+
+    //Create the Templater
+    templater = new MangoPointHierarchyTemplate(
+            {
+                //Optionally Include a summary chart (not fully working yet)
+                summaryChartId: "summary",
+                
+                //Div to place any errors that occur internally
+                errorDivId: "errors",
+                
+                //Default for point rendering
+                decimalPlaces: 2,
+                
+                //Group Configurations
+                groupConfigs: groupConfigs,
+                
+                //Numeric Point Configurations to use
+                numericPoints: numericPointOverrides,
+                
+                //Use Only 1 of these either choose by Folder or by Group
+                //allFoldersDropDownId: 'allFolders',
+                groupsDropDownId: 'groups',
+                
+                //Divs to place the Date Pickers
+                fromDateDivId: 'startDate',
+                toDateDivId: 'endDate',
+                
+                //Dates to default to
+                fromDate: defaultStartDate,
+                toDate: defaultEndDate,
+                
+                //Rollup Selection (only for charts)
+                rollupSelectId: 'rollup', //Select id for rollup
+                timePeriodTypeSelectId: 'timePeriodType', //Select id for Period Types
+                timePeriodInputId: 'timePeriod' //Input Id for period
+            }
+            
+        );
     
 });
-
-function setStartDate(date){
-    alert(date);
-}
-function setEndDate(date){
-    alert(date);
-}
-/**
- * Helper to display error messages in the error div
- * @param jqXHR - xhr response
- * @param textStatus - status from response
- * @param errorThrown - exception
- * @mangoMessaage - string response from Mango
- */
-function showError(jqXHR, textStatus, errorThrown, mangoMessage){
-
-    var msg = "";
-    if(textStatus != null)
-        msg += (textStatus + " ");
-    if(errorThrown != null)
-        msg += (errorThrown + " ");
-    if(mangoMessage != null)
-        msg += (mangoMessage + " ");
-    msg += "\n";
-    $("#" + this.errorDivId).text(msg);
-}

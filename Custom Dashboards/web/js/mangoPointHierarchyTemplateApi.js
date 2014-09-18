@@ -12,6 +12,78 @@ MangoPointHierarchyTemplate = function(options){
     for(var i in options) {
         this[i] = options[i];
     }
+    var _this = this;
+    //Assign on change events to the selection drop downs
+    if(this.allFoldersDropDownId != null)
+        $('#' + this.allFoldersDropDownId).change(function(){
+            _this.loadFolderMatchAll($(this).val());
+        });
+    
+    if(this.groupsDropDownId != null)
+        $('#' + this.groupsDropDownId).change(function(){
+            _this.loadGroupMatchAll($(this).val());
+        });
+
+    //Create the Time Periods and Rollup if required
+    if(this.rollupSelectId != null){
+        
+        for(k in this.rollups){
+            $('#' + this.rollupSelectId).append( 
+                    $("<option></option>").text(this.rollups[k]).val(this.rollups[k]));
+        }
+        //Add the onchange event
+        
+        for(k in this.timePeriods){
+            $('#' + this.timePeriodTypeSelectId).append( 
+                    $("<option></option>").text(this.timePeriods[k]).val(this.timePeriods[k]));
+        }        
+    }
+    
+    //Setup Date Pickers if necessary
+    if(this.fromDateDivId != null)
+        $('#' + this.fromDateDivId).datetimepicker({
+            inline: true,
+            format:'unixtime',
+            defaultDate: this.fromDate,
+            onChangeDateTime: function(dp, $input){
+                //Use Unix ts for input value, dirty hack but we will eventually get rid of this picker
+                _this.fromDate = new Date(parseInt($input.val(), 10) * 1000);
+                
+                if(_this.groupsDropDownId != null)
+                    _this.loadGroupMatchAll($("#" + _this.groupsDropDownId).val());
+                else
+                    _this.loadFolderMatchAll($("#" + _this.allFoldersDropDownId).val());
+            },
+        });
+    if(this.toDateDivId != null)
+        $('#' + _this.toDateDivId).datetimepicker({
+            inline: true,
+            format: 'unixtime',
+            defaultDate: this.toDate,
+            onChangeDateTime:function(dp, $input){
+              //Use Unix ts for input value, dirty hack but we will eventually get rid of this picker
+                _this.toDate = new Date(parseInt($input.val(), 10) * 1000);
+                if(_this.groupsDropDownId != null)
+                    _this.loadGroupMatchAll($("#" + _this.groupsDropDownId).val());
+                else
+                    _this.loadFolderMatchAll($("#" + _this.allFoldersDropDownId).val());
+            },
+        });
+    
+    
+    
+    
+    mangoRest.hierarchy.getRoot(function(data){
+        _this.root = data; //Set the PH
+        _this.loadAllPoints(); //Load all points from Hierarchy
+        //Load the point hierarchy into some select lists
+        if(_this.allFoldersDropDownId != null)
+            _this.createAllFoldersDropDown(_this.allFoldersDropDownId);
+        if(_this.groupsDropDownId != null)
+            _this.createGroupDropDown(_this.groupsDropDownId);
+        _this.loadNumericPointConfigs(_this.numericPoints);
+    }, this.showError);
+    
     
 };
 
@@ -21,12 +93,27 @@ MangoPointHierarchyTemplate.prototype = {
         errorDivId: "errors", //Div ID for error messages
         decimalPlaces: 2, //Default decimal places to use
         
+        fromDate: null,
+        toDate: null,
+        
         root: null, //Point Hierarchy Root node
         pointConfigs: new Array(), //Array of point configurations
         groupConfigs: new Array(), //Array of group configurations
         pointGroups: new Array(),
         pointHierarchyMap: {}, //Map of folder IDs to Folder
         allDataPointSummaries: new Array(), //Holds all data points in Mango
+        
+        fromDateDivId: null,
+        toDateDivId: null,
+        
+        rollups: ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
+        rollupSelectId: null,
+        timePeriods: ['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS'], //Not using yet 'MILLISECONDS', 'SECONDS',
+        timePeriodTypeSelectId: null,
+        timePeriodInputId: null,
+        //Point Configurations
+        numericPoints: new Array(),
+        
         
         /**
          * Override method to return a custom data view
@@ -619,8 +706,17 @@ MangoPointHierarchyTemplate.prototype = {
              * @param pointConfig
              */
             createStatistics: function(pointConfig, dataPointSummary){
-                var to = new Date();
-                var from = new Date(to.getTime() - 1000*60*60); //Last hour
+                
+                //Use Period or Dates
+                var to, from;
+                if(pointConfig.statistics.period != null){
+                    to = new Date(); //Always to now
+                    from = new Date(to.getTime() - pointConfig.statistics.period);
+                }else{
+                    from = this.fromDate;
+                    to = this.toDate;
+                }
+                
                 var _this = this;
                 mangoRest.pointValues.getStatistics(dataPointSummary.xid, mangoRest.formatLocalDate(from), mangoRest.formatLocalDate(to), function(data){
                     if(data.hasData == true){
@@ -658,6 +754,8 @@ MangoPointHierarchyTemplate.prototype = {
                     this.createLineChart(pointConfig, dataPointSummary);
                 }else if(pointConfig.chart.type == "gauge"){
                     this.createGaugeChart(pointConfig, dataPointSummary);
+                }else if(pointConfig.chart.type == "text"){
+                    this.createTextChart(pointConfig, dataPointSummary);
                 }
             },
             /**
@@ -679,14 +777,41 @@ MangoPointHierarchyTemplate.prototype = {
                                    title: dataPointSummary.name,
                                    valueField: dataPointSummary.xid
                                };
+                    
                     //Override and add any additional features
                     $.extend(true, data.graphs[0], data.graphs[0], pointConfig.chart.graph);
-                    var chart = new MangoAmChartHelper({
-                        chartDivId: pointConfig.chart.divId,
-                        xids: [dataPointSummary.xid],
-                        numberOfSamples: pointConfig.chart.pastPointCount,
-                        chartJson: data
-                    });
+                    
+                    var chartConfig = {
+                            chartDivId: pointConfig.chart.divId,
+                            xids: [dataPointSummary.xid],
+                            chartJson: data,
+                            showError: this.showError,
+                        };
+
+                    //Determine the date ranges
+                    if(pointConfig.chart.pastPointCount != null){
+                        chartConfig.numberOfSamples = pointConfig.chart.pastPointCount;
+                    }else{
+                        chartConfig.fromDate = _this.fromDate;
+                        chartConfig.toDate = _this.toDate;
+                    }
+                    
+                    //Setup Rollup
+                    if(_this.rollupSelectId != null){
+                        chartConfig.rollup = $('#'+_this.rollupSelectId).val();
+                        chartConfig.timePeriodType = $('#'+_this.timePeriodTypeSelectId).val();
+                        chartConfig.timePeriods = $('#'+_this.timePeriodInputId).val();
+                    }
+                    
+                    
+                    //Setup the value/time manipulation operations
+                    if(typeof pointConfig.chart.dataOperation != 'undefined')
+                        chartConfig.dataOperation = pointConfig.chart.dataOperation;
+                    if(typeof pointConfig.chart.timeOperation != 'undefined')
+                        chartConfig.timeOperation = pointConfig.chart.timeOperation;
+                    
+                    
+                    var chart = new MangoAmChartHelper(chartConfig);
                     chart.createChart();
 
                     if(pointConfig.chart.realtime == true){
@@ -710,8 +835,10 @@ MangoPointHierarchyTemplate.prototype = {
                                
                                 chart.amChart.dataProvider.shift();
                                 var data = {};
-                                data[dataPointSummary.xid] = message.payload.value.value;
-                                data.date = message.payload.value.time;
+                                data[dataPointSummary.xid] = chart.dataOperation(chart.amChart.dataProvider, message.payload.value, dataPointSummary.xid);
+                                data.date = chart.timeOperation(chart.amChart.dataProvider, message.payload.value, dataPointSummary.xid);
+                                
+                                
                                 chart.amChart.dataProvider.push(data);
                                 chart.amChart.validateData();
                                 
@@ -735,16 +862,23 @@ MangoPointHierarchyTemplate.prototype = {
                 
                 mangoRest.getJson("/modules/dashboards/web/private/charts/" + pointConfig.chart.config, function(data){
                     
-                    //Create a gauge for it
-                    var gauge = new MangoAmGaugeHelper({
+                    var gaugeConfig = {
                         xid: dataPointSummary.xid,
                         gaugeDivId: pointConfig.chart.divId,
                         units: pointConfig.chart.units,
                         decimalPlaces: 2,
                         realtime: pointConfig.chart.realtime,
                         jsonConfig: data,
-                        realtimeError: function(error){document.getElementById('errors').innerHTML = "Gauge Update Error: " + error;}
-                    });
+                        realtimeError: function(error){document.getElementById('errors').innerHTML = "Gauge Update Error: " + error;},
+                        showError: this.showError,
+                    };
+                    
+                    //Add in any custom rendering
+                    if(typeof pointConfig.chart.renderValue != 'undefined')
+                        gaugeConfig.renderValue =pointConfig.chart.renderValue;
+                    
+                    //Create a gauge for it
+                    var gauge = new MangoAmGaugeHelper(gaugeConfig);
                     gauge.startGauge();
                 }, this.showError);
 
@@ -786,6 +920,50 @@ MangoPointHierarchyTemplate.prototype = {
                     
                     
                 }, this.showError);
+                
+            },
+            /**
+             * Helper to create a text value rendered area
+             * 
+             */
+            createTextChart: function (pointConfig, dataPointSummary){
+ 
+                if(pointConfig.chart.realtime == true){
+                    this.realtimeText(pointConfig, dataPointSummary);
+                }else{
+                    //Get the value now
+                    mangoRest.pointValues.getLatest(dataPointSummary.xid, 1, function(data){
+                        if(data.length > 0)
+                            $("#" + pointConfig.chart.divId).text(pointConfig.chart.renderValue(data[0]));
+                        else
+                            $("#" + pointConfig.chart.divId).text("no data");
+                    }, this.showError);
+                    
+                }
+            },
+            /**
+             * 
+             * @param pointConfig
+             * @param chart
+             */
+            realtimeText: function(pointConfig, dataPointSummary){
+                //Add the socket to the point config
+                pointConfig.socket = mangoRest.pointValues.registerForEvents(dataPointSummary.xid,
+                        ['UPDATE'],
+                        function(message){ //On Message Received Method
+                           if(message.status == 'OK'){
+                              $("#" + pointConfig.chart.divId).text(pointConfig.chart.renderValue(message.payload.value));
+                                
+                           }else{
+                               document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                           }
+                        },function(error){ //On Error Method
+                            document.getElementById('errors').innerHTML = "Chart Update Error: " + error;
+                        },function(){ //On Open Method
+                            //document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            //document.getElementById('errors').innerHTML = '';
+                        });
                 
             },
             
