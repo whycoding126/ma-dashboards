@@ -107,7 +107,7 @@ var groupConfigs = [
             }
             
         },
-        {   //Group ALL by subfolder's of a folder
+        {   //Create groups for every folder in the Point Hierarchy
             matchAll: false,
             byFolder: true,
             byPointSummary: false,
@@ -130,7 +130,6 @@ var numericPointOverrides = [
                 divId: "temperatureChart",
                 title: "Temperature",
                 pastPointCount: null, //Or number of previous samples to use 25,
-                useRollup: false,
                 realtime: false,
                 valueAxis: {
                     title: "Degrees F"
@@ -267,6 +266,9 @@ $( document ).ready(function(){
                 //Divs to place the Date Pickers
                 fromDateDivId: 'startDate',
                 toDateDivId: 'endDate',
+                
+                dateInputInline: null,
+                dateFormat: null,
                 
                 //Dates to default to
                 fromDate: defaultStartDate,

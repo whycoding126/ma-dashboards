@@ -40,14 +40,14 @@ MangoPointHierarchyTemplate = function(options){
     }
     
     //Setup Date Pickers if necessary
-    if(this.fromDateDivId != null)
+    if(this.fromDateDivId != null){
         $('#' + this.fromDateDivId).datetimepicker({
-            inline: true,
-            format:'unixtime',
+            inline: this.dateInputInline,
+            format: this.dateFormat, //'unixtime',
             defaultDate: this.fromDate,
             onChangeDateTime: function(dp, $input){
                 //Use Unix ts for input value, dirty hack but we will eventually get rid of this picker
-                _this.fromDate = new Date(parseInt($input.val(), 10) * 1000);
+                _this.fromDate = _this.parseDate($input.val());
                 
                 if(_this.groupsDropDownId != null)
                     _this.loadGroupMatchAll($("#" + _this.groupsDropDownId).val());
@@ -55,14 +55,15 @@ MangoPointHierarchyTemplate = function(options){
                     _this.loadFolderMatchAll($("#" + _this.allFoldersDropDownId).val());
             },
         });
+    }
     if(this.toDateDivId != null)
         $('#' + _this.toDateDivId).datetimepicker({
-            inline: true,
-            format: 'unixtime',
+            inline: this.dateInputInline,
+            format: this.dateFormat,
             defaultDate: this.toDate,
             onChangeDateTime:function(dp, $input){
               //Use Unix ts for input value, dirty hack but we will eventually get rid of this picker
-                _this.toDate = new Date(parseInt($input.val(), 10) * 1000);
+                _this.toDate = parseDate($input.val());
                 if(_this.groupsDropDownId != null)
                     _this.loadGroupMatchAll($("#" + _this.groupsDropDownId).val());
                 else
@@ -105,6 +106,8 @@ MangoPointHierarchyTemplate.prototype = {
         
         fromDateDivId: null,
         toDateDivId: null,
+        dateInputInline: true,
+        dateFormat: 'unixtime',
         
         rollups: ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
         rollupSelectId: null,
@@ -120,6 +123,13 @@ MangoPointHierarchyTemplate.prototype = {
          */
         displayPointValueTime: function(pvt){
             return pvt.value.toFixed(this.decimalPlaces) + " @ " + pvt.time;
+        },
+        
+        /**
+         * Helper to parse the picker dates
+         */
+        parseDate: function(value){
+            return new Date(parseInt(value, 10) * 1000);
         },
         
         /**
