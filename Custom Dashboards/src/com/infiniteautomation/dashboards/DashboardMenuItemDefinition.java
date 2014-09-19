@@ -4,9 +4,19 @@
  */
 package com.infiniteautomation.dashboards;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.module.MenuItemDefinition;
 
 /**
@@ -14,6 +24,9 @@ import com.serotonin.m2m2.module.MenuItemDefinition;
  *
  */
 public class DashboardMenuItemDefinition extends MenuItemDefinition{
+	
+	Log LOG = LogFactory.getLog(DashboardMenuItemDefinition.class);
+	private final String defaultPage = "/private-dashboards/welcome.shtm";
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.MenuItemDefinition#getVisibility()
@@ -60,7 +73,21 @@ public class DashboardMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-        return "/private-dashboards/defaultDashboard.shtm";
+    	
+    	//Load up link to default page
+    	String propertiesPath = Common.MA_HOME + getModule().getDirectoryPath() + "/web/web.properties";
+    	File file = new File(propertiesPath);
+    	try {
+			FileInputStream is = new FileInputStream(file);
+			Properties webProperties = new Properties();
+			webProperties.load(is);
+	        return webProperties.getProperty("defaultPage", defaultPage);
+		} catch (FileNotFoundException e) {
+			LOG.error(e.getMessage(), e);
+		} catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+		}
+        return defaultPage;
     }
     
     @Override

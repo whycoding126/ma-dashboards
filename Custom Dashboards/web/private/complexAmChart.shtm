@@ -19,23 +19,27 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>         
        
         <script type="text/javascript">
+        
+         var chart1Xids = ["temp","volts"];
+         var chart2Xids = ["temp", "volts"];
+         var chart3Xids = ["temp", "volts"];
+        
           var chart1 = new MangoAmChartHelper({
                   chartDivId: "chart1",
-                  xids: ["DP_544063","DP_954927"],
+                  xids: chart1Xids,
                   numberOfSamples: 50,
                   //Operate on the PVT Object {time,value,...}
                   //this needs to return the value member or some representation of it
-                  dataOperation: function(pvt,xid){
-                      
-                      if(xid === "DP_544063"){
+                  dataOperation: function(allData, pvt,xid){
+                      if(xid === chart1Xids[0]){
                           return pvt.value * 0.01;
-                      }else if(xid === "DP_954927"){
+                      }else if(xid === chart1Xids[1]){
                           return pvt.value * 10;
                       }else{
                           return 0;
                       }
                   },
-                  timeOperation: function(pvt, xid){
+                  timeOperation: function(allData, pvt, xid){
                     return pvt.time;  
                   },
                   chartJson: 
@@ -59,14 +63,14 @@
                           {
                               "bullet": "round",
                               "id": "AmGraph-1",
-                              "title": "DP_544063",
-                              "valueField": "DP_544063"
+                              "title": chart1Xids[0],
+                              "valueField": chart1Xids[0]
                           },
                           {
                               "bullet": "square",
                               "id": "AmGraph-2",
-                              "title": "DP_954927",
-                              "valueField": "DP_954927"
+                              "title": chart1Xids[1],
+                              "valueField": chart1Xids[1]
                           }
                       ],
                       "guides": [],
@@ -93,7 +97,7 @@
         
           var chart2 = new MangoAmChartHelper({
               chartDivId: "chart2",
-              xids: ["DP_544063","DP_954927"],
+              xids: chart2Xids,
               numberOfSamples: 100,
               //No data operation defined so the data will be used as returned from the DB
               chartJson: 
@@ -116,14 +120,20 @@
                       {
                           "bullet": "round",
                           "id": "AmGraph-1",
-                          "title": "DP_544063",
-                          "valueField": "DP_544063"
+                          lineColor: "green",
+                          lineThickness: 2,
+                          negativeLineColor: "black",
+                          "title": chart2Xids[0],
+                          "valueField": chart2Xids[0]
                       },
                       {
                           "bullet": "square",
                           "id": "AmGraph-2",
-                          "title": "DP_954927",
-                          "valueField": "DP_954927"
+                          lineColor: "#d1655d",
+                          lineThickness: 2,
+                          negativeLineColor: "#637bb6",
+                          "title": chart2Xids[1],
+                          "valueField": chart2Xids[1]
                       }
                   ],
                   "guides": [],
@@ -150,15 +160,15 @@
           
           var chart3 = new MangoAmChartHelper({
               chartDivId: "chart3",
-              xids: ["DP_544063","DP_954927"],
+              xids: chart3Xids,
               numberOfSamples: 500,
               //Operate on the PVT Object {time,value,...}
               //this needs to return the value member or some representation of it
-              dataOperation: function(pvt,xid){
+              dataOperation: function(allData, pvt,xid){
                   
-                  if(xid === "DP_544063"){
+                  if(xid === chart3Xids[0]){
                       return pvt.value * 0.01;
-                  }else if(xid === "DP_954927"){
+                  }else if(xid === chart3Xids[1]){
                       return pvt.value * 10;
                   }else{
                       return 0;
@@ -183,16 +193,22 @@
                       {
                           "fillAlphas": 0.7,
                           "id": "AmGraph-1",
+                          lineColor: "brown",
+                          lineThickness: 5,
+                          negativeLineColor: "red",
                           "lineAlpha": 0,
-                          "title": "DP_544063",
-                          "valueField": "DP_544063"
+                          "title": chart3Xids[0],
+                          "valueField": chart3Xids[0]
                       },
                       {
                           "fillAlphas": 0.7,
                           "id": "AmGraph-2",
+                          lineColor: "blue",
+                          lineThickness: 2,
+                          negativeLineColor: "orange",
                           "lineAlpha": 0,
-                          "title": "DP_954927",
-                          "valueField": "DP_954927"
+                          "title": chart3Xids[1],
+                          "valueField": chart3Xids[1]
                       }
                   ],
                   "guides": [],

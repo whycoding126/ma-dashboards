@@ -125,7 +125,7 @@ var groupConfigs = [
 //Customize Your Points Here
 var numericPointOverrides = [
         {
-            nameEndsWith: "in F",
+            xidEndsWith: "temp",
             chart: {
                 divId: "temperatureChart",
                 title: "Temperature",
@@ -166,7 +166,7 @@ var numericPointOverrides = [
             }
         },
         {
-            nameEndsWith: "in F",
+            xidEndsWith: "temp",
 
             chart: {
                 type: "gauge",
@@ -183,7 +183,7 @@ var numericPointOverrides = [
             }
         },
         {
-            nameEndsWith: "volts",
+            xidEndsWith: "volts",
             chart: {
                 type: "line",
                 divId: "voltageChart",
@@ -204,7 +204,7 @@ var numericPointOverrides = [
         },
         
         {
-            nameEndsWith: "volts",
+            xidEndsWith: "volts",
             chart: {
                 type: "text", //Text Area Renderer type 
                 divId: "voltageValue",
@@ -267,8 +267,7 @@ $( document ).ready(function(){
                 fromDateDivId: 'startDate',
                 toDateDivId: 'endDate',
                 
-                dateInputInline: null,
-                dateFormat: null,
+                dateInputInline: true,
                 
                 //Dates to default to
                 fromDate: defaultStartDate,

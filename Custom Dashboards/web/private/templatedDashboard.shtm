@@ -39,7 +39,9 @@
         
     </head>
     <body>
-    <p>This page will create a dashboard from a JSON template that matches points in a Point Hierarchy Folder</p>
+    <p>This page will create a dashboard from a JSON template that matches points in a Point Hierarchy Folder.  
+    Select the folder that contains the points with xids temp and volts.
+    </p>
     
     <!-- Placeholder to log errors -->
     <div id="errors" style="color: red"></div> 

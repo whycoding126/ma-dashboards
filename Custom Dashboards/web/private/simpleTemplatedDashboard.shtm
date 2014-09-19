@@ -56,7 +56,7 @@
       //Customize Your Points Here
         var numericPointOverrides = [
                 {   //This point will match any point in the above groups that ends with 'in F' and is case sensitive
-                    nameEndsWith: "in F",
+                    xidEndsWith: "temp",
                     chart: {
                         divId: "chartDiv",
                         title: "Data Point",

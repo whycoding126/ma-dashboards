@@ -14,12 +14,13 @@
         <script type="text/javascript">
         
           //Assign point XID
-          var pointXid = "Test-watts";
+          var pointXid = "volts";
           
           /**
            * Run on page load
            */
           $( document ).ready(function(){
+              doPoll();
               //Setup a periodic poll method every 5000ms
               setTimeout(doPoll, 5000); 
            });
@@ -44,9 +45,9 @@
     </head>
 <body>
     <div id="main">
-        <div id="name"></div>
-        &nbsp - &nbsp
-        <div id="value"></div>
+        <div id="name" style="float:left">Name</div>
+        <div id="dash" style="float:left">&nbsp - &nbsp</div>
+        <div id="value" style="float:left">Value</div>
     </div>
 </body>
 </html>

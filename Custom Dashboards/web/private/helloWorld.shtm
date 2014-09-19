@@ -1,4 +1,4 @@
 <html>
 <h1>Hello World!</h1>
-
+<p>This page is only accessible once the user has logged in.  All resources placed in the web/private folder behave this way.</p>
 </html>

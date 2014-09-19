@@ -170,7 +170,7 @@ var mangoRest = {
                 
                 return {
                     annotation: null,
-                    dataType: null, //Fill from dataPoint.pointLocator.dataType,
+                    //dataType: null, //Fill from dataPoint.pointLocator.dataType,
                     value: null,
                     time: null};
                 

@@ -20,7 +20,7 @@
        
         <script type="text/javascript">
           var gauge1 = new MangoAmGaugeHelper({
-              xid: "DP_544063",
+              xid: "temp",
               gaugeDivId: "gauge1",
               units: "Degrees F",
               pollPeriodMs: 500,

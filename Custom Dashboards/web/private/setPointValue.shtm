@@ -14,7 +14,7 @@
         <script type="text/javascript">
           
           //Set this to the desired point XID
-          var pointXid = "Test-watts";
+          var pointXid = "volts";
           var pointType = "NUMERIC"; //Set to NUMERIC, MULTISTATE, BINARY or ALPHANUMERIC
           
           function updatePointValue(){
@@ -22,14 +22,14 @@
               //Create an empty point value object to send to mango after we fill it in
               var pointValue = mangoRest.pointValues.createNew();
               pointValue.annotation = "Set by default dashboard";
-              pointValue.dataType = pointType; //Set the point type
+              //pointValue.dataType = pointType; //Set the point type
               
               //Set the value depending on the data point type
-              if((pointValue.dataType === "MULTISTATE")||(pointValue.dataType === "NUMERIC")){
+              if((pointType === "MULTISTATE")||(pointType === "NUMERIC")){
                   //Since the input is text type we must convert
                   pointValue.value = new Number($('#pointValueInput').val());
               }
-              else if(pointValue.dataType === "BINARY"){
+              else if(pointType === "BINARY"){
                   //Since the input is text type we must convert
                   pointValue.value = new Boolean();
               } 
@@ -43,9 +43,9 @@
               
               //Using the global XID and the value from the input box set the point's value
 	          mangoRest.pointValues.put(pointXid, pointValue, function(data){
-	              alert('Point Value Saved');
+	              $('#status').text('Point Value Saved');
 	              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-	                  alert(errorThrown + " " + mangoMessage);
+	                  $('#status').text(textStatus + " - " + mangoMessage);
 	         });        
           }
           
@@ -55,7 +55,8 @@
 <body>
    <div>
        <label id="pointValueLabel" class="formLabel" for="pointValue">Value:</label>
-       <div id="pointValue" ><input id="pointValueInput" type="text"></input><button type="button" onclick="updatePointValue();">Update</button></div>
+       <div id="pointValue" ><input id="pointValueInput" type="number" value="100.01"></input><button type="button" onclick="updatePointValue();">Update</button></div>
    </div>
+   <div id="status"></div>
 </body>
 </html>
