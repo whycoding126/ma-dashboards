@@ -1,0 +1,10 @@
+{
+    "type": "pie",
+    "theme": "none",
+    "exportConfig":{    
+      "menuItems": [{
+      "icon": "/modules/dashboards/web/js/amcharts/images/export.png",
+      "format": "png"   
+      }]  
+    }
+}

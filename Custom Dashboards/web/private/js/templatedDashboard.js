@@ -199,6 +199,11 @@ var numericPointOverrides = [
                     lineThickness: 1,
                     negativeLineColor: "red",
                     type: "step",
+                },
+                mixin: { //Place any properties to override/customize the AmChart objects
+                    depth3D: 20,
+                    angle: 30,
+                    startDuration: 2,
                 }
             }
         },

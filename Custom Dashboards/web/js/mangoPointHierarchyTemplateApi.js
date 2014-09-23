@@ -766,8 +766,11 @@ MangoPointHierarchyTemplate.prototype = {
                     this.createGaugeChart(pointConfig, dataPointSummary);
                 }else if(pointConfig.chart.type == "text"){
                     this.createTextChart(pointConfig, dataPointSummary);
+                }else if(pointConfig.chart.type == "pie"){
+                    this.createPieChart(pointConfig, dataPointSummary);
                 }
             },
+ 
             /**
              * Helper to create a line chart from an XID
              * 
@@ -776,6 +779,10 @@ MangoPointHierarchyTemplate.prototype = {
                 var _this = this;
                 //Load in the Chart Configurations
                 mangoRest.getJson("/modules/dashboards/web/private/charts/" + pointConfig.chart.config, function(data){
+                    
+                  //Override and add any additional features for the chart
+                    $.extend(true, data, data, pointConfig.chart.mixin);
+                    
                     //Modify the data to suit the point
                     data.titles[0].text = pointConfig.chart.title;
                     //Override and add additional Value Axis Info
@@ -788,8 +795,10 @@ MangoPointHierarchyTemplate.prototype = {
                                    valueField: dataPointSummary.xid
                                };
                     
-                    //Override and add any additional features
+                    //Override and add any additional features for the graph
                     $.extend(true, data.graphs[0], data.graphs[0], pointConfig.chart.graph);
+                    
+                    
                     
                     var chartConfig = {
                             chartDivId: pointConfig.chart.divId,
@@ -865,7 +874,7 @@ MangoPointHierarchyTemplate.prototype = {
                 
             },
             /**
-             * 
+             * Create a Gauge Chart
              * @param pointConfig
              */
             createGaugeChart: function(pointConfig, dataPointSummary){
@@ -891,6 +900,41 @@ MangoPointHierarchyTemplate.prototype = {
                     var gauge = new MangoAmGaugeHelper(gaugeConfig);
                     gauge.startGauge();
                 }, this.showError);
+
+            },
+            /**
+             * Simple Pie Chart Creator that uses the statistics to show a Pie Chart
+             * 
+             * This currently only works for Multistate type points
+             * 
+             * @param pointConfig
+             */
+            createPieChart: function(pointConfig, dataPointSummary){
+                
+                var pieChart = new MangoAmHelper({
+                   chartDivId:  pointConfig.chart.divId,
+                   chartConfig: pointConfig.chart.config,
+                   mixin: pointConfig.chart.mixin,
+                   showError: this.showError
+                });
+                
+                var _this = this;
+                pieChart.prepareChart(function(dataProvider){
+                    //Get the data for the chart, statistics 
+                    mangoRest.pointValues.getStatistics(dataPointSummary.xid, mangoRest.formatLocalDate(_this.fromDate), mangoRest.formatLocalDate(_this.toDate), function(data){
+                        
+                        if(data.hasData === true){
+                            //Push all data onto Pie Chart's data provider
+                            for(var i in data.startsAndRuntime){
+                                var st = data.startsAndRuntime[i];
+                                dataProvider.push(st);
+                            }
+                            pieChart.createChart();
+                        }
+                        
+                    }, _this.showError);
+                 });
+
 
             },
             /**
@@ -951,6 +995,7 @@ MangoPointHierarchyTemplate.prototype = {
                     
                 }
             },
+ 
             /**
              * 
              * @param pointConfig

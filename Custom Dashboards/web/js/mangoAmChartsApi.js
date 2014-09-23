@@ -4,6 +4,97 @@
  */
 
 /* Mango AM Chart Helper */
+
+
+MangoAmHelper = function(options){
+    for(var i in options) {
+        this[i] = options[i];
+    }
+    
+};
+
+MangoAmHelper.prototype = {
+        
+        chartConfig: "/modules/dashboards/web/private/charts/simpleLine.json",
+        mixin: null, //JSON Configuration for chart
+        amChart: null,
+        chartDivId: null, //Div ID for chart
+        
+        /**
+         * Displaying Loading... on top of chart div
+         */
+        chartLoading: function(){
+            $('#' + this.chartDivId).html('<b>Loading Chart...</b>');
+        },
+        
+        /**
+         * Load in the configuration and mixin the extensions
+         * @param - callback(dataProvider) to add data
+         */
+        prepareChart: function(callback){
+            var self = this;
+            mangoRest.getJson(this.chartConfig, function(data){
+                 self.json = $.extend(true, {}, data, self.mixin);
+                 if((self.json.dataProvider === null)||(typeof self.json.dataProvider == 'undefined'))
+                         self.json.dataProvider = new Array(); //Init the data provider
+                 callback(self.json.dataProvider);
+            }, this.showError);
+        },
+
+        
+        /**
+         * Gather the data, manipulate it and place it on the chart
+         * @param dataProvider - optional pre-filled dataProvider
+         */
+        createChart: function(dataProvider){
+            this.chartLoading();
+            if(typeof dataProvider != 'undefined')
+                this.json.dataProvider = dataProvider; //Set data provider if necessary
+            this.amChart = AmCharts.makeChart(this.chartDivId, this.json);
+        }, //end createChart()
+        
+        /**
+         * Method to get the value for the chart,
+         * override as necessary.
+         */
+        dataOperation: function(allData, pvt, xid){
+            return pvt.value;
+        },
+        
+        /**
+         * Get the time value for the chart,
+         * override as necessary
+         */
+        timeOperation: function(allData, pvt, xid){
+            return pvt.time;
+        },
+                
+        /**
+         * Helper to display error messages in the error div.
+         * Override as needed
+         * 
+         * @param jqXHR - xhr response
+         * @param textStatus - status from response
+         * @param errorThrown - exception
+         * @mangoMessaage - string response from Mango
+         */
+        showError: function(jqXHR, textStatus, errorThrown, mangoMessage){
+        
+            var msg = "";
+            if(textStatus != null)
+                msg += (textStatus + " ");
+            if(errorThrown != null)
+                msg += (errorThrown + " ");
+            if(mangoMessage != null)
+                msg += (mangoMessage + " ");
+            msg += "\n";
+            alert(msg); 
+        }
+        
+};
+
+/* Mango AM Chart Helper */
+
 MangoAmChartHelper = function(options){
     for(var i in options) {
         this[i] = options[i];

@@ -22,6 +22,7 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
         
         <!-- Bootstrap -->
         <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
@@ -95,7 +96,23 @@
                         maximumId: "max"
                         
                     }
-                }];
+                },
+                {
+	                xidEndsWith: "multistate",
+	                chart: { //Pie chart that will use the point statistics from the selected dates
+	                    divId: "pieDiv",
+	                    type: "pie",
+	                    config: "/modules/dashboards/web/private/charts/simplePie.json",
+	                    pastPointCount: null, //Number of previous samples to use 25, if null then use dates
+	                    realtime: false,
+	                    includeInSummary: false,
+	                    mixin: { //Place any properties to override/customize the AmChart objects
+	                        valueField: "starts", //Multistate Options are ["starts", "runtime", "proportion"]
+	                        titleField: "value",
+	                    }
+	                }
+                }
+                ];
        
         /*
          * At page load setup the divs
@@ -234,7 +251,11 @@
               <h4>Chart</h4>
               <span class="text-muted">My First Chart</span>
           </div>
-
+          <div >
+              <div id="pieDiv" style='width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+              <h4>Pie</h4>
+              <span class="text-muted">My First Pie</span>
+          </div>
           <h2 class="sub-header">Statistics</h2>
           <div class="table-responsive">
             <table class="table table-striped">

@@ -210,7 +210,22 @@ var mangoRest = {
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
             },
-            
+            /**
+             * Get values based on date ranges with optional rollup
+             * 
+             * @param xid - list of xids for points desired
+             * @param from - date from formatted using this.formatLocalDate
+             * @param to - date to formatted using this.formatLocalDate
+             * @param rollup - null or ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
+             * @param timePeriodType - null or ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']
+             * @param timePeriods - null or integer number of periods to use
+             * 
+             * @param done(jsonData) callback with data in time order, oldest first
+             * 
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * 
+             */
+
             /**
              * Get the latest limit number of values
              * 
