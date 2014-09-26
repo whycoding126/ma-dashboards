@@ -130,12 +130,14 @@
            */
           $( document ).ready(function(){
               
+              //Create the start of the chain and start resolving.
               var startingpoint = $.Deferred();
               startingpoint.resolve();
               
               var to = new Date();
               var from = new Date(to.getTime() - 1000*60*60);
               
+              //For each xid, add a new DeferredAjax request into the chain
               $.each(chart1Xids, function(ix, xid){
                  var da = new DeferredAjax({
                      xid: xid,
@@ -149,7 +151,7 @@
                  startingpoint = da;
               });
 
-              //chart1.addSeries('temp', data, false);
+              //When the last startingpoint finishes, then create the chart
               $.when(startingpoint).then(function(){
                   console.log('Done: ' + dataProvider.length);
                   chart1.createChart(dataProvider);

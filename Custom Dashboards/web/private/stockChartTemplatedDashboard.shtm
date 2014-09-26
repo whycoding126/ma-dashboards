@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Stock Chart Templated Dashboard</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Page Style -->
+        <style type="text/css">
+        </style>
+        <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+        
+        <!-- JQuery and Plugins -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+        <!-- Charting Library -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+        
+        <!-- Bootstrap -->
+        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
+        
+        
+        <!-- Mango Rest API Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        
+        <!-- Mango AM Charts Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
+        
+        <!-- Mango Templating API -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoPointHierarchyTemplateApi.js"></script>
+        
+        <!-- JS For this page -->
+        <script type="text/javascript">
+        //Define the dynamic group matching for the drop down
+        var groupConfigs = [
+                  {   //Create groups for every folder in the Point Hierarchy
+                      matchAll: false,
+                      byFolder: true,
+                      byPointSummary: false,
+                      matchConfig: {
+                          label: null, //Use attribute to generate labels
+                          labelAttribute: "path",
+                          matchAttribute: "path",
+                          startsWith: null,
+                          endsWith: null,
+                      }
+                      
+                  }];
+      //Customize Your Points Here
+        var numericPointOverrides = [
+                {   //This point will match any point in the above groups that ends with 'in F' and is case sensitive
+                    xidEndsWith: "temp",
+                    chart: {
+                        divId: "chartDiv",
+                        title: "Data Point",
+                        type: "stock",
+                        pastPointCount: null, //Or number of previous samples to use 25,
+                        realtime: false,
+                        includeInSummary: false,
+                        valueAxis: {
+                            title: "Point Value"
+                        },            
+                        dataOperation: function(allData, pvt ,xid){
+                            return pvt.value.toFixed(2);
+                         },
+                         timeOperation: function(allData, pvt, xid){
+                           return pvt.time;  
+                         },
+                        graph: {
+                            balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                            bullet: "round",
+                            bulletSize: 6,
+                            lineColor: "#d1655d",
+                            lineThickness: 2,
+                            negativeLineColor: "#637bb6",
+                            type: "smoothedLine",
+                        }
+                        
+                    },
+                    statistics: {
+                        period: null, //Leave null to use templater dates (otherwise ms period prior to now)
+                        averageId: "average",
+                        integralId: "integral",
+                        sumId: "sum",
+                        firstId: null,
+                        lastId: null,
+                        countId: "count",
+                        minimumId: "min",
+                        maximumId: "max"
+                        
+                    }
+                },
+                {   //This point will match any point in the above groups that ends with 'in F' and is case sensitive
+                    xidEndsWith: "volts",
+                    chart: {
+                        divId: "chartDiv",
+                        title: "Data Point",
+                        type: "stock",
+                        pastPointCount: null, //Or number of previous samples to use 25,
+                        realtime: false,
+                        includeInSummary: false,
+                        valueAxis: {
+                            title: "Point Value"
+                        },            
+                        dataOperation: function(allData, pvt ,xid){
+                            return pvt.value.toFixed(2);
+                         },
+                         timeOperation: function(allData, pvt, xid){
+                           return pvt.time;  
+                         },
+                        graph: {
+                            balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                            bullet: "round",
+                            bulletSize: 6,
+                            lineColor: "red",
+                            lineThickness: 2,
+                            negativeLineColor: "#637bb6",
+                            type: "smoothedLine",
+                        }
+                        
+                    }
+                }];
+       
+        /*
+         * At page load setup the divs
+         */
+        $( document ).ready(function(){
+
+
+            //Create the initial dates
+            var defaultEndDate = new Date(); //Now
+            var defaultStartDate = new Date(defaultEndDate.getTime() - 1000*60*60); //One Hour Ago
+
+            //Create the Templater
+            var templater = new MangoPointHierarchyTemplate(
+                    {
+                        //Optionally Include a summary chart (not fully working yet)
+                        summaryChartId: null,
+                        
+                        //Div to place any errors that occur internally
+                        errorDivId: "errors",
+                        
+                        //Default for point rendering
+                        decimalPlaces: 2,
+                        
+                        //Group Configurations
+                        groupConfigs: groupConfigs,
+                        
+                        //Numeric Point Configurations to use
+                        numericPoints: numericPointOverrides,
+                        
+                        //Use Only 1 of these either choose by Folder or by Group
+                        //allFoldersDropDownId: 'allFolders',
+                        groupsDropDownId: 'groups',
+                        
+                        //Divs to place the Date Pickers
+                        fromDateDivId: 'startDate',
+                        toDateDivId: 'endDate',
+                        
+                        //Dates to default to
+                        fromDate: defaultStartDate,
+                        toDate: defaultEndDate,
+                        
+                        //Rollup Selection (only for charts)
+                        rollupSelectId: 'rollup', //Select id for rollup
+                        timePeriodTypeSelectId: 'timePeriodType', //Select id for Period Types
+                        timePeriodInputId: 'timePeriod', //Input Id for period
+                        
+                        //For statistics
+                        displayPointValueTime: function(pvt){
+                            return pvt.value.toFixed(2);
+                        }
+                    }
+                    
+                );
+            
+        });
+        //Setup the Templater
+        
+        
+        </script>
+        
+    </head>
+    <body>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Mango Automation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li>
+              <div class="form-group">
+                <label for="groups">Select Group:</label>
+                <select id="groups" class="form-control"></select>
+              </div>
+            </li>
+            <li>
+              <div class="form-group">
+                <label for="rollup">Rollup:</label>
+                <select id="rollup" class="form-control"></select>
+              </div>
+            </li>
+            <li>
+              <div class="form-group">
+                <label for="timePeriodType">Time Period:</label>
+                <select id="timePeriodType" class="form-control"></select>
+              </div>
+            <li>
+              <div class="form-group">
+                <label for="timePeriod">Periods:</label>
+                <input id="timePeriod" type="number" value="1" class="form-control"/>
+              </div>
+            </li>
+          </ul>
+         </div>
+         
+         
+        <div class="col-md-8 col-sm-offset-3 main">
+          <h1 class="page-header">Simple Templated Dashboard</h1>
+
+          <div class="row placeholders">
+            <div class="col-md-6 col-sm-3 placeholder">
+              <div id="startDate"></div>
+              <h4>Start Date</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-md-6 col-sm-3 placeholder">
+              <div id="endDate"></div>
+              <h4>End Date</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+          <div >
+              <div id="chartDiv" style='width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;'></div>
+              <h4>Chart</h4>
+              <span class="text-muted">My First Chart</span>
+          </div>
+
+          <h2 class="sub-header">Statistics</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Average</th>
+                  <th>Integral</th>
+                  <th>Sum</th>
+                  <th>Count</th>
+                  <th>Maximum</th>
+                  <th>Minimum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="pointName"></td>
+                  <td id="average"></td>
+                  <td id="integral"></td>
+                  <td id="sum"></td>
+                  <td id="count"></td>
+                  <td id="max"></td>
+                  <td id="min"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </body>
+</html>

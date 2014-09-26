@@ -22,7 +22,8 @@
     "allLabels": [],
     "balloon": {},
     "legend": {
-        "useGraphSettings": true
+        "useGraphSettings": true,
+        "spacing": 20
     },
     "titles": [
         {

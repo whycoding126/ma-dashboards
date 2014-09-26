@@ -192,6 +192,7 @@ var mangoRest = {
              * 
              */
             get: function(xid, from, to, rollup, timePeriodType, timePeriods, done, fail){
+                var deferred = $.Deferred();
                 //Create the parameter list
                 var params = "";
                 if(rollup != null)
@@ -205,10 +206,13 @@ var mangoRest = {
                     url : "/rest/v1/pointValues/" + xid + ".json?from=" + from + "&to=" + to + params,
                 }).done(function(data) {
                     done(data, xid);
+                    deferred.resolve(); //Finish Promise
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                
+                return deferred;
             },
             /**
              * Get values based on date ranges with optional rollup

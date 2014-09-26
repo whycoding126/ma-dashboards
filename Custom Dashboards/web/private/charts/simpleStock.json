@@ -1,0 +1,44 @@
+{
+    "type": "stock",
+    "theme": "none",
+    "pathToImages": "/modules/dashboards/web/js/amcharts/images/",
+
+    "dataSets": [],
+
+    "panels": [],
+
+    "chartScrollbarSettings": { },
+
+    "chartCursorSettings": {
+        "valueBalloonsEnabled": true,
+        "fullWidth": true,
+        "cursorAlpha": 0.1,
+        "valueLineBalloonEnabled": true,
+        "valueLineEnabled": true,
+        "valueLineAlpha": 0.5
+    },
+
+    "periodSelector": {
+        "position": "left",
+        "periods": [{
+            "period": "MM",
+            "selected": true,
+            "count": 1,
+            "label": "1 month"
+        }, {
+            "period": "YYYY",
+            "count": 1,
+            "label": "1 year"
+        }, {
+            "period": "YTD",
+            "label": "YTD"
+        }, {
+            "period": "MAX",
+            "label": "MAX"
+        }]
+    },
+
+    "dataSetSelector": {
+        "position": "left"
+    }
+}

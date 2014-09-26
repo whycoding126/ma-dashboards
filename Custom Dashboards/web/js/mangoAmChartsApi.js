@@ -10,7 +10,14 @@ MangoAmHelper = function(options){
     for(var i in options) {
         this[i] = options[i];
     }
+    this.deferred = $.Deferred();
+    this.prepareChart();
+    var self = this;
+    $.when(this).then(function(){
+        self.amChart = AmCharts.makeChart(self.chartDivId, self.json);
+    });
     
+       
 };
 
 MangoAmHelper.prototype = {
@@ -19,6 +26,12 @@ MangoAmHelper.prototype = {
         mixin: null, //JSON Configuration for chart
         amChart: null,
         chartDivId: null, //Div ID for chart
+        //Promise Setup
+        deferred: null,
+        promise: function(){
+            return this.deferred.promise();
+        },
+        
         
         /**
          * Displaying Loading... on top of chart div
@@ -37,7 +50,9 @@ MangoAmHelper.prototype = {
                  self.json = $.extend(true, {}, data, self.mixin);
                  if((self.json.dataProvider === null)||(typeof self.json.dataProvider == 'undefined'))
                          self.json.dataProvider = new Array(); //Init the data provider
-                 callback(self.json.dataProvider);
+                 if(typeof callback != 'undefined')
+                     callback(self.json.dataProvider);
+                 self.deferred.resolve();
             }, this.showError);
         },
 
