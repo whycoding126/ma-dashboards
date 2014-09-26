@@ -39,19 +39,15 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>        
+        <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
         
         
         <!-- JS For this page -->
         <script type="text/javascript">
         $( document ).ready(function(){
-            var pointMatcher;
             
-            //Create the Point Configurations
-            var pointConfigurations = new Array();
-            pointConfigurations.push(new DataPointMatchConfiguration(1, {xidStartsWith: 'volts'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(2, {xidStartsWith: 'temp'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(3, {xidStartsWith: 'temp', providerType: 'Statistics'}))
-            
+            //&&&&&&&&&& Display Manager Setup &&&&&&&&&&&&&&
             //Create the Display Manager
             var displayManager = new DataDisplayManager();
             
@@ -153,21 +149,70 @@
            
             //Setup a statistics Display
             displayManager.addDisplayConfiguration(new StatisticsConfiguration('temperature', [3]), true); //Add and Create on add         
-                     
             
-            //Fetch the data points to work with         
-            mangoRest.dataPoints.getAll(function(data){
-                pointMatcher = new DataPointMatcher(pointConfigurations, function(dataPointConfiguration){    
-                    console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
-                    
-                    //Now add it as a provider for the manager
-                    displayManager.addDataProvider(dataPointConfiguration);
-                });
+            //&&&&&&&&&&  Data Point Matcher Setup &&&&&&&&&&&&&&
+            
+            //Create the Point Configurations
+            var pointConfigurations = new Array();
+            pointConfigurations.push(new DataPointMatchConfiguration(1, {xidStartsWith: 'volts'}));
+            pointConfigurations.push(new DataPointMatchConfiguration(2, {xidStartsWith: 'temp'}));
+            pointConfigurations.push(new DataPointMatchConfiguration(3, {xidStartsWith: 'temp', providerType: 'Statistics'}))
+            /**
+             * Function called on data point Match
+             */
+            function onMatch(dataPointConfiguration){
+                console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
+                //Now add it as a provider for the manager
+                displayManager.addDataProvider(dataPointConfiguration);
+            }
+            //Create the Point Matcher
+            var pointMatcher = new DataPointMatcher(pointConfigurations, onMatch);
+            
+            
+             //&&&&&&&&&&  Data Point Grouper Setup &&&&&&&&&&&&&&
+            //Setup the Grouper
+            var root; //Root of P.H.
+            var grouper; //Grouper
+            /**
+             * What to do when we find a group
+             */
+            function onGroup(dataPointGroup){
+                console.log('Group: ' + dataPointGroup.label + ' (' + dataPointGroup.dataPoints.length + ')');
+                pointMatcher.match(dataPointGroup.dataPoints);
+            }
+             
+             
+            //Fetch the Point Hierarchy to work with         
+            var deferred = mangoRest.hierarchy.getRoot(function(phRoot){
+
+                root = phRoot; //Set the Global
                 
+            },showError); //end get data points
+            
+            $.when(deferred).then(function(){
+                //Setup the Grouper when ready
+                grouper = new PointHierarchyGrouper(root, onGroup);
+                
+                //Add group Configurations
+                //grouper.addGroupConfiguration(new DataPointGroupConfiguration()); //Simple Group into All
+                grouper.addGroupConfiguration(new DataPointGroupConfiguration({
+                    groupBy: 'Folder',
+                    labelAttribute: 'name',
+                    matchConfigurations: [{
+                        matchAttribute: 'name',
+                        endsWith: 'Goal Folder'
+                    }],
+                    
+                })); //Group uniqely by folder name
+                
+                
+                grouper.group(); //Action to group
+                
+                //Then Start loading data
                 //Action the matcher to setup the display manager,
                 // here we tell the display manager what Data Providers to update and
                 // give it the date/rollups for them
-                pointMatcher.match(data);
+
                 var to = new Date();
                 var from = new Date(to.getTime() - 1000*60*60);
                 displayManager.refresh([1,2,3], from, to, 'AVERAGE', 'MINUTES', 1);
@@ -176,12 +221,11 @@
                 setInterval(function(){
                     var to = new Date();
                     var from = new Date(to.getTime() - 1000*60*60);
-                    displayManager.refresh([1,2], from, to, 'AVERAGE', 'MINUTES', 1);
+                    displayManager.refresh([1,2,3], from, to, 'AVERAGE', 'MINUTES', 1);
                 }, 10000);
-                
-            },showError); //end get data points
-            
-            
+            });
+
+
             
             /**
              * Helper Function to show error messages
@@ -204,7 +248,7 @@
         
     </head>
     <body>
-    <p>This page will create a dashboard from a template that matches points from a list of points.  
+    <p>This page will create a dashboard from a template that matches points from Folders in the Point Hierarchy.  
     </p>
     
     <!-- Placeholder to log errors -->

@@ -1,0 +1,384 @@
+/**
+ * Javascript Objects Used for Grouping Data Points from 
+ * the Point Hierarchy.  
+ * 
+ * 
+ * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+ * @author Terry Packer
+ */
+
+
+
+/**
+ * Point Hierarchy Grouper, 
+ * 
+ * DataPointGroupConfiguration.matchBy can be one of ['All', 'Folder', 'DataPoint']
+ * DataPointGroupConfiguration.matchConfig.mat
+ * @param dataPoints
+ * @param options
+ * @returns
+ */
+PointHierarchyGrouper = function(root, onGroup, options){
+    
+    this.root = root;
+    this.onGroup = onGroup;
+    
+    for(var i in options) {
+        this[i] = options[i];
+    }
+    
+    //Ensure we have some basic properties initialized
+    if(this.groupConfigurations == null)
+        this.groupConfigurations = new Array(); 
+    if(this.pointHierarchyMap == null)
+        this.pointHierarchyMap = {};
+    if(this.dataPoints == null)
+        this.dataPoints = new Array();
+    
+    //Build the map and get all points
+    this.loadAllPoints();
+    
+};
+
+PointHierarchyGrouper.prototype = {
+        
+        dataPoints: null, //List of all data points to group
+        
+        groupConfigurations: null, //List of DataPointGroupConfiguration 
+        groups: null, //List of DataPointGroup
+        labels: null, //List of GroupLabel
+       
+        root: null, //The Root node of the Point Hierarchy
+        pointHierarchyMap: null, //Map of folder IDs to Folder
+        /**
+         * Add a DataPointGroupConfiguration
+         */
+        addGroupConfiguration: function(configuration){
+            this.groupConfigurations.push(configuration);
+        },
+        
+        /**
+         * Called on formation of a group
+         * @param DataPointGroup
+         */
+        onGroup: function(dataPointGroup){
+            //No Op Override
+        },
+        
+        /**
+         * Create a list of GroupLabels 
+         */
+        group: function(){
+            //Loop over all the configs and create groups
+            for(i in this.groupConfigurations){
+                
+                var groupConfig = this.groupConfigurations[i];
+                if(groupConfig.groupBy == 'All'){ //Match All Points
+                    //Use all points for this group
+                    //Create label first
+                    var label;
+                    if(groupConfig.label != null){
+                        label = groupConfig.label;
+                    }else{
+                        label = 'All'; //Just in case
+                    }
+                    //Push points into new array
+                    var points = new Array();
+                    points.push.apply(points, this.dataPoints);
+                    //Fire OnGroup
+                    this.onGroup(new DataPointGroup(label, points));
+                }else{
+                    //Loop over all data points and create a group with them
+                    var groupsMap = {}; //Create a map to build all groups in
+                    for(j=0; j < this.dataPoints.length; j++){
+                        var dataPoint = this.dataPoints[j];
+                        //Loop over our match configurations and see if our point matches any
+                        for(var k=0; k<groupConfig.matchConfigurations.length; k++){
+                            var matchConfiguration = groupConfig.matchConfigurations[k];
+                            
+                            if(groupConfig.groupBy == 'Folder'){ //Group By Folder
+                                this.matchByFolder(dataPoint, groupsMap, matchConfiguration, groupConfig);
+                            }else if(groupConfig.groupBy == 'DataPoint'){ //Match By Point Information
+                               this.matchByDataPoint(dataPoint, groupsMap, matchConfiguration, groupConfig); 
+                            }
+                        }// end for all match configuration in this Group Configuration
+                        
+                    }//end for all data points
+                    //Fire on Group for all new groups
+                    for(l in groupsMap){
+                        this.onGroup(groupsMap[l]);
+                    }
+                }//End else matching over points
+            }//end for all configs
+  
+        },
+        
+        /**
+         * @param dataPoint - Data Point Summary
+         * @param groupsMap - Map for Building groups
+         * @param matchConfiguration - GroupMatchConfiguration
+         * @param groupConfiguration - DataPointGroupConfiguration
+         */
+        matchByFolder: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
+            //Special case for path
+            if(matchConfiguration.matchAttribute == "path"){
+                
+                //Search the point hierarchy by path
+                var path = this.getPointHierarchyPath(dataPoint);
+                
+                //Just matching on name or ID 
+                match = false;
+                if(matchConfiguration.startsWith != null){
+                    if(path.indexOf(matchConfiguration.startsWith) == 0)
+                        match = true
+                    else
+                        match = false;
+                }
+                if(matchConfiguration.endsWith != null){
+                    if(path.indexOf(matchConfiguration.endsWith, path.length - matchConfiguration.endsWith.length) !== -1)
+                        match = true;
+                    else
+                        match = false;
+                }
+                //If not matching then just group by attribute
+                if((matchConfiguration.endsWith == null)&&(matchConfiguration.startsWith == null)){
+                    var group = groupsMap[path];
+                    if(group == null){
+                        var label;
+                        //Create Label First
+                        if(groupConfiguration.label == null){
+                            if(groupConfiguration.labelAttribute == "path")
+                                label = path;
+                            else
+                                label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
+                        }else{
+                            label = groupConfiguration.label;
+                        }
+                        //Create new group and add this point
+                        group = new DataPointGroup(labe, new Array());
+                        groupsMap[path] = group;
+                        
+                    }
+                    //Add to existing group
+                    group.dataPoints.push(dataPoint);
+                }
+                    
+                //Did we have a match
+                if(match){
+                    var group = groupsMap[path];
+                    if(group == null){
+                        //Create new group and add this point
+                        var label;
+                        //Create Label First
+                        if(groupConfiguration.label == null){
+                            if(groupConfiguration.labelAttribute == "path")
+                                label = path;
+                            else
+                                label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
+
+                        }else{
+                            label = groupConfiguration.label;
+                        }
+                        
+                        group = new DataPointGroup(label, new Array());
+                        groupsMap[path] = group;
+                      }
+                      //Add to existing group
+                      group.dataPoints.push(dataPoint);
+                    }                                    
+
+            }else{
+                //Just matching on name or ID 
+                match = false;
+                if(matchConfiguration.startsWith != null){
+                    if(this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute].indexOf(matchConfiguration.startsWith) == 0)
+                        match = true;
+                    else
+                        match = false;
+                }
+                if(matchConfiguration.endsWith != null){
+                    if(this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute].indexOf(matchConfiguration.endsWith, this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute].length - matchConfiguration.endsWith.length) !== -1)
+                        match = true;
+                    else
+                        match = false;
+                }
+                //If not matching then just group by attribute
+                if((matchConfiguration.endsWith == null)&&(matchConfiguration.startsWith == null)){
+                    var group = groupsMap[this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute]];
+                    if(group == null){
+                        var label;
+                        //Create Label First
+                        if(groupConfiguration.label == null){
+                            label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
+                        }else{
+                            label = groupConfiguration.label;
+                        }
+                        //Create new group and add this point
+                        group = new DataPointGroup(label, new Array());
+                        groupsMap[this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute]] = group;
+                        
+                    }
+                    //Add to existing group
+                    group.dataPoints.push(dataPoint);
+                }
+                    
+                //Did we have a match
+                if(match){
+                    var group = groupsMap[0];
+                    if(group == null){
+                        //Create new group and add this point
+                        var label;
+                        //Create Label First
+                        if(groupConfiguration.label == null){
+                            label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
+                        }else{
+                            label = groupConfiguration.label;
+                        }
+                        
+                        group = new DataPointGroup(label, new Array());
+                        groupsMap[0] = group;
+                      }
+                      //Add to existing group
+                      group.dataPoints.push(dataPoint);
+                    }                                    
+            }  
+        },
+        
+        /**
+         * @param dataPoint - Data Point Summary
+         * @param groupsMap - Map for Building groups
+         * @param matchConfiguration - GroupMatchConfiguration
+         * @param groupConfiguration - DataPointGroupConfiguration
+         */
+        matchByDataPoint: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
+            var match = false;
+            if(matchConfiguration.startsWith != null){
+                if(dataPoint[matchConfiguration.matchAttribute].indexOf(matchConfiguration.startsWith) == 0)
+                    match = true;
+                else
+                    match = false;
+            }
+            if(matchConfiguration.endsWith != null){
+                if(dataPoint[matchConfiguration.matchAttribute].indexOf(matchConfiguration.endsWith, dataPoint[matchConfiguration.matchAttribute].length - matchConfiguration.endsWith.length) !== -1)
+                    match = true;
+                else
+                    match = false;
+            }
+            //If not matching then just group by attribute
+            if((matchConfiguration.endsWith == null)&&(matchConfiguration.startsWith == null)){
+                var group = groupsMap[dataPoint[matchConfiguration.matchAttribute]];
+                if(group == null){
+                    var label;
+                    //Create Label First
+                    if(groupConfiguration.label == null){
+                        label = dataPoint[groupConfiguration.labelAttribute];
+                    }else{
+                        label = groupConfiguration.label;
+                    }
+                    //Create new group and add this point
+                    group = new DataPointGroup(label, new Array());
+                    groupsMap[dataPoint[matchConfiguration.matchAttribute]] = group;
+                    
+                }
+                //Add to existing group
+                group.dataPoints.push(dataPoint);
+            }
+                
+            //Did we have a match
+            if(match){
+                var group = groupsMap[0];
+                if(group == null){
+                    //Create new group and add this point
+                    var label;
+                    //Create Label First
+                    if(groupConfiguration.label == null){
+                        label = dataPoint[groupConfiguration.labelAttribute];
+                    }else{
+                        label = groupConfiguration.label;
+                    }
+                    
+                    group = new DataPointGroup(label, new Array());
+                    groupsMap[0] = group;
+                }
+                //Add to existing group
+                group.dataPoints.push(dataPoint);
+            }
+        },
+        
+        
+        /*Helper Functions to traverse the P.H. */
+        /**
+         * Get the path for a given point
+         * @param dataPoint - DataPointSummary object
+         */
+        getPointHierarchyPath: function(summary){
+            var paths = new Array();
+            this.findPointInSubfolders(summary, this.root, paths);
+            var result = "";
+            if(paths.length == 1)
+                return "/"; //Hack for root folder 
+            
+            //Paths in reverse order so go backwards
+            for(var i=paths.length-2; i>=0; i--)
+                result = result + paths[i] + "/";
+            return result;
+        },
+        
+        /**
+         * Recursively check the folders for points
+         * @param summary - DataPointSummary
+         * @param folder - Folder
+         * @paths array of string paths
+         */
+        findPointInSubfolders: function(summary, folder, paths){
+            var found = false;
+            for(i in folder.points){
+                if(folder.points[i].xid == summary.xid){
+                    found = true;
+                    break;
+                }
+            }
+            
+            //If we didn't find it check subfolders
+            if(!found){
+                for(i in folder.subfolders){
+                    found = this.findPointInSubfolders(summary, folder.subfolders[i], paths);
+                    if(found)
+                        break;
+                }
+            }
+            
+            //If we found it add our path
+            if(found)
+                paths.push(folder.name);
+            
+            return found;
+        },
+        /**
+         * Extract all points into the provided array
+         * @param folder
+         * @param allDataPointSummaries
+         */
+        loadAllPoints: function(){
+            this.loadAllPointsRecursively(this.root);
+        },
+        
+        /**
+         * Extract all points into the provided array
+         * @param folder
+         * @param allDataPointSummaries
+         */
+        loadAllPointsRecursively: function(folder){
+            var _this = this;
+            $.each(folder.points, function() {
+                _this.dataPoints.push(this);
+            });
+            
+            //Save into lookup
+            this.pointHierarchyMap[folder.id] = folder;
+            
+            $.each(folder.subfolders, function() {
+                _this.loadAllPointsRecursively(this);
+           });
+        },
+};

@@ -20,7 +20,8 @@ StatisticsDataProvider = function(id, dataPointConfiguration, options){
     this.id = id;
     this.listeners = new Array();
     this.pointConfigurations = new Array();
-    this.pointConfigurations.push(dataPointConfiguration);
+    if(typeof dataPointConfiguration != 'undefined')
+        this.pointConfigurations.push(dataPointConfiguration);
     
     for(var i in options) {
         this[i] = options[i];

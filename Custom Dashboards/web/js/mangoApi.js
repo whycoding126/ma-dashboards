@@ -409,14 +409,17 @@ var mangoRest = {
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              */
             getRoot: function(done, fail){
+                var deferred = $.Deferred();
                 $.ajax({
                     url : "/rest/v1/hierarchy.json",
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred;
             },
             
             /**

@@ -79,9 +79,8 @@ DataPointConfiguration.prototype = {
  * @param onMatch - method to call when a match is made, passing the dataPointConfiguration of the match
  * @param options - object of anything you want to override
  */
-DataPointMatcher = function(dataPoints, configurations, onMatch, options){
-    
-    this.dataPoints = dataPoints;
+DataPointMatcher = function(configurations, onMatch, options){
+
     this.configurations = configurations;
     this.onMatch = onMatch;
     
@@ -93,9 +92,17 @@ DataPointMatcher = function(dataPoints, configurations, onMatch, options){
 
 DataPointMatcher.prototype = {
         
-        dataPoints: null, //List of data points to create groups from
+
         configurations: null, //List of point configurations
         matchAll: true, //Use all points that match a point configuration (or use first match)
+        
+        /**
+         * Helper to add one configuration
+         * @param dataPointMatchConfiguration - DataPointMatchConfiguration Object
+         */
+        addDataPointMatchConfiguration: function(dataPointMatchConfiguration){
+            this.configurations.push(dataPointMatchConfiguration);
+        },
         
         /**
          * Match each configuration to as many points as possible.  Then
@@ -103,15 +110,15 @@ DataPointMatcher.prototype = {
          * 
          * This will clear out any data providers first
          * 
-         * @param dataPoints data point summaries
+         * @param dataPoints data points summaries
          * @return - List of Mango Data Providers
          */
-        match: function(){
+        match: function(dataPoints){
             
             for(var i=0; i<this.configurations.length; i++){
                 var configuration = this.configurations[i];
-                for(var j=0; j<this.dataPoints.length; j++){
-                    var point = this.dataPoints[j];
+                for(var j=0; j<dataPoints.length; j++){
+                    var point = dataPoints[j];
                     if(this.matchPointToConfiguration(point, configuration)){
                         //Matched, create/add to data provider
                         this.onMatch(new DataPointConfiguration(point,configuration.providerId, configuration.providerType));
@@ -120,8 +127,6 @@ DataPointMatcher.prototype = {
                     }
                 }
             }
-            
-            return this.dataProviders;
         },
         
         /**
