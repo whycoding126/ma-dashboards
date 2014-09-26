@@ -33,6 +33,8 @@ PointValueDataProvider = function(id, dataPointConfiguration, options){
 
 PointValueDataProvider.prototype = {
 
+        type: 'PointValueDataProvider',
+        
         id: null, //Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
         pointConfigurations: null, //List of Points + configurations to use
         from: null, //From date

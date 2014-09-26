@@ -130,7 +130,7 @@ DataDisplayManager.prototype = {
                     if($.inArray(this.dataProviders[i].id, ids) >= 0){
                         this.dataProviders[i].from = from;
                         this.dataProviders[i].to = to;
-                        if(typeof this.dataProviders[i] == 'PointValueDataProvider'){
+                        if(this.dataProviders[i].type == 'PointValueDataProvider'){
                             this.dataProviders[i].rollup = rollup;
                             this.dataProviders[i].timePeriodType = timePeriodType;
                             this.dataProviders[i].timePeriods = timePeriods;

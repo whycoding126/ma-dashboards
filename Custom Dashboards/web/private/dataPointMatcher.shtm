@@ -45,7 +45,6 @@
         <!-- JS For this page -->
         <script type="text/javascript">
         $( document ).ready(function(){
-            //First get the data points
             var pointMatcher;
             
             //Create the Point Configurations
@@ -56,10 +55,12 @@
             
             //Create the Display Manager
             var displayManager = new DataDisplayManager();
+            
+            //Add Display Configurations to it
             displayManager.addDisplayConfiguration(new SerialChartConfiguration(
-                    'chart1',
+                    'chart1', //Chart DIV id
                     [1,2], //List of data provider Ids for this chart
-                    {
+                    { //AmChart Mixins
                 titles: [{
                     id: "Title-1",
                     size: 15,
@@ -69,7 +70,15 @@
                 graphs: [{
                     title: "Voltage",
                     valueAxis: "voltage-axis",
-                    balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                    //Function to render the text inside the balloons
+                    //TODO Make this bulletproof and create a way to get a default 'graph'
+                    balloonFunction: function(graphDataItem, amGraph){
+                        if(typeof graphDataItem.values != 'undefined'){
+                            return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                        }else{
+                            return "";
+                        }
+                    },
                     bullet: "square",
                     bulletSize: 6,
                     lineColor: "green",
@@ -79,8 +88,16 @@
                     valueField: "volts"
                 },{
                     title: "Temperature",
+                    //Function to render the text inside the balloons
+                    //TODO Make this bulletproof and create a way to get a default 'graph'
+                    balloonFunction: function(graphDataItem, amGraph){
+                        if(typeof graphDataItem.values != 'undefined'){
+                            return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                        }else{
+                            return "";
+                        }
+                    },
                     valueAxis: "temp-axis",
-                    balloonText: "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
                     bullet: "round",
                     bulletSize: 6,
                     lineColor: "orange",
@@ -100,9 +117,10 @@
                 }],
             }), true);
             
+            //Add a Pie Chart Configuration
             displayManager.addDisplayConfiguration(new PieChartConfiguration(
-                    'chart2',
-                    [1,2],
+                    'chart2', //Chart Div ID
+                    [1,2], //Data Provider IDs for this chart
                     { //AmChart Mixins
                       titles: [{
                           text: "Averages",
@@ -147,18 +165,20 @@
                     displayManager.addDataProvider(dataPointConfiguration);
                 });
                 
-                //Action the matcher to setup the display manager
+                //Action the matcher to setup the display manager,
+                // here we tell the display manager what Data Providers to update and
+                // give it the date/rollups for them
                 pointMatcher.match();
                 var to = new Date();
                 var from = new Date(to.getTime() - 1000*60*60);
                 displayManager.refresh([1,2,3], from, to, 'AVERAGE', 'MINUTES', 1);
                 
-                //Load in some data for the provider
-//                 setInterval(function(){
-//                     var to = new Date();
-//                     var from = new Date(to.getTime() - 1000*60*60);
-//                     displayManager.refresh([1,2], from, to, 'AVERAGE', 'MINUTES', 1);
-//                 }, 10000);
+                //Set an interval that will refresh our page periodically
+                setInterval(function(){
+                    var to = new Date();
+                    var from = new Date(to.getTime() - 1000*60*60);
+                    displayManager.refresh([1,2], from, to, 'AVERAGE', 'MINUTES', 1);
+                }, 10000);
                 
             },showError); //end get data points
             
@@ -185,8 +205,7 @@
         
     </head>
     <body>
-    <p>This page will create a dashboard from a JSON template that matches points from a list of points.  
-    Select the folder that contains the points with xids temp and volts.
+    <p>This page will create a dashboard from a template that matches points from a list of points.  
     </p>
     
     <!-- Placeholder to log errors -->
