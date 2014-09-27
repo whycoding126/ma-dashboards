@@ -18,10 +18,12 @@
  * @param options
  * @returns
  */
-PointHierarchyGrouper = function(root, onGroup, options){
+PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
     
     this.root = root;
+    this.groupConfigurations = groupConfigurations;
     this.onGroup = onGroup;
+    
     
     for(var i in options) {
         this[i] = options[i];
@@ -42,6 +44,7 @@ PointHierarchyGrouper = function(root, onGroup, options){
 
 PointHierarchyGrouper.prototype = {
         
+        owner: null, //Object to include in callbacks
         dataPoints: null, //List of all data points to group
         
         groupConfigurations: null, //List of DataPointGroupConfiguration 
@@ -61,7 +64,7 @@ PointHierarchyGrouper.prototype = {
          * Called on formation of a group
          * @param DataPointGroup
          */
-        onGroup: function(dataPointGroup){
+        onGroup: function(dataPointGroup, owner){
             //No Op Override
         },
         
@@ -86,7 +89,7 @@ PointHierarchyGrouper.prototype = {
                     var points = new Array();
                     points.push.apply(points, this.dataPoints);
                     //Fire OnGroup
-                    this.onGroup(new DataPointGroup(label, points));
+                    this.onGroup(new DataPointGroup(label, points), this.owner);
                 }else{
                     //Loop over all data points and create a group with them
                     var groupsMap = {}; //Create a map to build all groups in
@@ -106,7 +109,7 @@ PointHierarchyGrouper.prototype = {
                     }//end for all data points
                     //Fire on Group for all new groups
                     for(l in groupsMap){
-                        this.onGroup(groupsMap[l]);
+                        this.onGroup(groupsMap[l], this.owner);
                     }
                 }//End else matching over points
             }//end for all configs

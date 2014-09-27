@@ -10,6 +10,7 @@
         
         <!-- Scripts from Module Directory -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        
         <!-- Charting Library -->
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>

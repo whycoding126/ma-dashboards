@@ -11,9 +11,9 @@
  * @param options
  * @returns
  */
-DataDisplayManager = function(options){
+DataDisplayManager = function(displayConfigurations, options){
     
-    this.displayConfigurations = new Array();
+    this.displayConfigurations = displayConfigurations;
     this.dataProviderConfigurations = new Array();
     
     this.dataProviders = new Array();
@@ -24,6 +24,15 @@ DataDisplayManager = function(options){
     for(var i in options) {
         this[i] = options[i];
     }
+    
+    if(this.displayConfigurations == null)
+        this.displayConfigurations = new Array();
+    else{
+        for(var i=0; i<this.displayConfigurations.length; i++){
+            this.displays.push(this.displayConfigurations[i].createDisplay());
+        }
+    }
+        
 };
 
 DataDisplayManager.prototype = {
@@ -53,7 +62,7 @@ DataDisplayManager.prototype = {
          * Using a point and a configuration create or find an existing data provider
          * @param dataPointConfiguration - data point configuration
          */
-        addDataProvider: function(dataPointConfiguration){
+        addDataPointConfiguration: function(dataPointConfiguration){
             var dataProvider; 
             if(dataPointConfiguration.providerId != null){
                 //Find it in the list
@@ -118,12 +127,39 @@ DataDisplayManager.prototype = {
         },
         
         /**
+         * Signal to data providers to clear data
+         */
+        clear: function(ids){
+            if((typeof ids == 'undefined')||(ids == null)){
+                for(var i=0; i<this.dataProviders.length; i++){
+                     this.dataProviders[i].clear();
+                }
+            }else{
+                //We have Args
+                for(var i=0; i<this.dataProviders.length; i++){
+                    if($.inArray(this.dataProviders[i].id, ids) >= 0){
+                         this.dataProviders[i].clear();
+                    }
+                }
+            }
+        },
+        
+        /**
          * Refresh data providers with IDs (or if not defined then all)
          */
         refresh: function(ids, from, to, rollup, timePeriodType, timePeriods){
-            if(typeof ids == 'undefined'){
-                for(var i=0; i<this.dataProviders.length; i++)
-                    this.dataProviders[i].load();
+            if((typeof ids == 'undefined')||(ids == null)){
+                for(var i=0; i<this.dataProviders.length; i++){
+                    this.dataProviders[i].from = from;
+                    this.dataProviders[i].to = to;
+                    if(this.dataProviders[i].type == 'PointValueDataProvider'){
+                        this.dataProviders[i].rollup = rollup;
+                        this.dataProviders[i].timePeriodType = timePeriodType;
+                        this.dataProviders[i].timePeriods = timePeriods;
+                    }
+                    this.dataProviders[i].load(this.error);
+
+                }
             }else{
                 //We have Args
                 for(var i=0; i<this.dataProviders.length; i++){

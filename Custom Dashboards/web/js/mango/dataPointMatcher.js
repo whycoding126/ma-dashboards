@@ -92,7 +92,7 @@ DataPointMatcher = function(configurations, onMatch, options){
 
 DataPointMatcher.prototype = {
         
-
+        owner: null, //Object to include in callbacks
         configurations: null, //List of point configurations
         matchAll: true, //Use all points that match a point configuration (or use first match)
         
@@ -121,7 +121,7 @@ DataPointMatcher.prototype = {
                     var point = dataPoints[j];
                     if(this.matchPointToConfiguration(point, configuration)){
                         //Matched, create/add to data provider
-                        this.onMatch(new DataPointConfiguration(point,configuration.providerId, configuration.providerType));
+                        this.onMatch(new DataPointConfiguration(point,configuration.providerId, configuration.providerType), this.owner);
                         if(!this.matchAll)
                             break; //Break out if we are not matching all
                     }
@@ -132,7 +132,7 @@ DataPointMatcher.prototype = {
         /**
          * Called on match of point to configuration
          */
-        onMatch: function(dataPointConfiguration){
+        onMatch: function(dataPointConfiguration, owner){
             //Do nothing unless overridden
         },
         

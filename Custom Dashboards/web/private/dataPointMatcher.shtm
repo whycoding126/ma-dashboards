@@ -161,7 +161,7 @@
                     console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
                     
                     //Now add it as a provider for the manager
-                    displayManager.addDataProvider(dataPointConfiguration);
+                    displayManager.addDataPointConfiguration(dataPointConfiguration);
                 });
                 
                 //Action the matcher to setup the display manager,

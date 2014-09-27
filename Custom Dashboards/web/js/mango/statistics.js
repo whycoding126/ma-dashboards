@@ -74,10 +74,24 @@ MangoStatistics.prototype = {
         dataProviderIds: null,
         
         /**
+         * Data Provider listener to clear data
+         */
+        onClear: function(){
+            $("#" + this.divPrefix + "Minimum").text("");
+            $("#" + this.divPrefix + "Maximum").text("");
+            $("#" + this.divPrefix + "Average").text("");
+            $("#" + this.divPrefix + "Integral").text("");
+            $("#" + this.divPrefix + "Sum").text("");
+            $("#" + this.divPrefix + "First").text("");
+            $("#" + this.divPrefix + "Last").text("");
+            $("#" + this.divPrefix + "Count").text("");
+        },
+        
+        /**
          * Data Provider Listener
          * On Data Provider load we add new data
          */
-        onLoad: function(data, xid){
+        onLoad: function(data, dataPoint){
             if(data.hasData == true){
                 
                 //Numeric Statistics

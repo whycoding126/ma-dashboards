@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!-- * Copyright (C) 2014-2016 Mango.-->
+<!-- *@author Joseph Mills-->
+<!-- * This program is free software; you can redistribute it and/or modify-->
+<!-- * it under the terms of the GNU General Public License as published by-->
+<!-- * the Free Software Foundation; version 3.-->
+<!-- *-->
+<!-- * This program is distributed in the hope that it will be useful,-->
+<!-- * but WITHOUT ANY WARRANTY; without even the implied warranty of-->
+<!-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the-->
+<!-- * GNU General Public License for more details.-->
+<!-- *-->
+<!-- * You should have received a copy of the GNU General Public License-->
+<!-- * along with this program.  If not, see <http://www.gnu.org/licenses/ -->
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	
+	  <!-- Page Style -->
+        <style type="text/css">
+
+.mytab{
+  width: 10% !important; 
+  clear: none !important;
+}
+        </style>
+	
+	
+	<title>Meters</title>
+	<!-- We should never reference online resources as not all of our installations have internet access -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    
+    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
+    <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
+        
+    <!-- JQuery -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+
+    <!-- Joseph Page -->
+    <script src="/modules/dashboards/web/js/joseph/index.js"></script>
+
+	<!-- JQuery Mobile -->
+	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
+
+
+       
+    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+    <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+       
+ 
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+    
+    <!-- Bootstrap -->
+    <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
+    
+    
+    <!-- Mango Rest API Helper -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+    
+    <!-- Mango AM Charts Helper -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
+        
+	<!-- Mango Templating API -->
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>  
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dashboardTemplater.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
+
+
+
+   <script type="text/javascript">
+   $( document ).ready(function(){
+       
+       //Setup Display Configurations
+       var displayConfigurations = new Array();
+       var kwhChart = new  SerialChartConfiguration(
+               'kwhChartDiv', //Chart DIV id
+               [1], //List of data provider Ids for this chart
+               { //AmChart Mixins
+           titles: [{
+               id: "Title-1",
+               size: 15,
+               text: "KWH "
+           }],
+           categoryField: "timestamp",
+           graphs: [{
+               title: "Kilo watts per hour",
+               valueAxis: "kwh-axis",
+               //Function to render the text inside the balloons
+               //TODO Make this bulletproof and create a way to get a default 'graph'
+               balloonFunction: function(graphDataItem, amGraph){
+                   if(typeof graphDataItem.values != 'undefined'){
+                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                   }else{
+                       return "";
+                   }
+               },
+               bullet: "square",
+               bulletSize: 6,
+               lineColor: "green",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "value"
+           }],
+           valueAxes: [{
+               id: "kwh-axis",
+               title: " KWH ",
+               position: "left"
+           }],
+       });
+       displayConfigurations.push(kwhChart);
+       
+       var ampsChart = new  SerialChartConfiguration(
+               'ampsChartDiv', //Chart DIV id
+               [2,3,4], //List of data provider Ids for this chart
+               { //AmChart Mixins
+           titles: [{
+               id: "Title-1",
+               size: 15,
+               text: "Amps "
+           }],
+           categoryField: "timestamp",
+           graphs: [{
+               title: "Amps Phase A",
+               valueAxis: "phaseA-axis",
+               //Function to render the text inside the balloons
+               //TODO Make this bulletproof and create a way to get a default 'graph'
+               balloonFunction: function(graphDataItem, amGraph){
+                   if(typeof graphDataItem.values != 'undefined'){
+                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                   }else{
+                       return "";
+                   }
+               },
+               bullet: "square",
+               bulletSize: 6,
+               lineColor: "green",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "phaseA"
+           },{              
+               title: "Amps Phase B",
+               valueAxis: "phaseB-axis",
+               //Function to render the text inside the balloons
+               //TODO Make this bulletproof and create a way to get a default 'graph'
+               balloonFunction: function(graphDataItem, amGraph){
+                   if(typeof graphDataItem.values != 'undefined'){
+                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                   }else{
+                       return "";
+                   }
+               },
+               bullet: "round",
+               bulletSize: 6,
+               lineColor: "red",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "phaseB"
+           },{              
+               title: "Amps Phase C",
+               valueAxis: "phaseC-axis",
+               //Function to render the text inside the balloons
+               //TODO Make this bulletproof and create a way to get a default 'graph'
+               balloonFunction: function(graphDataItem, amGraph){
+                   if(typeof graphDataItem.values != 'undefined'){
+                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+                   }else{
+                       return "";
+                   }
+               },
+               bullet: "round",
+               bulletSize: 6,
+               lineColor: "yellow",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "phaseC"
+           }],
+           valueAxes: [{
+               id: "phaseA-axis",
+               title: " Phase A (Amps) ",
+               position: "left",
+               color: "green"
+           },{
+               id: "phaseB-axis",
+               title: " Phase B (Amps) ",
+               position: "right",
+               color: "red"
+           },{
+               id: "phaseC-axis",
+               title: " Phase C (Amps) ",
+               position: "right",
+               color: "yellow"
+           }
+           ],
+       },{//Empty Mango Chart Mixins
+       },{
+           //Multi-series chart so create mappings from point to a graph valueField
+           dataPointMappings: [{
+                   nameEndsWith: 'Phase A (A)',
+                   valueField: 'phaseA'
+               },{
+                   nameEndsWith: 'Phase B (A)',
+                   valueField: 'phaseB'
+               },{
+                   nameEndsWith: 'Phase C (A)',
+                   valueField: 'phaseC'
+               }]
+       });
+       displayConfigurations.push(ampsChart);
+
+       //Setup a statistics Display
+       displayConfigurations.push(new StatisticsConfiguration('accumulator', [5]));    
+       displayConfigurations.push(new StatisticsConfiguration('currentPhaseA', [6]));  
+       displayConfigurations.push(new StatisticsConfiguration('currentPhaseB', [7]));    
+       displayConfigurations.push(new StatisticsConfiguration('currentPhaseC', [8]));    
+
+       
+       //Setup Point Configurations
+       var pointConfigurations = new Array();
+       pointConfigurations.push(new DataPointMatchConfiguration(1, {nameEndsWith: '(kWh)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(2, {nameEndsWith: 'Phase A (A)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(3, {nameEndsWith: 'Phase B (A)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(4, {nameEndsWith: 'Phase C (A)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(5, {nameEndsWith: '(kWh)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(6, {nameEndsWith: 'Phase A (A)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(7, {nameEndsWith: 'Phase B (A)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(8, {nameEndsWith: 'Phase C (A)', providerType: 'Statistics'}))
+
+
+       //Setup Groups
+       var meterGroups = new DataPointGroupConfiguration({
+           groupBy: 'Folder',
+           labelAttribute: 'name',
+           matchConfigurations: [{
+               matchAttribute: 'path',
+               startsWith: 'Buildings/City Plex/Meters'
+           }]
+           });
+       
+       var groupConfigurations = new Array();
+       groupConfigurations.push(meterGroups);
+       
+       //Setup Templater
+       var templaterConfig = {
+               debug: true,
+               type: 'PointHierarchy',
+               displayConfigurations: displayConfigurations,
+               pointConfigurations: pointConfigurations,
+               groupConfigurations: groupConfigurations,
+       }
+       
+       
+       
+       var templater = new DashboardTemplater(templaterConfig);
+            
+   });// End When page Ready
+   
+   /**
+	 * Display Errors method
+	 */
+	function showError(jqXHR, textStatus, errorThrown, mangoMessage){
+	    
+	    var msg = "";
+	    if(textStatus != null)
+	        msg += (textStatus + " ");
+	    if(errorThrown != null)
+	        msg += (errorThrown + " ");
+	    if(mangoMessage != null)
+	        msg += (mangoMessage + " ");
+	    msg += "\n";
+	    $("#errors").text(msg);
+	}
+   
+   
+   
+   
+   
+   
+   
+   </script>
+
+
+
+
+
+</head>
+<body>
+<div data-role="page" id="home">
+    <div data-theme="b" data-role="header">
+     <a href="#nav-panel" data-icon="bars">Menu</a>
+     <a href="#help" data-transition="flip" class="ui-btn-icon-right" data-icon="info">Help</a>
+<!--<h1></h1> FIXME Hack hack maybe add span or something but I am fine with this for now-->
+<h3></h3>
+<h1><b>Welcome To Mango</b></h1>
+      <p>This is the newest version of mango's dashbpoard views. We have tried to make it as nice as you can imagine.  This software is in its beta stage and some of the things are not yet working. If you would like some help either click on the help button in the upper right hand conner of the screen.  Or call us at. blah blah blahj.    </p>  
+  </div> <!--end the header-->
+
+
+<div data-role="panel" data-theme="b" id="nav-panel">
+  <!--FIXME Lets make it so that all the trabnstions are built off the settings and if not set a random one ?  -->
+  <ul data-role="listview">
+            <li><a  data-transition="flip" class="ui-btn ui-icon-home ui-btn-icon-left" href="/private-dashboards/welcome.shtm">Home</a></li>
+            <li><a  data-transition="pop" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#" onclick="".load('/private-dashboards/chartPointValues.shtm">Simple Chart</a></li>
+            <li><a  data-transition="turn" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/complexAmChart.shtm">Complex Chart</a></li>
+            <li><a  data-transition="flow" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/currentValue.shtm">Current Value</a></li>
+            <li><a  data-transition="slidefade" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/dynamicDashboard.shtm">Dynamic Dashboard</a></li>
+            <li><a  data-transition="slide" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/gaugeAmChartExample.shtm">Gauge</a></li>
+            <li><a  data-transition="slideup" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/helloWorld.shtm">Private Page</a></li>
+            <li><a  data-transition="slidedown" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/setPointValue.shtm">Set Point Value</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/simpleDashboard.shtm">Simple Dashboard</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/simpleTemplatedDashboard.shtm">Simple Template</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/templatedDashboard.shtm">Complex Template</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-gear ui-btn-icon-left" href="/private-dashboards/webSocket.shtm">Web Socket</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-left" href="/private-dashboards/boilerplate.shtm">BoilerPlate Page</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-left" href="/private-dashboards/collegeStartOut.shtm">Tabs</a></li>
+            <li><a  data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-left" href="/private-dashboards/settings.shtm">Settings</a></li>
+          </ul>
+</div>
+<!--This starts the main content of the page -->
+  <div data-role="main"  class="ui-content">
+     <div  class="ui-field-contain" data-theme="b">
+                <label for="groups">Select Meter:</label>
+                <select id="groups" class="form-control"  data-rel="close"></select>
+</div>
+
+<!--The tabs for the charts  -->
+
+<!--FIXME for some reason it is not ;loading all the charts and one has to refresh the data to see the chart.  It is like there is issues with the width or something-->
+<div data-role="tabs" class="lineChartTabs"  data-theme="b">
+    <div data-role="navbar" >
+    <ul>
+      <li class="mytab" ><a data-transition="flip" data-theme="b" href="#kw" data-ajax="false">KW</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#amps" data-ajax="false">Amps</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#volts" data-ajax="false">Volts</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#powerFactor" data-ajax="false">Power Factor</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseA" data-ajax="false">Phase A</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseB" data-ajax="false">Phase B</a></li>
+      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseC" data-ajax="false">Phase C</a></li>
+    </ul>
+  </div>
+
+  <div id="kw" class="ui-content">
+     <div  id="kwhChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+     <div id="ampsChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+
+  </div>
+
+  <div id="amps" class="ui-content">
+  </div>
+  
+
+    <div id="volts" class="ui-content">
+              <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+  </div>
+  
+    <div id="powerFactor" class="ui-content">
+              <div id="powerFactorChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+  </div>
+  
+    <div id="phaseA" class="ui-content">
+              <div id="phaseAChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+  </div>
+  
+    <div id="phaseB" class="ui-content">
+              <div id="phaseBChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+  </div>
+    <div id="phaseC" class="ui-content">
+              <div id="phaseCChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+  </div>
+
+</div> <!--this is the end of the tabs-->
+
+
+<div class="ui-grid-a">
+        <div data-role="navbar">
+                <ul>
+                <li>  
+                  <div class="form-group"> 
+                    <a href="#popupDialog" data-rel="popup" data-position-to="window" data-transition="pop" class=" ui-btn-b">Choose a Time</a>
+                  </div>
+                </li>
+            <li>
+              <div class="ui-field-contain">
+                <label for="rollup">Rollup:</label>
+                <select id="rollup" class="form-control"></select>
+              </div>
+            </li>
+            <li>
+              <div class="ui-field-contain">
+                <label for="timePeriodType">Time Period:</label>
+                <select id="timePeriodType" class="form-control"></select>
+              </div>
+            <li>
+              <div class="ui-field-contain">
+                <label for="timePeriod">Periods:</label>
+                <input id="timePeriod" type="number" value="1" class="form-control"/>
+              </div>
+            </li>
+</ul>
+</div>
+</div>
+
+
+<div data-role="popup" id="popupDialog" style=" margin-left: 100px; margin-right: 100px;" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
+          <div class="row placeholders">
+            <div class="col-md-6 col-sm-3 placeholder">
+              <input id="startDate"></input>
+              <h4>Start Date</h4>
+            </div>
+            <div class="col-md-6 col-sm-3 placeholder">
+              <input id="endDate"></input>
+              <h4>End Date</h4>
+          </div>
+          <div >
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+    </div>
+  </div>
+</div>
+      
+      
+      
+      
+      
+      <div class="ui-field-contain">
+          <h2 >Statistics</h2>
+          <div class="ui-field-contain">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Average</th>
+                  <th>Integral</th>
+                  <th>Sum</th>
+                  <th>Count</th>
+                  <th>Maximum</th>
+                  <th>Minimum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="pointName">Energy Accumulator</td>
+                  <td id="accumulatorAverage"></td>
+                  <td id="accumulatorIntegral"></td>
+                  <td id="accumulatorSum"></td>
+                  <td id="accumulatorCount"></td>
+                  <td id="accumulatorMax"></td>
+                  <td id="accumulatorMin"></td>
+                </tr>
+                <tr>
+                  <td id="pointName">Current Phase A</td>
+                  <td id="currentPhaseAAverage"></td>
+                  <td id="currentPhaseAIntegral"></td>
+                  <td id="currentPhaseASum"></td>
+                  <td id="currentPhaseACount"></td>
+                  <td id="currentPhaseAMax"></td>
+                  <td id="currentPhaseAMin"></td>
+                </tr>
+                <tr>
+                  <td id="pointName">Current Phase B</td>
+                  <td id="currentPhaseBAverage"></td>
+                  <td id="currentPhaseBIntegral"></td>
+                  <td id="currentPhaseBSum"></td>
+                  <td id="currentPhaseBCount"></td>
+                  <td id="currentPhaseBMax"></td>
+                  <td id="currentPhaseBMin"></td>
+                </tr>
+                <tr>
+                  <td id="pointName">Current Phase C</td>
+                  <td id="currentPhaseCAverage"></td>
+                  <td id="currentPhaseCIntegral"></td>
+                  <td id="currentPhaseCSum"></td>
+                  <td id="currentPhaseCCount"></td>
+                  <td id="currentPhaseCMax"></td>
+                  <td id="currentPhaseCMin"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="errors">
+        </div>
+      </div> <!--/ui-content -->
+            
+
+
+	<div data-role="footer" data-theme="b">
+		<h4>Powered by mango automation copyright 2014</h4>
+	</div><!-- /footer -->
+
+</div> <!-- page one -->
+
+<!--Start the acual Help page-->
+<div data-role="page" id="help">
+
+	<div data-theme="b" data-role="header"">
+		<h3></h3>
+		<h3>Help</h3>
+		
+     <a href="#home" data-icon="back" data-transition="flip">Back</a>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my ID is beeing clicked.</p>		
+		<p><a href="#foo">Back to foo</a></p>	
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="b">
+		<h4>Powered by mango automation copyright </script type="text/javascript">return new Date() </script></h4>
+	</div><!-- /footer -->
+</div><!-- /help page -->
+
+</body>
+</html>
+

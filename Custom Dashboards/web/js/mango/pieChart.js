@@ -101,11 +101,20 @@ MangoPieChart = function(amChart, dataProviderIds, options){
 MangoPieChart.prototype = {
         
         /**
+         * Data Provider listener to clear data
+         */
+        onClear: function(){
+            while(this.amChart.dataProvider.length >0){
+                this.amChart.dataProvider.pop();
+            }
+        },
+        
+        /**
          * Default action is to total per XID
          * Data Provider Listener
          * On Data Provider load we add new data
          */
-        onLoad: function(data, xid){
+        onLoad: function(data, dataPoint){
 
             var total = 0;
             for(var i=0; i<data.length; i++){
@@ -114,14 +123,14 @@ MangoPieChart.prototype = {
             
             //Check to see if it already exists in the chart
             for(var i=0; i<this.amChart.dataProvider.length; i++){
-                if(this.amChart.dataProvider[i].xid == xid){
+                if(this.amChart.dataProvider[i].xid == dataPoint.xid){
                     this.amChart.dataProvider[i].total = total;
                     this.amChart.validateData();
                     return; //Done
                 }
             }
             //We didn't find our set, so add a brand new one
-            this.amChart.dataProvider.push({total: total, xid: xid});
+            this.amChart.dataProvider.push({total: total, xid: dataPoint.xid});
             this.amChart.validateData();        
       }
 };

@@ -163,7 +163,7 @@
             function onMatch(dataPointConfiguration){
                 console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
                 //Now add it as a provider for the manager
-                displayManager.addDataProvider(dataPointConfiguration);
+                displayManager.addDataPointConfiguration(dataPointConfiguration);
             }
             //Create the Point Matcher
             var pointMatcher = new DataPointMatcher(pointConfigurations, onMatch);
@@ -191,7 +191,7 @@
             
             $.when(deferred).then(function(){
                 //Setup the Grouper when ready
-                grouper = new PointHierarchyGrouper(root, onGroup);
+                grouper = new PointHierarchyGrouper(root, new Array(), onGroup);
                 
                 //Add group Configurations
                 //grouper.addGroupConfiguration(new DataPointGroupConfiguration()); //Simple Group into All

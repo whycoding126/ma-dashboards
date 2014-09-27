@@ -52,11 +52,20 @@ PointValueDataProvider.prototype = {
          *  Send in this method in the options during object creation.
          * 
          * @param data - list of point value times
-         * @param xid - xid corresponding to pvts
+         * @param point - dataPoint corresponding to pvts
          * @return Array of manipulated data
          */
         manipulateData: null,
         
+        /**
+         * Signal to all Listeners to clear ALL their data
+         */
+        clear: function(){
+            for(var i=0; i<this.listeners.length; i++){
+                this.listeners[i].onClear();
+            }
+
+        },
         /**
          * Load our data and publish to listeners
          * 
@@ -81,11 +90,11 @@ PointValueDataProvider.prototype = {
 
                     //Optionally manipulate the data
                     if(this.manipulateData != null)
-                        data = this.manipulateData(data, self.pointConfigurations[pos].point.xid);
+                        data = this.manipulateData(data, self.pointConfigurations[pos].point);
                     
                     //Inform our listeners of this new data
                     for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point.xid);
+                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point);
                     }
                 },error);
                 
@@ -126,7 +135,14 @@ DataProviderListener.prototype = {
         /**
          * Called on load of data from provider
          */
-        onLoad: function(data, xid){
+        onLoad: function(data, dataPoint){
             
         },
+        
+        /**
+         * Called when data provider asks to clear data
+         */
+        onClear: function(){
+            
+        }
 };

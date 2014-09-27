@@ -51,6 +51,16 @@ StatisticsDataProvider.prototype = {
         manipulateData: null,
         
         /**
+         * Signal to all Listeners to clear ALL their data
+         */
+        clear: function(){
+            for(var i=0; i<this.listeners.length; i++){
+                this.listeners[i].onClear();
+            }
+
+        },
+        
+        /**
          * Load our data and publish to listeners
          * 
          * @param error - method to call on error

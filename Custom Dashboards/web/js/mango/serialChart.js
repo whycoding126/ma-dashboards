@@ -46,6 +46,8 @@ SerialChartConfiguration.prototype = {
        
         dataProviderIds: null, //List of my data provider ids
         
+        dataPointMappings: null, //List of Data Point Matching Items (not required)
+        
         /**
          * Displaying Loading... on top of chart div
          */
@@ -61,7 +63,7 @@ SerialChartConfiguration.prototype = {
             this.chartLoading();
             var serial = new MangoSerialChart(
                     AmCharts.makeChart(this.divId, this.configuration), 
-                    this.dataProviderIds);
+                    this.dataProviderIds, this.dataPointMappings);
             
             return $.extend(true, {}, serial, this.mangoPieMixin);
         },
@@ -98,9 +100,10 @@ SerialChartConfiguration.prototype = {
                  */
                 valueFunction: function(graphDataItem){
                     if(typeof graphDataItem.values != 'undefined')
-                        return graphDataItem.values.value.toFixed(2);
-                    else
-                        return "";
+                        if(typeof graphDataItem.values.value != 'undefined')
+                            return graphDataItem.values.value.toFixed(2);
+                    
+                    return ""; //Otherwise nada
                 }
             },
             "titles": [],
@@ -116,11 +119,12 @@ SerialChartConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoSerialChart = function(amChart, dataProviderIds, options){
+MangoSerialChart = function(amChart, dataProviderIds, dataPointMappings, options){
     
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
     this.valueAttribute = 'value'; //Can override with options
+    this.dataPointMappings = dataPointMappings;
     
     for(var i in options) {
         this[i] = options[i];
@@ -129,11 +133,80 @@ MangoSerialChart = function(amChart, dataProviderIds, options){
 
 MangoSerialChart.prototype = {
         
+        seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
+        /**
+         * Using our map get the series value attribute
+         * 
+         * @param dataPoint 
+         */
+        getSeriesValueAttribute: function(dataPoint){
+            
+            if(this.dataPointMappings != null){
+                for(var i=0; i<this.dataPointMappings.length; i++){
+                    if(this.matchPoint(this.dataPointMappings[i], dataPoint) == true){
+                        return this.dataPointMappings[i].valueField;
+                    }
+                }
+            }else{
+                if(this.seriesValueMapping == null)
+                    return 'value';
+                else{
+                    return dataPoint[this.seriesValueMapping];
+                }                
+            }
+
+        },
+        
+        /**
+         * Check to see if our data point matches this mapping
+         */
+        matchPoint: function(configuration, point){
+            var match = true;
+            //Does this point match this template
+            if(configuration.nameStartsWith != null){
+                if(point.name.indexOf(configuration.nameStartsWith) == 0)
+                    match = true;
+                else
+                    match = false;
+            }
+            if(configuration.nameEndsWith != null){
+                if(point.name.indexOf(configuration.nameEndsWith, point.name.length - configuration.nameEndsWith.length) !== -1)
+                    match = true;
+                else
+                    match = false;
+            }
+            if(configuration.xidStartsWith != null){
+                if(point.xid.indexOf(configuration.xidStartsWith) == 0)
+                    match = true;
+                else
+                    match = false;
+            }
+            if(configuration.xidEndsWith != null){
+                if(point.xid.indexOf(configuration.xidEndsWith, point.xid.length - configuration.xidEndsWith.length) !== -1)
+                    match = true;
+                else
+                    match = false;
+            }
+            return match;
+        },
+        
+        /**
+         * Data Provider listener to clear data
+         */
+        onClear: function(){
+            while(this.amChart.dataProvider.length >0){
+                this.amChart.dataProvider.pop();
+            }
+        },
+        
         /**
          * Data Provider Listener
          * On Data Provider load we add new data
          */
-        onLoad: function(data, xid){
+        onLoad: function(data, dataPoint){
+            
+            //Get the member name to put the value against in the Series
+            var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint);
             
             if(this.amChart.dataProvider.length >0){
                 //Assume the data is in order
@@ -149,7 +222,7 @@ MangoSerialChart.prototype = {
                 var startPos = 0;
                 if(this.amChart.dataProvider[pos].timestamp == data[0].timestamp){
                     //Merge
-                    this.amChart.dataProvider[pos][xid] = data[0][this.valueAttribute];
+                    this.amChart.dataProvider[pos][seriesValueAttribute] = data[0][this.valueAttribute];
                 }else{
                     this.amChart.dataProvider.splice(pos,0,data[0]);
                 }
@@ -172,7 +245,7 @@ MangoSerialChart.prototype = {
                     }else{
                         if(this.amChart.dataProvider[pos].timestamp == data[i].timestamp){
                             //Merge
-                            this.amChart.dataProvider[pos][xid] = data[i][this.valueAttribute];
+                            this.amChart.dataProvider[pos][seriesValueAttribute] = data[i][this.valueAttribute];
                         }else{
                             this.amChart.dataProvider.splice(pos,0,data[i]);
                         } 
@@ -183,7 +256,7 @@ MangoSerialChart.prototype = {
                 //Just insert as is, no data to merge
                 for(var i=0; i<data.length; i++){
                     var entry = {timestamp: data[i].timestamp};
-                    entry[xid] = data[i][this.valueAttribute];
+                    entry[seriesValueAttribute] = data[i][this.valueAttribute];
                     this.amChart.dataProvider.push(entry);
                 }
             }
