@@ -66,7 +66,11 @@ DashboardTemplater = function(options){
     this.timePeriodConfiguration.create();
     
     if(this.groupSelectConfiguration == null)
-        this.groupSelectConfiguration = new InputConfiguration('groups',{}, {owner: self, onChange: self.groupChanged, defaultValue: 0});
+        this.groupSelectConfiguration = new SelectConfiguration('groups',{}, {owner: self, onChange: self.groupChanged, defaultValue: 0});
+    else{
+        this.groupSelectConfiguration.owner = self;
+        this.groupSelectConfiguration.onChange = self.groupChanged;
+    }
     this.groupSelectConfiguration.create();
     
     //Display Manager
@@ -160,7 +164,7 @@ DashboardTemplater.prototype = {
         onGroup: function(dataPointGroup, templater){
             if(templater.debug)
                 console.log('MatchedGroup: ' + dataPointGroup);
-            $('#' + templater.groupSelectConfiguration.divId).append( $("<option></option>").text(dataPointGroup.label).val(templater.groups.length));
+            templater.groupSelectConfiguration.addItem(dataPointGroup.label, templater.groups.length);
             templater.groups.push(dataPointGroup);
 
         },

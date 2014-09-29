@@ -83,6 +83,9 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
+    
 
 
 
@@ -262,6 +265,9 @@
        var groupConfigurations = new Array();
        groupConfigurations.push(meterGroups);
        
+       //Create a custom group list view
+       var groupListView = new ListViewConfiguration('groupsList');
+       
        //Setup Templater
        var templaterConfig = {
                debug: true,
@@ -269,6 +275,7 @@
                displayConfigurations: displayConfigurations,
                pointConfigurations: pointConfigurations,
                groupConfigurations: groupConfigurations,
+               groupSelectConfiguration: groupListView,
        }
        
        
@@ -343,7 +350,11 @@
      <div  class="ui-field-contain" data-theme="b">
                 <label for="groups">Select Meter:</label>
                 <select id="groups" class="form-control"  data-rel="close"></select>
-</div>
+    </div>
+     <div>
+       <label for="groupsList">Choose Meter:</label>
+       <ul id="groupsList"></ul>
+    </div>
 
 <!--The tabs for the charts  -->
 
