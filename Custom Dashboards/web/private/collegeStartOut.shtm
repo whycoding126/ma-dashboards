@@ -330,6 +330,7 @@
 
 <div data-role="panel" data-theme="b" id="nav-panel">
   <!--FIXME Lets make it so that all the trabnstions are built off the settings and if not set a random one ?  -->
+  <ul id="groupsList"  data-role="listview"></ul>
   <ul data-role="listview">
             <li><a  data-transition="flip" class="ui-btn ui-icon-home ui-btn-icon-left" href="/private-dashboards/welcome.shtm">Home</a></li>
             <li><a  data-transition="pop" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#" onclick="".load('/private-dashboards/chartPointValues.shtm">Simple Chart</a></li>
@@ -354,11 +355,6 @@
                 <label for="groups">Select Meter:</label>
                 <select id="groups" class="form-control"  data-rel="close"></select>
     </div>
-     <div>
-       <label for="groupsList">Choose Meter:</label>
-       <ul id="groupsList"></ul>
-    </div>
-
 <!--The tabs for the charts  -->
 
 <!--FIXME for some reason it is not ;loading all the charts and one has to refresh the data to see the chart.  It is like there is issues with the width or something-->
