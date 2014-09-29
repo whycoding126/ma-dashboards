@@ -239,6 +239,9 @@
        displayConfigurations.push(new StatisticsConfiguration('currentPhaseB', [7]));    
        displayConfigurations.push(new StatisticsConfiguration('currentPhaseC', [8]));    
 
+       //Create Custom Data Provider Here
+       var kwhDataProvider = new PointValueDataProvider();
+       
        
        //Setup Point Configurations
        var pointConfigurations = new Array();
@@ -266,7 +269,7 @@
        groupConfigurations.push(meterGroups);
        
        //Create a custom group list view
-       var groupListView = new ListViewConfiguration('groupsList');
+       var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
        
        //Setup Templater
        var templaterConfig = {
