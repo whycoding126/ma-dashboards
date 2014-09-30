@@ -77,8 +77,8 @@ MangoStatistics.prototype = {
          * Data Provider listener to clear data
          */
         onClear: function(){
-            $("#" + this.divPrefix + "Minimum").text("");
-            $("#" + this.divPrefix + "Maximum").text("");
+            $("#" + this.divPrefix + "Min").text("");
+            $("#" + this.divPrefix + "Max").text("");
             $("#" + this.divPrefix + "Average").text("");
             $("#" + this.divPrefix + "Integral").text("");
             $("#" + this.divPrefix + "Sum").text("");
@@ -95,8 +95,8 @@ MangoStatistics.prototype = {
             if(data.hasData == true){
                 
                 //Numeric Statistics
-                $("#" + this.divPrefix + "Minimum").text(this.renderPointValueTime(data.minimum));
-                $("#" + this.divPrefix + "Maximum").text(this.renderPointValueTime(data.maximum));
+                $("#" + this.divPrefix + "Min").text(this.renderPointValueTime(data.minimum));
+                $("#" + this.divPrefix + "Max").text(this.renderPointValueTime(data.maximum));
                 $("#" + this.divPrefix + "Average").text(this.renderValue(data.average));
                 $("#" + this.divPrefix + "Integral").text(this.renderValue(data.integral));
                 $("#" + this.divPrefix + "Sum").text(this.renderValue(data.sum));

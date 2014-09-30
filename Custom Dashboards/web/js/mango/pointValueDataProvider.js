@@ -15,12 +15,11 @@
  * @param options
  * @returns
  */
-PointValueDataProvider = function(id, dataPointConfiguration, options){
+PointValueDataProvider = function(id, options){
     
     this.id = id;
     this.listeners = new Array();
     this.pointConfigurations = new Array();
-    this.pointConfigurations.push(dataPointConfiguration);
     
     this.rollup = 'AVERAGE';
     this.timePeriodType = 'HOURS';
@@ -89,8 +88,8 @@ PointValueDataProvider.prototype = {
                         function(data){
 
                     //Optionally manipulate the data
-                    if(this.manipulateData != null)
-                        data = this.manipulateData(data, self.pointConfigurations[pos].point);
+                    if(self.manipulateData != null)
+                        data = self.manipulateData(data, self.pointConfigurations[pos].point);
                     
                     //Inform our listeners of this new data
                     for(var i=0; i<self.listeners.length; i++){

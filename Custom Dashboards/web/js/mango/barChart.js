@@ -8,14 +8,14 @@
 
 
 /**
- * Configuration for Serial Charts
+ * Configuration for Bar Charts
  * @param divId
  * @param dataProviderIds
  * @param mixin
  * @param options
  * @returns
  */
-SerialChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChartMixin, options){
+BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChartMixin, options){
     this.divId = divId;
     this.amChartMixin = amChartMixin;
     this.mangoChartMixin = mangoChartMixin;
@@ -33,9 +33,9 @@ SerialChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoC
 };
 
 /**
- * Serial Chart Config
+ * Bar Chart Config
  */
-SerialChartConfiguration.prototype = {
+BarChartConfiguration.prototype = {
         divId: null, //Div of chart
         
         amChartMixin: null, //Any AmChart JSON configuration to override
@@ -61,7 +61,7 @@ SerialChartConfiguration.prototype = {
          */
         createDisplay: function(){
             this.chartLoading();
-            var serial = new MangoSerialChart(
+            var serial = new MangoBarChart(
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds, this.dataPointMappings);
             
@@ -78,11 +78,14 @@ SerialChartConfiguration.prototype = {
             //Note the path to images
             pathToImages: "/modules/dashboards/web/js/amcharts/images/",
             //Set to date field in result data
-            categoryField: "timestamp",
+            categoryField: "xid",
+            rotate: true,
+            startDuration: 1,
             categoryAxis: {
-                "minPeriod": "ss",
-                "parseDates": true //TODO Fix this so we are sending in dates
+                gridPosition: "start",
+                position: "left"
             },
+            trendLines: [],
             chartCursor: {
                 "categoryBalloonDateFormat": "JJ:NN:SS"
             },
@@ -113,17 +116,17 @@ SerialChartConfiguration.prototype = {
 
 
 /**
- * Serial Chart Object
+ * Bar Chart Object
  * @param amChart
  * @param dataProviderIds
  * @param options
  * @returns
  */
-MangoSerialChart = function(amChart, dataProviderIds, dataPointMappings, options){
+MangoBarChart = function(amChart, dataProviderIds, dataPointMappings, options){
     
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
-    this.valueAttribute = 'value'; //Can override with options
+    this.categoryField = 'xid'; //How to separate Categories
     this.dataPointMappings = dataPointMappings;
     
     for(var i in options) {
@@ -131,7 +134,7 @@ MangoSerialChart = function(amChart, dataProviderIds, dataPointMappings, options
     }
 };
 
-MangoSerialChart.prototype = {
+MangoBarChart.prototype = {
         
         seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
         /**
@@ -207,59 +210,21 @@ MangoSerialChart.prototype = {
             
             //Get the member name to put the value against in the Series
             var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint);
-            
-            if(this.amChart.dataProvider.length >0){
-                //Assume the data is in order
-                //Find starting point for chart's data provider
-                var pos = this.amChart.dataProvider.length-1;
-                for(var j=0; j<this.amChart.dataProvider.length; j++){
-                    if(this.amChart.dataProvider[j].timestamp >= data[0].timestamp){
-                        pos = j;
-                        break;
-                    }
-                }
+            var total = 0;
+            //Simply total up the values
+            for(var i=0; i<data.length; i++){
+               
+                total = total + data[i].value;
                 
-                var startPos = 0;
-                if(this.amChart.dataProvider[pos].timestamp == data[0].timestamp){
-                    //Merge
-                    this.amChart.dataProvider[pos][seriesValueAttribute] = data[0][this.valueAttribute];
-                }else{
-                    this.amChart.dataProvider.splice(pos,0,data[0]);
-                }
-                //Insert the data
-                for(var i=1; i<data.length; i++){
-                    //Find the next location to insert
-                    var found = false;
-                    for(var j = pos; j<this.amChart.dataProvider.length; j++){
-                        if(this.amChart.dataProvider[j].timestamp >= data[i].timestamp){
-                            pos = j;
-                            found = true;
-                            break;
-                        }
-                    }
-                    
-                    //Append or splice
-                    if(!found){
-                        //Insert at end
-                        this.amChart.dataProvider.push(data[i]);
-                    }else{
-                        if(this.amChart.dataProvider[pos].timestamp == data[i].timestamp){
-                            //Merge
-                            this.amChart.dataProvider[pos][seriesValueAttribute] = data[i][this.valueAttribute];
-                        }else{
-                            this.amChart.dataProvider.splice(pos,0,data[i]);
-                        } 
-                    }
-
-                }
-            }else{
-                //Just insert as is, no data to merge
-                for(var i=0; i<data.length; i++){
-                    var entry = {timestamp: data[i].timestamp};
-                    entry[seriesValueAttribute] = data[i][this.valueAttribute];
-                    this.amChart.dataProvider.push(entry);
-                }
             }
+            total = total / i;
+            //Create one entry per Data Point
+            var entry = {};
+            entry[seriesValueAttribute] = total;
+            entry[this.categoryField] = dataPoint[this.categoryField];
+            this.amChart.dataProvider.push(entry);
+            
+            
             this.amChart.validateData();
             
         }

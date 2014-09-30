@@ -15,13 +15,11 @@
  * @param options
  * @returns
  */
-StatisticsDataProvider = function(id, dataPointConfiguration, options){
+StatisticsDataProvider = function(id, options){
     
     this.id = id;
     this.listeners = new Array();
     this.pointConfigurations = new Array();
-    if(typeof dataPointConfiguration != 'undefined')
-        this.pointConfigurations.push(dataPointConfiguration);
     
     for(var i in options) {
         this[i] = options[i];
@@ -82,12 +80,12 @@ StatisticsDataProvider.prototype = {
                         function(data){
 
                     //Optionally manipulate the data
-                    if(this.manipulateData != null)
-                        data = this.manipulateData(data, self.pointConfigurations[pos].point.xid);
+                    if(self.manipulateData != null)
+                        data = self.manipulateData(data, self.pointConfigurations[pos].point);
                     
                     //Inform our listeners of this new data
                     for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point.xid);
+                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point);
                     }
                 },error);
                 

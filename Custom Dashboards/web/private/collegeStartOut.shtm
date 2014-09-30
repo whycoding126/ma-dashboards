@@ -71,6 +71,8 @@
 	<!-- Mango Templating API -->
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
@@ -232,6 +234,89 @@
                }]
        });
        displayConfigurations.push(ampsChart);
+       
+       //Create a bar chart for use with Point Value Data Providers
+       var ampsBarChart = new BarChartConfiguration(
+               'ampsBarChartDiv',
+               [2,3,4], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Average:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Total",
+                                  "type": "column",
+                                  "valueField": "value"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{//Empty Mango Chart Mixins
+           categoryField: "name", //What member of the data point to use as category label/separator
+       },{
+       });
+       displayConfigurations.push(ampsBarChart);
+       
+       
+       //Create a Bar Chart for use with Statistics Data Providers
+       var voltageChart = new  StatisticsBarChartConfiguration(
+               'voltageChartDiv', //Chart DIV id
+               [9,10,11], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Minimum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Minimum",
+                                  "type": "column",
+                                  "valueField": "minimum"
+                              },
+                              {
+                                  "balloonText": "Maximum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Maximum",
+                                  "type": "column",
+                                  "valueField": "maximum"
+                              },
+                              {
+                                  "balloonText": "Average:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-2",
+                                  "lineAlpha": 0.2,
+                                  "title": "Average",
+                                  "type": "column",
+                                  "valueField": "average"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{//Empty Mango Chart Mixins
+           categoryField: "name", //What member of the data point to use as category label/separator
+       },{
+       });
+       displayConfigurations.push(voltageChart);
+       
+       
 
        //Setup a statistics Display
        displayConfigurations.push(new StatisticsConfiguration('accumulator', [5]));    
@@ -239,9 +324,34 @@
        displayConfigurations.push(new StatisticsConfiguration('currentPhaseB', [7]));    
        displayConfigurations.push(new StatisticsConfiguration('currentPhaseC', [8]));    
 
-       //Create Custom Data Provider Here
-       var kwhDataProvider = new PointValueDataProvider();
-       
+       //Create Custom Data Provider To Compute kWh
+       var dataProviders = new Array();
+
+       var kwhDataProvider = new PointValueDataProvider(1, {manipulateData: function(pointValues, dataPoint){
+           
+           var newData = new Array();
+           
+           if(pointValues.length == 0)
+               return newData;
+           
+          
+           var previous = pointValues[0]
+           //Subtract previous value from current.
+           for(var i=1; i<pointValues.length; i++){
+               var current = pointValues[i];
+               var entry = {
+                       value: current.value - previous.value,
+                       timestamp: current.timestamp
+               };
+               newData.push(entry);
+               
+               //Move along
+               previous = current;
+           }
+           
+           return newData;
+       }});
+       dataProviders.push(kwhDataProvider);
        
        //Setup Point Configurations
        var pointConfigurations = new Array();
@@ -253,6 +363,9 @@
        pointConfigurations.push(new DataPointMatchConfiguration(6, {nameEndsWith: 'Phase A (A)', providerType: 'Statistics'}))
        pointConfigurations.push(new DataPointMatchConfiguration(7, {nameEndsWith: 'Phase B (A)', providerType: 'Statistics'}))
        pointConfigurations.push(new DataPointMatchConfiguration(8, {nameEndsWith: 'Phase C (A)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(9, {nameEndsWith: 'Voltage A-N (V)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(10, {nameEndsWith: 'Voltage B-N (V)', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(11, {nameEndsWith: 'Voltage C-N (V)', providerType: 'Statistics'}))
 
 
        //Setup Groups
@@ -278,6 +391,7 @@
                displayConfigurations: displayConfigurations,
                pointConfigurations: pointConfigurations,
                groupConfigurations: groupConfigurations,
+               dataProviders: dataProviders,
                groupSelectConfiguration: groupListView,
        }
        
@@ -330,7 +444,7 @@
 
 <div data-role="panel" data-theme="b" id="nav-panel">
   <!--FIXME Lets make it so that all the trabnstions are built off the settings and if not set a random one ?  -->
-  <ul id="groupsList"  data-role="listview"></ul>
+  
   <ul data-role="listview">
             <li><a  data-transition="flip" class="ui-btn ui-icon-home ui-btn-icon-left" href="/private-dashboards/welcome.shtm">Home</a></li>
             <li><a  data-transition="pop" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#" onclick="".load('/private-dashboards/chartPointValues.shtm">Simple Chart</a></li>
@@ -355,6 +469,7 @@
                 <label for="groups">Select Meter:</label>
                 <select id="groups" class="form-control"  data-rel="close"></select>
     </div>
+    <ul id="groupsList"  data-role="listview"></ul>
 <!--The tabs for the charts  -->
 
 <!--FIXME for some reason it is not ;loading all the charts and one has to refresh the data to see the chart.  It is like there is issues with the width or something-->
@@ -372,8 +487,10 @@
   </div>
 
   <div id="kw" class="ui-content">
-     <div  id="kwhChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-     <div id="ampsChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div  id="kwhChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div id="ampsChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div id="ampsBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
 
   </div>
 
@@ -382,7 +499,6 @@
   
 
     <div id="volts" class="ui-content">
-              <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
   </div>
   
     <div id="powerFactor" class="ui-content">
@@ -390,7 +506,8 @@
   </div>
   
     <div id="phaseA" class="ui-content">
-              <div id="phaseAChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+         <div id="phaseChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    
   </div>
   
     <div id="phaseB" class="ui-content">

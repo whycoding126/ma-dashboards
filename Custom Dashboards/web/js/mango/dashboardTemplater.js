@@ -34,7 +34,7 @@ DashboardTemplater = function(options){
     if(this.endDate == null)
         this.endDate = new Date();
     if(this.startDate == null)
-        this.startDate = new Date(this.endDate.getTime() - 1000*60*60); //1Hr
+        this.startDate = new Date(this.endDate.getTime() - 1000*60*60*12); //12Hr
     if(this.rollup == null)
         this.rollup = 'AVERAGE';
     if(this.timePeriodType == null)
@@ -76,6 +76,12 @@ DashboardTemplater = function(options){
     //Display Manager
     if(this.displayManager == null)
         this.displayManager = new DataDisplayManager(this.displayConfigurations);
+    if(this.dataProviders != null){
+        for(var i=0; i<this.dataProviders.length; i++){
+            this.displayManager.addProvider(this.dataProviders[i]);
+        }
+    }
+    
     
     //Point Matcher
     if(this.pointMatcher == null)
@@ -116,6 +122,8 @@ DashboardTemplater.prototype = {
         
         displayManager: null, 
         displayConfigurations: null,
+        
+        dataProviders: null, //List of pre-created providers
         
         pointMatcher: null,
         pointConfigurations: null,

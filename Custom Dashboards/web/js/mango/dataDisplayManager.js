@@ -53,6 +53,12 @@ DataDisplayManager.prototype = {
             this.displayConfigurations.push(displayConfiguration);
         },
         
+        addProvider: function(dataProvider){
+            this.dataProviders.push(dataProvider);
+            //Search our displays to find who wants to listen
+            this.registerWithDisplays(dataProvider);
+        },
+        
         clearProviders: function(){
             while(this.dataProviders.length >0)
                 this.dataProviders.pop(); //Empty out array
@@ -80,11 +86,12 @@ DataDisplayManager.prototype = {
             
             //None found, provider Id is set
             if(dataPointConfiguration.providerType == 'PointValue'){
-                dataProvider = new PointValueDataProvider(dataPointConfiguration.providerId,dataPointConfiguration);
+                dataProvider = new PointValueDataProvider(dataPointConfiguration.providerId);
             }else if(dataPointConfiguration.providerType == 'Statistics'){
-                dataProvider = new StatisticsDataProvider(dataPointConfiguration.providerId,dataPointConfiguration);
+                dataProvider = new StatisticsDataProvider(dataPointConfiguration.providerId);
             }
-            
+            //Add the point configuration
+            dataProvider.addDataPoint(dataPointConfiguration);
             //Search our displays to find who wants to listen
             this.registerWithDisplays(dataProvider);
         },
