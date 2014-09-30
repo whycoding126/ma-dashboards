@@ -61,7 +61,7 @@ SerialChartConfiguration.prototype = {
          */
         createDisplay: function(){
             this.chartLoading();
-            var serial = new MangoSerialChart(
+            var serial = new MangoSerialChart(this.divId,
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds, this.dataPointMappings);
             
@@ -119,8 +119,9 @@ SerialChartConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoSerialChart = function(amChart, dataProviderIds, dataPointMappings, options){
+MangoSerialChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
     
+    this.divId = divId;
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
     this.valueAttribute = 'value'; //Can override with options
@@ -133,6 +134,7 @@ MangoSerialChart = function(amChart, dataProviderIds, dataPointMappings, options
 
 MangoSerialChart.prototype = {
         
+        divId: null, //Div of chart
         seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
         /**
          * Using our map get the series value attribute
@@ -261,6 +263,5 @@ MangoSerialChart.prototype = {
                 }
             }
             this.amChart.validateData();
-            
         }
 };

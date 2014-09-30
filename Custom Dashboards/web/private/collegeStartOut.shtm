@@ -92,6 +92,10 @@
 
 
    <script type="text/javascript">
+   
+   //Define Global Variables
+   var templater;
+   
    $( document ).ready(function(){
        
        //Setup Display Configurations
@@ -397,7 +401,7 @@
        
        
        
-       var templater = new DashboardTemplater(templaterConfig);
+       templater = new DashboardTemplater(templaterConfig);
             
    });// End When page Ready
    
@@ -476,8 +480,8 @@
 <div data-role="tabs" class="lineChartTabs"  data-theme="b">
     <div data-role="navbar" >
     <ul>
-      <li class="mytab" ><a data-transition="flip" data-theme="b" href="#kw" data-ajax="false">KW</a></li>
-      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#amps" data-ajax="false">Amps</a></li>
+      <li class="mytab" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);"><a data-transition="flip" data-theme="b" href="#kw" data-ajax="false">KW</a></li>
+      <li class="mytab" onclick="templater.invalidateChartSize(['ampsChartDiv', 'ampsBarChartDiv'], templater);" ><a data-transition="fade" data-theme="b" href="#amps" data-ajax="false">Amps</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#volts" data-ajax="false">Volts</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#powerFactor" data-ajax="false">Power Factor</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseA" data-ajax="false">Phase A</a></li>
@@ -488,13 +492,13 @@
 
   <div id="kw" class="ui-content">
     <div  id="kwhChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-    <div id="ampsChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-    <div id="ampsBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
     <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
 
   </div>
 
   <div id="amps" class="ui-content">
+    <div id="ampsChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div id="ampsBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
   </div>
   
 

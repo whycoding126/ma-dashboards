@@ -61,7 +61,7 @@ BarChartConfiguration.prototype = {
          */
         createDisplay: function(){
             this.chartLoading();
-            var serial = new MangoBarChart(
+            var serial = new MangoBarChart(this.divId, 
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds, this.dataPointMappings);
             
@@ -122,8 +122,8 @@ BarChartConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoBarChart = function(amChart, dataProviderIds, dataPointMappings, options){
-    
+MangoBarChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
+    this.divId = divId;
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
     this.categoryField = 'xid'; //How to separate Categories
@@ -136,6 +136,7 @@ MangoBarChart = function(amChart, dataProviderIds, dataPointMappings, options){
 
 MangoBarChart.prototype = {
         
+        divId: null,
         seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
         /**
          * Using our map get the series value attribute
@@ -226,6 +227,6 @@ MangoBarChart.prototype = {
             
             
             this.amChart.validateData();
-            
         }
+        
 };

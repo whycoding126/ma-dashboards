@@ -182,7 +182,24 @@ DashboardTemplater.prototype = {
             templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.displayManager.clear(); //Clear all data
             templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
-        }
-          
+        },
+        /**
+         * Refresh the providers using the dates/rollups already set in templater
+         */
+        refresh: function(providerIds, templater){
+            templater.displayManager.refresh(providerIds, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+        },
+        
+        invalidateChartSize: function(chartDivIds, templater){
+            for(var i=0; i<templater.displayManager.displays.length; i++){
+                var display = templater.displayManager.displays[i];
+                if($.inArray(display.divId, chartDivIds) >= 0){
+                   //Invlidate the chart size
+                   display.amChart.invalidateSize();
+               }
+            }
+        },
+        
+        
         
 };

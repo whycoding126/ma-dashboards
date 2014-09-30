@@ -61,7 +61,7 @@ StatisticsBarChartConfiguration.prototype = {
          */
         createDisplay: function(){
             this.chartLoading();
-            var serial = new MangoStatisticsBarChart(
+            var serial = new MangoStatisticsBarChart(this.divId,
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds, this.dataPointMappings);
             
@@ -122,8 +122,8 @@ StatisticsBarChartConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoStatisticsBarChart = function(amChart, dataProviderIds, dataPointMappings, options){
-    
+MangoStatisticsBarChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
+    this.divId = divId;
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
     this.categoryField = 'xid'; //How to separate Categories
@@ -135,7 +135,7 @@ MangoStatisticsBarChart = function(amChart, dataProviderIds, dataPointMappings, 
 };
 
 MangoStatisticsBarChart.prototype = {
-        
+        divId: null, //Id of chart div
         seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
  
         
