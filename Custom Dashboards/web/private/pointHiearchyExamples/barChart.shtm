@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<!-- Page Style -->
+    <style type="text/css">
+    </style>
+	
+	
+	<title>Bar Chart</title>
+    
+    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
+    <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
+        
+    <!-- JQuery -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+
+	<!-- JQuery Mobile -->
+	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
+       
+    <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+ 
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+
+    <!-- Mango Rest API Helper -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        
+    <!-- Mango Templating API -->
+    <!-- Display Widgets -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/gaugeChart.js"></script>
+    
+    <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
+    <!-- Templater Core -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dashboardTemplater.js"></script>
+    <!-- Input Widgets -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
+    
+
+
+
+   <script type="text/javascript">
+   
+   //Define Global Variables
+   var templater;
+   
+   $( document ).ready(function(){
+       
+       //Setup Display Configurations
+       var displayConfigurations = new Array();
+       var bar1 = new  BarChartConfiguration(
+               'chart1', //Chart DIV id
+               [1], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Average:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Average",
+                                  "type": "column",
+                                  "valueField": "value"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{//Empty Mango Chart Mixins
+           categoryField: "name", //What member of the data point to use as category label/separator
+       },{
+       });
+       displayConfigurations.push(bar1);
+       
+       var bar2 = new  BarChartConfiguration(
+               'chart2', //Chart DIV id
+               [1], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Total:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Total",
+                                  "type": "column",
+                                  "valueField": "total"
+                              },
+                              {
+                                  "balloonText": "Maximum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-2",
+                                  "lineAlpha": 0.2,
+                                  "title": "Maximum",
+                                  "type": "column",
+                                  "valueField": "maximum"
+                              },
+                              {
+                                  "balloonText": "Minimum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-3",
+                                  "lineAlpha": 0.2,
+                                  "title": "Minimum",
+                                  "type": "column",
+                                  "valueField": "minimum"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{//Empty Mango Chart Mixins
+           /**
+            * on load of data
+            * @param data - list of point value time
+            * @param dataPoint - data point for the values
+            */
+           onLoad: function(data, dataPoint){
+               
+               //Create some statistis as an example
+               var total = 0;
+               var max = data[0].value;
+               var min = data[0].value;
+               for(var i=0; i<data.length; i++){
+                   total = total + data[i].value;
+                   if(max < data[i].value)
+                       max = data[i].value;
+                   if(min > data[i].value)
+                       min = data[i].value;
+               }
+               
+               //Create one entry per Data Point
+               var entry = {
+                       name: dataPoint.name,
+                       total: total,
+                       maximum: max,
+                       minimum: min
+               };
+               
+               this.amChart.dataProvider.push(entry);
+               
+               //Refresh the data       
+               this.amChart.validateData();
+           }
+       },{
+       });
+       displayConfigurations.push(bar2);
+       
+       
+       
+       //Create Data Providers
+       var dataProviders = new Array();
+ 
+       //Setup Point Configurations
+       var pointConfigurations = new Array();
+       pointConfigurations.push(new DataPointMatchConfiguration(1, {xidEndsWith: 'voltage', providerType: 'PointValue'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, {xidEndsWith: 'temperature', providerType: 'PointValue'}))
+
+       //Setup Groups
+       var group = new DataPointGroupConfiguration({
+           groupBy: 'Folder',
+           labelAttribute: 'name',
+           matchConfigurations: [{
+               matchAttribute: 'path',
+               startsWith: 'Target Folder'
+           }]
+           });
+       
+       var groupConfigurations = new Array();
+       groupConfigurations.push(group);
+       
+       //Create a custom group list view
+       var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
+       
+       //Setup Templater, Defaults to previous 12 Hours
+       var templaterConfig = {
+               debug: true,
+               type: 'PointHierarchy',
+               displayConfigurations: displayConfigurations,
+               pointConfigurations: pointConfigurations,
+               groupConfigurations: groupConfigurations,
+               dataProviders: dataProviders,
+               groupSelectConfiguration: groupListView,
+       }
+       
+       templater = new DashboardTemplater(templaterConfig);
+       
+       
+            
+   });// End When page Ready
+   </script>
+
+
+
+
+
+</head>
+<body>
+    <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
+    <ul id="groupsList"></ul>
+    <p>Bar Chart using a PointValueDataProvider mapped to the voltage and temperature points.  The first chart shows the default behavior 
+        of computing the average of the point values.  The second chart shows how to manipulate the data and create a more complex chart.
+        Click the Target Folder to start.
+    </p>
+    <div  id="chart1" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+    <div  id="chart2" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+</body>
+</html>
+

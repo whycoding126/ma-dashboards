@@ -28,7 +28,7 @@ public class DashboardUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return "/private-dashboards/*";
+		return "/private-dashboards/**";
 	}
 
 	/* (non-Javadoc)

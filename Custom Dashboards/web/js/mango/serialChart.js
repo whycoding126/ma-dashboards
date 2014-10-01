@@ -26,6 +26,13 @@ SerialChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoC
     }
 
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
+    
+    //Ensure we have a balloon function
+    for(var i=0; i<this.configuration.graphs.length; i++){
+        if(typeof this.configuration.graphs[i].balloonFunction == 'undefined')
+            this.configuration.graphs[i].balloonFunction = this.balloonFunction;
+    }
+    
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
         this.configuration.dataProvider = new Array();
@@ -47,6 +54,14 @@ SerialChartConfiguration.prototype = {
         dataProviderIds: null, //List of my data provider ids
         
         dataPointMappings: null, //List of Data Point Matching Items (not required)
+        
+        balloonFunction: function(graphDataItem, amGraph){
+            if(typeof graphDataItem.values != 'undefined'){
+                return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+            }else{
+                return "";
+            }
+        },
         
         /**
          * Displaying Loading... on top of chart div
@@ -136,6 +151,9 @@ MangoSerialChart.prototype = {
         
         divId: null, //Div of chart
         seriesValueMapping: null, //Set to 'xid' or 'name' if using multiple series on a chart, otherwise default of 'value' is used
+        
+        
+        
         /**
          * Using our map get the series value attribute
          * 
@@ -199,6 +217,7 @@ MangoSerialChart.prototype = {
             while(this.amChart.dataProvider.length >0){
                 this.amChart.dataProvider.pop();
             }
+            this.amChart.validateData();
         },
         
         /**
@@ -226,8 +245,13 @@ MangoSerialChart.prototype = {
                     //Merge
                     this.amChart.dataProvider[pos][seriesValueAttribute] = data[0][this.valueAttribute];
                 }else{
-                    this.amChart.dataProvider.splice(pos,0,data[0]);
+                    pos++; //Going to insert after
+                    //Else This timestamp is greater so we place it 
+                    var entry = {timestamp: data[0].timestamp, time: data[0].time};
+                    entry[seriesValueAttribute] = data[0][this.valueAttribute];
+                    this.amChart.dataProvider.splice(pos,0,entry);
                 }
+                
                 //Insert the data
                 for(var i=1; i<data.length; i++){
                     //Find the next location to insert
@@ -243,13 +267,17 @@ MangoSerialChart.prototype = {
                     //Append or splice
                     if(!found){
                         //Insert at end
-                        this.amChart.dataProvider.push(data[i]);
+                        var entry = {timestamp: data[i].timestamp, time: data[i].time};
+                        entry[seriesValueAttribute] = data[i][this.valueAttribute];
+                        this.amChart.dataProvider.push(entry);
                     }else{
                         if(this.amChart.dataProvider[pos].timestamp == data[i].timestamp){
                             //Merge
                             this.amChart.dataProvider[pos][seriesValueAttribute] = data[i][this.valueAttribute];
                         }else{
-                            this.amChart.dataProvider.splice(pos,0,data[i]);
+                            var entry = {timestamp: data[i].timestamp, time: data[i].time};
+                            entry[seriesValueAttribute] = data[i][this.valueAttribute];
+                            this.amChart.dataProvider.splice(pos,0,entry);
                         } 
                     }
 
@@ -257,7 +285,7 @@ MangoSerialChart.prototype = {
             }else{
                 //Just insert as is, no data to merge
                 for(var i=0; i<data.length; i++){
-                    var entry = {timestamp: data[i].timestamp};
+                    var entry = {timestamp: data[i].timestamp, time: data[i].time};
                     entry[seriesValueAttribute] = data[i][this.valueAttribute];
                     this.amChart.dataProvider.push(entry);
                 }

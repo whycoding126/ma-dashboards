@@ -290,7 +290,7 @@
                               {
                                   "balloonText": "Maximum:[[value]]",
                                   "fillAlphas": 0.8,
-                                  "id": "AmGraph-1",
+                                  "id": "AmGraph-2",
                                   "lineAlpha": 0.2,
                                   "title": "Maximum",
                                   "type": "column",
@@ -299,7 +299,7 @@
                               {
                                   "balloonText": "Average:[[value]]",
                                   "fillAlphas": 0.8,
-                                  "id": "AmGraph-2",
+                                  "id": "AmGraph-3",
                                   "lineAlpha": 0.2,
                                   "title": "Average",
                                   "type": "column",
@@ -474,15 +474,14 @@
                 <select id="groups" class="form-control"  data-rel="close"></select>
     </div>
     <ul id="groupsList"  data-role="listview"></ul>
-<!--The tabs for the charts  -->
 
-<!--FIXME for some reason it is not ;loading all the charts and one has to refresh the data to see the chart.  It is like there is issues with the width or something-->
+<!--The tabs for the charts  -->
 <div data-role="tabs" class="lineChartTabs"  data-theme="b">
     <div data-role="navbar" >
     <ul>
       <li class="mytab" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);"><a data-transition="flip" data-theme="b" href="#kw" data-ajax="false">KW</a></li>
       <li class="mytab" onclick="templater.invalidateChartSize(['ampsChartDiv', 'ampsBarChartDiv'], templater);" ><a data-transition="fade" data-theme="b" href="#amps" data-ajax="false">Amps</a></li>
-      <li class="mytab" ><a data-transition="fade" data-theme="b" href="#volts" data-ajax="false">Volts</a></li>
+      <li class="mytab" onclick="templater.invalidateChartSize(['voltageChartDiv'], templater);"><a data-transition="fade" data-theme="b" href="#volts" data-ajax="false">Volts</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#powerFactor" data-ajax="false">Power Factor</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseA" data-ajax="false">Phase A</a></li>
       <li class="mytab" ><a data-transition="fade" data-theme="b" href="#phaseB" data-ajax="false">Phase B</a></li>
@@ -492,8 +491,6 @@
 
   <div id="kw" class="ui-content">
     <div  id="kwhChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-    <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-
   </div>
 
   <div id="amps" class="ui-content">
@@ -502,7 +499,8 @@
   </div>
   
 
-    <div id="volts" class="ui-content">
+  <div id="volts" class="ui-content">
+    <div id="voltageChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
   </div>
   
     <div id="powerFactor" class="ui-content">

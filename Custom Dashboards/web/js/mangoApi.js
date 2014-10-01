@@ -16,16 +16,17 @@ var mangoRest = {
          * done(jsonData, defaultUrl) callback with logged In UserModel
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+         * @param options - object to pass into done method along with data
          * 
          */
-        loginPut: function(username, password, done, fail) {
+        loginPut: function(username, password, done, fail, options) {
             $.ajax({
                 type: "PUT",
                 url : "/rest/v1/login/" + username + ".json?password=" + password,
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
-                done(data, defaultUrl);
+                done(data, defaultUrl, options);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -35,19 +36,20 @@ var mangoRest = {
         /**
          * 
          * Login via POST
-         * done(jsonData, defaultUrl) callback with logged In UserModel
+         * done(jsonData, defaultUrl, options) callback with logged In UserModel
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+         * @param options - object to pass into done method along with data
          * 
          */
-        loginPost: function(username, password, done, fail) {
+        loginPost: function(username, password, done, fail, options) {
             $.ajax({
                 type: "POST",
                 url : "/rest/v1/login/" + username + ".json?password=" + password,
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
-                done(data, defaultUrl);
+                done(data, defaultUrl, options);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -60,15 +62,16 @@ var mangoRest = {
          * done(jsonData) callback with logged Out UserModel
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-         * 
+         * @param options - object to pass into done method along with data
+         *  
          */
-        logoutPost: function(username, done, fail) {
+        logoutPost: function(username, done, fail, options) {
             $.ajax({
                 type: "POST",
                 url : "/rest/v1/logout/" + username + ".json",
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
-                done(data);
+                done(data, options);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -77,14 +80,16 @@ var mangoRest = {
         
         /**
          * Make a request for any JSON data
+         * @param options - object to pass into done method along with data
+
          */
-        getJson: function(url, done, fail){
+        getJson: function(url, done, fail, options){
             $.ajax({
                 type: "GET",
                 url : url,
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
-                done(data);
+                done(data, options);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -103,13 +108,14 @@ var mangoRest = {
              * done(jsonData) callback with array of points as data
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @param options - object to pass into done method along with data
              * 
              */
-            getAll: function(done, fail) {
+            getAll: function(done, fail, options) {
                 $.ajax({
                     url : "/rest/v1/dataPoints.json",
                 }).done(function(data) {
-                    done(data);
+                    done(data, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -119,16 +125,17 @@ var mangoRest = {
             /**
              * 
              * Get One Data Point
-             * done(jsonData) callback one point as data
+             * done(jsonData, options) callback one point as data
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @param options - object to pass into done method along with data
              * 
              */
-            get: function(xid, done, fail) {
+            get: function(xid, done, fail, options) {
                 $.ajax({
                     url : "/rest/v1/dataPoints/" + xid + ".json",
                 }).done(function(data) {
-                    done(data);
+                    done(data, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     fail(jqXHR, textStatus, errorThrown);
                 });
@@ -186,12 +193,12 @@ var mangoRest = {
              * @param timePeriodType - null or ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']
              * @param timePeriods - null or integer number of periods to use
              * 
-             * @param done(jsonData) callback with data in time order, oldest first
+             * @param done(jsonData, xid, options) callback with data in time order, oldest first
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-             * 
+             * @param options - object to pass into done method along with data
              */
-            get: function(xid, from, to, rollup, timePeriodType, timePeriods, done, fail){
+            get: function(xid, from, to, rollup, timePeriodType, timePeriods, done, fail, options){
                 var deferred = $.Deferred();
                 //Create the parameter list
                 var params = "";
@@ -205,7 +212,7 @@ var mangoRest = {
                 $.ajax({
                     url : "/rest/v1/pointValues/" + xid + ".json?from=" + from + "&to=" + to + params,
                 }).done(function(data) {
-                    done(data, xid);
+                    done(data, xid, options);
                     deferred.resolve(); //Finish Promise
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
@@ -214,21 +221,7 @@ var mangoRest = {
                 
                 return deferred;
             },
-            /**
-             * Get values based on date ranges with optional rollup
-             * 
-             * @param xid - list of xids for points desired
-             * @param from - date from formatted using this.formatLocalDate
-             * @param to - date to formatted using this.formatLocalDate
-             * @param rollup - null or ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
-             * @param timePeriodType - null or ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']
-             * @param timePeriods - null or integer number of periods to use
-             * 
-             * @param done(jsonData) callback with data in time order, oldest first
-             * 
-             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-             * 
-             */
+
 
             /**
              * Get the latest limit number of values
@@ -236,17 +229,17 @@ var mangoRest = {
              * @param xid - for point desired
              * @param limit - number of results
              * 
-             * @param done(jsonData) callback with data in reverse order, most recent first the going backwards
+             * @param done(jsonData, xid, options) callback with data in reverse order, most recent first the going backwards
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * 
              */
-            getLatest: function(xid, limit, done, fail){
+            getLatest: function(xid, limit, done, fail, options){
                 $.ajax({
                     url : "/rest/v1/pointValues/" + xid + "/latest.json?limit=" + limit,
                     
                 }).done(function(data) {
-                    done(data, xid);
+                    done(data, xid, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -259,18 +252,19 @@ var mangoRest = {
              * @param xid - for point desired
              * @param from - date from formatted using this.formatLocalDate
              * @param to - date to formatted using this.formatLocalDate
-             * @param done(jsonData) callback with statistics object as data
+             * @param done(jsonData,xid, options) callback with statistics object as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-             * 
+             * @param options - object to pass into done method along with data
+
              */
-            getStatistics: function(xid, from, to, done, fail){
+            getStatistics: function(xid, from, to, done, fail, options){
                 $.ajax({
                     url : "/rest/v1/pointValues/" + xid + "/statistics.json?from=" 
                     + from
                     + "&to=" + to,
                 }).done(function(data) {
-                    done(data, xid);
+                    done(data, xid, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
@@ -282,12 +276,13 @@ var mangoRest = {
              * Save Point Value
              * @param xid - for data point to save to
              * @param value - Number, boolean or String
-             * @done(jsonData) callback with saved point as data
+             * @done(jsonData, options) callback with saved point as data
              * 
              * @fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-             * 
+             * @param options - object to pass into done method along with data
+
              */
-            put: function(xid, pointValue, done, fail){
+            put: function(xid, pointValue, done, fail, options){
 
                 $.ajax({
                     type: "PUT",
@@ -295,7 +290,7 @@ var mangoRest = {
                     contentType: "application/json",
                     data: JSON.stringify(pointValue)
                 }).done(function(data) {
-                    done(data);
+                    done(data, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);

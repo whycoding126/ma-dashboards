@@ -40,10 +40,7 @@ ListViewConfiguration.prototype = {
 //                    $('<li>').append(label));
             var li = $('<li>');
             $('#'+ this.listId).append(
-                li.append(
-                        $('<a>').attr('href','#').append(
-                            $('<span>').append(label)             
-                 )));   
+                li.append(label));   
             li.click(function(){self.onChange(id, self.owner);});
             if(this.styleClass != null)
                 li.attr('class', this.styleClass);

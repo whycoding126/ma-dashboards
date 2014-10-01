@@ -60,7 +60,6 @@ PieChartConfiguration.prototype = {
             var pie = new MangoPieChart(
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds);
-            
             return $.extend(true, {}, pie, this.mangoPieMixin);
         },
         
@@ -73,7 +72,15 @@ PieChartConfiguration.prototype = {
             type: "pie",
             theme: "none",
             valueField: "total",
-            titleField: "xid",
+            titleField: "name",
+            balloonFunction: function(graphDataItem, text){
+                if(typeof graphDataItem.value != 'undefined'){
+                    return "<b>" + graphDataItem.title +  "</b><br>" + graphDataItem.value.toFixed(2) + " (" + graphDataItem.percents.toFixed(2) + "%)";
+                }else{
+                    return "";
+                }
+            },
+
             exportConfig:{    
                 menuItems: [{
                 icon: "/modules/dashboards/web/js/amcharts/images/export.png",
@@ -100,6 +107,7 @@ MangoPieChart = function(amChart, dataProviderIds, options){
 
 MangoPieChart.prototype = {
         
+        titleField: 'name', //Data Point Member to use for titles
         /**
          * Data Provider listener to clear data
          */
@@ -107,6 +115,7 @@ MangoPieChart.prototype = {
             while(this.amChart.dataProvider.length >0){
                 this.amChart.dataProvider.pop();
             }
+            this.amChart.validateData();   
         },
         
         /**
@@ -123,14 +132,16 @@ MangoPieChart.prototype = {
             
             //Check to see if it already exists in the chart
             for(var i=0; i<this.amChart.dataProvider.length; i++){
-                if(this.amChart.dataProvider[i].xid == dataPoint.xid){
+                if(this.amChart.dataProvider[i][this.titleField] == dataPoint[this.titleField]){
                     this.amChart.dataProvider[i].total = total;
                     this.amChart.validateData();
                     return; //Done
                 }
             }
             //We didn't find our set, so add a brand new one
-            this.amChart.dataProvider.push({total: total, xid: dataPoint.xid});
+            var entry = {total: total};
+            entry[this.titleField] = dataPoint[this.titleField];
+            this.amChart.dataProvider.push(entry);
             this.amChart.validateData();        
       }
 };

@@ -89,6 +89,8 @@ DataDisplayManager.prototype = {
                 dataProvider = new PointValueDataProvider(dataPointConfiguration.providerId);
             }else if(dataPointConfiguration.providerType == 'Statistics'){
                 dataProvider = new StatisticsDataProvider(dataPointConfiguration.providerId);
+            }else if(dataPointConfiguration.providerType == 'RealtimePointValue'){
+                dataProvider = new RealtimePointValueDataProvider(dataPointConfiguration.providerId);
             }
             //Add the point configuration
             dataProvider.addDataPoint(dataPointConfiguration);

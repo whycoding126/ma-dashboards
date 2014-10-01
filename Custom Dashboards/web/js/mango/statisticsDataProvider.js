@@ -106,6 +106,11 @@ StatisticsDataProvider.prototype = {
          * Add a data point configuration to our list
          */
         addDataPoint: function(dataPointConfiguration){
+            //We only allow adding a Data Point Configuration once
+            for(var i=0; i<this.pointConfigurations.length; i++){
+                if(this.pointConfigurations[i].point.xid == dataPointConfiguration.point.xid)
+                    return;
+            }
             this.pointConfigurations.push(dataPointConfiguration);
         },
 };

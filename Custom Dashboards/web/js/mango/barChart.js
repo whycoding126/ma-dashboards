@@ -26,6 +26,13 @@ BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChar
     }
 
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
+    
+    //Ensure we have a balloon function
+    for(var i=0; i<this.configuration.graphs.length; i++){
+        if(typeof this.configuration.graphs[i].balloonFunction == 'undefined')
+            this.configuration.graphs[i].balloonFunction = this.balloonFunction;
+    }
+    
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
         this.configuration.dataProvider = new Array();
@@ -47,6 +54,14 @@ BarChartConfiguration.prototype = {
         dataProviderIds: null, //List of my data provider ids
         
         dataPointMappings: null, //List of Data Point Matching Items (not required)
+        
+        balloonFunction: function(graphDataItem, amGraph){
+            if(typeof graphDataItem.values != 'undefined'){
+                return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
+            }else{
+                return "";
+            }
+        },
         
         /**
          * Displaying Loading... on top of chart div
@@ -201,9 +216,11 @@ MangoBarChart.prototype = {
             while(this.amChart.dataProvider.length >0){
                 this.amChart.dataProvider.pop();
             }
+            this.amChart.validateData();
         },
         
         /**
+         * Default behaviour is to average them values
          * Data Provider Listener
          * On Data Provider load we add new data
          */
@@ -214,9 +231,7 @@ MangoBarChart.prototype = {
             var total = 0;
             //Simply total up the values
             for(var i=0; i<data.length; i++){
-               
                 total = total + data[i].value;
-                
             }
             total = total / i;
             //Create one entry per Data Point

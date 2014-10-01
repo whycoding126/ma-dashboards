@@ -47,29 +47,62 @@ DashboardTemplater = function(options){
     //Setup the Inputs
     if(this.startDateConfiguration == null)
         this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {owner: self, onChange: self.startDateChanged});
+    else{
+        if(this.startDateConfiguration.owner == null)
+            this.startDateConfiguration.owner = self;
+        if(this.startDateConfiguration.onChange == null)
+            this.startDateConfiguration.onChange = self.startDateChanged;
+    } 
     this.startDateConfiguration.create();
+    
     //Create End Date
     if(this.endDateConfiguration == null)
         this.endDateConfiguration = new DateTimePickerConfiguration('endDate', {}, {owner: self, onChange: self.endDateChanged});
+    else{
+        if(this.endDateConfiguration.owner == null)
+            this.endDateConfiguration.owner = self;
+        if(this.endDateConfiguration.onChange == null)
+            this.endDateConfiguration.onChange = self.endDateChanged;
+    } 
     this.endDateConfiguration.create();
     
     if(this.rollupConfiguration == null)
         this.rollupConfiguration = new RollupConfiguration('rollup', {}, {owner: self, onChange: self.rollupChanged, selected: this.rollup});
+    else{
+        if(this.rollupConfiguration.owner == null)
+            this.rollupConfiguration.owner = self;
+        if(this.rollupConfiguration.onChange == null)
+            this.rollupConfiguration.onChange = self.rollupChanged;
+    }    
     this.rollupConfiguration.create();
     
     if(this.timePeriodTypeConfiguration == null)
-        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {owner: self, onChange: self.timeTypePeriodChanged, selected: this.timePeriodType});
+        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {owner: self, onChange: self.timePeriodTypeChanged, selected: this.timePeriodType});
+    else{
+        if(this.timePeriodTypeConfiguration.owner == null)
+            this.timePeriodTypeConfiguration.owner = self;
+        if(this.timePeriodTypeConfiguration.onChange == null)
+            this.timePeriodTypeConfiguration.onChange = self.timePeriodTypeChanged;
+    }
     this.timePeriodTypeConfiguration.create();
   
     if(this.timePeriodConfiguration == null)
         this.timePeriodConfiguration = new InputConfiguration('timePeriod', {}, {owner: self, onChange: self.timePeriodChanged, defaultValue: this.timePeriod});
+    else{
+        if(this.timePeriodConfiguration.owner == null)
+            this.timePeriodConfiguration.owner = self;
+        if(this.timePeriodConfiguration.onChange == null)
+            this.timePeriodConfiguration.onChange = self.timePeriodChanged;
+    }
     this.timePeriodConfiguration.create();
     
     if(this.groupSelectConfiguration == null)
         this.groupSelectConfiguration = new SelectConfiguration('groups',{}, {owner: self, onChange: self.groupChanged, defaultValue: 0});
     else{
-        this.groupSelectConfiguration.owner = self;
-        this.groupSelectConfiguration.onChange = self.groupChanged;
+        if(this.groupSelectConfiguration.owner == null)
+            this.groupSelectConfiguration.owner = self;
+        if(this.groupSelectConfiguration.groupChanged == null)
+            this.groupSelectConfiguration.onChange = self.groupChanged;
     }
     this.groupSelectConfiguration.create();
     
@@ -91,13 +124,13 @@ DashboardTemplater = function(options){
     if(this.groupMatcher == null){
         if(this.type == 'PointHierarchy'){
           //Fetch the Point Hierarchy to work with        
-            var deferred = mangoRest.hierarchy.getRoot(function(phRoot){
+            this.deferred = mangoRest.hierarchy.getRoot(function(phRoot){
 
                 root = phRoot; //Set the Global
                
-            },showError); //end get data points
+            },this.showError); //end get data points
            
-            $.when(deferred).then(function(){
+            $.when(this.deferred).then(function(){
                 self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {owner: self});
                 self.groupMatcher.group(); //Do your job grouper
             });
@@ -113,6 +146,7 @@ DashboardTemplater.prototype = {
         
         type: 'PointHierarchy', //Currently only available Option
         
+        deferred: null, //Deferred to know when Templater is Ready after creation
         rollupConfiguration: null,
         timePeriodTypeConfiguration: null,
         timePeriodConfiguration: null,
@@ -132,6 +166,7 @@ DashboardTemplater.prototype = {
         groupConfigurations: null,
         groupSelectConfiguration: null,
         groups: null, //List of matched groups for drop down
+        groupId: null, //Current Group ID
         
         startDate: null,
         endDate: null,
@@ -166,19 +201,19 @@ DashboardTemplater.prototype = {
         },
         onMatch: function(dataPointConfiguration, templater){
             if(templater.debug)
-                console.log('MatchedPoint: ' + dataPointConfiguration);
+                console.log('MatchedPoint: {name: ' + dataPointConfiguration.point.name + ", providerId: " + dataPointConfiguration.providerId + ", providerType: " + dataPointConfiguration.providerType);
             templater.displayManager.addDataPointConfiguration(dataPointConfiguration);
         },
         onGroup: function(dataPointGroup, templater){
             if(templater.debug)
-                console.log('MatchedGroup: ' + dataPointGroup);
+                console.log('MatchedGroup: ' + dataPointGroup.label + "(" + dataPointGroup.dataPoints.length + ")");
             templater.groupSelectConfiguration.addItem(dataPointGroup.label, templater.groups.length);
             templater.groups.push(dataPointGroup);
-
         },
         groupChanged: function(groupId, templater){
             if(templater.debug)
                 console.log('GroupChanged: ' + groupId);
+            templater.groupId =  groupId;
             templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.displayManager.clear(); //Clear all data
             templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
@@ -200,6 +235,20 @@ DashboardTemplater.prototype = {
             }
         },
         
-        
+        /**
+         * Display Errors method
+         */
+        showError: function(jqXHR, textStatus, errorThrown, mangoMessage){
+            
+            var msg = "";
+            if(textStatus != null)
+                msg += (textStatus + " ");
+            if(errorThrown != null)
+                msg += (errorThrown + " ");
+            if(mangoMessage != null)
+                msg += (mangoMessage + " ");
+            msg += "\n";
+            $("#errors").text(msg);
+        }
         
 };

@@ -15,35 +15,35 @@
  * @param options
  * @returns
  */
-PointValueDataProvider = function(id, options){
+RealtimePointValueDataProvider = function(id, options){
     
     this.id = id;
     this.listeners = new Array();
     this.pointConfigurations = new Array();
-    
-    this.rollup = 'AVERAGE';
-    this.timePeriodType = 'HOURS';
-    this.timePeriods = 1;
+    this.socketMap = new Object();
     
     for(var i in options) {
         this[i] = options[i];
     }
+    
+    var self = this;
+    for(var x=0; x<this.pointConfigurations.length; x++){
+        this.registerPoint(this.pointConfigurations[x].point.xid);
+    }
+    
+    
 };
 
-PointValueDataProvider.prototype = {
+RealtimePointValueDataProvider.prototype = {
 
-        type: 'PointValueDataProvider',
+        type: 'RealtimePointValueDataProvider',
         
         id: null, //Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
         pointConfigurations: null, //List of Points + configurations to use
-        from: null, //From date
-        to: null, //To Date
-        rollup: null, //['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
-        timePeriodType: null,  //['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS' 'MILLISECONDS', 'SECONDS']
-        timePeriods: null,
         
         listeners: null, //Listeners to send new data when load() completes
-        
+
+        socketMap: null, //Map of sockets to xids
         /**
          * Optionally manipulate data.
          * 
@@ -62,7 +62,6 @@ PointValueDataProvider.prototype = {
             for(var i=0; i<this.listeners.length; i++){
                 this.listeners[i].onClear();
             }
-
         },
         /**
          * Load our data and publish to listeners
@@ -70,36 +69,8 @@ PointValueDataProvider.prototype = {
          * @param error - method to call on error
          */
         load: function(error){
-            
-            //TODO Fix up for promise using deferred and da
-            //Load in the data into time order and perform data operations
-            var deferred = $.Deferred();
-            //Start resolving the chain
-            deferred.resolve();
-
-            var self = this;
-            for(var x=0; x<this.pointConfigurations.length; x++){
-                var configuration = this.pointConfigurations[x];
-                var da = mangoRest.pointValues.get(this.pointConfigurations[x].point.xid, 
-                        mangoRest.formatLocalDate(this.from),
-                        mangoRest.formatLocalDate(this.to),
-                        this.rollup, this.timePeriodType, this.timePeriods,
-                        function(data, xid, options){
-
-                    //Optionally manipulate the data
-                    if(self.manipulateData != null)
-                        data = self.manipulateData(data, options.configuration.point);
-                    
-                    //Inform our listeners of this new data
-                    for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, options.configuration.point);
-                    }
-                },error, {configuration: configuration});
-                
-                //Form Chain
-            }
-           
-            return deferred;
+            this.error = error;
+            return; //We don't have load logic as we push data
         },
         
         /**
@@ -119,7 +90,48 @@ PointValueDataProvider.prototype = {
                     return;
             }
             this.pointConfigurations.push(dataPointConfiguration);
+            this.registerPoint(dataPointConfiguration.point.xid); //Register for events
         },
+        
+        registerPoint: function(xid){
+            
+            //Don't allow registering for a data point More than once
+            var socket = this.socketMap[xid];
+            
+            if(socket == null){
+                var self = this;
+                var socket = mangoRest.pointValues.registerForEvents(xid,
+                        ['UPDATE'],
+                        function(message){ //On Message Received Method
+                           if(message.status == 'OK'){
+                               self.pushData(message.payload.value, self);
+                           }else{
+                               self.error(message.payload.type + " - " + message.payload.message);
+                           }
+                        },function(error){ //On Error Method
+                            self.error(error);
+                        },function(){ //On Open Method
+                            //document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            //document.getElementById('errors').innerHTML = '';
+                        });
+                this.socketMap[xid] = socket;
+            }
+            
+
+        },
+        
+        pushData: function(pvt, realtimeDataProvider){
+            var data = new Array();
+            data.push(pvt); //Create an array of 1
+            //Inform our listeners of this new data
+            for(var x=0; x<this.pointConfigurations.length; x++){
+                for(var i=0; i<realtimeDataProvider.listeners.length; i++){
+                    realtimeDataProvider.listeners[i].onLoad(data, realtimeDataProvider.pointConfigurations[x].point);
+                }
+            }
+        },
+        
 };
 
 /**
