@@ -97,7 +97,7 @@ DataDisplayManager.prototype = {
             //Add the point configuration
             dataProvider.addDataPoint(dataPointConfiguration);
             //Search our displays to find who wants to listen
-            this.registerWithDisplays(dataProvider);
+            this.addDataProvider(dataProvider);
         },
         
         /**
@@ -107,7 +107,6 @@ DataDisplayManager.prototype = {
          * @returns
          */
         registerWithDisplays: function(dataProvider){
-            this.dataProviders.push(dataProvider);
             //Search our displays and add them as listeners to the data provider
             for(var i=0; i<this.displays.length; i++){
                 if($.inArray(dataProvider.id, this.displays[i].dataProviderIds) >= 0){

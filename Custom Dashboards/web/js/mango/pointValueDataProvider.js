@@ -47,13 +47,17 @@ PointValueDataProvider.prototype = {
         manipulateData: null,
         
         /**
+         * Clear out our pointConfigurations
+         * 
          * Signal to all Listeners to clear ALL their data
          */
         clear: function(){
-            for(var i=0; i<this.listeners.length; i++){
-                this.listeners[i].onClear();
-            }
-
+           while(this.pointConfigurations.length > 0){
+               this.pointConfigurations.pop();
+           } 
+           for(var i=0; i<this.listeners.length; i++){
+               this.listeners[i].onClear();
+           }
         },
         /**
          * Load our data and publish to listeners

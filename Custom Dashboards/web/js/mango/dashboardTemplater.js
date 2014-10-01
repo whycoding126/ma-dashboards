@@ -219,8 +219,8 @@ DashboardTemplater.prototype = {
             if(templater.debug)
                 console.log('GroupChanged: ' + groupId);
             templater.groupId =  groupId;
-            templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.displayManager.clear(); //Clear all data
+            templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.refresh(null, templater);
         },
         /**

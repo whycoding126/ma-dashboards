@@ -9,7 +9,7 @@
     </style>
 	
 	
-	<title>Data Provider</title>
+	<title>Custom Data Provider</title>
     
     <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
         

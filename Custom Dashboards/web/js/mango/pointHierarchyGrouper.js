@@ -117,19 +117,25 @@ PointHierarchyGrouper.prototype = {
         },
         
         /**
+         * Match a data point using the folder attributes
+         * 
          * @param dataPoint - Data Point Summary
          * @param groupsMap - Map for Building groups
          * @param matchConfiguration - GroupMatchConfiguration
          * @param groupConfiguration - DataPointGroupConfiguration
          */
         matchByFolder: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
+            
             //Special case for path
-            if(matchConfiguration.matchAttribute == "path"){
+            if((matchConfiguration.matchAttribute == "path")||(matchConfiguration.matchAttribute == "parentPath")){
                 
+                var path;
                 //Search the point hierarchy by path
-                var path = this.getPointHierarchyPath(dataPoint);
+                if(matchConfiguration.matchAttribute == "path")
+                    path = this.getPointHierarchyPath(dataPoint);
+                else if(matchConfiguration.matchAttribute == "parentPath")
+                    path = this.getPointHierarchyParentPath(dataPoint);
                 
-                //Just matching on name or ID 
                 match = false;
                 if(matchConfiguration.startsWith != null){
                     if(path.indexOf(matchConfiguration.startsWith) == 0)
