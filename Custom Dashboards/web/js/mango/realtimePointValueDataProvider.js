@@ -68,7 +68,7 @@ RealtimePointValueDataProvider.prototype = {
          * 
          * @param error - method to call on error
          */
-        load: function(error){
+        load: function(options, error){
             this.error = error;
             return; //We don't have load logic as we push data
         },

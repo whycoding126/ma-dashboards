@@ -162,31 +162,66 @@
    function startDateChanged(date, $input, templater){
        templater.startDate = date;
        templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+       templater.displayManager.refresh(null, 
+           {
+            from: templater.startDate, 
+            to: templater.endDate, 
+            rollup: templater.rollup, 
+            timePeriodType: templater.timePeriodType, 
+            timePeriods: templater.timePeriods
+           });
 
    }
    function endDateChanged(date, $input, templater){
        templater.endDate = date;
        templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
-   }   
+       templater.displayManager.refresh(null, 
+          {
+           from: templater.startDate, 
+           to: templater.endDate, 
+           rollup: templater.rollup, 
+           timePeriodType: templater.timePeriodType, 
+           timePeriods: templater.timePeriods
+          });
+   }
    
    function rollupChanged(rollup, templater){
        templater.rollup = rollup;
        templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
-   }
+       templater.displayManager.refresh(null,
+          {
+           from: templater.startDate, 
+           to: templater.endDate, 
+           rollup: templater.rollup, 
+           timePeriodType: templater.timePeriodType, 
+           timePeriods: templater.timePeriods
+          });
+       }
    
    function timePeriodTypeChanged(timePeriodType, templater){
        templater.timePeriodType = timePeriodType;
        templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+       templater.displayManager.refresh(null, 
+          {
+           from: templater.startDate, 
+           to: templater.endDate, 
+           rollup: templater.rollup, 
+           timePeriodType: templater.timePeriodType, 
+           timePeriods: templater.timePeriods
+          });
    }
    
-   function timePeriodChanged(timePeriod, templater){
-       templater.timePeriod = timePeriod;
+   function timePeriodChanged(timePeriods, templater){
+       templater.timePeriods = timePeriods;
        templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+       templater.displayManager.refresh(null, 
+          {
+           from: templater.startDate, 
+           to: templater.endDate, 
+           rollup: templater.rollup, 
+           timePeriodType: templater.timePeriodType, 
+           timePeriods: templater.timePeriods
+          });
    }
 
    </script>

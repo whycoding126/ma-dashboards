@@ -15,7 +15,7 @@
  * @param options
  * @returns
  */
-StatisticsDataProvider = function(id, options){
+HistoricalPointValueDataProvider = function(id, options){
     
     this.id = id;
     this.listeners = new Array();
@@ -26,9 +26,9 @@ StatisticsDataProvider = function(id, options){
     }
 };
 
-StatisticsDataProvider.prototype = {
+HistoricalPointValueDataProvider.prototype = {
 
-        type: 'StatisticsDataProvider',
+        type: 'HistoricalPointValueDataProvider',
         
         id: null, //Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
         pointConfigurations: null, //List of Points + configurations to use
@@ -41,7 +41,7 @@ StatisticsDataProvider.prototype = {
          *  Send in this method in the options during object creation.
          * 
          * @param data - list of point value times
-         * @param xid - xid corresponding to pvts
+         * @param point - dataPoint corresponding to pvts
          * @return Array of manipulated data
          */
         manipulateData: null,
@@ -55,10 +55,9 @@ StatisticsDataProvider.prototype = {
             }
 
         },
-        
         /**
          * Load our data and publish to listeners
-         * @param options - {from: date, to: date}
+         * @param options {limit}
          * @param error - method to call on error
          */
         load: function(options, error){
@@ -71,21 +70,20 @@ StatisticsDataProvider.prototype = {
 
             var self = this;
             for(var x=0; x<this.pointConfigurations.length; x++){
-                var pos = x;
-                var da = mangoRest.pointValues.getStatistics(this.pointConfigurations[x].point.xid, 
-                        mangoRest.formatLocalDate(options.from),
-                        mangoRest.formatLocalDate(options.to),
-                        function(data){
+                var configuration = this.pointConfigurations[x];
+                var da = mangoRest.pointValues.getLatest(this.pointConfigurations[x].point.xid,
+                        options.latest,
+                        function(data, xid, options){
 
                     //Optionally manipulate the data
                     if(self.manipulateData != null)
-                        data = self.manipulateData(data, self.pointConfigurations[pos].point);
+                        data = self.manipulateData(data, options.configuration.point);
                     
                     //Inform our listeners of this new data
                     for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point);
+                        self.listeners[i].onLoad(data, options.configuration.point);
                     }
-                },error);
+                },error, {configuration: configuration});
                 
                 //Form Chain
             }

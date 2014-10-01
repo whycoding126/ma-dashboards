@@ -156,33 +156,17 @@ DataDisplayManager.prototype = {
         /**
          * Refresh data providers with IDs (or if not defined then all)
          */
-        refresh: function(ids, from, to, rollup, timePeriodType, timePeriods){
+        refresh: function(ids, options){
             if((typeof ids == 'undefined')||(ids == null)){
                 for(var i=0; i<this.dataProviders.length; i++){
-                    this.dataProviders[i].from = from;
-                    this.dataProviders[i].to = to;
-                    if(this.dataProviders[i].type == 'PointValueDataProvider'){
-                        this.dataProviders[i].rollup = rollup;
-                        this.dataProviders[i].timePeriodType = timePeriodType;
-                        this.dataProviders[i].timePeriods = timePeriods;
-                    }
-                    this.dataProviders[i].load(this.error);
-
+                    this.dataProviders[i].load(options, this.error);
                 }
             }else{
                 //We have Args
                 for(var i=0; i<this.dataProviders.length; i++){
                     if($.inArray(this.dataProviders[i].id, ids) >= 0){
-                        this.dataProviders[i].from = from;
-                        this.dataProviders[i].to = to;
-                        if(this.dataProviders[i].type == 'PointValueDataProvider'){
-                            this.dataProviders[i].rollup = rollup;
-                            this.dataProviders[i].timePeriodType = timePeriodType;
-                            this.dataProviders[i].timePeriods = timePeriods;
-                        }
-                        this.dataProviders[i].load(this.error);
+                        this.dataProviders[i].load(options, this.error);
                     }
-                      
                 }
             }
         },

@@ -39,8 +39,8 @@ DashboardTemplater = function(options){
         this.rollup = 'AVERAGE';
     if(this.timePeriodType == null)
         this.timePeriodType = 'HOURS';
-    if(this.timePeriod == null)
-        this.timePeriod = 1;
+    if(this.timePeriods == null)
+        this.timePeriods = 1;
     
     var self = this; //Save a reference for our actions
     
@@ -172,7 +172,7 @@ DashboardTemplater.prototype = {
         endDate: null,
         rollup: null,
         timePeriodType: null,
-        timePeriod: null,
+        timePeriods: null,
         
         startDateChanged: function(date, $input, templater){
             if(templater.debug)
@@ -194,10 +194,10 @@ DashboardTemplater.prototype = {
                 console.log('TPT: ' + timePeriodType);
             templater.timePeriodType = timePeriodType;
         },
-        timePeriodChanged: function(timePeriod, templater){
+        timePeriodChanged: function(timePeriods, templater){
             if(templater.debug)
-                console.log('TP: ' + timePeriod);
-            templater.timePeriod = timePeriod;
+                console.log('TP: ' + timePeriods);
+            templater.timePeriods = timePeriods;
         },
         onMatch: function(dataPointConfiguration, templater){
             if(templater.debug)
@@ -216,13 +216,19 @@ DashboardTemplater.prototype = {
             templater.groupId =  groupId;
             templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.displayManager.clear(); //Clear all data
-            templater.displayManager.refresh(null, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+            templater.refresh(null, templater);
         },
         /**
          * Refresh the providers using the dates/rollups already set in templater
          */
         refresh: function(providerIds, templater){
-            templater.displayManager.refresh(providerIds, templater.startDate, templater.endDate, templater.rollup, templater.timePeriodType, templater.timePeriod);
+            templater.displayManager.refresh(providerIds, {
+                from: templater.startDate, 
+                to: templater.endDate, 
+                rollup: templater.rollup, 
+                timePeriodType: templater.timePeriodType, 
+                timePeriods: templater.timePeriods
+                });
         },
         
         invalidateChartSize: function(chartDivIds, templater){

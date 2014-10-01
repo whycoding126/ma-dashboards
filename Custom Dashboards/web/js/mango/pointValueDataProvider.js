@@ -21,10 +21,6 @@ PointValueDataProvider = function(id, options){
     this.listeners = new Array();
     this.pointConfigurations = new Array();
     
-    this.rollup = 'AVERAGE';
-    this.timePeriodType = 'HOURS';
-    this.timePeriods = 1;
-    
     for(var i in options) {
         this[i] = options[i];
     }
@@ -36,11 +32,6 @@ PointValueDataProvider.prototype = {
         
         id: null, //Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
         pointConfigurations: null, //List of Points + configurations to use
-        from: null, //From date
-        to: null, //To Date
-        rollup: null, //['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
-        timePeriodType: null,  //['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS' 'MILLISECONDS', 'SECONDS']
-        timePeriods: null,
         
         listeners: null, //Listeners to send new data when load() completes
         
@@ -66,10 +57,15 @@ PointValueDataProvider.prototype = {
         },
         /**
          * Load our data and publish to listeners
-         * 
+         * * @param options - 
+         *  {from: date, 
+         *   to: date, 
+         *   rollup: ['AVERAGE', 'FIRST', 'LAST' ....], 
+         *   timePeriodType: ['YEARS', 'MONTHS', 'DAYS', 'HOURS', 'MINUTES', ...] 
+         *   timePeriods: number}
          * @param error - method to call on error
          */
-        load: function(error){
+        load: function(options, error){
             
             //TODO Fix up for promise using deferred and da
             //Load in the data into time order and perform data operations
@@ -81,9 +77,9 @@ PointValueDataProvider.prototype = {
             for(var x=0; x<this.pointConfigurations.length; x++){
                 var configuration = this.pointConfigurations[x];
                 var da = mangoRest.pointValues.get(this.pointConfigurations[x].point.xid, 
-                        mangoRest.formatLocalDate(this.from),
-                        mangoRest.formatLocalDate(this.to),
-                        this.rollup, this.timePeriodType, this.timePeriods,
+                        mangoRest.formatLocalDate(options.from),
+                        mangoRest.formatLocalDate(options.to),
+                        options.rollup, options.timePeriodType, options.timePeriods,
                         function(data, xid, options){
 
                     //Optionally manipulate the data
