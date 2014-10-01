@@ -1,24 +1,86 @@
 <!DOCTYPE html>
-<!-- 
-    This page is available at the URL: http://localhost:8080/public-dashboards/login.htm 
-    
-    This example shows how to use the POST login API and use the default login URL assigned to that user
-
--->
 <html>
     <head>
         <title>Login</title>
-        
         <!-- Page Style -->
         <style type="text/css">
-        </style>
+        body{
+            background-color: #D35400;
+        }
+        .loginDiv{
+            width: 70%; 
+            height: 600px;
+            background-color: #BDC3C7;
+            margin-right: 0%; 
+            margin-left: 15% ; 
+            margin-top: 5%;
+        }
+        .textInput{
+            border: 1px solid;
+            border-color: transparent;
+            border-radius: 5px;
+            font-size: 35px;
+            width: 800px;
+            height: 48px; 
+            margin-right: 0%; 
+            margin-left: 25% ; 
+
+        }
+        .textLabel1{
+            color: #2a2626;
+            height: 22px;
+            font-weight: bold;
+            margin-left: 25% ; 
+            font-size: 22px;
+            position: relative;
+            margin-top: -5%;
+        }
         
+          .textLabel2{
+            color: #2a2626;
+            height: 22px;
+            position: relative;
+            font-weight: bold;
+            font-size: 22px;
+            margin-left: 25% ; 
+        }
+        
+        .logoImg{
+            margin-right: 0%; 
+            margin-left: 42% ;
+            margin-bottom: 5%;
+            margin-top: -3%; 
+        }
+        .loginButton{
+            background-color: #4183D7;
+            width: 800px;
+            height: 48px; 
+            margin-right: 0%; 
+            margin-left: 25% ; 
+            margin-top: 5%;
+            border: 1px solid;
+            border-color: #d3d3d3;
+            border-radius: 5px;
+            color: whitesmoke;
+            font-weight: bold;
+            font-size: 28px;
+        }
+        
+        .forgotLoginLink{
+            margin-right: 0%; 
+            margin-left: 65% ; 
+            margin-top: 25%;
+            color: #F22613;
+        }
+        #logout{42%
+            display:none
+          
+        }
+        </style>
         <!-- Scripts from Module Directory -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
-       
         <script type="text/javascript">
-        
         /** User Login Code **/
         function doLogin(){
             
@@ -32,23 +94,59 @@
                 
             }, function(jqXHR, textStatus, errorThrown, mangoMessage){
                 //alert user on fail
-                $('#loginError').text(errorThrown + " " + mangoMessage);
+                $('#loginError').text("Sorry but that username and or password is incorrect. Please try again.");
+                console.log(errorThrown + " " + mangoMessage)
             });
             
             
         }
         </script>
-        
     </head>
 <body>
-
+    <div class="loginDiv">
+<!--FIXME add in the correct img also add transition for onclick-->
+    <image class="logoImg" src="/images/logo.png"></img>
     <div id="loginForm">
         <div id="loginError"></div>
-        <label for="username">Username:</label><input type="text" id="username"/>
-        <label for="password">Password:</label><input type="password" id="password"/>
-        <button type="button" onclick="doLogin();">Login</button>
-        <button id="logout" style="display:none" type="button" onclick="doLogout();">Logout</button>
+            <table >
+                <tr>
+                <td>
+                    <label class="textLabel1" for="username">Username</label>
+                </tr>
+                </td>
+                <tr>
+                <td>    
+                   <input class="textInput" type="text" id="username"/>
+                </td>
+                </tr>
+                <tr height=22px >
+                <td>
+                    <label class="textLabel2" for="password">Password</label>
+                </tr>
+                </td>
+                <tr>
+                <td>
+                    <input class="textInput" type="password" id="password"/>
+                </tr>
+                </td>
+                <tr>
+                <td>
+                    <!--FIXME Add transition for when the button is clicked-->
+                    <button class="loginButton" type="button" onclick="doLogin();">Login</button>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <a class="forgotLoginLink" href="#">Forgot Your Password ?</a>
+                </tr>
+                </td>
+                <tr>
+                <td>
+                    <button id="logout" type="button" onclick="doLogout();">Logout</button>
+                </td>
+                </tr>
+            </table>
+        </div>
     </div>
-
 </body>
 </html>
