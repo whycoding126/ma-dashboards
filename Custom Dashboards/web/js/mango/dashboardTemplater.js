@@ -41,6 +41,8 @@ DashboardTemplater = function(options){
         this.timePeriodType = 'HOURS';
     if(this.timePeriods == null)
         this.timePeriods = 1;
+    if(this.historicalSamples == null)
+        this.historicalSamples = 10; //Default to 10 Historical Samples
     
     var self = this; //Save a reference for our actions
     
@@ -147,9 +149,12 @@ DashboardTemplater.prototype = {
         type: 'PointHierarchy', //Currently only available Option
         
         deferred: null, //Deferred to know when Templater is Ready after creation
+        
         rollupConfiguration: null,
         timePeriodTypeConfiguration: null,
         timePeriodConfiguration: null,
+        
+        historicalSamples: null, //Default Number of historical samples to use for historical providers
         
         startDateConfiguration: null,
         endDateConfiguration: null,
@@ -222,12 +227,14 @@ DashboardTemplater.prototype = {
          * Refresh the providers using the dates/rollups already set in templater
          */
         refresh: function(providerIds, templater){
-            templater.displayManager.refresh(providerIds, {
-                from: templater.startDate, 
-                to: templater.endDate, 
-                rollup: templater.rollup, 
-                timePeriodType: templater.timePeriodType, 
-                timePeriods: templater.timePeriods
+            templater.displayManager.refresh(providerIds, 
+                    {
+                        from: templater.startDate, 
+                        to: templater.endDate, 
+                        rollup: templater.rollup, 
+                        timePeriodType: templater.timePeriodType, 
+                        timePeriods: templater.timePeriods,
+                        historicalSamples: templater.historicalSamples
                 });
         },
         

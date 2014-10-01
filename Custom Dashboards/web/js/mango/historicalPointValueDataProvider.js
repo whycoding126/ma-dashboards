@@ -56,8 +56,8 @@ HistoricalPointValueDataProvider.prototype = {
 
         },
         /**
-         * Load our data and publish to listeners
-         * @param options {limit}
+         * Load Point Values from now backwards, using the historicalSamples count.  Then publish to listeners
+         * @param options {historicalSamples: integer}
          * @param error - method to call on error
          */
         load: function(options, error){
@@ -72,7 +72,7 @@ HistoricalPointValueDataProvider.prototype = {
             for(var x=0; x<this.pointConfigurations.length; x++){
                 var configuration = this.pointConfigurations[x];
                 var da = mangoRest.pointValues.getLatest(this.pointConfigurations[x].point.xid,
-                        options.latest,
+                        options.historicalSamples,
                         function(data, xid, options){
 
                     //Optionally manipulate the data
@@ -85,7 +85,7 @@ HistoricalPointValueDataProvider.prototype = {
                     }
                 },error, {configuration: configuration});
                 
-                //Form Chain
+                //TODO Form Chain with da - to ensure order of processing point configurations... 
             }
            
             return deferred;
