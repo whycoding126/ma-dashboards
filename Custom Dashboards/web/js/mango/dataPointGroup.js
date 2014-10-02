@@ -47,16 +47,14 @@ DataPointGroupConfiguration.prototype = {
         
 };
 
-GroupMatchConfiguration = function(matchAttribute, startsWith, endsWith, options){
+GroupMatchConfiguration = function(matchAttribute, regex, options){
     this.matchAttribute = matchAttribute;
-    this.startsWith = startsWith;
-    this.endsWith = endsWith;
+    this.regex = regex;
 };
 
 GroupMatchConfiguration.prototype = {
     matchAttribute: null,
-    startsWith: null,
-    endsWith: null,
+    regex: null, //Regex to match
 };
 
 /**

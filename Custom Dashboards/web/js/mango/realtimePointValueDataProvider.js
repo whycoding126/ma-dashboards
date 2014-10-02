@@ -56,12 +56,20 @@ RealtimePointValueDataProvider.prototype = {
         manipulateData: null,
         
         /**
+         * Clear out our pointConfigurations if required
+         * 
          * Signal to all Listeners to clear ALL their data
+         * 
+         * @param clearConfigurations - boolean to clear pointConfigurations too
          */
-        clear: function(){
-            for(var i=0; i<this.listeners.length; i++){
-                this.listeners[i].onClear();
-            }
+        clear: function(clearConfigurations){
+            if(clearConfigurations == true)
+               while(this.pointConfigurations.length > 0){
+                   this.pointConfigurations.pop();
+               } 
+           for(var i=0; i<this.listeners.length; i++){
+               this.listeners[i].onClear();
+           }
         },
         /**
          * Load our data and publish to listeners

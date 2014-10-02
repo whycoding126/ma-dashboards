@@ -14,9 +14,6 @@
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
 
-	<!-- JQuery Mobile -->
-	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
-       
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
@@ -198,7 +195,7 @@
        
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, {nameEndsWith: '(kWh)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'name', regex: /.*\(kWh\)/}]));
 
        //Setup Groups
        var meterGroups = new DataPointGroupConfiguration({
@@ -206,7 +203,7 @@
            labelAttribute: 'name',
            matchConfigurations: [{
                matchAttribute: 'path',
-               startsWith: 'Buildings/City Plex/Meters'
+               regex: /\/Buildings\/City Plex\/Meters\/M.*/
            }]
            });
        
@@ -235,11 +232,7 @@
                timePeriodType: 'DAYS',
                timePeriods: 1,
        };
-       
-       
-       
        templater = new DashboardTemplater(templaterConfig);
-       
        
             
    });// End When page Ready

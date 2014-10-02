@@ -11,13 +11,8 @@
 	
 	<title>30 Day Kwh Bar Chart</title>
     
-    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
-        
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-
-	<!-- JQuery Mobile -->
-	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
        
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
@@ -185,7 +180,7 @@
        
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, {nameEndsWith: '(kWh)'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'name', regex: /.*\(kWh\)/}]));
 
        //Setup Groups
        var meterGroups = new DataPointGroupConfiguration({
@@ -193,7 +188,7 @@
            labelAttribute: 'name',
            matchConfigurations: [{
                matchAttribute: 'path',
-               startsWith: 'Buildings/City Plex/Meters'
+               regex: /\/Buildings\/City Plex\/Meters\/M.*/
            }]
            });
        

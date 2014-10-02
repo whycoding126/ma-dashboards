@@ -67,21 +67,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-4 col-md-2 sidebar">
-          <h2>Examples</h2>
+          <h2>Point Hierarchy Examples</h2>
           <ul class="nav nav-sidebar">
             <li><a href="/private-dashboards/welcome.shtm">Home</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/chartPointValues.shtm')">Simple Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/complexAmChart.shtm')">Complex Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/currentValue.shtm')">Current Value</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/dynamicDashboard.shtm')">Dynamic Dashboard</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/gaugeAmChartExample.shtm')">Gauge</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/helloWorld.shtm')">Private Page</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pieAmChart.shtm')">Pie Charts</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/setPointValue.shtm')">Set Point Value</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/simpleDashboard.shtm')">Simple Dashboard</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/simpleTemplatedDashboard.shtm')">Simple Template</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/templatedDashboard.shtm')">Complex Template</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/webSocket.shtm')">Web Socket</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm')">Custom Data Provider</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
+            
           </ul>
          </div>
          <div id="content" class="col-md-8 col-sm-offset-3 main">
@@ -97,6 +89,8 @@
                 <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these 3 points</li>
             </ul>
          <p>Please note that currently only Numeric point types can be charted.</p>
+         <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>
+         
          </div>
       </div>
     </div>

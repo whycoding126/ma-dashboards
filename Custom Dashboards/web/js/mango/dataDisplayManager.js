@@ -97,7 +97,7 @@ DataDisplayManager.prototype = {
             //Add the point configuration
             dataProvider.addDataPoint(dataPointConfiguration);
             //Search our displays to find who wants to listen
-            this.addDataProvider(dataProvider);
+            this.addProvider(dataProvider);
         },
         
         /**
@@ -138,17 +138,20 @@ DataDisplayManager.prototype = {
         
         /**
          * Signal to data providers to clear data
+         * 
+         * @param clearConfigurations - boolean to indicate we need to drop point configurations too
+         * @param ids - array of integers indicating which data providerIDs to signal to clear 
          */
-        clear: function(ids){
+        clear: function(clearConfigurations, ids){
             if((typeof ids == 'undefined')||(ids == null)){
                 for(var i=0; i<this.dataProviders.length; i++){
-                     this.dataProviders[i].clear();
+                     this.dataProviders[i].clear(clearConfigurations);
                 }
             }else{
                 //We have Args
                 for(var i=0; i<this.dataProviders.length; i++){
                     if($.inArray(this.dataProviders[i].id, ids) >= 0){
-                         this.dataProviders[i].clear();
+                         this.dataProviders[i].clear(clearConfigurations);
                     }
                 }
             }

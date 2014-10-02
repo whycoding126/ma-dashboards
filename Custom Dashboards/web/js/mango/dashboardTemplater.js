@@ -219,7 +219,7 @@ DashboardTemplater.prototype = {
             if(templater.debug)
                 console.log('GroupChanged: ' + groupId);
             templater.groupId =  groupId;
-            templater.displayManager.clear(); //Clear all data
+            templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
             templater.pointMatcher.match(templater.groups[groupId].dataPoints);
             templater.refresh(null, templater);
         },

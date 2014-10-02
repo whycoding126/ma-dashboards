@@ -7,16 +7,10 @@
 	<!-- Page Style -->
     <style type="text/css">
     </style>
-	<link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
-	
-	
 	<title>Historical Data Provider</title>
         
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-
-	<!-- JQuery Mobile -->
-	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
        
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
@@ -98,7 +92,7 @@
        //Setup Point Configurations
        var pointConfigurations = new Array();
        //Create a Match Config and tell it to use a Historical Provider for the matched data points
-       pointConfigurations.push(new DataPointMatchConfiguration(1, {xidEndsWith: 'voltage', providerType: 'HistoricalPointValue'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'HistoricalPointValue'}))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -106,7 +100,7 @@
            labelAttribute: 'name',
            matchConfigurations: [{
                matchAttribute: 'path',
-               startsWith: 'Target Folder'
+               regex: /Target Folder/
            }]
            });
        
@@ -136,6 +130,7 @@
        historicalInput.create(); 
        function timePeriodChanged(historicalSamples, templater){
            //Refresh the first Data Provider
+           templater.historicalSamples = historicalSamples; //In case someone refreshes the groups
            templater.displayManager.refresh([1], {historicalSamples: historicalSamples});
        }
 

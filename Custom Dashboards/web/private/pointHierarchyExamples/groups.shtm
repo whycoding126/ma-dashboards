@@ -9,17 +9,11 @@
     </style>
 	
 	
-	<title>Inputs</title>
-    
-    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
-    <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
-        
+	<title>Groups</title>
+
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
 
-	<!-- JQuery Mobile -->
-	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
-       
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
@@ -64,7 +58,7 @@
    <script type="text/javascript">
    
    //Globally Define our Inputs
-   var group1Select, group2List, group3Table;
+   var group1Select, group2ListView, group3ListView;
    
    var groupsArray = new Array(); //Global Array for all matched Groups
    
@@ -73,12 +67,6 @@
        
        //Define our 3 Groupers
        var grouper1, grouper2, grouper3;
-       
-       
-       
-       //Setup Point Configurations
-       var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, {xidEndsWith: 'voltage'}))
 
        //Setup Group 1
        var group1 = new DataPointGroupConfiguration({
@@ -86,16 +74,45 @@
            labelAttribute: 'name',
            matchConfigurations: [{
                matchAttribute: 'path',
-               startsWith: 'Target Folder'
+               regex: /Target Folder/
            }]
            });
        //Setup Group 1 Select
-       group1Select = new SelectConfiguration('group1', {onGroup: onGroup1Change});
+       group1Select = new SelectConfiguration('group1', {}, {onChange: onGroup1Change});
+       group1Select.create();
+       
+       //Setup Group 2
+       var group2 = new DataPointGroupConfiguration({
+           groupBy: 'Folder',
+           labelAttribute: 'name',
+           matchConfigurations: [{
+               matchAttribute: 'path',
+               regex: /Target Folder/
+           }]
+           });
+       //Setup Group 2 ListView
+       group2ListView = new ListViewConfiguration('group2', {}, {onChange: onGroup2Change});
+       group2ListView.create();
+       
+       
+       //Setup Group 3 for All Points (Basically no match)
+       var group3 = new DataPointGroupConfiguration({
+           groupBy: 'All',
+           labelAttribute: 'name',
+           matchConfigurations: [{}]
+           });
+       
        
        //Make a REST API Call to get the Point Hierarchy and Create the Groupers
        var deferred = mangoRest.hierarchy.getRoot(function(phRoot){
            grouper1 = new PointHierarchyGrouper(phRoot, [group1], onGroup1);
            grouper1.group(); //Action the grouper to find the groups
+           
+           grouper2 = new PointHierarchyGrouper(phRoot, [group2], onGroup2);
+           grouper2.group(); //Action the grouper to find the groups
+           
+           grouper3 = new PointHierarchyGrouper(phRoot, [group3], onGroup3);
+           grouper3.group(); //Action the grouper to find the groups
            
            
        },showError);
@@ -110,8 +127,46 @@
        group1Select.addItem(dataPointGroup.label, groupsArray.length);
        groupsArray.push(dataPointGroup);
    }
-   function onGroup1Changed(value){
-       alert('Group 1 Selected' + groupsArray[value]);
+   /**
+    * Called when Group 1 Select list is changed
+    */
+   function onGroup1Change(value){
+       var group = groupsArray[value];
+       if(typeof group != 'undefined')
+           alert('Group 1 Selected: ' + groupsArray[value].label);
+   }
+
+   /**
+    * Called by Grouper 2 When a group is matched
+    */
+   function onGroup2(dataPointGroup){
+       //Add the group to our Groups Array
+       group2ListView.addItem(dataPointGroup.label, groupsArray.length);
+       groupsArray.push(dataPointGroup);
+   }
+   /**
+    * Called When Group 2 List View is Clicked
+    */
+   function onGroup2Change(value){
+       var group = groupsArray[value];
+       if(typeof group != 'undefined')
+           alert('Group 2 Selected: ' + groupsArray[value].label);
+   }
+   
+   /**
+    * Called by Grouper 3 When a group is matched
+    */
+   function onGroup3(dataPointGroup){
+       for(var i=0; i<dataPointGroup.dataPoints.length; i++){
+           var dataPoint = dataPointGroup.dataPoints[i];
+           $('#group3').append(
+                   "<tr><td>" + dataPoint.xid + 
+                   "</td><td>" + dataPoint.name +
+                   "</td><td>" + dataPoint.deviceName +
+                   "</td><td>" + dataPoint.pointFolderId +
+                   "</td><td>" + dataPoint.dataSourceXid +
+                   "</td></tr>");
+       }
    }
    
    /**
@@ -140,7 +195,7 @@
 <body>
     <div id="errors"></div> <!-- Where we will put our errors -->
     
-    <p>This page uses the Point Hierarchy Grouper to show different ways to create groups of data points.</p>
+    <p>This page uses the Point Hierarchy Grouper to show different ways to create and use groups of data points.</p>
     <h2>Group 1</h2>
     <select id="group1">
         <option>Select Group</option>
@@ -154,11 +209,11 @@
     <table>
 	    <thead>
 	       <tr>
-	         <th>xid</th>
+	         <th>XID</th>
 	         <th>Name</th>
 	         <th>Device Name</th>
-	         <th>Units</th>
-	         <th>Enabled</th>
+	         <th>Folder ID</th>
+	         <th>Data Souce XID</th>
 	       </tr>
 	     </thead>
 	     <tbody id="group3">

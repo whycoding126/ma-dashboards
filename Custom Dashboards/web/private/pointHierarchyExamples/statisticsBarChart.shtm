@@ -11,15 +11,9 @@
 	
 	<title>Statistics Bar Chart</title>
     
-    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
-    <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
-        
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
 
-	<!-- JQuery Mobile -->
-	<script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
-       
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
@@ -120,7 +114,7 @@
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, {xidEndsWith: 'voltage', providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -128,7 +122,7 @@
            labelAttribute: 'name',
            matchConfigurations: [{
                matchAttribute: 'path',
-               startsWith: 'Target Folder'
+               regex: /Target Folder/
            }]
            });
        

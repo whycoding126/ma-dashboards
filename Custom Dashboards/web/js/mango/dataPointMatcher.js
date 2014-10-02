@@ -10,20 +10,22 @@
 /**
  * Used for matching
  */
-DataPointMatchConfiguration = function(providerId, options){
+DataPointMatchConfiguration = function(providerId, matchConfigurations, options){
     this.providerId = providerId;
     this.providerType = 'PointValue';
+    this.matchConfigurations = matchConfigurations;
     
     for(var i in options) {
         this[i] = options[i];
     }
+    if((typeof this.matchConfigurations == 'undefined')||(this.matchConfigurations == null)){
+        this.matchConfigurations = new Array();
+    }
+    
 };
 
 DataPointMatchConfiguration.prototype = {
-        nameStartsWith: null,
-        nameEndsWith: null,
-        xidStartsWith: null,
-        xidEndsWith: null,
+        matchConfigurations: null, //Array of PointMatchConfigurations
 
         timeAttribute: null, //Leave null to use timestamp
         valueAttribute: null, //Leave null to use matched point xid
@@ -43,6 +45,16 @@ DataPointMatchConfiguration.prototype = {
         timeOperation: function(processedData, pvt, xid){
             return pvt.timestamp;
         },
+};
+
+PointMatchConfiguration = function(matchAttribute, regex, options){
+    this.matchAttribute = matchAttribute;
+    this.regex = regex;
+};
+
+PointMatchConfiguration.prototype = {
+    matchAttribute: null,
+    regex: null, //Regex to match
 };
 
 
@@ -149,26 +161,9 @@ DataPointMatcher.prototype = {
         matchPointToConfiguration: function(point, configuration){
             var match = true;
             //Does this point match this template
-            if(configuration.nameStartsWith != null){
-                if(point.name.indexOf(configuration.nameStartsWith) == 0)
-                    match = true;
-                else
-                    match = false;
-            }
-            if(configuration.nameEndsWith != null){
-                if(point.name.indexOf(configuration.nameEndsWith, point.name.length - configuration.nameEndsWith.length) !== -1)
-                    match = true;
-                else
-                    match = false;
-            }
-            if(configuration.xidStartsWith != null){
-                if(point.xid.indexOf(configuration.xidStartsWith) == 0)
-                    match = true;
-                else
-                    match = false;
-            }
-            if(configuration.xidEndsWith != null){
-                if(point.xid.indexOf(configuration.xidEndsWith, point.xid.length - configuration.xidEndsWith.length) !== -1)
+            for(var i=0; i<configuration.matchConfigurations.length; i++){
+                var matchConfig = configuration.matchConfigurations[i];
+                if(point[matchConfig.matchAttribute].match(matchConfig.regex) != null)
                     match = true;
                 else
                     match = false;
