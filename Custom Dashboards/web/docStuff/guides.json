@@ -1,0 +1,52 @@
+[
+ {
+  "title": "MangoJS Guides",
+  "items":[
+        {
+            "name": "templeators",
+            "title" : "Getting started with MangoJS",
+            "description": "In this guide we cover the over all concept of using the MangoJS libary."
+        }, 
+        {
+            "name": "barcharts",
+            "title" : "Simple Bar Chart",
+            "description": "Creating a chart with MangoJS is easy and fun. In this guide we make a simple bar chart that uses AmCharts along with MangoJS "
+        },
+        {
+            "name": "linecharts",
+            "title" : "Simple Line Chart",
+            "description": "Creating a chart with MangoJS is easy and fun. In this guide we make a simple line chart that uses AmCharts along with MangoJS "
+        },
+        {
+            "name": "login",
+            "title" : "How to log in and out",
+            "description": "This guide shows you how to log in and out o0f Mango using MangoJS"
+        }, 
+        {
+            "name": "displayWidgets",
+            "title" : "Use MangoJS to create Display Widgets",
+            "description": "This guide shows you how to make display widgets using MangoJS"
+        }, 
+        {
+            "name": "inputWidgets",
+            "title" : "Use MangoJS to create Input Widgets",
+            "description": "This guide shows you how to make input widgets using MangoJS"
+        },
+        {
+            "name": "dataProviders",
+            "title" : "Using Data Providers",
+            "description": "This guide shows you how to use the  Data Providers classes provided with MangoJS"
+        }, 
+        {
+            "name": "templaterCore",
+            "title" : "Using  Templater Core Classes",
+            "description": "This guide shows you how to use the Templater Core classes provided with MangoJS"
+        }, 
+        {
+            "name": "advancedMangoJS",
+            "title" : "Advanced Guide for MangoJS",
+            "description": "This guide shows you how to use thesome of the more advanced classes in MangoJS lib."
+        }, 
+        ]
+    }
+]

@@ -1,0 +1,48 @@
+[
+    {
+     "name":  "MangoJS",  
+     "groups": [
+        {
+        "name": "Display Widgets",
+         "classes":[
+             "SerialChart",
+             "BarChart",
+             "BtatisticsBarChart",
+             "PieChart",
+             "Statistics",
+             "GaugeChart",
+             "SimpleDisplay"
+         ]
+         },
+         {
+         "name": "Input Widgets",
+         "classes":[
+             "DateTimePicker",
+             "RollupPicker",
+             "TimePeriodTypePicker",
+             "Input",
+             "Select",
+             "Listview"
+        ]
+        },
+        {
+           "name": "Data Providers",
+           "classes":[
+             "PointValueDataProvider",
+             "RealtimePointValueDataProvider",
+             "StatisticsDataProvider"
+        ]   
+        },
+        {
+         "name": "Templater Core",
+         "classes":[
+             "DataDisplayManager",
+             "DataPointMatcher",
+             "DataPointGroup",
+             "PointHierarchyGrouper",
+             "DashboardTemplater"
+        ]
+        }
+     ]
+    }
+]

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Templated Dashboard</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Page Style -->
+        <style type="text/css">
+        </style>
+        <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+        
+        <!-- JQuery and Plugins -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+        <!-- Charting Library -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
+        
+        <!-- Bootstrap -->
+        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
+        
+        
+        <!-- Mango Rest API Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        
+        <!-- Mango AM Charts Helper -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
+        
+        <!-- Mango Templating API -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/mangoPointHierarchyTemplateApi.js"></script>
+        
+    </head>
+    <body>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Mango Automation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 col-md-2 sidebar">
+          <h2><a href="/private-dashboards/welcome.shtm">Home</a></h2>
+          <h2>Point Hierarchy Templater Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm')">Custom Data Provider</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/gaugeChart.shtm')">Gauge Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/groups.shtm')">Groups</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm')">Historical Data Provider</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/inputs.shtm')">Inputs</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/pieChart.shtm')">Pie Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChat.shtm')">Realtime Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChart.shtm')">Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statistics.shtm')">Statistics</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm')">Statistics Bar Chart</a></li>
+          </ul>
+          <h2>Power Meter Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm')">kWh Daily Bar Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/microCharts.shtm')">Micro Charts</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm')">Multiple Display Managers</a></li>
+          </ul>
+          <h2>Data Point Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointMatcher.shtm')">Data Point Matcher</a></li>
+          </ul>
+          <h2>REST API Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/currentValue.shtm')">Current Value</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/setPointValue.shtm')">Set Point Value</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/simpleDashboard.shtm')">Simple Dashboard</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/webSocket.shtm')">Point Values Web Socket</a></li>
+          </ul>
+
+         </div>
+         <div id="content" class="col-md-8 col-sm-offset-3 main">
+         <p>This page is a simple way to navigate through the example dashboards provided in the module.  Some pages require manual 
+         configuration before they will work so don't be alarmed if they fail to load properly.  Most will require linking some point 
+         XIDs from your instance into the page.</p>
+         <p>A simple way to get started:</p>
+            <ul>
+                <li>Create 2 Numeric points in your instance with xids: temperature and voltage</li>
+                <li>Create 1 Multistate point with xid: multistate</li>
+                <li>Ensure 3 points are settable</li>
+                <li>Ensure 3 points have data and are regularly being updated</li>
+                <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these 3 points</li>
+            </ul>
+         <p>Please note that currently only Numeric point types can be charted.</p>
+         <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>
+         
+         </div>
+      </div>
+    </div>
+
+    </body>
+</html>

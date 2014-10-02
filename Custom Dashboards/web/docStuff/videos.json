@@ -1,0 +1,13 @@
+[
+ {
+    "title": "MangoJS Video Tutorials",
+    "items": [
+        {
+            "id" : "47916288",
+            "title": "Intrpo to Mango Automation",
+            "description": "This is a test video to see if I can get the video tab to start to work",
+            "thumb":"http://i.vimeocdn.com/video/435036661.webp?mw=960"
+        }
+    ]
+ }
+]
