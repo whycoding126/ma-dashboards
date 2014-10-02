@@ -177,9 +177,9 @@ var mangoRest = {
                 
                 return {
                     annotation: null,
-                    //dataType: null, //Fill from dataPoint.pointLocator.dataType,
+                    dataType: null, //['ALPHANUMERIC', 'BINARY', 'MULTISTATE', 'NUMERIC']
                     value: null,
-                    time: null};
+                    timestamp: null};
                 
             },
         
@@ -275,7 +275,7 @@ var mangoRest = {
              * 
              * Save Point Value
              * @param xid - for data point to save to
-             * @param value - Number, boolean or String
+             * @param value - PointValueTimeModel Number, boolean or String
              * @done(jsonData, options) callback with saved point as data
              * 
              * @fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
@@ -290,7 +290,7 @@ var mangoRest = {
                     contentType: "application/json",
                     data: JSON.stringify(pointValue)
                 }).done(function(data) {
-                    done(data, options);
+                    done(data, xid, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);

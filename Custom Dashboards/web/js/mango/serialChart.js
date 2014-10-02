@@ -157,13 +157,25 @@ MangoSerialChart.prototype = {
         /**
          * Using our map get the series value attribute
          * 
+         * This currently only allows matching the data point to one attribute
+         * we need to expand this to allow making multiple series from 1 Data Point
+         * 
+         * TODO Could use a combination of Data Point matching and matching on what 
+         * attributes are in the data
+         * 
          * @param dataPoint 
          */
-        getSeriesValueAttribute: function(dataPoint){
+        getSeriesValueAttribute: function(dataPoint, data){
+            
+            var dataValue;
+            if(data.length > 0)
+                dataValue = data[0];
+            else
+                dataValue = null;
             
             if(this.dataPointMappings != null){
                 for(var i=0; i<this.dataPointMappings.length; i++){
-                    if(this.matchPoint(this.dataPointMappings[i], dataPoint) == true){
+                    if(this.matchPoint(this.dataPointMappings[i], dataPoint, dataValue) == true){
                         return this.dataPointMappings[i].valueField;
                     }
                 }
@@ -180,7 +192,7 @@ MangoSerialChart.prototype = {
         /**
          * Check to see if our data point matches this mapping
          */
-        matchPoint: function(configuration, point){
+        matchPoint: function(configuration, point, dataValue){
             var match = true;
             //Does this point match this template
             if(configuration.nameStartsWith != null){
@@ -207,6 +219,19 @@ MangoSerialChart.prototype = {
                 else
                     match = false;
             }
+            
+            //Match on the hasDataAttributes
+            if(typeof configuration.hasDataAttributes != 'undefined'){
+                for(var i=0; i<configuration.hasDataAttributes.length; i++){
+                    if(typeof dataValue[configuration.hasDataAttributes[i]] == 'undefined'){
+                        match = false;
+                        break;
+                    }
+                }
+                    
+            }
+            
+            
             return match;
         },
         
@@ -227,7 +252,7 @@ MangoSerialChart.prototype = {
         onLoad: function(data, dataPoint){
             
             //Get the member name to put the value against in the Series
-            var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint);
+            var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint, data);
             
             if(this.amChart.dataProvider.length >0){
                 //Assume the data is in order

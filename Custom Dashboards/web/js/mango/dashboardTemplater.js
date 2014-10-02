@@ -225,6 +225,8 @@ DashboardTemplater.prototype = {
         },
         /**
          * Refresh the providers using the dates/rollups already set in templater
+         * @param providerIds
+         * @param templater
          */
         refresh: function(providerIds, templater){
             templater.displayManager.refresh(providerIds, 
@@ -236,6 +238,29 @@ DashboardTemplater.prototype = {
                         timePeriods: templater.timePeriods,
                         historicalSamples: templater.historicalSamples
                 });
+        },
+        
+        /**
+         * Have one or many data providers put a value to Mango
+         * @param ids - Array of integer Ids of data providers
+         * @param options - { 
+         *                    value: PointValueTimeModel {value: object, time: long},
+         *                    refresh: boolean to indicate a refresh of displays with this data
+         *                  }
+         */
+        put: function(ids, options){
+            if((typeof ids == 'undefined')||(ids == null)){
+                for(var i=0; i<this.dataProviders.length; i++){
+                    this.dataProviders[i].put(options, this.showError);
+                }
+            }else{
+                //We have Args
+                for(var i=0; i<this.dataProviders.length; i++){
+                    if($.inArray(this.dataProviders[i].id, ids) >= 0){
+                        this.dataProviders[i].put(options, this.showError);
+                    }
+                }
+            }
         },
         
         invalidateChartSize: function(chartDivIds, templater){

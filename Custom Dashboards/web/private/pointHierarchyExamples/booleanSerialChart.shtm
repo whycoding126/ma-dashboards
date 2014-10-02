@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<!-- Page Style -->
+    <style type="text/css">
+    </style>
+	
+	
+	<title>Boolean Serial Chart</title>
+    
+    <!-- JQuery -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+        
+    <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+ 
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+
+    <!-- Mango Rest API Helper -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        
+	<!-- Mango Templating API -->
+    <!-- Display Widgets -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/gaugeChart.js"></script>
+    
+    <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
+    <!-- Templater Core -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dashboardTemplater.js"></script>
+    <!-- Input Widgets -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
+    
+
+
+
+   <script type="text/javascript">
+   
+   //Define Global Variables
+   var templater;
+   
+   $( document ).ready(function(){
+       
+       //Setup Display Configurations
+       var displayConfigurations = new Array();
+       var chart = new  SerialChartConfiguration(
+               'chartDiv', //Chart DIV id
+               [1,2], //List of data provider Ids for this chart
+               { //AmChart Mixins
+           titles: [{
+               id: "Title-1",
+               size: 15,
+               text: "Binary Chart"
+           }],
+           categoryField: "timestamp",
+           graphs: [{
+               title: "Binary",
+               valueAxis: "binary-axis",
+               bullet: "square",
+               bulletSize: 6,
+               lineColor: "green",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "boolean"
+           },{
+               title: "Boolean",
+               valueAxis: "boolean-axis",
+               bullet: "round",
+               bulletSize: 6,
+               lineColor: "blue",
+               lineThickness: 1,
+               negativeLineColor: "red",
+               type: "smoothedLine",
+               valueField: "booleanString"
+           }],
+           valueAxes: [{
+               id: "binary-axis",
+               title: " Binary",
+               position: "left"
+           },{
+               id: "boolean-axis",
+               title: " Boolean",
+               position: "right"
+           }],
+       },{//empty Mango Chart Mixins
+       },{//Confuguration Mixins
+           //Multi-series chart so create mappings from point to a graph valueField
+           dataPointMappings: [{
+                   xidEndsWith: 'binary',
+                   valueField: 'boolean',
+                   hasDataAttributes: ['dataType'] //Dirty hack to allow multiple data providers for the same point
+               },{
+                   xidEndsWith: 'binary',
+                   valueField: 'booleanString',
+                   hasDataAttributes: ['string']
+               }]
+       });
+       displayConfigurations.push(chart);
+
+       //Create Data Providers (NOT WORKING YET... NEED TO DETERMINE HOW TO GET AM CHARTS TO USE STRING VALUES)
+       var dataProviders = new Array();
+       var customDataProvider = new PointValueDataProvider(2, {
+           /**
+            * Method that is called before publishing the data to the Displays
+            * it is here that we can modify the data
+            */
+           manipulateData: function(pointValues, dataPoint){
+              
+               var newData = new Array();
+               
+               if(pointValues.length == 0)
+                   return newData;
+
+               //Subtract previous value from current.
+               for(var i=0; i<pointValues.length; i++){
+                   var value;
+                   if(pointValues[i].value == true)
+                       value = "true";
+                   else
+                      value = "false";
+                   var entry = {
+                           string: true,
+                           value: value,
+                           timestamp: pointValues[i].timestamp
+                   };
+                   newData.push(entry);
+               }
+               
+               return newData;
+           }           
+       });
+       dataProviders.push(customDataProvider);
+       
+       
+       //Setup Point Configurations
+       var pointConfigurations = new Array();
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /binary/}], {providerType: 'PointValue'}));
+       pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: /binary/}], {providerType: 'PointValue'}));
+
+       //Setup Groups
+       var group = new DataPointGroupConfiguration({
+           groupBy: 'Folder',
+           labelAttribute: 'name',
+           matchConfigurations: [{
+               matchAttribute: 'path',
+               regex: /Target Folder/
+           }]
+           });
+       
+       var groupConfigurations = new Array();
+       groupConfigurations.push(group);
+       
+       //Create a custom group list view
+       var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
+       
+       //Setup Templater
+       var templaterConfig = {
+               debug: true,
+               type: 'PointHierarchy',
+               displayConfigurations: displayConfigurations,
+               pointConfigurations: pointConfigurations,
+               groupConfigurations: groupConfigurations,
+               dataProviders: dataProviders,
+               groupSelectConfiguration: groupListView,
+               timePeriodType: 'MINUTES',
+               
+               
+       }
+       
+       
+       
+       templater = new DashboardTemplater(templaterConfig);
+            
+   });// End When page Ready
+   
+   </script>
+</head>
+<body>
+    <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
+    <ul id="groupsList"></ul>
+    <p>Serial Chart using 1 Point Value Data Provider matched to the temperature and voltage points.  This chart uses the default settings
+     for the templater of previous 12 hours and Hourly Averages. Click the Target Folder to start.
+    </p>
+    <div  id="chartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+</body>
+</html>
+
