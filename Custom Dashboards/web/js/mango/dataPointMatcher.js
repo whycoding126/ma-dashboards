@@ -123,22 +123,25 @@ DataPointMatcher.prototype = {
          * This will clear out any data providers first
          * 
          * @param dataPoints data points summaries
-         * @return - List of Mango Data Providers
+         * @return - List of DataPointConfigurations
          */
         match: function(dataPoints){
-            
+            var matchedConfigurations = new Array();
             for(var i=0; i<this.configurations.length; i++){
                 var configuration = this.configurations[i];
                 for(var j=0; j<dataPoints.length; j++){
                     var point = dataPoints[j];
                     if(this.matchPointToConfiguration(point, configuration)){
                         //Matched, create/add to data provider
-                        this.onMatch(new DataPointConfiguration(point,configuration.providerId, configuration.providerType), this.owner);
+                        var dataPointConfiguration = new DataPointConfiguration(point,configuration.providerId, configuration.providerType);
+                        this.onMatch(dataPointConfiguration, this.owner);
+                        matchedConfigurations.push(dataPointConfiguration);
                         if(!this.matchAll)
                             break; //Break out if we are not matching all
                     }
                 }
             }
+            return matchedConfigurations;
         },
         
         /**

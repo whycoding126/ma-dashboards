@@ -67,14 +67,39 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-4 col-md-2 sidebar">
-          <h2>Point Hierarchy Examples</h2>
+          <h2><a href="/private-dashboards/welcome.shtm">Home</a></h2>
+          <h2>Point Hierarchy Templater Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="/private-dashboards/welcome.shtm">Home</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm')">Custom Data Provider</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
-            
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/gaugeChart.shtm')">Gauge Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/groups.shtm')">Groups</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm')">Historical Data Provider</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/inputs.shtm')">Inputs</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/pieChart.shtm')">Pie Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChat.shtm')">Realtime Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChart.shtm')">Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statistics.shtm')">Statistics</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm')">Statistics Bar Chart</a></li>
           </ul>
+          <h2>Power Meter Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm')">kWh Daily Bar Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/microCharts.shtm')">Micro Charts</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm')">Multiple Display Managers</a></li>
+          </ul>
+          <h2>Data Point Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointMatcher.shtm')">Data Point Matcher</a></li>
+          </ul>
+          <h2>REST API Examples</h2>
+          <ul class="nav nav-sidebar">
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/currentValue.shtm')">Current Value</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/setPointValue.shtm')">Set Point Value</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/simpleDashboard.shtm')">Simple Dashboard</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/webSocket.shtm')">Point Values Web Socket</a></li>
+          </ul>
+
          </div>
          <div id="content" class="col-md-8 col-sm-offset-3 main">
          <p>This page is a simple way to navigate through the example dashboards provided in the module.  Some pages require manual 
