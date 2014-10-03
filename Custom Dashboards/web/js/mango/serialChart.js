@@ -251,69 +251,64 @@ MangoSerialChart.prototype = {
          */
         onLoad: function(data, dataPoint){
             
+            if(data.length == 0)
+                return; //Nothing to do here
+            
             //Get the member name to put the value against in the Series
             var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint, data);
             
-            if(this.amChart.dataProvider.length >0){
-                //Assume the data is in order
-                //Find starting point for chart's data provider
-                var pos = this.amChart.dataProvider.length-1;
-                for(var j=0; j<this.amChart.dataProvider.length; j++){
-                    if(this.amChart.dataProvider[j].timestamp >= data[0].timestamp){
-                        pos = j;
+            //We cannot assume the data is in time order but it must be on the chart,
+            // so we do extra work here to make sure things go into the data provider in
+            // order.
+            var dataProviderPos, newDataPos; 
+            //Set the initial position
+            if(this.amChart.dataProvider.length  > 0){
+                newDataPos = 0; //Starting at first data entry
+            }else{
+                //No data so insert the first one so we can merge the rest
+                var entry = new Object();
+                for(var k in data[0])
+                    entry[k] = data[0][k];
+                entry[seriesValueAttribute] = data[0][this.valueAttribute];
+                this.amChart.dataProvider.push(entry);
+                newDataPos = 1; //Start after first piece of data
+            }
+            
+            //Insert the data
+            for(var i=newDataPos; i<data.length; i++){
+                //Find the next location to insert
+                var found = false;
+                for(var j = 0; j<this.amChart.dataProvider.length; j++){
+                    if(this.amChart.dataProvider[j].timestamp >= data[i].timestamp){
+                        dataProviderPos = j;
+                        found = true;
                         break;
                     }
                 }
                 
-                var startPos = 0;
-                if(this.amChart.dataProvider[pos].timestamp == data[0].timestamp){
-                    //Merge
-                    this.amChart.dataProvider[pos][seriesValueAttribute] = data[0][this.valueAttribute];
-                }else{
-                    pos++; //Going to insert after
-                    //Else This timestamp is greater so we place it 
-                    var entry = {timestamp: data[0].timestamp, time: data[0].time};
-                    entry[seriesValueAttribute] = data[0][this.valueAttribute];
-                    this.amChart.dataProvider.splice(pos,0,entry);
-                }
-                
-                //Insert the data
-                for(var i=1; i<data.length; i++){
-                    //Find the next location to insert
-                    var found = false;
-                    for(var j = pos; j<this.amChart.dataProvider.length; j++){
-                        if(this.amChart.dataProvider[j].timestamp >= data[i].timestamp){
-                            pos = j;
-                            found = true;
-                            break;
-                        }
-                    }
-                    
-                    //Append or splice
-                    if(!found){
-                        //Insert at end
-                        var entry = {timestamp: data[i].timestamp, time: data[i].time};
-                        entry[seriesValueAttribute] = data[i][this.valueAttribute];
-                        this.amChart.dataProvider.push(entry);
-                    }else{
-                        if(this.amChart.dataProvider[pos].timestamp == data[i].timestamp){
-                            //Merge
-                            this.amChart.dataProvider[pos][seriesValueAttribute] = data[i][this.valueAttribute];
-                        }else{
-                            var entry = {timestamp: data[i].timestamp, time: data[i].time};
-                            entry[seriesValueAttribute] = data[i][this.valueAttribute];
-                            this.amChart.dataProvider.splice(pos,0,entry);
-                        } 
-                    }
-
-                }
-            }else{
-                //Just insert as is, no data to merge
-                for(var i=0; i<data.length; i++){
-                    var entry = {timestamp: data[i].timestamp, time: data[i].time};
+                //Append or splice
+                if(!found){
+                    //Insert at end
+                    var entry = new Object();
+                    for(var k in data[i])
+                        entry[k] = data[i][k];
                     entry[seriesValueAttribute] = data[i][this.valueAttribute];
                     this.amChart.dataProvider.push(entry);
+                }else{
+                    if(this.amChart.dataProvider[dataProviderPos].timestamp == data[i].timestamp){
+                        //Merge the new data value into the existing entry
+                        this.amChart.dataProvider[dataProviderPos][seriesValueAttribute] = data[i][this.valueAttribute];
+                    }else{
+                        //Splice into array 
+                        var entry = new Object();
+                        for(var k in data[i])
+                            entry[k] = data[i][k];
+                        entry[seriesValueAttribute] = data[i][this.valueAttribute];
+                        //Splice new data into array at the current dataProviderPos because its time is before
+                        this.amChart.dataProvider.splice(dataProviderPos,0,entry);
+                    } 
                 }
+
             }
             this.amChart.validateData();
         }
