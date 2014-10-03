@@ -99,13 +99,18 @@ HistoricalPointValueDataProvider.prototype = {
         },
         
         /**
+         * @param options {
+         *                  refresh: boolean to refresh displays,
+         *                  value: PointValueTime Model
+         *                 }
+         * 
+         * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
          * Put Point Value 
          */
         put: function(options, error){
             
-            //TODO Fix up for promise using deferred and da
-            //Load in the data into time order and perform data operations
             var deferred = $.Deferred();
+            //TODO Implement deferred Chaining
             //Start resolving the chain
             deferred.resolve();
             

@@ -1907,6 +1907,18 @@
             "dataType":"MULTISTATE",
             "changeType":{
                "type":"INCREMENT_MULTISTATE",
+               "roll":true,
+               "values":[
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9
+               ],
                "startValue":"1"
             },
             "settable":true
@@ -1982,6 +1994,48 @@
             "suffix":""
          },
          "tolerance":0.0
+      },
+      {
+         "xid":"binary",
+         "name":"Binary",
+         "enabled":true,
+         "loggingType":"ON_CHANGE",
+         "intervalLoggingPeriodType":"MINUTES",
+         "intervalLoggingType":"INSTANT",
+         "purgeType":"YEARS",
+         "pointLocator":{
+            "dataType":"BINARY",
+            "changeType":{
+               "type":"ALTERNATE_BOOLEAN",
+               "startValue":"true"
+            },
+            "settable":true
+         },
+         "eventDetectors":[
+         ],
+         "plotType":"STEP",
+         "unit":"",
+         "chartColour":"",
+         "chartRenderer":null,
+         "dataSourceXid":"DS_997094",
+         "defaultCacheSize":1,
+         "deviceName":"Dashboard Demo",
+         "discardExtremeValues":false,
+         "discardHighLimit":0.0,
+         "discardLowLimit":0.0,
+         "intervalLoggingPeriod":15,
+         "intervalLoggingSampleWindowSize":0,
+         "overrideIntervalLoggingSamples":false,
+         "purgeOverride":false,
+         "purgePeriod":1,
+         "textRenderer":{
+            "type":"PLAIN",
+            "useUnitAsSuffix":false,
+            "unit":"",
+            "renderedUnit":"",
+            "suffix":""
+         },
+         "tolerance":0.0
       }
    ],
    "pointHierarchy":[
@@ -2000,6 +2054,14 @@
                      ],
                      "name":"Meters",
                      "subfolders":[
+                        {
+                           "points":[
+                              "DP_993944"
+                           ],
+                           "name":"Dummy",
+                           "subfolders":[
+                           ]
+                        },
                         {
                            "points":[
                               "DP_119588",
@@ -2059,14 +2121,6 @@
                            "name":"Meter 3",
                            "subfolders":[
                            ]
-                        },
-                        {
-                           "points":[
-                              "DP_993944"
-                           ],
-                           "name":"Dummy",
-                           "subfolders":[
-                           ]
                         }
                      ]
                   }
@@ -2076,6 +2130,7 @@
       },
       {
          "points":[
+            "binary",
             "multistate",
             "temperature",
             "voltage"

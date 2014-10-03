@@ -101,6 +101,19 @@ StatisticsDataProvider.prototype = {
         },
         
         /**
+         * Put Point Value - No Op For this class
+         * 
+         * @param options {
+         *                  refresh: boolean to refresh displays,
+         *                  value: PointValueTime Model
+         *                 }
+         * 
+         * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
+         * 
+         */
+        put: function(options, error){},
+        
+        /**
          * Add a listener who registers to know of our updates
          */
         addListener: function(dataProviderListener){

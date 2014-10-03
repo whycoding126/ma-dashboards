@@ -106,6 +106,47 @@ PointValueDataProvider.prototype = {
         },
         
         /**
+         * @param options {
+         *                  refresh: boolean to refresh displays,
+         *                  value: PointValueTime Model
+         *                 }
+         * 
+         * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
+         * Put Point Value 
+         */
+        put: function(options, error){
+            
+            var deferred = $.Deferred();
+            //TODO Implement deferred Chaining
+            //Start resolving the chain
+            deferred.resolve();
+            
+            var self = this;
+            for(var x=0; x<this.pointConfigurations.length; x++){
+                var configuration = this.pointConfigurations[x];
+                var callbackOptions = {
+                        refresh: options.refresh,
+                        configuration: configuration
+                }; //Define the options to use within the done callback
+                var da = mangoRest.pointValues.put(this.pointConfigurations[x].point.xid,
+                        options.value,
+                        function(pvt, xid, options){
+
+                    if(options.refresh == true){
+                        var data = new Array();
+                        data.push(pvt);
+                      //Inform our listeners of this new data
+                        for(var i=0; i<self.listeners.length; i++){
+                            self.listeners[i].onLoad(data, options.configuration.point);
+                        }
+                    }
+                },error, callbackOptions);                    
+            }
+           
+            return deferred;
+        },
+        
+        /**
          * Add a listener who registers to know of our updates
          */
         addListener: function(dataProviderListener){
