@@ -87,6 +87,7 @@
             <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm')">kWh Daily Bar Chart</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/microCharts.shtm')">Micro Charts</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm')">Multiple Display Managers</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/realPowerPieChart.shtm')">Real Power Pie Chart</a></li>
           </ul>
           <h2>Data Point Examples</h2>
           <ul class="nav nav-sidebar">
