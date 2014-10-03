@@ -1,19 +1,89 @@
 /**
- * Javascript Objects Used for Templating a Dashboard.
- * 
- * Inputs:
- * - Rollup Drop Down
- * - Time Period Drop Down
- * - Periods Input
- * 
- * - Start Date Picker
- * - End Date Picker
- * 
- * 
- * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
- * @author Terry Packer
- */
-
+*
+* This is the Templeater aka the thing that ties the all the other imporant modlues togeather. 
+* a Simple DashboardTemplater Would look something like this
+*
+* Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+* Terry Packer (implamentation)
+* Joseph Mills (documention)
+*
+*
+     * Simple Example
+     *
+     *     @example
+     *     var templaterConfig = {
+     *         debug: true,
+     *         type: 'PointHierarchy',
+     *         displayConfigurations: displayConfigurations,
+     *         pointConfigurations: pointConfigurations,
+     *         groupConfigurations: groupConfigurations,
+     *         dataProviders: dataProviders,
+     *         groupSelectConfiguration: groupListView,
+     *     }
+     *     templater = new DashboardTemplater(templaterConfig);
+     *
+*
+* Lets say that we want to take in custom objects on are query to the Mango backend. 
+* If one would want to do such a thing they can. Here  is a example of using Custom Input to a Templater, 
+* for setting the time to be one month from 24 hours ago see line's
+*
+     * Custom Templater
+     *
+     *     @example
+     *     var to = new Date();
+     *     var from = new Date(to.getTime() - 1000*60*60*24*30);
+     *     var templaterCustomConfig = {
+     *     debug: true,
+     *     displayConfigurations: displayConfigurations,
+     *     pointConfigurations: pointConfigurations,
+     *     groupConfigurations: groupConfigurations,
+     *     dataProviders: dataProviders,
+     *     groupSelectConfiguration: groupListView,
+     *     //grouper
+     *     startDate: from, //adding the custom option of startDate and adding the varible that we defined above. 
+     *     endDate: to, // adding the too varible to the custom options
+     *     rollup: 'AVERAGE',
+     *     timePeriods: 1,
+     *     }
+     *     var templaterCustom  = new DashboardTemplater(templaterCustomConfig);
+     *
+*
+* Adding more then One Templeater
+*
+* TODO after terry fixes this I will document this.  
+*
+*
+*
+*@param {Boolean} debug Make sure that the templeate for the Widget is in debug mode.  This is handy when wondering why a widget is not working
+*
+*@param {String} type DOCME
+*
+*@param {String} dataDisplayManager This is the connecting peice to you Display Manger. If you would like to read more about the display manager please vist <a
+* src="#">This Help Page</a>
+*
+*@param {String} pointConfigurations This is the main point Configuration That one would assign 
+* tpo many points or just single points in the mango 
+* system
+* If you would like to read more about the pointConfigurations please vist <a src="#">This Help Page</a>
+*
+*@param {String} groupConfigurations This is the main grouper that one is using to group points to the 
+* display system and pass them off to the Matcher
+* If you would like to read more about the Groups and there configuration  please vist {@link Man#groupConfigurations This Help Page}
+*
+*@param {String} groupSelectConfiguration this is the main ui piece that one is going to use with the grouped data. 
+*
+*
+* Optional Custom Inputs:
+*  
+*@param {String} Rollup Drop Down
+*@param {String} Time Period Drop Down
+*@param {String} Periods Input
+* 
+*@param {Date} startDatePicker
+*@param {Date} endDatePicker
+* 
+*
+*/
 
 DashboardTemplater = function(options){
     
