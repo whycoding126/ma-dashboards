@@ -56,11 +56,38 @@
                dataProviders: dataProviders,
                groupSelectConfiguration: groupSelectView,
                loadGroupAtStartup: 0, //GroupId to load
+               /**
+                * Since we want to tie in another display manager 
+                * that is already configured we can just 
+                * refresh it here.
+                */
+               groupChanged: function(groupId, templater){
+                   if(templater.debug)
+                       console.log('GroupChanged: ' + groupId);
+                   templater.groupId =  groupId;
+                   templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
+                   var matchedDataPointConfigurations = templater.pointMatcher.match(templater.groups[groupId].dataPoints);
+                   templater.refresh(null, templater);
+                   
+                   //Refresh the other display Manager
+                   //Clear out the bar chart for new data
+                   kWhDailyBarChartDisplayManager.clear(true);
+                   //Ensure we have the new data point configurations from the Match
+                   for(var i=0; i<matchedDataPointConfigurations.length; i++){
+                       kWhDailyBarChartDisplayManager.addDataPointConfiguration(matchedDataPointConfigurations[i]);
+                   }
+                   
+                   //The kWhBarChartDataProviderSettings are Globally defined in the kWhDailyBarChart.js file
+                   kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
+               },
+               
+               
+               
        }
        
        templater = new DashboardTemplater(templaterConfig);
 
-            
+       
    });// End When page Ready
    
         /**

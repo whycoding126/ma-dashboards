@@ -37,10 +37,14 @@ SelectConfiguration.prototype = {
         owner: null, //Owner Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
-        selected: 0, //Item selected
+        selected: 0, //Index selected
         
-        addItem: function(label, id){
-            $('#' + this.divId).append( $("<option></option>").text(label).val(id));
+        addItem: function(label, id, selected){
+            var html = "<option></option>";
+//            if(selected == true)
+//                html += "selected='selected'";
+//            html += "></option>";
+            $('#' + this.divId).append( $(html).text(label).val(id));
         },
         
         onChange: function(value, owner){
@@ -52,12 +56,16 @@ SelectConfiguration.prototype = {
             var select = $('#' + this.divId);
             //Add the options
             for(k in this.configuration.options){
-                this.addItem(this.configuration.options[k].label, this.configuration.options[k].value);
+                if(k == this.selected)
+                    this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, true);
+                else
+                    this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, false);
+                    
             }
-            $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
-
             //Add the onChange method
             select.change(self.configuration.onChange);
+            $('#' + this.divId).val(this.configuration.options[this.selected].value);
+            $('#' + this.divId).selectmenu('refresh', true);
         },
         
 

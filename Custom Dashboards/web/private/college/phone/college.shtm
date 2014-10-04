@@ -66,6 +66,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeLogic.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js"></script>
 
 </head>
 <!-- Starting to write the UI -->
@@ -153,23 +154,19 @@
     <div class="ui-block-a">
         <label for="simpleTimePicker"></label>
         <select id="simpleTimePicker" class="form-control">
-            <option value="" disabled selected>Today</option>
-            <option value="simpleTimePeriodType"></option>
         </select>
     </div>
     <div class="ui-block-b">
-        <input placeholder="From Date" id="startDate"> </input>
+        <input placeholder="From Date" id="kWhFromDate"> </input>
     </div>
     <div class="ui-block-c">
-        <input placeholder="To Date" id="endDate"></input>
+        <input placeholder="To Date" id="kWhToDate"></input>
     </div>
     <div class="ui-block-d">
         <label for="simpleTimePeriodType">
         </label>
         
         <select id="simpleTimePeriodType" class="form-control">
-            <option value="" disabled selected>Hourly</option>
-            <option value="simpleTimePeriodType"></option>
         </select>
     </div>
 </div>
