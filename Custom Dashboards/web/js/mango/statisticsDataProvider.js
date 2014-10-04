@@ -67,37 +67,40 @@ StatisticsDataProvider.prototype = {
          * Load our data and publish to listeners
          * @param options - {from: date, to: date}
          * @param error - method to call on error
+         * @return promise when done
          */
         load: function(options, error){
             
-            //TODO Fix up for promise using deferred and da
-            //Load in the data into time order and perform data operations
-            var deferred = $.Deferred();
-            //Start resolving the chain
-            deferred.resolve();
+            
+            //We will keep the requests in order by using a Deferred Chain
+            var link = $.Deferred();
+            var promise = link.promise();
 
             var self = this;
-            for(var x=0; x<this.pointConfigurations.length; x++){
-                var pos = x;
-                var da = mangoRest.pointValues.getStatistics(this.pointConfigurations[x].point.xid, 
-                        mangoRest.formatLocalDate(options.from),
-                        mangoRest.formatLocalDate(options.to),
-                        function(data){
-
-                    //Optionally manipulate the data
-                    if(self.manipulateData != null)
-                        data = self.manipulateData(data, self.pointConfigurations[pos].point);
-                    
-                    //Inform our listeners of this new data
-                    for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, self.pointConfigurations[pos].point);
-                    }
-                },error);
-                
+            $.each(this.pointConfigurations, function(i, configuration){
                 //Form Chain
-            }
-           
-            return deferred;
+                 promise = promise.then(function(){
+                     return mangoRest.pointValues.getStatistics(configuration.point.xid, 
+                            mangoRest.formatLocalDate(options.from),
+                            mangoRest.formatLocalDate(options.to),
+                            function(data, xid, options){
+    
+                        //Optionally manipulate the data
+                        if(options.owner.manipulateData != null)
+                            data = options.owner.manipulateData(data, options.configuration.point);
+                        
+                        //Inform our listeners of this new data
+                        for(var i=0; i<options.owner.listeners.length; i++){
+                            options.owner.listeners[i].onLoad(data, options.configuration.point);
+                        }
+                    },error, {configuration: configuration, owner: self});
+                 });
+                //Form Chain
+            });
+            //Resolve the Deferred and start the Chain
+            link.resolve();
+            //Return the final promise that will be resolved when done
+            return promise;
         },
         
         /**

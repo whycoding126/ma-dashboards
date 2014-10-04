@@ -71,79 +71,88 @@ PointValueDataProvider.prototype = {
          *   timePeriodType: ['YEARS', 'MONTHS', 'DAYS', 'HOURS', 'MINUTES', ...] 
          *   timePeriods: number}
          * @param error - method to call on error
+         * @return promise - Deferred Promise for action when done
          */
         load: function(options, error){
             
-            //TODO Fix up for promise using deferred and da
-            //Load in the data into time order and perform data operations
-            var deferred = $.Deferred();
-            //Start resolving the chain
-            deferred.resolve();
+            //We will keep the requests in order by using a Deferred Chain
+            var link = $.Deferred();
+            var promise = link.promise();
 
             var self = this;
-            for(var x=0; x<this.pointConfigurations.length; x++){
-                var configuration = this.pointConfigurations[x];
-                var da = mangoRest.pointValues.get(this.pointConfigurations[x].point.xid, 
-                        mangoRest.formatLocalDate(options.from),
-                        mangoRest.formatLocalDate(options.to),
-                        options.rollup, options.timePeriodType, options.timePeriods,
-                        function(data, xid, options){
+            $.each(this.pointConfigurations, function(i, configuration){
+               //Form Chain
+                promise = promise.then(function(){
+                     return mangoRest.pointValues.get(configuration.point.xid, 
+                            mangoRest.formatLocalDate(options.from),
+                            mangoRest.formatLocalDate(options.to),
+                            options.rollup, options.timePeriodType, options.timePeriods,
+                            function(data, xid, options){
 
-                    //Optionally manipulate the data
-                    if(self.manipulateData != null)
-                        data = self.manipulateData(data, options.configuration.point);
-                    
-                    //Inform our listeners of this new data
-                    for(var i=0; i<self.listeners.length; i++){
-                        self.listeners[i].onLoad(data, options.configuration.point);
-                    }
-                },error, {configuration: configuration});
-                
-                //Form Chain
-            }
-           
-            return deferred;
+                        //Optionally manipulate the data
+                        if(options.owner.manipulateData != null)
+                            data = options.owner.manipulateData(data, options.configuration.point);
+                        
+                        //Inform our listeners of this new data
+                        for(var i=0; i<options.owner.listeners.length; i++){
+                            options.owner.listeners[i].onLoad(data, options.configuration.point);
+                        }
+                    },error, {configuration: configuration, owner: self});
+                });
+               
+            });
+            
+            //Resolve the Deferred and start the Chain
+            link.resolve();
+            //Return the final promise that will be resolved when done
+            return promise;
         },
         
         /**
+         * Put Point Value 
          * @param options {
          *                  refresh: boolean to refresh displays,
          *                  value: PointValueTime Model
          *                 }
          * 
          * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
-         * Put Point Value 
+         * @return promise
          */
         put: function(options, error){
             
-            var deferred = $.Deferred();
-            //TODO Implement deferred Chaining
-            //Start resolving the chain
-            deferred.resolve();
+            //We will keep the requests in order by using a Deferred Chain
+            var link = $.Deferred();
+            var promise = link.promise();
             
             var self = this;
-            for(var x=0; x<this.pointConfigurations.length; x++){
-                var configuration = this.pointConfigurations[x];
+            $.each(this.pointConfigurations, function(i, configuration){
+                //Form Chain
+                promise = promise.then(function(){
+                  //Define the options to use within the done callback
                 var callbackOptions = {
-                        refresh: options.refresh,
-                        configuration: configuration
-                }; //Define the options to use within the done callback
-                var da = mangoRest.pointValues.put(this.pointConfigurations[x].point.xid,
-                        options.value,
-                        function(pvt, xid, options){
-
-                    if(options.refresh == true){
-                        var data = new Array();
-                        data.push(pvt);
-                      //Inform our listeners of this new data
-                        for(var i=0; i<self.listeners.length; i++){
-                            self.listeners[i].onLoad(data, options.configuration.point);
+                        refresh: options.refresh, //Refresh?
+                        configuration: configuration, //Configuration to use
+                        listeners: self.listeners //Listeners to fire
+                }; 
+                return mangoRest.pointValues.put(configuration.point.xid,
+                            options.value,
+                            function(pvt, xid, options){
+    
+                        if(options.refresh == true){
+                            var data = new Array();
+                            data.push(pvt);
+                          //Inform our listeners of this new data
+                            for(var i=0; i<options.listeners.length; i++){
+                                options.listeners[i].onLoad(data, options.configuration.point);
+                            }
                         }
-                    }
-                },error, callbackOptions);                    
-            }
-           
-            return deferred;
+                    },error, callbackOptions);                    
+                });
+            });
+            //Resolve the Deferred and start the Chain
+            link.resolve();
+            //Return the final promise that will be resolved when done
+            return promise;
         },
         
         /**

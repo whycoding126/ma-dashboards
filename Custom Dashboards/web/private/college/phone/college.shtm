@@ -47,6 +47,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
@@ -59,8 +60,12 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
-<!--    // the custom script for this page -->
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/collegeLogic.js"></script>
+    
+    <!--    the custom script for this page -->
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegePointConfigurations.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeLogic.js"></script>
 
 </head>
 <!-- Starting to write the UI -->
@@ -99,25 +104,25 @@
     <!-- Lables for this row -->
     <tr>
         <td class="leftName">Amps</td>
-        <td><div id="ampsBarChartDiv" ></div></td>
+        <td><div id="ampsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td>
         <td><div id="ampsBarTextDiv" ></div></td> 
     </tr>
     <tr>    
         <td class="leftName">Volts</td> 
-        <td><div id="voltsBarChartDiv"> </div></td>
+        <td><div id="voltsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"> </div></td>
         <td><div id="voltsTextDiv"> </div></td> 
     </tr>
     <!--the realtime numbers-->
     <tr>
         
         <td class="leftName">Kilo Watts</td>
-        <td><div id="kwBarChartDiv" ></div></td> 
+        <td><div id="kwBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
         <td><div id="kwBarTextDiv" ></div></td>         
     </tr>
     <!--the realtime numbers-->
     <tr>
         <td class="leftName">Power Factor</td>
-        <td><div id="powerFactorBarChartDiv" ></div></td> 
+        <td><div id="powerFactorBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
         <td><div id="powerFactorTextDiv"></div></td>
         </tr>
 </table>

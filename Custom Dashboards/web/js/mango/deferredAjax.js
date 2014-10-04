@@ -8,11 +8,12 @@
  * @author Terry Packer
  */
 
-function DeferredAjax(opts, ) {
+function DeferredAjax(opts ) {
     this.deferred = $.Deferred();
 }
 DeferredAjax.prototype = {
-        invoke: = function() {
+        
+        invoke: function() {
 
             var self = this, data = {
                 xid : self.xid

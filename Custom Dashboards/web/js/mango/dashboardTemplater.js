@@ -205,6 +205,8 @@ DashboardTemplater = function(options){
             $.when(this.deferred).then(function(){
                 self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {owner: self});
                 self.groupMatcher.group(); //Do your job grouper
+                if(self.loadGroupAtStartup != null) //Load a Group if required
+                    self.groupChanged(self.loadGroupAtStartup,self);
             });
         }
     }
@@ -219,6 +221,8 @@ DashboardTemplater.prototype = {
         type: 'PointHierarchy', //Currently only available Option
         
         deferred: null, //Deferred to know when Templater is Ready after creation
+        
+        loadGroupAtStartup: null, //Group Index to load at startup, can be null
         
         rollupConfiguration: null,
         timePeriodTypeConfiguration: null,

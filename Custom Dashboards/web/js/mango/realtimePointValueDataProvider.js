@@ -101,6 +101,11 @@ RealtimePointValueDataProvider.prototype = {
             this.registerPoint(dataPointConfiguration.point.xid); //Register for events
         },
         
+        /**
+         * Register a point with XID to a WebSocket
+         * @param xid - String xid of point
+         * @return socket
+         */
         registerPoint: function(xid){
             
             //Don't allow registering for a data point More than once
@@ -126,7 +131,7 @@ RealtimePointValueDataProvider.prototype = {
                 this.socketMap[xid] = socket;
             }
             
-
+            return socket; 
         },
         
         /**
@@ -146,44 +151,50 @@ RealtimePointValueDataProvider.prototype = {
         },
         
         /**
+         * Put Point Value 
          * @param options {
          *                  refresh: boolean to refresh displays,
          *                  value: PointValueTime Model
          *                 }
          * 
          * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
-         * Put Point Value 
+         * @return promise
          */
         put: function(options, error){
             
-            var deferred = $.Deferred();
-            //TODO Implement deferred Chaining
-            //Start resolving the chain
-            deferred.resolve();
+            //We will keep the requests in order by using a Deferred Chain
+            var link = $.Deferred();
+            var promise = link.promise();
             
             var self = this;
-            for(var x=0; x<this.pointConfigurations.length; x++){
-                var configuration = this.pointConfigurations[x];
+            $.each(this.pointConfigurations, function(i, configuration){
+                //Form Chain
+                promise = promise.then(function(){
+                  //Define the options to use within the done callback
                 var callbackOptions = {
-                        refresh: options.refresh,
-                        configuration: configuration
-                }; //Define the options to use within the done callback
-                var da = mangoRest.pointValues.put(this.pointConfigurations[x].point.xid,
-                        options.value,
-                        function(pvt, xid, options){
-
-                    if(options.refresh == true){
-                        var data = new Array();
-                        data.push(pvt);
-                      //Inform our listeners of this new data
-                        for(var i=0; i<self.listeners.length; i++){
-                            self.listeners[i].onLoad(data, options.configuration.point);
+                        refresh: options.refresh, //Refresh?
+                        configuration: configuration, //Configuration to use
+                        listeners: self.listeners //Listeners to fire
+                }; 
+                return mangoRest.pointValues.put(configuration.point.xid,
+                            options.value,
+                            function(pvt, xid, options){
+    
+                        if(options.refresh == true){
+                            var data = new Array();
+                            data.push(pvt);
+                          //Inform our listeners of this new data
+                            for(var i=0; i<options.listeners.length; i++){
+                                options.listeners[i].onLoad(data, options.configuration.point);
+                            }
                         }
-                    }
-                },error, callbackOptions);                    
-            }
-           
-            return deferred;
+                    },error, callbackOptions);                    
+                });
+            });
+            //Resolve the Deferred and start the Chain
+            link.resolve();
+            //Return the final promise that will be resolved when done
+            return promise;
         },
         
 };

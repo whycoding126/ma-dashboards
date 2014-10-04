@@ -77,7 +77,7 @@
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm')">Historical Data Provider</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/inputs.shtm')">Inputs</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/pieChart.shtm')">Pie Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChat.shtm')">Realtime Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChart.shtm')">Realtime Serial Chart</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChart.shtm')">Serial Chart</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statistics.shtm')">Statistics</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm')">Statistics Bar Chart</a></li>
