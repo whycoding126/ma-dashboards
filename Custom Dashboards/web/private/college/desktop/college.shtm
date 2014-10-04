@@ -6,7 +6,7 @@
     <title>Meters</title>
   <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/college/desktop/collegeMobile.css" rel="stylesheet">
         
         
         <!-- JQuery and Plugins -->
@@ -110,7 +110,7 @@
             <button class="btn" onClicked="#main">History</button>
             <button class="btn" href="#statisticsPage">Statistics</button>
         </div>
-    <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    <div id="kwhBarChartDiv" class="amChartsTab">
     </div>
   <h3>KWH Watts Per Day</h3>
 <!-- Ui Wiget for hourly time Picker-->
@@ -147,40 +147,47 @@
 <!--The tabs for the charts  -->
 <div id="tab"  class="col-md-8">
     <div>
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs">
             <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
-            <button class="btn" href="#kw">KW</button>
+            <a href="#panel-kw" data-toggle="tab" class="btn">KW</a>
             </li>
             
             <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
-            <button class="btn" href="#amps">Amps</button>
+            <a href="#panel-amps" data-toggle="tab">Amps</a>
             </li>
             
             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-            <button class="btn" onclick=""href="#volts">Volts</button>
+            <a class="btn" href="#panel-volts" data-toggle="tab">Volts</a>
             </li>
         </ul>
     </div>
-
-    <div id="kw">
-        <div id="kwhChartDiv" >
+    <div class="tab-content">
+    <div class="tab-pane" id="panel-kwh">
+        <div id="kwhChartDiv"  class="amChartsTab" >
         </div>
     </div>
-    <div id="amps">
-        <div id="ampsChartDiv" >
+    <div  class="tab-pane" id="panel-amps" id="amps">
+        <div id="ampsChartDiv"  class="amChartsTab" >
         </div>
     </div>
     
-    <div id="volts">
-        <div id="voltsLineChartDiv">
+    <div  class="tab-pane" id="panel-volts" id="volts">
+        <div id="voltsLineChartDiv"  class="amChartsTab">
         </div>
+    
+    <tab>
     </div>
 
 
 
     <!--Starting the Rollup and date and time pickers -->
     <div class="row">
-        
+         <div class="col-md-2">
+        <select id="simpleTimePicker" class="form-control">
+            <option value="" disabled selected>Today</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+    </div>
             <div class="col-md-2">
                 <input placeholder="Start Date" id="startDate" class="form-control"></input>
             </div>
