@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Meters</title>
-    
-    
     <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
     <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
     <link rel="stylesheet" href="/modules/dashboards/web/private/css/collegeMobile.css">
@@ -61,55 +59,111 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
-    
+<!--    // the custom script for this page -->
     <script type="text/javascript" src="/modules/dashboards/web/private/js/collegeLogic.js"></script>
 
 </head>
-
 <!-- Starting to write the UI -->
-
 <body>
 
+<!--this is the start of the page -->
 <div data-role="page" id="home">
+
     <div data-theme="a" data-role="header">
      <a href="#nav-panel" data-icon="bars">Meters</a>
      <a href="#help" data-transition="flip" class="ui-btn-icon-right" data-icon="info">Help</a>
 
 <div class="mynav">
-    <a data-transition="flip" class="ui-btn"  href="/private-dashboards/helloWorld.shtm">Hello World</a>
-    <button class='navButton'>Page 2</button>
-    <button class='navButton'>Page 3</button>
-    <button class='navButton'>Page 4</button>
+<h3>Meters</h3>
 </div>
+    
+    </div> <!--end the header-->
 
-</div> <!--end the header-->
-
-<div data-role="panel" data-theme="a" id="nav-panel">
-    <ul class="navListView" data-role="listview" data-filter="true" data-rel="close" id="groupsList">
-    </ul>
-</div>
 
 <!--This starts the main content of the page -->
 <div data-role="main"  class="ui-content">
+<!--this is the meters list that is in the nav pannel -->
 
 
-<!--The top left chart -->
+<!--The top left chart 
+1st div is the chart 2nd is the realtime text data
+
+-->
 <div class="barChartLeft">
-        <h4>Amps</h4>
-    <div id="ampsBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Volts</h4> 
-    <div id="voltsBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Kilo Watts</h4>
-    <div id="kwBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Power Factor</h4>
-    <div id="powerFactorBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
+<table id="phone-table" height=100%>
+    <!-- Lables for this row -->
+    <tr>
+        <td class="leftName">Amps</td>
+        <td><div id="ampsBarChartDiv" ></div></td>
+        <td><div id="ampsBarTextDiv" ></div></td> 
+    </tr>
+    <tr>    
+        <td class="leftName">Volts</td> 
+        <td><div id="voltsBarChartDiv"> </div></td>
+        <td><div id="voltsTextDiv"> </div></td> 
+    </tr>
+    <!--the realtime numbers-->
+    <tr>
+        
+        <td class="leftName">Kilo Watts</td>
+        <td><div id="kwBarChartDiv" ></div></td> 
+        <td><div id="kwBarTextDiv" ></div></td>         
+    </tr>
+    <!--the realtime numbers-->
+    <tr>
+        <td class="leftName">Power Factor</td>
+        <td><div id="powerFactorBarChartDiv" ></div></td> 
+        <td><div id="powerFactorTextDiv"></div></td>
+        </tr>
+</table>
+</div>
+
+
+    
+
+
+
+    
+
 </div> <!--The End of the top Left Chart -->
 
 
 <!--The Top right chart -->
 <div class="statsChart">
-    <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h3>KWH Watts Per Day</h3>
+        <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
+            <a class="ui-btn ui-btn-inline" href="#main">History</a>
+            <a class="ui-btn ui-btn-inline" href="#statisticsPage">Statistics</a>
+        </div>
+      
+    <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+  <h3>KWH Watts Per Day</h3>
+<!-- Ui Wiget for hourly time Picker-->
+<div class="ui-grid-d center ui-responsive">
+    <div class="ui-block-a">
+        <label for="simpleTimePicker"></label>
+        <select id="simpleTimePicker" class="form-control">
+            <option value="" disabled selected>Today</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+    </div>
+    <div class="ui-block-b">
+        <input placeholder="From Date" id="startDate"> </input>
+    </div>
+    <div class="ui-block-c">
+        <input placeholder="To Date" id="endDate"></input>
+    </div>
+    <div class="ui-block-d">
+        <label for="simpleTimePeriodType">
+        </label>
+        
+        <select id="simpleTimePeriodType" class="form-control">
+            <option value="" disabled selected>Hourly</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+    </div>
+</div>
+
 </div><!--End the top Right Chart -->
 
 
@@ -117,67 +171,77 @@
 <div id="tab" data-role="tabs" class="lineChartTabs"  data-theme="a">
     <div  data-role="navbar" >
         <ul>
-            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);"><a data-transition="flip" data-theme="a" href="#kw">KW</a>
+            
+            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+            <a data-transition="flip" data-theme="a" href="#kw">KW</a>
             </li>
-            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);"><a data-transition="fade" data-theme="a" href="#amps">Amps</a>
+            
+            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
+            <a data-transition="fade" data-theme="a" href="#amps">Amps</a>
             </li>
-            <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);"><a onclick=""data-transition="fade" data-theme="a" href="#volts">Volts</a>
+            
+            <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+            <a onclick=""data-transition="fade" data-theme="a" href="#volts">Volts</a>
             </li>
         </ul>
-</div>
+    </div>
 
-<div id="kw">
-    <div  id="kwhChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
-<div id="amps">
-    <div id="ampsChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
-<div id="volts">
-    <div id="voltsLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
+    <div id="kw">
+        <div  id="kwhChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
+    </div>
+    <div id="amps">
+        <div id="ampsChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
+    </div>
+    
+    <div id="volts">
+        <div id="voltsLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
+    </div>
 
 
 
-<!-Starting the Rollup and date and time pickers-->
-<div class="ui-grid-a">
-<div data-role="navbar">
-    <ul>
-        <li>
-        <div class="col-md-6 col-sm-3 placeholder">
-            <input id="startDate"></input>
-            <h4>Start Date</h4>
-        </div>
-        <div class="col-md-6 col-sm-3 placeholder">
-            <input id="endDate"></input>
-            <h4>End Date</h4>
-        </div>
-        </li>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="rollup">Rollup:</label>
-            <select id="rollup" class="form-control"></select>
-        </div>
-        </li>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="timePeriodType">Time Period:</label>
-            <select id="timePeriodType" class="form-control"></select>
-        </div>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="timePeriod">Periods:</label>
-            <input id="timePeriod" type="number" value="1" class="form-control"/>
-        </div>
-        </li>
-    </ul>
-</div>
-</div>
+    <!-Starting the Rollup and date and time pickers-->
+    <div class="ui-grid-a">
+    <div data-role="navbar">
+        <ul>
+            <li>
+            <div class="col-md-6 col-sm-3 placeholder">
+                <input id="startDate"></input>
+                <h4>Start Date</h4>
+            </div>
+            <div class="col-md-6 col-sm-3 placeholder">
+                <input id="endDate"></input>
+                <h4>End Date</h4>
+            </div>
+            </li>
+            <li>
+            <div class="ui-field-contain"  style="width=79%">
+                <label for="rollup">Rollup:</label>
+                <select id="rollup" class="form-control"></select>
+            </div>
+            </li>
+            <li>
+            <div class="ui-field-contain"  style="width=79%">
+                <label for="timePeriodType">Time Period:</label>
+                <select id="timePeriodType" class="form-control"></select>
+            </div>
+            <li>
+            <div class="ui-field-contain"  style="width=79%">
+                <label for="timePeriod">Periods:</label>
+                <input id="timePeriod" type="number" value="1" class="form-control"/>
+            </div>
+            </li>
+        </ul>
+    </div>
+    </div>
 </div> <!--this is the end of the tabs-->
 
-<div id="errors">
-</div>
+    <div id="errors">
+    </div>
 
-</div>
+<!--</div><!--end of the 1st page-->-->
 
 
 <div data-role="footer" data-theme="a">
@@ -194,7 +258,11 @@
         <a href="#home" data-icon="back" data-transition="flip">Back</a>
     </div><!-- /header -->
 
-<div data-role="content">	
+<div data-role="content">
+
+
+
+
     <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my ID is beeing clicked.
     </p>
     <p>
@@ -207,5 +275,68 @@
     <h4>Powered by mango automation copyright </script type="text/javascript">return new Date() </script></h4>
 </div><!-- /footer -->
 </div><!-- /help page -->
+
+
+
+
+
+<!-- The Stats Page -->
+<!--Start the acual Help page-->
+<div data-role="page" id="statisticsPage">
+    <div data-theme="a" data-role="header"">
+        <h3></h3>
+        <h3>Statistics</h3>
+        <a href="#home" data-icon="back" data-transition="flip">Back</a>
+    </div><!-- /header -->
+
+<div data-role="content">
+    <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
+    <ul id="groupsList"></ul>
+	<p>Statistics display using 1 Statistics Data Provider mapped to temperature and voltage points. Click the Target Folder to start.
+	</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Average</th>
+                  <th>Integral</th>
+                  <th>Sum</th>
+                  <th>Count</th>
+                  <th>Maximum</th>
+                  <th>Minimum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="pointName">Voltage</td>
+                  <td id="voltageAverage"></td>
+                  <td id="voltageIntegral"></td>
+                  <td id="voltageSum"></td>
+                  <td id="voltageCount"></td>
+                  <td id="voltageMax"></td>
+                  <td id="voltageMin"></td>
+                </tr>
+                <tr>
+                  <td id="pointName">Temperature</td>
+                  <td id="temperatureAverage"></td>
+                  <td id="temperatureIntegral"></td>
+                  <td id="temperatureSum"></td>
+                  <td id="temperatureCount"></td>
+                  <td id="temperatureMax"></td>
+                  <td id="temperatureMin"></td>
+                </tr>
+              </tbody>
+           </table>
+
+</div><!-- /content -->
+
+<div data-role="footer" data-theme="a">
+    <h4>Powered by mango automation copyright </script type="text/javascript">return new Date() </script></h4>
+</div><!-- /footer -->
+</div><!-- /help page -->
+
+
+
+
 </body>
 </html>

@@ -1075,7 +1075,7 @@ var powerFactorBarChart = new BarChartConfiguration(
 
 
 <!--The tabs for the charts  -->
-<div id="tab" data-role="tabs" class="lineChartTabs"  data-theme="a">
+<div id="tab" class="nav-tabs" class="lineChartTabs">
     <div  data-role="navbar" >
         <ul>
             <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);"><a data-transition="flip" data-theme="a" href="#kw">KW</a>

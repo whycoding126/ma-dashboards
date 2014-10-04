@@ -2,46 +2,34 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meters</title>
-    
-    
-    <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
-    <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
-    <link rel="stylesheet" href="/modules/dashboards/web/private/css/collegeMobile.css">
-    <!-- JQuery -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-
-    <!-- Joseph Page -->
-    <script src="/modules/dashboards/web/js/joseph/index.js"></script>
-
-    <!-- JQuery Mobile -->
-    <script src="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
-
-    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
-    <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
-	
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
-    <!-- Charting Library -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
-
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
+  <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        
+        
+        <!-- JQuery and Plugins -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+        <!-- Charting Library -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
+        
+        <!-- Bootstrap -->
+        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
+        
 
 
 
-    <!-- Bootstrap -->
-    <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
-    
-    
     <!-- Mango Rest API Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
     
     <!-- Mango AM Charts Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
-        
     <!-- MangoJS -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
@@ -61,151 +49,176 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
-    
+<!--    // the custom script for this page -->
     <script type="text/javascript" src="/modules/dashboards/web/private/js/collegeLogic.js"></script>
 
 </head>
-
 <!-- Starting to write the UI -->
-
 <body>
-
-<div data-role="page" id="home">
-    <div data-theme="a" data-role="header">
-     <a href="#nav-panel" data-icon="bars">Meters</a>
-     <a href="#help" data-transition="flip" class="ui-btn-icon-right" data-icon="info">Help</a>
-
-<div class="mynav">
-    <a data-transition="flip" class="ui-btn"  href="/private-dashboards/helloWorld.shtm">Hello World</a>
-    <button class='navButton'>Page 2</button>
-    <button class='navButton'>Page 3</button>
-    <button class='navButton'>Page 4</button>
+<div class="container">
+<div class="row clearfix">
+    <div class="col-md-12 column">
+        <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+        <select class="navbar-brand">
+            <option value="" disabled selected>Meters</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+		</div>
+</div>
 </div>
 
-</div> <!--end the header-->
+    <div class="col-md-4  container-lg-height" style=" height:1000px">
 
-<div data-role="panel" data-theme="a" id="nav-panel">
-    <ul class="navListView" data-role="listview" data-filter="true" data-rel="close" id="groupsList">
-    </ul>
+<table height=100%>
+    <!-- Lables for this row -->
+    <tr>
+        <td class="leftName">Amps</td>
+        <td><div id="ampsBarChartDiv" ></div></td>
+        <td><div id="ampsBarTextDiv" ></div></td> 
+    </tr>
+    <tr>    
+        <td class="leftName">Volts</td> 
+        <td><div id="voltsBarChartDiv"> </div></td>
+        <td><div id="voltsTextDiv"> </div></td> 
+    </tr>
+    <!--the realtime numbers-->
+    <tr>
+        
+        <td class="leftName">Kilo Watts</td>
+        <td><div id="kwBarChartDiv" ></div></td> 
+        <td><div id="kwBarTextDiv" ></div></td>         
+    </tr>
+    <!--the realtime numbers-->
+    <tr>
+        <td class="leftName">Power Factor</td>
+        <td><div id="powerFactorBarChartDiv" ></div></td> 
+        <td><div id="powerFactorTextDiv"></div></td>
+        </tr>
+</table>
+    </div>
+    
+    
+    
+    
+    
+<!--    start top right -->
+    
+    
+    <div class="col-md-8">
+        <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
+            <button class="btn" onClicked="#main">History</button>
+            <button class="btn" href="#statisticsPage">Statistics</button>
+        </div>
+    <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+  <h3>KWH Watts Per Day</h3>
+<!-- Ui Wiget for hourly time Picker-->
+<div class="row">
+    <div class="col-md-2">
+        <select id="simpleTimePicker" class="form-control">
+            <option value="" disabled selected>Today</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+    </div>
+    
+    <div class="col-md-2">
+        <input class="form-control" placeholder="From Date" id="startDate"> </input>
+    </div>
+    
+    <div class="col-md-2">
+        <input class="form-control" placeholder="To Date" id="endDate"></input>
+    </div>
+    
+    <div class="col-md-2">
+        <select id="simpleTimePeriodType" class="form-control">
+            <option value="" disabled selected>Hourly</option>
+            <option value="simpleTimePeriodType"></option>
+        </select>
+    </div>
 </div>
-
-<!--This starts the main content of the page -->
-<div data-role="main"  class="ui-content">
-
-
-<!--The top left chart -->
-<div class="barChartLeft">
-        <h4>Amps</h4>
-    <div id="ampsBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Volts</h4> 
-    <div id="voltsBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Kilo Watts</h4>
-    <div id="kwBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h4>Power Factor</h4>
-    <div id="powerFactorBarChartDiv" style="width:100%; height:200px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div> <!--The End of the top Left Chart -->
-
-
-<!--The Top right chart -->
-<div class="statsChart">
-    <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-        <h3>KWH Watts Per Day</h3>
-</div><!--End the top Right Chart -->
-
+</div>
+    
+    
+    
+    
+    
 
 <!--The tabs for the charts  -->
-<div id="tab" data-role="tabs" class="lineChartTabs"  data-theme="a">
-    <div  data-role="navbar" >
-        <ul>
-            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);"><a data-transition="flip" data-theme="a" href="#kw">KW</a>
+<div id="tab"  class="col-md-8">
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+            <button class="btn" href="#kw">KW</button>
             </li>
-            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);"><a data-transition="fade" data-theme="a" href="#amps">Amps</a>
+            
+            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
+            <button class="btn" href="#amps">Amps</button>
             </li>
-            <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);"><a onclick=""data-transition="fade" data-theme="a" href="#volts">Volts</a>
+            
+            <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+            <button class="btn" onclick=""href="#volts">Volts</button>
             </li>
         </ul>
-</div>
+    </div>
 
-<div id="kw">
-    <div  id="kwhChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
-<div id="amps">
-    <div id="ampsChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
-<div id="volts">
-    <div id="voltsLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
-</div>
-
-
-
-<!-Starting the Rollup and date and time pickers-->
-<div class="ui-grid-a">
-<div data-role="navbar">
-    <ul>
-        <li>
-        <div class="col-md-6 col-sm-3 placeholder">
-            <input id="startDate"></input>
-            <h4>Start Date</h4>
+    <div id="kw">
+        <div id="kwhChartDiv" >
         </div>
-        <div class="col-md-6 col-sm-3 placeholder">
-            <input id="endDate"></input>
-            <h4>End Date</h4>
+    </div>
+    <div id="amps">
+        <div id="ampsChartDiv" >
         </div>
-        </li>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="rollup">Rollup:</label>
-            <select id="rollup" class="form-control"></select>
+    </div>
+    
+    <div id="volts">
+        <div id="voltsLineChartDiv">
         </div>
-        </li>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="timePeriodType">Time Period:</label>
-            <select id="timePeriodType" class="form-control"></select>
-        </div>
-        <li>
-        <div class="ui-field-contain"  style="width=79%">
-            <label for="timePeriod">Periods:</label>
-            <input id="timePeriod" type="number" value="1" class="form-control"/>
-        </div>
-        </li>
-    </ul>
-</div>
-</div>
-</div> <!--this is the end of the tabs-->
-
-<div id="errors">
-</div>
-
-</div>
+    </div>
 
 
-<div data-role="footer" data-theme="a">
-    <h4>Powered by mango automation copyright 2014</h4>
-</div><!-- /footer -->
 
-</div> <!--The End Of Page One -->
+    <!--Starting the Rollup and date and time pickers -->
+    <div class="row">
+        
+            <div class="col-md-2">
+                <input placeholder="Start Date" id="startDate" class="form-control"></input>
+            </div>
+         
+            <div class="col-md-2">
+                <input placeholder="End Date"id="endDate" class="form-control"></input>
+            </div>
+            
+            <div class="col-md-2">
+                <select id="rollup" class="form-control">
+                
+                </select>
+            </div>
+       
+       
+            <div class="col-md-2">
+                <select id="timePeriodType" class="form-control">
+                
+                </select>
+            </div>
+            
+            <div class="col-md-2">
+                <input placeholder="1" id="timePeriod" type="number" value="1" class="form-control"></input>
+            </div>
+        
+        
+    </div>
+    </div>
+</div> 
+    
+    
+    
+    
+    
+    
+    
+    </div>
+<!--  </div>-->
 
-<!--Start the acual Help page-->
-<div data-role="page" id="help">
-    <div data-theme="a" data-role="header"">
-        <h3></h3>
-        <h3>Help</h3>
-        <a href="#home" data-icon="back" data-transition="flip">Back</a>
-    </div><!-- /header -->
-
-<div data-role="content">	
-    <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my ID is beeing clicked.
-    </p>
-    <p>
-    <a href="#foo">Back to foo
-    </a>
-    </p>
-</div><!-- /content -->
-
-<div data-role="footer" data-theme="a">
-    <h4>Powered by mango automation copyright </script type="text/javascript">return new Date() </script></h4>
-</div><!-- /footer -->
-</div><!-- /help page -->
 </body>
 </html>
