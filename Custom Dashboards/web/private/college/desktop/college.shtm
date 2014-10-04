@@ -55,177 +55,154 @@
 </head>
 <!-- Starting to write the UI -->
 <body>
-<div class="container">
-<div class="row clearfix">
-    <div class="col-md-12 column">
-        <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-        <select class="navbar-brand">
-            <option value="" disabled selected>Meters</option>
-            <option value="simpleTimePeriodType"></option>
-        </select>
-		</div>
-</div>
-</div>
+    <div class="page-header" style="text-align: center;">
+        <h1>Meter Name<small>   Substation A</small></h1>
+    </div>
+
+    <div class="container">
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+            <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+            <select id="groupsList" class="navbar-brand">
+                <option value="" disabled selected>Meters</option>
+                <option value="simpleTimePeriodType"></option>
+            </select>
+        </div>
+    </div>
+    </div>
 
     <div class="col-md-4  container-lg-height" style=" height:1000px">
-
-<table height=100%>
-    <!-- Lables for this row -->
-    <tr>
-        <td class="leftName">Amps</td>
-        <td><div id="ampsBarChartDiv" ></div></td>
-        <td><div id="ampsBarTextDiv" ></div></td> 
-    </tr>
-    <tr>    
-        <td class="leftName">Volts</td> 
-        <td><div id="voltsBarChartDiv"> </div></td>
-        <td><div id="voltsTextDiv"> </div></td> 
-    </tr>
-    <!--the realtime numbers-->
-    <tr>
-        
-        <td class="leftName">Kilo Watts</td>
-        <td><div id="kwBarChartDiv" ></div></td> 
-        <td><div id="kwBarTextDiv" ></div></td>         
-    </tr>
-    <!--the realtime numbers-->
-    <tr>
-        <td class="leftName">Power Factor</td>
-        <td><div id="powerFactorBarChartDiv" ></div></td> 
-        <td><div id="powerFactorTextDiv"></div></td>
-        </tr>
-</table>
+        <table height=100%>
+            <!-- Lables for this row -->
+            <tr>
+                <td class="leftName">Amps</td>
+                <td><div id="ampsBarChartDiv" ></div></td>
+                <td><div id="ampsBarTextDiv" ></div></td> 
+            </tr>
+            <tr>    
+                <td class="leftName">Volts</td> 
+                <td><div id="voltsBarChartDiv"> </div></td>
+                <td><div id="voltsTextDiv"> </div></td> 
+            </tr>
+            <!--the realtime numbers-->
+            <tr>
+                
+                <td class="leftName">Kilo Watts</td>
+                <td><div id="kwBarChartDiv" ></div></td> 
+                <td><div id="kwBarTextDiv" ></div></td>         
+            </tr>
+            <!--the realtime numbers-->
+            <tr>
+                <td class="leftName">Power Factor</td>
+                <td><div id="powerFactorBarChartDiv" ></div></td> 
+                <td><div id="powerFactorTextDiv"></div></td>
+                </tr>
+        </table>
     </div>
-    
-    
-    
-    
-    
-<!--    start top right -->
-    
-    
+
+    <!--    start top right -->
     <div class="col-md-8">
         <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
-            <button class="btn" onClicked="#main">History</button>
-            <button class="btn" href="#statisticsPage">Statistics</button>
+            <button class="btn" onclick="#main">History</button>
+            <button class="btn" onclick="#statisticsPage">Statistics</button>
         </div>
-    <div id="kwhBarChartDiv" class="amChartsTab">
+        <div id="kwhBarChartDiv" class="amChartsTab">
+        </div>
+            <h3>KWH Watts Per Day</h3>
+        <!-- Ui Wiget for hourly time Picker-->
+        <div class="centeredPickers">
+            <div class="row">
+                
+                <div class="col-sm-2">
+                    <select id="simpleTimePicker" class="form-control">
+                        <option value="" disabled selected>Today</option>
+                        <option value="simpleTimePeriodType"></option>
+                    </select>
+                </div>
+        
+                <div class="col-sm-4">
+                    <input class="form-control" placeholder="From Date" id="startDate"> </input>
+                </div>
+        
+                <div class="col-sm-4">
+                    <input class="form-control" placeholder="To Date" id="endDate"></input>
+                </div>
+                
+                <div class="col-md-2">
+                    <select id="simpleTimePeriodType" class="form-control">
+                        <option value="" disabled selected>Hourly</option>
+                        <option value="simpleTimePeriodType"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
-  <h3>KWH Watts Per Day</h3>
-<!-- Ui Wiget for hourly time Picker-->
-<div class="row">
-    <div class="col-md-2">
-        <select id="simpleTimePicker" class="form-control">
-            <option value="" disabled selected>Today</option>
-            <option value="simpleTimePeriodType"></option>
-        </select>
-    </div>
-    
-    <div class="col-md-2">
-        <input class="form-control" placeholder="From Date" id="startDate"> </input>
-    </div>
-    
-    <div class="col-md-2">
-        <input class="form-control" placeholder="To Date" id="endDate"></input>
-    </div>
-    
-    <div class="col-md-2">
-        <select id="simpleTimePeriodType" class="form-control">
-            <option value="" disabled selected>Hourly</option>
-            <option value="simpleTimePeriodType"></option>
-        </select>
-    </div>
-</div>
-</div>
-    
-    
-    
-    
     
 
-<!--The tabs for the charts  -->
-<div id="tab"  class="col-md-8">
-    <div>
-        <ul class="nav nav-tabs">
-            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
-            <a href="#panel-kw" data-toggle="tab" class="btn">KW</a>
-            </li>
-            
-            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
-            <a href="#panel-amps" data-toggle="tab">Amps</a>
-            </li>
-            
-            <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-            <a class="btn" href="#panel-volts" data-toggle="tab">Volts</a>
-            </li>
-        </ul>
-    </div>
-    <div class="tab-content">
-    <div class="tab-pane" id="panel-kwh">
-        <div id="kwhChartDiv"  class="amChartsTab" >
+    <!--The tabs for the charts  -->
+    <div id="tab"  class="col-md-8">
+        <div>
+            <ul class="nav nav-tabs">
+                <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+                <a href="#panel-kw" data-toggle="tab" class="btn">KW</a>
+                </li>
+                
+                <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
+                <a href="#panel-amps" data-toggle="tab">Amps</a>
+                </li>
+                
+                <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a class="btn" href="#panel-volts" data-toggle="tab">Volts</a>
+                </li>
+            </ul>
         </div>
-    </div>
-    <div  class="tab-pane" id="panel-amps" id="amps">
-        <div id="ampsChartDiv"  class="amChartsTab" >
+        <div class="tab-content">
+        <div class="tab-pane" id="panel-kwh">
+            <div id="kwhChartDiv"class="amChartsTab" >
+            </div>
         </div>
-    </div>
-    
-    <div  class="tab-pane" id="panel-volts" id="volts">
-        <div id="voltsLineChartDiv"  class="amChartsTab">
+        <div  class="tab-pane" id="panel-amps" id="amps">
+            <div id="ampsChartDiv"  class="amChartsTab" >
+            </div>
         </div>
-    
-    <tab>
-    </div>
+        
+        <div  class="tab-pane" id="panel-volts" id="volts">
+            <div id="voltsLineChartDiv"  class="amChartsTab">
+            </div>
+        <tab>
+        </div>
 
 
 
     <!--Starting the Rollup and date and time pickers -->
-    <div class="row">
-         <div class="col-md-2">
-        <select id="simpleTimePicker" class="form-control">
-            <option value="" disabled selected>Today</option>
-            <option value="simpleTimePeriodType"></option>
-        </select>
-    </div>
-            <div class="col-md-2">
-                <input placeholder="Start Date" id="startDate" class="form-control"></input>
-            </div>
-         
-            <div class="col-md-2">
-                <input placeholder="End Date"id="endDate" class="form-control"></input>
-            </div>
-            
-            <div class="col-md-2">
-                <select id="rollup" class="form-control">
-                
-                </select>
-            </div>
-       
-       
-            <div class="col-md-2">
-                <select id="timePeriodType" class="form-control">
-                
-                </select>
-            </div>
-            
-            <div class="col-md-2">
-                <input placeholder="1" id="timePeriod" type="number" value="1" class="form-control"></input>
-            </div>
-        
-        
-    </div>
-    </div>
-</div> 
-    
-    
-    
-    
-    
-    
-    
-    </div>
-<!--  </div>-->
 
+    <div class="row">
+        <div class="col-sm-2">
+            <select id="simpleTimePicker" class="form-control">
+                <option value="" disabled selected>Today</option>
+                <option value="simpleTimePeriodType"></option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <input class="form-control" placeholder="To Date" id="startDate"></input>
+        </div>
+        <div class="col-sm-2">
+            <input class="form-control" placeholder="To Date" id="endDate"></input>
+        </div>
+        <div class="col-sm-2">
+            <select id="rollup" class="form-control">
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select id="timePeriodType" class="form-control">
+            </select>
+        </div>
+        <div class="col-xs-2">
+            <input placeholder="1" id="timePeriod" type="number" value="1" class="form-control"></input>
+        </div>
+    </div>
+</div>
+        </div>
 </body>
 </html>

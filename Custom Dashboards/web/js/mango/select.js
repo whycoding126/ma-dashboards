@@ -1,7 +1,12 @@
 /**
- * Javascript Objects Used for Configuration of Rollups Picker
+ *Configuration of Rollups Picker into a <select>
  * 
+ * One can use this class to tie point values into a drop down menu,via the html select property
+ * This is done most the time byt tying in a Grouper to the SelectConfiguration. 
+ 
+ * Example goes here.
  * 
+ * {@property} divId {String} The div Id that one wants to use for the selctor
  * 
  * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
  * @author Terry Packer

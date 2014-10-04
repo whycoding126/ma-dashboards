@@ -76,13 +76,18 @@
 <div class="mynav">
 <h3>Meters</h3>
 </div>
-    
-    </div> <!--end the header-->
+
+</div> <!--end the header-->
+
+<!--this is the pannel for the meter listview -->
+<div data-role="panel" data-theme="a" id="nav-panel">
+    <ul class="navListView" data-role="listview" data-filter="true" data-rel="close" id="groupsList">
+    </ul>
+</div>
 
 
 <!--This starts the main content of the page -->
 <div data-role="main"  class="ui-content">
-<!--this is the meters list that is in the nav pannel -->
 
 
 <!--The top left chart 

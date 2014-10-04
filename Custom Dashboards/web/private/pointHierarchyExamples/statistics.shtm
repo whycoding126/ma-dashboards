@@ -103,13 +103,7 @@
                dataProviders: dataProviders,
                groupSelectConfiguration: groupListView,
        }
-       
-       
-       
        templater = new DashboardTemplater(templaterConfig);
-       
-       
-            
    });// End When page Ready
    
    </script>

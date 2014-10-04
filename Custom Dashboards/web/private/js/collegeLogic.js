@@ -739,8 +739,9 @@ var powerFactorBarChart = new BarChartConfiguration(
     
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
-                5, 
-                [{matchAttribute: 'name', regex: /.*\(kWh\)/, providerType: 'Statistics'}]
+                5,
+                [{matchAttribute: 'name', regex: /.*\(kWh\)/}],
+                {providerType: 'Statistics'}
             )
         );
 
@@ -749,42 +750,48 @@ var powerFactorBarChart = new BarChartConfiguration(
        pointConfigurations.push(
             new DataPointMatchConfiguration(
             6,
-            [{matchAttribute: 'name',regex: /Phase\ \A\ \(A\)/g, providerType: 'Statistics'}]
+            [{matchAttribute: 'name',regex: /Phase\ \A\ \(A\)/g}],
+             {providerType: 'Statistics'}
                 )
             )
 
        pointConfigurations.push(
             new DataPointMatchConfiguration(
             7,
-            [{matchAttribute: 'name' , regex: /Phase\ \B\ \(\A\)/g , providerType: 'Statistics'}]
+            [{matchAttribute: 'name' , regex: /Phase\ \B\ \(\A\)/g}] ,
+            {providerType: 'Statistics'}
                 )
             )
 
        pointConfigurations.push(
             new DataPointMatchConfiguration(
             8,
-            [{matchAttribute: 'name' , regex: /\Phase\ C\ \(A\)/g, providerType: 'Statistics'}]
+            [{matchAttribute: 'name' , regex: /\Phase\ C\ \(A\)/g}],
+            {providerType: 'Statistics'}
             )
         )
 
        pointConfigurations.push(
             new DataPointMatchConfiguration(
             9,
-            [{matchAttribute:'name', regex: /Voltage\ \A-N\ \(V\)/g , providerType: 'Statistics'}]
+            [{matchAttribute:'name', regex: /Voltage\ \A-N\ \(V\)/g }],
+            {providerType: 'Statistics'}
             )
         )
 
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
                 10,
-                [{matchAttribute: 'name' ,regex: /Voltage\ B-N\ \(V\)/g, providerType: 'Statistics'}]
+                [{matchAttribute: 'name' ,regex: /Voltage\ B-N\ \(V\)/g,}],
+                {providerType: 'Statistics'}
             )
         )
 
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
                 11, 
-                [{matchAttribute: 'name', regex: /Voltage\ C-N\ \(V\)/g , providerType: 'Statistics'}]
+                [{matchAttribute: 'name', regex: /Voltage\ C-N\ \(V\)/g}] , 
+                {providerType: 'Statistics'}
             )
        )
 
@@ -799,14 +806,16 @@ var powerFactorBarChart = new BarChartConfiguration(
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
                 13, 
-                [{matchAttribute: 'name',regex: /\(kWh\)/g , providerType: 'Statistics'}]
+                [{matchAttribute: 'name',regex: /\(kWh\)/g }],
+                 {providerType: 'Statistics'}
             )
        );
 
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
                 14, 
-                [{matchAttribute: 'name' ,regex: /\(kWh\)/g,providerType: 'Statistics'}]
+                [{matchAttribute: 'name' ,regex: /\(kWh\)/g,}],
+                {providerType: 'Statistics'}
             )
        );
 
@@ -826,14 +835,14 @@ var powerFactorBarChart = new BarChartConfiguration(
 
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
-                17, 
+                17,
                 [{matchAttribute: 'name' , regex: /Voltage\ \C-N\ \(V\)/g}]
             )
        );
 
        pointConfigurations.push(
                 new DataPointMatchConfiguration(
-                18, 
+                18,
                 [{matchAttribute: 'name' , regex: /Real\ Power\ A\ \(kW\)/g }]
             )
        );
@@ -900,9 +909,8 @@ var powerFactorBarChart = new BarChartConfiguration(
        var meterGroups = new DataPointGroupConfiguration({
            groupBy: 'Folder',
            labelAttribute: 'name',
-           matchConfigurations: [{ matchAttribute: 'path' , regex: /.\/Buildings\/City\ Plex\/Meters\/M.*\ / }]
-           }
-           );
+           matchConfigurations: [{ matchAttribute: 'path', regex: /\/Buildings\/City Plex\/Meters\/M.*/ }]
+           });
        
        
        /**
@@ -916,15 +924,16 @@ var powerFactorBarChart = new BarChartConfiguration(
        groupConfigurations.push(meterGroups);
        
        /**
-       *Create a custom grouper for jquery mobiles listview element
+       *Create a custom grouper for bootstraps listgroup element
        */
-       var groupListView = new ListViewConfiguration(
+       var groupSelectView = new ListViewConfiguration(
         'groupsList', 
         {},
+
         /*
         * Adding Custom Class tags to the object of the JQuery Mobiles ListView
         */
-        {styleClass: "ui-btn ui-btn-icon-right  ui-icon-gear"}
+        {styleClass: "btn"}
         );
        
        /**
@@ -937,7 +946,7 @@ var powerFactorBarChart = new BarChartConfiguration(
                pointConfigurations: pointConfigurations,
                groupConfigurations: groupConfigurations,
                dataProviders: dataProviders,
-               groupSelectConfiguration: groupListView,
+               groupSelectConfiguration: groupSelectView,
        }
        
        templater = new DashboardTemplater(templaterConfig);
