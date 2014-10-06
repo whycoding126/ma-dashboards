@@ -88,6 +88,8 @@
        templater = new DashboardTemplater(templaterConfig);
 
        
+       //TODO Refresh the 4 Mini BarChart Historical Data Providers to load in the last 1 Value
+       
    });// End When page Ready
    
         /**

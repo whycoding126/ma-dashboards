@@ -44,7 +44,7 @@ TimePeriodTypeConfiguration.prototype = {
                         .val(this.configuration.timePeriodTypes[k]));
             }
             $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
-
+            $('#' + this.divId).selectmenu('refresh', true);
             //Add the onChange method
             select.change(self.configuration.onChange);
         },

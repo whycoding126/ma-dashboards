@@ -82,7 +82,28 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
        });
        kwhDisplayConfigurations.push(kwhBarChart);
        var kWhDailyBarChartDisplayManager = new DataDisplayManager(kwhDisplayConfigurations);
-       kWhDailyBarChartDisplayManager.addProvider(kwhDataProvider); //Ensure we add our data provider
+       var kWhDailyBarDataProvider = new PointValueDataProvider(1, {manipulateData: function(pointValues, dataPoint){
+           var newData = new Array();
+           if(pointValues.length == 0)
+               return newData;
+
+           var previous = pointValues[0]
+           //Subtract previous value from current.
+           for(var i=1; i<pointValues.length; i++){
+               var current = pointValues[i];
+               var entry = {
+                       value: current.value - previous.value,
+                       timestamp: current.timestamp
+               };
+               newData.push(entry);
+               
+               //Move along
+               previous = current;
+           }
+           
+           return newData;
+       }});
+       kWhDailyBarChartDisplayManager.addProvider(kWhDailyBarDataProvider); //Ensure we add our data provider
        
        
        /*
@@ -90,6 +111,36 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
         */
        $( document ).ready(function(){
            
+           var kWhPerDayFromDate = new DateTimePickerConfiguration('kWhFromDate', 
+                   {}, 
+                   {
+                       defaultValue: kWhDailyBarChartDataProviderSettings.from,
+                       owner: null,
+                       onChange: function(date){
+                           console.log("kWh From Date: " +  date);
+                           kWhDailyBarChartDataProviderSettings.from = date;
+                           kWhDailyBarChartDisplayManager.clear(false);
+                           kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
+                       }
+                   }
+           );
+           kWhPerDayFromDate.create();
+           
+           var kWhPerDayToDate = new DateTimePickerConfiguration('kWhToDate', 
+                   {}, 
+                   {
+                       defaultValue: kWhDailyBarChartDataProviderSettings.to,
+                       owner: null,
+                       onChange: function(date){
+                           console.log("kWh To Date: " +  date);
+                           kWhDailyBarChartDataProviderSettings.to = date;
+                           kWhDailyBarChartDisplayManager.clear(false);
+                           kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
+                       }
+                   }
+           ); 
+           kWhPerDayToDate.create();
+
        
            //Setup The kWh Chart Area (Not using the Templater)
            var customPeriodSelect = new SelectConfiguration('simpleTimePicker', 
@@ -107,20 +158,37 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                                kWhDailyBarChartDataProviderSettings.from = new Date();
                                kWhDailyBarChartDataProviderSettings.from.setHours(0,0,0,0);
                                kWhDailyBarChartDataProviderSettings.to = new Date();
+                               $("#simpleTimePeriodType").val("HOURS");
+                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               kWhDailyBarChartDataProviderSettings.timePeriodType = "HOURS";        
+
                            }else if(value == "1"){
                                kWhDailyBarChartDataProviderSettings.to = new Date();
                                //Subtract 7*24Hrs
                                kWhDailyBarChartDataProviderSettings.from = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*7);
+                               $("#simpleTimePeriodType").val("DAYS");
+                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               kWhDailyBarChartDataProviderSettings.timePeriodType = "DAYS";        
+
                            }else if(value == "2"){
                                kWhDailyBarChartDataProviderSettings.to = new Date();
                                //Subtract 30 Days
                                kWhDailyBarChartDataProviderSettings.from = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*30);
-                           }else if(value == "3"){
+                               $("#simpleTimePeriodType").val("DAYS");
+                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               kWhDailyBarChartDataProviderSettings.timePeriodType = "DAYS";        
+                           }else if(value == "3"){ //This Year
                                kWhDailyBarChartDataProviderSettings.to = new Date();
                                //Set Date to first of year
                                kWhDailyBarChartDataProviderSettings.from = new Date(new Date().getFullYear(), 0, 1);
                                kWhDailyBarChartDataProviderSettings.from.setHours(0,0,0,0);
+                               $("#simpleTimePeriodType").val("MONTHS");
+                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               kWhDailyBarChartDataProviderSettings.timePeriodType = "MONTHS";        
                            }
+                           $("#kWhToDate").val(kWhDailyBarChartDataProviderSettings.to);
+                           $("#kWhFromDate").val(kWhDailyBarChartDataProviderSettings.from);
+                           
                            kWhDailyBarChartDisplayManager.clear(false);
                            kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
                        }
@@ -148,33 +216,6 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                    );
            customTimePeriodTypeSelect.create();
            
-           var kWhPerDayFromDate = new DateTimePickerConfiguration('kWhFromDate', 
-                   {}, 
-                   {
-                       owner: null,
-                       onChange: function(date){
-                           console.log("kWh From Date: " +  date);
-                           kWhDailyBarChartDataProviderSettings.from = date;
-                           kWhDailyBarChartDisplayManager.clear(false);
-                           kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
-                       }
-                   }
-           );
-           kWhPerDayFromDate.create();
-           
-           var kWhPerDayToDate = new DateTimePickerConfiguration('kWhToDate', 
-                   {}, 
-                   {
-                       owner: null,
-                       onChange: function(date){
-                           console.log("kWh To Date: " +  date);
-                           kWhDailyBarChartDataProviderSettings.to = date;
-                           kWhDailyBarChartDisplayManager.clear(false);
-                           kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
-                       }
-                   }
-           ); 
-           kWhPerDayToDate.create();
        });
        
        

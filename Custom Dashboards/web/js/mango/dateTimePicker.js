@@ -38,11 +38,13 @@ DateTimePickerConfiguration.prototype = {
         owner: null, //Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
-        
+        defaultValue: null, //Default Date/Time
         
         create: function(){
             
-            jQuery("#" + this.divId).datetimepicker(this.configuration);
+            var picker = jQuery("#" + this.divId).datetimepicker(this.configuration);
+            if(this.defaultValue != null)
+                picker.val(this.defaultValue);
         },
 
         onChange: function(date, picker, owner){
@@ -60,6 +62,7 @@ DateTimePickerConfiguration.prototype = {
                             console.log(dp); //Log the date
                         },
                         format: 'd/m/Y H:i:s',
+                        defaultTime: '00:00',
                         closeOnDateSelect: false, //Close when date is selected
                     };
   

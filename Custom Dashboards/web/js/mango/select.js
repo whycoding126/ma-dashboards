@@ -41,9 +41,6 @@ SelectConfiguration.prototype = {
         
         addItem: function(label, id, selected){
             var html = "<option></option>";
-//            if(selected == true)
-//                html += "selected='selected'";
-//            html += "></option>";
             $('#' + this.divId).append( $(html).text(label).val(id));
         },
         

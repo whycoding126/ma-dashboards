@@ -46,7 +46,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/simpleDisplay.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
@@ -195,11 +195,11 @@
     </div>
 
     <div id="kw">
-        <div  id="kwhChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        <div  id="kwhLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
         </div>
     </div>
     <div id="amps">
-        <div id="ampsChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        <div id="ampsLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
         </div>
     </div>
     
@@ -209,25 +209,29 @@
     </div>
    <div id="powerFactor">
         <div id="powerFactorLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
     </div>
     
     <div id="phaseA">
         <div id="phaseALineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
     </div>
     
-      <div id="phaseB">
+    <div id="phaseB">
         <div id="phaseBLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
     </div>
     
       <div id="phaseC">
         <div id="phaseCLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+        </div>
     </div>
     
     
     </div>
 
 
-    <!-Starting the Rollup and date and time pickers-->
+    <!-- Starting the Rollup and date and time pickers -->
     <div class="ui-grid-a">
     <div data-role="navbar">
         <ul>
@@ -331,25 +335,7 @@
                   <th>Minimum</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td id="pointName">Voltage</td>
-                  <td id="voltageAverage"></td>
-                  <td id="voltageIntegral"></td>
-                  <td id="voltageSum"></td>
-                  <td id="voltageCount"></td>
-                  <td id="voltageMax"></td>
-                  <td id="voltageMin"></td>
-                </tr>
-                <tr>
-                  <td id="pointName">Temperature</td>
-                  <td id="temperatureAverage"></td>
-                  <td id="temperatureIntegral"></td>
-                  <td id="temperatureSum"></td>
-                  <td id="temperatureCount"></td>
-                  <td id="temperatureMax"></td>
-                  <td id="temperatureMin"></td>
-                </tr>
+              <tbody id="statisticsTableBody">
               </tbody>
            </table>
 

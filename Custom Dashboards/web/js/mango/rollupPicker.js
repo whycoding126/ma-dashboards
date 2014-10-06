@@ -43,6 +43,7 @@ RollupConfiguration.prototype = {
                         $("<option></option>").text(this.configuration.rollups[k]).val(this.configuration.rollups[k]));
             }
             $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
+            $('#' + this.divId).selectmenu('refresh', true);
 
             //Add the onChange method
             select.change(self.configuration.onChange);

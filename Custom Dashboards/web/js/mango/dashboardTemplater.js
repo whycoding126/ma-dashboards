@@ -118,7 +118,7 @@ DashboardTemplater = function(options){
     
     //Setup the Inputs
     if(this.startDateConfiguration == null)
-        this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {owner: self, onChange: self.startDateChanged});
+        this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {defaultValue: self.startDate, owner: self, onChange: self.startDateChanged});
     else{
         if(this.startDateConfiguration.owner == null)
             this.startDateConfiguration.owner = self;
@@ -129,7 +129,7 @@ DashboardTemplater = function(options){
     
     //Create End Date
     if(this.endDateConfiguration == null)
-        this.endDateConfiguration = new DateTimePickerConfiguration('endDate', {}, {owner: self, onChange: self.endDateChanged});
+        this.endDateConfiguration = new DateTimePickerConfiguration('endDate', {}, {defaultValue: self.endDate, owner: self, onChange: self.endDateChanged});
     else{
         if(this.endDateConfiguration.owner == null)
             this.endDateConfiguration.owner = self;
@@ -159,7 +159,7 @@ DashboardTemplater = function(options){
     this.timePeriodTypeConfiguration.create();
   
     if(this.timePeriodConfiguration == null)
-        this.timePeriodConfiguration = new InputConfiguration('timePeriod', {}, {owner: self, onChange: self.timePeriodChanged, defaultValue: this.timePeriod});
+        this.timePeriodConfiguration = new InputConfiguration('timePeriod', {}, {owner: self, onChange: self.timePeriodChanged, defaultValue: this.timePeriods});
     else{
         if(this.timePeriodConfiguration.owner == null)
             this.timePeriodConfiguration.owner = self;
@@ -257,26 +257,36 @@ DashboardTemplater.prototype = {
             if(templater.debug)
                 console.log('SD: ' + date);
             templater.startDate = date;
+            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(null, templater);
         },
         endDateChanged: function(date, $input, templater){
             if(templater.debug)
                 console.log('ED: ' + date);
             templater.endDate = date;
+            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(null, templater);
         },
         rollupChanged: function(rollup, templater){
             if(templater.debug)
                 console.log('RU: ' + rollup);
             templater.rollup = rollup;
+            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(null, templater);
         },
         timePeriodTypeChanged: function(timePeriodType, templater){
             if(templater.debug)
                 console.log('TPT: ' + timePeriodType);
             templater.timePeriodType = timePeriodType;
+            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(null, templater);
         },
         timePeriodChanged: function(timePeriods, templater){
             if(templater.debug)
                 console.log('TP: ' + timePeriods);
             templater.timePeriods = timePeriods;
+            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(null, templater);
         },
         onMatch: function(dataPointConfiguration, templater){
             if(templater.debug)

@@ -19,7 +19,7 @@ var realPowerCColor = "blue";
        
        
        var kwhChart = new  SerialChartConfiguration(
-               'kwhChartDiv', //Chart DIV id
+               'kwhLineChartDiv', //Chart DIV id
                /*
                * List of data provider Ids for this chart
                */
@@ -38,17 +38,6 @@ var realPowerCColor = "blue";
            graphs: [{
                title: "Kilo watts per hour",
                valueAxis: "kwh-axis",
-               
-//               //Function to render the text inside the balloons
-//               //TODO Make this bulletproof and create a way to get a default 'graph'
-//               balloonFunction: function(graphDataItem, amGraph){
-//                   if(typeof graphDataItem.values != 'undefined'){
-//                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
-//                   }else{
-//                       return "";
-//                   }
-//               },
-               
                bullet: "square",
                bulletSize: 6,
                lineColor: "green",
@@ -409,7 +398,7 @@ var realPowerCColor = "blue";
                /**
                * The Chart Id that is given to pass on to html
                */
-               'ampsChartDiv', //Chart DIV id
+               'ampsLineChartDiv', //Chart DIV id
                /*
                * List of data provider Ids for this chart
                */
@@ -576,445 +565,443 @@ var realPowerCColor = "blue";
                 valueField: 'voltsB'
             },{
                 nameEndsWith: 'Voltage C-N (V)',
-                valueField: 'phaseC'
+                valueField: 'voltsC'
             }]
     });
     displayConfigurations.push(voltsLineChart);
        
-       
-       
-//       
-//       /*
-//       * Voltage Bar Chart for use with Statistics Data Providers
-//       */
-//       var voltageChart = new  SerialChartConfiguration(
-//               'voltageChartDiv', //Chart DIV id
-//               /*
-//               * List of data provider Ids for this chart
-//               */
-//               [9,10,11],
-//               /**
-//               * Start AmChart Styling
-//               */
-//               {
-//                   "categoryField": "xid",
-//                   "color": "whitesmoke",
-//                   "startEffect": "bounce",
-//                   "graphs": [
-//                              {
-//                                  "balloonText": "Minimum:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Minimum",
-//                                  "type": "column",
-//                                  "valueField": "minimum"
-//                              },
-//                              {
-//                                  "balloonText": "Maximum:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-2",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Maximum",
-//                                  "type": "column",
-//                                  "valueField": "maximum"
-//                              },
-//                              {
-//                                  "balloonText": "Average:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-3",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Average",
-//                                  "type": "column",
-//                                  "valueField": "average"
-//                              }
-//                          ],
-//                          "guides": [],
-//                          "titles": [
-//                        {
-//                            "id": "Title-1",
-//                            "size": 15,
-//                            "text": "Voltage"
-//                        }
-//                    ],
-//                          "valueAxes": [
-//                              {
-//                                  "id": "ValueAxis-1",
-//                                  "position": "top",
-//                                  "axisAlpha": 0,
-//                                  "title": ""
-//                              }
-//                          ],
-//       },{//Empty Mango Chart Mixins
-//           categoryField: "xid", //What member of the data point to use as category label/separator
-//       },{
-//       });
-//       displayConfigurations.push(voltageChart);
-//       
-//       
-//           var kwhBarChart = new StatisticsBarChartConfiguration(
-//               'kwhBarChartDiv',
-//               /*
-//               * List of data provider Ids for this chart
-//               */
-//               [12,13,14],
-//               /**
-//               * Start AmChart Styling
-//               */
-//               {
-//                "categoryField": "name",
-//                "rotate": false,
-//                "color": "whitesmoke",
-//                  "graphs": [
-//                              {
-//                                  "balloonText": "Minimum:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Minimum",
-//                                  "type": "column",
-//                                  "valueField": "minimum"
-//                              },
-//                              {
-//                                  "balloonText": "Maximum:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Maximum",
-//                                  "type": "column",
-//                                  "valueField": "maximum"
-//                              },
-//                              {
-//                                  "balloonText": "Average:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-2",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Average",
-//                                  "type": "column",
-//                                  "valueField": "average"
-//                              },
-//                               {
-//                                  "balloonText": "Integral:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-3",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Integral",
-//                                  "type": "column",
-//                                  "valueField": "average"
-//                              },
-//                            {
-//                                  "balloonText": "Sum:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-3",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Sum",
-//                                  "type": "column",
-//                                  "valueField": "average"
-//                              },
-//                          ],
-//                          
-//                          "guides": [],
-//                              "titles": [
-//                        {
-//                            "id": "Title-1",
-//                            "size": 15,
-//                            "text": "Statistics"
-//                        }
-//                    ],
-//                          
-//                          
-//                          "valueAxes": [
-//                              {
-//                                  "id": "ValueAxis-1",
-//                                  "position": "top",
-//                                  "axisAlpha": 0,
-//
-//                              }
-//                          ],
-//       },{//Empty Mango Chart Mixins
-//           categoryField: "name", //What member of the data point to use as category label/separator
-//       },{
-//       });
-//       displayConfigurations.push(kwhBarChart);
-//
-//
-//
-//
-// var voltsBarChart = new BarChartConfiguration(
-//               'voltsBarChartDiv',
-//               /*
-//               * List of data provider Ids for this chart
-//               */
-//               [15,16,17], 
-//               /**
-//               * Start AmChart Styling
-//               */
-//               { //AmChart Mixins
-//                   "categoryField": "name",
-//                   "rotate": true,
-//                   "color": "whitesmoke",
-//                   "graphs": [
-//                              {
-//                                  "balloonText": "Average:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Total",
-//                                  "type": "column",
-//                                  "valueField": "value",
-//                                  "lineColor": "#4183D7"
-//                              }
-//                          ],
-//                          "guides": [],
-//                          "valueAxes": [
-//                              {
-//                                  "id": "ValueAxis-1",
-//                                  "position": "top",
-//                                  "axisAlpha": 0
-//                              }
-//                          ],
-//       },{//Empty Mango Chart Mixins
-//           categoryField: "name", //What member of the data point to use as category label/separator
-//       },{
-//       });
-//       displayConfigurations.push(voltsBarChart);
-//
-//
-//var kwBarChart = new BarChartConfiguration(
-//               'kwBarChartDiv',
-//               /*
-//               * List of data provider Ids for this chart
-//               */
-//               [18,19,20],
-//               /**
-//               * Start AmChart Styling
-//               */
-//               {
-//                   "categoryField": "name",
-//                   "rotate": true,
-//                   "color":"whitesmoke",
-//                   "graphs": [
-//                              {
-//                                  "balloonText": "Average:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Total",
-//                                  "type": "column",
-//                                  "valueField": "value"
-//                              }
-//                          ],
-//                          "guides": [],
-//                          "valueAxes": [
-//                              {
-//                                  "id": "ValueAxis-1",
-//                                  "position": "top",
-//                                  "axisAlpha": 0
-//                              }
-//                          ],
-//       },{//End AmChart Styles
-//       
-//           categoryField: "name", //What member of the data point to use as category label/separator
-//       },{
-//       });
-//       displayConfigurations.push(kwBarChart);
-//
-//
-//var powerFactorBarChart = new BarChartConfiguration(
-//
-//               'powerFactorBarChartDiv',
-//                /*
-//                * List of data provider Ids for this chart
-//                */
-//               [21,22,23],
-//               /**
-//               * Start AmChart Styling
-//               */
-//               {
-//                   "categoryField": "name",
-//                   "rotate": true,
-//                   "color": "whitesmoke",
-//                   "graphs": [
-//                              {
-//                                  "balloonText": "Average:[[value]]",
-//                                  "fillAlphas": 0.8,
-//                                  "id": "AmGraph-1",
-//                                  "lineAlpha": 0.2,
-//                                  "title": "Total",
-//                                  "type": "column",
-//                                  "valueField": "value",
-//                                  "lineColor": "#A62B2B",
-//                              }
-//                          ],
-//                          "guides": [],
-//                          "valueAxes": [
-//                              {
-//                                  "id": "ValueAxis-1",
-//                                  "position": "top",
-//                                  "axisAlpha": 0
-//                              }
-//                          ],
-//       },{//end amcharts styles
-//       /**
-//       * this is the member of the data point to use as category label/separator
-//       * could be name xid or ?
-//       */
-//           categoryField: "name", 
-//       },{
-//       });
-//       displayConfigurations.push(powerFactorBarChart);
-//
-//        /**
-//        * This is the Volts line chart that also shows statistics al
-//        */
-//       var voltsLineChart = new  SerialChartConfiguration(
-//               'voltsLineChartDiv', //Chart DIV id
-//               /*
-//               * List of data provider Ids for this chart
-//               */
-//               [24,25,26], 
-//            /**
-//            *AmChart Styles fo a chart.
-//            */
-//               {
-//           titles: [{
-//               id: "Title-1",
-//               size: 15,
-//               text: "Volts "
-//           }],
-//           categoryField: "timestamp",
-//           color: "whitesmoke",
-//           graphs: [{
-//               title: "Volts A-N",
-//               valueAxis: "voltsA-axis",
-//               /*
-//               *Function to render the text inside the balloons
-//               */
-//               //TODO Make this bulletproof and create a way to get a default 'graph'
-//               balloonFunction: function(graphDataItem, amGraph){
-//                   if(typeof graphDataItem.values != 'undefined'){
-//                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
-//                   }else{
-//                       return "";
-//                   }
-//               },
-//               bullet: "square",
-//               bulletSize: 6,
-//               lineColor: "green",
-//               lineThickness: 1,
-//               negativeLineColor: "red",
-//               type: "smoothedLine",
-//               valueField: "voltsA"
-//           },{              
-//               title: "Volts B-N",
-//               valueAxis: "voltsB-axis",
-//               /*
-//               *Function to render the text inside the balloons
-//               */
-//               //TODO Make this bulletproof and create a way to get a default 'graph'
-//               balloonFunction: function(graphDataItem, amGraph){
-//                   if(typeof graphDataItem.values != 'undefined'){
-//                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
-//                   }else{
-//                       return "";
-//                   }
-//               },
-//               bullet: "round",
-//               bulletSize: 6,
-//               lineColor: "red",
-//               lineThickness: 1,
-//               negativeLineColor: "red",
-//               type: "smoothedLine",
-//               valueField: "voltsB"
-//           },{              
-//               title: "Volts C-N",
-//               valueAxis: "voltsC-axis",
-//               /**
-//               * Function to render the text inside the balloons
-//               */
-//               //TODO Make this bulletproof and create a way to get a default 'graph'
-//               balloonFunction: function(graphDataItem, amGraph){
-//                   if(typeof graphDataItem.values != 'undefined'){
-//                       return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
-//                   }else{
-//                       return "";
-//                   }
-//               },
-//               bullet: "round",
-//               bulletSize: 6,
-//               lineColor: "yellow",
-//               lineThickness: 1,
-//               negativeLineColor: "red",
-//               type: "smoothedLine",
-//               valueField: "voltsC"
-//           }],
-//           valueAxes: [{
-//               id: "voltsA-axis",
-//               title: " Volts A-N ",
-//               position: "left",
-//               color: "green"
-//           },{
-//               id: "voltsB-axis",
-//               title: " Volts B-N ",
-//               position: "right",
-//               color: "red"
-//           },{
-//               id: "voltsC-axis",
-//               title: " Volts C-N ",
-//               position: "right",
-//               color: "yellow"
-//           }
-//           ],
-//       },{
-//       },{
-//           /*
-//           * Setting Multi-series chart to create mappings from point to a graph valueField
-//           */
-//           dataPointMappings: [{
-//                   nameEndsWith: 'Voltage A-N (V)',
-//                   valueField: 'voltsA' 
-//               },{
-//                   nameEndsWith: 'Voltage B-N (V)',
-//                   valueField: 'voltsB'
-//               },{
-//                   nameEndsWith: 'Voltage C-N (V)',
-//                   valueField: 'phaseC'
-//               }]
-//       });
-//       displayConfigurations.push(voltsLineChart);
-//       
-//
-//// END THE CHARTS
-//
-//
-//       /**
-//       * Seting up the statistics Display for a different page on mobile.  This is different then on desktop due to the page stacking of are toolkits
-//       */
-//       displayConfigurations.push(
-//       
-//       new StatisticsConfiguration(
-//                'accumulator', 
-//                [5]
-//                )
-//       );
-//       
-//       displayConfigurations.push(
-//                new StatisticsConfiguration(
-//                'currentPhaseA',
-//                [6]
-//            )
-//        );  
-//       
-//       displayConfigurations.push(
-//                new StatisticsConfiguration(
-//                'currentPhaseB',
-//                [7]
-//            )
-//        );    
-//       
-//       displayConfigurations.push(
-//                new StatisticsConfiguration(
-//                'currentPhaseC',
-//                [8]
-//            )
-//        );    
+    /**
+     * This is the Volts line chart that also shows statistics al
+     */
+    var powerFactorLineChart = new  SerialChartConfiguration(
+            'powerFactorLineChartDiv', //Chart DIV id
+            /*
+            * List of data provider Ids for this chart
+            */
+            [23,24,25], 
+         /**
+         *AmChart Styles fo a chart.
+         */
+            {
+        titles: [{
+            id: "Title-1",
+            size: 15,
+            text: "Power Factor"
+        }],
+        categoryField: "timestamp",
+        color: "whitesmoke",
+        graphs: [{
+            title: "Power Factor A",
+            valueAxis: "pfA-axis",
+            bullet: "square",
+            bulletSize: 6,
+            lineColor: "green",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "pfA"
+        },{              
+            title: "Power Factor B",
+            valueAxis: "pfB-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "red",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "pfB"
+        },{              
+            title: "Power Factor C",
+            valueAxis: "pfC-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "yellow",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "pfC"
+        }],
+        valueAxes: [{
+            id: "pfA-axis",
+            title: " Power Factor A ",
+            position: "left",
+            color: "green"
+        },{
+            id: "pfB-axis",
+            title: " Power Factor B ",
+            position: "right",
+            color: "red"
+        },{
+            id: "pfC-axis",
+            title: " Power Factor C ",
+            position: "right",
+            color: "yellow"
+        }
+        ],
+    },{
+    },{
+        /*
+        * Setting Multi-series chart to create mappings from point to a graph valueField
+        */
+        dataPointMappings: [{
+                nameEndsWith: 'Power Factor A',
+                valueField: 'pfA' 
+            },{
+                nameEndsWith: 'Power Factor B',
+                valueField: 'pfB'
+            },{
+                nameEndsWith: 'Power Factor C',
+                valueField: 'pfC'
+            }]
+    });
+    displayConfigurations.push(powerFactorLineChart);   
+ 
+    
+    /**
+     * This is the Volts line chart that also shows statistics al
+     */
+    var phaseALineChart = new  SerialChartConfiguration(
+            'phaseALineChartDiv', //Chart DIV id
+            /*
+            * List of data provider Ids for this chart
+            */
+            [5,11,17,23], 
+         /**
+         *AmChart Styles fo a chart.
+         */
+            {
+        titles: [{
+            id: "Title-1",
+            size: 15,
+            text: "Phase A"
+        }],
+        categoryField: "timestamp",
+        color: "whitesmoke",
+        graphs: [{
+            title: "Amps",
+            valueAxis: "amps-axis",
+            bullet: "square",
+            bulletSize: 6,
+            lineColor: "green",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "amps"
+        },{              
+            title: "Voltage",
+            valueAxis: "volts-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "red",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "volts"
+        },{              
+            title: "Power",
+            valueAxis: "power-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "yellow",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "power"
+        },{              
+            title: "Power Factor",
+            valueAxis: "powerFactor-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "blue",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "powerFactor"
+        }],
+        valueAxes: [{
+            id: "amps-axis",
+            title: " Amps ",
+            position: "left",
+            color: "green"
+        },{
+            id: "volts-axis",
+            title: " Voltage ",
+            position: "right",
+            color: "red"
+        },{
+            id: "power-axis",
+            title: " Real Power ",
+            position: "left",
+            color: "yellow"
+        },{
+            id: "powerFactor-axis",
+            title: " Power Factor ",
+            position: "right",
+            color: "blue"
+        }
+        ],
+    },{
+    },{
+        /*
+        * Setting Multi-series chart to create mappings from point to a graph valueField
+        */
+        dataPointMappings: [{
+                nameEndsWith: '(A)',
+                valueField: 'amps' 
+            },{
+                nameEndsWith: '(V)',
+                valueField: 'volts'
+            },{
+                nameEndsWith: '(kW)',
+                valueField: 'power'
+            },{
+                nameStartsWith: 'Power Factor',
+                valueField: 'powerFactor'
+            }]
+    });
+    displayConfigurations.push(phaseALineChart);   
+    
+    /**
+     * This is the Volts line chart that also shows statistics al
+     */
+    var phaseBLineChart = new  SerialChartConfiguration(
+            'phaseBLineChartDiv', //Chart DIV id
+            /*
+            * List of data provider Ids for this chart
+            */
+            [6,12,18,24], 
+         /**
+         *AmChart Styles fo a chart.
+         */
+            {
+        titles: [{
+            id: "Title-1",
+            size: 15,
+            text: "Phase B"
+        }],
+        categoryField: "timestamp",
+        color: "whitesmoke",
+        graphs: [{
+            title: "Amps",
+            valueAxis: "amps-axis",
+            bullet: "square",
+            bulletSize: 6,
+            lineColor: "green",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "amps"
+        },{              
+            title: "Voltage",
+            valueAxis: "volts-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "red",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "volts"
+        },{              
+            title: "Power",
+            valueAxis: "power-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "yellow",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "power"
+        },{              
+            title: "Power Factor",
+            valueAxis: "powerFactor-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "blue",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "powerFactor"
+        }],
+        valueAxes: [{
+            id: "amps-axis",
+            title: " Amps ",
+            position: "left",
+            color: "green"
+        },{
+            id: "volts-axis",
+            title: " Voltage ",
+            position: "right",
+            color: "red"
+        },{
+            id: "power-axis",
+            title: " Real Power ",
+            position: "left",
+            color: "yellow"
+        },{
+            id: "powerFactor-axis",
+            title: " Power Factor ",
+            position: "right",
+            color: "blue"
+        }
+        ],
+    },{
+    },{
+        /*
+        * Setting Multi-series chart to create mappings from point to a graph valueField
+        */
+        dataPointMappings: [{
+                nameEndsWith: '(A)',
+                valueField: 'amps' 
+            },{
+                nameEndsWith: '(V)',
+                valueField: 'volts'
+            },{
+                nameEndsWith: '(kW)',
+                valueField: 'power'
+            },{
+                nameStartsWith: 'Power Factor',
+                valueField: 'powerFactor'
+            }]
+    });
+    displayConfigurations.push(phaseBLineChart);  
+    
+    /**
+     * This is the Volts line chart that also shows statistics al
+     */
+    var phaseCLineChart = new  SerialChartConfiguration(
+            'phaseCLineChartDiv', //Chart DIV id
+            /*
+            * List of data provider Ids for this chart
+            */
+            [7,13,19,25], 
+         /**
+         *AmChart Styles fo a chart.
+         */
+            {
+        titles: [{
+            id: "Title-1",
+            size: 15,
+            text: "Phase C"
+        }],
+        categoryField: "timestamp",
+        color: "whitesmoke",
+        graphs: [{
+            title: "Amps",
+            valueAxis: "amps-axis",
+            bullet: "square",
+            bulletSize: 6,
+            lineColor: "green",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "amps"
+        },{              
+            title: "Voltage",
+            valueAxis: "volts-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "red",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "volts"
+        },{              
+            title: "Power",
+            valueAxis: "power-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "yellow",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "power"
+        },{              
+            title: "Power Factor",
+            valueAxis: "powerFactor-axis",
+            bullet: "round",
+            bulletSize: 6,
+            lineColor: "blue",
+            lineThickness: 1,
+            negativeLineColor: "red",
+            type: "smoothedLine",
+            valueField: "powerFactor"
+        }],
+        valueAxes: [{
+            id: "amps-axis",
+            title: " Amps ",
+            position: "left",
+            color: "green"
+        },{
+            id: "volts-axis",
+            title: " Voltage ",
+            position: "right",
+            color: "red"
+        },{
+            id: "power-axis",
+            title: " Real Power ",
+            position: "left",
+            color: "yellow"
+        },{
+            id: "powerFactor-axis",
+            title: " Power Factor ",
+            position: "right",
+            color: "blue"
+        }
+        ],
+    },{
+    },{
+        /*
+        * Setting Multi-series chart to create mappings from point to a graph valueField
+        */
+        dataPointMappings: [{
+                nameEndsWith: '(A)',
+                valueField: 'amps' 
+            },{
+                nameEndsWith: '(V)',
+                valueField: 'volts'
+            },{
+                nameEndsWith: '(kW)',
+                valueField: 'power'
+            },{
+                nameStartsWith: 'Power Factor',
+                valueField: 'powerFactor'
+            }]
+    });
+    displayConfigurations.push(phaseCLineChart);  
+    
+    
+    //For this example we will use a SimpleDisplay to fill a table with values
+    var statisticsDisplay = new SimpleDisplayConfiguration([26,27,28,29,30,31,32,33,34,35,36,37,38], 
+            {
+               onClear: function(){
+                   //Do anything required to clear our display
+                   $('#statisticsTableBody').empty();
+               },
+               onLoad: function(data, dataPoint){
+                   //Do anything required to fills our display with data
+                   if(data.hasData == true){
+                       $('#statisticsTableBody').append(
+                               "<tr><td>" + dataPoint.name + 
+                               "</td><td>" + this.renderValue(data.average) +
+                               "</td><td>" + this.renderValue(data.integral) +
+                               "</td><td>" + this.renderValue(data.sum) +
+                               "</td><td>" + this.renderValue(data.count) +
+                               "</td><td>" + this.renderPointValueTime(data.minimum) +
+                               "</td><td>" + this.renderPointValueTime(data.maximum) +
+                               "</td></tr>");
+                   }
+                   
+               },
+               renderPointValueTime: function(pvt){
+                   return this.renderValue(pvt.value) + " @ " + this.renderTime(pvt.timestamp);  
+                },
+                
+                renderValue: function(number){
+                    return number.toFixed(2);
+                },
+                
+                renderTime: function(time){
+                   return new Date(time);
+                }
+            }); //Just assign data provider ids
+    displayConfigurations.push(statisticsDisplay);
