@@ -36,10 +36,7 @@
     
     <!-- Mango Rest API Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
-    
-    <!-- Mango AM Charts Helper -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
-        
+            
     <!-- MangoJS -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
@@ -67,7 +64,10 @@
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeLogic.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js"></script>
-
+    
+    <script type="text/javascript">
+       var groupsListsType = "listView"; //Define the type of input for the Groups
+    </script>
 </head>
 <!-- Starting to write the UI -->
 <body>

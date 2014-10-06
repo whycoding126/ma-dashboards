@@ -32,7 +32,7 @@ RollupConfiguration.prototype = {
         owner: null, //Owner Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
-        selected: 'AVERAGE',
+        selected: 0,
         
         create: function(){
             var self = this;
@@ -42,9 +42,12 @@ RollupConfiguration.prototype = {
                 select.append( 
                         $("<option></option>").text(this.configuration.rollups[k]).val(this.configuration.rollups[k]));
             }
-            $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
-            $('#' + this.divId).selectmenu('refresh', true);
-
+//            $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
+//            $('#' + this.divId).selectmenu('refresh', true);
+            if(this.configuration.rollups.length > 0){
+                $('#' + this.divId).val(this.configuration.rollups[this.selected]);
+                $('#' + this.divId).selectmenu('refresh', true);
+            }
             //Add the onChange method
             select.change(self.configuration.onChange);
         },

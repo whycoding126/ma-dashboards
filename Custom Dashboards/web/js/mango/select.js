@@ -38,6 +38,7 @@ SelectConfiguration.prototype = {
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         selected: 0, //Index selected
+        placeholder: null, //Optional placeholder text
         
         addItem: function(label, id, selected){
             var html = "<option></option>";
@@ -59,10 +60,16 @@ SelectConfiguration.prototype = {
                     this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, false);
                     
             }
+            
+            if(this.placeholder != null)
+                $('#' + this.divId).attr("placeholder", this.placeholder);
+            
             //Add the onChange method
             select.change(self.configuration.onChange);
-            $('#' + this.divId).val(this.configuration.options[this.selected].value);
-            $('#' + this.divId).selectmenu('refresh', true);
+            if(this.configuration.options.length > 0){
+                $('#' + this.divId).val(this.configuration.options[this.selected].value);
+                $('#' + this.divId).selectmenu('refresh', true);
+            }
         },
         
 

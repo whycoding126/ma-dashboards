@@ -31,18 +31,24 @@
        */
        groupConfigurations.push(meterGroups);
        
-       /**
-       *Create a custom grouper for bootstraps listgroup element
-       */
-       var groupSelectView = new ListViewConfiguration(
-        'groupsList', 
-        {},
+       
+       if(groupsListsType == 'select'){
+           var groupSelect = new SelectConfiguration('groups',{}, {});
+       }else{
+           /**
+            *Create a custom grouper for bootstraps listgroup element
+            */
+            var groupSelect = new ListViewConfiguration(
+             'groupsList', 
+             {},
 
-        /*
-        * Adding Custom Class tags to the object of the JQuery Mobiles ListView
-        */
-        {styleClass: "btn"}
-        );
+             /*
+             * Adding Custom Class tags to the object of the JQuery Mobiles ListView
+             */
+             {styleClass: "btn"}
+             );           
+       }
+
        
        /**
        *Setting upo the main Templater and adding all the vars ans what not to the Display
@@ -54,7 +60,7 @@
                pointConfigurations: pointConfigurations,
                groupConfigurations: groupConfigurations,
                dataProviders: dataProviders,
-               groupSelectConfiguration: groupSelectView,
+               groupSelectConfiguration: groupSelect,
                loadGroupAtStartup: 0, //GroupId to load
                /**
                 * Since we want to tie in another display manager 
