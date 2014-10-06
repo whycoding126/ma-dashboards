@@ -2,34 +2,53 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Meters</title>
-  <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/private/css/college/desktop/collegeMobile.css" rel="stylesheet">
-        
-        
-        <!-- JQuery and Plugins -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
-        <!-- Charting Library -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+    <link rel="stylesheet" href="/modules/dashboards/web/private/css/college/desktop/collegeMobile.css">
+    <!-- JQuery -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+
+
+
+
+
+
+
+
+    <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+<!--    <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">-->
+	
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
+
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
-        
-        <!-- Bootstrap -->
-        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
-        
 
 
 
+    <!-- Bootstrap JS-->
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-list-filter/bootstrap-list-filter.src.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/tabs.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script>
+    
+    <!--Bootstrap and others CSS-->
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet"> 
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" >
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" >
+    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">    
+    
+    
     <!-- Mango Rest API Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
     
     <!-- Mango AM Charts Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
+        
     <!-- MangoJS -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
@@ -37,6 +56,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
@@ -48,55 +68,84 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
-<!--    // the custom script for this page -->
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/collegeLogic.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listgroup.js"></script>
+    
+    <!--    the custom script for this page -->
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegePointConfigurations.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeBootstrap.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js"></script>
+
+
+<script type="text/javascript">
+//<!--    $('#searchlist').empty();-->
+//    $('#searchlist').btsListFilter('#searchinput', {itemChild: 'span'});
+
+if (top.location != location) {
+    top.location.href = document.location.href ;
+  }
+		$(function(){
+			window.prettyPrint && prettyPrint();
+      $('.nav-tabs:first').tabdrop();
+      $('.nav-tabs:last').tabdrop({text: 'More options'});
+      $('.nav-pills').tabdrop({text: 'With pills'});
+		});
+</script>
 
 </head>
+
+
+
 <!-- Starting to write the UI -->
 <body>
     <div class="page-header" style="text-align: center;">
         <h1>Meter Name<small>   Substation A</small></h1>
     </div>
 
-    <div class="container">
-    <div class="row clearfix">
-        <div class="col-md-4 column">
-            <nav class="navbar navbar-default" role="navigation">
-            <div class="navbar-header">
-            <select id="groupsList" class="navbar-brand">
-                <option value="" disabled selected>Meters</option>
-                <option value="simpleTimePeriodType"></option>
-            </select>
-        </div>
+<div class="container">
+    <div class="row clearfix col-md-4" >
+<!--        <div class="col-md-12 column">-->
+<!--            <nav class="navbar navbar-default" role="navigation">-->
+            <!--FIXME  The select needs to work and also change the meter name when it changes; In fact I think that we are going to need to make a new js addon for searchable listgroup plugin for bootstrap. -->
+            <form role="form">
+                <div class="form-group">
+                <input class="form-control" id="searchinput" type="search" placeholder="Search Meters..." ></input>
+                </div>
+                <div id="searchlist" class="list-group">
+                    <a id="groupsList"><span></span></a>
+                    <!-- FILLED DYNAMICALLY -->
+                </div>
+            </form>
+<!--        </div>-->
     </div>
-    </div>
+</div>
 
     <div class="col-md-4  container-lg-height" style=" height:1000px">
         <table height=100%>
             <!-- Lables for this row -->
             <tr>
                 <td class="leftName">Amps</td>
-                <td><div id="ampsBarChartDiv" ></div></td>
-                <td><div id="ampsBarTextDiv" ></div></td> 
+                <td><div id="ampsBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td>
+
             </tr>
             <tr>    
                 <td class="leftName">Volts</td> 
-                <td><div id="voltsBarChartDiv"> </div></td>
-                <td><div id="voltsTextDiv"> </div></td> 
+                <td><div id="voltsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"> </div></td>
+
             </tr>
             <!--the realtime numbers-->
             <tr>
                 
                 <td class="leftName">Kilo Watts</td>
-                <td><div id="kwBarChartDiv" ></div></td> 
-                <td><div id="kwBarTextDiv" ></div></td>         
+                <td><div id="kwBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
+
             </tr>
             <!--the realtime numbers-->
             <tr>
                 <td class="leftName">Power Factor</td>
-                <td><div id="powerFactorBarChartDiv" ></div></td> 
-                <td><div id="powerFactorTextDiv"></div></td>
+                <td><div id="powerFactorBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
+
                 </tr>
         </table>
     </div>
@@ -142,10 +191,10 @@
 
     <!--The tabs for the charts  -->
     <div id="tab"  class="col-md-8">
-        <div>
+        <div id="tabbable">
             <ul class="nav nav-tabs">
-                <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
-                <a href="#panel-kw" data-toggle="tab" class="btn">KW</a>
+                <li  class="active" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+                <a href="#panel-kw" data-toggle="tab">KW</a>
                 </li>
                 
                 <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
@@ -153,13 +202,35 @@
                 </li>
                 
                 <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a class="btn" href="#panel-volts" data-toggle="tab">Volts</a>
+                <a href="#panel-volts" data-toggle="tab">Volts</a>
                 </li>
+            
+             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a href="#panel-volts" data-toggle="tab">Foo</a>
+                </li>
+                
+                
+                 <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a href="#panel-volts" data-toggle="tab">Bar</a>
+                </li>
+            
+             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a href="#panel-volts" data-toggle="tab">car</a>
+                </li>
+            
+             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a href="#panel-volts" data-toggle="tab">mar</a>
+                </li>
+            
+              <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <a href="#panel-volts" data-toggle="tab">Dar</a>
+                </li>
+            
             </ul>
-        </div>
+
         <div class="tab-content">
-        <div class="tab-pane" id="panel-kwh">
-            <div id="kwhChartDiv"class="amChartsTab" >
+        <div class="tab-pane" id="panel-kw">
+            <div id="kwhChartDiv" class="amChartsTab" >
             </div>
         </div>
         <div  class="tab-pane" id="panel-amps" id="amps">
@@ -172,7 +243,7 @@
             </div>
         <tab>
         </div>
-
+        </div>
 
 
     <!--Starting the Rollup and date and time pickers -->

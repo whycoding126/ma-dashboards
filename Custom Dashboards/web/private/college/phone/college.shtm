@@ -6,7 +6,7 @@
     <title>Meters</title>
     <link rel="stylesheet" href="/modules/dashboards/web/js/jquery-mobile/jquery.mobile-1.4.4.min.css">
     <link rel="stylesheet" href="/modules/dashboards/web/js/joseph/jqm-demos.css">
-    <link rel="stylesheet" href="/modules/dashboards/web/private/css/collegeMobile.css">
+    <link rel="stylesheet" href="/modules/dashboards/web/private/css/college/phone/collegeMobile.css">
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
 
@@ -80,7 +80,8 @@
      <a href="#help" data-transition="flip" class="ui-btn-icon-right" data-icon="info">Help</a>
 
 <div class="mynav">
-<h3>Meters</h3>
+<!--FIXME  The name below needs to change when the meter name changes;-->
+<div id="meterName"><h3>Meters</h3></div>
 </div>
 
 </div> <!--end the header-->
@@ -95,82 +96,64 @@
 <!--This starts the main content of the page -->
 <div data-role="main"  class="ui-content">
 
-
-<!--The top left chart 
-1st div is the chart 2nd is the realtime text data
-
--->
 <div class="barChartLeft">
 <table id="phone-table" height=100%>
     <!-- Lables for this row -->
     <tr>
         <td class="leftName">Amps</td>
         <td><div id="ampsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td>
-        <td><div id="ampsBarTextDiv" ></div></td> 
+
     </tr>
     <tr>    
         <td class="leftName">Volts</td> 
         <td><div id="voltsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"> </div></td>
-        <td><div id="voltsTextDiv"> </div></td> 
+
     </tr>
     <!--the realtime numbers-->
     <tr>
         
         <td class="leftName">Kilo Watts</td>
         <td><div id="kwBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
-        <td><div id="kwBarTextDiv" ></div></td>         
+
     </tr>
     <!--the realtime numbers-->
     <tr>
         <td class="leftName">Power Factor</td>
         <td><div id="powerFactorBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
-        <td><div id="powerFactorTextDiv"></div></td>
         </tr>
 </table>
-</div>
-
-
-    
-
-
-
-    
-
 </div> <!--The End of the top Left Chart -->
 
 
 <!--The Top right chart -->
 <div class="statsChart">
-        <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
-            <a class="ui-btn ui-btn-inline" href="#main">History</a>
-            <a class="ui-btn ui-btn-inline" href="#statisticsPage">Statistics</a>
-        </div>
-      
+    <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
+        <a class="ui-btn ui-btn-inline" href="#main">History</a>
+        <a class="ui-btn ui-btn-inline" href="#statisticsPage">Statistics</a>
+    </div>
     <div id="kwhBarChartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
     </div>
-  <h3>KWH Watts Per Day</h3>
+    <h3>KWH Watts Per Day</h3>
 <!-- Ui Wiget for hourly time Picker-->
-<div class="ui-grid-d center ui-responsive">
-    <div class="ui-block-a">
-        <label for="simpleTimePicker"></label>
-        <select id="simpleTimePicker" class="form-control">
-        </select>
+    <div class="ui-grid-d center ui-responsive">
+        <div class="ui-block-a">
+            <label for="simpleTimePicker"></label>
+            <select id="simpleTimePicker" class="form-control">
+            </select>
+        </div>
+        <div class="ui-block-b">
+            <input placeholder="From Date" id="kWhFromDate"> </input>
+        </div>
+        <div class="ui-block-c">
+            <input placeholder="To Date" id="kWhToDate"></input>
+        </div>
+        <div class="ui-block-d">
+            <label for="simpleTimePeriodType">
+            </label>
+            <select id="simpleTimePeriodType" class="form-control">
+            </select>
+        </div>
     </div>
-    <div class="ui-block-b">
-        <input placeholder="From Date" id="kWhFromDate"> </input>
-    </div>
-    <div class="ui-block-c">
-        <input placeholder="To Date" id="kWhToDate"></input>
-    </div>
-    <div class="ui-block-d">
-        <label for="simpleTimePeriodType">
-        </label>
-        
-        <select id="simpleTimePeriodType" class="form-control">
-        </select>
-    </div>
-</div>
-
 </div><!--End the top Right Chart -->
 
 
@@ -178,18 +161,36 @@
 <div id="tab" data-role="tabs" class="lineChartTabs"  data-theme="a">
     <div  data-role="navbar" >
         <ul>
-            
-            <li onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+            <!-- FIXME lets make it so easch of the charts are named by the type of chart that they are.-->
+            <li onclick="templater.invalidateChartSize(['kwhLineChartDiv'], templater);">
             <a data-transition="flip" data-theme="a" href="#kw">KW</a>
             </li>
             
-            <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
+            <li onclick="templater.invalidateChartSize(['ampsLineChartDiv'], templater);">
             <a data-transition="fade" data-theme="a" href="#amps">Amps</a>
             </li>
             
             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
             <a onclick=""data-transition="fade" data-theme="a" href="#volts">Volts</a>
             </li>
+            
+              <li onclick="templater.invalidateChartSize(['powerFactorLineChartDiv'], templater);">
+            <a onclick=""data-transition="fade" data-theme="a" href="#powerFactor">Power Factor</a>
+            </li>
+            
+             <li onclick="templater.invalidateChartSize(['phaseALineChartDiv'], templater);">
+            <a onclick=""data-transition="fade" data-theme="a" href="#phaseA">Phase A</a>
+            </li>
+            
+             <li onclick="templater.invalidateChartSize(['phaseBLineChartDiv'], templater);">
+            <a onclick=""data-transition="fade" data-theme="a" href="#phaseB">Phase B</a>
+            </li>
+            
+             <li onclick="templater.invalidateChartSize(['phaseCLineChartDiv'], templater);">
+            <a onclick=""data-transition="fade" data-theme="a" href="#phaseC">Phase C</a>
+            </li>
+            
+            
         </ul>
     </div>
 
@@ -206,7 +207,24 @@
         <div id="voltsLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
         </div>
     </div>
-
+   <div id="powerFactor">
+        <div id="powerFactorLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+    
+    <div id="phaseA">
+        <div id="phaseALineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+    
+      <div id="phaseB">
+        <div id="phaseBLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+    
+      <div id="phaseC">
+        <div id="phaseCLineChartDiv" style="width:100% ; height:400px; vertical-align: top;  display: inline-block; padding: 10px;">
+    </div>
+    
+    
+    </div>
 
 
     <!-Starting the Rollup and date and time pickers-->
@@ -248,7 +266,7 @@
     <div id="errors">
     </div>
 
-<!--</div><!--end of the 1st page-->-->
+<!--</div><!--end of the 1st page-->
 
 
 <div data-role="footer" data-theme="a">
