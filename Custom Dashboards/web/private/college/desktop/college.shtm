@@ -9,14 +9,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
 
 
-
-
-
-
-
-
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
-<!--    <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">-->
 	
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
     <!-- Charting Library -->
@@ -30,9 +23,9 @@
 
     <!-- Bootstrap JS-->
     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-list-filter/bootstrap-list-filter.src.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/js/bootstrap-select.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/tabs.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script>
     
@@ -46,8 +39,6 @@
     <!-- Mango Rest API Helper -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
     
-    <!-- Mango AM Charts Helper -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
         
     <!-- MangoJS -->
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
@@ -79,18 +70,19 @@
 
 
 <script type="text/javascript">
-//<!--    $('#searchlist').empty();-->
-//    $('#searchlist').btsListFilter('#searchinput', {itemChild: 'span'});
 
-if (top.location != location) {
-    top.location.href = document.location.href ;
-  }
-		$(function(){
-			window.prettyPrint && prettyPrint();
-      $('.nav-tabs:first').tabdrop();
-      $('.nav-tabs:last').tabdrop({text: 'More options'});
-      $('.nav-pills').tabdrop({text: 'With pills'});
-		});
+
+$('.nav-pills, .nav-tabs').tabdrop()
+
+
+ $('.selectpicker').selectpicker({
+      style: 'btn-info',
+      size: 5
+  });
+
+
+
+
 </script>
 
 </head>
@@ -103,22 +95,15 @@ if (top.location != location) {
         <h1>Meter Name<small>   Substation A</small></h1>
     </div>
 
+	<select class="selectpicker">
+      <option>Meter 1</option>
+      <option>Meter 2</option>
+      <option>Meter 3</option>
+	</select> 
 <div class="container">
-    <div class="row clearfix col-md-4" >
-<!--        <div class="col-md-12 column">-->
-<!--            <nav class="navbar navbar-default" role="navigation">-->
-            <!--FIXME  The select needs to work and also change the meter name when it changes; In fact I think that we are going to need to make a new js addon for searchable listgroup plugin for bootstrap. -->
-            <form role="form">
-                <div class="form-group">
-                <input class="form-control" id="searchinput" type="search" placeholder="Search Meters..." ></input>
-                </div>
-                <div id="searchlist" class="list-group">
-                    <a id="groupsList"><span></span></a>
-                    <!-- FILLED DYNAMICALLY -->
-                </div>
-            </form>
-    </div>
+  
 </div>
+
 
     <div class="col-md-4  container-lg-height" style=" height:1000px">
         <table height=100%>
@@ -155,26 +140,27 @@ if (top.location != location) {
     <!--    start top  -->
       <div id="tab"  class="col-md-8">
         <div id="tabbable">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs responsive">
                 <li class="active" onclick="templater.invalidateChartSize(['kwChartDiv'], templater);">
                     <a href="#panel-kw" data-toggle="tab">History</a>
                 </li>
-                  <li class="active" onclick="templater.invalidateChartSize(['dtatsTableDiv'], templater);">
+                  <li class="active" onclick="templater.invalidateChartSize(['statsTableDiv'], templater);">
                     <a href="#panel-stats" data-toggle="tab">Statistics</a>
                 </li>    
                 </ul>
-             <div class="tab-content ">
-            	<div class="tab-pane" id="panel-kw">
-                <div id="kwChartDiv" class="amChartsTab" ></div>
-            	</div>   
-                <div class="tab-pane" id="panel-stats">
-                <div id="statsTablewDiv" class="amChartsTab" ></div>
-            	</div>
+             <div class="tab-content responsive ">
+	            		<div class="tab-pane fade" id="panel-kw">
+                		<div id="kwChartDiv" class="amChartsTab" ></div>
+            		</div>  
+            		
+            		 
+                	<div class="tab-pane" id="panel-stats">
+                		<div id="statsTablewDiv fade" class="amChartsTab" ></div>
+            		</div>
               </div>
                 
         </div>
-        <div id="kwhBarChartDiv" class="amChartsTab">
-        </div>
+      
             <h3>KWH Watts Per Day</h3>
         <!-- Ui Wiget for hourly time Picker-->
         <div class="centeredPickers">
@@ -194,8 +180,8 @@ if (top.location != location) {
                 <div class="col-sm-4">
                     <input class="form-control" placeholder="To Date" id="endDate"></input>
                 </div>
-                
-                <div class="col-md-2">
+             	   
+					<div class="col-md-2">
                     <select id="simpleTimePeriodType" class="form-control">
                         <option value="" disabled selected>Hourly</option>
                         <option value="simpleTimePeriodType"></option>
@@ -213,7 +199,7 @@ if (top.location != location) {
     <div id="tab"  class="col-md-8">
 		  <div class="divider"> </div>
         <div id="tabbable">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs responsive">
                 <li  class="active" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
                     <a href="#panel-kw" data-toggle="tab">KW</a>
                 </li>
@@ -244,37 +230,28 @@ if (top.location != location) {
                 </li>
             </ul>
 
-
-
-
-
-
-
-
-
-
-        <div class="tab-content ">
+        <div class="tab-content responsive">
             
-            <div class="tab-pane" id="panel-kw">
+            <div class="tab-pane fade" id="panel-kw">
                 <div id="kwhChartDiv" class="amChartsTab" ></div>
             </div>
-            <div  class="tab-pane" id="panel-amps" id="amps">
+            <div  class="tab-pane fade" id="panel-amps" id="amps">
                 <div id="ampsChartDiv"  class="amChartsTab" ></div>
             </div>
             
-            <div  class="tab-pane" id="panel-volts" id="volts">
+            <div  class="tab-pane fade" id="panel-volts" id="volts">
                 <div id="voltsLineChartDiv"  class="amChartsTab"></div>
             </div>
-             <div  class="tab-pane" id="panel-powerFactor" id="powerFactor">
+             <div  class="tab-pane fade" id="panel-powerFactor" id="powerFactor">
                 <div id="powerFactorLineChartDiv"  class="amChartsTab"> </div>
             </div>
-             <div  class="tab-pane" id="panel-phaseA" id="PhaseA">
+             <div  class="tab-pane fade" id="panel-phaseA" id="PhaseA">
                 <div id="phaseALineChartDiv"  class="amChartsTab"></div>
              </div>
-             <div  class="tab-pane" id="panel-phaseB" id="PhaseB">
+             <div  class="tab-pane  fade" id="panel-phaseB" id="PhaseB">
                 <div id="phaseBLineChartDiv"  class="amChartsTab"></div>
              </div>
-             <div  class="tab-pane" id="panel-phaseC" id="PhaseC">
+             <div  class="tab-pane fade" id="panel-phaseC" id="PhaseC">
                 <div id="phaseCLineChartDiv"  class="amChartsTab"></div>
         		</div>
         </div>
