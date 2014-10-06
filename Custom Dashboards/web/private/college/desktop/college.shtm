@@ -117,7 +117,6 @@ if (top.location != location) {
                     <!-- FILLED DYNAMICALLY -->
                 </div>
             </form>
-<!--        </div>-->
     </div>
 </div>
 
@@ -150,11 +149,29 @@ if (top.location != location) {
         </table>
     </div>
 
-    <!--    start top right -->
-    <div class="col-md-8">
-        <div class="changStatistics" style="width:30%; margin-right:auto; margin-left: 60% ">
-            <button class="btn" onclick="#main">History</button>
-            <button class="btn" onclick="#statisticsPage">Statistics</button>
+
+
+
+    <!--    start top  -->
+      <div id="tab"  class="col-md-8">
+        <div id="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="templater.invalidateChartSize(['kwChartDiv'], templater);">
+                    <a href="#panel-kw" data-toggle="tab">History</a>
+                </li>
+                  <li class="active" onclick="templater.invalidateChartSize(['dtatsTableDiv'], templater);">
+                    <a href="#panel-stats" data-toggle="tab">Statistics</a>
+                </li>    
+                </ul>
+             <div class="tab-content ">
+            	<div class="tab-pane" id="panel-kw">
+                <div id="kwChartDiv" class="amChartsTab" ></div>
+            	</div>   
+                <div class="tab-pane" id="panel-stats">
+                <div id="statsTablewDiv" class="amChartsTab" ></div>
+            	</div>
+              </div>
+                
         </div>
         <div id="kwhBarChartDiv" class="amChartsTab">
         </div>
@@ -186,65 +203,82 @@ if (top.location != location) {
                 </div>
             </div>
         </div>
+
     </div>
     
 
     <!--The tabs for the charts  -->
+
+
     <div id="tab"  class="col-md-8">
+		  <div class="divider"> </div>
         <div id="tabbable">
             <ul class="nav nav-tabs">
                 <li  class="active" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
-                <a href="#panel-kw" data-toggle="tab">KW</a>
+                    <a href="#panel-kw" data-toggle="tab">KW</a>
                 </li>
                 
                 <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
-                <a href="#panel-amps" data-toggle="tab">Amps</a>
+                    <a href="#panel-amps" data-toggle="tab">Amps</a>
                 </li>
                 
                 <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">Volts</a>
+                    <a href="#panel-volts" data-toggle="tab">Volts</a>
                 </li>
             
-             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">Foo</a>
+                <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                    <a href="#panel-powerFactor" data-toggle="tab">Power Factor</a>
                 </li>
                 
                 
-                 <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">Bar</a>
+                <li onclick="templater.invalidateChartSize(['phaseALineChartDiv'], templater);">
+                    <a href="#panel-phaseA" data-toggle="tab">Phase A</a>
                 </li>
             
-             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">car</a>
+                <li onclick="templater.invalidateChartSize(['phaseBLineChartDiv'], templater);">
+                    <a href="#panel-phaseB" data-toggle="tab">Phase B</a>
                 </li>
             
-             <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">mar</a>
+                <li onclick="templater.invalidateChartSize(['phaseCLineChartDiv'], templater);">
+                    <a href="#panel-phaseC" data-toggle="tab">Phase C</a>
                 </li>
-            
-              <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                <a href="#panel-volts" data-toggle="tab">Dar</a>
-                </li>
-            
             </ul>
 
-        <div class="tab-content">
-        <div class="tab-pane" id="panel-kw">
-            <div id="kwhChartDiv" class="amChartsTab" >
-            </div>
-        </div>
-        <div  class="tab-pane" id="panel-amps" id="amps">
-            <div id="ampsChartDiv"  class="amChartsTab" >
-            </div>
-        </div>
-        
-        <div  class="tab-pane" id="panel-volts" id="volts">
-            <div id="voltsLineChartDiv"  class="amChartsTab">
-            </div>
-        <tab>
-        </div>
-        </div>
 
+
+
+
+
+
+
+
+
+        <div class="tab-content ">
+            
+            <div class="tab-pane" id="panel-kw">
+                <div id="kwhChartDiv" class="amChartsTab" ></div>
+            </div>
+            <div  class="tab-pane" id="panel-amps" id="amps">
+                <div id="ampsChartDiv"  class="amChartsTab" ></div>
+            </div>
+            
+            <div  class="tab-pane" id="panel-volts" id="volts">
+                <div id="voltsLineChartDiv"  class="amChartsTab"></div>
+            </div>
+             <div  class="tab-pane" id="panel-powerFactor" id="powerFactor">
+                <div id="powerFactorLineChartDiv"  class="amChartsTab"> </div>
+            </div>
+             <div  class="tab-pane" id="panel-phaseA" id="PhaseA">
+                <div id="phaseALineChartDiv"  class="amChartsTab"></div>
+             </div>
+             <div  class="tab-pane" id="panel-phaseB" id="PhaseB">
+                <div id="phaseBLineChartDiv"  class="amChartsTab"></div>
+             </div>
+             <div  class="tab-pane" id="panel-phaseC" id="PhaseC">
+                <div id="phaseCLineChartDiv"  class="amChartsTab"></div>
+        		</div>
+        </div>
+</div>
 
     <!--Starting the Rollup and date and time pickers -->
 
@@ -274,6 +308,7 @@ if (top.location != location) {
         </div>
     </div>
 </div>
-        </div>
+</div>
+
 </body>
 </html>
