@@ -54,6 +54,8 @@ SelectPickerConfiguration.prototype = {
         create: function(){
             var self = this;
             var select = $('#' + this.divId);
+            if($('#' + this.divId).selectpicker != undefined)
+                $('#' + this.divId).selectpicker();
             //Add the options
             for(k in this.configuration.options){
                 if(k == this.selected)
@@ -65,8 +67,7 @@ SelectPickerConfiguration.prototype = {
             
             if(this.placeholder != null)
                 $('#' + this.divId).attr("placeholder", this.placeholder);
-            if($('#' + this.divId).selectpicker != undefined)
-                $('#' + this.divId).selectpicker();
+
             //Add the onChange method
             select.change(self.configuration.onChange);
             if(this.configuration.options.length > 0){

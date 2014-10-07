@@ -19,15 +19,15 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
 
 <!--     Bootstrap and others CSS -->
-<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet">  -->
-<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" > -->
-<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" > -->
-<!--     <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">    -->
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet"> 
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" >
+    <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" >
+    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">   
 
 <!--     Bootstrap JS -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script> -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script> -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script> -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script>
 <!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script> -->
 <!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script> -->
 <!--     <link rel="stylesheet" type="text/css" href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css"> -->
@@ -73,8 +73,8 @@
 var groupsListsType = "select";
 
 $( document ).ready(function(){
-    $('.nav-pills, .nav-tabs').tabdrop();
-    
+    //$('.nav-pills, .nav-tabs').tabdrop();
+
     
     //  $('.selectpicker').selectpicker({
     //       style: 'btn-info',
@@ -83,6 +83,26 @@ $( document ).ready(function(){
     
     
 //    $('.groupsList').selectpicker();
+
+    //Ensure that this active tab has a resized chart
+    $.when(templater.deferred).then(function(){
+        $('.chart-tabs').tabdrop();
+        $('.overview-tabs').tabdrop();
+
+        templater.invalidateChartSize(['kwhLineChartDiv'], templater);
+        
+        //Refresh the am chart for daily kWh
+        for(var i=0; i<kWhDailyBarChartDisplayManager.displays.length; i++){
+            var display = kWhDailyBarChartDisplayManager.displays[i];
+            if($.inArray(display.divId, ['kWhDailyBarChartDiv']) >= 0){
+               //Invlidate the chart size
+               display.amChart.invalidateSize();
+           }
+        }
+        
+        
+    });
+
 });
 
 </script>
@@ -100,12 +120,11 @@ $( document ).ready(function(){
 	<select id="groupsList" class="selectpicker" data-live-search="true">
 	</select> 
 <div class="container">
-  
-</div>
+
 
 
     <div class="col-md-4  container-lg-height" style=" height:1000px">
-        <table height=100%>
+        <table style="height:100%">
             <!-- Lables for this row -->
             <tr>
                 <td class="leftName">Amps</td>
@@ -137,24 +156,24 @@ $( document ).ready(function(){
 
 
     <!--    start top  -->
-      <div id="tab"  class="col-md-8">
-        <div id="tabbable">
+      <div class="col-md-8">
+        <div>
             <ul class="nav nav-tabs responsive">
-                <li class="active" onclick="templater.invalidateChartSize(['kwChartDiv'], templater);">
-                    <a href="#panel-kw" data-toggle="tab">History</a>
+                <li class="active" onclick="templater.invalidateChartSize(['kwBarChartDiv'], templater);">
+                    <a href="#panel-kw-daily" data-toggle="tab">History</a>
                 </li>
-                  <li class="active" onclick="templater.invalidateChartSize(['statsTableDiv'], templater);">
+                 <li onclick="templater.invalidateChartSize(['statsTableDiv'], templater);">
                     <a href="#panel-stats" data-toggle="tab">Statistics</a>
-                </li>    
-                </ul>
-             <div class="tab-content responsive ">
-	            		<div class="tab-pane fade" id="panel-kw">
-                		<div id="kwhBarChartDiv" class="amChartsTab" ></div>
+                </li> 
+              </ul>
+             <div id="overview-tabs" class="tab-content responsive">
+	            	<div class="tab-pane fade" id="panel-kw-daily">
+                		<div id="kWhDailyBarChartDiv" class="amChartsTab" ></div>
             		</div>  
             		
             		 
-                	<div class="tab-pane" id="panel-stats">
-                		<div id="statsTablewDiv fade" >
+                	<div class="tab-pane fade" id="panel-stats">
+                		<div id="statsTablewDiv" >
                             <table>
                               <thead>
                                 <tr>
@@ -175,15 +194,10 @@ $( document ).ready(function(){
               </div>
                 
         </div>
-      
-            <h3>KWH Watts Per Day</h3>
-        <!-- Ui Wiget for hourly time Picker-->
         <div class="centeredPickers">
             <div class="row">
-                
                 <div class="col-sm-2">
-                    <select id="simpleTimePicker" class="form-control">
-                    </select>
+                    <select id="simpleTimePicker" class="form-control"></select>
                 </div>
         
                 <div class="col-sm-4">
@@ -194,9 +208,8 @@ $( document ).ready(function(){
                     <input class="form-control" placeholder="To Date" id="kWhToDate"></input>
                 </div>
              	   
-					<div class="col-md-2">
-                    <select id="simpleTimePeriodType" class="form-control">
-                    </select>
+		        <div class="col-md-2">
+                    <select id="simpleTimePeriodType" class="form-control"></select>
                 </div>
             </div>
         </div>
@@ -207,7 +220,7 @@ $( document ).ready(function(){
     <!--The tabs for the charts  -->
 
 
-    <div id="tab"  class="col-md-8">
+    <div class="col-md-8">
 		  <div class="divider"> </div>
         <div id="tabbable">
             <ul class="nav nav-tabs responsive">
@@ -241,7 +254,7 @@ $( document ).ready(function(){
                 </li>
             </ul>
 
-        <div class="tab-content responsive">
+        <div id="chart-tabs" class="tab-content responsive">
             
             <div class="tab-pane fade" id="panel-kw">
                 <div id="kwhLineChartDiv" class="amChartsTab" ></div>
@@ -294,6 +307,7 @@ $( document ).ready(function(){
         </div>
     </div>
 </div>
-
+  
+</div>
 </body>
 </html>

@@ -21,7 +21,7 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
        //Setup The Bar Chart
        //Create a bar chart for use with Point Value Data Providers
        var kwhBarChart = new BarChartConfiguration(
-               'kwhBarChartDiv',
+               'kWhDailyBarChartDiv',
                [1], //List of data provider Ids for this chart
                { //AmChart Mixins
                    rotate: false,
