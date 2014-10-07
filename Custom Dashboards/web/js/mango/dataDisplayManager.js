@@ -176,6 +176,24 @@ DataDisplayManager.prototype = {
         },
         
         /**
+         * Force an AmCharts Re-size
+         * @param divIds - Array of String div ids
+         * @param displayManager - manager for displays
+         */
+        invalidateChartSize: function(divIds, displayManager){
+            //Refresh the am chart for all divIds
+            for(var i=0; i<displayManager.displays.length; i++){
+                var display = displayManager.displays[i];
+                if($.inArray(display.divId, divIds) >= 0){
+                   //Invlidate the chart size
+                   display.amChart.invalidateSize();
+               }
+            }
+
+        },
+        
+        
+        /**
          * Helper Function to show error messages
          */
         error: function(jqXHR, textStatus, errorThrown, mangoMessage){

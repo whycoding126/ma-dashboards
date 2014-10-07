@@ -26,12 +26,12 @@
 
 <!--     Bootstrap JS -->
     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script>
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script> -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script> -->
 <!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script> -->
 <!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script> -->
-<!--     <link rel="stylesheet" type="text/css" href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css"> -->
-<!--     <script  type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/js/bootstrap-select.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css">
+    <script  type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     
  
     
@@ -73,35 +73,30 @@
 var groupsListsType = "select";
 
 $( document ).ready(function(){
-    //$('.nav-pills, .nav-tabs').tabdrop();
-
-    
-    //  $('.selectpicker').selectpicker({
-    //       style: 'btn-info',
-    //       size: 5
-    //   });
-    
-    
-//    $('.groupsList').selectpicker();
 
     //Ensure that this active tab has a resized chart
     $.when(templater.deferred).then(function(){
-        $('.chart-tabs').tabdrop();
-        $('.overview-tabs').tabdrop();
 
         templater.invalidateChartSize(['kwhLineChartDiv'], templater);
         
         //Refresh the am chart for daily kWh
-        for(var i=0; i<kWhDailyBarChartDisplayManager.displays.length; i++){
-            var display = kWhDailyBarChartDisplayManager.displays[i];
-            if($.inArray(display.divId, ['kWhDailyBarChartDiv']) >= 0){
-               //Invlidate the chart size
-               display.amChart.invalidateSize();
-           }
-        }
-        
+        kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
         
     });
+    
+    //Hack for Bootstrap Tabs to refresh chart After Tab is shown
+    //Each Link for the tab MUST Start with the prefix before the Chart's ID wihtout the Div ending.
+    // ie. for the chart in 'kwhLineChartDiv' you must set the anchor's id='kwhLineChart'
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        //e.target // activated tab
+        //e.relatedTarget // previous tab
+        if(e.target.id == 'kWhDailyBarChart'){
+            kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
+        }else{
+            //For all other chart Tabs
+            templater.invalidateChartSize([e.target.id + 'Div'], templater);
+        }
+      });
 
 });
 
@@ -159,21 +154,21 @@ $( document ).ready(function(){
       <div class="col-md-8">
         <div>
             <ul class="nav nav-tabs responsive">
-                <li class="active" onclick="templater.invalidateChartSize(['kwBarChartDiv'], templater);">
-                    <a href="#panel-kw-daily" data-toggle="tab">History</a>
+                <li class="active">
+                    <a href="#panel-kw-daily" data-toggle="tab" id="kWhDailyBarChart">History</a>
                 </li>
-                 <li onclick="templater.invalidateChartSize(['statsTableDiv'], templater);">
+                 <li onclick="//No resize required">
                     <a href="#panel-stats" data-toggle="tab">Statistics</a>
                 </li> 
               </ul>
              <div id="overview-tabs" class="tab-content responsive">
-	            	<div class="tab-pane fade" id="panel-kw-daily">
+	            	<div class="tab-pane fade in active" id="panel-kw-daily">
                 		<div id="kWhDailyBarChartDiv" class="amChartsTab" ></div>
             		</div>  
             		
             		 
                 	<div class="tab-pane fade" id="panel-stats">
-                		<div id="statsTablewDiv" >
+                		<div id="statsTableDiv" >
                             <table>
                               <thead>
                                 <tr>
@@ -224,60 +219,60 @@ $( document ).ready(function(){
 		  <div class="divider"> </div>
         <div id="tabbable">
             <ul class="nav nav-tabs responsive">
-                <li  class="active" onclick="templater.invalidateChartSize(['kwhLineChartDiv'], templater);">
-                    <a href="#panel-kw" data-toggle="tab">KW</a>
+                <li class="active" >
+                    <a href="#panel-kw"  data-toggle="tab" id="kwhLineChart">KW</a>
                 </li>
                 
-                <li onclick="templater.invalidateChartSize(['ampsLineChartDiv'], templater);">
-                    <a href="#panel-amps" data-toggle="tab">Amps</a>
+                <li>
+                    <a href="#panel-amps" data-toggle="tab" id="ampsLineChart">Amps</a>
                 </li>
                 
-                <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
-                    <a href="#panel-volts" data-toggle="tab">Volts</a>
+                <li>
+                    <a href="#panel-volts" data-toggle="tab" id="voltsLineChart">Volts</a>
                 </li>
             
-                <li onclick="templater.invalidateChartSize(['powerFactorLineChartDiv'], templater);">
-                    <a href="#panel-powerFactor" data-toggle="tab">Power Factor</a>
+                <li>
+                    <a href="#panel-powerFactor" data-toggle="tab" id="powerFactorLineChart">Power Factor</a>
                 </li>
                 
                 
-                <li onclick="templater.invalidateChartSize(['phaseALineChartDiv'], templater);">
-                    <a href="#panel-phaseA" data-toggle="tab">Phase A</a>
+                <li>
+                    <a href="#panel-phaseA" data-toggle="tab" id="phaseALineChart">Phase A</a>
                 </li>
             
-                <li onclick="templater.invalidateChartSize(['phaseBLineChartDiv'], templater);">
-                    <a href="#panel-phaseB" data-toggle="tab">Phase B</a>
+                <li>
+                    <a href="#panel-phaseB" data-toggle="tab" id="phaseBLineChart">Phase B</a>
                 </li>
             
-                <li onclick="templater.invalidateChartSize(['phaseCLineChartDiv'], templater);">
-                    <a href="#panel-phaseC" data-toggle="tab">Phase C</a>
+                <li>
+                    <a href="#panel-phaseC" data-toggle="tab" id="phaseCLineChart">Phase C</a>
                 </li>
             </ul>
 
         <div id="chart-tabs" class="tab-content responsive">
             
-            <div class="tab-pane fade" id="panel-kw">
+            <div class="tab-pane fade in active" id="panel-kw">
                 <div id="kwhLineChartDiv" class="amChartsTab" ></div>
             </div>
-            <div  class="tab-pane fade" id="panel-amps" id="amps">
+            <div class="tab-pane fade" id="panel-amps">
                 <div id="ampsLineChartDiv"  class="amChartsTab" ></div>
             </div>
             
-            <div  class="tab-pane fade" id="panel-volts" id="volts">
+            <div class="tab-pane fade" id="panel-volts">
                 <div id="voltsLineChartDiv"  class="amChartsTab"></div>
             </div>
-             <div  class="tab-pane fade" id="panel-powerFactor" id="powerFactor">
+             <div class="tab-pane fade" id="panel-powerFactor">
                 <div id="powerFactorLineChartDiv"  class="amChartsTab"> </div>
             </div>
-             <div  class="tab-pane fade" id="panel-phaseA" id="PhaseA">
+             <div class="tab-pane fade" id="panel-phaseA">
                 <div id="phaseALineChartDiv"  class="amChartsTab"></div>
              </div>
-             <div  class="tab-pane  fade" id="panel-phaseB" id="PhaseB">
+             <div class="tab-pane fade" id="panel-phaseB">
                 <div id="phaseBLineChartDiv"  class="amChartsTab"></div>
              </div>
-             <div  class="tab-pane fade" id="panel-phaseC" id="PhaseC">
+             <div class="tab-pane fade" id="panel-phaseC">
                 <div id="phaseCLineChartDiv"  class="amChartsTab"></div>
-        		</div>
+             </div>
         </div>
 </div>
 
