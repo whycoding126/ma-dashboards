@@ -139,7 +139,7 @@ DashboardTemplater = function(options){
     this.endDateConfiguration.create();
     
     if(this.rollupConfiguration == null)
-        this.rollupConfiguration = new RollupConfiguration('rollup', {}, {owner: self, onChange: self.rollupChanged, selected: this.rollup});
+        this.rollupConfiguration = new RollupConfiguration('rollup', {}, {owner: self, onChange: self.rollupChanged, selected: 0});
     else{
         if(this.rollupConfiguration.owner == null)
             this.rollupConfiguration.owner = self;
@@ -149,7 +149,7 @@ DashboardTemplater = function(options){
     this.rollupConfiguration.create();
     
     if(this.timePeriodTypeConfiguration == null)
-        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {owner: self, onChange: self.timePeriodTypeChanged, selected: this.timePeriodType});
+        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {owner: self, onChange: self.timePeriodTypeChanged, selected: 1});
     else{
         if(this.timePeriodTypeConfiguration.owner == null)
             this.timePeriodTypeConfiguration.owner = self;

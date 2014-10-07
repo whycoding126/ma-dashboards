@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="/modules/dashboards/web/private/css/college/desktop/collegeMobile.css">
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-
-
+    
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
 	
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
@@ -17,23 +16,24 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
 
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
 
+<!--     Bootstrap and others CSS -->
+<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet">  -->
+<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" > -->
+<!--     <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" > -->
+<!--     <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">    -->
 
-
-    <!-- Bootstrap JS-->
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/js/bootstrap-select.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script>
+<!--     Bootstrap JS -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script> -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script> -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script> -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script> -->
+<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script> -->
+<!--     <link rel="stylesheet" type="text/css" href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css"> -->
+<!--     <script  type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/js/bootstrap-select.min.js"></script> -->
     
-    <!--Bootstrap and others CSS-->
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet"> 
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" >
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" >
-    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">    
+ 
     
     
     <!-- Mango Rest API Helper -->
@@ -46,7 +46,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/simpleDisplay.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
@@ -59,29 +59,31 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listgroup.js"></script>
-    
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/selectPicker.js"></script>
+        
     <!--    the custom script for this page -->
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegePointConfigurations.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeBootstrap.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeLogic.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js"></script>
 
 
 <script type="text/javascript">
+var groupsListsType = "select";
 
-
-$('.nav-pills, .nav-tabs').tabdrop()
-
-
- $('.selectpicker').selectpicker({
-      style: 'btn-info',
-      size: 5
-  });
-
-
-
+$( document ).ready(function(){
+    $('.nav-pills, .nav-tabs').tabdrop();
+    
+    
+    //  $('.selectpicker').selectpicker({
+    //       style: 'btn-info',
+    //       size: 5
+    //   });
+    
+    
+//    $('.groupsList').selectpicker();
+});
 
 </script>
 
@@ -91,14 +93,11 @@ $('.nav-pills, .nav-tabs').tabdrop()
 
 <!-- Starting to write the UI -->
 <body>
-    <div class="page-header" style="text-align: center;">
+    <div id="meterName" class="page-header" style="text-align: center;">
         <h1>Meter Name<small>   Substation A</small></h1>
     </div>
 
-	<select class="selectpicker">
-      <option>Meter 1</option>
-      <option>Meter 2</option>
-      <option>Meter 3</option>
+	<select id="groupsList" class="selectpicker" data-live-search="true">
 	</select> 
 <div class="container">
   
@@ -150,12 +149,28 @@ $('.nav-pills, .nav-tabs').tabdrop()
                 </ul>
              <div class="tab-content responsive ">
 	            		<div class="tab-pane fade" id="panel-kw">
-                		<div id="kwChartDiv" class="amChartsTab" ></div>
+                		<div id="kwhBarChartDiv" class="amChartsTab" ></div>
             		</div>  
             		
             		 
                 	<div class="tab-pane" id="panel-stats">
-                		<div id="statsTablewDiv fade" class="amChartsTab" ></div>
+                		<div id="statsTablewDiv fade" >
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Average</th>
+                                  <th>Integral</th>
+                                  <th>Sum</th>
+                                  <th>Count</th>
+                                  <th>Maximum</th>
+                                  <th>Minimum</th>
+                                </tr>
+                              </thead>
+                              <tbody id="statisticsTableBody">
+                              </tbody>
+                           </table>
+                        </div>
             		</div>
               </div>
                 
@@ -168,23 +183,19 @@ $('.nav-pills, .nav-tabs').tabdrop()
                 
                 <div class="col-sm-2">
                     <select id="simpleTimePicker" class="form-control">
-                        <option value="" disabled selected>Today</option>
-                        <option value="simpleTimePeriodType"></option>
                     </select>
                 </div>
         
                 <div class="col-sm-4">
-                    <input class="form-control" placeholder="From Date" id="startDate"> </input>
+                    <input class="form-control" placeholder="From Date" id="kWhFromDate"></input>
                 </div>
         
                 <div class="col-sm-4">
-                    <input class="form-control" placeholder="To Date" id="endDate"></input>
+                    <input class="form-control" placeholder="To Date" id="kWhToDate"></input>
                 </div>
              	   
 					<div class="col-md-2">
                     <select id="simpleTimePeriodType" class="form-control">
-                        <option value="" disabled selected>Hourly</option>
-                        <option value="simpleTimePeriodType"></option>
                     </select>
                 </div>
             </div>
@@ -200,11 +211,11 @@ $('.nav-pills, .nav-tabs').tabdrop()
 		  <div class="divider"> </div>
         <div id="tabbable">
             <ul class="nav nav-tabs responsive">
-                <li  class="active" onclick="templater.invalidateChartSize(['kwhChartDiv'], templater);">
+                <li  class="active" onclick="templater.invalidateChartSize(['kwhLineChartDiv'], templater);">
                     <a href="#panel-kw" data-toggle="tab">KW</a>
                 </li>
                 
-                <li onclick="templater.invalidateChartSize(['ampsChartDiv'], templater);">
+                <li onclick="templater.invalidateChartSize(['ampsLineChartDiv'], templater);">
                     <a href="#panel-amps" data-toggle="tab">Amps</a>
                 </li>
                 
@@ -212,7 +223,7 @@ $('.nav-pills, .nav-tabs').tabdrop()
                     <a href="#panel-volts" data-toggle="tab">Volts</a>
                 </li>
             
-                <li onclick="templater.invalidateChartSize(['voltsLineChartDiv'], templater);">
+                <li onclick="templater.invalidateChartSize(['powerFactorLineChartDiv'], templater);">
                     <a href="#panel-powerFactor" data-toggle="tab">Power Factor</a>
                 </li>
                 
@@ -233,10 +244,10 @@ $('.nav-pills, .nav-tabs').tabdrop()
         <div class="tab-content responsive">
             
             <div class="tab-pane fade" id="panel-kw">
-                <div id="kwhChartDiv" class="amChartsTab" ></div>
+                <div id="kwhLineChartDiv" class="amChartsTab" ></div>
             </div>
             <div  class="tab-pane fade" id="panel-amps" id="amps">
-                <div id="ampsChartDiv"  class="amChartsTab" ></div>
+                <div id="ampsLineChartDiv"  class="amChartsTab" ></div>
             </div>
             
             <div  class="tab-pane fade" id="panel-volts" id="volts">
@@ -261,9 +272,7 @@ $('.nav-pills, .nav-tabs').tabdrop()
 
     <div class="row">
         <div class="col-sm-2">
-            <select id="simpleTimePicker" class="form-control">
-                <option value="" disabled selected>Today</option>
-                <option value="simpleTimePeriodType"></option>
+            <select id="simpleTimePicker2" class="form-control">
             </select>
         </div>
         <div class="col-sm-2">
@@ -284,7 +293,6 @@ $('.nav-pills, .nav-tabs').tabdrop()
             <input placeholder="1" id="timePeriod" type="number" value="1" class="form-control"></input>
         </div>
     </div>
-</div>
 </div>
 
 </body>

@@ -68,7 +68,8 @@ SelectConfiguration.prototype = {
             select.change(self.configuration.onChange);
             if(this.configuration.options.length > 0){
                 $('#' + this.divId).val(this.configuration.options[this.selected].value);
-                $('#' + this.divId).selectmenu('refresh', true);
+                if($('#' + this.divId).selectmenu != undefined)
+                    $('#' + this.divId).selectmenu('refresh', true);
             }
         },
         

@@ -34,22 +34,33 @@ RollupConfiguration.prototype = {
         configuration: null, //Full mixed-in config
         selected: 0,
         
+        addItem: function(label, id, selected){
+            var html = "<option></option>";
+            $('#' + this.divId).append( $(html).text(label).val(id));
+        },
+        
         create: function(){
             var self = this;
             var select = $('#' + this.divId);
             //Add the options
-            for(k in this.configuration.rollups){
-                select.append( 
-                        $("<option></option>").text(this.configuration.rollups[k]).val(this.configuration.rollups[k]));
+            for(k in this.configuration.options){
+                if(k == this.selected)
+                    this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, true);
+                else
+                    this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, false);
+                    
             }
-//            $("#" +this.divId + " option[value='" + this.selected +"']").prop('selected', true);
-//            $('#' + this.divId).selectmenu('refresh', true);
-            if(this.configuration.rollups.length > 0){
-                $('#' + this.divId).val(this.configuration.rollups[this.selected]);
-                $('#' + this.divId).selectmenu('refresh', true);
-            }
+            
+            if(this.placeholder != null)
+                $('#' + this.divId).attr("placeholder", this.placeholder);
+ 
             //Add the onChange method
             select.change(self.configuration.onChange);
+            if(this.configuration.options.length > 0){
+                $('#' + this.divId).val(this.configuration.options[this.selected].value);
+                if($('#' + this.divId).selectmenu != undefined)
+                    $('#' + this.divId).selectmenu('refresh', true);
+            }
         },
         
         onChange: function(value, owner){
@@ -58,7 +69,14 @@ RollupConfiguration.prototype = {
         
         getBaseConfiguration: function(){
             return {
-                rollups: ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
+                options: [
+                          {label: 'AVERAGE', value: 'AVERAGE'}, 
+                          {label: 'MAXIMUM', value: 'MINIMUM'},
+                          {label: 'SUM', value: 'SUM'},
+                          {label: 'FIRST', value: 'FIRST'},
+                          {label: 'LAST', value: 'LAST'},
+                          {label: 'COUNT', value: 'COUNT'}
+                         ],
                 onChange: function(rollup){
                     console.log(rollup);
                 }

@@ -33,7 +33,7 @@
        
        
        if(groupsListsType == 'select'){
-           var groupSelect = new SelectConfiguration('groups',{}, {});
+           var groupSelect = new SelectPickerConfiguration('groupsList',{}, {});
        }else{
            /**
             *Create a custom grouper for bootstraps listgroup element
@@ -74,6 +74,9 @@
                    templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
                    var matchedDataPointConfigurations = templater.pointMatcher.match(templater.groups[groupId].dataPoints);
                    templater.refresh(null, templater);
+                   
+                   //Load in the Name of the Meter
+                   $('#meterName').text(templater.groups[groupId].label);
                    
                    //Refresh the other display Manager
                    //Clear out the bar chart for new data

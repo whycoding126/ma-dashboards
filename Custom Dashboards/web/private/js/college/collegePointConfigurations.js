@@ -355,54 +355,5 @@ pointConfigurations.push(new DataPointMatchConfiguration(32, [ {
         } ], {
             providerType: "Statistics"
         }));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(6, [ {
-//    matchAttribute : 'name',
-//    regex : /Phase\ \A\ \(A\)/g
-//} ], {
-//    providerType : 'Statistics'
-//}));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(7, [ {
-//    matchAttribute : 'name',
-//    regex : /Phase\ \B\ \(\A\)/g
-//} ], {
-//    providerType : 'Statistics'
-//}));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(8, [ {
-//    matchAttribute : 'name',
-//    regex : /\Phase\ C\ \(A\)/g
-//} ], {
-//    providerType : 'Statistics'
-//}));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(9, [ {
-//    matchAttribute : 'name',
-//    regex : /Voltage\ \A-N\ \(V\)/g
-//} ], {
-//    providerType : 'Statistics'
-//}));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(10, [ {
-//    matchAttribute : 'name',
-//    regex : /Voltage\ B-N\ \(V\)/g,
-//} ], {
-//    providerType : 'Statistics'
-//}));
-//
-//pointConfigurations.push(new DataPointMatchConfiguration(11, [ {
-//    matchAttribute : 'name',
-//    regex : /Voltage\ C-N\ \(V\)/g
-//} ], {
-//    providerType : 'Statistics'
-//}));
 
-
-pointConfigurations.push(new DataPointMatchConfiguration(5, [ {
-    matchAttribute : 'name',
-    regex : /.*\(kWh\)/
-} ], {
-    providerType : 'Statistics'
-}));
 

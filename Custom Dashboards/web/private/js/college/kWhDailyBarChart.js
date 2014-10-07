@@ -159,7 +159,8 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                                kWhDailyBarChartDataProviderSettings.from.setHours(0,0,0,0);
                                kWhDailyBarChartDataProviderSettings.to = new Date();
                                $("#simpleTimePeriodType").val("HOURS");
-                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               if($("#simpleTimePeriodType").selectmenu != undefined)
+                                   $("#simpleTimePeriodType").selectmenu('refresh', true);
                                kWhDailyBarChartDataProviderSettings.timePeriodType = "HOURS";        
 
                            }else if(value == "1"){
@@ -167,7 +168,8 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                                //Subtract 7*24Hrs
                                kWhDailyBarChartDataProviderSettings.from = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*7);
                                $("#simpleTimePeriodType").val("DAYS");
-                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               if($("#simpleTimePeriodType").selectmenu != undefined)
+                                   $("#simpleTimePeriodType").selectmenu('refresh', true);
                                kWhDailyBarChartDataProviderSettings.timePeriodType = "DAYS";        
 
                            }else if(value == "2"){
@@ -175,7 +177,8 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                                //Subtract 30 Days
                                kWhDailyBarChartDataProviderSettings.from = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*30);
                                $("#simpleTimePeriodType").val("DAYS");
-                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               if($("#simpleTimePeriodType").selectmenu != undefined)
+                                   $("#simpleTimePeriodType").selectmenu('refresh', true);
                                kWhDailyBarChartDataProviderSettings.timePeriodType = "DAYS";        
                            }else if(value == "3"){ //This Year
                                kWhDailyBarChartDataProviderSettings.to = new Date();
@@ -183,7 +186,8 @@ kWhDailyBarChartFrom.setHours(0,0,0,0);
                                kWhDailyBarChartDataProviderSettings.from = new Date(new Date().getFullYear(), 0, 1);
                                kWhDailyBarChartDataProviderSettings.from.setHours(0,0,0,0);
                                $("#simpleTimePeriodType").val("MONTHS");
-                               $("#simpleTimePeriodType").selectmenu('refresh', true);
+                               if($("#simpleTimePeriodType").selectmenu != undefined)
+                                   $("#simpleTimePeriodType").selectmenu('refresh', true);
                                kWhDailyBarChartDataProviderSettings.timePeriodType = "MONTHS";        
                            }
                            $("#kWhToDate").val(kWhDailyBarChartDataProviderSettings.to);

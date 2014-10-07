@@ -321,8 +321,6 @@
 <div data-role="content">
     <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
     <ul id="groupsList"></ul>
-	<p>Statistics display using 1 Statistics Data Provider mapped to temperature and voltage points. Click the Target Folder to start.
-	</p>
             <table>
               <thead>
                 <tr>
