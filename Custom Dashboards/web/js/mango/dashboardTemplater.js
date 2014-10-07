@@ -117,6 +117,25 @@ DashboardTemplater = function(options){
     var self = this; //Save a reference for our actions
     
     //Setup the Inputs
+    if(this.customPeriodConfiguration == null){
+        this.customPeriodConfiguration = new SelectConfiguration('customPeriodSelect', 
+                {options: [
+                           {label: 'Today', value: "0"},
+                           {label: '7 Days', value: "1"},
+                           {label: '30 Days', value: "2"},
+                           {label: 'This Year', value: "3"}
+                           ]
+                },{owner: self, onChange: self.customPeriodChanged}
+                );
+    }else{
+        if(this.customPeriodConfiguration.owner == null)
+            this.customPeriodConfiguration.owner = self;
+        if(this.customPeriodConfiguration.onChange == null)
+            this.customPeriodConfiguration.onChange = self.startDateChanged;
+    } 
+    this.customPeriodConfiguration.create();
+    
+    //Start Date Picker
     if(this.startDateConfiguration == null)
         this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {defaultValue: self.startDate, owner: self, onChange: self.startDateChanged});
     else{
@@ -251,42 +270,100 @@ DashboardTemplater.prototype = {
         endDate: null,
         rollup: null,
         timePeriodType: null,
-        timePeriods: null,
+        timePeriods: null, //Currently selected Time Periods
+        providersToRefresh: null, //If null refresh all otherwise can set to array of provider IDS to refresh
         
+        /**
+         * Called when custom period has been changed
+         */
+        customPeriodChanged: function(value, templater){
+            if(templater.debug)
+                console.log("customPeriod: " + value);
+            if(value == "0"){
+                templater.startDate = new Date();
+                templater.startDate.setHours(0,0,0,0);
+                templater.endDate = new Date();
+                $("#" + templater.timePeriodTypeConfiguration.divId).val("HOURS");
+                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
+                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                templater.timePeriodType = "HOURS";        
+
+            }else if(value == "1"){
+                templater.endDate = new Date();
+                //Subtract 7*24Hrs
+                templater.startDate = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*7);
+                $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
+                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
+                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                templater.timePeriodType = "DAYS";        
+
+            }else if(value == "2"){
+                templater.endDate = new Date();
+                //Subtract 30 Days
+                templater.startDate = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*30);
+                $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
+                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
+                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                templater.timePeriodType = "DAYS";        
+            }else if(value == "3"){ //This Year
+                templater.endDate = new Date();
+                //Set Date to first of year
+                templater.startDate = new Date(new Date().getFullYear(), 0, 1);
+                templater.startDate.setHours(0,0,0,0);
+                $("#" + templater.timePeriodTypeConfiguration.divId).val("MONTHS");
+                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
+                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                templater.timePeriodType = "MONTHS";        
+            }
+            //Refresh the date pickers
+            $("#" + templater.startDateConfiguration.divId).val(templater.startDate);
+            $("#" + templater.endDateConfiguration.divId).val(templater.endDate);
+
+            
+            templater.displayManager.clear(false, templater.providersToRefresh);
+            templater.refresh(templater.providersToRefresh, templater);
+        },
+        /**
+         * Called on start date change
+         */
         startDateChanged: function(date, $input, templater){
             if(templater.debug)
                 console.log('SD: ' + date);
             templater.startDate = date;
-            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(null, templater);
+            templater.displayManager.clear(false, templater.providersToRefresh); //Clear all data  AND Point Configurations on a change of Group
+            templater.refresh(templater.providersToRefresh, templater);
         },
         endDateChanged: function(date, $input, templater){
             if(templater.debug)
                 console.log('ED: ' + date);
             templater.endDate = date;
-            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(null, templater);
+            //Clear out the displays for new data (but keep the point configurations)
+            templater.displayManager.clear(false, templater.providersToRefresh); 
+            templater.refresh(templater.providersToRefresh, templater);
         },
         rollupChanged: function(rollup, templater){
             if(templater.debug)
                 console.log('RU: ' + rollup);
             templater.rollup = rollup;
-            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(null, templater);
+            //Clear out the displays for new data (but keep the point configurations)
+            templater.displayManager.clear(false, templater.providersToRefresh);
+            templater.refresh(templater.providersToRefresh, templater);
         },
         timePeriodTypeChanged: function(timePeriodType, templater){
             if(templater.debug)
                 console.log('TPT: ' + timePeriodType);
             templater.timePeriodType = timePeriodType;
-            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(null, templater);
+            //Clear out the displays for new data (but keep the point configurations)
+            templater.displayManager.clear(false, templater.providersToRefresh);
+            templater.refresh(templater.providersToRefresh, templater);
         },
         timePeriodChanged: function(timePeriods, templater){
             if(templater.debug)
                 console.log('TP: ' + timePeriods);
             templater.timePeriods = timePeriods;
-            templater.displayManager.clear(false); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(null, templater);
+            //Clear out the displays for new data (but keep the point configurations)
+            templater.displayManager.clear(false, templater.providersToRefresh);
+            templater.refresh(templater.providersToRefresh, templater);
         },
         onMatch: function(dataPointConfiguration, templater){
             if(templater.debug)
@@ -305,7 +382,7 @@ DashboardTemplater.prototype = {
             templater.groupId =  groupId;
             templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
             var matchedConfigs = templater.pointMatcher.match(templater.groups[groupId].dataPoints);
-            templater.refresh(null, templater);
+            templater.refresh(templater.providersToRefresh, templater);
         },
         /**
          * Refresh the providers using the dates/rollups already set in templater

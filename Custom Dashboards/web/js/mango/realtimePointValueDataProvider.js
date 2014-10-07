@@ -44,6 +44,9 @@ RealtimePointValueDataProvider.prototype = {
         listeners: null, //Listeners to send new data when load() completes
 
         socketMap: null, //Map of sockets to xids
+        
+        loadMostRecent: true, //Load most recent 1 sample
+        
         /**
          * Optionally manipulate data.
          * 
@@ -74,11 +77,49 @@ RealtimePointValueDataProvider.prototype = {
         /**
          * Load our data and publish to listeners
          * 
+         * This is a special case that return the most recent point value
+         * to kick start the data provider since 
+         * a point may not be updating often and data may be desired
+         * 
          * @param error - method to call on error
          */
         load: function(options, error){
             this.error = error;
-            return; //We don't have load logic as we push data
+            
+            if(this.loadMostRecent == false)
+                return;
+            
+            //To make life easier we will allow access to the most current point value
+            // on a load
+            //We will keep the requests in order by using a Deferred Chain
+            var link = $.Deferred();
+            var promise = link.promise();
+
+            var self = this;
+            $.each(this.pointConfigurations, function(i, configuration){
+                //Form Chain
+                 promise = promise.then(function(){
+                    return mangoRest.pointValues.getLatest(configuration.point.xid,
+                            1,
+                            function(data, xid, options){
+    
+                        //Optionally manipulate the data
+                        if(self.manipulateData != null)
+                            data = self.manipulateData(data, options.configuration.point);
+                        
+                        //Inform our listeners of this new data
+                        for(var i=0; i<self.listeners.length; i++){
+                            self.listeners[i].onLoad(data, options.configuration.point);
+                        }
+                    },error, {configuration: configuration});
+                    
+                    //TODO Form Chain with da - to ensure order of processing point configurations... 
+                });
+            });
+            //Resolve the Deferred and start the Chain
+            link.resolve();
+            //Return the final promise that will be resolved when done
+            return promise;
         },
         
         /**

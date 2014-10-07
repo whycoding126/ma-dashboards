@@ -53,6 +53,7 @@
        /**
        *Setting upo the main Templater and adding all the vars ans what not to the Display
        */
+       var providersLinkedToPickers = []; //Global
        var templaterConfig = {
                debug: true,
                type: 'PointHierarchy',
@@ -62,6 +63,7 @@
                dataProviders: dataProviders,
                groupSelectConfiguration: groupSelect,
                loadGroupAtStartup: 0, //GroupId to load
+               providersToRefresh: [1,5,6,7,11,12,13,17,18,19,23,24,25],  //Only the charts that are connected to the pickers
                /**
                 * Since we want to tie in another display manager 
                 * that is already configured we can just 
@@ -89,9 +91,6 @@
                    //The kWhBarChartDataProviderSettings are Globally defined in the kWhDailyBarChart.js file
                    kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
                },
-               
-               
-               
        }
        
        templater = new DashboardTemplater(templaterConfig);
