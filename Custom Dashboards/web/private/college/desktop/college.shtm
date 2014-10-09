@@ -1,308 +1,400 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Meters</title>
-    <link rel="stylesheet" href="/modules/dashboards/web/private/css/college/desktop/collegeMobile.css">
+    <meta charset="utf-8">
+    <meta name="Copyright" content="&copy;2014 Infinite Automation Systems Inc."/>
+    <meta name="DESCRIPTION" content="Mango Automation from Infinite Automation Systems"/>
+    <meta name="KEYWORDS" content="Mango Automation from Infinite Automation Systems"/>
+
+    <link rel="icon" href="/2.5.0/images/favicon.ico"></link>
+    
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>Meters</title><!--main css page that in the future will be able to change -->
+    <link href="/modules/dashboards/web/private/css/college/desktop/dark.css" id="theme_css" media="all" rel="stylesheet" type="text/css">
     <!-- JQuery -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-    
+
+    <script src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js" type="text/javascript"></script>
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
-	
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    <script src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js" type="text/javascript"></script>
     <!-- Charting Library -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
 
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+    <script src="/modules/dashboards/web/js/amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/amcharts/serial.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/amcharts/pie.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/amcharts/gauge.js" type="text/javascript"></script>
+    <!--     Bootstrap and others CSS -->
+    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--     Bootstrap JS -->
 
-<!--     Bootstrap and others CSS -->
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/bootstrap-responsive.css" rel="stylesheet"> 
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/google-code-prettify/prettify.css" rel="stylesheet" >
-    <link href="/modules/dashboards/web/js/bootstrap/css/addon/tabdrop.css" rel="stylesheet" >
-    <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">   
-
-<!--     Bootstrap JS -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js"></script>
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/bootstrap-tabdrop.js"></script> -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-responsive-tabs/js/responsive-tabs.js"></script> -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/tabdrop/js/dropdown.js"></script> -->
-<!--     <script type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/google-code-prettify/prettify.js"></script> -->
-    <link rel="stylesheet" type="text/css" href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css">
-    <script  type="text/javascript" src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    
- 
-    
+    <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <link href="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet" type="text/css">
+    <script src="/modules/dashboards/web/js/bootstrap/addon/bootstrap-select/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
     
     <!-- Mango Rest API Helper -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
-    
-        
+    <script src="/modules/dashboards/web/js/mangoApi.js" type="text/javascript"></script>
     <!-- MangoJS -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/simpleDisplay.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>  
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dashboardTemplater.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dateTimePicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/selectPicker.js"></script>
-        
-    <!--    the custom script for this page -->
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegePointConfigurations.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeDataProviders.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/collegeLogic.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js"></script>
-
-
-<script type="text/javascript">
+    <script src="/modules/dashboards/web/js/mango/dataDisplayManager.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/serialChart.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/barChart.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/statisticsBarChart.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/pieChart.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/simpleDisplay.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/pointValueDataProvider.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/statisticsDataProvider.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/dataPointMatcher.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/dataPointGroup.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/dashboardTemplater.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/dateTimePicker.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/rollupPicker.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/input.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/select.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/js/mango/selectPicker.js" type="text/javascript"></script>
+    <!--    the custom scripts for this page -->
+    <script src="/modules/dashboards/web/private/js/college/collegePointConfigurations.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/private/js/college/collegeDisplayConfigurations.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/private/js/college/collegeDataProviders.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/private/js/college/collegeLogic.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
 var groupsListsType = "select";
 
-$( document ).ready(function(){
+    $( document ).ready(function(){
 
-    //Ensure that this active tab has a resized chart
-    $.when(templater.deferred).then(function(){
+      //Ensure that this active tab has a resized chart
+      $.when(templater.deferred).then(function(){
 
-        templater.invalidateChartSize(['kwhLineChartDiv'], templater);
-        
-        //Refresh the am chart for daily kWh
-        kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
-        
-    });
-    
-    //Hack for Bootstrap Tabs to refresh chart After Tab is shown
-    //Each Link for the tab MUST Start with the prefix before the Chart's ID wihtout the Div ending.
-    // ie. for the chart in 'kwhLineChartDiv' you must set the anchor's id='kwhLineChart'
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        //e.target // activated tab
-        //e.relatedTarget // previous tab
-        if(e.target.id == 'kWhDailyBarChart'){
-            kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
-        }else{
-            //For all other chart Tabs
-            templater.invalidateChartSize([e.target.id + 'Div'], templater);
-        }
+      templater.invalidateChartSize(['kwhLineChartDiv'], templater);
+      
+      //Refresh the am chart for daily kWh
+      kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
+      
       });
+      
+      //Hack for Bootstrap Tabs to refresh chart After Tab is shown
+      //Each Link for the tab MUST Start with the prefix before the Chart's ID wihtout the Div ending.
+      // ie. for the chart in 'kwhLineChartDiv' you must set the anchor's id='kwhLineChart'
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      //e.target // activated tab
+      //e.relatedTarget // previous tab
+      if(e.target.id == 'kWhDailyBarChart'){
+          kWhDailyBarChartDisplayManager.invalidateChartSize(['kWhDailyBarChartDiv'], kWhDailyBarChartDisplayManager);
+      }else{
+          //For all other chart Tabs
+          templater.invalidateChartSize([e.target.id + 'Div'], templater);
+      }
+    });
 
-});
+    });
 
-</script>
-
+    </script>
+    
 </head>
-
-
-
 <!-- Starting to write the UI -->
 <body>
-    <div id="meterName" class="page-header" style="text-align: center;">
-        <h1>Meter Name<small>   Substation A</small></h1>
-    </div>
-
-	<select id="groupsList" class="selectpicker" data-live-search="true">
-	</select> 
-<div class="container">
-
-
-
-    <div class="col-md-4  container-lg-height" style=" height:1000px">
-        <table style="height:100%">
-            <!-- Lables for this row -->
-            <tr>
-                <td class="leftName">Amps</td>
-                <td><div id="ampsBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td>
-
-            </tr>
-            <tr>    
-                <td class="leftName">Volts</td> 
-                <td><div id="voltsBarChartDiv" style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"> </div></td>
-
-            </tr>
-            <!--the realtime numbers-->
-            <tr>
-                
-                <td class="leftName">Kilo Watts</td>
-                <td><div id="kwBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
-
-            </tr>
-            <!--the realtime numbers-->
-            <tr>
-                <td class="leftName">Power Factor</td>
-                <td><div id="powerFactorBarChartDiv"  style="width:200px; height:100px; vertical-align: top;  display: inline-block; padding: 10px;"></div></td> 
-
-                </tr>
-        </table>
+    <div class="pageHeader" id="meterName">
     </div>
 
 
+    <div id="groupListDiv">
+        <select class="selectpicker" data-live-search="true" id="groupsList">
+            </select>
+    </div>
 
 
-    <!--    start top  -->
-      <div class="col-md-8">
-        <div>
-            <ul class="nav nav-tabs responsive">
-                <li class="active">
-                    <a href="#panel-kw-daily" data-toggle="tab" id="kWhDailyBarChart">History</a>
-                </li>
-                 <li onclick="//No resize required">
-                    <a href="#panel-stats" data-toggle="tab">Statistics</a>
-                </li> 
-              </ul>
-             <div id="overview-tabs" class="tab-content responsive">
-	            	<div class="tab-pane fade in active" id="panel-kw-daily">
-                		<div id="kWhDailyBarChartDiv" class="amChartsTab" ></div>
-            		</div>  
-            		
-            		 
-                	<div class="tab-pane fade" id="panel-stats">
-                		<div id="statsTableDiv" >
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>#</th>
-                                  <th>Average</th>
-                                  <th>Integral</th>
-                                  <th>Sum</th>
-                                  <th>Count</th>
-                                  <th>Maximum</th>
-                                  <th>Minimum</th>
-                                </tr>
-                              </thead>
-                              <tbody id="statisticsTableBody">
-                              </tbody>
-                           </table>
-                        </div>
-            		</div>
-              </div>
-                
+    <div class="container-fluid" id="mainContainer">
+        <!-- real time on the top left -->
+
+
+        <div class="col-md-2 container-lg-height" id="topLeftCharts">
+
+            <div id="pannelHeader" style="height:6em">
+                <div class="pannelHeaderText">
+                    <h2>Amps</h2>
+                </div>
+            </div>
+
+
+            <div id="ampsBarChartDiv" style="overflow:visible !important ;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+            </div>
+
+
+            <div id="pannelHeader" style="height:6em">
+                <div class="pannelHeaderText">
+                    <h2>Volts</h2>
+                </div>
+            </div>
+
+
+            <div id="voltsBarChartDiv" style="overflow:visible !important;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+
+            </div>
+
+
+            <div id="pannelHeader" style="height:6em">
+                <div class="pannelHeaderText">
+                    <h2>Kilo Watts</h2>
+                </div>
+            </div>
+
+
+            <div id="kwBarChartDiv" style="overflow:visible !important; width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+
+            </div>
+
+
+            <div id="pannelHeader" style="height:6em">
+                <div class="pannelHeaderText">
+                    <h2>Power Factor</h2>
+                </div>
+            </div>
+
+
+            <div id="powerFactorBarChartDiv" style="overflow:visible !important;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+
+            </div>
         </div>
-        <div class="centeredPickers">
+        <!--end top left-->
+        <!--    start top right -->
+
+
+        <div class="col-md-10" id="topRightCharts">
+            <div>
+                <ul class="nav nav-tabs responsive">
+                    <li class="active">
+                        <a data-toggle="tab" href="#panel-kw-daily" id="kWhDailyBarChart">History</a>
+                    </li>
+
+
+                    <li onclick="//No resize required">
+                        <a data-toggle="tab" href="#panel-stats">Statistics</a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content responsive" id="overview-tabs">
+                    <div class="tab-pane fade in active" id="panel-kw-daily">
+                        <div class="divider">
+                        </div>
+
+
+                        <div id="pannelHeader">
+                            <div class="pannelHeaderText">
+                                <h2>Kilo Watts Daily</h2>
+                            </div>
+                        </div>
+
+
+                        <div class="divider">
+                        </div>
+                        
+                        <!--        Options  -->
+                        <div class="centeredPickers" id="optionsPickers">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <select class="form-control" id="simpleTimePicker">
+                                        </select>
+                                </div>
+
+
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="kWhFromDate" placeholder="From Date">
+                                </div>
+
+
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="kWhToDate" placeholder="To Date">
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <select class="form-control" id="simpleTimePeriodType">
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="amChartsTabDaily" id="kWhDailyBarChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-stats">
+                        <div id="pannelHeader">
+                            <div class="pannelHeaderText">
+                                <h2>Statistics</h2>
+                            </div>
+                        </div>
+
+
+                        <div class="divider">
+                        </div>
+
+
+                        <div id="statsTableDiv">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+
+                                        <th>Average</th>
+
+                                        <th>Count</th>
+
+                                        <th>Maximum</th>
+
+                                        <th>Minimum</th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody id="statisticsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--The tabs for the charts  -->
+        <div class="col-md-10" id="bottomRightCharts">
+            <div id="pannelHeader">
+                <div class="pannelHeaderText">
+                    <h2>Meter History</h2>
+                </div>
+            </div>
+
+            <div class="divider">
+            </div>
+            
+            <!--Starting the Rollup and date and time pickers -->
             <div class="row">
                 <div class="col-sm-2">
-                    <select id="simpleTimePicker" class="form-control"></select>
+                    <select class="form-control" id="customPeriodSelect">
+                        </select>
                 </div>
-        
-                <div class="col-sm-4">
-                    <input class="form-control" placeholder="From Date" id="kWhFromDate"></input>
+
+
+                <div class="col-sm-2">
+                    <input class="form-control" id="startDate" placeholder="To Date">
                 </div>
-        
-                <div class="col-sm-4">
-                    <input class="form-control" placeholder="To Date" id="kWhToDate"></input>
+
+
+                <div class="col-sm-2">
+                    <input class="form-control" id="endDate" placeholder="To Date">
                 </div>
-             	   
-		        <div class="col-md-2">
-                    <select id="simpleTimePeriodType" class="form-control"></select>
+
+
+                <div class="col-sm-2">
+                    <select class="form-control" id="rollup">
+                        </select>
+                </div>
+
+
+                <div class="col-sm-2">
+                    <select class="form-control" id="timePeriodType">
+                        </select>
+                </div>
+
+
+                <div class="col-xs-1">
+                    <input class="form-control" id="timePeriod" placeholder="1" type="number" value="1">
+                </div>
+            </div>
+
+
+            <div class="divider">
+            </div>
+            
+            <!--      start the bottom tabs -->
+            <div id="tabbable">
+                <ul class="nav nav-tabs responsive">
+                    <li class="active">
+                        <a data-toggle="tab" href="#panel-kw" id="kwhLineChart">KW</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-amps" id="ampsLineChart">Amps</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-volts" id="voltsLineChart">Volts</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-powerFactor" id="powerFactorLineChart">Power Factor</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-phaseA" id="phaseALineChart">Phase A</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-phaseB" id="phaseBLineChart">Phase B</a>
+                    </li>
+
+
+                    <li>
+                        <a data-toggle="tab" href="#panel-phaseC" id="phaseCLineChart">Phase C</a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content responsive" id="chart-tabs">
+                    <div class="tab-pane fade in active" id="panel-kw">
+                        <div class="amChartsTab" id="kwhLineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-amps">
+                        <div class="amChartsTab" id="ampsLineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-volts">
+                        <div class="amChartsTab" id="voltsLineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-powerFactor">
+                        <div class="amChartsTab" id="powerFactorLineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-phaseA">
+                        <div class="amChartsTab" id="phaseALineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-phaseB">
+                        <div class="amChartsTab" id="phaseBLineChartDiv">
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="panel-phaseC">
+                        <div class="amChartsTab" id="phaseCLineChartDiv">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
-    
-
-    <!--The tabs for the charts  -->
-
-
-    <div class="col-md-8">
-		  <div class="divider"> </div>
-        <div id="tabbable">
-            <ul class="nav nav-tabs responsive">
-                <li class="active" >
-                    <a href="#panel-kw"  data-toggle="tab" id="kwhLineChart">KW</a>
-                </li>
-                
-                <li>
-                    <a href="#panel-amps" data-toggle="tab" id="ampsLineChart">Amps</a>
-                </li>
-                
-                <li>
-                    <a href="#panel-volts" data-toggle="tab" id="voltsLineChart">Volts</a>
-                </li>
-            
-                <li>
-                    <a href="#panel-powerFactor" data-toggle="tab" id="powerFactorLineChart">Power Factor</a>
-                </li>
-                
-                
-                <li>
-                    <a href="#panel-phaseA" data-toggle="tab" id="phaseALineChart">Phase A</a>
-                </li>
-            
-                <li>
-                    <a href="#panel-phaseB" data-toggle="tab" id="phaseBLineChart">Phase B</a>
-                </li>
-            
-                <li>
-                    <a href="#panel-phaseC" data-toggle="tab" id="phaseCLineChart">Phase C</a>
-                </li>
-            </ul>
-
-        <div id="chart-tabs" class="tab-content responsive">
-            
-            <div class="tab-pane fade in active" id="panel-kw">
-                <div id="kwhLineChartDiv" class="amChartsTab" ></div>
-            </div>
-            <div class="tab-pane fade" id="panel-amps">
-                <div id="ampsLineChartDiv"  class="amChartsTab" ></div>
-            </div>
-            
-            <div class="tab-pane fade" id="panel-volts">
-                <div id="voltsLineChartDiv"  class="amChartsTab"></div>
-            </div>
-             <div class="tab-pane fade" id="panel-powerFactor">
-                <div id="powerFactorLineChartDiv"  class="amChartsTab"> </div>
-            </div>
-             <div class="tab-pane fade" id="panel-phaseA">
-                <div id="phaseALineChartDiv"  class="amChartsTab"></div>
-             </div>
-             <div class="tab-pane fade" id="panel-phaseB">
-                <div id="phaseBLineChartDiv"  class="amChartsTab"></div>
-             </div>
-             <div class="tab-pane fade" id="panel-phaseC">
-                <div id="phaseCLineChartDiv"  class="amChartsTab"></div>
-             </div>
-        </div>
-</div>
-
-    <!--Starting the Rollup and date and time pickers -->
-
-    <div class="row">
-        <div class="col-sm-2">
-            <select id="simpleTimePicker2" class="form-control">
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <input class="form-control" placeholder="To Date" id="startDate"></input>
-        </div>
-        <div class="col-sm-2">
-            <input class="form-control" placeholder="To Date" id="endDate"></input>
-        </div>
-        <div class="col-sm-2">
-            <select id="rollup" class="form-control">
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <select id="timePeriodType" class="form-control">
-            </select>
-        </div>
-        <div class="col-xs-2">
-            <input placeholder="1" id="timePeriod" type="number" value="1" class="form-control"></input>
-        </div>
-    </div>
-</div>
-  
-</div>
 </body>
 </html>

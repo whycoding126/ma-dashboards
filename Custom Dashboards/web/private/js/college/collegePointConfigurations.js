@@ -25,7 +25,6 @@
  *      23              PointValue          Power Factor A 
  *      24              PointValue          Power Factor B
  *      25              PointValue          Power Factor C
-// These are on the statistics Tab
  *      26              Statistics          Current Phase A (A)
  *      27              Statistics          Current Phase B (A)
  *      28              Statistics          Current Phase C (A)
@@ -42,8 +41,8 @@
  * 
  * 
  * 
+ * 
  */
-
 //Setup Point Configurations
 var pointConfigurations = new Array();
 
