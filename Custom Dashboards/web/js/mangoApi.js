@@ -22,7 +22,7 @@ var mangoRest = {
         loginPut: function(username, password, done, fail, options) {
             $.ajax({
                 type: "PUT",
-                url : "/rest/v1/login/" + username + ".json?password=" + password,
+                url : "/rest/v1/login/" + encodeURIComponent(username) + ".json?password=" + encodeURIComponent(password),
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
@@ -45,7 +45,7 @@ var mangoRest = {
         loginPost: function(username, password, done, fail, options) {
             $.ajax({
                 type: "POST",
-                url : "/rest/v1/login/" + username + ".json?password=" + password,
+                url : "/rest/v1/login/" + encodeURIComponent(username) + ".json?password=" + encodeURIComponent(password),
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
@@ -68,7 +68,7 @@ var mangoRest = {
         logoutPost: function(username, done, fail, options) {
             $.ajax({
                 type: "POST",
-                url : "/rest/v1/logout/" + username + ".json",
+                url : "/rest/v1/logout/" + encodeURIComponent(username) + ".json",
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 done(data, options);
@@ -133,7 +133,7 @@ var mangoRest = {
              */
             get: function(xid, done, fail, options) {
                 $.ajax({
-                    url : "/rest/v1/dataPoints/" + xid + ".json",
+                    url : "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".json",
                 }).done(function(data) {
                     done(data, options);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -152,7 +152,7 @@ var mangoRest = {
             put: function(dataPoint, done, fail) {
                 $.ajax({
                     type: "PUT",
-                    url : "/rest/v1/dataPoints/" + dataPoint.xid + ".json",
+                    url : "/rest/v1/dataPoints/" + encodeURIComponent(dataPoint.xid) + ".json",
                     contentType: "application/json",
                     data: JSON.stringify(dataPoint)
                 }).done(function(data) {
@@ -215,9 +215,9 @@ var mangoRest = {
                     params += "&timePeriodType=" + timePeriodType;
                 if(timePeriods != null)
                     params += "&timePeriods=" + timePeriods;
-                
+                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json?from=" + from + "&to=" + to + params;
                 $.ajax({
-                    url : "/rest/v1/pointValues/" + xid + ".json?from=" + from + "&to=" + to + params,
+                    url : url,
                 }).done(function(data) {
                     done(data, xid, options);
                     deferred.resolve(); //Finish Promise
@@ -251,7 +251,7 @@ var mangoRest = {
                     deferred = options.deferred;
                 
                 $.ajax({
-                    url : "/rest/v1/pointValues/" + xid + "/latest.json?limit=" + limit,
+                    url : "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/latest.json?limit=" + limit,
                 }).done(function(data) {
                     done(data, xid, options);
                     deferred.resolve();
@@ -284,7 +284,7 @@ var mangoRest = {
                 else
                     deferred = options.deferred;
                 $.ajax({
-                    url : "/rest/v1/pointValues/" + xid + "/statistics.json?from=" 
+                    url : "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/statistics.json?from=" 
                     + from
                     + "&to=" + to,
                 }).done(function(data) {
@@ -319,7 +319,7 @@ var mangoRest = {
                     deferred = options.deferred;
                 $.ajax({
                     type: "PUT",
-                    url : "/rest/v1/pointValues/" + xid + ".json",
+                    url : "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json",
                     contentType: "application/json",
                     data: JSON.stringify(pointValue)
                 }).done(function(data) {
@@ -394,7 +394,7 @@ var mangoRest = {
              */
             getCurrentValue: function(xid, done, fail){
                 $.ajax({
-                    url : "/rest/v1/realtime/byXid/" + xid + ".json",
+                    url : "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json",
                 }).done(function(data) {
                     done(data);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -470,7 +470,7 @@ var mangoRest = {
              */
             getFolderByName: function(name, done, fail){
                 $.ajax({
-                    url : "/rest/v1/hierarchy/byName/" + name + ".json",
+                    url : "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json",
                 }).done(function(data) {
                     done(data);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -490,7 +490,7 @@ var mangoRest = {
              */
             getFolderById: function(id, done, fail){
                 $.ajax({
-                    url : "/rest/v1/hierarchy/byId/" + id + ".json",
+                    url : "/rest/v1/hierarchy/byId/" + encodeURIComponent(id) + ".json",
                 }).done(function(data) {
                     done(data);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
