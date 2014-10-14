@@ -74,7 +74,7 @@
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'Statistics'}))
        pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
 
        //Setup Groups
@@ -92,6 +92,7 @@
        
        //Create a custom group list view
        var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
+       
        
        //Setup Templater, Defaults to previous 12 Hours
        var templaterConfig = {

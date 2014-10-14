@@ -150,6 +150,7 @@
                groupConfigurations: groupConfigurations,
                dataProviders: dataProviders,
                groupSelectConfiguration: groupListView,
+               timePeriodType: "MINUTES",
        }
        
        

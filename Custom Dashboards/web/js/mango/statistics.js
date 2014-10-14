@@ -107,14 +107,14 @@ MangoStatistics.prototype = {
         },
         
         renderPointValueTime: function(pvt){
-           return this.renderValue(pvt.value) + " @ " + this.renderTime(pvt.time);  
+           return this.renderValue(pvt.value) + " @ " + this.renderTime(pvt.timestamp);  
         },
         
         renderValue: function(number){
             return number.toFixed(2);
         },
         
-        renderTime: function(time){
-           return time;
+        renderTime: function(timestamp){
+           return new Date(timestamp);
         }
 };
