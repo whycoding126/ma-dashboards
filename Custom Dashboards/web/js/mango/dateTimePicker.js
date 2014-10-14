@@ -14,6 +14,7 @@
  * @author Terry Packer
  */
 
+
 DateTimePickerConfiguration = function(divId, mixin, options){
     this.divId = divId;
     this.mixin = mixin;
@@ -23,7 +24,7 @@ DateTimePickerConfiguration = function(divId, mixin, options){
     }
     
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.mixin);
-
+    
     //Configure the callback
     var self = this;
     this.configuration.onChangeDateTime = function(dp, $input){
@@ -44,7 +45,7 @@ DateTimePickerConfiguration.prototype = {
             
             var picker = jQuery("#" + this.divId).datetimepicker(this.configuration);
             if(this.defaultValue != null)
-                picker.val(this.defaultValue);
+                picker.val(this.defaultValue.dateFormat(this.configuration.format));
         },
 
         onChange: function(date, picker, owner){
