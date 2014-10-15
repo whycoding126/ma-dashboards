@@ -71,7 +71,8 @@ RollupConfiguration.prototype = {
             return {
                 options: [
                           {label: 'AVERAGE', value: 'AVERAGE'}, 
-                          {label: 'MAXIMUM', value: 'MINIMUM'},
+                          {label: 'MAXIMUM', value: 'MAXIMUM'},
+                          {label: 'MINIMUM', value: 'MINIMUM'},
                           {label: 'SUM', value: 'SUM'},
                           {label: 'FIRST', value: 'FIRST'},
                           {label: 'LAST', value: 'LAST'},
