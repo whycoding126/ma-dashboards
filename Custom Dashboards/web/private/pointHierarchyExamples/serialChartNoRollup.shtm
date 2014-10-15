@@ -83,7 +83,7 @@
                lineThickness: 1,
                negativeLineColor: "red",
                type: "smoothedLine",
-               valueField: "temperature"
+               valueField: "value"
            },{
                title: "Voltage",
                valueAxis: "volts-axis",
@@ -95,6 +95,10 @@
                type: "smoothedLine",
                valueField: "voltage"
            }],
+           categoryAxis: {
+               "minPeriod": "fff",
+               "parseDates": true, //TODO Fix this so we are sending in dates
+           },
            valueAxes: [{
                id: "temp-axis",
                title: " Degress F",
@@ -104,26 +108,49 @@
                title: " Volts",
                position: "right"
            }],
-       },{//empty Mango Chart Mixins
-       },{//Confuguration Mixins
-           //Multi-series chart so create mappings from point to a graph valueField
-           dataPointMappings: [{
-                   xidEndsWith: 'temperature',
-                   valueField: 'temperature'
-               },{
-                   xidEndsWith: 'voltage',
-                   valueField: 'voltage'
-               }]
+       },{
+           /**
+            * Data Provider Listener
+            * On Data Provider load we add new data
+            */
+           onLoad: function(data, dataPoint){
+               
+//                for(var i=0; i<data.length; i++){
+//                   var entry = {
+//                       value: data[i].value,
+//                       timestamp: new Date(data[i].timestamp),
+                  
+//                   };
+                  
+//                   this.amChart.dataProvider.push(entry);  
+//                }
+               this.amChart.dataProvider = data;
+               this.amChart.validateData();
+           }
+       },{
+           //Configuration Mixins
        });
        displayConfigurations.push(chart);
 
        //Create Data Providers
        var dataProviders = new Array();
+       var customDataProvider = new PointValueDataProvider(1, {
+           /**
+            * Method that is called before publishing the data to the Displays
+            * it is here that we can modify the data
+            */
+           manipulateData: function(pointValues, dataPoint){
+               //We want to know how many point values are going to be charted so just print this
+               console.log("Point Value Count: " + pointValues.length);
+               return pointValues;
+               
+           }           
+       });
+       dataProviders.push(customDataProvider);
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
        pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'PointValue'}));
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'PointValue'}));
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -140,7 +167,10 @@
        
        //Create a custom group list view
        var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
-       
+
+       var endDate = new Date(); //12Hr
+       var startDate = new Date(endDate.getTime() - 1000*10);
+           
        //Setup Templater
        var templaterConfig = {
                debug: true,
@@ -150,12 +180,20 @@
                groupConfigurations: groupConfigurations,
                dataProviders: dataProviders,
                groupSelectConfiguration: groupListView,
-               timePeriodType: "MINUTES",
+               startDate: startDate,
+               endDate: endDate,
        }
        
        
        
        templater = new DashboardTemplater(templaterConfig);
+       
+       //When the templater finishes setting up, we can set the rollup to null to force 
+       // a load of all point values.
+       $.when(templater.deferred).then(function(){
+           templater.rollup = null;
+           templater.timePeriodType = null;
+       });
        
    });// End When page Ready
    
@@ -164,8 +202,8 @@
 <body>
     <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
     <ul id="groupsList"></ul>
-    <p>Serial Chart using 1 Point Value Data Provider matched to the temperature and voltage points.  This chart uses the default settings
-     for the templater of previous 12 hours and Hourly Averages. Click the Target Folder to start.
+    <p>Serial Chart using 1 Point Value Data Provider matched to the temperature point.  This page is useful 
+    for load testing the chart api. Click the Target Folder to start.
     </p>
     <div  id="chartDiv" style="width:100%; height:400px; vertical-align: top;  display: inline-block; padding: 10px;"></div>
 </body>

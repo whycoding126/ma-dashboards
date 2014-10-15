@@ -195,8 +195,9 @@ DataDisplayManager.prototype = {
         
         /**
          * Helper Function to show error messages
+         * Override to use different format or divId than 'errors'
          */
-        error: function(jqXHR, textStatus, errorThrown, mangoMessage){
+        error: function(jqXHR, textStatus, errorThrown, mangoMessage, errorDivId){
             
             var msg = "";
             if(textStatus != null)
@@ -206,7 +207,7 @@ DataDisplayManager.prototype = {
             if(mangoMessage != null)
                 msg += (mangoMessage + " ");
             msg += "\n";
-            $("#" + this.errorDivId).text(msg);
+            $("#errors").text(msg);
         }
         
 };

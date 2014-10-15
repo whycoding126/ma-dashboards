@@ -15,11 +15,10 @@
  * @param options
  * @returns
  */
-StatisticsConfiguration = function(divPrefix, dataProviderIds, mangoChartMixin, options){
+StartsAndRuntimeListConfiguration = function(divPrefix, dataProviderIds, mangoMixin, options){
     this.divPrefix = divPrefix;
     this.dataProviderIds = dataProviderIds;
-    this.mangoChartMixin = mangoChartMixin;
-    this.dataType = 'Numeric';
+    this.mangoMixin = mangoMixin;
     
     for(var i in options) {
         this[i] = options[i];
@@ -30,24 +29,22 @@ StatisticsConfiguration = function(divPrefix, dataProviderIds, mangoChartMixin, 
 /**
  * Serial Chart Config
  */
-StatisticsConfiguration.prototype = {
+StartsAndRuntimeListConfiguration.prototype = {
         divPrefix: null, //Div of chart
         
-        mangoChartMixin: null, //Any Mango Serial Chart mixins
+        mangoMixin: null, //Any Mango Serial Chart mixins
         
         configuration: null, //The full config with mixin
        
         dataProviderIds: null, //List of my data provider ids
-        
-        dataType: null, //['Numeric', 'Multistate', 'Binary', 'Alphanumeric']
         
         /**
          * Do the heavy lifting and create the item
          * @return AmChart created
          */
         createDisplay: function(){
-            var stats = new MangoStatistics(this.divPrefix, this.dataProviderIds);
-            return $.extend(true, {}, stats, this.mangoChartMixin);
+            var stats = new MangoStartsAndRuntimeList(this.divPrefix, this.dataProviderIds);
+            return $.extend(true, {}, stats, this.mangoMixin);
         },
 };
 
@@ -58,7 +55,7 @@ StatisticsConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoStatistics = function(divPrefix, dataProviderIds, options){
+MangoStartsAndRuntimeList = function(divPrefix, dataProviderIds, options){
     
     this.divPrefix = divPrefix;
     this.dataProviderIds = dataProviderIds;
@@ -68,7 +65,7 @@ MangoStatistics = function(divPrefix, dataProviderIds, options){
     }
 };
 
-MangoStatistics.prototype = {
+MangoStartsAndRuntimeList.prototype = {
         
         divPrefix: null,  //The prefix for all divs ie. myXidSum will contain the sum and prefix is myXid
         dataProviderIds: null,
@@ -77,14 +74,9 @@ MangoStatistics.prototype = {
          * Data Provider listener to clear data
          */
         onClear: function(){
-            $("#" + this.divPrefix + "Min").text("");
-            $("#" + this.divPrefix + "Max").text("");
-            $("#" + this.divPrefix + "Average").text("");
-            $("#" + this.divPrefix + "Integral").text("");
-            $("#" + this.divPrefix + "Sum").text("");
+            $("#" + this.divPrefix + "StartsAndRuntimes").text("");
             $("#" + this.divPrefix + "First").text("");
             $("#" + this.divPrefix + "Last").text("");
-            $("#" + this.divPrefix + "Count").text("");
         },
         
         /**
@@ -93,16 +85,19 @@ MangoStatistics.prototype = {
          */
         onLoad: function(data, dataPoint){
             if(data.hasData == true){
-                
-                //Numeric Statistics
-                $("#" + this.divPrefix + "Min").text(this.renderPointValueTime(data.minimum));
-                $("#" + this.divPrefix + "Max").text(this.renderPointValueTime(data.maximum));
-                $("#" + this.divPrefix + "Average").text(this.renderValue(data.average));
-                $("#" + this.divPrefix + "Integral").text(this.renderValue(data.integral));
-                $("#" + this.divPrefix + "Sum").text(this.renderValue(data.sum));
+                //Starts and Runtimes Statistics
+                var list = "";
+                for(var i=0; i<data.startsAndRuntimes.length; i++){
+                    list += "<tr><td>";
+                    list += data.startsAndRuntimes[i].value;
+                    list += "</td><td>" + data.startsAndRuntimes[i].runtime;
+                    list += "</td><td>" + data.startsAndRuntimes[i].proportion;
+                    list += "</td><td>" + data.startsAndRuntimes[i].starts;
+                    list += "</td></tr>";
+                }
+                $("#" + this.divPrefix + "StartsAndRuntimes").html(list);
                 $("#" + this.divPrefix + "First").text(this.renderPointValueTime(data.first));
                 $("#" + this.divPrefix + "Last").text(this.renderPointValueTime(data.last));
-                $("#" + this.divPrefix + "Count").text(this.renderValue(data.count));
             }
         },
         

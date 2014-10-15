@@ -33,6 +33,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/mango/startsAndRuntimeListStatistics.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/mango/gaugeChart.js"></script>
 	
 	<!-- Data Providers -->
@@ -67,7 +68,9 @@
        var displayConfigurations = new Array();
        //Pass in the div id prefix and array of data provider IDs
        displayConfigurations.push(new StatisticsConfiguration('temperature', [1]));    
-       displayConfigurations.push(new StatisticsConfiguration('voltage', [1]));  
+       displayConfigurations.push(new StatisticsConfiguration('voltage', [2]));  
+       displayConfigurations.push(new StartsAndRuntimeListConfiguration('multistate', [3]));  
+       
        
        //Create Data Providers
        var dataProviders = new Array();
@@ -75,7 +78,8 @@
        //Setup Point Configurations
        var pointConfigurations = new Array();
        pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'Statistics'}))
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(3, [{matchAttribute: 'xid', regex: /multistate/}], {providerType: 'Statistics'}))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -119,6 +123,12 @@
     <ul id="groupsList"></ul>
 	<p>Statistics display using 1 Statistics Data Provider mapped to temperature and voltage points. Click the Target Folder to start.
 	</p>
+    <hr></hr>
+    <h1>Voltage Point</h1>
+        First:<br>
+        <div id="voltageFirst"></div>
+        Last:<br>
+        <div id="voltageLast"></div>
             <table>
               <thead>
                 <tr>
@@ -141,6 +151,27 @@
                   <td id="voltageMax"></td>
                   <td id="voltageMin"></td>
                 </tr>
+              </tbody>
+           </table>
+    <hr></hr>
+    <h1>Temperature Point</h1>
+       First:<br>
+        <div id="temperatureFirst"></div>
+        Last:<br>
+        <div id="temperatureLast"></div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Average</th>
+                  <th>Integral</th>
+                  <th>Sum</th>
+                  <th>Count</th>
+                  <th>Maximum</th>
+                  <th>Minimum</th>
+                </tr>
+              </thead>
+              <tbody>
                 <tr>
                   <td id="pointName">Temperature</td>
                   <td id="temperatureAverage"></td>
@@ -151,7 +182,53 @@
                   <td id="temperatureMin"></td>
                 </tr>
               </tbody>
+           </table>           
+           <hr></hr>
+           <h1>Multistate Point</h1>
+           First:<br>
+           <div id="multistateFirst"></div>
+           Last:<br>
+           <div id="multistateLast"></div>
+           <table>
+              <thead>
+                <tr>
+                  <th>Value</th>
+                  <th>Runtime Ratio</th>
+                  <th>Proportion</th>
+                  <th>Starts</th>
+                </tr>
+              </thead>
+              <tbody id="multistateStartsAndRuntimes">
+              </tbody>
            </table>
+           
+           
+           
+           <hr></hr>
+           <h1>Alphanumeric Point</h1>
+           <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First</th>
+                  <th>Last</th>
+                  <th>Count</th>
+                  <th>Changes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="pointName">Alphanumeric - (Un-implemented)</td>
+                  <td id="alphanumericFirst"></td>
+                  <td id="alphanumericLast"></td>
+                  <td id="alphanumericCount"></td>
+                  <td id="alphanumericChanges"></td>
+                </tr>
+              </tbody>
+           </table>
+           
+           
+           
 </body>
 </html>
 
