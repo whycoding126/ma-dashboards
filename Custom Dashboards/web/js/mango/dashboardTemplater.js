@@ -316,8 +316,8 @@ DashboardTemplater.prototype = {
                 templater.timePeriodType = "MONTHS";        
             }
             //Refresh the date pickers
-            $("#" + templater.startDateConfiguration.divId).val(templater.startDate.formatDate(templater.startDateConfiguration.configuration.format));
-            $("#" + templater.endDateConfiguration.divId).val(templater.endDate.formatDate(templater.endDateConfiguration.configuration.format));
+            $("#" + templater.startDateConfiguration.divId).val(templater.startDate.dateFormat(templater.startDateConfiguration.configuration.format));
+            $("#" + templater.endDateConfiguration.divId).val(templater.endDate.dateFormat(templater.endDateConfiguration.configuration.format));
 
             
             templater.displayManager.clear(false, templater.providersToRefresh);
