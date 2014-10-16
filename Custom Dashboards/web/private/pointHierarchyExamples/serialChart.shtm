@@ -150,13 +150,12 @@
                groupConfigurations: groupConfigurations,
                dataProviders: dataProviders,
                groupSelectConfiguration: groupListView,
-               timePeriodType: "MINUTES",
        }
        
        
        
        templater = new DashboardTemplater(templaterConfig);
-       
+            
    });// End When page Ready
    
    </script>

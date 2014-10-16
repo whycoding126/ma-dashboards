@@ -16,7 +16,7 @@
        var meterGroups = new DataPointGroupConfiguration({
            groupBy: 'Folder',
            labelAttribute: 'name',
-           matchConfigurations: [{ matchAttribute: 'path', regex: /\/Buildings\/City Plex\/Meters\/M.*/ }]
+           matchConfigurations: [{ matchAttribute: 'path', regex: /\/Buildings\/City Plex\/Meters\/*/ }]
            }
        );
        
@@ -48,8 +48,9 @@
              {styleClass: "btn"}
              );           
        }
-
-       
+    // setting up the custom date picker format
+       var templaterDefaultEndDate = new Date(); //Now
+       var templaterDefaultStartDate = new Date(templaterDefaultEndDate.getTime() - 1000*60*60*24);
        /**
        *Setting upo the main Templater and adding all the vars ans what not to the Display
        */
@@ -62,11 +63,14 @@
                dataProviders: dataProviders,
                groupSelectConfiguration: groupSelect,
                loadGroupAtStartup: 0, //GroupId to load
-               /**
+               startDate: templaterDefaultStartDate,
+               endDate: templaterDefaultEndDate,
+	       /**
                 * Since we want to tie in another display manager 
                 * that is already configured we can just 
                 * refresh it here.
                 */
+	       
                groupChanged: function(groupId, templater){
                    if(templater.debug)
                        console.log('GroupChanged: ' + groupId);
@@ -90,7 +94,21 @@
                    kWhDailyBarChartDisplayManager.refresh(null, kWhDailyBarChartDataProviderSettings);
                },
                
-               
+              /** 
+	       *Setup Custom Formats for Time 
+	       */
+               startDateConfiguration: new DateTimePickerConfiguration(
+                       'startDate', {
+                           format: 'm/d Y g a'
+                       }, {
+                           defaultValue: templaterDefaultStartDate,
+                       }),
+              endDateConfiguration: new DateTimePickerConfiguration(
+                      'endDate', {
+                          format: 'm/d Y g a'
+                      }, {
+                          defaultValue: templaterDefaultEndDate,
+                      }),    
                
        }
        

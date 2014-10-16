@@ -1,29 +1,29 @@
 //Default to value from last midnight
-var kWhDailyBarChartTo = new Date(); //Till now
-var kWhDailyBarChartFrom = new Date();
-kWhDailyBarChartFrom.setHours(0, 0, 0, 0);
-var kWhDailyBarChartDataProviderSettings = {
+var voltageDailyBarChartTo = new Date(); //Till now
+var voltageDailyBarChartFrom = new Date();
+voltageDailyBarChartFrom.setHours(0, 0, 0, 0);
+var voltageDailyBarChartDataProviderSettings = {
     //Setup the Date/Rollups
-    from: kWhDailyBarChartFrom,
-    to: kWhDailyBarChartTo,
+    from: voltageDailyBarChartFrom,
+    to: voltageDailyBarChartTo,
     rollup: 'AVERAGE',
     timePeriodType: 'HOURS',
     timePeriods: 1, //Always 1
 };
 //Setup a Display Manager for the Bar Chart
-var kwhDisplayConfigurations = new Array();
+var voltageDisplayConfigurations = new Array();
 //Setup The Bar Chart
 //Create a bar chart for use with Point Value Data Providers
-var kwhBarChart = new BarChartConfiguration('kWhDailyBarChartDiv', [1], //List of data provider Ids for this chart
+var voltageBarChart = new BarChartConfiguration('voltageDailyBarChartDiv', [1], //List of data provider Ids for this chart
     { //AmChart Mixins
- 
-	rotate: false,
+        rotate: false,
         categoryField: "time",
-//         angle: 5,
-//         depth3D: 3,
-	chartScrollbar: null,
+        angle: 15,
+        depth3D: 30,
         categoryAxis: {
-        color: "white",
+            "gridPosition": "start",
+            "labelRotation": 45,
+            "color": "#888888",
         },
         legend: {
             showEntries: false
@@ -33,27 +33,25 @@ var kwhBarChart = new BarChartConfiguration('kWhDailyBarChartDiv', [1], //List o
         },
         graphs: [
             {
-	    "balloonFunction":null,
-	    "balloonText": "[[title]] <br /> value: [[value]] <br /> Time: [[category]]",
-	    "fillAlphas": 1,
+                "balloonText": "Average:[[value]]",
+                "fillAlphas": 0.8,
                 "id": "AmGraph-1",
-//                 "lineAlpha": 0.2,
+                "lineAlpha": 0.2,
                 "title": "Total",
-//                 "topRadius": 1.06,
+                "topRadius": 1.36,
                 "columnWidth": 0.72,
-                "lineColor": "#446CB3",
+                "lineColor": "#1115E1",
                 "type": "column",
                 "valueField": "value"
                               }
                           ],
         "guides": [],
-        valueAxes: [
+        "valueAxes": [
             {
-                id: "ValueAxis-1",
-                position: "top",
-                axisAlpha: 0,
-                axisColor:"white",
-		color: "white",
+                "id": "ValueAxis-1",
+                "position": "top",
+                "axisAlpha": 0,
+                "color": "#888888",
                               }
                           ],
     }, { //Empty Mango Chart Mixins
@@ -67,14 +65,13 @@ var kwhBarChart = new BarChartConfiguration('kWhDailyBarChartDiv', [1], //List o
             for (var i = 0; i < data.length; i++) {
                 //Format the Time Depending on the Rollup
                 var time;
-                if (kWhDailyBarChartDataProviderSettings.timePeriodType ==
-                    'HOURS') tim = new Date(data[i].timestamp)
-                    .toLocaleTimeString()
-		    var time = tim.substring(0,tim.lastIndexOf(":"));
-                if (kWhDailyBarChartDataProviderSettings.timePeriodType ==
+                if (voltageDailyBarChartDataProviderSettings.timePeriodType ==
+                    'HOURS') time = new Date(data[i].timestamp)
+                    .toLocaleTimeString();
+                if (voltageDailyBarChartDataProviderSettings.timePeriodType ==
                     'DAYS') time = new Date(data[i].timestamp)
                     .toLocaleDateString();
-                if (kWhDailyBarChartDataProviderSettings.timePeriodType ==
+                if (voltageDailyBarChartDataProviderSettings.timePeriodType ==
                     'MONTHS') time = new Date(data[i].timestamp)
                     .toLocaleDateString();
                 var entry = {
@@ -86,10 +83,10 @@ var kwhBarChart = new BarChartConfiguration('kWhDailyBarChartDiv', [1], //List o
             this.amChart.validateData();
         }
     }, {});
-kwhDisplayConfigurations.push(kwhBarChart);
-var kWhDailyBarChartDisplayManager = new DataDisplayManager(
-    kwhDisplayConfigurations);
-var kWhDailyBarDataProvider = new PointValueDataProvider(1, {
+voltageDisplayConfigurations.push(voltageBarChart);
+var voltageDailyBarChartDisplayManager = new DataDisplayManager(
+    voltageDisplayConfigurations);
+var voltageDailyBarDataProvider = new PointValueDataProvider(1, {
     manipulateData: function(pointValues, dataPoint) {
         var newData = new Array();
         if (pointValues.length === 0) return newData;
@@ -108,45 +105,39 @@ var kWhDailyBarDataProvider = new PointValueDataProvider(1, {
         return newData;
     }
 });
-kWhDailyBarChartDisplayManager.addProvider(kWhDailyBarDataProvider); //Ensure we add our data provider
+voltageDailyBarChartDisplayManager.addProvider(voltageDailyBarDataProvider); //Ensure we add our data provider
 /*
  * Fires when the everything is ready to show
  */
 $(document)
     .ready(function() {
-        var kWhPerDayFromDate = new DateTimePickerConfiguration(
-            'kWhFromDate', {
-	      format:'m/d Y g a'
-	    }, {
-                defaultValue: kWhDailyBarChartDataProviderSettings.from,
+        var voltagePerDayFromDate = new DateTimePickerConfiguration(
+            'voltageFromDate', {}, {
+                defaultValue: voltageDailyBarChartDataProviderSettings.from,
                 owner: null,
                 onChange: function(date) {
-                    console.log("kWh From Date: " + date);
-                    kWhDailyBarChartDataProviderSettings.from =
+                    console.log("voltage From Date: " + date);
+                    voltageDailyBarChartDataProviderSettings.from =
                         date;
-                    kWhDailyBarChartDisplayManager.clear(false);
-                    kWhDailyBarChartDisplayManager.refresh(null,
-                        kWhDailyBarChartDataProviderSettings);
+                    voltageDailyBarChartDisplayManager.clear(false);
+                    voltageDailyBarChartDisplayManager.refresh(null,
+                        voltageDailyBarChartDataProviderSettings);
                 }
             });
-        kWhPerDayFromDate.create();
-        var kWhPerDayToDate = new DateTimePickerConfiguration('kWhToDate', 
-	{
-	format:'m/d Y g a'
-	  
-	}, {
-            defaultValue: kWhDailyBarChartDataProviderSettings.to,
+        voltagePerDayFromDate.create();
+        var voltagePerDayToDate = new DateTimePickerConfiguration('voltageToDate', {}, {
+            defaultValue: voltageDailyBarChartDataProviderSettings.to,
             owner: null,
             onChange: function(date) {
-                console.log("kWh To Date: " + date);
-                kWhDailyBarChartDataProviderSettings.to = date;
-                kWhDailyBarChartDisplayManager.clear(false);
-                kWhDailyBarChartDisplayManager.refresh(null,
-                    kWhDailyBarChartDataProviderSettings);
+                console.log("voltage To Date: " + date);
+                voltageDailyBarChartDataProviderSettings.to = date;
+                voltageDailyBarChartDisplayManager.clear(false);
+                voltageDailyBarChartDisplayManager.refresh(null,
+                    voltageDailyBarChartDataProviderSettings);
             }
         });
-        kWhPerDayToDate.create();
-        //Setup The kWh Chart Area (Not using the Templater)
+        voltagePerDayToDate.create();
+        //Setup The voltage Chart Area (Not using the Templater)
         var customPeriodSelect = new SelectConfiguration('simpleTimePicker', {
             options: [
                 {
@@ -170,11 +161,11 @@ $(document)
             onChange: function(value, owner) {
                 console.log("customPeriod: " + value);
                 if (value == "0") {
-                    kWhDailyBarChartDataProviderSettings.from =
+                    voltageDailyBarChartDataProviderSettings.from =
                         new Date();
-                    kWhDailyBarChartDataProviderSettings.from.setHours(
+                    voltageDailyBarChartDataProviderSettings.from.setHours(
                         0, 0, 0, 0);
-                    kWhDailyBarChartDataProviderSettings.to =
+                    voltageDailyBarChartDataProviderSettings.to =
                         new Date();
                     $("#simpleTimePeriodType")
                         .val("HOURS");
@@ -182,15 +173,15 @@ $(document)
                         .selectmenu !== undefined) $(
                             "#simpleTimePeriodType")
                         .selectmenu('refresh', true);
-                    kWhDailyBarChartDataProviderSettings.timePeriodType =
+                    voltageDailyBarChartDataProviderSettings.timePeriodType =
                         "HOURS";
                 } else if (value == "1") {
-                    kWhDailyBarChartDataProviderSettings.to =
+                    voltageDailyBarChartDataProviderSettings.to =
                         new Date();
                     //Subtract 7*24Hrs
-                    kWhDailyBarChartDataProviderSettings.from =
+                    voltageDailyBarChartDataProviderSettings.from =
                         new Date(
-                            kWhDailyBarChartDataProviderSettings
+                            voltageDailyBarChartDataProviderSettings
                             .to.getTime() - 1000 * 60 * 60 * 24 *
                             7);
                     $("#simpleTimePeriodType")
@@ -199,15 +190,15 @@ $(document)
                         .selectmenu !== undefined) $(
                             "#simpleTimePeriodType")
                         .selectmenu('refresh', true);
-                    kWhDailyBarChartDataProviderSettings.timePeriodType =
+                    voltageDailyBarChartDataProviderSettings.timePeriodType =
                         "DAYS";
                 } else if (value == "2") {
-                    kWhDailyBarChartDataProviderSettings.to =
+                    voltageDailyBarChartDataProviderSettings.to =
                         new Date();
                     //Subtract 30 Days
-                    kWhDailyBarChartDataProviderSettings.from =
+                    voltageDailyBarChartDataProviderSettings.from =
                         new Date(
-                            kWhDailyBarChartDataProviderSettings
+                            voltageDailyBarChartDataProviderSettings
                             .to.getTime() - 1000 * 60 * 60 * 24 *
                             30);
                     $("#simpleTimePeriodType")
@@ -216,16 +207,16 @@ $(document)
                         .selectmenu !== undefined) $(
                             "#simpleTimePeriodType")
                         .selectmenu('refresh', true);
-                    kWhDailyBarChartDataProviderSettings.timePeriodType =
+                    voltageDailyBarChartDataProviderSettings.timePeriodType =
                         "DAYS";
                 } else if (value == "3") { //This Year
-                    kWhDailyBarChartDataProviderSettings.to =
+                    voltageDailyBarChartDataProviderSettings.to =
                         new Date();
                     //Set Date to first of year
-                    kWhDailyBarChartDataProviderSettings.from =
+                    voltageDailyBarChartDataProviderSettings.from =
                         new Date(new Date()
                             .getFullYear(), 0, 1);
-                    kWhDailyBarChartDataProviderSettings.from.setHours(
+                    voltageDailyBarChartDataProviderSettings.from.setHours(
                         0, 0, 0, 0);
                     $("#simpleTimePeriodType")
                         .val("MONTHS");
@@ -233,16 +224,16 @@ $(document)
                         .selectmenu !== undefined) $(
                             "#simpleTimePeriodType")
                         .selectmenu('refresh', true);
-                    kWhDailyBarChartDataProviderSettings.timePeriodType =
+                    voltageDailyBarChartDataProviderSettings.timePeriodType =
                         "MONTHS";
                 }
-                $("#kWhToDate")
-                     .val(kWhDailyBarChartDataProviderSettings.to.dateFormat(kWhPerDayToDate.configuration.format));
-                $("#kWhFromDate")
-                    .val(kWhDailyBarChartDataProviderSettings.from.dateFormat(kWhPerDayFromDate.configuration.format));
-		kWhDailyBarChartDisplayManager.clear(false);
-                kWhDailyBarChartDisplayManager.refresh(null,
-                    kWhDailyBarChartDataProviderSettings);
+                $("#voltageToDate")
+                    .val(voltageDailyBarChartDataProviderSettings.to);
+                $("#voltageFromDate")
+                    .val(voltageDailyBarChartDataProviderSettings.from);
+                voltageDailyBarChartDisplayManager.clear(false);
+                voltageDailyBarChartDisplayManager.refresh(null,
+                    voltageDailyBarChartDataProviderSettings);
             }
         });
         customPeriodSelect.create();
@@ -265,12 +256,12 @@ $(document)
             }, {
                 onChange: function(value, owner) {
                     console.log("customPeriodType: " + value);
-                    kWhDailyBarChartDataProviderSettings.timePeriodType =
+                    voltageDailyBarChartDataProviderSettings.timePeriodType =
                         value;
                     //Refresh display
-                    kWhDailyBarChartDisplayManager.clear(false);
-                    kWhDailyBarChartDisplayManager.refresh(null,
-                        kWhDailyBarChartDataProviderSettings);
+                    voltageDailyBarChartDisplayManager.clear(false);
+                    voltageDailyBarChartDisplayManager.refresh(null,
+                        voltageDailyBarChartDataProviderSettings);
                 }
             });
         customTimePeriodTypeSelect.create();

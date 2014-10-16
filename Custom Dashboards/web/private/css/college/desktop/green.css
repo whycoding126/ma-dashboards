@@ -1,25 +1,17 @@
-body {
-    background-color:#EDEDED !important;
-    border:1px solid #d3d3d3;
-    -webkit-animation: bodyAnimation 2s ease-in;
-    animation:topRight 2s ease-in
-}
-
 h1,h2,h3,h4,h5 {
-    color:#333 !important;
+    color:#FFF!important;
     font-family:"Lucida Console",Monaco,monospace
 }
 
-
 body {
-    background-color:#EDEDED !important;
+    background-color:#d3d3d3!important;
     border:1px solid #d3d3d3;
-    -webkit-animation: bodyAnimation 2s ease-in;
+    -webkit-animation:bodyAnimation 2s ease-in;
     animation:topRight 2s ease-in
 }
 
 p {
-    color:#333 !important
+    color:#FFF !important
 }
 
 td {
@@ -27,7 +19,7 @@ td {
 }
 
 th {
-    color:#333 !important
+    color:#FFF!important
 }
 
 .nav>li>a {
@@ -40,29 +32,45 @@ th {
 .nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus {
     color:#fff !important;
     cursor:default;
-    background-color: #1E824C !important;
+    background-color:#049372 !important;
     border:1px solid #ddd;
     border-bottom-color:transparent
 }
 
 .nav-tabs,a:hover {
-    background-color: #AEA79F !important
+    background-color:#049372 !important
 }
 
 #chart-tabs {
-    background-color:#EDEDED;
+    background-color:#049372;
     border-right:1px solid #ededed;
     border-left:1px solid #ededed;
     border-bottom:1px solid #ededed
 }
 
 .leftName {
-    color:#333
+    color:#FFF
+}
+
+.topLeftChartMin {
+    width:16em;
+    height:8em;
+    vertical-align:top;
+    display:inline-block;
+    padding:10px
+}
+
+.topLeftChartMax {
+    width:150% !important;
+    height:8em;
+    vertical-align:top;
+    display:inline-block;
+    padding:10px;
 }
 
 .amChartsTab {
     width:100%;
-    height:39em;
+    height:20em;
     vertical-align:top;
     display:inline-block;
     padding:10px;
@@ -71,7 +79,7 @@ th {
 
 .amChartsTabBig {
     width:100%;
-    height:50em;
+    height:61em;
     vertical-align:top;
     display:inline-block;
     padding:10px;
@@ -79,40 +87,53 @@ th {
 
 .amChartsTabDaily {
     width:100%;
-    height:39em;
+    height:20em;
     vertical-align:top;
     display:inline-block;
     padding:10px;
 }
 
 #overview-tabs {
-    background-color:#D3D3D3;
+    background-color:#049372;
     border-right:1px solid #ededed;
     border-left:1px solid #ededed;
     border-bottom:1px solid #ededed
 }
 
 #groupListDiv {
-    background-color:#ededed;
+    background-color:#049372;
     width:100%
 }
 
 #pannelHeader {
     background-color:#1E824C !important;
     width:100%;
-    height:20%;
+    height:10%;
     margin-top:1em;
     margin-bottom:1em;
     border:1px solid #ededed;
     border-radius:5px;
     text-align:center;
-    -webkit-animation: pannelAnimation 2.5s ease-out;
+    -webkit-animation:pannelAnimation 2.5s ease-out;
+    animation:pannelAnimation 2.5s ease-out
+}
+
+#pannelHeaderButton {
+    background-color:#1E824C !important;
+    width:100%;
+    height:3em !important;
+    margin-top:1em;
+    margin-bottom:1em;
+    border:1px solid #ededed;
+    border-radius:5px;
+    text-align:center;
+    -webkit-animation:pannelAnimation 2.5s ease-out;
     animation:pannelAnimation 2.5s ease-out
 }
 
 .pannelHeaderText {
     display:inline-block;
-    color:#333
+    color:#888
 }
 
 #settingsCog {
@@ -127,11 +148,13 @@ th {
 }
 
 #meterName {
-    color:#333;
+    color:#fff;
+    height:2em !important;
     background-color:#1E824C;
-    font-size:4em;
-    text-align:center;
-    border:1px solid #ededed
+    font-size:2em;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center
 }
 
 .divider {
@@ -140,26 +163,26 @@ th {
     background-color:#1E824C;
     margin-top:5px;
     margin-bottom:5px;
-    -webkit-animation: borderAnimation 2.5s ease-out;
+    -webkit-animation:borderAnimation 2.5s ease-out;
     animation:borderAnimation 2.5s ease-out
 }
 
 .selectpicker {
     margin-right:auto;
-    margin-left:20% !important;
+    margin-left:20%!important;
     margin-top:1em;
-    margin-bottom:1em !important
+    margin-bottom:1em!important
 }
 
 .dropdown-menu {
     border:1px solid #d3d3d3;
     margin-right:auto;
-    margin-left:20% !important
+    margin-left:20%!important
 }
 
 .bootstrap-select.btn-group .dropdown-menu.inner {
     margin-right:auto;
-    margin-left:0 !important
+    margin-left:0!important
 }
 
 .statsTable,tr,td,th {
@@ -168,9 +191,9 @@ th {
 }
 
 #bottomRightCharts {
-    background:#EDEDED
-    border:3px solid #333;
-    -webkit-animation: topRight 1.5s ease-in;
+    background:#1E824C;
+    border:3px solid #888;
+    -webkit-animation:topRight 1.5s ease-in;
     animation:topRight 1.5s ease-in;
     margin-top:1em;
     margin-bottom:1em
@@ -178,77 +201,98 @@ th {
 
 /* charts animations */
 #topRightCharts {
-    border:3px solid #333;
-    background:#EDEDED;
-    -webkit-animation: topRight 1.5s ease-in;
+    border:3px solid 019875;
+    background:#1E824C;
+    -webkit-animation:topRight 1.5s ease-in;
     animation:topRight 1.5s ease-in
 }
 
 #topLeftCharts {
-    border:3px solid #333;
-    background:#EDEDED;
-    -webkit-animation: topLeft 1.5s ease-in;
-    animation: topLeft 1.5s ease-in;
-    height:80em !important
+    border:3px solid #888;
+    background:#1E824C;
+    -webkit-animation:topLeft 1.5s ease-in;
+    animation:topLeft 1.5s ease-in;
+    height:61em!important
+}
+
+.windowBar {
+    background-color: transparent!important;
+    height:2em%;
+    text-align:right;
+    margin-top:-2em
+/*     -webkit-animation: pannelAnimation 2.5s ease-out; */
+/*     animation:pannelAnimation 2.5s ease-out */
+}
+
+.restoreChart {
+    background-color:#049372!important;
+    width:100%;
+    height:2em%;
+    color:#fff;
+    border:1px solid #ededed;
+    border-radius:5px;
+    text-align:center;
+    -webkit-animation:pannelAnimation 2.5s ease-out;
+    animation:pannelAnimation 2.5s ease-out
 }
 
 /*  Start Animations */
 @-webkit-keyframes topLeft {
 from {
-    background:#EDEDED;
+    background:#d3d3d3;
     border:3px solid #323232;
     height:0
 }
 
 to {
-    background:#d3d3d3;
-    border:3px solid #333;
-    height:80em
+    background:#1E824C;
+    border:3px solid #888;
+    height:61em
 }
 }
 
 @keyframes topLeft {
 from {
-    background:#EDEDED;
+    background:#d3d3d3;
     border:0 solid #323232;
     height:0
 }
 
 to {
-    background:#d3d3d3;
-    border:3px solid #333;
-    height:80em;
+    background:#1E824C;
+    border:3px solid #888;
+    height:80em
 }
 }
 
 @-webkit-keyframes topRight {
 from {
-    background:#EDEDED;
+    background:#d3d3d3;
     border:3px solid #323232
 }
 
 to {
-    background:#d3d3d3;
-    border:3px solid #333
+    background:#1E824C;
+    border:3px solid #888
 }
 }
 
 @keyframes topRight {
 from {
-    background:#EDEDED;
+    background:#d3d3d3;
     border:0 solid #323232
 }
 
 to {
-    background:#d3d3d3;
-    border:3px solid #333
+    background:#1E824C;
+    border:3px solid #888
 }
 }
 
 /* BODY ANIMATION */
 @-webkit-keyframes bodyAnimation {
 from {
-    background-color:#BFBFBF
+    background-color:#d3d3d3
 }
 
 to {
@@ -258,7 +302,7 @@ to {
 
 @keyframes bodyAnimation {
 from {
-    background-color:#BFBFBF
+    background-color:#d3d3d3
 }
 
 to {
@@ -270,23 +314,24 @@ to {
 @-webkit-keyframes borderAnimation {
 from {
     background-color:#d3d3d3;
-    width:0
+    windowheaderwidth:0
 }
 
 to {
-    background-color:#1E824C;
+    background-color:#ededed;
     width:100%
 }
 }
 
 @keyframes borderAnimation {
 from {
+    class:windowBar;
     background-color:#d3d3d3;
     width:0
 }
 
 to {
-    background-color:#1E824C;
+    background-color:#ededed;
     width:100%
 }
 }

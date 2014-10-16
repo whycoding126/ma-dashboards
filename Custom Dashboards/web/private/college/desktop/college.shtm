@@ -11,7 +11,10 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <title>Meters</title><!--main css page that in the future will be able to change -->
-    <link href="/modules/dashboards/web/private/css/college/desktop/dark.css" id="theme_css" media="all" rel="stylesheet" type="text/css">
+    <link href="/modules/dashboards/web/private/css/college/desktop/dark.css" id="themingCSS" rel="stylesheet" type="text/css">
+<!--     <link rel="stylesheet" type="text/css" href="style1.css" /> -->
+
+    
     <!-- JQuery -->
 
     <script src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js" type="text/javascript"></script>
@@ -59,13 +62,29 @@
     <script src="/modules/dashboards/web/private/js/college/collegeDataProviders.js" type="text/javascript"></script>
     <script src="/modules/dashboards/web/private/js/college/collegeLogic.js" type="text/javascript"></script>
     <script src="/modules/dashboards/web/private/js/college/kWhDailyBarChart.js" type="text/javascript"></script>
+   
+<!--    Activity indicators -->
+<!--    <script src="/modules/dashboards/web/private/js/college/jquery.spin.js" type="text/javascript"></script> -->
+    <script src="/modules/dashboards/web/private/js/college/spin.js" type="text/javascript"></script>
+    <script src="/modules/dashboards/web/private/js/college/jquery.cookie.js" type="text/javascript"></script>
+
+    <script src="/modules/dashboards/web/private/js/college/screenfull.js" type="text/javascript"></script>
+    
+    
     
     <script type="text/javascript">
-var groupsListsType = "select";
+    var groupsListsType = "select";
 
+    
+    
+    
     $( document ).ready(function(){
-
-      //Ensure that this active tab has a resized chart
+    
+    // this is for chrome to go full screen 
+   
+   
+    
+    //Ensure that this active tab has a resized chart
       $.when(templater.deferred).then(function(){
 
       templater.invalidateChartSize(['kwhLineChartDiv'], templater);
@@ -89,20 +108,263 @@ var groupsListsType = "select";
       }
     });
 
+    
+      var opts = {
+	    lines: 13, // The number of lines to draw
+	    length: 20, // The length of each line
+	    width: 10, // The line thickness
+	    radius: 30, // The radius of the inner circle
+	    corners: 1, // Corner roundness (0..1)
+	    rotate: 0, // The rotation offset
+	    direction: 1, // 1: clockwise, -1: counterclockwise
+	    color: '#000', // #rgb or #rrggbb or array of colors
+	    speed: 1, // Rounds per second
+	    trail: 60, // Afterglow percentage
+	    shadow: false, // Whether to render a shadow
+	    hwaccel: false, // Whether to use hardware acceleration
+	    className: 'spinner', // The CSS class to assign to the spinner
+	    zIndex: 2e9, // The z-index (defaults to 2000000000)
+	    top: '50%', // Top position relative to parent
+	    left: '50%' // Left position relative to parent
+  };
+
+  var target = document.getElementById('activityIndicator');
+  var spinner = new Spinner(opts).spin(target);
+
+    $('#activityIndicator').show();
+
+    //close all the reopen windows on load
+    $('#closedWindows1').hide();
+    $('#closedWindows2').hide();
+    $('#closedWindows3').hide();
+    
+    //close the options 
+    $('#groupListDiv').hide();
+    
+    /*
+    * function to close the top left chart and add to the bar at the top
+    * closedWindows1 = top left 
+    * closedWindows2 = top right 
+    * closedWindows3 = bottom right
+    */
+    $('#closeTopLeft').click(function(){
+    $('#topLeftCharts').hide(function(){
+    $('#topRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#bottomRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#closedWindows1').html("Open Real Time Charts");
+    $('#closedWindows1').show();
+    });
+    });
+    
+    
+    // max out the top left chart
+    $('#maxTopLeft').click(function(){
+    $('#topLeftCharts').toggleClass("col-md-2 col-md-12");
+    $('#topRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#bottomRightCharts').toggleClass("col-md-10 col-md-12");
+//     these are the charts that need to be in-larged
+    $('#ampsBarChartDiv').toggleClass('topLeftChartMin topLeftChartMax');
+    templater.invalidateChartSize(['ampsBarChartDiv'], templater);    
+    
+    $('#voltsBarChartDiv').toggleClass('topLeftChartMin topLeftChartMax');
+    templater.invalidateChartSize(['voltsBarChartDiv'], templater);    
+    
+    $('#kwBarChartDiv').toggleClass('topLeftChartMin topLeftChartMax');
+    templater.invalidateChartSize(['kwBarChartDiv'], templater);    
+
+    $('#powerFactorBarChartDiv').toggleClass('topLeftChartMin topLeftChartMax');
+    templater.invalidateChartSize(['powerFactorBarChartDiv'], templater);    
+    
+    
+    }); 
+    
+    
+    
+    
+    
+    
+    // close the top right chart
+    $('#closeTopRight').click(function(){
+    $('#topRightCharts').hide(function(){
+    $('#topLeftCharts').toggleClass("col-md-2 col-md-12");
+    $('#bottomRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#closedWindows2').html("Open Daily Charts");
+    $('#closedWindows2').show();
+    });
+    });
+    
+    
+    // max out the right left chart
+    $('#maxTopRight').click(function(){
+    $('#topLeftCharts').toggleClass("col-md-2 col-md-12");
+    $('#topRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#bottomRightCharts').toggleClass("col-md-10 col-md-12");
+    }); 
+
+    
+   // close the top right chart
+    $('#closeBottomRight').click(function(){
+    $('#bottomRightCharts').hide();
+    $('#topLeftCharts').toggleClass("col-md-2 col-md-12");
+    $('#topRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#closedWindows3').html("Open History Charts");
+    $('#closedWindows3').show();
+    });
+    
+    // max out the right left chart
+    $('#maxBottomRight').click(function(){
+    $('#topLeftCharts').toggleClass("col-md-2 col-md-12");
+    $('#topRightCharts').toggleClass("col-md-10 col-md-12");
+    $('#bottomRightCharts').toggleClass("col-md-10 col-md-12");
+    });
+ 
+ 
+ 
+ 
+ 
+    // function to re-open the top left chart
+    $("#closedWindows1").click(function(){
+    $('#topLeftCharts').show();
+    $('#topRightCharts').toggleClass("col-md-12 col-md-10");
+    $('#bottomRightCharts').toggleClass("col-md-12 col-md-10");
+    $('#closedWindows1').html(""); 
+    });
+    
+        // function to re-open the top right chart
+    $("#closedWindows2").click(function(){
+    $('#topRightCharts').show();
+    $('#topLeftCharts').toggleClass('("col-md-12 col-md-2"');
+    $('#bottomRightCharts').toggleClass("col-md-12 col-md-10");
+    $('#closedWindows2').hide();
+    $('#closedWindows2').html(""); 
+    });
+    
+    $("#closedWindows3").click(function(){
+    $('#bottomRightCharts').show();
+    $('#topLeftCharts').toggleClass('("col-md-12 col-md-2"');
+    $('#topRightCharts').toggleClass("col-md-12 col-md-10");
+    $('#closedWindows3').hide();
+    $('#closedWindows3').html(""); 
+    });
+   
+    // check to see if there is a cookie for themes.    
+    if($.cookie("css")) {
+    $("#themingCSS").attr("href",$.cookie("css"));
+    }
+    //set the options select for the theme to the current theme
+    $("#themeSelector").val($.cookie("css"));  
+    // change the cookie and also theme aka the css files
+    $("#themeSelector").on('change', function() {
+	console.log("changing CSS to " + $(this).val());
+        $("#themingCSS").attr("href",$(this).val());
+        $.cookie("css",$(this).val(), {expires: 365, path: '/'});
+        return false;	
     });
 
+
+    // $('#groupListDiv').hide("slow");
+    // function to toggle the options along with the meter names
+    $('#opt').click(function(){
+    $('#opt').css(['-webkit-transform','rotate(360deg)']); 
+    $('#opt').css(['-moz-transform','rotate(360deg)']);
+    $('#opt').css(['transform','rotate(360deg)']);
+    $('#groupListDiv').fadeToggle('slow');
+    });
+    
+    //$('#topLeftCharts').height;
+    
+    // remnove the bottom right tab when stats are clicked // this is kinda messing up fullscreen. 
+    $('#statsTab').click(function(){
+    $('#bottomRightCharts').fadeOut('slow')
+    });
+    
+    // bring the bottom right tab back into view
+    $('#historyTab').click(function(){
+    $('#bottomRightCharts').fadeIn('slow')
+    });  
+    
+    
+    // go fullscreen 
+   $('#fullscreenButton').click(function(){
+	console.log("you go full screen ")
+	screenfull.request($('#forFullscreeen')[0])
+});   
+   
+    
+    
+    });
+
+    // this is for later butt need a signal to send to the display manager and oither things I think
+    function changeDailyChart(type){
+    var cmd;
+    switch (type) {
+    case "amps":
+        cmd =  "ampsDailyBarChart";
+        break;
+    case "volts":
+        cmd = "voltageDailyBarChart";
+        break;
+    case "kilo":
+        cmd = "kiloDailyBarChart";
+        break;
+    case "powerFactor":
+        cmd = "powerFactorDailyBarChart";
+        break;        
+    }
+    console.log(cmd);
+    document.getElementsByClassName("amChartsTabDaily")[0].setAttribute("id",cmd);
+//     templater.invalidateChartSize([cmd];
+}
+    
+    
+    
+    
+    
+    
+    
     </script>
     
 </head>
 <!-- Starting to write the UI -->
 <body>
-    <div class="pageHeader" id="meterName">
+<div id='forFullscreeen'>
+
+<div id=closedWindows1 class='restoreChart'></div>
+<div id=closedWindows2 class='restoreChart'></div>
+<div id=closedWindows3 class='restoreChart'></div>
+
+
+
+    <div class="pageHeader" id="meterName">  
+
+    
     </div>
+    
+    <div class='row' style="margin-top: -4em;margin-left: 1em " >
+    <button style="margin-left:1em;" type="button" id='opt' title="Click to show all the options for this page" class="btn btn-default btn-md"><span class="glyphicon glyphicon-cog"></span>Options</button> 
+<!--        <label style="color: white; display: inline">Meters</label>-->
+        <select class="selectpicker" data-live-search="true" id="groupsList"></select>    
+    
+    </div>
+    
+    
+    
+    
+    
+    <div id="groupListDiv" class="col-md-12">
 
-
-    <div id="groupListDiv">
-        <select class="selectpicker" data-live-search="true" id="groupsList">
-            </select>
+        <label style="color: white;margin-left: 8em ; margin-right: auto " >Themes</label>
+        <select class="selectpicker" id="themeSelector">
+	  <option value="/modules/dashboards/web/private/css/college/desktop/dark.css">Dark</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/light.css">Light</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/red.css">Red</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/blue.css">Blue</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/green.css">Green</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/purple.css">Purple</option>
+	  <option value="/modules/dashboards/web/private/css/college/desktop/orange.css">Orange</option>
+        </select>
+	<button style="margin-left: 8em ; margin-right: auto"  id="fullscreenButton" class="btn btn-default btn-md"><span class="glyphicon glyphicon-resize-full"></span> Full Screen</button>
+    
     </div>
 
 
@@ -110,87 +372,91 @@ var groupsListsType = "select";
         <!-- real time on the top left -->
 
 
-        <div class="col-md-2 container-lg-height" id="topLeftCharts">
+        <div class="col-md-2" id="topLeftCharts">
 
-            <div id="pannelHeader" style="height:6em">
-                <div class="pannelHeaderText">
-                    <h2>Amps</h2>
-                </div>
+        <h4>Real Time Data</h4>
+        <div class='windowBar'>
+	  <button type="button" title="Click to Maximize these real time data charts" id='maxTopLeft' class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
+	  <button type="button" id='closeTopLeft' title="Click to Minimize these real time data charts" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        
+	    <div id="activityIndicator"></div>           
+        
+	    <!-- I am going to use this to change the daily charts also  -->
+      
+<!--             <div id="pannelHeaderButton" style="height:6em"> -->
+<!--                <div class="pannelHeaderText"> -->
+                    <h4>Amps</h4>
+<!--                 </div> -->
+<!--             </div> -->
+            <div class='topLeftChartMin' id="ampsBarChartDiv">
             </div>
 
-
-            <div id="ampsBarChartDiv" style="overflow:visible !important ;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
-            </div>
-
-
-            <div id="pannelHeader" style="height:6em">
-                <div class="pannelHeaderText">
-                    <h2>Volts</h2>
-                </div>
-            </div>
+<!--             <a onclick="changeDailyChart('volts')"> -->
+<!--             <div id="pannelHeaderButton" style="height:6em"> -->
+<!--                 <div class="pannelHeaderText"> -->
+                    <h4>Volts</h4>
+<!--                 </div> -->
+<!--             </div> -->
+<!--             </a> -->
 
 
-            <div id="voltsBarChartDiv" style="overflow:visible !important;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+	    <div class='topLeftChartMin' id="voltsBarChartDiv">
 
             </div>
+	    <div id="activityIndicator"></div>           
 
+<!--             <a onclick="changeDailyChart(kilo)"> -->
+<!--             <div id="pannelHeaderButton" style="height:6em"> -->
+<!--                 <div class="pannelHeaderText"> -->
+                    <h4>Kilowatts</h4>
+<!--                 </div> -->
+<!--             </div> -->
+<!-- 	    </a> -->
 
-            <div id="pannelHeader" style="height:6em">
-                <div class="pannelHeaderText">
-                    <h2>Kilo Watts</h2>
-                </div>
+            <div class='topLeftChartMin' id="kwBarChartDiv">
             </div>
 
-
-            <div id="kwBarChartDiv" style="overflow:visible !important; width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
-
-            </div>
-
-
-            <div id="pannelHeader" style="height:6em">
-                <div class="pannelHeaderText">
-                    <h2>Power Factor</h2>
-                </div>
-            </div>
-
-
-            <div id="powerFactorBarChartDiv" style="overflow:visible !important;width:16em; height:12em ; vertical-align: top; display: inline-block; padding: 10px;">
+<!--             <a onclick="changeDailyChart(powerFactor)"> -->
+<!--             <div id="pannelHeaderButton" style="height:6em"> -->
+<!--                 <div class="pannelHeaderText"> -->
+                    <h4>Power Factor</h4>
+<!--                 </div> -->
+<!--             </div> -->
+<!-- 	    </a> -->
+            <div class='topLeftChartMin' id="powerFactorBarChartDiv">
 
             </div>
         </div>
         <!--end top left-->
+        
+        
         <!--    start top right -->
-
-
         <div class="col-md-10" id="topRightCharts">
             <div>
+             <h4>KiloWatts Daily</h4>
+            <div class='windowBar'>
+		    <button type="button" title="Click to Maximize this daily chart" id='maxTopRight' class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
+		    <button type="button" id='closeTopRight' title="Click to Minimize this daily chart" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+	    </div>
+	    <div id="activityIndicator"></div>           
+
+		
                 <ul class="nav nav-tabs responsive">
                     <li class="active">
-                        <a data-toggle="tab" href="#panel-kw-daily" id="kWhDailyBarChart">History</a>
+                        <a id='historyTab' data-toggle="tab" href="#panel-kw-daily" id="kWhDailyBarChart">History</a>
                     </li>
 
 
                     <li onclick="//No resize required">
-                        <a data-toggle="tab" href="#panel-stats">Statistics</a>
+                        <a id="statsTab" data-toggle="tab" href="#panel-stats">Statistics</a>
                     </li>
                 </ul>
 
 
                 <div class="tab-content responsive" id="overview-tabs">
                     <div class="tab-pane fade in active" id="panel-kw-daily">
-                        <div class="divider">
-                        </div>
-
-
-                        <div id="pannelHeader">
-                            <div class="pannelHeaderText">
-                                <h2>Kilo Watts Daily</h2>
-                            </div>
-                        </div>
-
-
-                        <div class="divider">
-                        </div>
+                     
                         
                         <!--        Options  -->
                         <div class="centeredPickers" id="optionsPickers">
@@ -264,11 +530,17 @@ var groupsListsType = "select";
         
         <!--The tabs for the charts  -->
         <div class="col-md-10" id="bottomRightCharts">
-            <div id="pannelHeader">
-                <div class="pannelHeaderText">
-                    <h2>Meter History</h2>
-                </div>
-            </div>
+       
+<!--             <div id="pannelHeader"> -->
+<!--                 <div class="row"> -->
+<!--                     <div class="col-md-8"> -->
+                    <h4 >Meter History</h4>
+<!-- 		    </div> -->
+		    <div class='windowBar'>
+		      <button type="button" title="Click to Maximize these real time data charts" id='maxBottomRight' class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
+		      <button type="button" id='closeBottomRight' title="Click to Minimize these real time data charts" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
+		    </div>
+<!-- 		</div> -->
 
             <div class="divider">
             </div>
@@ -353,7 +625,7 @@ var groupsListsType = "select";
 
                 <div class="tab-content responsive" id="chart-tabs">
                     <div class="tab-pane fade in active" id="panel-kw">
-                        <div class="amChartsTab" id="kwhLineChartDiv">
+                        <div class="amChartsTab" id="kwLineChartDiv">
                         </div>
                     </div>
 
@@ -392,9 +664,11 @@ var groupsListsType = "select";
                         <div class="amChartsTab" id="phaseCLineChartDiv">
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 </html>

@@ -1,16 +1,19 @@
 //Global Defines for colors
-var phaseACurrentColor = "#F22613";
-var phaseBCurrentColor = "#1E824C";
-var phaseCCurrentColor = "#3A539B";
-var voltsANColor = "#F22613";
-var voltsBNColor = "#1E824C";
-var voltsCNColor = "#3A539B";
-var powerFactorAColor = "#F22613";
-var powerFactorBColor = "#1E824C";
-var powerFactorCColor = "#3A539B";
-var realPowerAColor = "#F22613";
-var realPowerBColor = "#1E824C";
-var realPowerCColor = "#3A539B";
+var phaseACurrentColor = "#f45749";
+var phaseBCurrentColor = "#18bc62";
+var phaseCCurrentColor = "#F4D03F";
+var voltsANColor = "#f45749";
+var voltsBNColor = "#18bc62";
+var voltsCNColor = "#F4D03F";
+var powerFactorAColor = "#f45749";
+var powerFactorBColor = "#18bc62";
+var powerFactorCColor = "#F4D03F";
+var realPowerAColor = "#f45749";
+var realPowerBColor = "#18bc62";
+var realPowerCColor = "#F4D03F";
+var ampsA = "#26A65B";
+var ampsB = "#C0392B";
+var ampsC = "#F4D03F"
 /**
  *Here is the Array that is used to push charts and other widgets to the DisplayManger
  */
@@ -20,11 +23,17 @@ var kwhChart = new SerialChartConfiguration('kwhLineChartDiv', //Chart DIV id
      * List of data provider Ids for this chart
      */
                [1], { //AmChart Mixins
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "KWH"
-           }],
+	  valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+		 
+	categoryAxis: {
+	color: "white",
+	axisColor: "white",
+	},
+	chartScrollbar: null,
         legend: {
             showEntries: false
         },
@@ -32,25 +41,22 @@ var kwhChart = new SerialChartConfiguration('kwhLineChartDiv', //Chart DIV id
             "cursorColor": "#888888"
         },
         categoryField: "timestamp",
-        color: "#888888",
-        "startEffect": "bounce",
+        color: "white",
+        startEffect: "bounce",
         graphs: [{
-            title: "Kilo watts per hour",
-            valueAxis: "kwh-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            title: "Kilowatts",
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
+	    valueAxis: "kwh-axis",
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "value"
-           }],
-        valueAxes: [{
-            id: "kwh-axis",
-            title: " KWH ",
-            position: "left"
-           }],
+	  
+	}],
+	 
     });
 displayConfigurations.push(kwhChart);
 /**
@@ -76,22 +82,26 @@ var ampsBarChart = new BarChartConfiguration('ampsBarChartDiv',
         chartCursor: null,
         chartScrollbar: null,
         legend: null,
-        angle: 30,
-        depth3D: 5,
+//         // angle: 30,
+//         depth3D: 5,
         categoryAxis: {
             gridPosition: "start",
-            labelRotation: 45
+            labelRotation: 45,
+	    gridAlpha: 0,
         },
         graphs: [
             {
-                showBalloon: true,
+	        color:"white",
+	        fontSize : 20,
+                showBalloon: false,
                 labelText: '[[value]]',
-                fillAlphas: .9,
-                lineAlpha: .2,
+                fillAlphas: 1,
+                lineAlpha: 0,
                 type: "column",
                 valueField: "value",
                 colorField: "color",
-                topRadius: 1.36,
+// 		lineColor: ampsA,
+//                 topRadius: 1.06,
                 columnWidth: 0.72,
                             }
                         ],
@@ -100,6 +110,7 @@ var ampsBarChart = new BarChartConfiguration('ampsBarChartDiv',
             {
                 axisAlpha: 0,
                 gridAlpha: 0,
+		maximum: 500,
                     }
                 ]
     }, { //Empty Mango Chart Mixins
@@ -109,11 +120,11 @@ var ampsBarChart = new BarChartConfiguration('ampsBarChartDiv',
             var valueAttribute = "value",
                 color;
             if (dataPoint.name.indexOf("Phase A") >= 0) {
-                color = phaseACurrentColor;
+                color = ampsA;
             } else if (dataPoint.name.indexOf("Phase B") >= 0) {
-                color = phaseBCurrentColor;
+                color = ampsB;
             } else if (dataPoint.name.indexOf("Phase C") >= 0) {
-                color = phaseCCurrentColor;
+                color = ampsC ;
             }
             //Check to see if it already exists in the chart
             for (var i = 0; i < this.amChart.dataProvider.length; i++) {
@@ -133,7 +144,8 @@ var ampsBarChart = new BarChartConfiguration('ampsBarChartDiv',
             entry[valueAttribute] = value;
             this.amChart.dataProvider.push(entry);
             this.amChart.validateData();
-        }
+	    $('#activityIndicator').hide();  
+	}
     }, {});
 displayConfigurations.push(ampsBarChart);
 /**
@@ -148,6 +160,8 @@ var voltsBarChart = new BarChartConfiguration('voltsBarChartDiv',
      * Start AmChart Styling
      */
     {
+        color:"white",
+	fontSize : 20,
         rotate: true,
         categoryField: "name",
         startEffect: "bounce",
@@ -159,22 +173,26 @@ var voltsBarChart = new BarChartConfiguration('voltsBarChartDiv',
         chartCursor: null,
         chartScrollbar: null,
         legend: null,
-        angle: 30,
-        depth3D: 5,
+        // angle: 30,
+        //         depth3D: 5,
+
         categoryAxis: {
             gridPosition: "start",
-            labelRotation: 45
-        },
+            labelRotation: 45,
+	    gridAlpha: 0,
+	  
+	},
         graphs: [
             {
-                showBalloon: true,
+	        color:"white",
+                showBalloon: false,
                 labelText: '[[value]]',
                 fillAlphas: .9,
                 lineAlpha: .2,
                 type: "column",
                 valueField: "value",
                 colorField: "color",
-                topRadius: 1.36,
+                topRadius: 1.06,
                 columnWidth: 0.72,
                             }
                          ],
@@ -183,6 +201,8 @@ var voltsBarChart = new BarChartConfiguration('voltsBarChartDiv',
             {
                 axisAlpha: 0,
                 gridAlpha: 0,
+				maximum: 500,
+
                      }
                  ]
     }, { //Empty Mango Chart Mixins
@@ -204,7 +224,8 @@ var voltsBarChart = new BarChartConfiguration('voltsBarChartDiv',
                     this.amChart.dataProvider[i][valueAttribute] =
                         value;
                     this.amChart.validateData();
-                    return; //Done
+                    $('#activityIndicator').hide();  
+		    return; //Done
                 }
             }
             //We didn't find our set, so add a brand new one
@@ -216,6 +237,8 @@ var voltsBarChart = new BarChartConfiguration('voltsBarChartDiv',
             entry[valueAttribute] = value;
             this.amChart.dataProvider.push(entry);
             this.amChart.validateData();
+	    $('#activityIndicator').hide();  
+
         }
     }, {});
 displayConfigurations.push(voltsBarChart);
@@ -231,6 +254,8 @@ var realPowerBarChart = new BarChartConfiguration('kwBarChartDiv',
      * Start AmChart Styling
      */
     {
+        color:"white",
+	fontSize : 20,
         rotate: true,
         categoryField: "name",
         startEffect: "bounce",
@@ -242,22 +267,29 @@ var realPowerBarChart = new BarChartConfiguration('kwBarChartDiv',
         chartCursor: null,
         chartScrollbar: null,
         legend: null,
-        angle: 30,
-        depth3D: 5,
+        // angle: 30,
+        //         depth3D: 5,
+
         categoryAxis: {
             gridPosition: "start",
-            labelRotation: 45
-        },
+            labelRotation: 45,
+	    gridAlpha: 0,
+	    axisAlpha: 0,
+
+	
+	  
+	},
         graphs: [
             {
-                showBalloon: true,
+                showBalloon: false,
+		color:"white",
                 labelText: '[[value]]',
                 fillAlphas: .9,
                 lineAlpha: .2,
                 type: "column",
                 valueField: "value",
                 colorField: "color",
-                topRadius: 1.36,
+                topRadius: 1.06,
                 columnWidth: 0.72,
                             }
                           ],
@@ -266,6 +298,8 @@ var realPowerBarChart = new BarChartConfiguration('kwBarChartDiv',
             {
                 axisAlpha: 0,
                 gridAlpha: 0,
+		maximum: 500,
+
                       }
                   ]
     }, { //Empty Mango Chart Mixins
@@ -299,7 +333,8 @@ var realPowerBarChart = new BarChartConfiguration('kwBarChartDiv',
             entry[valueAttribute] = value;
             this.amChart.dataProvider.push(entry);
             this.amChart.validateData();
-        }
+	    $('#activityIndicator').hide();  
+	}
     }, {});
 displayConfigurations.push(realPowerBarChart);
 /**
@@ -314,6 +349,11 @@ var powerFactorBarChart = new BarChartConfiguration('powerFactorBarChartDiv',
      * Start AmChart Styling
      */
     {
+        categoryAxis: {
+	    color: "white"
+	},
+        color:"white",
+	fontSize : 20,
         rotate: true,
         categoryField: "name",
         startEffect: "bounce",
@@ -325,23 +365,28 @@ var powerFactorBarChart = new BarChartConfiguration('powerFactorBarChartDiv',
         chartCursor: null,
         chartScrollbar: null,
         legend: null,
-        angle: 30,
-        depth3D: 5,
+        // angle: 30,
+        //         depth3D: 5,
+
         categoryAxis: {
             gridPosition: "start",
-            labelRotation: 45
-        },
+            labelRotation: 45,
+	    gridAlpha: 0,
+	  
+	},
         graphs: [
             {
-                showBalloon: true,
+                showBalloon: false,
                 labelText: '[[value]]',
-                fillAlphas: .9,
+                color:"white",
+		fillAlphas: .9,
                 lineAlpha: .2,
                 type: "column",
                 valueField: "value",
                 colorField: "color",
-                topRadius: 1.36,
+                topRadius: 1.06,
                 columnWidth: 0.72,
+		
                             }
                            ],
         guides: [],
@@ -349,6 +394,8 @@ var powerFactorBarChart = new BarChartConfiguration('powerFactorBarChartDiv',
             {
                 axisAlpha: 0,
                 gridAlpha: 0,
+	        maximum: 1.7,
+		
                        }
                    ]
     }, { //Empty Mango Chart Mixins
@@ -382,6 +429,7 @@ var powerFactorBarChart = new BarChartConfiguration('powerFactorBarChartDiv',
             entry[valueAttribute] = value;
             this.amChart.dataProvider.push(entry);
             this.amChart.validateData();
+	    $('#activityIndicator').hide();  
         }
     }, {});
 displayConfigurations.push(powerFactorBarChart);
@@ -400,66 +448,56 @@ var ampsChart = new SerialChartConfiguration(
     /**
      * Start AmChart Styling
      */
-    {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Amps "
-           }],
+    {  valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+        categoryAxis: {
+	   color: "white",
+	   axisColor: "white",
+},
+	legend:{
+	  color:"white",
+	},
+      	chartScrollbar: null,
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
         startEffect: "bounce",
         graphs: [{
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Amps Phase A",
             valueAxis: "phaseA-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "phaseA"
            }, {
-            title: "Amps Phase B",
+            showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
+	    title: "Amps Phase B",
             valueAxis: "phaseB-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#ff0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "phaseB"
            }, {
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Amps Phase C",
             valueAxis: "phaseC-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "phaseC"
            }],
-        valueAxes: [{
-                id: "phaseA-axis",
-                title: " Phase A (Amps) ",
-                position: "left",
-                color: "#1E824C"
-           }, {
-                id: "phaseB-axis",
-                title: " Phase B (Amps) ",
-                position: "right",
-                color: "#ff0000"
-           }, {
-                id: "phaseC-axis",
-                title: " Phase C (Amps) ",
-                position: "right",
-                color: "#F4D03F"
-           }
-           ],
         /*
          * End style of AmCharts
          */
@@ -490,72 +528,62 @@ var voltsLineChart = new SerialChartConfiguration('voltsLineChartDiv', //Chart D
     /**
      *AmChart Styles fo a chart.
      */
-    {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Volts "
-        }],
+    {  valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+        categoryAxis: {
+	    color: "white",
+		    axisColor: "white",
+},
+      	chartScrollbar: null,
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
         startEffect: "elastic",
         chartCursor: {
             "cursorColor": "#888888"
-        },
+        },	
+	legend:{
+	  color:"white",
+	},
         graphs: [{
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Volts A-N",
             valueAxis: "voltsA-axis",
-            balloonColor: "#424242",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            balloonColor: "#f45749",
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "voltsA"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Volts B-N",
-            balloonColor: "#424242",
+            balloonColor: "#18bc62",
             valueAxis: "voltsB-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#ff0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "voltsB"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Volts C-N",
             valueAxis: "voltsC-axis",
-            balloonColor: "#424242",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            balloonColor: "#F4D03F",
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "voltsC"
         }],
-        valueAxes: [{
-                id: "voltsA-axis",
-                title: " Volts A-N ",
-                position: "left",
-                color: "#1E824C"
-        }, {
-                id: "voltsB-axis",
-                title: " Volts B-N ",
-                position: "right",
-                color: "#ff0000"
-        }, {
-                id: "voltsC-axis",
-                title: " Volts C-N ",
-                position: "right",
-                color: "#F4D03F"
-        }
-        ],
     }, {}, {
         /*
          * Setting Multi-series chart to create mappings from point to a graph valueField
@@ -584,68 +612,58 @@ var powerFactorLineChart = new SerialChartConfiguration(
     /**
      *AmChart Styles fo a chart.
      */
-    {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Power Factor"
-        }],
+    {  valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+            categoryAxis: {
+	    color: "white",
+		    axisColor: "white",
+},
+      	chartScrollbar: null,
         chartCursor: {
             "cursorColor": "#888888"
         },
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
+	legend:{
+	  color:"white",
+	},
         graphs: [{
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power Factor A",
             valueAxis: "pfA-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "pfA"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power Factor B",
             valueAxis: "pfB-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#FF0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "pfB"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power Factor C",
             valueAxis: "pfC-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "pfC"
         }],
-        valueAxes: [{
-                id: "pfA-axis",
-                title: " Power Factor A ",
-                position: "left",
-                color: "#1E824C"
-        }, {
-                id: "pfB-axis",
-                title: " Power Factor B ",
-                position: "right",
-                color: "#ff0000"
-        }, {
-                id: "pfC-axis",
-                title: " Power Factor C ",
-                position: "right",
-                color: "#F4D03F"
-        }
-        ],
     }, {}, {
         /*
          * Setting Multi-series chart to create mappings from point to a graph valueField
@@ -673,100 +691,139 @@ var phaseALineChart = new SerialChartConfiguration('phaseALineChartDiv', //Chart
     /**
      *AmChart Styles fo a chart.
      */
-    {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Phase A"
-        }],
+    {      valueAxes: [
+	{
+	axisColor: "white",
+	}
+	], 
+      categoryAxis: {
+	    color: "white",
+		    axisColor: "white",
+},
+      	chartScrollbar: null,
         chartCursor: {
             "cursorColor": "#888888"
         },
+	legend:{
+	  color:"white",
+	},
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
         graphs: [{
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Amps",
             valueAxis: "amps-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "amps"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Voltage",
             valueAxis: "volts-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#ff0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "volts"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power",
             valueAxis: "power-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "power"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power Factor",
             valueAxis: "powerFactor-axis",
-            bullet: "round",
-            bulletSize: 6,
+            //bullet: "round",
+            // bulletSize: 0,
             lineColor: "#3A539B",
-            lineThickness: 3,
-            fillAlphas: 0.4,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "powerFactor"
         }],
-        valueAxes: [{
-                id: "amps-axis",
-                title: " Amps ",
-                position: "left",
-                color: "#1E824C"
-        }, {
-                id: "volts-axis",
-                title: " Voltage ",
-                position: "right",
-                color: "#ff0000"
-        }, {
-                id: "power-axis",
-                title: " Real Power ",
-                position: "left",
-                color: "#F4D03F"
-        }, {
-                id: "powerFactor-axis",
-                title: " Power Factor ",
-                position: "right",
-                color: "#3A539B"
-        }
-        ],
+	
+	valueAxes: [{
+        id:"amps-axis",
+        title: "Amps",
+	titleColor:'white',
+	axisColor: "green",
+        axisThickness: 1,
+        gridAlpha: 0	,
+        axisAlpha: 1,
+	offset: 70,
+        position: "left"
+    }, {
+        id:"power-axis",
+        title: "Power",
+	titleColor:'white',
+	axisColor: "yellow",
+        axisThickness: 1,
+        gridAlpha: 0,
+        axisAlpha: 1,
+        position: "right"
+    }, {
+        id:"powerFactor-axis",
+        title: "PowerFactor",
+	titleColor:'white',
+	axisColor: "blue",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 60,
+        axisAlpha: 1,
+        position: "right"
+    },
+    {
+        id:"volts-axis",
+        title: "Volts",
+	axisColor: "red	",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 0,
+        axisAlpha: 1,
+        position: "left"
+    }],
+	
+	
+	
+	
+	
+	
+	
     }, {}, {
         /*
          * Setting Multi-series chart to create mappings from point to a graph valueField
          */
         dataPointMappings: [{
             nameEndsWith: '(A)',
-            valueField: 'amps'
-            }, {
+            valueField: 'amps',
+// 	    valueAxis: 'v1'  
+	  
+	}, {
             nameEndsWith: '(V)',
-            valueField: 'volts'
+            valueField: 'volts',
+// 	    valueAxis: 'v2'
             }, {
             nameEndsWith: '(kW)',
-            valueField: 'power'
+            valueField: 'power',
+// 	    valueAxis: 'v3'
             }, {
             nameStartsWith: 'Power Factor',
-            valueField: 'powerFactor'
+            valueField: 'powerFactor',
+// 	    valueAxis: 'v4'
             }]
     });
 displayConfigurations.push(phaseALineChart);
@@ -781,84 +838,112 @@ var phaseBLineChart = new SerialChartConfiguration('phaseBLineChartDiv', //Chart
     /**
      *AmChart Styles fo a chart.
      */
-    {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Phase B"
-        }],
+    {  valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+            categoryAxis: {
+	    color: "white",
+	   axisColor: "white",
+
+	},
+      	chartScrollbar: null,
         chartCursor: {
             "cursorColor": "#888888"
         },
+	legend:{
+	  color:"white",
+	},
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
         graphs: [{
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Amps",
             valueAxis: "amps-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            bullet: null,
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "amps"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Voltage",
             valueAxis: "volts-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#ff0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
+            // fillAlphas: 0.4,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "volts"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power",
             valueAxis: "power-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "power"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power Factor",
             valueAxis: "powerFactor-axis",
-            bullet: "round",
-            bulletSize: 6,
             lineColor: "#3A539B",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "powerFactor"
         }],
-        valueAxes: [{
-                id: "amps-axis",
-                title: " Amps ",
-                position: "left",
-                color: "#1E824C"
-        }, {
-                id: "volts-axis",
-                title: " Voltage ",
-                position: "right",
-                color: "#ff0000"
-        }, {
-                id: "power-axis",
-                title: " Real Power ",
-                position: "left",
-                color: "#F4D03F"
-        }, {
-                id: "powerFactor-axis",
-                title: " Power Factor ",
-                position: "right",
-                color: "#3A539B"
-        }
-        ],
+	valueAxes: [{
+        id:"amps-axis",
+        title: "Amps",
+	titleColor:'white',
+	axisColor: "green",
+        axisThickness: 1,
+        gridAlpha: 0	,
+        axisAlpha: 1,
+	offset: 70,
+        position: "left"
+    }, {
+        id:"power-axis",
+        title: "Power",
+	titleColor:'white',
+	axisColor: "yellow",
+        axisThickness: 1,
+        gridAlpha: 0,
+        axisAlpha: 1,
+        position: "right"
+    }, {
+        id:"powerFactor-axis",
+        title: "PowerFactor",
+	titleColor:'white',
+	axisColor: "blue",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 60,
+        axisAlpha: 1,
+        position: "right"
+    },
+    {
+        id:"volts-axis",
+        title: "Volts",
+	axisColor: "red	",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 0,
+        axisAlpha: 1,
+        position: "left"
+    }],
     }, {}, {
         /*
          * Setting Multi-series chart to create mappings from point to a graph valueField
@@ -890,83 +975,109 @@ var phaseCLineChart = new SerialChartConfiguration('phaseCLineChartDiv', //Chart
      *AmChart Styles fo a chart.
      */
     {
-        titles: [{
-            id: "Title-1",
-            size: 15,
-            text: "Phase C"
-        }],
+      valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+      categoryAxis: {
+	    color: "white",
+	    axisColor: "white",
+      },
+      	chartScrollbar: null,
         chartCursor: {
             "cursorColor": "#888888"
         },
+	legend:{
+	  color:"white",
+	},
         categoryField: "timestamp",
-        color: "#888888",
+        color: "white",
         graphs: [{
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Amps",
             valueAxis: "amps-axis",
-            bullet: "bubble",
-            bulletSize: 6,
-            lineColor: "#1E824C",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#18bc62",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "amps"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Voltage",
             valueAxis: "volts-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#ff0000",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#EF4836",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "volts"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
             title: "Power",
             valueAxis: "power-axis",
-            bullet: "round",
-            bulletSize: 6,
-            lineColor: "#F4D03F",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineColor: "#F5D76E",
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "power"
         }, {
+	  	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "[[title]] <br /> value: [[value]]  Time: [[category]]",
             title: "Power Factor",
             valueAxis: "powerFactor-axis",
-            bullet: "round",
-            bulletSize: 6,
             lineColor: "#3A539B",
-            lineThickness: 3,
-            fillAlphas: 0.4,
+            lineThickness: 1,
             negativeLineColor: "#96281B",
             type: "smoothedLine",
             valueField: "powerFactor"
         }],
-        valueAxes: [{
-                id: "amps-axis",
-                title: " Amps ",
-                position: "left",
-                color: "#1E824C"
-        }, {
-                id: "volts-axis",
-                title: " Voltage ",
-                position: "right",
-                color: "#ff0000"
-        }, {
-                id: "power-axis",
-                title: " Real Power ",
-                position: "left",
-                color: "#F4D03F"
-        }, {
-                id: "powerFactor-axis",
-                title: " Power Factor ",
-                position: "right",
-                color: "#3A539B"
-        }
-        ],
+	valueAxes: [{
+        id:"amps-axis",
+        title: "Amps",
+	titleColor:'white',
+	axisColor: "green",
+        axisThickness: 1,
+        gridAlpha: 0	,
+        axisAlpha: 1,
+	offset: 70,
+        position: "left"
+    }, {
+        id:"power-axis",
+        title: "Power",
+	titleColor:'white',
+	axisColor: "yellow",
+        axisThickness: 1,
+        gridAlpha: 0,
+        axisAlpha: 1,
+        position: "right"
+    }, {
+        id:"powerFactor-axis",
+        title: "PowerFactor",
+	titleColor:'white',
+	axisColor: "blue",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 60,
+        axisAlpha: 1,
+        position: "right"
+    },
+    {
+        id:"volts-axis",
+        title: "Volts",
+	axisColor: "red	",
+        axisThickness: 1,
+        gridAlpha: 0,
+        offset: 0,
+        axisAlpha: 1,
+        position: "left"
+    }],
     }, {}, {
         /*
          * Setting Multi-series chart to create mappings from point to a graph valueField
@@ -986,6 +1097,7 @@ var phaseCLineChart = new SerialChartConfiguration('phaseCLineChartDiv', //Chart
             }]
     });
 displayConfigurations.push(phaseCLineChart);
+
 //For this example we will use a SimpleDisplay to fill a table with values
 var statisticsDisplay = new SimpleDisplayConfiguration([26, 27, 28, 29, 30, 31,
     32, 33, 34, 35, 36, 37, 38], {
@@ -996,17 +1108,29 @@ var statisticsDisplay = new SimpleDisplayConfiguration([26, 27, 28, 29, 30, 31,
     },
     onLoad: function(data, dataPoint) {
         //Do anything required to fills our display with data
-        if (data.hasData === true) {
-            $('#statisticsTableBody')
-                .append("<tr><td>" + dataPoint.name + "</td><td>" +
-                    this.renderValue(data.average) +
-                    //                                "</td><td>" + this.renderValue(data.integral) +
-                    //                                "</td><td>" + this.renderValue(data.sum) +
+	// lets make this into a switch statement
+ 
+    
+//       if (dataPoint.name === "Current Phase B (A)"){
+// 	  $('#statisticsTableBody').append(
+// 		   "<tr>" +
+// 		   "<td'>" + dataPoint.name +"</td>"+
+// 		   "<td'>" + this.renderValue(data.average) +"</td>"+
+// 		    "<td'>" + this.renderValue(data.count) + "</td>"+
+// 		    "<td'>" + this.renderPointValueTime(data.minimum) + "</td>"+
+// 		    "<td'>" + this.renderPointValueTime(data.maximum) + "</td>" +
+// 		    "</tr>"
+// 		 );  
+// 		 }else if (data.hasData === true){
+		$('#statisticsTableBody').append(
+		  "<tr><td>" + dataPoint.name + "</td><td>" +
+		  this.renderValue(data.average) +
                     "</td><td>" + this.renderValue(data.count) +
                     "</td><td>" + this.renderPointValueTime(data.minimum) +
                     "</td><td>" + this.renderPointValueTime(data.maximum) +
                     "</td></tr>");
-        }
+//         }
+	
     },
     renderPointValueTime: function(pvt) {
         return this.renderValue(pvt.value) + " @ " + this.renderTime(
@@ -1020,3 +1144,88 @@ var statisticsDisplay = new SimpleDisplayConfiguration([26, 27, 28, 29, 30, 31,
     }
 }); //Just assign data provider ids
 displayConfigurations.push(statisticsDisplay);
+
+
+
+
+
+
+var realPowerLineChart = new SerialChartConfiguration('kwLineChartDiv',
+    /*
+     * List of data provider Ids for this chart
+     */
+               [17, 18, 19],
+    /**
+     * Start AmChart Styling
+     */
+     {
+      valueAxes: [
+	{
+	axisColor: "white",
+	}
+	],
+      categoryAxis: {
+	    color: "white",
+	    axisColor: "white",
+      },
+      	chartScrollbar: null,
+        chartCursor: {
+            "cursorColor": "#888888"
+        },
+	legend:{
+	  color:"white",
+	},
+        categoryField: "timestamp",
+        color: "white",
+        graphs: [{
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
+            title: "Real Power A",
+            valueAxis: "power-A-axis",
+            lineColor: "#18bc62",
+            lineThickness: 1,
+            negativeLineColor: "#96281B",
+            type: "smoothedLine",
+            valueField: "power-A"
+        }, {
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
+            title: "Real Power B",
+            valueAxis: "power-B-axis",
+            lineColor: "#EF4836",
+            lineThickness: 1,
+            negativeLineColor: "#96281B",
+            type: "smoothedLine",
+            valueField: "power-B"
+        }, {
+	    showBalloon: true,
+	    balloonFunction:null,
+	    balloonText: "<b>[[title]]</b> <br /> <b>value:</b> [[value]]  <b>Time:</b> [[category]]",
+            title: "Real Power C",
+            valueAxis: "power-C-axis",
+            lineColor: "#F5D76E",
+            lineThickness: 1,
+            negativeLineColor: "#96281B",
+            type: "smoothedLine",
+            valueField: "power-C"
+        }],
+	
+     }, {}, {
+        /*
+         * Setting Multi-series chart to create mappings from point to a graph valueField
+         */
+        dataPointMappings: [{
+            nameStartsWith: 'Real Power A',
+            valueField: 'power-A'
+            }, {
+            nameStartsWith: 'Real Power B',
+            valueField: 'power-B'
+            }, {
+            nameStartsWith: 'Real Power C',
+            valueField: 'power-C'
+            }]
+    });
+displayConfigurations.push(realPowerLineChart);
+

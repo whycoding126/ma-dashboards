@@ -1,6 +1,6 @@
 /**
  * DataProviderID | DataProvider Type | Point Name:
- *      1            CustPointValue              kWh
+ *      1            CustPointValue              kWh /// this needs to be changed in a couple of ways. Realpower ()
  *      2               Realtime            Current Phase A (A)
  *      3               Realtime            Current Phase B (A)
  *      4               Realtime            Current Phase C (A)
@@ -20,7 +20,7 @@
  *      18              PointValue          Real Power B
  *      19              PointValue          Real Power C
  *      20              Realtime            Power Factor A 
- *      21              Realtime            Power Factor B
+ *      21              Realtime            P61emower Factor B
  *      22              Realtime            Power Factor C
  *      23              PointValue          Power Factor A 
  *      24              PointValue          Power Factor B
@@ -76,7 +76,7 @@ pointConfigurations.push(new DataPointMatchConfiguration(3, [ {
 // Phase C Amps (Realtime)
 pointConfigurations.push(new DataPointMatchConfiguration(4, [ {
     matchAttribute : 'name',
-    regex : /Phase C \(\A\)/g
+    regex : /Phase C \(\A\)/g // Phase C (A)
 } ], {
     providerType : 'RealtimePointValue'
 }));
@@ -356,4 +356,4 @@ pointConfigurations.push(new DataPointMatchConfiguration(32, [ {
             providerType: "Statistics"
         }));
 
-
+	
