@@ -27,10 +27,7 @@
         
         <!-- Mango Rest API Helper -->
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
-        
-        <!-- Mango AM Charts Helper -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
-        
+                
         <!-- Mango Templating API -->
         <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>

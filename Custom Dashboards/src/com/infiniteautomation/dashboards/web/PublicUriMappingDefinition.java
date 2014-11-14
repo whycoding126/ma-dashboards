@@ -13,7 +13,7 @@ import com.serotonin.m2m2.web.mvc.UrlHandler;
  * @author Terry Packer
  *
  */
-public class PublicDashboardUriMappingDefinition extends UriMappingDefinition{
+public class PublicUriMappingDefinition extends UriMappingDefinition{
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.UriMappingDefinition#getPermission()
@@ -28,7 +28,7 @@ public class PublicDashboardUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return "/public-dashboards/**";
+		return Lifecycle.publicUrlPrefix + "/**";
 	}
 
 	/* (non-Javadoc)
@@ -36,7 +36,7 @@ public class PublicDashboardUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public UrlHandler getHandler() {
-		return new PublicDashboardUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath());
+		return new PublicUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath());
 	}
 
 	/* (non-Javadoc)

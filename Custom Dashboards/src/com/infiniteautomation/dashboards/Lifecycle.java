@@ -15,13 +15,33 @@ import com.serotonin.util.properties.ReloadingProperties;
 
 public class Lifecycle extends LifecycleDefinition {
 	public static ReloadingProperties props;
-	public static String webPath;
+	
+	public static String webPath; //Full path to module web dir
+	
+	public static String publicUrlPrefix; //URL Mapping prefix
+	public static String publicFilesLocation; //Folder within web folder
+	
+	public static String privateUrlPrefix; //URL Mapping prefix
+	public static String privateFilesLocation; //folder within web folder
+	
+	public static String iconLocation; //Location of Icon file for mango toolbar
+	public static String iconDestination; //Location to link to on-click of icon
+	
+	
 	public static String moduleName;
 
 	@Override
 	public void preInitialize() {
-//		props = new ReloadingProperties("dashboards",
-//				Lifecycle.class.getClassLoader());
+		props = new ReloadingProperties("customDashboards-config",
+				Lifecycle.class.getClassLoader());
+		
+		publicUrlPrefix = props.getString("publicPrefix","/public-files");
+		publicFilesLocation = props.getString("publicLocation", "/web/public/");
+		privateUrlPrefix = props.getString("privatePrefix", "/private-files");
+		privateFilesLocation = props.getString("privateLocation", "/web/private/");
+		iconLocation = props.getString("iconLocation", "web/img/dashboards.png");
+		iconDestination = props.getString("iconDestination");
+
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.servlet.View;
 
+import com.infiniteautomation.dashboards.Lifecycle;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
 import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
@@ -21,12 +22,12 @@ import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
  * @author Terry Packer
  *
  */
-public class PublicDashboardUrlHandler implements UrlHandler{
+public class PrivateUrlHandler implements UrlHandler{
 	
 	private String dashboardsBasePath;
 	
-	public PublicDashboardUrlHandler(String modulePath){
-		this.dashboardsBasePath = modulePath + "/web/public/";
+	public PrivateUrlHandler(String modulePath){
+		this.dashboardsBasePath = modulePath + Lifecycle.privateFilesLocation;
 	}
 
 	/* (non-Javadoc)
@@ -40,7 +41,7 @@ public class PublicDashboardUrlHandler implements UrlHandler{
 		//Here we would map to the pages by loading the view
 		String contextPath = request.getRequestURI();
 		//Load in the dashboard
-		String[] parts = contextPath.split("/public-dashboards");
+		String[] parts = contextPath.split(Lifecycle.privateUrlPrefix);
 		
 		File dashboard = new File(Common.MA_HOME + dashboardsBasePath + parts[1]);
 		if(dashboard.exists()){

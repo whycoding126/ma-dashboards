@@ -19,9 +19,6 @@
         <!-- Mango Rest API Helper -->
         <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
         
-        <!-- Mango AM Charts Helper -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoAmChartsApi.js"></script>
-        
         <!-- JS For this page -->
     <script type="text/javascript">
      var socket;
