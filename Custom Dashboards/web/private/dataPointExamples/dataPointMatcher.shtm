@@ -167,13 +167,26 @@
                 pointMatcher.match(data);
                 var to = new Date();
                 var from = new Date(to.getTime() - 1000*60*60);
-                displayManager.refresh([1,2,3], from, to, 'AVERAGE', 'MINUTES', 1);
-                
+                displayManager.refresh([1,2,3],
+	                		{
+			                	from: from, 
+			                	to: to,
+			                	rollup: 'AVERAGE',
+			                	timePeriodType: 'MINUTES',
+			                	timePeriods: 1
+			                });
                 //Set an interval that will refresh our page periodically
                 setInterval(function(){
                     var to = new Date();
                     var from = new Date(to.getTime() - 1000*60*60);
-                    displayManager.refresh([1,2], from, to, 'AVERAGE', 'MINUTES', 1);
+                    displayManager.refresh([1,2], 
+                    		{
+		                    	from: from, 
+		                    	to: to,
+		                    	rollup: 'AVERAGE',
+		                    	timePeriodType: 'MINUTES',
+		                    	timePeriods: 1
+		                    });
                 }, 10000);
                 
             },showError); //end get data points
