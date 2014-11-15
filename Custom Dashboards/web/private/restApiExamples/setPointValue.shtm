@@ -9,18 +9,19 @@
         
         <!-- Scripts from Module Directory -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
        
         <script type="text/javascript">
           
           //Set this to the desired point XID
-          var pointXid = "volts";
+          var pointXid = "voltage";
           var pointType = "NUMERIC"; //Set to NUMERIC, MULTISTATE, BINARY or ALPHANUMERIC
           
           function updatePointValue(){
               
               //Create an empty point value object to send to mango after we fill it in
               var pointValue = mangoRest.pointValues.createNew();
+              pointValue.dataType = pointType;
               pointValue.annotation = "Set by default dashboard";
               //pointValue.dataType = pointType; //Set the point type
               
@@ -38,7 +39,7 @@
                   pointValue.value = $('#pointValueInput').val();
               }
               
-              pointValue.time = new Date().getTime();
+              pointValue.timestamp = new Date().getTime();
              
               
               //Using the global XID and the value from the input box set the point's value

@@ -26,16 +26,16 @@
         
         
         <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
                 
         <!-- Mango Templating API -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/dataDisplayManager.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/serialChart.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/pieChart.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/statistics.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/dataPointMatcher.js"></script>
         
         
         <!-- JS For this page -->
@@ -45,9 +45,9 @@
             
             //Create the Point Configurations
             var pointConfigurations = new Array();
-            pointConfigurations.push(new DataPointMatchConfiguration(1, {xidStartsWith: 'volts'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(2, {xidStartsWith: 'temp'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(3, {xidStartsWith: 'temp', providerType: 'Statistics'}))
+            pointConfigurations.push(new DataPointMatchConfiguration(1, {xidStartsWith: 'voltage'}));
+            pointConfigurations.push(new DataPointMatchConfiguration(2, {xidStartsWith: 'temperature'}));
+            pointConfigurations.push(new DataPointMatchConfiguration(3, {xidStartsWith: 'temperature', providerType: 'Statistics'}))
             
             //Create the Display Manager
             var displayManager = new DataDisplayManager();

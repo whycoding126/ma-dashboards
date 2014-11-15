@@ -58,7 +58,7 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
         <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
        
                 <script type="text/javascript">
           var chart,chartCursor,chartData,graph;
@@ -130,7 +130,7 @@
                   chartData = new Array();
                   for(var i=data.length-1; i>=0; i--){
                       chartData.push({
-                        date: new Date(data[i].time),
+                        date: new Date(data[i].timestamp),
                         value: data[i].value
                       });
                   }
@@ -148,7 +148,8 @@
            * Save Currently Loaded Data Point
            */
           function saveCurrentDataPoint(){
-              
+              alert("Not yet implemented.");
+              return;
               //Un-comment to test error response 
               //currentDataPoint.intervalLoggingPeriod = -1;
               
@@ -172,7 +173,7 @@
               //Get a fresh point value object and fill it
               var pointValue = mangoRest.pointValues.createNew();
               pointValue.annotation = "Set by default dashboard";
-              pointValue.dataType = currentDataPoint.pointLocator.dataType;
+              pointValue.dataType = currentDataPoint.dataType;
               
               if((pointValue.dataType === "MULTISTATE")||(pointValue.dataType === "NUMERIC")){
                   //Since the input is text type we must convert
@@ -187,7 +188,7 @@
                   pointValue.value = $('#pointValueInput').val();
               }
               
-              pointValue.time = new Date().getTime();
+              pointValue.timestamp = new Date().getTime();
              
               
               mangoRest.pointValues.put(currentDataPoint.xid, pointValue,function(data){

@@ -23,35 +23,35 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
 
     <!-- Mango Rest API Helper -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+    <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
         
 	<!-- Mango Templating API -->
     <!-- Display Widgets -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/serialChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/barChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsBarChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pieChart.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statistics.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/gaugeChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/serialChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/barChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/statisticsBarChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/pieChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/statistics.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/gaugeChart.js"></script>
     
     <!-- Data Providers -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointValueDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/historicalPointValueDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/realtimePointValueDataProvider.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/statisticsDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/historicalPointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
     <!-- Templater Core -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataDisplayManager.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointMatcher.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dataPointGroup.js"></script>  
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/pointHierarchyGrouper.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dashboardTemplater.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/mango-javascript/v1/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dashboardTemplater.js"></script>
     <!-- Input Widgets -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/dateTimePicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/rollupPicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/timePeriodTypePicker.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/input.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/select.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/mango/listView.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/rollupPicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/input.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/select.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/listView.js"></script>
     
 
 

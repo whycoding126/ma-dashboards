@@ -17,7 +17,7 @@
         <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
         
         <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
         
         <!-- JS For this page -->
     <script type="text/javascript">
@@ -38,7 +38,7 @@
                      document.getElementById('lastMessageTime').innerHTML = new Date();
                      if(message.status == 'OK'){
                          document.getElementById('value').innerHTML = message.payload.value.value;
-                         document.getElementById('time').innerHTML = message.payload.value.time;
+                         document.getElementById('time').innerHTML = message.payload.value.timestamp;
                          document.getElementById('type').innerHTML = message.payload.event;
                          
                      }else{
@@ -86,7 +86,7 @@
 	    
 	    <div style="clear:both">
 	      <div style="float:left; padding-right:5px">Value: </div>
-	      <div id="value" style="float:left; padding-right:5px"></div>&nbsp<div id="time" style="float:left"></div>
+	      <div id="value" style="float:left; padding-right:5px"></div>&nbsp@&nbsp<div id="time" style="float:left"></div>
 	    </div>
 	    
 	    <div style="clear:both">

@@ -17,3 +17,7 @@ localhost:8080/dashboards/helloWorld.shtm
 Public pages can be accessed via:
 
 http://localhost:8080/public-dashboards/<your dashboard name>.htm
+
+Link to any of the Mango Javascript API files via:
+
+/mango-javascript/{version, currently v1}/{filename.js}
