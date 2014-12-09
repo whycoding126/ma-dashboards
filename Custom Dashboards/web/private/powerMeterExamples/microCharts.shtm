@@ -23,7 +23,7 @@
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
 
     <!-- Mango Rest API Helper -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/mangoApi.js"></script>         
+    <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
         
     <!-- Mango Templating API -->
     <!-- Display Widgets -->

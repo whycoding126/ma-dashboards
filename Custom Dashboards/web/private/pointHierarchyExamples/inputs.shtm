@@ -129,8 +129,8 @@
            //Here we reference the functions below to handle the changes and perform custom actions on them
            startDateConfiguration:  new DateTimePickerConfiguration('startDate2', {}, {onChange: startDateChanged}),
            endDateConfiguration: new DateTimePickerConfiguration('endDate2', {}, {onChange: endDateChanged}),
-           rollupConfiguration: new RollupConfiguration('rollup2', {}, {onChange: rollupChanged, selected: 'FIRST'}),
-           timePeriodTypeConfiguration: new TimePeriodTypeConfiguration('timePeriodType2', {timePeriodTypes: ['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']}, {onChange: timePeriodTypeChanged, selected: 'MINUTES'}),
+           rollupConfiguration: new RollupConfiguration('rollup2', {}, {onChange: rollupChanged, selected: 0}),
+           timePeriodTypeConfiguration: new TimePeriodTypeConfiguration('timePeriodType2', {timePeriodTypes: ['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']}, {onChange: timePeriodTypeChanged, selected: 1}),
            timePeriodConfiguration: new InputConfiguration('timePeriod2', {}, {onChange: timePeriodChanged, defaultValue: 1}),
            
            //Because we are not going to use a Group Selector we need to let the templater to know 
@@ -265,7 +265,7 @@
     </div>
     <hr>
     <h2>Templater 2 Inputs</h2>
-    
+    <p>This templater can be actioned by changing any of the inputs.</p>
     <label for="startDate2">Start Date</label>
     <input id="startDate2"></input>
     

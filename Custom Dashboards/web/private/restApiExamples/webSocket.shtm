@@ -86,7 +86,7 @@
 	    
 	    <div style="clear:both">
 	      <div style="float:left; padding-right:5px">Value: </div>
-	      <div id="value" style="float:left; padding-right:5px"></div>&nbsp@&nbsp<div id="time" style="float:left"></div>
+	      <div id="value" style="float:left; padding-right:5px"></div><div style="float:left">&nbsp@&nbsp</div><div id="time" style="float:left"></div>
 	    </div>
 	    
 	    <div style="clear:both">

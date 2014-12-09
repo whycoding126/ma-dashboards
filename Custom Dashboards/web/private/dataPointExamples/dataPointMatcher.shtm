@@ -45,9 +45,9 @@
             
             //Create the Point Configurations
             var pointConfigurations = new Array();
-            pointConfigurations.push(new DataPointMatchConfiguration(1, {xidStartsWith: 'voltage'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(2, {xidStartsWith: 'temperature'}));
-            pointConfigurations.push(new DataPointMatchConfiguration(3, {xidStartsWith: 'temperature', providerType: 'Statistics'}))
+            pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: 'voltage'}]));
+            pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: 'temperature'}]));
+            pointConfigurations.push(new DataPointMatchConfiguration(3, [{matchAttribute: 'xid', regex: 'temperature'}], {providerType: 'Statistics'}))
             
             //Create the Display Manager
             var displayManager = new DataDisplayManager();
@@ -81,7 +81,7 @@
                     lineThickness: 1,
                     negativeLineColor: "red",
                     type: "smoothedLine",
-                    valueField: "volts"
+                    valueField: "voltage"
                 },{
                     title: "Temperature",
                     //Function to render the text inside the balloons
@@ -100,7 +100,7 @@
                     lineThickness: 1,
                     negativeLineColor: "red",
                     type: "smoothedLine",
-                    valueField: "temp"
+                    valueField: "temperature"
                 }],
                 valueAxes: [{
                     id: "voltage-axis",
@@ -111,6 +111,16 @@
                     title: "Temperature",
                     position: "right"
                 }],
+            },{//Empty Mango Chart Mixins
+            },{
+                //Multi-series chart so create mappings from point to a graph valueField
+                dataPointMappings: [{
+                        xidEndsWith: 'temperature',
+                        valueField: 'temperature'
+                    },{
+                        xidEndsWith: 'voltage',
+                        valueField: 'voltage'
+                    }]
             }), true);
             
             //Add a Pie Chart Configuration
@@ -126,7 +136,7 @@
                       balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
                       angle: 30
                      },{  //MangoPieChart Mixins
-                         onLoad: function(data, xid){
+                         onLoad: function(data, dataPoint){
                              var total = 0;
                              for(var i=0; i<data.length; i++){
                                  total += data[i][this.valueAttribute];
@@ -135,14 +145,14 @@
                              total = total.toFixed(2);
                              //Find the matching XID if there is one
                              for(var i=0; i<this.amChart.dataProvider.length; i++){
-                                 if(this.amChart.dataProvider[i].xid == xid){
+                                 if(this.amChart.dataProvider[i].xid == dataPoint.xid){
                                      this.amChart.dataProvider[i].total = total;
                                      this.amChart.validateData();
                                      return; //Done
                                  }
                              }
                              //We didn't find our set, so add a brand new one
-                             this.amChart.dataProvider.push({total: total, xid: xid});
+                             this.amChart.dataProvider.push({total: total, xid: dataPoint.xid});
                              this.amChart.validateData();
                          }
                      }), true); //Add and Create on add
@@ -158,6 +168,7 @@
                     console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
                     
                     //Now add it as a provider for the manager
+                    //TODO We can't keep adding this
                     displayManager.addDataPointConfiguration(dataPointConfiguration);
                 });
                 
@@ -254,11 +265,11 @@
         </div>
         <div style="clear:both">
           <div style="float:left; padding-right:5px">Maximum: </div>
-          <div id="temperatureMaximum" style="float:left"></div>
+          <div id="temperatureMax" style="float:left"></div>
         </div>
         <div style="clear:both">
           <div style="float:left; padding-right:5px">Minimum: </div>
-          <div id="temperatureMinimum" style="float:left"></div>
+          <div id="temperatureMin" style="float:left"></div>
         </div>
     </div>
     </body>

@@ -105,7 +105,7 @@
                position: "right"
            }],
        },{//empty Mango Chart Mixins
-       },{//Confuguration Mixins
+       },{//Configuration Mixins
            //Multi-series chart so create mappings from point to a graph valueField
            dataPointMappings: [{
                    xidEndsWith: 'temperature',
