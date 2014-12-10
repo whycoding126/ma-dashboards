@@ -119,7 +119,7 @@ MangoPieChart.prototype = {
         },
         
         /**
-         * Default action is to total per XID
+         * Default action is to total per name
          * Data Provider Listener
          * On Data Provider load we add new data
          */

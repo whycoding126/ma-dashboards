@@ -33,6 +33,7 @@ RollupConfiguration.prototype = {
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         selected: 0,
+        placeholder: null, //Placeholder for text
         
         addItem: function(label, id, selected){
             var html = "<option></option>";

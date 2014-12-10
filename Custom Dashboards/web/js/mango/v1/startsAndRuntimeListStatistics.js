@@ -27,7 +27,7 @@ StartsAndRuntimeListConfiguration = function(divPrefix, dataProviderIds, mangoMi
 };
 
 /**
- * Serial Chart Config
+ * Starts and Runtime List Config
  */
 StartsAndRuntimeListConfiguration.prototype = {
         divPrefix: null, //Div of chart

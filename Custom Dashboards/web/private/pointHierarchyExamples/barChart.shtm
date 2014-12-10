@@ -136,7 +136,7 @@
                                   "axisAlpha": 0
                               }
                           ],
-       },{//Empty Mango Chart Mixins
+       },{
            /**
             * on load of data
             * @param data - list of point value time

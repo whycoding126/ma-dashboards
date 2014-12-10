@@ -11,15 +11,15 @@
  * @param divId
  * @param dataProviderIds
  * @param amChartMixin
- * @param mangoPieMixin
+ * @param mangoChartMixin
  * @param options
  * @returns
  */
 GaugeChartConfiguration = function(divId, dataProviderIds, 
-        amChartMixin, mangoPieMixin, options){
+        amChartMixin, mangoChartMixin, options){
     this.divId = divId;
     this.amChartMixin = amChartMixin;
-    this.mangoPieMixin = mangoPieMixin;
+    this.mangoChartMixin = mangoChartMixin;
     this.dataProviderIds = dataProviderIds;
     
     for(var i in options) {
@@ -36,7 +36,7 @@ GaugeChartConfiguration = function(divId, dataProviderIds,
 GaugeChartConfiguration.prototype = {
         divId: null, //Div of chart
         
-        mangoPieMixin: null, //Any mixins for the MangoPie chart
+        mangoChartMixin: null, //Any mixins for the MangoPie chart
         
         amChartMixin: null, //Any AmChart JSON configuration to override
         
@@ -57,10 +57,10 @@ GaugeChartConfiguration.prototype = {
          */
         createDisplay: function(){
             this.chartLoading();
-            var pie = new MangoGaugeChart(
+            var chart = new MangoGaugeChart(
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds);
-            return $.extend(true, {}, pie, this.mangoPieMixin);
+            return $.extend(true, {}, chart, this.mangoChartMixin);
         },
         
         
@@ -144,8 +144,8 @@ MangoGaugeChart.prototype = {
          * @param value
          * @returns
          */
-        renderValue: function(pvt){
-            return pvt.value.toFixed(2);
+        renderValue: function(dataItem){
+            return dataItem[this.valueAttribute].toFixed(2);
         },
         
         /**

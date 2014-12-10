@@ -28,7 +28,7 @@ SimpleDisplayConfiguration = function(dataProviderIds, mangoDisplayMixin, option
 };
 
 /**
- * Bar Chart Config
+ * Simple Display Config
  */
 SimpleDisplayConfiguration.prototype = {
         divId: null, //Div of chart

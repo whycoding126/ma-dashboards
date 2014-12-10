@@ -344,7 +344,7 @@ var mangoRest = {
              */
             registerForEvents: function(xid, events, onMessage, onError, onOpen, onClose){
                 if ('WebSocket' in window){
-                    var socket = new WebSocket('ws://localhost:8080/rest/v1/websocket/pointValue');
+                    var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
                     socket.onopen = function(){
                         //Register for recieving point values
                         // using a PointValueRegistrationModel
