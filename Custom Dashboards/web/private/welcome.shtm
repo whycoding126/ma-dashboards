@@ -65,6 +65,8 @@
           <h2>Point Hierarchy Templater Examples</h2>
           <ul class="nav nav-sidebar">
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanSerialChart.shtm')">Boolean Serial Chart</a></li>
+            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanStatistics.shtm')">Boolean Statistics</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm')">Custom Data Provider</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/gaugeChart.shtm')">Gauge Chart</a></li>
             <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/groups.shtm')">Groups</a></li>
