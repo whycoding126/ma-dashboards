@@ -84,16 +84,6 @@
                negativeLineColor: "red",
                type: "smoothedLine",
                valueField: "value"
-           },{
-               title: "Voltage",
-               valueAxis: "volts-axis",
-               bullet: "round",
-               bulletSize: 6,
-               lineColor: "blue",
-               lineThickness: 1,
-               negativeLineColor: "red",
-               type: "smoothedLine",
-               valueField: "voltage"
            }],
            categoryAxis: {
                "minPeriod": "fff",
@@ -103,30 +93,9 @@
                id: "temp-axis",
                title: " Degress F",
                position: "left"
-           },{
-               id: "volts-axis",
-               title: " Volts",
-               position: "right"
            }],
        },{
-           /**
-            * Data Provider Listener
-            * On Data Provider load we add new data
-            */
-           onLoad: function(data, dataPoint){
-               
-//                for(var i=0; i<data.length; i++){
-//                   var entry = {
-//                       value: data[i].value,
-//                       timestamp: new Date(data[i].timestamp),
-                  
-//                   };
-                  
-//                   this.amChart.dataProvider.push(entry);  
-//                }
-               this.amChart.dataProvider = data;
-               this.amChart.validateData();
-           }
+    	   //Chart Mixins
        },{
            //Configuration Mixins
        });
@@ -168,8 +137,8 @@
        //Create a custom group list view
        var groupListView = new ListViewConfiguration('groupsList', {}, {styleClass: "ui-btn"});
 
-       var endDate = new Date(); //12Hr
-       var startDate = new Date(endDate.getTime() - 1000*10);
+       var endDate = new Date(); //Now
+       var startDate = new Date(endDate.getTime() - 1000*60*10); //10 Minutes of data
            
        //Setup Templater
        var templaterConfig = {
