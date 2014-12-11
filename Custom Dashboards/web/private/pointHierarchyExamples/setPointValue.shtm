@@ -164,7 +164,7 @@
     <p>Setting a point value is done via the put method of the templater.  The templater accepts the ID(s) of the 
         data providers to put the value to and the PointValueTimeModel object that contains the value to put. This
         example will put the value to the data point and then display the Current Value (without having to make another XHR request)
-        Click the Target Folder to start.
+        Click the Target Folder to start.  To change the value input the number you want to set and press enter.
     </p>
     <div>
         <label for="pointValue">Set Value</label>
