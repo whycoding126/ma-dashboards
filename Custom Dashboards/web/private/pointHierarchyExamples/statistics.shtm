@@ -67,15 +67,15 @@
        var displayConfigurations = new Array();
        //Pass in the div id prefix and array of data provider IDs
        displayConfigurations.push(new StatisticsConfiguration('temperature', [1]));    
-       displayConfigurations.push(new StatisticsConfiguration('voltage', [1]));  
+       displayConfigurations.push(new StatisticsConfiguration('voltage', [2]));  
        
        //Create Data Providers
        var dataProviders = new Array();
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'Statistics'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'Statistics'}))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({

@@ -105,8 +105,11 @@ MangoStartsAndRuntimeList.prototype = {
            return this.renderValue(pvt.value) + " @ " + this.renderTime(pvt.timestamp);  
         },
         
-        renderValue: function(number){
-            return number.toFixed(2);
+        renderValue: function(value){
+        	if(typeof value == 'Number')
+        		return value.toFixed(2);
+        	else
+        		return value;
         },
         
         renderTime: function(timestamp){

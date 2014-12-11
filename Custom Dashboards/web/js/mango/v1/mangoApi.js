@@ -17,9 +17,16 @@ var mangoRest = {
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
          * @param options - object to pass into done method along with data
-         * 
+         * @return promise that will be resolved when done
          */
         loginPut: function(username, password, done, fail, options) {
+        	var deferred;
+            if(typeof options == 'undefined')
+                deferred = $.Deferred();
+            else if(typeof options.deferred == 'undefined')
+                deferred = $.Deferred();
+            else
+                deferred = options.deferred;
             $.ajax({
                 type: "PUT",
                 url : "/rest/v1/login/" + encodeURIComponent(username) + ".json?password=" + encodeURIComponent(password),
@@ -27,10 +34,12 @@ var mangoRest = {
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
                 done(data, defaultUrl, options);
+                deferred.resolve(); //Finish Promise
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
             });
+            return deferred.promise();
         },
         
         /**
@@ -40,9 +49,16 @@ var mangoRest = {
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
          * @param options - object to pass into done method along with data
-         * 
+         * @return promise that will be resolved when done
          */
         loginPost: function(username, password, done, fail, options) {
+        	var deferred;
+            if(typeof options == 'undefined')
+                deferred = $.Deferred();
+            else if(typeof options.deferred == 'undefined')
+                deferred = $.Deferred();
+            else
+                deferred = options.deferred;
             $.ajax({
                 type: "POST",
                 url : "/rest/v1/login/" + encodeURIComponent(username) + ".json?password=" + encodeURIComponent(password),
@@ -50,10 +66,12 @@ var mangoRest = {
             }).done(function(data, status, jqXHR) {
                 var defaultUrl = jqXHR.getResponseHeader("user-home-uri");
                 done(data, defaultUrl, options);
+                deferred.resolve(); //Finish Promise
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
             });
+            return deferred.promise();
         },
         
         /**
@@ -63,25 +81,33 @@ var mangoRest = {
          * 
          * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
          * @param options - object to pass into done method along with data
-         *  
+         *  @return promise that will be resolved when done
          */
         logoutPost: function(username, done, fail, options) {
+        	var deferred;
+            if(typeof options == 'undefined')
+                deferred = $.Deferred();
+            else if(typeof options.deferred == 'undefined')
+                deferred = $.Deferred();
+            else
+                deferred = options.deferred;
             $.ajax({
                 type: "POST",
                 url : "/rest/v1/logout/" + encodeURIComponent(username) + ".json",
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 done(data, options);
+                deferred.resolve(); //Finish Promise
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
             });
+            return deferred.promise();
         },
         
         /**
          * Make a request for any JSON data
          * @param options - object to pass into done method along with data
-
          */
         getJson: function(url, done, fail, options){
             $.ajax({
@@ -197,6 +223,7 @@ var mangoRest = {
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * @param options - object to pass into done method along with data
+             * @return promise that will be resolved when done
              */
             get: function(xid, from, to, rollup, timePeriodType, timePeriods, done, fail, options){
                 var deferred;
@@ -273,7 +300,7 @@ var mangoRest = {
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * @param options - object to pass into done method along with data
-
+             * @return promise that will be resolved when done
              */
             getStatistics: function(xid, from, to, done, fail, options){
                 var deferred;

@@ -90,6 +90,25 @@
                title: " Degress F",
                position: "left"
            }],
+       },{//Mango Chart Mixins
+    	   /*
+    	    * Override the onLoad method to limit the chart to show
+    	    * a sliding window of 10 samples
+    	   */
+    	   onLoad: function(data, dataPoint){
+    		   var windowSize = 10; //Keep 10 samples on the chart
+    		   for(var i=0; i<data.length; i++){
+    		   		this.amChart.dataProvider.push(data[i]);
+    		   }
+    		   
+    		   //Remove the first of the array until the array is our window Size
+    		   while(this.amChart.dataProvider.length > windowSize){
+    			   this.amChart.dataProvider.shift(); 
+    		   }
+    		   this.amChart.validateData();
+    	   }
+       },{
+    	   //Empty Options
        });
        displayConfigurations.push(chart);
 

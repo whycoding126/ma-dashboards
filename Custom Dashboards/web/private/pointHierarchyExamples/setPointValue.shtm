@@ -73,8 +73,12 @@
                       //Do anything required to clear our display
                       $('#currentValue').empty();
                       $('#currentTime').empty();
+                      $('#currentXid').empty();
                   },
                   onLoad: function(pointValues, dataPoint){
+                	  if(dataPoint != null){
+                		  $('#currentXid').text(dataPoint.xid);
+                	  }
                       if(pointValues.length > 0){
                           $('#currentValue').text(pointValues[0].value.toFixed(2));
                           $('#currentTime').text(new Date(pointValues[0].timestamp));
@@ -167,6 +171,10 @@
         <input id="pointValue" type="number"></input>
     </div>
     <hr></hr>
+    <div>
+        <div>Point XID:</div>
+        <div id="currentXid"></div>
+    </div>
     <div>
         <div>Current Value:</div>
         <div id="currentValue"></div>
