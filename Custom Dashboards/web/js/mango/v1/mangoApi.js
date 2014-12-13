@@ -108,18 +108,28 @@ var mangoRest = {
         /**
          * Make a request for any JSON data
          * @param options - object to pass into done method along with data
+         * @return promise that will be resolved when done
          */
         getJson: function(url, done, fail, options){
+        	var deferred;
+            if(typeof options == 'undefined')
+                deferred = $.Deferred();
+            else if(typeof options.deferred == 'undefined')
+                deferred = $.Deferred();
+            else
+                deferred = options.deferred;
             $.ajax({
                 type: "GET",
                 url : url,
                 contentType: "application/json"
             }).done(function(data, status, jqXHR) {
                 done(data, options);
+                deferred.resolve();
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 var mangoMessage = jqXHR.getResponseHeader("errors");
                 fail(jqXHR, textStatus, errorThrown, mangoMessage);
             });
+            return deferred.promise();
         },
         
         
@@ -135,17 +145,26 @@ var mangoRest = {
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * @param options - object to pass into done method along with data
-             * 
+             * @return promise that will be resolved when done
              */
             getAll: function(done, fail, options) {
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/dataPoints.json",
                 }).done(function(data) {
                     done(data, options);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
             
             /**
@@ -155,27 +174,43 @@ var mangoRest = {
              * 
              * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * @param options - object to pass into done method along with data
-             * 
+             * @return promise that will be resolved when done
              */
             get: function(xid, done, fail, options) {
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".json",
                 }).done(function(data) {
                     done(data, options);
+                    deferred.resovle();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     fail(jqXHR, textStatus, errorThrown);
                 });
+                return deferred.promise();
             },
 
             /**
              * 
              * Save Data Point
-             * done(jsonData) callback with saved point as data
-             * 
-             * fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-             * 
+             * @param dataPoint - point to save
+             * @param done(jsonData) callback with saved point as data
+             * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
              */
             put: function(dataPoint, done, fail) {
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     type: "PUT",
                     url : "/rest/v1/dataPoints/" + encodeURIComponent(dataPoint.xid) + ".json",
@@ -183,10 +218,12 @@ var mangoRest = {
                     data: JSON.stringify(dataPoint)
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
         },
     
@@ -418,16 +455,26 @@ var mangoRest = {
              * @param done(jsonData) callback with current point value as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
              */
             getCurrentValue: function(xid, done, fail){
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json",
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
             
             /**
@@ -438,16 +485,26 @@ var mangoRest = {
              * @param done(jsonData) callback with current point values as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
              */
             getAll: function(limit, done, fail){
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/realtime.json?limit=" + limit,
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
 
         },
@@ -494,16 +551,26 @@ var mangoRest = {
              * @param done(jsonData) callback with folder contents as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
              */
             getFolderByName: function(name, done, fail){
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json",
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
             
             /**
@@ -514,16 +581,26 @@ var mangoRest = {
              * @param done(jsonData) callback with folder contents as data
              * 
              * @param fail(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
              */
             getFolderById: function(id, done, fail){
+            	var deferred;
+                if(typeof options == 'undefined')
+                    deferred = $.Deferred();
+                else if(typeof options.deferred == 'undefined')
+                    deferred = $.Deferred();
+                else
+                    deferred = options.deferred;
                 $.ajax({
                     url : "/rest/v1/hierarchy/byId/" + encodeURIComponent(id) + ".json",
                 }).done(function(data) {
                     done(data);
+                    deferred.resolve();
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     var mangoMessage = jqXHR.getResponseHeader("errors");
                     fail(jqXHR, textStatus, errorThrown, mangoMessage);
                 });
+                return deferred.promise();
             },
         }, 
         

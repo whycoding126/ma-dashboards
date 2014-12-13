@@ -2,6 +2,9 @@
 <html>
     <head>
         <title>Templated Dashboard</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,6 +117,8 @@
                 <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these points</li>
             </ul>
          <p> <a href="/modules/dashboards/web/private/MangoJavascriptAPI-UserGuide.pdf" target="download">Here</a> is a link to the Javascript API User Guide. </p>
+         
+         <p> <a href="https://vimeo.com/114367359" target="video">Here</a> is a link to a tutorial video about how to create your first dashboard.</p>
          
          <p>Please note that currently only Numeric point types can be charted.</p>
          <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>

@@ -291,7 +291,7 @@ DashboardTemplater.prototype = {
             }else if(value == "1"){
                 templater.endDate = new Date();
                 //Subtract 7*24Hrs
-                templater.startDate = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*7);
+                templater.startDate = new Date(new Date().getTime() - 1000*60*60*24*7);
                 $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
                 if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
                     $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
@@ -300,7 +300,7 @@ DashboardTemplater.prototype = {
             }else if(value == "2"){
                 templater.endDate = new Date();
                 //Subtract 30 Days
-                templater.startDate = new Date(kWhDailyBarChartDataProviderSettings.to.getTime() - 1000*60*60*24*30);
+                templater.startDate = new Date(new Date().getTime() - 1000*60*60*24*30);
                 $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
                 if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
                     $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);

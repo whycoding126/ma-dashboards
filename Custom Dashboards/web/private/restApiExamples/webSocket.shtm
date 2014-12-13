@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>Websocket Example</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/2.5.0/images/favicon.ico">
         
         
         <!-- Page Style -->
