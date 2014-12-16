@@ -87,7 +87,7 @@
              
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: 'voltage'}]))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: 'voltage'}]));
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({

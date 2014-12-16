@@ -1,2 +1,6 @@
+*Version 1.0.1*
+* Fixed bug in mangoApi Javascript Date formatter for Timezones that are +GMT 
+
+
 *Version 1.0.0*
 * Initial Release

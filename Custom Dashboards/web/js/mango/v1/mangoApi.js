@@ -620,7 +620,7 @@ var mangoRest = {
                     norm = Math.abs(Math.floor(num));
                     return (norm < 10 ? '0' : '') + norm;
                 };
-            return now.getFullYear() 
+            return encodeURIComponent(now.getFullYear() 
                 + '-' + pad(now.getMonth()+1)
                 + '-' + pad(now.getDate())
                 + 'T' + pad(now.getHours())
@@ -628,7 +628,7 @@ var mangoRest = {
                 + ':' + pad(now.getSeconds())
                 + '.' + "000"
                 + dif + pad(tzo / 60) 
-                + ':' + pad(tzo % 60);
+                + ':' + pad(tzo % 60));
         },
 };
 
