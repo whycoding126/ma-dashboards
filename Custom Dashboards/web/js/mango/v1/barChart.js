@@ -28,15 +28,14 @@ BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChar
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
     
     //Ensure we have a balloon function
-    for(var i=0; i<this.configuration.graphs.length; i++){
+    for(i=0; i<this.configuration.graphs.length; i++){
         if(typeof this.configuration.graphs[i].balloonFunction == 'undefined')
             this.configuration.graphs[i].balloonFunction = this.balloonFunction;
     }
     
     //Ensure we have a data provider
-    if(typeof this.configuration.dataProvider == 'undefined')
-        this.configuration.dataProvider = new Array();
-    
+    if(typeof this.configuration.dataProvider === 'undefined')
+        this.configuration.dataProvider = [];
 };
 
 /**
@@ -44,30 +43,22 @@ BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChar
  */
 BarChartConfiguration.prototype = {
         divId: null, //Div of chart
-        
         amChartMixin: null, //Any AmChart JSON configuration to override
-        
         mangoChartMixin: null, //Any Mango Serial Chart mixins
-        
         configuration: null, //The full config with mixin
-       
         dataProviderIds: null, //List of my data provider ids
-        
         dataPointMappings: null, //List of Data Point Matching Items (not required)
         
         balloonFunction: function(graphDataItem, amGraph){
-            if(typeof graphDataItem.values != 'undefined'){
-                return graphDataItem.category + "<br>" + graphDataItem.values.value.toFixed(2);
-            }else{
-                return "";
+            if(typeof graphDataItem.values === 'undefined')
+                return '';
+            
+            var label =  graphDataItem.category + "<br>" +
+                graphDataItem.values.value.toFixed(2);
+            if (amGraph.unit) {
+                label += ' ' + amGraph.unit;
             }
-        },
-        
-        /**
-         * Displaying Loading... on top of chart div
-         */
-        chartLoading: function(){
-            $('#' + this.divId).html('<b>Loading Chart...</b>');
+            return label;
         },
         
         /**
@@ -75,7 +66,6 @@ BarChartConfiguration.prototype = {
          * @return AmChart created
          */
         createDisplay: function(){
-            this.chartLoading();
             var serial = new MangoBarChart(this.divId, 
                     AmCharts.makeChart(this.divId, this.configuration), 
                     this.dataProviderIds, this.dataPointMappings);
@@ -88,7 +78,8 @@ BarChartConfiguration.prototype = {
          * Return the base Serial Chart Configuration
          */
         getBaseConfiguration: function(){
-            return  {                    
+            return  {
+            addClassNames: true,
             type: "serial",
             //Note the path to images
             pathToImages: "/modules/dashboards/web/js/amcharts/images/",
@@ -101,16 +92,13 @@ BarChartConfiguration.prototype = {
                 position: "left"
             },
             trendLines: [],
-            chartCursor: {
-                "categoryBalloonDateFormat": "JJ:NN:SS"
-            },
-            "chartScrollbar": {},
-            "trendLines": [],
-            "graphs": [],
-            "guides": [],
-            "valueAxes": [],
-            "allLabels": [],
-            "balloon": {},
+            chartCursor: {},
+            chartScrollbar: {},
+            graphs: [],
+            guides: [],
+            valueAxes: [],
+            allLabels: [],
+            balloon: {},
             legend: {
                 useGraphSettings: true,
                 /**
@@ -124,7 +112,7 @@ BarChartConfiguration.prototype = {
                     return ""; //Otherwise nada
                 }
             },
-            "titles": [],
+            titles: []
         };
      }
 };
@@ -160,14 +148,14 @@ MangoBarChart.prototype = {
          */
         getSeriesValueAttribute: function(dataPoint){
             
-            if(this.dataPointMappings != null){
+            if(this.dataPointMappings !== null){
                 for(var i=0; i<this.dataPointMappings.length; i++){
-                    if(this.matchPoint(this.dataPointMappings[i], dataPoint) == true){
+                    if(this.matchPoint(this.dataPointMappings[i], dataPoint)){
                         return this.dataPointMappings[i].valueField;
                     }
                 }
             }else{
-                if(this.seriesValueMapping == null)
+                if(this.seriesValueMapping === null)
                     return 'value';
                 else{
                     return dataPoint[this.seriesValueMapping];
@@ -182,25 +170,25 @@ MangoBarChart.prototype = {
         matchPoint: function(configuration, point){
             var match = true;
             //Does this point match this template
-            if(configuration.nameStartsWith != null){
-                if(point.name.indexOf(configuration.nameStartsWith) == 0)
+            if(configuration.nameStartsWith !== null){
+                if(point.name.indexOf(configuration.nameStartsWith) === 0)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.nameEndsWith != null){
+            if(configuration.nameEndsWith !== null){
                 if(point.name.indexOf(configuration.nameEndsWith, point.name.length - configuration.nameEndsWith.length) !== -1)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.xidStartsWith != null){
-                if(point.xid.indexOf(configuration.xidStartsWith) == 0)
+            if(configuration.xidStartsWith !== null){
+                if(point.xid.indexOf(configuration.xidStartsWith) === 0)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.xidEndsWith != null){
+            if(configuration.xidEndsWith !== null){
                 if(point.xid.indexOf(configuration.xidEndsWith, point.xid.length - configuration.xidEndsWith.length) !== -1)
                     match = true;
                 else
@@ -210,9 +198,27 @@ MangoBarChart.prototype = {
         },
         
         /**
+         * Displaying Loading... on top of chart div
+         */
+        loading: function() {
+            if ($('#' + this.divId).find('div.loading').length > 0)
+                return;
+            var loadingDiv = $('<div>', {id: 'div.loading'});
+            loadingDiv.addClass('loading');
+            loadingDiv.text('Loading Chart...');
+            $('#' + this.divId).prepend(loadingDiv);
+        },
+        
+        removeLoading: function() {
+            $('#' + this.divId).find('div.loading').remove();
+        },
+        
+        /**
          * Data Provider listener to clear data
          */
         onClear: function(){
+            this.removeLoading();
+            
             while(this.amChart.dataProvider.length >0){
                 this.amChart.dataProvider.pop();
             }
@@ -225,6 +231,7 @@ MangoBarChart.prototype = {
          * On Data Provider load we add new data
          */
         onLoad: function(data, dataPoint){
+            this.removeLoading();
             
             //Get the member name to put the value against in the Series
             var seriesValueAttribute = this.getSeriesValueAttribute(dataPoint);
@@ -239,9 +246,9 @@ MangoBarChart.prototype = {
             entry[seriesValueAttribute] = total;
             entry[this.categoryField] = dataPoint[this.categoryField];
             this.amChart.dataProvider.push(entry);
-            
-            
+        },
+        
+        redraw: function() {
             this.amChart.validateData();
         }
-        
 };

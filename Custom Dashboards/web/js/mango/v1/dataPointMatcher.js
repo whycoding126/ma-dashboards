@@ -18,8 +18,8 @@ DataPointMatchConfiguration = function(providerId, matchConfigurations, options)
     for(var i in options) {
         this[i] = options[i];
     }
-    if((typeof this.matchConfigurations == 'undefined')||(this.matchConfigurations == null)){
-        this.matchConfigurations = new Array();
+    if((typeof this.matchConfigurations == 'undefined')||(this.matchConfigurations === null)){
+        this.matchConfigurations = [];
     }
     
 };
@@ -44,7 +44,7 @@ DataPointMatchConfiguration.prototype = {
          */
         timeOperation: function(processedData, pvt, xid){
             return pvt.timestamp;
-        },
+        }
 };
 
 PointMatchConfiguration = function(matchAttribute, regex, options){
@@ -54,7 +54,7 @@ PointMatchConfiguration = function(matchAttribute, regex, options){
 
 PointMatchConfiguration.prototype = {
     matchAttribute: null,
-    regex: null, //Regex to match
+    regex: null //Regex to match
 };
 
 
@@ -79,99 +79,91 @@ DataPointConfiguration = function(point, providerId, providerType, options){
 DataPointConfiguration.prototype = {
         point: null, //Data Point
         providerId: null, //Data Provider ID to add this to
-        providerType: null, //Data Provider Type ['PointValue', 'Statistcs']
+        providerType: null //Data Provider Type ['PointValue', 'Statistcs']
 };
 
 /**
- * The Mango Data Point Matcher will match points to thier configurations
+ * The Mango Data Point Matcher will match points to their configurations
  * 
- * 
- * @param dataPoints - list of {xid, name, dataSourceXid, deviceName, pointFolderId} (will not be modified)
- * @param configurations - list of Data Point Match Configurations to use
- * @param onMatch - method to call when a match is made, passing the dataPointConfiguration of the match
- * @param options - object of anything you want to override
+ * @param options
  */
-DataPointMatcher = function(configurations, onMatch, options){
-
-    this.configurations = configurations;
-    this.onMatch = onMatch;
-    
+DataPointMatcher = function(options) {
     for(var i in options) {
         this[i] = options[i];
     }
 };
 
+/**
+ * Match one point to one configuration.  If no matching attributes are set,
+ * a match is assumed.
+ * 
+ * If more than one matching attribute is in the configuration they must all match.
+ * 
+ * @param point - data point
+ * @param configuration - point configuration
+ * @return - true if match, false if not
+ */
+DataPointMatcher.matchPointToConfiguration = function(point, configuration) {
+    //Does this point match this template
+    for(var i=0; i<configuration.matchConfigurations.length; i++){
+        var matchConfig = configuration.matchConfigurations[i];
+        if(point[matchConfig.matchAttribute].match(matchConfig.regex) === null)
+            return false;
+    }
+    return true;
+};
 
 DataPointMatcher.prototype = {
-        
-        owner: null, //Object to include in callbacks
-        configurations: null, //List of point configurations
+        matchConfigurations: null,
+        dataPoints: null,
         matchAll: true, //Use all points that match a point configuration (or use first match)
         
-        /**
-         * Helper to add one configuration
-         * @param dataPointMatchConfiguration - DataPointMatchConfiguration Object
-         */
-        addDataPointMatchConfiguration: function(dataPointMatchConfiguration){
-            this.configurations.push(dataPointMatchConfiguration);
+        matchConfigs: function(configurations) {
+            return this.match(configurations, this.dataPoints);
+        },
+        
+        matchDataPoints: function(dataPoints) {
+            return this.match(this.matchConfigurations, dataPoints);
         },
         
         /**
          * Match each configuration to as many points as possible.  Then
          * return the list of DataPointConfiguration
          * 
-         * This will clear out any data providers first
-         * 
-         * @param dataPoints data points summaries
+         * @param configurations
+         * @param dataPoints
          * @return - List of DataPointConfigurations
          */
-        match: function(dataPoints){
-            var matchedConfigurations = new Array();
-            for(var i=0; i<this.configurations.length; i++){
-                var configuration = this.configurations[i];
-                for(var j=0; j<dataPoints.length; j++){
+        match: function(first, second) {
+            if (first && !$.isArray(first))
+                first = [first];
+            if (second && !$.isArray(second))
+                second = [second];
+            
+            var dataPoints, configurations;
+            if (typeof first[0].matchConfigurations !== 'undefined') {
+                configurations = first;
+                dataPoints = second || this.dataPoints;
+            }
+            else {
+                dataPoints = first;
+                configurations = second || this.matchConfigurations;
+            }
+            
+            var matchedConfigurations = [];
+            for (var i = 0; i < configurations.length; i++) {
+                var configuration = configurations[i];
+                for (var j = 0; j < dataPoints.length; j++) {
                     var point = dataPoints[j];
-                    if(this.matchPointToConfiguration(point, configuration)){
+                    if (DataPointMatcher.matchPointToConfiguration(point, configuration)) {
                         //Matched, create/add to data provider
-                        var dataPointConfiguration = new DataPointConfiguration(point,configuration.providerId, configuration.providerType);
-                        this.onMatch(dataPointConfiguration, this.owner);
+                        var dataPointConfiguration = new DataPointConfiguration(point, configuration.providerId, configuration.providerType);
                         matchedConfigurations.push(dataPointConfiguration);
-                        if(!this.matchAll)
+                        if (!this.matchAll)
                             break; //Break out if we are not matching all
                     }
                 }
             }
             return matchedConfigurations;
-        },
-        
-        /**
-         * Called on match of point to configuration
-         */
-        onMatch: function(dataPointConfiguration, owner){
-            //Do nothing unless overridden
-        },
-        
-        /**
-         * Match one point to one configuration.  If no matching attributes are set,
-         * a match is assumed.
-         * 
-         * If more than one matching attribute is in the configuration they must all match.
-         * 
-         * @param point - data point
-         * @param configuration - point configuration
-         * @return - true if match, false if not
-         */
-        matchPointToConfiguration: function(point, configuration){
-            var match = true;
-            //Does this point match this template
-            for(var i=0; i<configuration.matchConfigurations.length; i++){
-                var matchConfig = configuration.matchConfigurations[i];
-                if(point[matchConfig.matchAttribute].match(matchConfig.regex) != null)
-                    match = true;
-                else
-                    match = false;
-            }
-            return match;
-        },
-        
+        }
 };

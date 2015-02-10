@@ -22,8 +22,8 @@ DeferredAjax.prototype = {
         
             return $.ajax(
                     {
-                        url : "/rest/v1/pointValues/" + self.xid + ".json?from="
-                                + self.from + "&to=" + self.to,
+                        url : "/rest/v1/pointValues/" + self.xid + ".json?from=" +
+                                self.from + "&to=" + self.to
                     }).done(function(data) {
                 for (var i = 0; i < data.length; i++) {
                     var entry = {
@@ -39,4 +39,4 @@ DeferredAjax.prototype = {
 };
 DeferredAjax.prototype.promise = function() {
     return this.deferred.promise();
-}
+};

@@ -28,7 +28,7 @@ DateTimePickerConfiguration = function(divId, mixin, options){
     //Configure the callback
     var self = this;
     this.configuration.onChangeDateTime = function(dp, $input){
-        self.onChange(dp, $input, self.owner);
+        self.onChange(dp, $input);
     };
 };
 
@@ -36,7 +36,6 @@ DateTimePickerConfiguration = function(divId, mixin, options){
 DateTimePickerConfiguration.prototype = {
         
         divId: null, //Id of div to place Picker
-        owner: null, //Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         defaultValue: null, //Default Date/Time
@@ -44,17 +43,16 @@ DateTimePickerConfiguration.prototype = {
         create: function(){
             
             var picker = jQuery("#" + this.divId).datetimepicker(this.configuration);
-            if(this.defaultValue != null)
+            if(this.defaultValue !== null)
                 picker.val(this.defaultValue.dateFormat(this.configuration.format));
         },
 
-        onChange: function(date, picker, owner){
+        onChange: function(date, picker){
             console.log('picked: ' + date);
         },
         
         getBaseConfiguration: function (){
                    return {
-                        owner: null,
                         /**
                          * @param dp - Picked Date object
                          * @param $input - the input widget
@@ -64,8 +62,8 @@ DateTimePickerConfiguration.prototype = {
                         },
                         format: 'd/m/Y H:i:s',
                         defaultTime: '00:00',
-                        closeOnDateSelect: false, //Close when date is selected
+                        closeOnDateSelect: false //Close when date is selected
                     };
   
-        },
+        }
 };

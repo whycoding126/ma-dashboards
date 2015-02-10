@@ -14,7 +14,7 @@
         
         
         <!-- JQuery and Plugins -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
         <!-- Charting Library -->
@@ -35,6 +35,8 @@
         <script type="text/javascript" src="/mango-javascript/v1/serialChart.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/pieChart.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/statistics.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/dataPointMatcher.js"></script>
@@ -166,7 +168,13 @@
             
             //Fetch the data points to work with         
             mangoRest.dataPoints.getAll(function(data){
-                pointMatcher = new DataPointMatcher(pointConfigurations, function(dataPointConfiguration){    
+                pointMatcher = new DataPointMatcher();
+                
+                //Action the matcher to setup the display manager,
+                // here we tell the display manager what Data Providers to update and
+                // give it the date/rollups for them
+                var matched = pointMatcher.match(pointConfigurations, data);
+                $.each(matched, function(key, dataPointConfiguration) {
                     console.log("onMatch found xid: " + dataPointConfiguration.point.xid);
                     
                     //Now add it as a provider for the manager
@@ -174,10 +182,6 @@
                     displayManager.addDataPointConfiguration(dataPointConfiguration);
                 });
                 
-                //Action the matcher to setup the display manager,
-                // here we tell the display manager what Data Providers to update and
-                // give it the date/rollups for them
-                pointMatcher.match(data);
                 var to = new Date();
                 var from = new Date(to.getTime() - 1000*60*60);
                 displayManager.refresh([1,2,3],

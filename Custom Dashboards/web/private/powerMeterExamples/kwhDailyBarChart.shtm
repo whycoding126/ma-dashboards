@@ -14,8 +14,8 @@
 	<title>30 Day Kwh Bar Chart</title>
     
     <!-- JQuery -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
-       
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
+      
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
@@ -39,6 +39,8 @@
     
     
     <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
@@ -133,7 +135,7 @@
             * On Data Provider load we add new data
             */
            onLoad: function(data, dataPoint){
-
+			   this.removeLoading();
                //Create one entry for every piece of data
                for(var i=0; i<data.length; i++){
                    var entry = {

@@ -29,7 +29,7 @@ PieChartConfiguration = function(divId, dataProviderIds,
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
-        this.configuration.dataProvider = new Array();
+        this.configuration.dataProvider = [];
     
 };
 
@@ -131,7 +131,7 @@ MangoPieChart.prototype = {
             }
             
             //Check to see if it already exists in the chart
-            for(var i=0; i<this.amChart.dataProvider.length; i++){
+            for(i=0; i<this.amChart.dataProvider.length; i++){
                 if(this.amChart.dataProvider[i][this.titleField] == dataPoint[this.titleField]){
                     this.amChart.dataProvider[i].total = total;
                     this.amChart.validateData();

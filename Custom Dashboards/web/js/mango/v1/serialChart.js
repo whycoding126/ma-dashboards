@@ -28,14 +28,14 @@ SerialChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoC
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
     
     //Ensure we have a balloon function
-    for(var i=0; i<this.configuration.graphs.length; i++){
+    for(i=0; i<this.configuration.graphs.length; i++){
         if(typeof this.configuration.graphs[i].balloonFunction == 'undefined')
             this.configuration.graphs[i].balloonFunction = this.balloonFunction;
     }
     
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
-        this.configuration.dataProvider = new Array();
+        this.configuration.dataProvider = [];
     
 };
 
@@ -121,7 +121,7 @@ SerialChartConfiguration.prototype = {
                     return ""; //Otherwise nada
                 }
             },
-            "titles": [],
+            "titles": []
         };
      }
 };
@@ -173,14 +173,14 @@ MangoSerialChart.prototype = {
             else
                 dataValue = null;
             
-            if(this.dataPointMappings != null){
+            if(this.dataPointMappings !== null){
                 for(var i=0; i<this.dataPointMappings.length; i++){
-                    if(this.matchPoint(this.dataPointMappings[i], dataPoint, dataValue) == true){
+                    if(this.matchPoint(this.dataPointMappings[i], dataPoint, dataValue)){
                         return this.dataPointMappings[i].valueField;
                     }
                 }
             }else{
-                if(this.seriesValueMapping == null)
+                if(this.seriesValueMapping === null)
                     return 'value';
                 else{
                     return dataPoint[this.seriesValueMapping];
@@ -195,25 +195,25 @@ MangoSerialChart.prototype = {
         matchPoint: function(configuration, point, dataValue){
             var match = true;
             //Does this point match this template
-            if(configuration.nameStartsWith != null){
-                if(point.name.indexOf(configuration.nameStartsWith) == 0)
+            if(configuration.nameStartsWith){
+                if(point.name.indexOf(configuration.nameStartsWith) === 0)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.nameEndsWith != null){
+            if(configuration.nameEndsWith){
                 if(point.name.indexOf(configuration.nameEndsWith, point.name.length - configuration.nameEndsWith.length) !== -1)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.xidStartsWith != null){
-                if(point.xid.indexOf(configuration.xidStartsWith) == 0)
+            if(configuration.xidStartsWith){
+                if(point.xid.indexOf(configuration.xidStartsWith) === 0)
                     match = true;
                 else
                     match = false;
             }
-            if(configuration.xidEndsWith != null){
+            if(configuration.xidEndsWith){
                 if(point.xid.indexOf(configuration.xidEndsWith, point.xid.length - configuration.xidEndsWith.length) !== -1)
                     match = true;
                 else
@@ -250,8 +250,8 @@ MangoSerialChart.prototype = {
          * On Data Provider load we add new data
          */
         onLoad: function(data, dataPoint){
-            
-            if(data.length == 0)
+            var entry, k;
+            if(data.length === 0)
                 return; //Nothing to do here
             
             //Get the member name to put the value against in the Series
@@ -266,8 +266,8 @@ MangoSerialChart.prototype = {
                 newDataPos = 0; //Starting at first data entry
             }else{
                 //No data so insert the first one so we can merge the rest
-                var entry = new Object();
-                for(var k in data[0])
+                entry = {};
+                for(k in data[0])
                     entry[k] = data[0][k];
                 entry[seriesValueAttribute] = data[0][this.valueAttribute];
                 this.amChart.dataProvider.push(entry);
@@ -289,8 +289,8 @@ MangoSerialChart.prototype = {
                 //Append or splice
                 if(!found){
                     //Insert at end
-                    var entry = new Object();
-                    for(var k in data[i])
+                    entry = {};
+                    for(k in data[i])
                         entry[k] = data[i][k];
                     entry[seriesValueAttribute] = data[i][this.valueAttribute];
                     this.amChart.dataProvider.push(entry);
@@ -300,8 +300,8 @@ MangoSerialChart.prototype = {
                         this.amChart.dataProvider[dataProviderPos][seriesValueAttribute] = data[i][this.valueAttribute];
                     }else{
                         //Splice into array 
-                        var entry = new Object();
-                        for(var k in data[i])
+                        entry = {};
+                        for(k in data[i])
                             entry[k] = data[i][k];
                         entry[seriesValueAttribute] = data[i][this.valueAttribute];
                         //Splice new data into array at the current dataProviderPos because its time is before

@@ -21,15 +21,12 @@ RollupConfiguration = function(divId, mixin, options){
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.mixin);
     var self = this;
     this.configuration.onChange = function(){
-        self.onChange($(this).val(), self.owner);
+        self.onChange($(this).val());
     };
 };
 
 RollupConfiguration.prototype = {
-        
-        
         divId: null, //Id of div to place Picker
-        owner: null, //Owner Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         selected: 0,
@@ -44,7 +41,7 @@ RollupConfiguration.prototype = {
             var self = this;
             var select = $('#' + this.divId);
             //Add the options
-            for(k in this.configuration.options){
+            for(var k in this.configuration.options){
                 if(k == this.selected)
                     this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, true);
                 else
@@ -52,19 +49,19 @@ RollupConfiguration.prototype = {
                     
             }
             
-            if(this.placeholder != null)
+            if(this.placeholder !== null)
                 $('#' + this.divId).attr("placeholder", this.placeholder);
  
             //Add the onChange method
             select.change(self.configuration.onChange);
             if(this.configuration.options.length > 0){
                 $('#' + this.divId).val(this.configuration.options[this.selected].value);
-                if($('#' + this.divId).selectmenu != undefined)
+                if($('#' + this.divId).selectmenu !== undefined)
                     $('#' + this.divId).selectmenu('refresh', true);
             }
         },
         
-        onChange: function(value, owner){
+        onChange: function(value){
             console.log(value);
         },
         

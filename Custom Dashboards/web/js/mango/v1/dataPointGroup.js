@@ -21,7 +21,7 @@ GroupLabel = function(id, label, options){
     for(var i in options) {
         this[i] = options[i];
     }
-}
+};
 
 
 DataPointGroupConfiguration = function(options){
@@ -32,8 +32,8 @@ DataPointGroupConfiguration = function(options){
         this[i] = options[i];
     }
     //Ensure we at least have an empty array
-    if(this.matchConfigurations == null)
-        this.matchConfigurations = new Array(); 
+    if(this.matchConfigurations === null)
+        this.matchConfigurations = []; 
     
 };
 
@@ -43,7 +43,7 @@ DataPointGroupConfiguration.prototype = {
     label: null, //Use directly for Group Label
     labelAttribute: null, //Optionally use a member to generate the label
     
-    matchConfigurations: null, //List of GroupMatchConfiguration
+    matchConfigurations: null //List of GroupMatchConfiguration
         
 };
 
@@ -54,7 +54,7 @@ GroupMatchConfiguration = function(matchAttribute, regex, options){
 
 GroupMatchConfiguration.prototype = {
     matchAttribute: null,
-    regex: null, //Regex to match
+    regex: null //Regex to match
 };
 
 /**
@@ -77,7 +77,7 @@ DataPointGroup = function(label, dataPoints, options){
 DataPointGroup.prototype = {
         
         label: null, //Label for group
-        dataPoints: null, //The list of DataPoint 
+        dataPoints: null //The list of DataPoint 
         
         
-}
+};

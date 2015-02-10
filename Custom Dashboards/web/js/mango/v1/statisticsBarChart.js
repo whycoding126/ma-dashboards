@@ -28,14 +28,14 @@ StatisticsBarChartConfiguration = function(divId, dataProviderIds, amChartMixin,
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
     
     //Ensure we have a balloon function
-    for(var i=0; i<this.configuration.graphs.length; i++){
+    for(i=0; i<this.configuration.graphs.length; i++){
         if(typeof this.configuration.graphs[i].balloonFunction == 'undefined')
             this.configuration.graphs[i].balloonFunction = this.balloonFunction;
     }
     
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
-        this.configuration.dataProvider = new Array();
+        this.configuration.dataProvider = [];
     
 };
 
@@ -105,7 +105,6 @@ StatisticsBarChartConfiguration.prototype = {
                 "categoryBalloonDateFormat": "JJ:NN:SS"
             },
             "chartScrollbar": {},
-            "trendLines": [],
             "graphs": [],
             "guides": [],
             "valueAxes": [],
@@ -124,7 +123,7 @@ StatisticsBarChartConfiguration.prototype = {
                     return ""; //Otherwise nada
                 }
             },
-            "titles": [],
+            "titles": []
         };
      }
 };
@@ -170,7 +169,7 @@ MangoStatisticsBarChart.prototype = {
          */
         onLoad: function(statistics, dataPoint){
             
-            if(statistics.hasData == true){
+            if(statistics.hasData){
                 var entry = {};
                 entry.minimum = statistics.minimum.value;
                 entry.maximum = statistics.maximum.value;

@@ -52,7 +52,7 @@ SimpleDisplayConfiguration.prototype = {
             var serial = new MangoSimpleDisplay(this.dataProviderIds);
             
             return $.extend(true, {}, serial, this.mangoDisplayMixin);
-        },
+        }
         
 };
 

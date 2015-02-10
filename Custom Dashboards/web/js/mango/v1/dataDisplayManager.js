@@ -14,10 +14,10 @@
 DataDisplayManager = function(displayConfigurations, options){
     
     this.displayConfigurations = displayConfigurations;
-    this.dataProviderConfigurations = new Array();
+    this.dataProviderConfigurations = [];
     
-    this.dataProviders = new Array();
-    this.displays = new Array();
+    this.dataProviders = [];
+    this.displays = [];
     
     this.errorDivId = "errors";
     
@@ -25,14 +25,13 @@ DataDisplayManager = function(displayConfigurations, options){
         this[i] = options[i];
     }
     
-    if(this.displayConfigurations == null)
-        this.displayConfigurations = new Array();
+    if(!this.displayConfigurations)
+        this.displayConfigurations = [];
     else{
-        for(var i=0; i<this.displayConfigurations.length; i++){
+        for(i=0; i<this.displayConfigurations.length; i++){
             this.displays.push(this.displayConfigurations[i].createDisplay());
         }
     }
-        
 };
 
 DataDisplayManager.prototype = {
@@ -49,8 +48,10 @@ DataDisplayManager.prototype = {
          */
         addDisplayConfiguration: function(displayConfiguration){
             //Add a display configuration 
-            this.displays.push(displayConfiguration.createDisplay());
+            var display = displayConfiguration.createDisplay();
+            this.displays.push(display);
             this.displayConfigurations.push(displayConfiguration);
+            this.registerWithDataProviders(display);
         },
         
         addProvider: function(dataProvider){
@@ -65,17 +66,82 @@ DataDisplayManager.prototype = {
         },
         
         /**
+         * Finds an existing provider which matches an array of DataPointConfigurations
+         * or creates a new provider and returns its id
+         * 
+         * @param dataPointConfigurations - array of DataPointConfiguration
+         * @returns a providerId
+         */
+        findOrCreateProvider: function(dataPointConfigurations) {
+            for (var i = 0; i < this.dataProviders.length; i++) {
+                var provider = this.dataProviders[i];
+                if (this.comparePointConfigs(dataPointConfigurations, provider.pointConfigurations)) {
+                    return provider.id;
+                }
+            }
+            
+            return this.addDataPointConfigurations(dataPointConfigurations);
+        },
+        
+        /**
+         * Compares two DataPointConfiguration arrays
+         * 
+         * @param array1
+         * @param array2
+         * @returns true if equivalent
+         */
+        comparePointConfigs: function(array1, array2) {
+            if (array1.length !== array2.length)
+                return false;
+            
+            for (var i = 0; i < array1.length; i++) {
+                var config1 = array1[i];
+                var foundConfig1 = false;
+                for (var j = 0; j < array2.length; j++) {
+                    var config2 = array2[j];
+                    if (config1.point.xid == config2.point.xid &&
+                            config1.providerType == config2.providerType) {
+                        foundConfig1 = true;
+                        break;
+                    }
+                }
+                if (!foundConfig1)
+                    return false;
+            }
+            return true;
+        },
+        
+        /**
+         * Add multiple data point configurations under the same providerId
+         * Do not use if you want multiple providers or different provider types
+         * 
+         * @param dataPointConfigurations - array of data point configurations
+         */
+        addDataPointConfigurations: function(dataPointConfigurations) {
+            if (dataPointConfigurations.length <= 0) {
+                return;
+            }
+            
+            providerId = this.addDataPointConfiguration(dataPointConfigurations[0]);
+            for (i = 1; i < dataPointConfigurations.length; i++) {
+                dataPointConfigurations[i].providerId = providerId;
+                this.addDataPointConfiguration(dataPointConfigurations[i]);
+            }
+            return providerId;
+        },
+        
+        /**
          * Using a point and a configuration create or find an existing data provider
          * @param dataPointConfiguration - data point configuration
          */
         addDataPointConfiguration: function(dataPointConfiguration){
             var dataProvider; 
-            if(dataPointConfiguration.providerId != null){
+            if(dataPointConfiguration.providerId !== null){
                 //Find it in the list
                 for(var i=0; i<this.dataProviders.length; i++){
                     if(this.dataProviders[i].id == dataPointConfiguration.providerId){
                         this.dataProviders[i].addDataPoint(dataPointConfiguration);
-                        return;
+                        return this.dataProviders[i].id;
                     }
                 }
                 
@@ -98,6 +164,8 @@ DataDisplayManager.prototype = {
             dataProvider.addDataPoint(dataPointConfiguration);
             //Search our displays to find who wants to listen
             this.addProvider(dataProvider);
+            
+            return dataPointConfiguration.providerId;
         },
         
         /**
@@ -116,24 +184,15 @@ DataDisplayManager.prototype = {
         },
         
         /**
-         * 
-         * 
          * @param dataProviderListener
-         * @param optional id for provider to register with, if none then register with all
          */
-        regsiterWithDataProviders: function(dataProviderListener, providerId){
-            if(typeof providerId == 'undefined'){
-                for(var i=0; i<this.dataProviders.length; i++){
+        registerWithDataProviders: function(dataProviderListener){
+            //Search our providers and add the listener
+            for(var i=0; i<this.dataProviders.length; i++){
+                if ($.inArray(this.dataProviders[i].id, dataProviderListener.dataProviderIds) >= 0){
                     this.dataProviders[i].addListener(dataProviderListener);
                 }
-            }else{
-                for(var i=0; i<this.dataProviders.length; i++){
-                    if(this.dataProviders[i].id == providerId){
-                        this.dataProviders[i].addListener(dataProviderListener);
-                    }
-                }                
             }
-
         },
         
         /**
@@ -143,15 +202,15 @@ DataDisplayManager.prototype = {
          * @param ids - array of integers indicating which data providerIDs to signal to clear 
          */
         clear: function(clearConfigurations, ids){
-            if((typeof ids == 'undefined')||(ids == null)){
+            if((typeof ids == 'undefined')||(ids === null)){
                 for(var i=0; i<this.dataProviders.length; i++){
                      this.dataProviders[i].clear(clearConfigurations);
                 }
             }else{
                 //We have Args
-                for(var i=0; i<this.dataProviders.length; i++){
-                    if($.inArray(this.dataProviders[i].id, ids) >= 0){
-                         this.dataProviders[i].clear(clearConfigurations);
+                for(var j=0; j<this.dataProviders.length; j++){
+                    if($.inArray(this.dataProviders[j].id, ids) >= 0){
+                         this.dataProviders[j].clear(clearConfigurations);
                     }
                 }
             }
@@ -161,15 +220,15 @@ DataDisplayManager.prototype = {
          * Refresh data providers with IDs (or if not defined then all)
          */
         refresh: function(ids, options){
-            if((typeof ids == 'undefined')||(ids == null)){
+            if((typeof ids == 'undefined')||(ids === null)){
                 for(var i=0; i<this.dataProviders.length; i++){
                     this.dataProviders[i].load(options, this.error);
                 }
             }else{
                 //We have Args
-                for(var i=0; i<this.dataProviders.length; i++){
-                    if($.inArray(this.dataProviders[i].id, ids) >= 0){
-                        this.dataProviders[i].load(options, this.error);
+                for(var j=0; j<this.dataProviders.length; j++){
+                    if($.inArray(this.dataProviders[j].id, ids) >= 0){
+                        this.dataProviders[j].load(options, this.error);
                     }
                 }
             }
@@ -200,11 +259,11 @@ DataDisplayManager.prototype = {
         error: function(jqXHR, textStatus, errorThrown, mangoMessage, errorDivId){
             
             var msg = "";
-            if(textStatus != null)
+            if(textStatus !== null)
                 msg += (textStatus + " ");
-            if(errorThrown != null)
+            if(errorThrown !== null)
                 msg += (errorThrown + " ");
-            if(mangoMessage != null)
+            if(mangoMessage !== null)
                 msg += (mangoMessage + " ");
             msg += "\n";
             $("#errors").text(msg);

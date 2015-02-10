@@ -14,7 +14,7 @@
 	<title>Groups</title>
 
     <!-- JQuery -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
 
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
@@ -39,6 +39,8 @@
     
     
     <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>

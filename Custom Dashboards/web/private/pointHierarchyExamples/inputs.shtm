@@ -14,7 +14,7 @@
 	<title>Inputs</title>
     
     <!-- JQuery -->
-    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>    	
+    <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
 
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
  
@@ -39,6 +39,8 @@
     
     
     <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
@@ -87,7 +89,7 @@
              
        //Setup Point Configurations
        var pointConfigurations = new Array();
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: 'voltage'}]));
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: 'voltage'}]))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -129,25 +131,27 @@
            endDate: templater2EndDate,
            
            //Here we reference the functions below to handle the changes and perform custom actions on them
-           startDateConfiguration:  new DateTimePickerConfiguration('startDate2', {}, {onChange: startDateChanged}),
-           endDateConfiguration: new DateTimePickerConfiguration('endDate2', {}, {onChange: endDateChanged}),
-           rollupConfiguration: new RollupConfiguration('rollup2', {}, {onChange: rollupChanged, selected: 0}),
-           timePeriodTypeConfiguration: new TimePeriodTypeConfiguration('timePeriodType2', {timePeriodTypes: ['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']}, {onChange: timePeriodTypeChanged, selected: 1}),
-           timePeriodConfiguration: new InputConfiguration('timePeriod2', {}, {onChange: timePeriodChanged, defaultValue: 1}),
+           startDateConfiguration:  new DateTimePickerConfiguration('startDate2', {}),
+           endDateConfiguration: new DateTimePickerConfiguration('endDate2', {}),
+           rollupConfiguration: new RollupConfiguration('rollup2', {}, {selected: 0}),
+           timePeriodTypeConfiguration: new TimePeriodTypeConfiguration('timePeriodType2', {timePeriodTypes: ['SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']}, {selected: 1}),
+           timePeriodConfiguration: new InputConfiguration('timePeriod2', {}, {defaultValue: 1}),
+           
+           startDateChanged: startDateChanged,
+           endDateChanged: endDateChanged,
+           rollupChanged: rollupChanged,
+           timePeriodTypeChanged: timePeriodTypeChanged,
+           timePeriodChanged: timePeriodChanged,
            
            //Because we are not going to use a Group Selector we need to let the templater to know 
            // not to create the default one.  This is done by passing in a dummy Group Selector that does nothing
            groupSelectConfiguration: {create: function(){}, addItem: function(label, id){}}, //Dummy Configuration that does nothing
-           
-           
-      });       
-       
-       //Using the Deferred to know when the templater is ready for use, we change to the first group 
-      $.when(templater2.deferred.promise).then(function(){
-          templater2.groupChanged(0, templater2); //Signal a group change
       });
-       
-            
+      
+      //Using the Deferred to know when the templater is ready for use, we change to the first group
+      templater2.deferred.done(function() {
+          templater2.groupChanged(0); //Signal a group change
+      });
    });// End When page Ready
    
    var groupId = 0; //Groups are referenced to thier position in the array in the templater, there is only 1 group and its at position 0
@@ -155,68 +159,68 @@
    /**
     * What to do when Templater 2's start date is changed
     */
-   function startDateChanged(date, $input, templater){
-       templater.startDate = date;
-       templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, 
+   function startDateChanged(date, $input){
+       this.startDate = date;
+       this.displayManager.clear(); //Clear all data
+       this.displayManager.refresh(null, 
            {
-            from: templater.startDate, 
-            to: templater.endDate, 
-            rollup: templater.rollup, 
-            timePeriodType: templater.timePeriodType, 
-            timePeriods: templater.timePeriods
+            from: this.startDate, 
+            to: this.endDate, 
+            rollup: this.rollup, 
+            timePeriodType: this.timePeriodType, 
+            timePeriods: this.timePeriods
            });
 
    }
-   function endDateChanged(date, $input, templater){
-       templater.endDate = date;
-       templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, 
+   function endDateChanged(date, $input){
+       this.endDate = date;
+       this.displayManager.clear(); //Clear all data
+       this.displayManager.refresh(null, 
           {
-           from: templater.startDate, 
-           to: templater.endDate, 
-           rollup: templater.rollup, 
-           timePeriodType: templater.timePeriodType, 
-           timePeriods: templater.timePeriods
+           from: this.startDate, 
+           to: this.endDate, 
+           rollup: this.rollup, 
+           timePeriodType: this.timePeriodType, 
+           timePeriods: this.timePeriods
           });
    }
    
-   function rollupChanged(rollup, templater){
-       templater.rollup = rollup;
-       templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null,
+   function rollupChanged(rollup){
+       this.rollup = rollup;
+       this.displayManager.clear(); //Clear all data
+       this.displayManager.refresh(null,
           {
-           from: templater.startDate, 
-           to: templater.endDate, 
-           rollup: templater.rollup, 
-           timePeriodType: templater.timePeriodType, 
-           timePeriods: templater.timePeriods
+           from: this.startDate, 
+           to: this.endDate, 
+           rollup: this.rollup, 
+           timePeriodType: this.timePeriodType, 
+           timePeriods: this.timePeriods
           });
        }
    
-   function timePeriodTypeChanged(timePeriodType, templater){
-       templater.timePeriodType = timePeriodType;
-       templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, 
+   function timePeriodTypeChanged(timePeriodType){
+       this.timePeriodType = timePeriodType;
+       this.displayManager.clear(); //Clear all data
+       this.displayManager.refresh(null, 
           {
-           from: templater.startDate, 
-           to: templater.endDate, 
-           rollup: templater.rollup, 
-           timePeriodType: templater.timePeriodType, 
-           timePeriods: templater.timePeriods
+           from: this.startDate, 
+           to: this.endDate, 
+           rollup: this.rollup, 
+           timePeriodType: this.timePeriodType, 
+           timePeriods: this.timePeriods
           });
    }
    
-   function timePeriodChanged(timePeriods, templater){
-       templater.timePeriods = timePeriods;
-       templater.displayManager.clear(); //Clear all data
-       templater.displayManager.refresh(null, 
+   function timePeriodChanged(timePeriods){
+       this.timePeriods = timePeriods;
+       this.displayManager.clear(); //Clear all data
+       this.displayManager.refresh(null, 
           {
-           from: templater.startDate, 
-           to: templater.endDate, 
-           rollup: templater.rollup, 
-           timePeriodType: templater.timePeriodType, 
-           timePeriods: templater.timePeriods
+           from: this.startDate, 
+           to: this.endDate, 
+           rollup: this.rollup, 
+           timePeriodType: this.timePeriodType, 
+           timePeriods: this.timePeriods
           });
    }
 

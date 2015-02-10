@@ -45,7 +45,7 @@ StartsAndRuntimeListConfiguration.prototype = {
         createDisplay: function(){
             var stats = new MangoStartsAndRuntimeList(this.divPrefix, this.dataProviderIds);
             return $.extend(true, {}, stats, this.mangoMixin);
-        },
+        }
 };
 
 
@@ -84,7 +84,7 @@ MangoStartsAndRuntimeList.prototype = {
          * On Data Provider load we add new data
          */
         onLoad: function(data, dataPoint){
-            if(data.hasData == true){
+            if(data.hasData){
                 //Starts and Runtimes Statistics
                 var list = "";
                 for(var i=0; i<data.startsAndRuntimes.length; i++){
@@ -106,7 +106,7 @@ MangoStartsAndRuntimeList.prototype = {
         },
         
         renderValue: function(value){
-        	if(typeof value == 'Number')
+        	if(typeof value === 'number')
         		return value.toFixed(2);
         	else
         		return value;

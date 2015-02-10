@@ -30,12 +30,12 @@ PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
     }
     
     //Ensure we have some basic properties initialized
-    if(this.groupConfigurations == null)
-        this.groupConfigurations = new Array(); 
-    if(this.pointHierarchyMap == null)
+    if(this.groupConfigurations === null)
+        this.groupConfigurations = []; 
+    if(this.pointHierarchyMap === null)
         this.pointHierarchyMap = {};
-    if(this.dataPoints == null)
-        this.dataPoints = new Array();
+    if(this.dataPoints === null)
+        this.dataPoints = [];
     
     //Build the map and get all points
     this.loadAllPoints();
@@ -43,8 +43,6 @@ PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
 };
 
 PointHierarchyGrouper.prototype = {
-        
-        owner: null, //Object to include in callbacks
         dataPoints: null, //List of all data points to group
         
         groupConfigurations: null, //List of DataPointGroupConfiguration 
@@ -64,7 +62,7 @@ PointHierarchyGrouper.prototype = {
          * Called on formation of a group
          * @param DataPointGroup
          */
-        onGroup: function(dataPointGroup, owner){
+        onGroup: function(dataPointGroup){
             //No Op Override
         },
         
@@ -73,23 +71,23 @@ PointHierarchyGrouper.prototype = {
          */
         group: function(){
             //Loop over all the configs and create groups
-            for(i in this.groupConfigurations){
+            for(var i in this.groupConfigurations){
                 
                 var groupConfig = this.groupConfigurations[i];
                 if(groupConfig.groupBy == 'All'){ //Match All Points
                     //Use all points for this group
                     //Create label first
                     var label;
-                    if(groupConfig.label != null){
+                    if(groupConfig.label !== null){
                         label = groupConfig.label;
                     }else{
                         label = 'All'; //Just in case
                     }
                     //Push points into new array
-                    var points = new Array();
+                    var points = [];
                     points.push.apply(points, this.dataPoints);
                     //Fire OnGroup
-                    this.onGroup(new DataPointGroup(label, points), this.owner);
+                    this.onGroup(new DataPointGroup(label, points));
                 }else{
                     //Loop over all data points and create a group with them
                     var groupsMap = {}; //Create a map to build all groups in
@@ -108,8 +106,8 @@ PointHierarchyGrouper.prototype = {
                         
                     }//end for all data points
                     //Fire on Group for all new groups
-                    for(l in groupsMap){
-                        this.onGroup(groupsMap[l], this.owner);
+                    for(var l in groupsMap){
+                        this.onGroup(groupsMap[l]);
                     }
                 }//End else matching over points
             }//end for all configs
@@ -125,6 +123,7 @@ PointHierarchyGrouper.prototype = {
          * @param groupConfiguration - DataPointGroupConfiguration
          */
         matchByFolder: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
+            var group, label;
             
             //Special case for path
             if(matchConfiguration.matchAttribute == "path"){
@@ -133,15 +132,14 @@ PointHierarchyGrouper.prototype = {
                 var path = this.getPointHierarchyPath(dataPoint);
                 
                 match = false;
-                if(matchConfiguration.regex != null){
-                    if(path.match(matchConfiguration.regex) != null){
+                if(matchConfiguration.regex !== null){
+                    if(path.match(matchConfiguration.regex) !== null){
                          //Had a match
-                         var group = groupsMap[path];
-                         if(group == null){
+                         group = groupsMap[path];
+                         if(!group){
                             //Create new group and add this point
-                            var label;
                             //Create Label First
-                            if(groupConfiguration.label == null){
+                            if(groupConfiguration.label === null){
                                 if(groupConfiguration.labelAttribute == "path")
                                     label = path;
                                 else
@@ -151,18 +149,17 @@ PointHierarchyGrouper.prototype = {
                                 label = groupConfiguration.label;
                             }
                             
-                            group = new DataPointGroup(label, new Array());
+                            group = new DataPointGroup(label, []);
                             groupsMap[path] = group;
                          }
                          //Add to existing group
                         group.dataPoints.push(dataPoint);
                     }  
                 }else{
-                    var group = groupsMap[path];
-                    if(group == null){
-                        var label;
+                    group = groupsMap[path];
+                    if(group === null){
                         //Create Label First
-                        if(groupConfiguration.label == null){
+                        if(groupConfiguration.label === null){
                             if(groupConfiguration.labelAttribute == "path")
                                 label = path;
                             else
@@ -171,7 +168,7 @@ PointHierarchyGrouper.prototype = {
                             label = groupConfiguration.label;
                         }
                         //Create new group and add this point
-                        group = new DataPointGroup(label, new Array());
+                        group = new DataPointGroup(label, []);
                         groupsMap[path] = group;
                         
                     }
@@ -181,38 +178,36 @@ PointHierarchyGrouper.prototype = {
             }else{
                 //Just matching on name or ID 
                 match = true;
-                if(matchConfiguration.regex != null){
-                    if(this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute].match(matchConfiguration.regex) != null){
+                if(matchConfiguration.regex !== null){
+                    if(this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute].match(matchConfiguration.regex) !== null){
                         //Did we have a match
-                        var group = groupsMap[0];
-                        if(group == null){
+                        group = groupsMap[0];
+                        if(group === null){
                             //Create new group and add this point
-                            var label;
                             //Create Label First
-                            if(groupConfiguration.label == null){
+                            if(groupConfiguration.label === null){
                                 label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
                             }else{
                                 label = groupConfiguration.label;
                             }
                             
-                            group = new DataPointGroup(label, new Array());
+                            group = new DataPointGroup(label, []);
                             groupsMap[0] = group;
                        }
                        //Add to existing group
                        group.dataPoints.push(dataPoint);
                     }  
                 }else{
-                    var group = groupsMap[this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute]];
-                    if(group == null){
-                        var label;
+                    group = groupsMap[this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute]];
+                    if(group === null){
                         //Create Label First
-                        if(groupConfiguration.label == null){
+                        if(groupConfiguration.label === null){
                             label = this.pointHierarchyMap[dataPoint.pointFolderId][groupConfiguration.labelAttribute];
                         }else{
                             label = groupConfiguration.label;
                         }
                         //Create new group and add this point
-                        group = new DataPointGroup(label, new Array());
+                        group = new DataPointGroup(label, []);
                         groupsMap[this.pointHierarchyMap[dataPoint.pointFolderId][matchConfiguration.matchAttribute]] = group;
                         
                     }
@@ -229,39 +224,38 @@ PointHierarchyGrouper.prototype = {
          * @param groupConfiguration - DataPointGroupConfiguration
          */
         matchByDataPoint: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
+            var group, label;
             var match = false;
-            if(matchConfiguration.regex != null){
-                if(dataPoint[matchConfiguration.matchAttribute].match(matchConfiguration.regex) != null){
+            if(matchConfiguration.regex !== null){
+                if(dataPoint[matchConfiguration.matchAttribute].match(matchConfiguration.regex) !== null){
                     //Got a match
-                    var group = groupsMap[0];
-                    if(group == null){
+                    group = groupsMap[0];
+                    if(group === null){
                         //Create new group and add this point
-                        var label;
                         //Create Label First
-                        if(groupConfiguration.label == null){
+                        if(groupConfiguration.label === null){
                             label = dataPoint[groupConfiguration.labelAttribute];
                         }else{
                             label = groupConfiguration.label;
                         }
                         
-                        group = new DataPointGroup(label, new Array());
+                        group = new DataPointGroup(label, []);
                         groupsMap[0] = group;
                     }
                     //Add to existing group
                     group.dataPoints.push(dataPoint);
                 }
             }else{
-                var group = groupsMap[dataPoint[matchConfiguration.matchAttribute]];
-                if(group == null){
-                    var label;
+                group = groupsMap[dataPoint[matchConfiguration.matchAttribute]];
+                if(group === null){
                     //Create Label First
-                    if(groupConfiguration.label == null){
+                    if(groupConfiguration.label === null){
                         label = dataPoint[groupConfiguration.labelAttribute];
                     }else{
                         label = groupConfiguration.label;
                     }
                     //Create new group and add this point
-                    group = new DataPointGroup(label, new Array());
+                    group = new DataPointGroup(label, []);
                     groupsMap[dataPoint[matchConfiguration.matchAttribute]] = group;
                     
                 }
@@ -277,7 +271,7 @@ PointHierarchyGrouper.prototype = {
          * @param dataPoint - DataPointSummary object
          */
         getPointHierarchyPath: function(summary){
-            var paths = new Array();
+            var paths = [];
             this.findPointInSubfolders(summary, this.root, paths);
             var result = "/";
             if(paths.length == 1)
@@ -297,6 +291,7 @@ PointHierarchyGrouper.prototype = {
          */
         findPointInSubfolders: function(summary, folder, paths){
             var found = false;
+            var i;
             for(i in folder.points){
                 if(folder.points[i].xid == summary.xid){
                     found = true;
@@ -345,5 +340,5 @@ PointHierarchyGrouper.prototype = {
             $.each(folder.subfolders, function() {
                 _this.loadAllPointsRecursively(this);
            });
-        },
+        }
 };

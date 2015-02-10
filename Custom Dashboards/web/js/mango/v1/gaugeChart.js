@@ -29,7 +29,7 @@ GaugeChartConfiguration = function(divId, dataProviderIds,
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
     //Ensure we have a data provider
     if(typeof this.configuration.dataProvider == 'undefined')
-        this.configuration.dataProvider = new Array();
+        this.configuration.dataProvider = [];
     
 };
 
@@ -152,9 +152,8 @@ MangoGaugeChart.prototype = {
          * Data Provider listener to clear data
          */
         onClear: function(){
-            while(this.amChart.dataProvider.length >0){
-                this.amChart.dataProvider.pop();
-            }
+            this.amChart.arrows[0].setValue(0);
+            this.amChart.axes[0].setBottomText("");
             this.amChart.validateData();   
         },
         

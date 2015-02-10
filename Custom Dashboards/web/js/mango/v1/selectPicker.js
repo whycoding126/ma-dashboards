@@ -26,15 +26,12 @@ SelectPickerConfiguration = function(divId, mixin, options){
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.mixin);
     var self = this;
     this.configuration.onChange = function(){
-        self.onChange($(this).val(), self.owner);
+        self.onChange($(this).val());
     };
 };
 
 SelectPickerConfiguration.prototype = {
-        
-        
         divId: null, //Id of div to place Picker
-        owner: null, //Owner Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         selected: 0, //Index selected
@@ -43,21 +40,21 @@ SelectPickerConfiguration.prototype = {
         addItem: function(label, id, selected){
             var html = "<option></option>";
             $('#' + this.divId).append( $(html).text(label).val(id));
-            if($('#' + this.divId).selectpicker != undefined)
+            if($('#' + this.divId).selectpicker !== undefined)
                 $('#' + this.divId).selectpicker('refresh');
         },
         
-        onChange: function(value, owner){
+        onChange: function(value){
             console.log(value);
         },
         
         create: function(){
             var self = this;
             var select = $('#' + this.divId);
-            if($('#' + this.divId).selectpicker != undefined)
+            if($('#' + this.divId).selectpicker !== undefined)
                 $('#' + this.divId).selectpicker();
             //Add the options
-            for(k in this.configuration.options){
+            for(var k in this.configuration.options){
                 if(k == this.selected)
                     this.addItem(this.configuration.options[k].label, this.configuration.options[k].value, true);
                 else
@@ -65,14 +62,14 @@ SelectPickerConfiguration.prototype = {
                     
             }
             
-            if(this.placeholder != null)
+            if(this.placeholder !== null)
                 $('#' + this.divId).attr("placeholder", this.placeholder);
 
             //Add the onChange method
             select.change(self.configuration.onChange);
             if(this.configuration.options.length > 0){
                 $('#' + this.divId).val(this.configuration.options[this.selected].value);
-                if($('#' + this.divId).selectpicker != undefined)
+                if($('#' + this.divId).selectpicker !== undefined)
                     $('#' + this.divId).selectpicker('refresh');
             }
             
@@ -84,7 +81,7 @@ SelectPickerConfiguration.prototype = {
         
         getBaseConfiguration: function(){
             return {
-                options: [], //Array of {label, value}
+                options: [] //Array of {label, value}
             };
         }
         

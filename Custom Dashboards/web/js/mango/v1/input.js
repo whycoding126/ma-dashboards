@@ -20,7 +20,7 @@ InputConfiguration = function(divId, mixin, options){
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.mixin);
     var self = this;
     this.configuration.onChange = function(){
-        self.onChange($(this).val(), self.owner);
+        self.onChange($(this).val());
     };
 
 };
@@ -29,7 +29,6 @@ InputConfiguration.prototype = {
         
         
         divId: null, //Id of div to place Picker
-        owner: null, //Owner object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         defaultValue: null, //Default Value
@@ -42,7 +41,7 @@ InputConfiguration.prototype = {
             input.change(this.configuration.onChange);
         },
         
-        onChange: function(value, owner){
+        onChange: function(value){
             console.log(value);
         },
         

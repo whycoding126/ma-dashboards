@@ -86,38 +86,46 @@
 */
 
 DashboardTemplater = function(options){
-    
     for(var i in options) {
         this[i] = options[i];
-    }    
+    }
     
     //Ensure we have arrays for all important items
-    if(this.displayConfigurations == null)
-        this.displayConfigurations = new Array();
-    if(this.pointConfigurations == null)
-        this.pointConfigurations = new Array();
-    if(this.groupConfigurations == null)
-        this.groupConfigurations = new Array();
-    if(this.groups == null)
-        this.groups = new Array();
+    if(this.displayConfigurations === null)
+        this.displayConfigurations = [];
+    if(this.pointConfigurations === null)
+        this.pointConfigurations = [];
+    if(this.groupConfigurations === null)
+        this.groupConfigurations = [];
+    if(this.groups === null)
+        this.groups = [];
     
-    if(this.endDate == null)
+    if(this.endDate === null)
         this.endDate = new Date();
-    if(this.startDate == null)
+    if(this.startDate === null)
         this.startDate = new Date(this.endDate.getTime() - 1000*60*60*12); //12Hr
-    if(this.rollup == null)
+    if(this.rollup === null)
         this.rollup = 'AVERAGE';
-    if(this.timePeriodType == null)
+    if(this.timePeriodType === null)
         this.timePeriodType = 'HOURS';
-    if(this.timePeriods == null)
+    if(this.timePeriods === null)
         this.timePeriods = 1;
-    if(this.historicalSamples == null)
+    if(this.historicalSamples === null)
         this.historicalSamples = 10; //Default to 10 Historical Samples
+    
+    // bind call backs to this object
+    // use Function.prototype.bind() if supported otherwise use jQuery.proxy()
+    var useBind = typeof Function.prototype.bind == 'function';
+    for (var prop in this) {
+        if (typeof this[prop] == 'function') {
+            this[prop] = useBind ? this[prop].bind(this) : $.proxy(this[prop], this);
+        }
+    }
     
     var self = this; //Save a reference for our actions
     
     //Setup the Inputs
-    if(this.customPeriodConfiguration == null){
+    if(!this.customPeriodConfiguration){
         this.customPeriodConfiguration = new SelectConfiguration('customPeriodSelect', 
                 {options: [
                            {label: 'Today', value: "0"},
@@ -125,108 +133,85 @@ DashboardTemplater = function(options){
                            {label: '30 Days', value: "2"},
                            {label: 'This Year', value: "3"}
                            ]
-                },{owner: self, onChange: self.customPeriodChanged}
+                },{onChange: this.customPeriodChanged}
                 );
     }else{
-        if(this.customPeriodConfiguration.owner == null)
-            this.customPeriodConfiguration.owner = self;
-        if(this.customPeriodConfiguration.onChange == null)
-            this.customPeriodConfiguration.onChange = self.startDateChanged;
+        if(this.customPeriodConfiguration.onChange === null)
+            this.customPeriodConfiguration.onChange = this.startDateChanged;
     } 
     this.customPeriodConfiguration.create();
     
     //Start Date Picker
-    if(this.startDateConfiguration == null)
-        this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {defaultValue: self.startDate, owner: self, onChange: self.startDateChanged});
+    if(this.startDateConfiguration === null)
+        this.startDateConfiguration = new DateTimePickerConfiguration('startDate', {}, {defaultValue: this.startDate, onChange: this.startDateChanged});
     else{
-        if(this.startDateConfiguration.owner == null)
-            this.startDateConfiguration.owner = self;
-        if(this.startDateConfiguration.onChange == null)
-            this.startDateConfiguration.onChange = self.startDateChanged;
+        this.startDateConfiguration.onChange = this.startDateChanged;
     } 
     this.startDateConfiguration.create();
     
     //Create End Date
-    if(this.endDateConfiguration == null)
-        this.endDateConfiguration = new DateTimePickerConfiguration('endDate', {}, {defaultValue: self.endDate, owner: self, onChange: self.endDateChanged});
+    if(this.endDateConfiguration === null)
+        this.endDateConfiguration = new DateTimePickerConfiguration('endDate', {}, {defaultValue: this.endDate, onChange: this.endDateChanged});
     else{
-        if(this.endDateConfiguration.owner == null)
-            this.endDateConfiguration.owner = self;
-        if(this.endDateConfiguration.onChange == null)
-            this.endDateConfiguration.onChange = self.endDateChanged;
+        this.endDateConfiguration.onChange = this.endDateChanged;
     } 
     this.endDateConfiguration.create();
     
-    if(this.rollupConfiguration == null)
-        this.rollupConfiguration = new RollupConfiguration('rollup', {}, {owner: self, onChange: self.rollupChanged, selected: 0});
+    if(this.rollupConfiguration === null)
+        this.rollupConfiguration = new RollupConfiguration('rollup', {}, {onChange: this.rollupChanged, selected: 0});
     else{
-        if(this.rollupConfiguration.owner == null)
-            this.rollupConfiguration.owner = self;
-        if(this.rollupConfiguration.onChange == null)
-            this.rollupConfiguration.onChange = self.rollupChanged;
+        this.rollupConfiguration.onChange = this.rollupChanged;
     }    
     this.rollupConfiguration.create();
     
-    if(this.timePeriodTypeConfiguration == null)
-        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {owner: self, onChange: self.timePeriodTypeChanged, selected: 1});
+    if(this.timePeriodTypeConfiguration === null)
+        this.timePeriodTypeConfiguration = new TimePeriodTypeConfiguration('timePeriodType', {}, {onChange: this.timePeriodTypeChanged, selected: 1});
     else{
-        if(this.timePeriodTypeConfiguration.owner == null)
-            this.timePeriodTypeConfiguration.owner = self;
-        if(this.timePeriodTypeConfiguration.onChange == null)
-            this.timePeriodTypeConfiguration.onChange = self.timePeriodTypeChanged;
+        this.timePeriodTypeConfiguration.onChange = this.timePeriodTypeChanged;
     }
     this.timePeriodTypeConfiguration.create();
   
-    if(this.timePeriodConfiguration == null)
-        this.timePeriodConfiguration = new InputConfiguration('timePeriod', {}, {owner: self, onChange: self.timePeriodChanged, defaultValue: this.timePeriods});
+    if(this.timePeriodConfiguration === null)
+        this.timePeriodConfiguration = new InputConfiguration('timePeriod', {}, {onChange: this.timePeriodChanged, defaultValue: this.timePeriods});
     else{
-        if(this.timePeriodConfiguration.owner == null)
-            this.timePeriodConfiguration.owner = self;
-        if(this.timePeriodConfiguration.onChange == null)
-            this.timePeriodConfiguration.onChange = self.timePeriodChanged;
+        this.timePeriodConfiguration.onChange = this.timePeriodChanged;
     }
     this.timePeriodConfiguration.create();
     
-    if(this.groupSelectConfiguration == null)
-        this.groupSelectConfiguration = new SelectConfiguration('groups',{}, {owner: self, onChange: self.groupChanged, defaultValue: 0});
+    if(this.groupSelectConfiguration === null)
+        this.groupSelectConfiguration = new SelectConfiguration('groups',{}, {onChange: this.groupChanged, defaultValue: 0});
     else{
-        if(this.groupSelectConfiguration.owner == null)
-            this.groupSelectConfiguration.owner = self;
-        if(this.groupSelectConfiguration.groupChanged == null)
-            this.groupSelectConfiguration.onChange = self.groupChanged;
+        this.groupSelectConfiguration.onChange = this.groupChanged;
     }
     this.groupSelectConfiguration.create();
     
     //Display Manager
-    if(this.displayManager == null)
+    if(this.displayManager === null)
         this.displayManager = new DataDisplayManager(this.displayConfigurations);
-    if(this.dataProviders != null){
-        for(var i=0; i<this.dataProviders.length; i++){
+    if(this.dataProviders !== null){
+        for(i=0; i<this.dataProviders.length; i++){
             this.displayManager.addProvider(this.dataProviders[i]);
         }
     }
     
-    
     //Point Matcher
-    if(this.pointMatcher == null)
-        this.pointMatcher = new DataPointMatcher(this.pointConfigurations, this.onMatch, {owner: self});
+    if(this.pointMatcher === null) {
+        this.pointMatcher = new DataPointMatcher({
+            matchConfigurations: this.pointConfigurations
+        });
+    }
     
     //Grouper
-    if(this.groupMatcher == null){
+    if(this.groupMatcher === null){
         if(this.type == 'PointHierarchy'){
-          //Fetch the Point Hierarchy to work with        
-            this.deferred = mangoRest.hierarchy.getRoot(function(phRoot){
-
-                root = phRoot; //Set the Global
-               
-            },this.showError); //end get data points
-           
-            $.when(this.deferred).then(function(){
-                self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {owner: self});
+            //Fetch the Point Hierarchy to work with        
+            this.deferred = mangoRest.hierarchy.getRoot();
+            this.deferred.done(function(root) {
+                self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {});
                 self.groupMatcher.group(); //Do your job grouper
-                if(self.loadGroupAtStartup != null) //Load a Group if required
-                    self.groupChanged(self.loadGroupAtStartup,self);
-            });
+                if(self.loadGroupAtStartup !== null) //Load a Group if required
+                    self.groupChanged(self.loadGroupAtStartup);
+            }).fail(this.showError);
         }
     }
     
@@ -276,128 +261,130 @@ DashboardTemplater.prototype = {
         /**
          * Called when custom period has been changed
          */
-        customPeriodChanged: function(value, templater){
-            if(templater.debug)
+        customPeriodChanged: function(value){
+            if(this.debug)
                 console.log("customPeriod: " + value);
             if(value == "0"){
-                templater.startDate = new Date();
-                templater.startDate.setHours(0,0,0,0);
-                templater.endDate = new Date();
-                $("#" + templater.timePeriodTypeConfiguration.divId).val("HOURS");
-                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
-                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
-                templater.timePeriodType = "HOURS";        
+                this.startDate = new Date();
+                this.startDate.setHours(0,0,0,0);
+                this.endDate = new Date();
+                $("#" + this.timePeriodTypeConfiguration.divId).val("HOURS");
+                if($("#" + this.timePeriodTypeConfiguration.divId).selectmenu !== undefined)
+                    $("#" + this.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                this.timePeriodType = "HOURS";        
 
             }else if(value == "1"){
-                templater.endDate = new Date();
+                this.endDate = new Date();
                 //Subtract 7*24Hrs
-                templater.startDate = new Date(new Date().getTime() - 1000*60*60*24*7);
-                $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
-                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
-                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
-                templater.timePeriodType = "DAYS";        
+                this.startDate = new Date(new Date().getTime() - 1000*60*60*24*7);
+                $("#" + this.timePeriodTypeConfiguration.divId).val("DAYS");
+                if($("#" + this.timePeriodTypeConfiguration.divId).selectmenu !== undefined)
+                    $("#" + this.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                this.timePeriodType = "DAYS";        
 
             }else if(value == "2"){
-                templater.endDate = new Date();
+                this.endDate = new Date();
                 //Subtract 30 Days
-                templater.startDate = new Date(new Date().getTime() - 1000*60*60*24*30);
-                $("#" + templater.timePeriodTypeConfiguration.divId).val("DAYS");
-                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
-                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
-                templater.timePeriodType = "DAYS";        
+                this.startDate = new Date(new Date().getTime() - 1000*60*60*24*30);
+                $("#" + this.timePeriodTypeConfiguration.divId).val("DAYS");
+                if($("#" + this.timePeriodTypeConfiguration.divId).selectmenu !== undefined)
+                    $("#" + this.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                this.timePeriodType = "DAYS";        
             }else if(value == "3"){ //This Year
-                templater.endDate = new Date();
+                this.endDate = new Date();
                 //Set Date to first of year
-                templater.startDate = new Date(new Date().getFullYear(), 0, 1);
-                templater.startDate.setHours(0,0,0,0);
-                $("#" + templater.timePeriodTypeConfiguration.divId).val("MONTHS");
-                if($("#" + templater.timePeriodTypeConfiguration.divId).selectmenu != undefined)
-                    $("#" + templater.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
-                templater.timePeriodType = "MONTHS";        
+                this.startDate = new Date(new Date().getFullYear(), 0, 1);
+                this.startDate.setHours(0,0,0,0);
+                $("#" + this.timePeriodTypeConfiguration.divId).val("MONTHS");
+                if($("#" + this.timePeriodTypeConfiguration.divId).selectmenu !== undefined)
+                    $("#" + this.timePeriodTypeConfiguration.divId).selectmenu('refresh', true);
+                this.timePeriodType = "MONTHS";        
             }
             //Refresh the date pickers
-            $("#" + templater.startDateConfiguration.divId).val(templater.startDate.dateFormat(templater.startDateConfiguration.configuration.format));
-            $("#" + templater.endDateConfiguration.divId).val(templater.endDate.dateFormat(templater.endDateConfiguration.configuration.format));
+            $("#" + this.startDateConfiguration.divId).val(this.startDate.dateFormat(this.startDateConfiguration.configuration.format));
+            $("#" + this.endDateConfiguration.divId).val(this.endDate.dateFormat(this.endDateConfiguration.configuration.format));
 
             
-            templater.displayManager.clear(false, templater.providersToRefresh);
-            templater.refresh(templater.providersToRefresh, templater);
+            this.displayManager.clear(false, this.providersToRefresh);
+            this.refresh(this.providersToRefresh);
         },
         /**
          * Called on start date change
          */
-        startDateChanged: function(date, $input, templater){
-            if(templater.debug)
+        startDateChanged: function(date, $input){
+            if(this.debug)
                 console.log('SD: ' + date);
-            templater.startDate = date;
-            templater.displayManager.clear(false, templater.providersToRefresh); //Clear all data  AND Point Configurations on a change of Group
-            templater.refresh(templater.providersToRefresh, templater);
+            this.startDate = date;
+            this.displayManager.clear(false, this.providersToRefresh); //Clear all data  AND Point Configurations on a change of Group
+            this.refresh(this.providersToRefresh);
         },
-        endDateChanged: function(date, $input, templater){
-            if(templater.debug)
+        endDateChanged: function(date, $input){
+            if(this.debug)
                 console.log('ED: ' + date);
-            templater.endDate = date;
+            this.endDate = date;
             //Clear out the displays for new data (but keep the point configurations)
-            templater.displayManager.clear(false, templater.providersToRefresh); 
-            templater.refresh(templater.providersToRefresh, templater);
+            this.displayManager.clear(false, this.providersToRefresh); 
+            this.refresh(this.providersToRefresh);
         },
-        rollupChanged: function(rollup, templater){
-            if(templater.debug)
+        rollupChanged: function(rollup){
+            if(this.debug)
                 console.log('RU: ' + rollup);
-            templater.rollup = rollup;
+            this.rollup = rollup;
             //Clear out the displays for new data (but keep the point configurations)
-            templater.displayManager.clear(false, templater.providersToRefresh);
-            templater.refresh(templater.providersToRefresh, templater);
+            this.displayManager.clear(false, this.providersToRefresh);
+            this.refresh(this.providersToRefresh);
         },
-        timePeriodTypeChanged: function(timePeriodType, templater){
-            if(templater.debug)
+        timePeriodTypeChanged: function(timePeriodType){
+            if(this.debug)
                 console.log('TPT: ' + timePeriodType);
-            templater.timePeriodType = timePeriodType;
+            this.timePeriodType = timePeriodType;
             //Clear out the displays for new data (but keep the point configurations)
-            templater.displayManager.clear(false, templater.providersToRefresh);
-            templater.refresh(templater.providersToRefresh, templater);
+            this.displayManager.clear(false, this.providersToRefresh);
+            this.refresh(this.providersToRefresh);
         },
-        timePeriodChanged: function(timePeriods, templater){
-            if(templater.debug)
+        timePeriodChanged: function(timePeriods){
+            if(this.debug)
                 console.log('TP: ' + timePeriods);
-            templater.timePeriods = timePeriods;
+            this.timePeriods = timePeriods;
             //Clear out the displays for new data (but keep the point configurations)
-            templater.displayManager.clear(false, templater.providersToRefresh);
-            templater.refresh(templater.providersToRefresh, templater);
+            this.displayManager.clear(false, this.providersToRefresh);
+            this.refresh(this.providersToRefresh);
         },
-        onMatch: function(dataPointConfiguration, templater){
-            if(templater.debug)
-                console.log('MatchedPoint: {name: ' + dataPointConfiguration.point.name + ", providerId: " + dataPointConfiguration.providerId + ", providerType: " + dataPointConfiguration.providerType);
-            templater.displayManager.addDataPointConfiguration(dataPointConfiguration);
-        },
-        onGroup: function(dataPointGroup, templater){
-            if(templater.debug)
+        onGroup: function(dataPointGroup){
+            if(this.debug)
                 console.log('MatchedGroup: ' + dataPointGroup.label + "(" + dataPointGroup.dataPoints.length + ")");
-            templater.groupSelectConfiguration.addItem(dataPointGroup.label, templater.groups.length);
-            templater.groups.push(dataPointGroup);
+            this.groupSelectConfiguration.addItem(dataPointGroup.label, this.groups.length);
+            this.groups.push(dataPointGroup);
         },
-        groupChanged: function(groupId, templater){
-            if(templater.debug)
+        groupChanged: function(groupId){
+            if(this.debug)
                 console.log('GroupChanged: ' + groupId);
-            templater.groupId =  groupId;
-            templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
-            var matchedConfigs = templater.pointMatcher.match(templater.groups[groupId].dataPoints);
-            templater.refresh(templater.providersToRefresh, templater);
+            this.groupId =  groupId;
+            this.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
+            
+            var self = this;
+            var matchedConfigs = this.pointMatcher.matchDataPoints(this.groups[groupId].dataPoints);
+            $.each(matchedConfigs, function(key, dataPointConfiguration) {
+                if(self.debug)
+                    console.log('MatchedPoint: {name: ' + dataPointConfiguration.point.name + ", providerId: " + dataPointConfiguration.providerId + ", providerType: " + dataPointConfiguration.providerType);
+                self.displayManager.addDataPointConfiguration(dataPointConfiguration);
+            });
+            
+            this.refresh(this.providersToRefresh);
         },
         /**
          * Refresh the providers using the dates/rollups already set in templater
          * @param providerIds
-         * @param templater
          */
-        refresh: function(providerIds, templater){
-            templater.displayManager.refresh(providerIds, 
+        refresh: function(providerIds){
+            this.displayManager.refresh(providerIds, 
                     {
-                        from: templater.startDate, 
-                        to: templater.endDate, 
-                        rollup: templater.rollup, 
-                        timePeriodType: templater.timePeriodType, 
-                        timePeriods: templater.timePeriods,
-                        historicalSamples: templater.historicalSamples
+                        from: this.startDate, 
+                        to: this.endDate, 
+                        rollup: this.rollup, 
+                        timePeriodType: this.timePeriodType, 
+                        timePeriods: this.timePeriods,
+                        historicalSamples: this.historicalSamples
                 });
         },
         
@@ -410,23 +397,23 @@ DashboardTemplater.prototype = {
          *                  }
          */
         put: function(ids, options){
-            if((typeof ids == 'undefined')||(ids == null)){
+            if((typeof ids == 'undefined')||(ids === null)){
                 for(var i=0; i<this.dataProviders.length; i++){
                     this.dataProviders[i].put(options, this.showError);
                 }
             }else{
                 //We have Args
-                for(var i=0; i<this.dataProviders.length; i++){
-                    if($.inArray(this.dataProviders[i].id, ids) >= 0){
-                        this.dataProviders[i].put(options, this.showError);
+                for(var j=0; j<this.dataProviders.length; j++){
+                    if($.inArray(this.dataProviders[j].id, ids) >= 0){
+                        this.dataProviders[j].put(options, this.showError);
                     }
                 }
             }
         },
         
-        invalidateChartSize: function(chartDivIds, templater){
-            for(var i=0; i<templater.displayManager.displays.length; i++){
-                var display = templater.displayManager.displays[i];
+        invalidateChartSize: function(chartDivIds){
+            for(var i=0; i<this.displayManager.displays.length; i++){
+                var display = this.displayManager.displays[i];
                 if($.inArray(display.divId, chartDivIds) >= 0){
                    //Invlidate the chart size
                    display.amChart.invalidateSize();
@@ -440,11 +427,11 @@ DashboardTemplater.prototype = {
         showError: function(jqXHR, textStatus, errorThrown, mangoMessage){
             
             var msg = "";
-            if(textStatus != null)
+            if(textStatus !== null)
                 msg += (textStatus + " ");
-            if(errorThrown != null)
+            if(errorThrown !== null)
                 msg += (errorThrown + " ");
-            if(mangoMessage != null)
+            if(mangoMessage !== null)
                 msg += (mangoMessage + " ");
             msg += "\n";
             $("#errors").text(msg);

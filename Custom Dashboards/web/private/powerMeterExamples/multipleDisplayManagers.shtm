@@ -39,6 +39,8 @@
     
     
     <!-- Data Providers -->
+    <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
@@ -253,37 +255,30 @@
                 * that is already configured we can just 
                 * refresh it here.
                 */
-               groupChanged: function(groupId, templater){
-                   if(templater.debug)
-                       console.log('GroupChanged: ' + groupId);
-                   templater.groupId =  groupId;
-                   templater.displayManager.clear(true); //Clear all data  AND Point Configurations on a change of Group
-                   var matchedDataPointConfigurations = templater.pointMatcher.match(templater.groups[groupId].dataPoints);
-                   templater.refresh(null, templater);
+               groupChanged: function(groupId){
+                   // call super function
+                   DashboardTemplater.prototype.groupChanged.apply(this, arguments);
+                   
+                   // fetch the point configurations from the templater's display manager
+                   var pointConfigurations = this.displayManager.dataProviders[0].pointConfigurations;
                    
                    //Refresh the other display Manager
                    var to = new Date();
-			       var from = new Date(to.getTime() - 1000*60*60*24*30);
-			       var dataProviderSettings = {
-			               //Setup the Date/Rollups
-			               from: from,
-			               to: to,
-			               rollup: 'AVERAGE',
-			               timePeriodType: 'DAYS',
-			               timePeriods: 1,
-			       };
-			       //Clear out the bar chart for new data
-			       kwhBarChartDisplayManager.clear(true);
-			       //Ensure we have the new data point configurations from the Match
-			       for(var i=0; i<matchedDataPointConfigurations.length; i++){
-			           kwhBarChartDisplayManager.addDataPointConfiguration(matchedDataPointConfigurations[i]);
-			       }
-			       
+                   var from = new Date(to.getTime() - 1000*60*60*24*30);
+                   var dataProviderSettings = {
+                           //Setup the Date/Rollups
+                           from: from,
+                           to: to,
+                           rollup: 'AVERAGE',
+                           timePeriodType: 'DAYS',
+                           timePeriods: 1,
+                   };
+                   
+                   //Clear out the bar chart for new data
+                   kwhBarChartDisplayManager.clear(true);
+                   kwhBarChartDisplayManager.addDataPointConfigurations(pointConfigurations);
                    kwhBarChartDisplayManager.refresh(null, dataProviderSettings);
-                   
-                   
-               },
-
+               }
        };
        templater = new DashboardTemplater(templaterConfig);
 

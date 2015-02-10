@@ -21,7 +21,7 @@ ListViewConfiguration = function(listId, mixin, options){
     this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.mixin);
     var self = this;
 //    this.configuration.onChange = function(){
-//        self.onChange($(this).val(), self.owner);
+//        self.onChange($(this).val());
 //    };
 };
 
@@ -29,7 +29,6 @@ ListViewConfiguration.prototype = {
         
         
         listId: null, //Id of List
-        owner: null, //Owner Object to include in callback
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
         styleClass: null,
@@ -41,12 +40,12 @@ ListViewConfiguration.prototype = {
             var li = $('<li>');
             $('#'+ this.listId).append(
                 li.append(label));   
-            li.click(function(){self.onChange(id, self.owner);});
-            if(this.styleClass != null)
+            li.click(function(){self.onChange(id);});
+            if(this.styleClass !== null)
                 li.attr('class', this.styleClass);
         },
         
-        onChange: function(value, owner){
+        onChange: function(value){
             console.log(value);
         },
         
@@ -54,7 +53,7 @@ ListViewConfiguration.prototype = {
             var self = this;
             var list = $('#' + this.divId);
             //Add the options
-            for(k in this.configuration.options){
+            for(var k in this.configuration.options){
                 this.addItem(this.configuration.items[k].label, this.configuration.items[k].value);
             }
         },
@@ -63,7 +62,7 @@ ListViewConfiguration.prototype = {
         
         getBaseConfiguration: function(){
             return { 
-                    items: [], //Array of {label, value}
+                    items: [] //Array of {label, value}
                    };
             
         }

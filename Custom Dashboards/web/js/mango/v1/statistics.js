@@ -48,7 +48,7 @@ StatisticsConfiguration.prototype = {
         createDisplay: function(){
             var stats = new MangoStatistics(this.divPrefix, this.dataProviderIds);
             return $.extend(true, {}, stats, this.mangoChartMixin);
-        },
+        }
 };
 
 
@@ -92,7 +92,7 @@ MangoStatistics.prototype = {
          * On Data Provider load we add new data
          */
         onLoad: function(data, dataPoint){
-            if(data.hasData == true){
+            if(data.hasData){
                 
                 //Numeric Statistics
                 $("#" + this.divPrefix + "Min").text(this.renderPointValueTime(data.minimum));

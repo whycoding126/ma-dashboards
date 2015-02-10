@@ -18,7 +18,7 @@
         
         
         <!-- JQuery and Plugins -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
         <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
         <!-- Charting Library -->
@@ -67,39 +67,39 @@
           <h2><a href="/private-dashboards/welcome.shtm">Home</a></h2>
           <h2>Point Hierarchy Templater Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm')">Bar Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanSerialChart.shtm')">Boolean Serial Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanStatistics.shtm')">Boolean Statistics</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm')">Custom Data Provider</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/gaugeChart.shtm')">Gauge Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/groups.shtm')">Groups</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm')">Historical Data Provider</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/inputs.shtm')">Inputs</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/pieChart.shtm')">Pie Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChart.shtm')">Realtime Serial Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChart.shtm')">Serial Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChartNoRollup.shtm')">Serial Chart No Rollup</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/setPointValue.shtm')">Set Point Value</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statistics.shtm')">Statistics</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm')">Statistics Bar Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/barChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/barChart.shtm');return false">Bar Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/booleanSerialChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanSerialChart.shtm');return false">Boolean Serial Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/booleanStatistics.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/booleanStatistics.shtm');return false">Boolean Statistics</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/customDataProvider.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/customDataProvider.shtm');return false">Custom Data Provider</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/gaugeChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/gaugeChart.shtm');return false">Gauge Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/groups.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/groups.shtm');return false">Groups</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/historicalDataProvider.shtm');return false">Historical Data Provider</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/inputs.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/inputs.shtm');return false">Inputs</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/pieChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/pieChart.shtm');return false">Pie Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/realtimeSerialChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/realtimeSerialChart.shtm');return false">Realtime Serial Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/serialChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChart.shtm');return false">Serial Chart</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/serialChartNoRollup.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/serialChartNoRollup.shtm');return false">Serial Chart No Rollup</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/setPointValue.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/setPointValue.shtm');return false">Set Point Value</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/statistics.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statistics.shtm');return false">Statistics</a></li>
+            <li><a href="/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm" onclick="$('#content').load('/private-dashboards/pointHierarchyExamples/statisticsBarChart.shtm');return false">Statistics Bar Chart</a></li>
           </ul>
           <h2>Power Meter Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm')">kWh Daily Bar Chart</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/microCharts.shtm')">Micro Charts</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm')">Multiple Display Managers</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/powerMeterExamples/realPowerPieChart.shtm')">Real Power Pie Chart</a></li>
+            <li><a href="/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm" onclick="$('#content').load('/private-dashboards/powerMeterExamples/kwhDailyBarChart.shtm');return false">kWh Daily Bar Chart</a></li>
+            <li><a href="/private-dashboards/powerMeterExamples/microCharts.shtm" onclick="$('#content').load('/private-dashboards/powerMeterExamples/microCharts.shtm');return false">Micro Charts</a></li>
+            <li><a href="/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm" onclick="$('#content').load('/private-dashboards/powerMeterExamples/multipleDisplayManagers.shtm');return false">Multiple Display Managers</a></li>
+            <li><a href="/private-dashboards/powerMeterExamples/realPowerPieChart.shtm" onclick="$('#content').load('/private-dashboards/powerMeterExamples/realPowerPieChart.shtm');return false">Real Power Pie Chart</a></li>
           </ul>
           <h2>Data Point Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointMatcher.shtm')">Data Point Matcher</a></li>
+            <li><a href="/private-dashboards/dataPointExamples/dataPointMatcher.shtm" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointMatcher.shtm');return false">Data Point Matcher</a></li>
           </ul>
           <h2>REST API Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/currentValue.shtm')">Current Value</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/setPointValue.shtm')">Set Point Value</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/simpleDashboard.shtm')">Simple Dashboard</a></li>
-            <li><a href="#" onclick="$('#content').load('/private-dashboards/restApiExamples/webSocket.shtm')">Point Values Web Socket</a></li>
+            <li><a href="/private-dashboards/restApiExamples/currentValue.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/currentValue.shtm');return false">Current Value</a></li>
+            <li><a href="/private-dashboards/restApiExamples/setPointValue.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/setPointValue.shtm');return false">Set Point Value</a></li>
+            <li><a href="/private-dashboards/restApiExamples/simpleDashboard.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/simpleDashboard.shtm');return false">Simple Dashboard</a></li>
+            <li><a href="/private-dashboards/restApiExamples/webSocket.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/webSocket.shtm');return false">Point Values Web Socket</a></li>
           </ul>
 
          </div>
