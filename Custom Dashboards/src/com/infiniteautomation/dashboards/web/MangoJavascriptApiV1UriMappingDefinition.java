@@ -4,19 +4,22 @@
  */
 package com.infiniteautomation.dashboards.web;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.web.servlet.View;
 
 import com.infiniteautomation.dashboards.Lifecycle;
+import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.module.UriMappingDefinition;
+import com.serotonin.m2m2.web.OverridingFileResource;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
 import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
 
@@ -85,14 +88,25 @@ public class MangoJavascriptApiV1UriMappingDefinition extends UriMappingDefiniti
 			
 			String[] parts = contextPath.split(baseUrl);
 			
-			File dashboard = new File(Common.MA_HOME + dashboardsBasePath + parts[1]);
-			if(dashboard.exists()){
-				return new DashboardJavascriptResourceView(FileUtils.readFileToString(dashboard));
-			}else{
-				//Return a 404
-				throw new ResourceNotFoundException(dashboard.getName());
-			}
-
+			
+			String baseFilePath = dashboardsBasePath + parts[1];
+			OverridingFileResource ofr;
+	        try {
+	            ofr = new OverridingFileResource(Resource.newResource(Common.MA_HOME + "/overrides" + baseFilePath),
+	                    Resource.newResource(Common.MA_HOME + baseFilePath));
+	            if(ofr.exists()){
+	            	DashboardJavascriptResourceView dbv = new DashboardJavascriptResourceView(FileUtils.readFileToString(ofr.getFile()));
+	    			ofr.close();
+	    			return dbv;
+	    		}else{
+	    			//Return a 404
+	    			ofr.close();
+	    			throw new ResourceNotFoundException(contextPath);
+	    		}
+	        }
+	        catch (IOException e) {
+	            throw new ShouldNeverHappenException(e);
+	        }
 		}
 	}
 }

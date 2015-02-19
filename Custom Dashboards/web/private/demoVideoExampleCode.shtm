@@ -41,6 +41,8 @@
         <script type="text/javascript" src="/mango-javascript/v1/gaugeChart.js"></script>
         
         <!-- Data Providers -->
+        <script type="text/javascript" src="/modules/dashboards/web/js/extend.js"></script>
+        <script type="text/javascript" src="/mango-javascript/v1/dataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/pointValueDataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
         <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
