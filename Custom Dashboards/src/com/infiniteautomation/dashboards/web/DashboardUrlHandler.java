@@ -4,17 +4,19 @@
  */
 package com.infiniteautomation.dashboards.web;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jetty.util.resource.Resource;
 import org.springframework.web.servlet.View;
 
-import com.infiniteautomation.dashboards.Lifecycle;
+import com.serotonin.ShouldNeverHappenException;
 import com.serotonin.m2m2.Common;
+import com.serotonin.m2m2.web.OverridingFileResource;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
 import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
 
@@ -22,12 +24,20 @@ import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
  * @author Terry Packer
  *
  */
-public class PrivateUrlHandler implements UrlHandler{
+public class DashboardUrlHandler implements UrlHandler{
 	
 	private String dashboardsBasePath;
+	private String urlPrefix;
 	
-	public PrivateUrlHandler(String modulePath){
-		this.dashboardsBasePath = modulePath + Lifecycle.privateFilesLocation;
+	/**
+	 * 
+	 * @param modulePath - From Lifecycle at runtime
+	 * @param fileLocation - Prefix for where files actually are in reference to modulePath
+	 * @param urlPrefix - Prefix for url requesting the file
+	 */
+	public DashboardUrlHandler(String modulePath, String fileLocation, String urlPrefix){
+		this.dashboardsBasePath = modulePath + fileLocation;
+		this.urlPrefix = urlPrefix;
 	}
 
 	/* (non-Javadoc)
@@ -41,15 +51,26 @@ public class PrivateUrlHandler implements UrlHandler{
 		//Here we would map to the pages by loading the view
 		String contextPath = request.getRequestURI();
 		//Load in the dashboard
-		String[] parts = contextPath.split(Lifecycle.privateUrlPrefix);
+		String[] parts = contextPath.split(urlPrefix);
 		
-		File dashboard = new File(Common.MA_HOME + dashboardsBasePath + parts[1]);
-		if(dashboard.exists()){
-			return new DashboardView(FileUtils.readFileToString(dashboard));
-		}else{
-			//Return a 404
-			throw new ResourceNotFoundException(dashboard.getName());
-		}
+		String baseFilePath = dashboardsBasePath + parts[1];
+		OverridingFileResource ofr;
+        try {
+            ofr = new OverridingFileResource(Resource.newResource(Common.MA_HOME + "/overrides" + baseFilePath),
+                    Resource.newResource(Common.MA_HOME + baseFilePath));
+            if(ofr.exists()){
+    			DashboardView dbv = new DashboardView(FileUtils.readFileToString(ofr.getFile()));
+    			ofr.close();
+    			return dbv;
+    		}else{
+    			//Return a 404
+    			ofr.close();
+    			throw new ResourceNotFoundException(contextPath);
+    		}
+        }
+        catch (IOException e) {
+            throw new ShouldNeverHappenException(e);
+        }
 
 	}
 

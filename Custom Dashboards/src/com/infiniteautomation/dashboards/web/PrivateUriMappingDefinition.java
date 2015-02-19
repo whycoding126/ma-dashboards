@@ -36,7 +36,8 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public UrlHandler getHandler() {
-		return new PrivateUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath());
+		return new DashboardUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath(), 
+				Lifecycle.privateFilesLocation, Lifecycle.privateUrlPrefix);
 	}
 
 	/* (non-Javadoc)
