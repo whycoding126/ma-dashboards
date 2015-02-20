@@ -1,5 +1,6 @@
 *Version 1.0.4*
 * Bugfixes
+* Add RealtimeDataProvider and PointEventManager
 
 *Version 1.0.3*
 * CAUTION: Removed persist path to allow full upgrade of module's web folder. Ensure any custom work is moved to the overrides folder in the core.
