@@ -1,3 +1,6 @@
+*Version 1.0.4*
+* Bugfixes
+
 *Version 1.0.3*
 * CAUTION: Removed persist path to allow full upgrade of module's web folder. Ensure any custom work is moved to the overrides folder in the core.
 * To add new files to this module place them in the core/overrides/web/modules/dashboards/web/ folder with an identical structure
@@ -8,7 +11,6 @@
 
 *Version 1.0.1*
 * Fixed bug in mangoApi Javascript Date formatter for Timezones that are +GMT 
-
 
 *Version 1.0.0*
 * Initial Release

@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
+ * http://infiniteautomation.com/
+ * @author Jared Wiltshire
+ */
 
 (function(factory) { // anonymous function
     // Support multiple module loading scenarios
@@ -228,20 +233,23 @@ var DataProvider = extend(Object, {
     
     /**
      * Add a data point configuration to our list
+     * @return true if point was added, false if it already existed
      */
     addDataPoint: function(dataPointConfiguration) {
         if (!dataPointConfiguration)
-            return;
+            return false;
         
         //We only allow adding a Data Point Configuration once
         for(var i=0; i<this.pointConfigurations.length; i++){
             if(this.pointConfigurations[i].point.xid == dataPointConfiguration.point.xid)
-                return;
+                return false;
         }
         this.pointConfigurations.push(dataPointConfiguration);
 
         // ensures that next load() call actually loads
         delete this.previousOptions;
+
+        return true;
     },
     
     addDataPoints: function(dataPointConfiguration) {

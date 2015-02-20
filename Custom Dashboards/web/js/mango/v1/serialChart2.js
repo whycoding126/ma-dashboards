@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
+ * http://infiniteautomation.com/
+ * @author Jared Wiltshire
+ */
+
 define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
 
 var SerialChart = extend(Object, {
@@ -43,14 +49,21 @@ var SerialChart = extend(Object, {
     },
     
     balloonFunction: function(graphDataItem, amGraph) {
-        if (graphDataItem.values) {
-            var dateFormatted = moment(graphDataItem.category).format('lll Z z');
-            return amGraph.title + '<br>' +
-                dateFormatted + "<br><strong>" +
-                graphDataItem.values.value.toFixed(2) + "</strong>";
-        } else {
-            return "";
+        if (!graphDataItem.values)
+            return '';
+        
+        var dateFormatted = moment(graphDataItem.category).format('lll Z z');
+        var label = amGraph.title + '<br>' +
+            dateFormatted + "<br><strong>" +
+            graphDataItem.values.value.toFixed(2);
+        
+        if (amGraph.unit) {
+            label += ' ' + amGraph.unit;
         }
+        
+        label += "</strong>";
+        
+        return label;
     },
     
     /**
@@ -141,13 +154,17 @@ var SerialChart = extend(Object, {
                 }
             }
             
+            var value = dataItem[fromField];
+            if (typeof this.manipulateValue === 'function')
+                value = this.manipulateValue(value, dataPoint);
+            
             // if it exists then update the item, otherwise insert new item
             if (existing) {
-                existing[valueField] = dataItem[fromField];
+                existing[valueField] = value;
             }
             else {
                 var entry = {};
-                entry[valueField] = dataItem[fromField];
+                entry[valueField] = value;
                 entry.date = date;
                 dataProvider.push(entry);
             }
@@ -155,7 +172,7 @@ var SerialChart = extend(Object, {
         
         // sort the data as items could have been pushed to end of array
         // not needed if categoryAxis.parseDates === true
-        //dataProvider.sort(this.sortCompare);
+        dataProvider.sort(this.sortCompare);
     },
     
     redraw: function() {
@@ -174,7 +191,7 @@ var SerialChart = extend(Object, {
     createGraph: function(valueField, dataPoint) {
         var graph = new AmCharts.AmGraph();
         graph.valueField = valueField;
-        graph.type = "smoothedLine";
+        graph.type = this.graphType(valueField, dataPoint);
         graph.title = this.graphTitle(valueField, dataPoint);
         graph.id = this.graphId(valueField, dataPoint);
         graph.balloonFunction = this.balloonFunction;
@@ -188,6 +205,10 @@ var SerialChart = extend(Object, {
         
         this.amChart.addGraph(graph);
         return graph;
+    },
+
+    graphType: function(valueField, dataPoint) {
+        return 'smoothedLine';
     },
     
     graphTitle: function(valueField, dataPoint) {
@@ -262,10 +283,10 @@ var baseConfiguration = {
         categoryAxis: {
             parseDates: true,
             minPeriod: "mm",
-            gridPosition: "start",
             labelRotation: 45,
             boldPeriodBeginning: false,
-            markPeriodChange: false
+            markPeriodChange: false,
+            equalSpacing: true
         },
         chartScrollbar: {},
         trendLines: [],

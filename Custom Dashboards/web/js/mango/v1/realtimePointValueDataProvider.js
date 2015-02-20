@@ -4,7 +4,10 @@
  * 
  * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
  * @author Terry Packer
+ * @deprecated
  */
+
+if (window.console) console.log('This file is deprecated. Please use RealtimeDataProvider.js instead.');
 
 (function(factory) { // anonymous function
     // Support multiple module loading scenarios

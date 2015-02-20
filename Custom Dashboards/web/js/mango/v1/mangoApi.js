@@ -513,7 +513,11 @@ var mangoRest = {
                         {'xid': xid,
                          'eventTypes': events
                         }));
-            }   
+            },
+            
+            openSocket: function() {
+                return new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
+            }
         },
 
         /**

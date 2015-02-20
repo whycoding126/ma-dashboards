@@ -203,7 +203,7 @@ MangoBarChart.prototype = {
         loading: function() {
             if ($('#' + this.divId).find('div.loading').length > 0)
                 return;
-            var loadingDiv = $('<div>', {id: 'div.loading'});
+            var loadingDiv = $('<div>');
             loadingDiv.addClass('loading');
             loadingDiv.text('Loading Chart...');
             $('#' + this.divId).prepend(loadingDiv);

@@ -1,7 +1,7 @@
 var require = {
     baseUrl : '/modules/dashboards/web/js',
     paths: {
-        'mango': '/mango-javascript/v1/',
+        'mango': '/mango-javascript/v1',
         'jquery': 'jquery/jquery-1.11.2.min',
         'amcharts'          : 'amcharts/amcharts',
         'amcharts.funnel'   : 'amcharts/funnel',

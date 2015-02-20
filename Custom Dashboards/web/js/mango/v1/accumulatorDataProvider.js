@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
+ * http://infiniteautomation.com/
+ * @author Jared Wiltshire
+ */
 
 (function(factory) { // anonymous function
     // Support multiple module loading scenarios
