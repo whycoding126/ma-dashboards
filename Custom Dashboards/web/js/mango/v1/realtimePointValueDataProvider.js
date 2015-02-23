@@ -27,9 +27,9 @@ var RealtimePointValueDataProvider = DataProvider.extend({
      * @param options
      * @returns
      */
-    init: function(id, options) {
+    constructor: function(id, options) {
         this.socketMap = {};
-        this.base.init.apply(this, arguments);
+        DataProvider.apply(this, arguments);
     },
 
     type: 'RealtimePointValueDataProvider',
@@ -52,7 +52,7 @@ var RealtimePointValueDataProvider = DataProvider.extend({
             });
         }
         
-        this.base.clear.apply(this, arguments);
+        DataProvider.prototype.clear.apply(this, arguments);
     },
 
     needsToLoad: function(changedOptions) {
@@ -72,7 +72,7 @@ var RealtimePointValueDataProvider = DataProvider.extend({
             self.unregisterPoint(xid);
         });
         
-        this.base.disable.apply(this, arguments);
+        DataProvider.prototype.disable.apply(this, arguments);
     },
 
     enable: function() {
@@ -81,14 +81,14 @@ var RealtimePointValueDataProvider = DataProvider.extend({
             self.registerPoint(pointConfig.point.xid);
         });
         
-        this.base.enable.apply(this, arguments);
+        DataProvider.prototype.enable.apply(this, arguments);
     },
 
     /**
      * Add a data point configuration to our list
      */
     addDataPoint: function(dataPointConfiguration) {
-        this.base.addDataPoint.apply(this, arguments);
+        DataProvider.prototype.addDataPoint.apply(this, arguments);
         
         if (!dataPointConfiguration)
             return;

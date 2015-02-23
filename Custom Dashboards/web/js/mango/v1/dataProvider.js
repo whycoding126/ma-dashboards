@@ -15,14 +15,14 @@
     }
 }(function($, extend, mangoRest) { // factory function
 
-var DataProvider = extend(Object, {
+var DataProvider = extend({
     /**
      * Data Provider constructor
      * @param id
      * @param options
      * @returns
      */
-    init: function(id, options) {
+    constructor: function(id, options) {
         this.id = id;
         this.listeners = [];
         this.pointConfigurations = [];

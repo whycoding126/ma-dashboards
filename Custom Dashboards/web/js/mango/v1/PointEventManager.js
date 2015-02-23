@@ -7,11 +7,11 @@
 define(['jquery', 'extend'], function($, extend) {
 "use strict";
 
-var PointEventManager = extend(Object, {
+var PointEventManager = extend({
     socketPromise: null,
     subscriptions: null,
     
-    init: function() {
+    constructor: function() {
         this.subscriptions = {};
     },
     

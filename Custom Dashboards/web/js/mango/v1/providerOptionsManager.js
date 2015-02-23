@@ -7,7 +7,7 @@
 define(['jquery', 'extend', 'moment-timezone'],
 function($, extend, moment) {
 
-var ProviderOptionsManager = extend(Object, {
+var ProviderOptionsManager = extend({
     providerOptions: null,
     providers: [],
     refreshOnChange: true,
@@ -18,7 +18,7 @@ var ProviderOptionsManager = extend(Object, {
     timePeriodTypePicker: null,
     timePeriodsPicker: null,
     
-    init: function(options) {
+    constructor: function(options) {
         this.pickerChanged = this.pickerChanged.bind(this);
         
         this.providerOptions = {

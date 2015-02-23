@@ -12,46 +12,27 @@
         return new Type();
     };
     
-    var extend = function(parent, properties) {
-        // setup new prototype and set base property on it
-        var prototype = create(parent.prototype);
-        prototype.base = parent.prototype;
-        
-        var extended;
-        if (typeof properties.init === 'function') {
-            // use provided init function
-            extended = properties.init;
-        } else if (parent === Object) {
-            // don't call Object constructor as it returns an object with an empty prototype
-            extended = function() {};
-        } else {
-            // use parent constructor
-            extended = function() {
-                this.base = parent.prototype.base;
-                var result = parent.apply(this, arguments);
-                delete this.base;
-                return result;
-            };
+    var Base = function() {};
+    Base.extend = function(parent, properties) {
+        if (arguments.length < 2) {
+            properties = arguments[0];
+            parent = typeof this === 'function' ? this : Base;
         }
+        
+        // setup new prototype
+        var prototype = create(parent.prototype);
         
         // copy supplied properties into the prototype
-        for (var key in properties) {
+        for (var key in properties)
             prototype[key] = properties[key];
-        }
         
-        // make sure prototype.init always refers to the super constructor
-        prototype.init = extended;
-        
-        // set the prototype on the new extended type
-        extended.prototype = prototype;
-        
-        // give the new type an extend method
-        extended.extend = function(properties) {
-            return extend(this, properties);
-        };
-
-        return extended;
+        // call parent constructor if new class doesn't have its own
+        var Extended = prototype.hasOwnProperty('constructor') ?  prototype.constructor :
+            function() { return prototype.constructor.apply(this, arguments); };
+        Extended.prototype = prototype;
+        Extended.extend = Base.extend; // give the subclass an extend method
+        return Extended;
     };
     
-    return extend;
+    return Base.extend;
 }));

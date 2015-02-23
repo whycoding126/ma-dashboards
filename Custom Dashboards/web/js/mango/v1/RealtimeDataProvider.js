@@ -15,8 +15,8 @@ var RealtimeDataProvider = DataProvider.extend({
     type: 'RealtimeDataProvider',
     eventType: 'CHANGE',
     
-    init: function(id, options) {
-        DataProvider.prototype.init.apply(this, arguments);
+    constructor: function(id, options) {
+        DataProvider.apply(this, arguments);
         this.eventHandler = this.eventHandler.bind(this);
     },
 

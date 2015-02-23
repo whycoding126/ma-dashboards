@@ -6,8 +6,8 @@
 
 define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
 
-var SerialChart = extend(Object, {
-    init: function(options) {
+var SerialChart = extend({
+    constructor: function(options) {
         this.divId = null;
         this.amChart = null;
         this.uniqueAxes = false;

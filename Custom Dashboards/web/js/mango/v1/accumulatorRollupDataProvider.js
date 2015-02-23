@@ -76,7 +76,7 @@ var AccumulatorRollupDataProvider = PointValueDataProvider.extend({
         }
         options.from = modifiedFrom.toDate();
         
-        return this.base.loadPoint.call(this, point, options);
+        return DataProvider.prototype.loadPoint.call(this, point, options);
     }
 });
 

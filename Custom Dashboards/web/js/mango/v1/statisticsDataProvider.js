@@ -24,8 +24,8 @@ var StatisticsDataProvider = DataProvider.extend({
      * @param options
      * @returns
      */
-    init: function(id, options) {
-        this.base.init.apply(this, arguments);
+    constructor: function(id, options) {
+        DataProvider.apply(this, arguments);
     },
 
     type: 'StatisticsDataProvider',
