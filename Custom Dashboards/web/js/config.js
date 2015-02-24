@@ -14,12 +14,10 @@ var require = {
         'moment': 'moment-with-locales.min',
         'moment-timezone': 'moment-timezone-with-data.min',
         'es5-shim': 'es5-shim.min',
-        'jstz': 'jstz-1.0.4.min'
+        'jstz': 'jstz-1.0.4.min',
+        'jquery.mousewheel': 'jquery.mousewheel.min'
     },
     shim : {
-        "jquery-ui/jquery.datetimepicker" : {
-            "deps" : ['jquery']
-        },
         "bootstrap" : {
             "deps" : ['jquery']
         },
