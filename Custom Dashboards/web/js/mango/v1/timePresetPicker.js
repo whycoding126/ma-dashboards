@@ -101,8 +101,11 @@ TimePresetPicker.prototype = {
     },
     
     fromToPickerChanged: function(event) {
-        var from = moment(this.fromPicker.val(), this.format);
-        var to = moment(this.toPicker.val(), this.format);
+        var zone = moment.defaultZone && moment.defaultZone.name;
+        var from = zone ? moment.tz(this.fromPicker.val(), this.format, zone) :
+            moment(this.fromPicker.val(), this.format);
+        var to = zone ? moment.tz(this.toPicker.val(), this.format, zone) :
+            moment(this.toPicker.val(), this.format);
         
         if (from.isValid())
             this.from = from;
