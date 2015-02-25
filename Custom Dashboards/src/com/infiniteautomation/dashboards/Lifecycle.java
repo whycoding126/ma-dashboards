@@ -35,9 +35,9 @@ public class Lifecycle extends LifecycleDefinition {
 		props = new ReloadingProperties("customDashboards-config",
 				Lifecycle.class.getClassLoader());
 		
-		publicUrlPrefix = props.getString("publicPrefix","/public-files");
+		publicUrlPrefix = props.getString("publicPrefix","/public-dashboards/");
 		publicFilesLocation = props.getString("publicLocation", "/web/public/");
-		privateUrlPrefix = props.getString("privatePrefix", "/private-files");
+		privateUrlPrefix = props.getString("privatePrefix", "/private-dashboards/");
 		privateFilesLocation = props.getString("privateLocation", "/web/private/");
 		iconLocation = props.getString("iconLocation", "web/img/dashboards.png");
 		iconDestination = props.getString("iconDestination");
