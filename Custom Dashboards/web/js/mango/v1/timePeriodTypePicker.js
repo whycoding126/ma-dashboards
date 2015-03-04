@@ -7,7 +7,19 @@
  * @author Terry Packer
  */
 
-TimePeriodTypeConfiguration = function(divId, mixin, options){
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.TimePeriodTypeConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
+
+var TimePeriodTypeConfiguration = function(divId, mixin, options){
     
     this.divId = divId;
     
@@ -82,3 +94,7 @@ TimePeriodTypeConfiguration.prototype = {
         }
         
 };
+
+return TimePeriodTypeConfiguration;
+
+})); // close factory function and execute anonymous function

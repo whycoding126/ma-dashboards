@@ -14,8 +14,19 @@
  * @author Terry Packer
  */
 
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'jquery-ui/jquery.datetimepicker'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.DateTimePickerConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
 
-DateTimePickerConfiguration = function(divId, mixin, options){
+var DateTimePickerConfiguration = function(divId, mixin, options){
     this.divId = divId;
     this.mixin = mixin;
     
@@ -63,3 +74,7 @@ DateTimePickerConfiguration.prototype = {
   
         }
 };
+
+return DateTimePickerConfiguration;
+
+})); // close factory function and execute anonymous function

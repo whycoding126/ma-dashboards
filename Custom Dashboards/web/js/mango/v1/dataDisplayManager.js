@@ -6,12 +6,26 @@
  * @author Terry Packer
  */
 
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'mango/dataProvider', 'mango/accumulatorDataProvider', 'mango/accumulatorRollupDataProvider',
+                'mango/historicalPointValueDataProvider', 'mango/pointValueDataProvider', 'mango/RealtimeDataProvider',
+                'mango/realtimePointValueDataProvider', 'mango/statisticsDataProvider'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.DataDisplayManager = factory(jQuery, DataProvider);
+    }
+}(function($, DataProvider) { // factory function
+"use strict";
+
 /**
  * Data Display Manager
  * @param options
  * @returns
  */
-DataDisplayManager = function(displayConfigurations, options){
+var DataDisplayManager = function(displayConfigurations, options){
     
     this.displayConfigurations = displayConfigurations;
     this.dataProviderConfigurations = [];
@@ -122,8 +136,8 @@ DataDisplayManager.prototype = {
                 return;
             }
             
-            providerId = this.addDataPointConfiguration(dataPointConfigurations[0]);
-            for (i = 1; i < dataPointConfigurations.length; i++) {
+            var providerId = this.addDataPointConfiguration(dataPointConfigurations[0]);
+            for (var i = 1; i < dataPointConfigurations.length; i++) {
                 dataPointConfigurations[i].providerId = providerId;
                 this.addDataPointConfiguration(dataPointConfigurations[i]);
             }
@@ -151,15 +165,9 @@ DataDisplayManager.prototype = {
             }
             
             //None found, provider Id is set
-            if(dataPointConfiguration.providerType == 'PointValue'){
-                dataProvider = new PointValueDataProvider(dataPointConfiguration.providerId);
-            }else if(dataPointConfiguration.providerType == 'Statistics'){
-                dataProvider = new StatisticsDataProvider(dataPointConfiguration.providerId);
-            }else if(dataPointConfiguration.providerType == 'RealtimePointValue'){
-                dataProvider = new RealtimePointValueDataProvider(dataPointConfiguration.providerId);
-            }else if(dataPointConfiguration.providerType == 'HistoricalPointValue'){
-                dataProvider = new HistoricalPointValueDataProvider(dataPointConfiguration.providerId);
-            }
+            dataProvider = DataProvider.newProvider(dataPointConfiguration.providerType + 'DataProvider',
+                    dataPointConfiguration.providerId);
+            
             //Add the point configuration
             dataProvider.addDataPoint(dataPointConfiguration);
             //Search our displays to find who wants to listen
@@ -270,3 +278,8 @@ DataDisplayManager.prototype = {
         }
         
 };
+
+
+return DataDisplayManager;
+
+})); // close factory function and execute anonymous function

@@ -43,12 +43,6 @@
     <script type="text/javascript" src="/mango-javascript/v1/historicalPointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/realtimePointValueDataProvider.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsDataProvider.js"></script>
-    <!-- Templater Core -->
-    <script type="text/javascript" src="/mango-javascript/v1/dataDisplayManager.js"></script>
-    <script type="text/javascript" src="/mango-javascript/v1/dataPointMatcher.js"></script>
-    <script type="text/javascript" src="/mango-javascript/v1/dataPointGroup.js"></script>  
-    <script type="text/javascript" src="/mango-javascript/v1/pointHierarchyGrouper.js"></script>
-    <script type="text/javascript" src="/mango-javascript/v1/dashboardTemplater.js"></script>
     <!-- Input Widgets -->
     <script type="text/javascript" src="/mango-javascript/v1/dateTimePicker.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/rollupPicker.js"></script>
@@ -56,10 +50,13 @@
     <script type="text/javascript" src="/mango-javascript/v1/input.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/select.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/listView.js"></script>
+    <!-- Templater Core -->
+    <script type="text/javascript" src="/mango-javascript/v1/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/mango-javascript/v1/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/mango-javascript/v1/dashboardTemplater.js"></script>
     
-
-
-
    <script type="text/javascript">
    
    //Define Global Variables

@@ -6,6 +6,21 @@
  * @author Terry Packer
  */
 
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.DataPointGroup = factory(jQuery);
+        // make the sub types visible in global namespace
+        this.GroupLabel = this.DataPointGroup.GroupLabel;
+        this.DataPointGroupConfiguration = this.DataPointGroup.DataPointGroupConfiguration;
+        this.GroupMatchConfiguration = this.DataPointGroup.GroupMatchConfiguration;
+    }
+}(function($) { // factory function
+"use strict";
 
 /**
  * Group Label 
@@ -14,7 +29,7 @@
  * @param options
  * @returns
  */
-GroupLabel = function(id, label, options){
+var GroupLabel = function(id, label, options){
     this.id = id;
     this.label = label;
     
@@ -24,7 +39,7 @@ GroupLabel = function(id, label, options){
 };
 
 
-DataPointGroupConfiguration = function(options){
+var DataPointGroupConfiguration = function(options){
     
     this.groupBy = 'All'; //When grouping by All if no label set it will be 'All'
     
@@ -47,7 +62,7 @@ DataPointGroupConfiguration.prototype = {
         
 };
 
-GroupMatchConfiguration = function(matchAttribute, regex, options){
+var GroupMatchConfiguration = function(matchAttribute, regex, options){
     this.matchAttribute = matchAttribute;
     this.regex = regex;
 };
@@ -64,7 +79,7 @@ GroupMatchConfiguration.prototype = {
  * @param options
  * @returns
  */
-DataPointGroup = function(label, dataPoints, options){
+var DataPointGroup = function(label, dataPoints, options){
     
     this.label = label;
     this.dataPoints = dataPoints;
@@ -81,3 +96,13 @@ DataPointGroup.prototype = {
         
         
 };
+
+//make the related sub types accessible through the returned type
+//alternatively could make only visible internally or put them in separate files
+DataPointGroup.GroupLabel = GroupLabel;
+DataPointGroup.DataPointGroupConfiguration = DataPointGroupConfiguration;
+DataPointGroup.GroupMatchConfiguration = GroupMatchConfiguration;
+
+return DataPointGroup;
+
+})); // close factory function and execute anonymous function

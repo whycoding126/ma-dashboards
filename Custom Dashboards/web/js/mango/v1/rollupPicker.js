@@ -7,7 +7,19 @@
  * @author Terry Packer
  */
 
-RollupConfiguration = function(divId, mixin, options){
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.RollupConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
+
+var RollupConfiguration = function(divId, mixin, options){
     
     this.divId = divId;
     
@@ -83,3 +95,7 @@ RollupConfiguration.prototype = {
         }
         
 };
+
+return RollupConfiguration;
+
+})); // close factory function and execute anonymous function

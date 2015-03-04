@@ -6,11 +6,26 @@
  * @author Terry Packer
  */
 
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.DataPointMatcher = factory(jQuery);
+        // make the sub types visible in global namespace
+        this.DataPointMatchConfiguration = this.DataPointMatcher.DataPointMatchConfiguration;
+        this.PointMatchConfiguration = this.DataPointMatcher.PointMatchConfiguration;
+        this.DataPointConfiguration = this.DataPointMatcher.DataPointConfiguration;
+    }
+}(function($) { // factory function
+"use strict";
 
 /**
  * Used for matching
  */
-DataPointMatchConfiguration = function(providerId, matchConfigurations, options){
+var DataPointMatchConfiguration = function(providerId, matchConfigurations, options){
     this.providerId = providerId;
     this.providerType = 'PointValue';
     this.matchConfigurations = matchConfigurations;
@@ -47,7 +62,7 @@ DataPointMatchConfiguration.prototype = {
         }
 };
 
-PointMatchConfiguration = function(matchAttribute, regex, options){
+var PointMatchConfiguration = function(matchAttribute, regex, options){
     this.matchAttribute = matchAttribute;
     this.regex = regex;
 };
@@ -66,7 +81,7 @@ PointMatchConfiguration.prototype = {
  * @param options
  * @returns
  */
-DataPointConfiguration = function(point, providerId, providerType, options){
+var DataPointConfiguration = function(point, providerId, providerType, options){
     this.point = point;
     this.providerId = providerId;
     this.providerType = providerType; 
@@ -87,7 +102,7 @@ DataPointConfiguration.prototype = {
  * 
  * @param options
  */
-DataPointMatcher = function(options) {
+var DataPointMatcher = function(options) {
     for(var i in options) {
         this[i] = options[i];
     }
@@ -167,3 +182,13 @@ DataPointMatcher.prototype = {
             return matchedConfigurations;
         }
 };
+
+// make the related sub types accessible through the returned type
+// alternatively could make only visible internally or put them in separate files
+DataPointMatcher.DataPointMatchConfiguration = DataPointMatchConfiguration;
+DataPointMatcher.PointMatchConfiguration = PointMatchConfiguration;
+DataPointMatcher.DataPointConfiguration = DataPointConfiguration;
+
+return DataPointMatcher;
+
+})); // close factory function and execute anonymous function

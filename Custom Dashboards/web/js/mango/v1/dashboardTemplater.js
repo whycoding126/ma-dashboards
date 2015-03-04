@@ -85,7 +85,25 @@
 *
 */
 
-DashboardTemplater = function(options){
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'mango/select', 'mango/dateTimePicker', 'mango/rollupPicker',
+                'mango/timePeriodTypePicker', 'mango/input', 'mango/dataDisplayManager',
+                'mango/dataPointMatcher', 'mango/mangoApi', 'mango/pointHierarchyGrouper'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.DashboardTemplater = factory(jQuery, SelectConfiguration, DateTimePickerConfiguration,
+                RollupConfiguration, TimePeriodTypeConfiguration, InputConfiguration, DataDisplayManager,
+                DataPointMatcher, mangoRest, PointHierarchyGrouper);
+    }
+}(function($, SelectConfiguration, DateTimePickerConfiguration, RollupConfiguration,
+        TimePeriodTypeConfiguration, InputConfiguration, DataDisplayManager, DataPointMatcher,
+        mangoRest, PointHierarchyGrouper) { // factory function
+"use strict";
+
+var DashboardTemplater = function(options){
     for(var i in options) {
         this[i] = options[i];
     }
@@ -427,3 +445,7 @@ DashboardTemplater.prototype = {
         }
         
 };
+
+return DashboardTemplater;
+
+})); // close factory function and execute anonymous function

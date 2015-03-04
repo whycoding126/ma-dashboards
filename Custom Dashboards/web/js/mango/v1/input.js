@@ -7,7 +7,19 @@
  * @author Terry Packer
  */
 
-InputConfiguration = function(divId, mixin, options){
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.InputConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
+
+var InputConfiguration = function(divId, mixin, options){
     
     this.divId = divId;
     
@@ -55,3 +67,7 @@ InputConfiguration.prototype = {
         }
         
 };
+
+return InputConfiguration;
+
+})); // close factory function and execute anonymous function

@@ -6,6 +6,17 @@
  * @author Terry Packer
  */
 
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'amcharts.serial'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.BarChartConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
 
 /**
  * Configuration for Bar Charts
@@ -15,7 +26,7 @@
  * @param options
  * @returns
  */
-BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChartMixin, options){
+var BarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChartMixin, options){
     this.divId = divId;
     this.amChartMixin = amChartMixin;
     this.mangoChartMixin = mangoChartMixin;
@@ -125,7 +136,7 @@ BarChartConfiguration.prototype = {
  * @param options
  * @returns
  */
-MangoBarChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
+var MangoBarChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
     this.divId = divId;
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
@@ -252,3 +263,7 @@ MangoBarChart.prototype = {
             this.amChart.validateData();
         }
 };
+
+return BarChartConfiguration;
+
+})); // close factory function and execute anonymous function

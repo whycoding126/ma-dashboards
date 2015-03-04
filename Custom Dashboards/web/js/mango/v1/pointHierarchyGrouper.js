@@ -7,7 +7,17 @@
  * @author Terry Packer
  */
 
-
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'mango/dataPointGroup'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.PointHierarchyGrouper = factory(jQuery, DataPointGroup);
+    }
+}(function($, DataPointGroup) { // factory function
+"use strict";
 
 /**
  * Point Hierarchy Grouper, 
@@ -18,7 +28,7 @@
  * @param options
  * @returns
  */
-PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
+var PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
     
     this.root = root;
     this.groupConfigurations = groupConfigurations;
@@ -91,7 +101,7 @@ PointHierarchyGrouper.prototype = {
                 }else{
                     //Loop over all data points and create a group with them
                     var groupsMap = {}; //Create a map to build all groups in
-                    for(j=0; j < this.dataPoints.length; j++){
+                    for(var j=0; j < this.dataPoints.length; j++){
                         var dataPoint = this.dataPoints[j];
                         //Loop over our match configurations and see if our point matches any
                         for(var k=0; k<groupConfig.matchConfigurations.length; k++){
@@ -123,7 +133,7 @@ PointHierarchyGrouper.prototype = {
          * @param groupConfiguration - DataPointGroupConfiguration
          */
         matchByFolder: function(dataPoint, groupsMap, matchConfiguration, groupConfiguration){
-            var group, label;
+            var group, label, match;
             
             //Special case for path
             if(matchConfiguration.matchAttribute == "path"){
@@ -342,3 +352,7 @@ PointHierarchyGrouper.prototype = {
            });
         }
 };
+
+return PointHierarchyGrouper;
+
+})); // close factory function and execute anonymous function

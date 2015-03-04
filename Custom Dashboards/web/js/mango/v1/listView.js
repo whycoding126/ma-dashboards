@@ -7,7 +7,19 @@
  * @author Terry Packer
  */
 
-ListViewConfiguration = function(listId, mixin, options){
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.ListViewConfiguration = factory(jQuery);
+    }
+}(function($) { // factory function
+"use strict";
+
+var ListViewConfiguration = function(listId, mixin, options){
     
     this.listId = listId;
     
@@ -68,3 +80,7 @@ ListViewConfiguration.prototype = {
         }
         
 };
+
+return ListViewConfiguration;
+
+})); // close factory function and execute anonymous function
