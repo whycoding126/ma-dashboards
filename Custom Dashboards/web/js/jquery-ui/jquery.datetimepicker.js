@@ -449,10 +449,10 @@
                 }
 
                 if (options.value) {
-                    if (input && input.val) {
-                        input.val(options.value);
-                    }
                     _xdsoft_datetime.setCurrentTime(options.value);
+                    if (input && input.val) {
+                        input.val(_xdsoft_datetime.currentTime.format(options.format));
+                    }
                 }
 
                 if (isNaN(options.dayOfWeekStart)) {
@@ -698,8 +698,7 @@
                 };
 
                 _this.setCurrentTime = function (dTime) {
-                    _this.currentTime = (typeof dTime === 'string') ? _this.strToDateTime(dTime) :
-                        moment.isMoment(dTime) && dTime.isValid() ? dTime : _this.now();
+                    _this.currentTime = _this.strToDateTime(dTime);
                     datetimepicker.trigger('xchange.xdsoft');
                 };
 
@@ -748,9 +747,10 @@
                 };
 
                 _this.strToDateTime = function (sDateTime) {
-                    if (sDateTime && moment.isMoment(sDateTime) && sDateTime.isValid()) {
+                    if (sDateTime instanceof Date)
+                        return newMoment(sDateTime);
+                    if (sDateTime && moment.isMoment(sDateTime) && sDateTime.isValid())
                         return sDateTime;
-                    }
 
                     var currentTime = sDateTime ? parseDate(sDateTime, options.format) : _this.now();
                     if (!currentTime.isValid()) {
@@ -760,9 +760,10 @@
                 };
 
                 _this.strToDate = function (sDate) {
-                    if (sDate && moment.isMoment(sDate) && sDate.isValid()) {
+                    if (sDate instanceof Date)
+                        return newMoment(sDate);
+                    if (sDate && moment.isMoment(sDate) && sDate.isValid())
                         return sDate;
-                    }
 
                     var currentTime = sDate ? parseDate(sDate, options.formatDate) : _this.now(true);
                     if (!currentTime.isValid()) {
@@ -772,9 +773,11 @@
                 };
 
                 _this.strtotime = function (sTime) {
-                    if (sTime && moment.isMoment(sTime) && sTime.isValid()) {
+                    if (sTime instanceof Date)
+                        return newMoment(sTime);
+                    if (sTime && moment.isMoment(sTime) && sTime.isValid())
                         return sTime;
-                    }
+                    
                     var currentTime = sTime ? parseDate(sTime, options.formatTime) : _this.now(true);
                     if (!currentTime.isValid()) {
                         currentTime = _this.now(true);

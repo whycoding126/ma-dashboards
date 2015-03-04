@@ -16,9 +16,11 @@
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
 
+    <script type="text/javascript" src="/modules/dashboards/web/js/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/moment-timezone-with-data.min.js"></script>
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
- 
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    
     <!-- Charting Library -->
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
@@ -161,7 +163,6 @@
     */
    function startDateChanged(date, $input){
        this.startDate = date;
-       this.displayManager.clear(); //Clear all data
        this.displayManager.refresh(null, 
            {
             from: this.startDate, 
@@ -174,7 +175,6 @@
    }
    function endDateChanged(date, $input){
        this.endDate = date;
-       this.displayManager.clear(); //Clear all data
        this.displayManager.refresh(null, 
           {
            from: this.startDate, 
@@ -187,7 +187,6 @@
    
    function rollupChanged(rollup){
        this.rollup = rollup;
-       this.displayManager.clear(); //Clear all data
        this.displayManager.refresh(null,
           {
            from: this.startDate, 
@@ -200,7 +199,6 @@
    
    function timePeriodTypeChanged(timePeriodType){
        this.timePeriodType = timePeriodType;
-       this.displayManager.clear(); //Clear all data
        this.displayManager.refresh(null, 
           {
            from: this.startDate, 
@@ -213,7 +211,6 @@
    
    function timePeriodChanged(timePeriods){
        this.timePeriods = timePeriods;
-       this.displayManager.clear(); //Clear all data
        this.displayManager.refresh(null, 
           {
            from: this.startDate, 

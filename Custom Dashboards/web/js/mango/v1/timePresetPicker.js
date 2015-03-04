@@ -11,14 +11,6 @@ define(['jquery', 'moment-timezone', 'jquery-ui/jquery.datetimepicker'], functio
  * com.serotonin.m2m2.TimePeriodDescriptor. Ensure that they match. 
  */
 
-Date.parseDate = function(input, format) {
-    return moment(input, format).toDate();
-};
-
-Date.prototype.dateFormat = function(format) {
-    return moment(this).format(format);
-};
-
 TimePresetPicker = function(options) {
     this.presetPickerChanged = this.presetPickerChanged.bind(this);
     this.fromToPickerChanged = this.fromToPickerChanged.bind(this);

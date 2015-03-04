@@ -15,10 +15,12 @@
     
     <!-- JQuery -->
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.1.js"></script>       
-       
+    
+    <script type="text/javascript" src="/modules/dashboards/web/js/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="/modules/dashboards/web/js/moment-timezone-with-data.min.js"></script>
     <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
- 
     <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
+    
     <!-- Charting Library -->
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
     <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
@@ -138,6 +140,7 @@
             * On Data Provider load we add new data
             */
            onLoad: function(data, dataPoint){
+               this.removeLoading();
 
                //Create one entry for every piece of data
                for(var i=0; i<data.length; i++){

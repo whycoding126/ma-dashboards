@@ -304,8 +304,6 @@ DashboardTemplater.prototype = {
             $("#" + this.startDateConfiguration.divId).val(this.startDate.dateFormat(this.startDateConfiguration.configuration.format));
             $("#" + this.endDateConfiguration.divId).val(this.endDate.dateFormat(this.endDateConfiguration.configuration.format));
 
-            
-            this.displayManager.clear(false, this.providersToRefresh);
             this.refresh(this.providersToRefresh);
         },
         /**
@@ -315,39 +313,30 @@ DashboardTemplater.prototype = {
             if(this.debug)
                 console.log('SD: ' + date);
             this.startDate = date;
-            this.displayManager.clear(false, this.providersToRefresh); //Clear all data  AND Point Configurations on a change of Group
             this.refresh(this.providersToRefresh);
         },
         endDateChanged: function(date, $input){
             if(this.debug)
                 console.log('ED: ' + date);
             this.endDate = date;
-            //Clear out the displays for new data (but keep the point configurations)
-            this.displayManager.clear(false, this.providersToRefresh); 
             this.refresh(this.providersToRefresh);
         },
         rollupChanged: function(rollup){
             if(this.debug)
                 console.log('RU: ' + rollup);
             this.rollup = rollup;
-            //Clear out the displays for new data (but keep the point configurations)
-            this.displayManager.clear(false, this.providersToRefresh);
             this.refresh(this.providersToRefresh);
         },
         timePeriodTypeChanged: function(timePeriodType){
             if(this.debug)
                 console.log('TPT: ' + timePeriodType);
             this.timePeriodType = timePeriodType;
-            //Clear out the displays for new data (but keep the point configurations)
-            this.displayManager.clear(false, this.providersToRefresh);
             this.refresh(this.providersToRefresh);
         },
         timePeriodChanged: function(timePeriods){
             if(this.debug)
                 console.log('TP: ' + timePeriods);
             this.timePeriods = timePeriods;
-            //Clear out the displays for new data (but keep the point configurations)
-            this.displayManager.clear(false, this.providersToRefresh);
             this.refresh(this.providersToRefresh);
         },
         onGroup: function(dataPointGroup){

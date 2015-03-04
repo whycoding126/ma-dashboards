@@ -28,10 +28,9 @@ DateTimePickerConfiguration = function(divId, mixin, options){
     //Configure the callback
     var self = this;
     this.configuration.onChangeDateTime = function(dp, $input){
-        self.onChange(dp, $input);
+        self.onChange(dp ? dp.toDate() : null, $input);
     };
 };
-
 
 DateTimePickerConfiguration.prototype = {
         
@@ -40,11 +39,8 @@ DateTimePickerConfiguration.prototype = {
         configuration: null, //Full mixed-in config
         defaultValue: null, //Default Date/Time
         
-        create: function(){
-            
-            var picker = jQuery("#" + this.divId).datetimepicker(this.configuration);
-            if(this.defaultValue !== null)
-                picker.val(this.defaultValue.dateFormat(this.configuration.format));
+        create: function() {
+            var picker = $("#" + this.divId).datetimepicker(this.configuration);
         },
 
         onChange: function(date, picker){
@@ -60,8 +56,8 @@ DateTimePickerConfiguration.prototype = {
                         onChangeDateTime: function(dp,$input){
                             console.log(dp); //Log the date
                         },
-                        format: 'd/m/Y H:i:s',
                         defaultTime: '00:00',
+                        value: this.defaultValue,
                         closeOnDateSelect: false //Close when date is selected
                     };
   

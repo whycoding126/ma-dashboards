@@ -147,6 +147,7 @@
             * @param dataPoint - data point for the values
             */
            onLoad: function(data, dataPoint){
+               this.removeLoading();
                
                //Create some statistis as an example
                var total = 0;
