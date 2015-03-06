@@ -107,8 +107,12 @@ else if (loader === 'Dojo') {
                    {name: 'dijit', location: '/resources/dijit'},
                    {name: 'dgrid', location: '/resources/dgrid', main: 'OnDemandGrid'},
                    {name: 'xstyle', location: '/resources/xstyle'},
-                   {name: 'put-selector', location: '/resources/put-selector', main: 'put'}
-                   ],
+                   {name: 'put-selector', location: '/resources/put-selector', main: 'put'},
+                   {name: 'charting', location: '/resources/charting'},
+                   {name: 'deltamation', location: '/resources/deltamation'},
+                   {name: 'infinite', location: '/resources/infinite'},
+                   {name: 'view', location: '/resources/view'},
+                   {name: 'mango/mobile', location: '/resources/mango/mobile'}],
         aliases: []
     };
     
