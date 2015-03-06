@@ -302,14 +302,37 @@ var mangoRest = {
              * @param fail - function(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
              * @return promise that will be resolved when done
              */
-            put: function(dataPoint, done, fail) {
+            put: function(dataPoint, done, fail, options) {
                 var promise = ajaxTemplate({
                     type: "PUT",
                     url : "/rest/v1/dataPoints/" + encodeURIComponent(dataPoint.xid) + ".json",
                     contentType: "application/json",
                     data: JSON.stringify(dataPoint)
                 }).then(function(data, status, jqXHR) {
-                    return data;
+                    return resolvedPromise(data, options);
+                });
+                
+                if (typeof done == 'function') promise.done(done);
+                if (typeof fail == 'function') promise.fail(fail);
+                
+                return promise;
+            },
+            /**
+             * Save Data Point
+             * 
+             * @param dataPoint - point to save
+             * @param done - function(jsonData) callback with saved point as data
+             * @param fail - function(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
+             * @return promise that will be resolved when done
+             */
+            putCSV: function(xid, csvData, done, fail, options) {
+                var promise = ajaxTemplate({
+                    type: "PUT",
+                    url : "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".csv",
+                    contentType: "text/csv",
+                    data: csvData
+                }).then(function(data, status, jqXHR) {
+                    return resolvedPromise(data, options);
                 });
                 
                 if (typeof done == 'function') promise.done(done);

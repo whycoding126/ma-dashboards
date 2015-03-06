@@ -1,4 +1,26 @@
 <html>
+<head>
+  <!-- Mango Rest API Helper -->
+  <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>     
+  <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
+  <script type="text/javascript">
+       
+       //Define Global Variables
+       var templater;
+       
+       $( document ).ready(function(){
+    	   var csvData = '"xid","name","enabled","dataSourceXid","deviceName","templateXid","readPermission","setPermission","pointLocatorType","additive","bit","registerCount","charset","writeType","range","modbusDataType","multiplier","offset","slaveId","slaveMonitor"\n"DP_481690","Coil","False","DS_235395","Modbus","TPL_497574",,,"MODBUS_POINT_LOCATOR","0.0","0","0","ASCII","SETTABLE","COIL_STATUS","BINARY","1.0","0","1","False"';
+    	   var promise = mangoRest.dataPoints.putCSV('DP_481690',csvData, function(done){
+    		   alert("Ok!" + done);
+    	   },
+    	   function(fail){
+    		  alert(fail.statusText); 
+    	   });
+       });
+  </script>
+  
+  
+</head>
 <h1>Hello World!</h1>
 <p>This page is only accessible once the user has logged in.  All resources placed in the web/private folder behave this way.</p>
 </html>
