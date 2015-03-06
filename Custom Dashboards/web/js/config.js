@@ -34,7 +34,9 @@ var requireJsConfig = {
         'moment-timezone': 'moment-timezone-with-data.min',
         'es5-shim': 'es5-shim.min',
         'jstz': 'jstz-1.0.4.min',
-        'jquery.mousewheel': 'jquery.mousewheel.min'
+        'jquery.mousewheel': 'jquery.mousewheel.min',
+        // for whatever reason this works but the AMD version doesn't
+        'jquery.select2': 'select2/js/select2.min'
     },
     shim : {
         "bootstrap" : {
@@ -118,10 +120,11 @@ else if (loader === 'Dojo') {
     
     for (var packageName in paths) {
         var path = paths[packageName];
-        // turn paths ending with .min and names starting with amcharts into
+        // turn paths ending with .min and names starting with amcharts or jquery into
         // aliases instead of packages
         if (path.indexOf('.min', path.length - 4) !== -1 ||
-                packageName.slice(0, 8) === 'amcharts') {
+                packageName.slice(0, 8) === 'amcharts' ||
+                packageName.slice(0, 6) === 'jquery') {
             dojoConfig.aliases.push([
                 packageName,
                 path
