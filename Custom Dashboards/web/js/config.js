@@ -17,7 +17,7 @@ for (var i = 0; i < scriptTags.length; i++) {
     }
 }
 
-var requireJsConfig = {
+var config = {
     baseUrl : '/modules/dashboards/web/js',
     paths: {
         'mango': '/mango-javascript/v1',
@@ -36,9 +36,20 @@ var requireJsConfig = {
         'jstz': 'jstz-1.0.4.min',
         'jquery.mousewheel': 'jquery.mousewheel.min',
         // for whatever reason this works but the AMD version doesn't
-        'jquery.select2': 'select2/js/select2.min'
+        'jquery.select2': 'select2/js/select2.min',
+        'dojo': '/resources/dojo',
+        'dojox': '/resources/dojox',
+        'dijit': '/resources/dijit',
+        'dgrid': '/resources/dgrid',
+        'xstyle': '/resources/xstyle',
+        'put-selector': '/resources/put-selector',
+        'charting': '/resources/charting',
+        'deltamation': '/resources/deltamation',
+        'infinite': '/resources/infinite',
+        'view': '/resources/view',
+        'mango/mobile': '/resources/mango/mobile'
     },
-    shim : {
+    shim: {
         "bootstrap" : {
             "deps" : ['jquery']
         },
@@ -89,57 +100,20 @@ var requireJsConfig = {
 
 if (loader === 'RequireJS') {
     // export require to global scope
-    root.require = requireJsConfig;
+    root.require = config;
 }
 else if (loader === 'Dojo') {
-    var paths = requireJsConfig.paths;
-    
-    var dojoConfig = this.dojoConfig = {
-        baseUrl: requireJsConfig.baseUrl,
-        tlmSiblingOfDojo: false,
-        // load jquery before anything else so we can put it in noConflict mode
-        deps: ['jquery'],
-        callback: function($) {
-            // remove $ from the global scope, jQuery global is still available
-            // $ is defined by DWR and is used in Mango legacy scripts
-            $.noConflict();
-        },
-        packages: [{name: 'dojo', location: '/resources/dojo'},
-                   {name: 'dojox', location: '/resources/dojox'},
-                   {name: 'dijit', location: '/resources/dijit'},
-                   {name: 'dgrid', location: '/resources/dgrid', main: 'OnDemandGrid'},
-                   {name: 'xstyle', location: '/resources/xstyle'},
-                   {name: 'put-selector', location: '/resources/put-selector', main: 'put'},
-                   {name: 'charting', location: '/resources/charting'},
-                   {name: 'deltamation', location: '/resources/deltamation'},
-                   {name: 'infinite', location: '/resources/infinite'},
-                   {name: 'view', location: '/resources/view'},
-                   {name: 'mango/mobile', location: '/resources/mango/mobile'}],
-        aliases: []
+    config.tlmSiblingOfDojo = false;
+    // load jquery before anything else so we can put it in noConflict mode
+    config.deps = ['jquery'];
+    config.callback = function($) {
+        // remove $ from the global scope, jQuery global is still available
+        // $ is defined by DWR and is used in Mango legacy scripts
+        $.noConflict();
     };
     
-    for (var packageName in paths) {
-        var path = paths[packageName];
-        // turn paths ending with .min and names starting with amcharts or jquery into
-        // aliases instead of packages
-        if (path.indexOf('.min', path.length - 4) !== -1 ||
-                packageName.slice(0, 8) === 'amcharts' ||
-                packageName.slice(0, 6) === 'jquery') {
-            dojoConfig.aliases.push([
-                packageName,
-                path
-            ]);
-        }
-        else {
-            dojoConfig.packages.push({
-                name: packageName,
-                location: path
-            });
-        }
-    }
-    
     // export dojoConfig to global scope
-    root.dojoConfig = dojoConfig;
+    root.dojoConfig = config;
 }
 
 })(this); // execute anonymous function
