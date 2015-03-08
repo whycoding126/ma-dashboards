@@ -113,7 +113,7 @@ var DataProvider = extend({
 
         var self = this;
         $.each(this.pointConfigurations, function(i, configuration) {
-            var point = configuration.point;
+            var point = self.toPoint(configuration);
             var promise = self.loadPoint(point, options).then(function(data) {
                 // filter promise so we supply point to promise.done
                 return {data: data, point: point};
@@ -238,10 +238,13 @@ var DataProvider = extend({
     addDataPoint: function(dataPointConfiguration) {
         if (!dataPointConfiguration)
             return false;
+        var newPoint = this.toPoint(dataPointConfiguration);
         
         //We only allow adding a Data Point Configuration once
-        for(var i=0; i<this.pointConfigurations.length; i++){
-            if(this.pointConfigurations[i].point.xid == dataPointConfiguration.point.xid)
+        for(var i=0; i<this.pointConfigurations.length; i++) {
+            var point = toPoint(this.pointConfigurations[i]);
+            
+            if(point.xid == newPoint.xid)
                 return false;
         }
         this.pointConfigurations.push(dataPointConfiguration);
@@ -250,6 +253,13 @@ var DataProvider = extend({
         delete this.previousOptions;
 
         return true;
+    },
+    
+    /**
+     * Enables data providers to use legacy pointConfigurations or just store plain points
+     */
+    toPoint: function(pointConfig) {
+        return typeof pointConfig.xid === 'undefined' ? pointConfig.point : pointConfig;
     },
     
     addDataPoints: function(dataPointConfiguration) {
