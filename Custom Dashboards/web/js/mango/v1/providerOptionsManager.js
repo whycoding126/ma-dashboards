@@ -6,12 +6,16 @@
 
 define(['jquery', 'extend', 'moment-timezone'],
 function($, extend, moment) {
+"use strict";
 
 var ProviderOptionsManager = extend({
     providerOptions: null,
     providers: [],
     refreshOnChange: true,
-    //periodsLimit: 62, // i.e. maximum of 2 months by day, 2.58 days by hour
+    /**
+     * Used to set the default rollup period when a time preset is picked
+     */
+    graphType: 'bar',
     
     timePicker: null,
     rollupPicker: null,
@@ -139,28 +143,51 @@ var ProviderOptionsManager = extend({
         case 'PREVIOUS_DAY':
         case 'YESTERDAY':
         case 'DAY_TO_DATE':
-            this.providerOptions.timePeriodType = 'HOURS';
-            this.providerOptions.timePeriods = 1;
-            setPickers = true;
+            if (this.graphType === 'line') {
+                this.providerOptions.timePeriodType = 'MINUTES';
+                this.providerOptions.timePeriods = 5;
+            }
+            else { // assume bar
+                this.providerOptions.timePeriodType = 'HOURS';
+                this.providerOptions.timePeriods = 1;
+            }
             break;
         case 'PREVIOUS_WEEK':
         case 'LAST_WEEK':
         case 'WEEK_TO_DATE':
-            this.providerOptions.timePeriodType = 'DAYS';
-            this.providerOptions.timePeriods = 1;
+            if (this.graphType === 'line') {
+                this.providerOptions.timePeriodType = 'HOURS';
+                this.providerOptions.timePeriods = 1;
+            }
+            else { // assume bar
+                this.providerOptions.timePeriodType = 'DAYS';
+                this.providerOptions.timePeriods = 1;
+            }
             break;
         case 'PREVIOUS_4WEEKS':
         case 'PREVIOUS_MONTH':
         case 'LAST_MONTH':
         case 'MONTH_TO_DATE':
-            this.providerOptions.timePeriodType = 'DAYS';
-            this.providerOptions.timePeriods = 1;
+            if (this.graphType === 'line') {
+                this.providerOptions.timePeriodType = 'HOURS';
+                this.providerOptions.timePeriods = 6;
+            }
+            else { // assume bar
+                this.providerOptions.timePeriodType = 'DAYS';
+                this.providerOptions.timePeriods = 1;
+            }
             break;
         case 'PREVIOUS_YEAR':
         case 'LAST_YEAR':
         case 'YEAR_TO_DATE':
-            this.providerOptions.timePeriodType = 'MONTHS';
-            this.providerOptions.timePeriods = 1;
+            if (this.graphType === 'line') {
+                this.providerOptions.timePeriodType = 'DAYS';
+                this.providerOptions.timePeriods = 1;
+            }
+            else { // assume bar
+                this.providerOptions.timePeriodType = 'MONTHS';
+                this.providerOptions.timePeriods = 1;
+            }
             break;
         default:
             // dont change anything for custom time periods
@@ -192,62 +219,96 @@ var ProviderOptionsManager = extend({
             this.providerOptions.toMoment = to;
         }
         
-        if (this.rollupPicker && this.rollupPicker.length > 0) {
+        if (this.rollupPicker.length > 0) {
             this.providerOptions.rollup = this.rollupPicker.val();
         }
-        if (this.timePeriodTypePicker && this.timePeriodTypePicker.length > 0) {
+        if (this.timePeriodTypePicker.length > 0) {
             this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
         }
-        if (this.timePeriodsPicker && this.timePeriodsPicker.length > 0) {
+        if (this.timePeriodsPicker.length > 0) {
             this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
         }
         
-        /*
-        if (this.periodsLimit) {
-            var quantizationPeriod = moment.duration(this.providerOptions.timePeriods,
-                    this.providerOptions.timePeriodType.toLowerCase());
-            var timePeriod = this.providerOptions.to - this.providerOptions.from;
-            var periods = timePeriod / quantizationPeriod.asMilliseconds();
+        // disable the time period pickers when there is no rollup
+        this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === '');
+        this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === '');
+
+        this.limitRollupPeriod();
+    },
+    
+    /**
+     * Dont allow tiny rollup periods for comparatively large date ranges
+     * Also limit the use of no rollup to small periods
+     */
+    limitRollupPeriod: function() {
+        var timePeriod = this.providerOptions.to - this.providerOptions.from;
+        
+        if (this.providerOptions.rollup === '' && timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
+            this.providerOptions.rollup = 'AVERAGE';
+            this.rollupPicker.val(this.providerOptions.rollup);
+            this.providerOptions.timePeriods = 1;
+            this.providerOptions.timePeriodType = 'MINUTES';
+        }
+        
+        if (this.providerOptions.rollup !== '') {
+            var timePeriods = this.providerOptions.timePeriods;
+            var timePeriodType = this.providerOptions.timePeriodType.toLowerCase();
+            var rollupPeriod = moment.duration(timePeriods, timePeriodType).asMilliseconds();
             
-            if (periods > this.periodsLimit) {
-                var minDuration = moment.duration(timePeriod / this.periodsLimit);
-                if (minDuration.asHours() < 24) {
-                    this.providerOptions.timePeriods = Math.ceil(minDuration.asHours());
-                    this.providerOptions.timePeriodType = 'HOURS';
-                } else if (minDuration.asDays() < 30) {
-                    this.providerOptions.timePeriods = Math.ceil(minDuration.asDays());
-                    this.providerOptions.timePeriodType = 'DAYS';
-                } else {
-                    this.providerOptions.timePeriods = Math.ceil(minDuration.asMonths());
+            if (timePeriod >  moment.duration(5, 'year').asMilliseconds()) {
+                // more than 5 years
+                if (rollupPeriod < moment.duration(1, 'months').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
                     this.providerOptions.timePeriodType = 'MONTHS';
                 }
-                if (this.timePeriodsPicker)
-                    this.timePeriodsPicker.val(this.providerOptions.timePeriods);
-                if (this.timePeriodTypePicker)
-                    this.timePeriodTypePicker.val(this.providerOptions.timePeriodType);
             }
+            else if (timePeriod >  moment.duration(1, 'years').asMilliseconds()) {
+                // 1 years to 5 years: 5 years * 52 weeks = 260 periods
+                if (rollupPeriod < moment.duration(1, 'weeks').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
+                    this.providerOptions.timePeriodType = 'WEEKS';
+                }
+            }
+            else if (timePeriod >  moment.duration(31, 'days').asMilliseconds()) {
+                // 31 days to 1 year: 12 months * 30 days = 360 periods
+                if (rollupPeriod < moment.duration(1, 'days').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
+                    this.providerOptions.timePeriodType = 'DAYS';
+                }
+            }
+            else if (timePeriod >  moment.duration(1, 'weeks').asMilliseconds()) {
+                // 1 week to 1 month: 31 days * 24 hours = 744 periods
+                if (rollupPeriod < moment.duration(1, 'hours').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
+                    this.providerOptions.timePeriodType = 'HOURS';
+                }
+            }
+            else if (timePeriod >  moment.duration(2, 'days').asMilliseconds()) {
+                // 2 days to 1 week: 7days * 24 hours * 60 minutes / 15 = 672 periods
+                if (rollupPeriod < moment.duration(15, 'minutes').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 15;
+                    this.providerOptions.timePeriodType = 'MINUTES';
+                }
+            }
+            else if (timePeriod >  moment.duration(12, 'hours').asMilliseconds()) {
+                // 12 hours to 2 day: 2 days * 24 hours * 60 minutes / 5 = 576 periods
+                if (rollupPeriod < moment.duration(5, 'minutes').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 5;
+                    this.providerOptions.timePeriodType = 'MINUTES';
+                }
+            }
+            // up to 12 hours: 12 hours * 60 minutes = 720 periods
         }
-        */
         
-        var timePeriod = this.providerOptions.to - this.providerOptions.from;
-        if (timePeriod >  moment.duration(3, 'months').asMilliseconds()) {
-            this.providerOptions.timePeriods = 1;
-            this.providerOptions.timePeriodType = 'MONTHS';
-        }
-        else if (timePeriod >  moment.duration(1, 'weeks').asMilliseconds() &&
-                this.providerOptions.timePeriodType === 'HOURS') {
-            this.providerOptions.timePeriods = 1;
-            this.providerOptions.timePeriodType = 'DAYS';
-        }
-        
-        if (this.timePeriodsPicker)
-            this.timePeriodsPicker.val(this.providerOptions.timePeriods);
-        if (this.timePeriodTypePicker)
-            this.timePeriodTypePicker.val(this.providerOptions.timePeriodType);
+        this.timePeriodsPicker.val(this.providerOptions.timePeriods);
+        this.timePeriodTypePicker.val(this.providerOptions.timePeriodType);
     },
     
     setTimePicker: function(picker) {
-        this.setPicker('timePicker', picker);
+        var existingPicker = this.timePicker;
+        $(existingPicker).off('change', this.pickerChanged);
+        $(picker).on('change', this.pickerChanged);
+        this.timePicker = picker;
     },
     
     setRollupPicker: function(picker) {
@@ -264,13 +325,11 @@ var ProviderOptionsManager = extend({
     
     setPicker: function(pickerName, picker) {
         var existingPicker = this[pickerName];
-        if (existingPicker) {
+        if (existingPicker)
             existingPicker.off('change', this.pickerChanged);
-        }
-        if (picker) {
-            $(picker).on('change', this.pickerChanged);
-            this[pickerName] = picker;
-        }
+        picker = $(picker);
+        picker.on('change', this.pickerChanged);
+        this[pickerName] = picker;
     }
 });
 
