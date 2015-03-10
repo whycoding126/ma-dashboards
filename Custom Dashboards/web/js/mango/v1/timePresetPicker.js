@@ -124,7 +124,7 @@ TimePresetPicker.prototype = {
         
         this.preset = preset;
         if (this.presetPicker) {
-            this.presetPicker.val(preset);
+            this.presetPicker.val(preset).trigger('change.select2');
         }
         
         var period = TimePresetPicker.calculatePeriod(preset);

@@ -195,16 +195,11 @@ var ProviderOptionsManager = extend({
         }
         
         if (this.timePeriodsPicker)
-            this.timePeriodsPicker.val(this.providerOptions.timePeriods);
+            this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
         if (this.timePeriodTypePicker)
-            this.timePeriodTypePicker.val(this.providerOptions.timePeriodType);
+            this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
     },
-    
-    quantizationPeriod: function() {
-        return moment.duration(this.providerOptions.timePeriods,
-                this.providerOptions.timePeriodType.toLowerCase());
-    },
-    
+        
     loadFromPickers: function(event) {
         if (this.timePicker) {
             var from = this.timePicker.from;
@@ -229,11 +224,11 @@ var ProviderOptionsManager = extend({
             this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
         }
         
+        this.limitRollupPeriod();
+        
         // disable the time period pickers when there is no rollup
         this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === '');
         this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === '');
-
-        this.limitRollupPeriod();
     },
     
     /**
@@ -245,7 +240,7 @@ var ProviderOptionsManager = extend({
         
         if (this.providerOptions.rollup === '' && timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
             this.providerOptions.rollup = 'AVERAGE';
-            this.rollupPicker.val(this.providerOptions.rollup);
+            this.rollupPicker.val(this.providerOptions.rollup).trigger('change.select2');
             this.providerOptions.timePeriods = 1;
             this.providerOptions.timePeriodType = 'MINUTES';
         }
@@ -300,8 +295,8 @@ var ProviderOptionsManager = extend({
             // up to 12 hours: 12 hours * 60 minutes = 720 periods
         }
         
-        this.timePeriodsPicker.val(this.providerOptions.timePeriods);
-        this.timePeriodTypePicker.val(this.providerOptions.timePeriodType);
+        this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
+        this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
     },
     
     setTimePicker: function(picker) {
