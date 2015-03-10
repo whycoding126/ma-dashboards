@@ -199,7 +199,12 @@ var ProviderOptionsManager = extend({
         if (this.timePeriodTypePicker)
             this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
     },
-        
+    
+    quantizationPeriod: function() {
+        return moment.duration(this.providerOptions.timePeriods,
+                this.providerOptions.timePeriodType.toLowerCase());
+    },
+    
     loadFromPickers: function(event) {
         if (this.timePicker) {
             var from = this.timePicker.from;

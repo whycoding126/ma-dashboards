@@ -242,7 +242,7 @@ var DataProvider = extend({
         
         //We only allow adding a Data Point Configuration once
         for(var i=0; i<this.pointConfigurations.length; i++) {
-            var point = toPoint(this.pointConfigurations[i]);
+            var point = this.toPoint(this.pointConfigurations[i]);
             
             if(point.xid == newPoint.xid)
                 return false;
