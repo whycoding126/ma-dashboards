@@ -32,7 +32,7 @@ var RealtimeDataProvider = DataProvider.extend({
 
         if (clearConfigurations) {
             $.each(this.pointConfigurations, function(key, pointConfig) {
-                var point = pointConfig.point;
+                var point = self.toPoint(pointConfig);
                 pointEventManager.unsubscribe(point.xid, self.eventType, self.eventHandler);
             });
         }
@@ -54,7 +54,7 @@ var RealtimeDataProvider = DataProvider.extend({
     disable: function() {
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
-            var point = pointConfig.point;
+            var point = self.toPoint(pointConfig);
             pointEventManager.unsubscribe(point.xid, self.eventType, self.eventHandler);
         });
 
@@ -64,7 +64,7 @@ var RealtimeDataProvider = DataProvider.extend({
     enable: function() {
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
-            var point = pointConfig.point;
+            var point = self.toPoint(pointConfig);
             pointEventManager.subscribe(point.xid, self.eventType, self.eventHandler);
         });
 
@@ -80,7 +80,8 @@ var RealtimeDataProvider = DataProvider.extend({
             return ret;
         
         if (this.enabled) {
-            var xid = dataPointConfiguration.point.xid;
+            var point = this.toPoint(dataPointConfiguration);
+            var xid = point.xid;
             pointEventManager.subscribe(xid, this.eventType, this.eventHandler);
         }
     },
@@ -91,57 +92,11 @@ var RealtimeDataProvider = DataProvider.extend({
         
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
-            var point = pointConfig.point;
+            var point = self.toPoint(pointConfig);
             if (point.xid === xid) {
                 self.notifyListeners(value, point);
             }
         });
-    },
-
-    /**
-     * Put Point Value 
-     * @param options {
-     *                  refresh: boolean to refresh displays,
-     *                  value: PointValueTime Model
-     *                 }
-     * 
-     * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
-     * @return promise
-     */
-    put: function(options, error){
-        //We will keep the requests in order by using a Deferred Chain
-        var link = $.Deferred();
-        var promise = link.promise();
-
-        var self = this;
-        $.each(this.pointConfigurations, function(i, configuration){
-            //Form Chain
-            promise = promise.then(function(){
-                //Define the options to use within the done callback
-                var callbackOptions = {
-                        refresh: options.refresh, //Refresh?
-                        configuration: configuration, //Configuration to use
-                        listeners: self.listeners //Listeners to fire
-                }; 
-                return mangoRest.pointValues.put(configuration.point.xid,
-                        options.value,
-                        function(pvt, xid, options){
-
-                    if(options.refresh){
-                        var data = [];
-                        data.push(pvt);
-                        //Inform our listeners of this new data
-                        for(var i=0; i<options.listeners.length; i++){
-                            options.listeners[i].onLoad(data, options.configuration.point);
-                        }
-                    }
-                },error, callbackOptions);                    
-            });
-        });
-        //Resolve the Deferred and start the Chain
-        link.resolve();
-        //Return the final promise that will be resolved when done
-        return promise;
     }
 });
 

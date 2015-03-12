@@ -51,8 +51,17 @@ TextDisplay.prototype = {
             var value = data[this.valueAttribute];
             if (typeof this.manipulateValue === 'function')
                 value = this.manipulateValue(value, dataPoint);
-            
-            this.selection.text(this.renderValue(value));
+
+            var rendered = this.renderValue(value);
+            if (this.useVal) {
+                var inputs = this.selection.filter('input');
+                var others = this.selection.not(inputs);
+                inputs.filter(':not(:focus)').val(rendered);
+                others.text(rendered);
+            }
+            else {
+                this.selection.text(rendered);
+            }
         }
 };
 

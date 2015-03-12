@@ -43,6 +43,24 @@ util.pointsInFolder = function(folder, path, points) {
     return points;
 };
 
+util.folderPaths = function(folder, path, result) {
+    if (typeof path === 'undefined')
+        path = [];
+    if (typeof result === 'undefined')
+        result = {};
+
+    if (folder.name != 'Root')
+        path.push(folder.name);
+    result[folder.id] = path.slice();
+    
+    for (var i in folder.subfolders) {
+        util.folderPaths(folder.subfolders[i], path, result);
+        path.pop();
+    }
+
+    return result;
+};
+
 /*
  * Logs an error to the console
  */

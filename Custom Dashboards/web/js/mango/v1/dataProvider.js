@@ -137,7 +137,7 @@ var DataProvider = extend({
         return combinedPromise;
     },
     
-    loadPoint: function(options, point) {
+    loadPoint: function(point, options) {
         // fail. need to override
         var deferred = $.Deferred();
         deferred.reject(null, "invalid", "loadPoint() should be overridden");
@@ -190,18 +190,56 @@ var DataProvider = extend({
     },
     
     /**
-     * Put Point Value - No Op For this class
-     * 
+     * Put Point Value 
      * @param options {
      *                  refresh: boolean to refresh displays,
-     *                  value: PointValueTime Model
-     *                 }
+     *                  putAll: boolean, true if value is written to all points
+     *                  value: PointValueTime Model if putAll is true, otherwise
+     *                         an object with PVT model for each XID
+     *                }
      * 
-     * @param error - function(jqXHR, textStatus, errorThrown, mangoMessage)
-     * 
+     * @return promise
      */
-    put: function(options, error) {
-        // no-op
+    put: function(options) {
+        if (!this.enabled) {
+            return rejectedPromise("disabled", "Data provider is not enabled");
+        }
+                
+        var promises = [];
+
+        var self = this;
+        $.each(this.pointConfigurations, function(i, configuration) {
+            var point = self.toPoint(configuration);
+            var value = options.putAll ? options.value : options.value[point.xid];
+            if (value) {
+                var promise = self.putPoint(point, value, options).then(function(data) {
+                    // filter promise so we supply point to promise.done
+                    return {data: data, point: point};
+                });
+                promises.push(promise);
+            }
+        });
+
+        var combinedPromise = mangoRest.when(promises);
+        
+        if (options.refresh) {
+            // notify all listeners at once in order
+            combinedPromise.done(function() {
+                for (var i in arguments) {
+                    var resolved = arguments[i];
+                    self.notifyListeners(resolved.data, resolved.point);
+                }
+                self.redrawListeners();
+            });
+        }
+        
+        if (typeof error == 'function') combinedPromise.fail(error);
+        
+        return combinedPromise;
+    },
+    
+    putPoint: function(point, value, options) {
+        return mangoRest.pointValues.put(point.xid, value);
     },
     
     /**
