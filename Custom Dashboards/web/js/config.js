@@ -37,6 +37,8 @@ var config = {
         'jquery.mousewheel': 'jquery.mousewheel.min',
         // for whatever reason this works but the AMD version doesn't
         'jquery.select2': 'select2/js/select2.min',
+        
+        // core packages
         'dojo': '/resources/dojo',
         'dojox': '/resources/dojox',
         'dijit': '/resources/dijit',
@@ -47,7 +49,9 @@ var config = {
         'deltamation': '/resources/deltamation',
         'infinite': '/resources/infinite',
         'view': '/resources/view',
-        'mango/mobile': '/resources/mango/mobile'
+        'mango/mobile': '/resources/mango/mobile',
+        'dgrid-0.4': '/resources/dgrid-0.4',
+        'dstore': '/resources/dstore'
     },
     shim: {
         "bootstrap" : {
@@ -94,6 +98,11 @@ var config = {
             init: function() {
                 AmCharts.isReady = true;
             }
+        }
+    },
+    map: {
+        'mango/GridDisplay': {
+            'dgrid': 'dgrid-0.4'
         }
     }
 };
