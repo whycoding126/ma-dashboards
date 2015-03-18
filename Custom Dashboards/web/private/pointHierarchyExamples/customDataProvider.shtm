@@ -78,10 +78,18 @@
                   onLoad: function(pointValues, dataPoint){
                       //Do anything required to fills our display with data
                       for(var i=0; i<pointValues.length; i++){
+                    	  var annotation;
+                    	   if(pointValues[i].annotation != null){
+                    		   annotation = pointValues[i].annotation;
+                    	   }else{
+                    		   annotation = "";
+                    	   }
+                    	  
                           $('#displayTableBody').append(
                                   "<tr><td>" + dataPoint.name + 
                                   "</td><td>" + pointValues[i].value.toFixed(2) +
                                   "</td><td>" + new Date(pointValues[i].timestamp) +
+                                  "</td><td>" + annotation +
                                   "</td></tr>");
                       }
                       
@@ -111,7 +119,8 @@
                    var current = pointValues[i];
                    var entry = {
                            value: current.value - previous.value,
-                           timestamp: current.timestamp
+                           timestamp: current.timestamp,
+                           annotation: current.annotation
                    };
                    newData.push(entry);
                    
@@ -183,6 +192,7 @@
          <th>Point Name</th>
          <th>Value</th>
          <th>Time</th>
+         <th>Annotation</th>
        </tr>
      </thead>
      <tbody id="displayTableBody">

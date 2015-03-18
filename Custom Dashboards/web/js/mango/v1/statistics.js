@@ -97,9 +97,9 @@ MangoStatistics.prototype = {
                 //Numeric Statistics
                 $("#" + this.divPrefix + "Min").text(this.renderPointValueTime(data.minimum));
                 $("#" + this.divPrefix + "Max").text(this.renderPointValueTime(data.maximum));
-                $("#" + this.divPrefix + "Average").text(this.renderValue(data.average));
-                $("#" + this.divPrefix + "Integral").text(this.renderValue(data.integral));
-                $("#" + this.divPrefix + "Sum").text(this.renderValue(data.sum));
+                $("#" + this.divPrefix + "Average").text(this.renderPointValueTime(data.average));
+                $("#" + this.divPrefix + "Integral").text(this.renderPointValueTime(data.integral));
+                $("#" + this.divPrefix + "Sum").text(this.renderPointValueTime(data.sum));
                 $("#" + this.divPrefix + "First").text(this.renderPointValueTime(data.first));
                 $("#" + this.divPrefix + "Last").text(this.renderPointValueTime(data.last));
                 $("#" + this.divPrefix + "Count").text(this.renderValue(data.count));
