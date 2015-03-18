@@ -352,6 +352,48 @@ var MangoAPI = extend({
             });
         },
         
+        /**
+         * Query the Events Table
+         * 
+         * @param query - Query Model:
+         * { 
+         *	offset: start position (can  be null)
+         *	limit: limit results to this Number (can be null)
+         *	query: {
+         * 		attribute: String name
+         * 		condition: See below
+         *		}
+         *  sort: {
+         *  	attribute: String name
+         *  	desc: true or false to order by descending
+         *  }
+         *  useOr: true or false to apply query conditions with OR or AND
+         *  
+         *  conditions:
+         *  Conditions are all Strings.
+         *  
+         *  Javascript Regex: RegExp:^.*$
+         *  Integer Compare: Int:=1, Int:>1, Int:>=1, Int:<1, Int:<=1
+         *  Long Compare: Long:=1, Long:>1, Long:<1
+         *  Long Range: LongRange:>startValue:<endValue
+         *  Duration: Duration:>1:00:00, Duration:<1:00:00
+         *  Boolean Compare: BooleanIs:true, BooleanIs:false
+         *  Null Check: NullCheck:true, NullCheck:false
+         * 
+         * @return promise that will be resolved when done
+         */
+        queryEvents: function(query){
+        	var url = "/rest/v1/events/query.json";
+            var data = JSON.stringify(query);
+            
+            return this.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json",
+                data: data
+            });
+        },
+        
         ajax: function(ajaxOptions) {
             ajaxOptions.url = this.baseUrl + ajaxOptions.url;
             var deferred = $.Deferred();
