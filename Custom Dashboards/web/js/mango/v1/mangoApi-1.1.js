@@ -7,12 +7,12 @@
     // Support multiple module loading scenarios
     if (typeof define === 'function' && define.amd) {
         // AMD anonymous module
-        define(['jquery', 'extend', 'moment-timezone'], factory);
+        define(['jquery', 'extend', 'moment-timezone', 'globalize', 'globalize/message', 'cldr/unresolved'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
-        this.MangoAPI = factory(jQuery, extend, moment);
+        this.MangoAPI = factory(jQuery, extend, moment, Globalize);
     }
-}(function($, extend, moment) { // factory function
+}(function($, extend, moment, Globalize) { // factory function
 
 /**
  * 
@@ -394,8 +394,27 @@ var MangoAPI = extend({
             });
         },
         
+        getTranslations: function(namespace, language) {
+            var url = '/rest/v1/translations';
+            
+            if (typeof namespace !== 'undefined')
+                url += '/' + encodeURIComponent(namespace);
+            if (typeof language !== 'undefined')
+                url += '?language=' + encodeURIComponent(language);
+            
+            return this.ajax({
+                url: url
+            });
+        },
+        
+        defaultAjaxOptions: {
+            dataType: 'json'
+        },
+        
         ajax: function(ajaxOptions) {
+            ajaxOptions = $.extend({}, this.defaultAjaxOptions, ajaxOptions);
             ajaxOptions.url = this.baseUrl + ajaxOptions.url;
+            
             var deferred = $.Deferred();
             var ajax = $.ajax(ajaxOptions).done(function() {
                 deferred.resolve.apply(deferred, arguments);
@@ -409,6 +428,32 @@ var MangoAPI = extend({
             MangoAPI.cancellable(promise, ajax.abort.bind(ajax));
             
             return promise;
+        },
+        
+        loadJson: function() {
+            var promiseArray = [];
+            for (var i = 0; i < arguments.length; i++) {
+                promiseArray.push(this.ajax({
+                    url: arguments[i],
+                    dataType: 'json'
+                }));
+            }
+            return MangoAPI.when(promiseArray);
+        },
+        
+        setupGlobalize: function() {
+            var promiseArray = [this.loadJson('/resources/cldr-data/supplemental/likelySubtags.json')];
+            for (var i = 0; i < arguments.length; i++) {
+                promiseArray.push(this.getTranslations(arguments[i]));
+            }
+            
+            return MangoAPI.when(promiseArray).then(MangoAPI.firstArrayArg).then(function(likelySubtags) {
+                Globalize.load(likelySubtags);
+                for (var i = 1; i < arguments.length; i++) {
+                    Globalize.loadMessages(arguments[i]);
+                }
+                Globalize.locale(MangoAPI.userLanguage());
+            });
         }
 });
 
@@ -481,6 +526,24 @@ MangoAPI.when = function(promises) {
 MangoAPI.resolvedPromise = function() {
     var deferred = $.Deferred();
     return deferred.resolve.apply(deferred, arguments).promise();
+};
+
+MangoAPI.userLanguage = function() {
+    return navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+};
+
+MangoAPI.firstArrayArg = function() {
+    var firstArgs = [];
+    for (var i = 0; i < arguments.length; i++) {
+        var argsI = arguments[i];
+        if (argsI && argsI.length > 0)
+            firstArgs.push(argsI[0]);
+        else
+            firstArgs.push(argsI);
+    }
+    
+    var deferred = $.Deferred();
+    return deferred.resolve.apply(deferred, firstArgs).promise();
 };
 
 return MangoAPI;
