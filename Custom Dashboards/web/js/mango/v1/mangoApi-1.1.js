@@ -449,10 +449,14 @@ var MangoAPI = extend({
             
             return MangoAPI.when(promiseArray).then(MangoAPI.firstArrayArg).then(function(likelySubtags) {
                 Globalize.load(likelySubtags);
+                var locale = null;
                 for (var i = 1; i < arguments.length; i++) {
-                    Globalize.loadMessages(arguments[i]);
+                    Globalize.loadMessages(arguments[i].translations);
+                    if (!locale)
+                        locale = arguments[i].locale;
                 }
-                Globalize.locale(MangoAPI.userLanguage());
+                if (locale)
+                    Globalize.locale(locale);
             });
         }
 });
