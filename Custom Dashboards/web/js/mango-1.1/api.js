@@ -261,7 +261,7 @@ var MangoAPI = extend({
             var data = JSON.stringify(pointValue);
             
             if (typeof options.converted !== 'undefined')
-                url += "&unitConversion=" + encodeURIComponent(options.converted);
+                url += "?unitConversion=" + encodeURIComponent(options.converted);
             
             return this.ajax({
                 type: "PUT",
