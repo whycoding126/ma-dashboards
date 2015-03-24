@@ -27,7 +27,8 @@ var AccumulatorDataProvider = DataProvider.extend({
     },
 
     loadPoint: function(point, options) {
-        var promise = this.mangoApi.pointValues.getFirstLast(point.xid, options.from, options.to).then(function(data) {
+        var promise = this.mangoApi.getFirstLastValues(point.xid, options.from, options.to, this.apiOptions)
+        .then(function(data) {
             var result = {};
             result.value = data[1].value - data[0].value;
             result.first = data[0];

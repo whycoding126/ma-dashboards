@@ -48,7 +48,7 @@ var RealtimeDataProvider = DataProvider.extend({
     },
 
     loadPoint: function(point, options) {
-        return this.mangoApi.getLatestValues(point.xid, 1);
+        return this.mangoApi.getLatestValues(point.xid, 1, this.apiOptions);
     },
 
     disable: function() {

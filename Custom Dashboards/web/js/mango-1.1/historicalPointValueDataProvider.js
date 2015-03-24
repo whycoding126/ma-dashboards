@@ -22,7 +22,7 @@ var HistoricalPointValueDataProvider = DataProvider.extend({
     type: 'HistoricalPointValueDataProvider',
 
     loadPoint: function(point, options) {
-        return this.mangoApi.getLatestValues(point.xid, options.historicalSamples);
+        return this.mangoApi.getLatestValues(point.xid, options.historicalSamples, this.apiOptions);
     }
 });
 

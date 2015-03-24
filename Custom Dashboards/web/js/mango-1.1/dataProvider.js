@@ -17,6 +17,7 @@ var DataProvider = extend({
         this.id = id;
         this.listeners = [];
         this.pointConfigurations = [];
+        this.apiOptions = {};
         
         $.extend(this, options);
         
@@ -234,7 +235,7 @@ var DataProvider = extend({
     },
     
     putPoint: function(point, value, options) {
-        return this.mangoApi.putValue(point.xid, value);
+        return this.mangoApi.putValue(point.xid, value, this.apiOptions);
     },
     
     /**

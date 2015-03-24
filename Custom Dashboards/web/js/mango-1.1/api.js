@@ -22,7 +22,7 @@ var MangoAPI = extend({
          * @param username
          * @param password
          * @param logout - optional, logout existing user
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         login: function(username, password, logout) {
             if (logout === undefined)
@@ -41,7 +41,7 @@ var MangoAPI = extend({
         /**
          * Logout via GET
          * 
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         logout: function() {
             return this.ajax({
@@ -53,7 +53,7 @@ var MangoAPI = extend({
          * Make a request for any JSON data
          * 
          * @param url
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getJson: function(url) {
             return this.ajax({
@@ -64,7 +64,7 @@ var MangoAPI = extend({
         /**
          * Get All Data Points 
          * 
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getAllPoints: function() {
             return this.ajax({
@@ -76,7 +76,7 @@ var MangoAPI = extend({
          * Get One Data Point
          * 
          * @param xid
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getPoint: function(xid) {
             return this.ajax({
@@ -88,7 +88,7 @@ var MangoAPI = extend({
          * Save Data Point
          * 
          * @param dataPoint - point to save
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         putPoint: function(dataPoint) {
             return this.ajax({
@@ -104,7 +104,7 @@ var MangoAPI = extend({
          * 
          * @param xid - xid of point to save
          * @param csvData - point CSV data to save
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         putCSVPoint: function(xid, csvData) {
             return this.ajax({
@@ -121,25 +121,32 @@ var MangoAPI = extend({
          * @param xid - for point desired
          * @param from - date from
          * @param to - date to
-         * @param rollup - null or ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT']
-         * @param timePeriodType - null or ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS']
-         * @param timePeriods - null or integer number of periods to use
-         * @param done - function(jsonData, xid, options) callback with data in time order, oldest first
-         * @param fail - function(jqXHR, textStatus, errorThrown, mangoMessage) on failure callback
-         * @param options - object to pass into done method along with data
-         * @return promise that will be resolved when done
+         * @param options - optional object
+         *        {
+         *            rollup: one of ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
+         *            timePeriodType: one of ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS'],
+         *            timePeriods: integer number of periods to use,
+         *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
+         *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number),
+         *        }
+         * @return promise, resolved with data when done
          */
-        getValues: function(xid, from, to, rollup, timePeriodType, timePeriods) {
-            //Create the parameter list
-            var params = "";
-            if(rollup)
-                params += "&rollup=" + encodeURIComponent(rollup);
-            if(timePeriodType)
-                params += "&timePeriodType=" + encodeURIComponent(timePeriodType);
-            if(timePeriods)
-                params += "&timePeriods=" + encodeURIComponent(timePeriods);
+        getValues: function(xid, from, to, options) {
+            options = options || {};
+            
             var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&to=" +
-                toISOString(to) + params;
+                toISOString(to);
+            
+            if (options.rollup)
+                url += "&rollup=" + encodeURIComponent(options.rollup);
+            if (options.timePeriodType)
+                url += "&timePeriodType=" + encodeURIComponent(options.timePeriodType);
+            if (options.timePeriods)
+                url += "&timePeriods=" + encodeURIComponent(options.timePeriods);
+            if (typeof options.rendered !== 'undefined')
+                url += "&useRendered=" + encodeURIComponent(options.rendered);
+            if (typeof options.converted !== 'undefined')
+                url += "&unitConversion=" + encodeURIComponent(options.converted);
             
             return this.ajax({
                 url: url
@@ -152,10 +159,23 @@ var MangoAPI = extend({
          * @param xid - for point desired
          * @param from - date from
          * @param to - date to
+         * @param options - optional object
+         *        {
+         *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
+         *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number)
+         *        }
+         * @return promise, resolved with data when done
          */
-        getFirstLastValues: function(xid, from, to) {
+        getFirstLastValues: function(xid, from, to, options) {
+            options = options || {};
+            
             var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
+            
+            if (typeof options.rendered !== 'undefined')
+                url += "&useRendered=" + encodeURIComponent(options.rendered);
+            if (typeof options.converted !== 'undefined')
+                url += "&unitConversion=" + encodeURIComponent(options.converted);
             
             return this.ajax({
                 url: url
@@ -167,11 +187,26 @@ var MangoAPI = extend({
          * 
          * @param xid - for point desired
          * @param limit - number of results
-         * @return promise after if (typeof done == 'function') done()
+         * @param options - optional object
+         *        {
+         *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
+         *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number),
+         *            useCache: boolean (default true), determines if values should be retrieved from cache
+         *        }
+         * @return promise, resolved with data when done
          */
-        getLatestValues: function(xid, limit) {
+        getLatestValues: function(xid, limit, options) {
+            options = options || {};
+            
             var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/latest.json?limit=" +
                 encodeURIComponent(limit);
+            
+            if (typeof options.rendered !== 'undefined')
+                url += "&useRendered=" + encodeURIComponent(options.rendered);
+            if (typeof options.converted !== 'undefined')
+                url += "&unitConversion=" + encodeURIComponent(options.converted);
+            if (typeof options.useCache !== 'undefined')
+                url += "&useCache=" + encodeURIComponent(options.useCache);
             
             return this.ajax({
                 url: url
@@ -182,13 +217,25 @@ var MangoAPI = extend({
          * Get the point statistics
          * 
          * @param xid - for point desired
-         * @param from - date from formatted using this.toISOString
-         * @param to - date to formatted using this.toISOString
-         * @return promise that will be resolved when done
+         * @param from - date from
+         * @param to - date to
+         * @param options - optional object
+         *        {
+         *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
+         *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number)
+         *        }
+         * @return promise, resolved with data when done
          */
-        getStatistics: function(xid, from, to) {
+        getStatistics: function(xid, from, to, options) {
+            options = options || {};
+            
             var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/statistics.json?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
+            
+            if (typeof options.rendered !== 'undefined')
+                url += "&useRendered=" + encodeURIComponent(options.rendered);
+            if (typeof options.converted !== 'undefined')
+                url += "&unitConversion=" + encodeURIComponent(options.converted);
             
             return this.ajax({
                 url: url
@@ -200,11 +247,21 @@ var MangoAPI = extend({
          * Save Point Value
          * @param xid - for data point to save to
          * @param value - PointValueTimeModel Number, boolean or String
+         * @param options - optional object
+         *        {
+         *            converted: boolean (default false), numeric value to save is in display units,
+         *                       convert to original units before saving to database
+         *        }
          * @return promise when done
          */
-        putValue: function(xid, pointValue) {
+        putValue: function(xid, pointValue, options) {
+            options = options || {};
+            
             var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json";
             var data = JSON.stringify(pointValue);
+            
+            if (typeof options.converted !== 'undefined')
+                url += "&unitConversion=" + encodeURIComponent(options.converted);
             
             return this.ajax({
                 type: "PUT",
@@ -267,7 +324,7 @@ var MangoAPI = extend({
          * Get Current Value
          * 
          * @param xid - for point desired
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getCurrentValue: function(xid) {
             var url = "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json";
@@ -281,7 +338,7 @@ var MangoAPI = extend({
          * Get All Current Values for running points
          * 
          * @param limit results too this
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getAllCurrentValues: function(limit) {
             var url = "/rest/v1/realtime.json?limit=" + encodeURIComponent(limit);
@@ -307,7 +364,7 @@ var MangoAPI = extend({
          * Get Contents of a given folder
          * 
          * @param name of folder
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getFolderByName: function(name) {
             var url = "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json";
@@ -321,7 +378,7 @@ var MangoAPI = extend({
          * Get Contents of a given folder
          * 
          * @param id of folder
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getFolderById: function(id) {
             var url = "/rest/v1/hierarchy/byId/" + encodeURIComponent(id) + ".json";
@@ -334,7 +391,7 @@ var MangoAPI = extend({
         /**
          * Get the current user
          * 
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         getCurrentUser: function() {
             var url = "/rest/v1/users/current.json";
@@ -372,7 +429,7 @@ var MangoAPI = extend({
          *  Boolean Compare: BooleanIs:true, BooleanIs:false
          *  Null Check: NullCheck:true, NullCheck:false
          * 
-         * @return promise that will be resolved when done
+         * @return promise, resolved with data when done
          */
         queryEvents: function(query){
         	var url = "/rest/v1/events/query.json";

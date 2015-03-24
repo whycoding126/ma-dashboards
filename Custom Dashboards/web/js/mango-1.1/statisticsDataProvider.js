@@ -28,7 +28,7 @@ var StatisticsDataProvider = DataProvider.extend({
     },
     
     loadPoint: function(point, options) {
-        return this.mangoApi.getStatistics(point.xid, options.from, options.to);
+        return this.mangoApi.getStatistics(point.xid, options.from, options.to, this.apiOptions);
     }
 });
 

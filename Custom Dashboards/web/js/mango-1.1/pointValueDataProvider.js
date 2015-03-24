@@ -30,7 +30,12 @@ var PointValueDataProvider = DataProvider.extend({
     },
 
     loadPoint: function(point, options) {
-        return this.mangoApi.getValues(point.xid, options.from, options.to, options.rollup, options.timePeriodType, options.timePeriods);
+        var apiOptions = $.extend({}, this.apiOptions, {
+            rollup: options.rollup,
+            timePeriodType: options.timePeriodType,
+            timePeriods: options.timePeriods
+        });
+        return this.mangoApi.getValues(point.xid, options.from, options.to, apiOptions);
     }
 });
 
