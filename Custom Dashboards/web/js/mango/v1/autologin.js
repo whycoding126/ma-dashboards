@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-define(['mango/mangoApi'], function(mangoRest) {
+define(['./mangoApi'], function(mangoRest) {
 "use strict";
 
 var autologin = function(config) {

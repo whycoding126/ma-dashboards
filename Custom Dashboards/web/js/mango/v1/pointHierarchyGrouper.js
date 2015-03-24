@@ -11,7 +11,7 @@
     // Support multiple module loading scenarios
     if (typeof define === 'function' && define.amd) {
         // AMD anonymous module
-        define(['jquery', 'mango/dataPointGroup'], factory);
+        define(['jquery', './dataPointGroup'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
         this.PointHierarchyGrouper = factory(jQuery, DataPointGroup);

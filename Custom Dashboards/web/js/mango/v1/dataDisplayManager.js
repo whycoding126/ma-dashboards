@@ -10,9 +10,9 @@
     // Support multiple module loading scenarios
     if (typeof define === 'function' && define.amd) {
         // AMD anonymous module
-        define(['jquery', 'mango/dataProvider', 'mango/accumulatorDataProvider', 'mango/accumulatorRollupDataProvider',
-                'mango/historicalPointValueDataProvider', 'mango/pointValueDataProvider', 'mango/RealtimeDataProvider',
-                'mango/realtimePointValueDataProvider', 'mango/statisticsDataProvider'], factory);
+        define(['jquery', './dataProvider', './accumulatorDataProvider', './accumulatorRollupDataProvider',
+                './historicalPointValueDataProvider', './pointValueDataProvider', './RealtimeDataProvider',
+                './realtimePointValueDataProvider', './statisticsDataProvider'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
         this.DataDisplayManager = factory(jQuery, DataProvider);

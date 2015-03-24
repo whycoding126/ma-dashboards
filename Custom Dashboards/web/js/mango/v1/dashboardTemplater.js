@@ -89,9 +89,9 @@
     // Support multiple module loading scenarios
     if (typeof define === 'function' && define.amd) {
         // AMD anonymous module
-        define(['jquery', 'mango/select', 'mango/dateTimePicker', 'mango/rollupPicker',
-                'mango/timePeriodTypePicker', 'mango/input', 'mango/dataDisplayManager',
-                'mango/dataPointMatcher', 'mango/mangoApi', 'mango/pointHierarchyGrouper'], factory);
+        define(['jquery', './select', './dateTimePicker', './rollupPicker',
+                './timePeriodTypePicker', './input', './dataDisplayManager',
+                './dataPointMatcher', './mangoApi', './pointHierarchyGrouper'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
         this.DashboardTemplater = factory(jQuery, SelectConfiguration, DateTimePickerConfiguration,
