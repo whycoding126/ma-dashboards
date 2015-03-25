@@ -86,14 +86,25 @@ var RealtimeDataProvider = DataProvider.extend({
         }
     },
 
-    eventHandler: function(event, xid, eventType, value) {
-        if (eventType !== this.eventType)
+    eventHandler: function(event, payload) {
+        if (payload.event !== this.eventType)
             return;
+        
+        var value = $.extend({}, payload.value);
+        
+        value.originalValue = value.value;
+        value.renderedValue = payload.renderedValue;
+        value.convertedValue = payload.convertedValue;
+        
+        if (this.apiOptions.rendered)
+            value.value = value.renderedValue;
+        else if (this.apiOptions.converted)
+            value.value = value.convertedValue;
         
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
             var point = self.toPoint(pointConfig);
-            if (point.xid === xid) {
+            if (point.xid === payload.xid) {
                 self.notifyListeners(value, point);
             }
         });

@@ -54,8 +54,8 @@ var PointEventManager = extend({
             var xidSubscriptions = this.subscriptions[payload.xid];
             if (!xidSubscriptions)
                 return;
-            $(xidSubscriptions.eventEmitter).trigger(payload.event, [payload.xid, payload.event, payload.value]);
-            $(this).trigger(payload.xid, [payload.xid, payload.event, payload.value]);
+            $(xidSubscriptions.eventEmitter).trigger(payload.event, payload);
+            $(this).trigger(payload.xid, payload);
         }
     },
     
