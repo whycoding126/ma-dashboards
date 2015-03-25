@@ -55,6 +55,14 @@ TextDisplay.prototype = {
                 value = this.manipulateValue(value, dataPoint);
 
             var rendered = this.renderText(value);
+            
+            if (typeof this.onChange === 'function') {
+                if (this.previous !== undefined && rendered !== this.previous) {
+                    this.onChange();
+                }
+                this.previous = rendered;
+            }
+            
             if (this.useVal) {
                 var inputs = this.selection.filter('input');
                 var others = this.selection.not(inputs);
