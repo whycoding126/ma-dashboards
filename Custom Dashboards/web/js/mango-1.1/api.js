@@ -317,7 +317,23 @@ var MangoAPI = extend({
         },
         
         openSocket: function() {
-            return new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
+            var host = document.location.host;
+            var protocol = document.location.protocol;
+            
+            if (this.baseUrl) {
+                var i = this.baseUrl.indexOf('//');
+                if (i >= 0) {
+                    protocol = this.baseUrl.substring(0, i);
+                    host = this.baseUrl.substring(i+2);
+                }
+                else {
+                    host = this.baseUrl;
+                }
+            }
+            
+            protocol = protocol === 'https:' ? 'wss:' : 'ws:';
+            
+            return new WebSocket(protocol + '//' + host + '/rest/v1/websocket/pointValue');
         },
 
         /**

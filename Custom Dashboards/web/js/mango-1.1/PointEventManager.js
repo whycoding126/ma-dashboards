@@ -11,8 +11,14 @@ var PointEventManager = extend({
     socketPromise: null,
     subscriptions: null,
     
-    constructor: function() {
+    constructor: function(options) {
         this.subscriptions = {};
+        
+        $.extend(this, options);
+        
+        if (!this.mangoApi) {
+            this.mangoApi = MangoAPI.defaultApi;
+        }
     },
     
     getSocketPromise: function() {
@@ -22,24 +28,8 @@ var PointEventManager = extend({
             return self.socketPromise;
         
         var deferred = $.Deferred();
-        var host, protocol;
-        var apiBaseUrl = MangoAPI.defaultApi.baseUrl;
-        if (apiBaseUrl) {
-            var i = apiBaseUrl.indexOf('//');
-            if (i >= 0) {
-                protocol = apiBaseUrl.substring(0, i) === 'https:' ? 'wss:' : 'ws:';
-                host = apiBaseUrl.substring(i+2);
-            }
-            else {
-                protocol = 'ws:';
-                host = apiBaseUrl;
-            }
-        }
-        else {
-            host = document.location.host;
-            protocol = document.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        }
-        var socket = new WebSocket(protocol + '//' + host + '/rest/v1/websocket/pointValue');
+        
+        var socket = this.mangoApi.openSocket();
         
         socket.onopen = function() {
             deferred.resolve(socket);
