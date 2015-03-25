@@ -13,7 +13,7 @@ var pointEventManager = new PointEventManager();
 
 var RealtimeDataProvider = DataProvider.extend({
     type: 'RealtimeDataProvider',
-    eventType: 'CHANGE',
+    eventType: 'UPDATE',
     
     constructor: function(id, options) {
         DataProvider.apply(this, arguments);
