@@ -211,30 +211,34 @@ var DashboardTemplater = function(options){
         });
     }
     
+    var self = this;
+    var promises = [this.displayManager.ready()];
+    
     //Grouper
-    if(this.groupMatcher === null){
-        if(this.type == 'PointHierarchy'){
-            //Fetch the Point Hierarchy to work with        
-            this.deferred = this.mangoApi.getHierarchy();
-            this.deferred.done(function(root) {
-                self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {});
-                self.groupMatcher.group(); //Do your job grouper
-                if(self.loadGroupAtStartup !== null) //Load a Group if required
-                    self.groupChanged(self.loadGroupAtStartup);
-            }).fail(this.showError);
-        }
+    if(this.groupMatcher === null && this.type == 'PointHierarchy'){
+        //Fetch the Point Hierarchy to work with
+        var hierarchyPromise = this.mangoApi.getHierarchy().then(function(root) {
+            self.groupMatcher = new PointHierarchyGrouper(root, self.groupConfigurations, self.onGroup, {});
+            self.groupMatcher.group(); //Do your job grouper
+            if(self.loadGroupAtStartup !== null) //Load a Group if required
+                self.groupChanged(self.loadGroupAtStartup);
+            
+        }).fail(this.showError);
+        
+        promises.push(hierarchyPromise);
     }
     
+    $.when.apply($, promises).done(function() {
+        self.readyDeferred.resolve();
+    });
 };
 
-
 DashboardTemplater.prototype = {
-        
         debug: false,
         
         type: 'PointHierarchy', //Currently only available Option
         
-        deferred: null, //Deferred to know when Templater is Ready after creation
+        readyDeferred: $.Deferred(), //Deferred to know when Templater is Ready after creation
         
         loadGroupAtStartup: null, //Group Index to load at startup, can be null
         
@@ -267,6 +271,13 @@ DashboardTemplater.prototype = {
         timePeriodType: null,
         timePeriods: null, //Currently selected Time Periods
         providersToRefresh: null, //If null refresh all otherwise can set to array of provider IDS to refresh
+        
+        /**
+         * @return promise indicating when DashboardTemplater is ready
+         */
+        ready: function() {
+            return this.readyDeferred.promise();
+        },
         
         /**
          * Called when custom period has been changed

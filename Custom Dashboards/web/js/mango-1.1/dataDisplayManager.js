@@ -30,13 +30,29 @@ var DataDisplayManager = function(displayConfigurations, options){
         this[i] = options[i];
     }
     
+    var self = this;
+    var displayPromises = [];
+    
     if(!this.displayConfigurations)
         this.displayConfigurations = [];
-    else{
-        for(i=0; i<this.displayConfigurations.length; i++){
-            this.displays.push(this.displayConfigurations[i].createDisplay());
+    else {
+        for(i=0; i<this.displayConfigurations.length; i++) {
+            var display = this.displayConfigurations[i].createDisplay();
+            if (typeof display.then === 'function') {
+                var displayPromise = display.then(function(resolvedDisplay) {
+                    self.displays.push(resolvedDisplay);
+                });
+                displayPromises.push(displayPromise);
+            }
+            else {
+                this.displays.push(display);
+            }
         }
     }
+    
+    $.when.apply($, displayPromises).done(function() {
+        self.readyDeferred.resolve();
+    });
 };
 
 DataDisplayManager.prototype = {
@@ -46,6 +62,14 @@ DataDisplayManager.prototype = {
         displays: null, //List of our displays
         dataProviders: null, //List of all our data providers
         errorDivId: null, //Div to place error messages
+        readyDeferred: $.Deferred(),
+        
+        /**
+         * @return promise indicating when DataDisplayManager is ready
+         */
+        ready: function() {
+            return this.readyDeferred.promise();
+        },
 
         /**
          *  @param displayConfiguration - config to use
