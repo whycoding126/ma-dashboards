@@ -164,9 +164,12 @@ MangoGaugeChart.prototype = {
          * On Data Provider load we add new data
          */
         onLoad: function(data, dataPoint){
-
-            this.amChart.arrows[0].setValue(data[0][this.valueAttribute]);
-            this.amChart.axes[0].setBottomText(this.renderValue(data[0]));
+            if ($.isArray(data)) {
+                data = data[0];
+            }
+            
+            this.amChart.arrows[0].setValue(data[this.valueAttribute]);
+            this.amChart.axes[0].setBottomText(this.renderValue(data));
             this.amChart.validateData();        
       }
 };

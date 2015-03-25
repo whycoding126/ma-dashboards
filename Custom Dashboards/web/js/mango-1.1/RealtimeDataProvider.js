@@ -50,6 +50,21 @@ var RealtimeDataProvider = DataProvider.extend({
     loadPoint: function(point, options) {
         return this.mangoApi.getLatestValues(point.xid, 1, this.apiOptions);
     },
+    
+    notifyListeners: function(data, point) {
+        // initial point value from loadPoint i.e. not from WebSocket
+        if ($.isArray(data)) {
+            data = data[0];
+            
+            // add renderedValue or convertedValue so we can use valueAttribute consistently in displays
+            if (this.apiOptions.rendered) {
+                data.renderedValue = data.value;
+            } else if (this.apiOptions.converted) {
+                data.convertedValue = data.value;
+            }
+        }
+        DataProvider.prototype.notifyListeners.apply(this, arguments);
+    },
 
     disable: function() {
         var self = this;

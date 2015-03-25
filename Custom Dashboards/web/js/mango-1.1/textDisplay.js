@@ -23,10 +23,6 @@ TextDisplay.prototype = {
             return this;
         },
         
-        renderValue: function(value) {
-            return value.toFixed(this.decimalPlaces) + this.suffix;
-        },
-        
         /**
          * Data Provider listener to clear data
          */
@@ -49,10 +45,11 @@ TextDisplay.prototype = {
             }
             
             var value = data[this.valueAttribute];
+            
             if (typeof this.manipulateValue === 'function')
                 value = this.manipulateValue(value, dataPoint);
 
-            var rendered = this.renderValue(value);
+            var rendered = this.renderText(value);
             if (this.useVal) {
                 var inputs = this.selection.filter('input');
                 var others = this.selection.not(inputs);
@@ -62,6 +59,21 @@ TextDisplay.prototype = {
             else {
                 this.selection.text(rendered);
             }
+        },
+        
+        renderText: function(value) {
+            // PointValueTime
+            if (typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
+                return this.renderValue(value.value);
+            }
+            
+            return this.renderValue(value);
+        },
+
+        renderValue: function(value) {
+            if (typeof value === 'number')
+                return value.toFixed(this.decimalPlaces) + this.suffix;
+            return value;
         }
 };
 

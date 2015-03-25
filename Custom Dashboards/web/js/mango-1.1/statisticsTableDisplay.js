@@ -10,6 +10,7 @@ var StatisticsTableDisplay = function(options) {
     this.table = null;
     this.dataProviderIds = [];
     this.rows = {};
+    this.decimalPlaces = 2;
     
     for(var i in options) {
         this[i] = options[i];
@@ -60,14 +61,14 @@ StatisticsTableDisplay.prototype = {
             prop = this.pointProperties[i];
             td = row.find('.point-prop-' + prop);
             value = dataPoint[prop];
-            td.text(this.renderValue(value));
+            td.text(this.renderCellText(value));
         }
         
         for (i in this.dataProperties) {
             prop = this.dataProperties[i];
             td = row.find('.data-prop-' + prop);
             value = data[prop];
-            td.text(this.renderValue(value));
+            td.text(this.renderCellText(value));
         }
     },
     
@@ -95,21 +96,19 @@ StatisticsTableDisplay.prototype = {
         return tr;
     },
 
-    renderValue: function(value) {
+    renderCellText: function(value) {
         // PointValueTime
-        if (value.value && value.timestamp) {
-            return this.renderNumber(value.value) + " @ " + this.renderTime(value.timestamp);
+        if (typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
+            return this.renderValue(value.value) + ' @ ' + this.renderTime(value.timestamp);
         }
         
-        if (typeof value === 'number') {
-            return this.renderNumber(value);
-        }
-        
-        return value;
+        return this.renderValue(value);
     },
 
-    renderNumber: function(number) {
-        return number.toFixed(2);
+    renderValue: function(value) {
+        if (typeof value === 'number')
+            return value.toFixed(this.decimalPlaces);
+        return value;
     },
 
     renderTime: function(timestamp) {
