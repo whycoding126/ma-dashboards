@@ -195,13 +195,17 @@ var DashboardTemplater = function(options){
     }
     this.groupSelectConfiguration.create();
     
+    var self = this;
+    
     //Display Manager
     if(this.displayManager === null)
         this.displayManager = new DataDisplayManager(this.displayConfigurations);
     if(this.dataProviders !== null){
-        for(i=0; i<this.dataProviders.length; i++){
-            this.displayManager.addProvider(this.dataProviders[i]);
-        }
+    	$.when(this.displayManager.ready()).done(function(){
+	        for(i=0; i<self.dataProviders.length; i++){
+	            self.displayManager.addProvider(self.dataProviders[i]);
+	        }
+    	});
     }
     
     //Point Matcher
@@ -211,7 +215,7 @@ var DashboardTemplater = function(options){
         });
     }
     
-    var self = this;
+
     var promises = [this.displayManager.ready()];
     
     //Grouper

@@ -24,8 +24,8 @@
     
     <script type="text/javascript">
     require(['mango/serialChart', 'mango/dataPointMatcher', 'mango/dataPointGroup', 'mango/listView',
-             'mango/dashboardTemplater', 'domReady!'],
-    function(SerialChart, DataPointMatcher, DataPointGroup, ListViewConfiguration, DashboardTemplater) {
+             'mango/dashboardTemplater', 'mango/pointValueDataProvider', 'domReady!'],
+    function(SerialChart, DataPointMatcher, DataPointGroup, ListViewConfiguration, DashboardTemplater, PointValueDataProvider) {
     
     // get subtypes we need
     var DataPointMatchConfiguration = DataPointMatcher.DataPointMatchConfiguration;
@@ -52,47 +52,35 @@
        
 		var bar2 = new SerialChart({
 			divId: 'chart2', //Chart DIV id
-			dataProvidersIds: [1], //List of data provider Ids for this chart
-            amChart: { chartScrollbar: null},
-        	graphId: function(valueField, dataPoint){
-           		return 'bar1';
-           	},
-        	graphType: function(valueField, dataPoint){
-        		return 'column';
-			},   
-           /**
-            * on load of data
-            * @param data - list of point value time
-            * @param dataPoint - data point for the values
-            */
-           onLoad: function(data, dataPoint){
-               this.removeLoading();
-               
-             //Create some statistis as an example
-             var total = 0;
-             var max = data[0].value;
-             var min = data[0].value;
-             for(var i=0; i<data.length; i++){
-                 total = total + data[i].value;
-                 if(max < data[i].value)
-                     max = data[i].value;
-                 if(min > data[i].value)
-                     min = data[i].value;
-             }
-             
-             //Create one entry per Data Point
-             var entry = {
-                     name: dataPoint.name,
-                     total: total,
-                     maximum: max,
-                     minimum: min
-             };
-             
-             this.amChart.dataProvider.push(entry);
-             
-             //Refresh the data       
-             this.amChart.validateData();
-         }		
+			dataProviderIds: [2], //List of data provider Ids for this chart
+            amChart: { 
+            	categoryField: "name",
+            	chartScrollbar: null,
+            },
+			onLoad: function(data, dataPoint){
+				this.removeLoading();
+				
+				//Ensure we have the graphs created
+		        var totalGraph = this.findGraph('total') || this.createGraph('total', dataPoint);
+				
+		        var minGraph = this.findGraph('minimum') || this.createGraph('minimum', dataPoint);
+		        var maxGraph = this.findGraph('maximum') || this.createGraph('maximum', dataPoint);
+
+				this.amChart.dataProvider = new Array(); //Clear out old data
+				this.amChart.dataProvider.push(data[0]);
+				
+			},
+		    graphType: function(valueField, dataPoint) {
+		        return 'column';
+		    },
+		    
+		    graphTitle: function(valueField, dataPoint) {
+		        return valueField;
+		    },
+		    
+		    graphId: function(valueField, dataPoint) {
+		        return valueField;
+		    },
        });
        displayConfigurations.push(bar2);
        
@@ -100,11 +88,48 @@
        
        //Create Data Providers
        var dataProviders = new Array();
+       var customDataProvider = new PointValueDataProvider(2,{
+    	   loadPoint: function(point, options){
+    		   
+    		   var apiOptions = $.extend({}, this.apiOptions, {
+    	            rollup: options.rollup,
+    	            timePeriodType: options.timePeriodType,
+    	            timePeriods: options.timePeriods
+    	        });
+    	        var promise = this.mangoApi.getValues(point.xid, options.from, options.to, apiOptions).
+    	        then(function(data){
+    	               //Create some statistis as an example
+    	               var total = 0;
+    	               var max = data[0].value;
+    	               var min = data[0].value;
+    	               for(var i=0; i<data.length; i++){
+    	                   total = total + data[i].value;
+    	                   if(max < data[i].value)
+    	                       max = data[i].value;
+    	                   if(min > data[i].value)
+    	                       min = data[i].value;
+    	               }
+    	               
+    	               //Create one entry per Data Point
+    	               var entry = {
+    	                       name: point.name,
+    	                       total: total,
+    	                       maximum: max,
+    	                       minimum: min
+    	               };  
+    	               var newData = new Array();
+    	               newData.push(entry);
+    	               return newData;
+    	        });
+    	        return promise;
+    	   }
+       });
+       dataProviders.push(customDataProvider);
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
        pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'PointValue'}))
-       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'PointValue'}))
+       pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: /temperature/}]))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({

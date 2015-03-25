@@ -10,72 +10,80 @@
         <style type="text/css">
         </style>
         
-        <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
         
-        <!-- Charting Library -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
+        <!-- Map mango-1.1 overtop of mango link in loader configuration -->
+        <script>
+        	require.config({
+            	map: {'*': {'mango': 'mango-1.1'}}
+        	});
+          	
+        </script>
         
-        <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
-        
-        <!-- JS For this page -->
-    <script type="text/javascript">
-     var socket;
-      /**
-       * Register with the given XID for ALL Events
-       */
-      function register(){
-           var xid = $('#xid').val();
-           if(xid == ""){
-               document.getElementById('errors').innerHTML = "No XID provided";
-               return;
-           }
-          socket = mangoRest.pointValues.registerForEvents(xid,
-                  ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
-                  function(message){ //On Message Received Method
-                     document.getElementById('errors').innerHTML = "";
-                     document.getElementById('lastMessageTime').innerHTML = new Date();
-                     if(message.status == 'OK'){
-                         document.getElementById('value').innerHTML = message.payload.value.value;
-                         document.getElementById('time').innerHTML = message.payload.value.timestamp;
-                         document.getElementById('type').innerHTML = message.payload.event;
-                         
-                     }else{
-                         document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
-                     }
-                  },function(error){ //On Error Method
-                      document.getElementById('status').innerHTML = error;
-                  },function(){ //On Open Method
-                      document.getElementById('status').innerHTML = 'Connected';
-                      document.getElementById('errors').innerHTML = '';
-                  },function(){ //On Close Method
-                      document.getElementById('status').innerHTML = 'Closed';
-                      document.getElementById('errors').innerHTML = '';
-                  });
-      }
-      
-      /**
-       * Un-register for all events
-       */
-      function unRegister(){
-          var xid = $('#xid').val();
-          if(xid == ""){
-              document.getElementById('errors').innerHTML = "No XID provided";
-              return;
-          }
-          mangoRest.pointValues.modifyRegisteredEvents(socket, xid, []);
-          
-      }
+        <script type="text/javascript">
+        require(['mango/api', 'domReady!'],
+        function(MangoAPI) {
+            mangoRest = MangoAPI.defaultApi;
+            
+            /**
+             * Register with the given XID for ALL Events
+             */
+             $('#registerButton').on('click', function(){
+                 var xid = $('#xid').val();
+                 if(xid == ""){
+                     document.getElementById('errors').innerHTML = "No XID provided";
+                     return;
+                 }
+                socket = mangoRest.registerForEvents(xid,
+                        ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
+                        function(message){ //On Message Received Method
+                           document.getElementById('errors').innerHTML = "";
+                           document.getElementById('lastMessageTime').innerHTML = new Date();
+                           if(message.status == 'OK'){
+                               document.getElementById('value').innerHTML = message.payload.value.value;
+                               document.getElementById('time').innerHTML = message.payload.value.timestamp;
+                               document.getElementById('type').innerHTML = message.payload.event;
+                               
+                           }else{
+                               document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                           }
+                        },function(error){ //On Error Method
+                            document.getElementById('status').innerHTML = error;
+                        },function(){ //On Open Method
+                            document.getElementById('status').innerHTML = 'Connected';
+                            document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            document.getElementById('status').innerHTML = 'Closed';
+                            document.getElementById('errors').innerHTML = '';
+                        });
+            });
+            
+            /**
+             * Un-register for all events
+             */
+             $('#unRegisterButton').on('click', function(){
+                var xid = $('#xid').val();
+                if(xid == ""){
+                    document.getElementById('errors').innerHTML = "No XID provided";
+                    return;
+                }
+                mangoRest.modifyRegisteredEvents(socket, xid, []);
+                document.getElementById('lastMessageTime').innerHTML = '';
+                document.getElementById('status').innerHTML = 'Closed';
+                document.getElementById('errors').innerHTML = '';
+                document.getElementById('value').innerHTML = '';
+                document.getElementById('time').innerHTML = '';
+                document.getElementById('type').innerHTML = '';
 
-    </script>
+            });
+        });
+        </script>
     </head>
 	<body>
 	    <label for="xid">Xid: </label><input type="text" id="xid"/>
-	    <button onclick="register()">Register</button>
-	    <button onclick="unRegister()">Un-Register</button>
+	    <button id="registerButton">Register</button>
+	    <button id="unRegisterButton">Un-Register</button>
 	    <div style="clear:both">
 	      <div style="float:left; padding-right:5px">Status: </div>
 	      <div id="status" style="float:left"></div>

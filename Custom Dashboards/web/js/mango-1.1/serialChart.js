@@ -278,7 +278,7 @@ var baseConfiguration = {
         addClassNames: true,
         dataProvider: [],
         //Note the path to images
-        pathToImages: "/modules/dashboards/web/js/amcharts/images/",
+        pathToImages: "/resources/amcharts/images/",
         categoryField: "date",
         categoryAxis: {
             parseDates: true,
