@@ -45,6 +45,11 @@ TextDisplay.prototype = {
             }
             
             var value = data[this.valueAttribute];
+            if (value === null || value === undefined) {
+                // we will often want convertedValue or renderedValue but they aren't available
+                // on non-numeric points
+                value = data.value;
+            }
             
             if (typeof this.manipulateValue === 'function')
                 value = this.manipulateValue(value, dataPoint);
@@ -63,7 +68,7 @@ TextDisplay.prototype = {
         
         renderText: function(value) {
             // PointValueTime
-            if (typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
+            if (value && typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
                 return this.renderValue(value.value);
             }
             

@@ -98,7 +98,7 @@ StatisticsTableDisplay.prototype = {
 
     renderCellText: function(value) {
         // PointValueTime
-        if (typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
+        if (value && typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
             return this.renderValue(value.value) + ' @ ' + this.renderTime(value.timestamp);
         }
         
