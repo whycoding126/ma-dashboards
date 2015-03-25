@@ -12,13 +12,20 @@
 	
 	<title>Bar Chart</title>
 
-    <script type="text/javascript" src="/modules/dashboards/web/js/config.js"></script>
-    <script type="text/javascript" src="/modules/dashboards/web/js/require.js"></script>
+    <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+    <script type="text/javascript" src="/resources/require.js"></script>
+    
+    <!-- Map mango-1.1 overtop of mango link in loader configuration -->
+    <script>
+    	require.config({
+    		map: {'*': {'mango': 'mango-1.1'}}
+		});
+    </script>
     
     <script type="text/javascript">
-    require(['mango/barChart', 'mango/dataPointMatcher', 'mango/dataPointGroup', 'mango/listView',
+    require(['mango/serialChart', 'mango/dataPointMatcher', 'mango/dataPointGroup', 'mango/listView',
              'mango/dashboardTemplater', 'domReady!'],
-    function(BarChartConfiguration, DataPointMatcher, DataPointGroup, ListViewConfiguration, DashboardTemplater) {
+    function(SerialChart, DataPointMatcher, DataPointGroup, ListViewConfiguration, DashboardTemplater) {
     
     // get subtypes we need
     var DataPointMatchConfiguration = DataPointMatcher.DataPointMatchConfiguration;
@@ -28,81 +35,31 @@
    //Define Global Variables
    var templater;
    
-       //Setup Display Configurations
-       var displayConfigurations = new Array();
-       var bar1 = new  BarChartConfiguration(
-               'chart1', //Chart DIV id
-               [1], //List of data provider Ids for this chart
-               { //AmChart Mixins
-                   "categoryField": "name",
-                   "graphs": [
-                              {
-                                  "balloonText": "Average:[[value]]",
-                                  "fillAlphas": 0.8,
-                                  "id": "AmGraph-1",
-                                  "lineAlpha": 0.2,
-                                  "title": "Average",
-                                  "type": "column",
-                                  "valueField": "value"
-                              }
-                          ],
-                          "guides": [],
-                          "valueAxes": [
-                              {
-                                  "id": "ValueAxis-1",
-                                  "position": "top",
-                                  "axisAlpha": 0
-                              }
-                          ],
-       },{//Empty Mango Chart Mixins
-           categoryField: "name", //What member of the data point to use as category label/separator
-       },{
-       });
-       displayConfigurations.push(bar1);
+		//Setup Display Configurations
+		var displayConfigurations = new Array();
+        var bar1 = new SerialChart({
+        	divId: 'chart1', //Chart DIV id
+        	dataProviderIds: [1], //List of data provider Ids for this chart
+        	amChart: { chartScrollbar: null},
+        	graphId: function(valueField, dataPoint){
+           		return 'bar1';
+           	},
+        	graphType: function(valueField, dataPoint){
+        		return 'column';
+			}
+        });
+        displayConfigurations.push(bar1);
        
-       var bar2 = new  BarChartConfiguration(
-               'chart2', //Chart DIV id
-               [1], //List of data provider Ids for this chart
-               { //AmChart Mixins
-                   "categoryField": "name",
-                   "graphs": [
-                              {
-                                  "balloonText": "Total:[[value]]",
-                                  "fillAlphas": 0.8,
-                                  "id": "AmGraph-1",
-                                  "lineAlpha": 0.2,
-                                  "title": "Total",
-                                  "type": "column",
-                                  "valueField": "total"
-                              },
-                              {
-                                  "balloonText": "Maximum:[[value]]",
-                                  "fillAlphas": 0.8,
-                                  "id": "AmGraph-2",
-                                  "lineAlpha": 0.2,
-                                  "title": "Maximum",
-                                  "type": "column",
-                                  "valueField": "maximum"
-                              },
-                              {
-                                  "balloonText": "Minimum:[[value]]",
-                                  "fillAlphas": 0.8,
-                                  "id": "AmGraph-3",
-                                  "lineAlpha": 0.2,
-                                  "title": "Minimum",
-                                  "type": "column",
-                                  "valueField": "minimum"
-                              }
-                          ],
-                          "guides": [],
-                          "valueAxes": [
-                              {
-                                  "id": "ValueAxis-1",
-                                  "position": "top",
-                                  "axisAlpha": 0
-                              }
-                          ],
-       },{
+		var bar2 = new SerialChart({
+			divId: 'chart2', //Chart DIV id
+			dataProvidersIds: [1], //List of data provider Ids for this chart
+            amChart: { chartScrollbar: null},
+        	graphId: function(valueField, dataPoint){
+           		return 'bar1';
+           	},
+        	graphType: function(valueField, dataPoint){
+        		return 'column';
+			},   
            /**
             * on load of data
             * @param data - list of point value time
@@ -111,32 +68,31 @@
            onLoad: function(data, dataPoint){
                this.removeLoading();
                
-               //Create some statistis as an example
-               var total = 0;
-               var max = data[0].value;
-               var min = data[0].value;
-               for(var i=0; i<data.length; i++){
-                   total = total + data[i].value;
-                   if(max < data[i].value)
-                       max = data[i].value;
-                   if(min > data[i].value)
-                       min = data[i].value;
-               }
-               
-               //Create one entry per Data Point
-               var entry = {
-                       name: dataPoint.name,
-                       total: total,
-                       maximum: max,
-                       minimum: min
-               };
-               
-               this.amChart.dataProvider.push(entry);
-               
-               //Refresh the data       
-               this.amChart.validateData();
-           }
-       },{
+             //Create some statistis as an example
+             var total = 0;
+             var max = data[0].value;
+             var min = data[0].value;
+             for(var i=0; i<data.length; i++){
+                 total = total + data[i].value;
+                 if(max < data[i].value)
+                     max = data[i].value;
+                 if(min > data[i].value)
+                     min = data[i].value;
+             }
+             
+             //Create one entry per Data Point
+             var entry = {
+                     name: dataPoint.name,
+                     total: total,
+                     maximum: max,
+                     minimum: min
+             };
+             
+             this.amChart.dataProvider.push(entry);
+             
+             //Refresh the data       
+             this.amChart.validateData();
+         }		
        });
        displayConfigurations.push(bar2);
        

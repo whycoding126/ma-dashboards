@@ -8,7 +8,7 @@
 
 define(['jquery', './dataProvider', './accumulatorDataProvider', './accumulatorRollupDataProvider',
                 './historicalPointValueDataProvider', './pointValueDataProvider', './RealtimeDataProvider',
-                './realtimePointValueDataProvider', './statisticsDataProvider'], function($, DataProvider) {
+                './statisticsDataProvider'], function($, DataProvider) {
 "use strict";
 
 /**
