@@ -28,6 +28,7 @@ TextDisplay.prototype = {
          */
         onClear: function() {
             this.selection.text('');
+            delete this.previous;
         },
         
         /**

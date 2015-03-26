@@ -235,7 +235,15 @@ var DataProvider = extend({
     },
     
     putPoint: function(point, value, options) {
-        return this.mangoApi.putValue(point.xid, value, this.apiOptions);
+        // workaround until we can properly handle putting rendered text to
+        // numeric/multistate/binary points
+        var putOptions = $.extend({}, this.apiOptions);
+        if (putOptions.rendered) {
+            putOptions.rendered = false;
+            putOptions.converted = true;
+        }
+        
+        return this.mangoApi.putValue(point.xid, value, putOptions);
     },
     
     /**
