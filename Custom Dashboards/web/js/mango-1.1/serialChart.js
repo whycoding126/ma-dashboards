@@ -70,16 +70,16 @@ var SerialChart = extend({
      * Displaying Loading... on top of chart div
      */
     loading: function() {
-        if ($('#' + this.divId).find('div.loading').length > 0)
+        if ($('#' + this.divId + ' .amcharts-main-div').find('div.loading').length > 0)
             return;
         var loadingDiv = $('<div>');
         loadingDiv.addClass('loading');
         loadingDiv.text('Loading Chart...');
-        $('#' + this.divId).prepend(loadingDiv);
+        $('#' + this.divId + ' .amcharts-main-div').prepend(loadingDiv);
     },
     
     removeLoading: function() {
-        $('#' + this.divId).find('div.loading').remove();
+        $('#' + this.divId + ' .amcharts-main-div').find('div.loading').remove();
     },
     
     /**
