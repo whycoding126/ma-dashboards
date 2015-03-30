@@ -10,6 +10,7 @@ TextDisplay = function(options) {
     this.valueAttribute = 'value';
     this.suffix = '';
     this.decimalPlaces = 2;
+    this.inhibitUpdateOnFocus = $(null);
 
     for(var i in options) {
         this[i] = options[i];
@@ -67,7 +68,10 @@ TextDisplay.prototype = {
             if (this.useVal) {
                 var inputs = this.selection.filter('input');
                 var others = this.selection.not(inputs);
-                inputs.filter(':not(:focus)').val(rendered);
+                
+                if (this.inhibitUpdateOnFocus.filter(':focus').length === 0) {
+                    inputs.filter(':not(:focus)').val(rendered);
+                }
                 others.text(rendered);
             }
             else {
