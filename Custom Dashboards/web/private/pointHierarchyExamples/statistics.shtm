@@ -34,7 +34,7 @@
     <script type="text/javascript" src="/mango-javascript/v1/barChart.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/statisticsBarChart.js"></script>
 	<script type="text/javascript" src="/mango-javascript/v1/pieChart.js"></script>
-	<script type="text/javascript" src="/mango-javascript/v1/statistics.js"></script>
+	<script type="text/javascript" src="/mango-javascript/v1/statisticsDisplay.js"></script>
     <script type="text/javascript" src="/mango-javascript/v1/gaugeChart.js"></script>
 	
 	<!-- Data Providers -->
@@ -67,8 +67,14 @@
        //Setup Display Configurations
        var displayConfigurations = new Array();
        //Pass in the div id prefix and array of data provider IDs
-       displayConfigurations.push(new StatisticsConfiguration('temperature', [1]));    
-       displayConfigurations.push(new StatisticsConfiguration('voltage', [2]));  
+       displayConfigurations.push(new StatisticsDisplay({
+           container: $('#temperature'),
+           dataProviderIds: [1]
+       }));    
+       displayConfigurations.push(new StatisticsDisplay({
+           container: $('#voltage'),
+           dataProviderIds: [2]
+       }));  
        
        //Create Data Providers
        var dataProviders = new Array();
@@ -132,26 +138,25 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td id="pointName">Voltage</td>
-                  <td id="voltageAverage"></td>
-                  <td id="voltageIntegral"></td>
-                  <td id="voltageSum"></td>
-                  <td id="voltageCount"></td>
-                  <td id="voltageMax"></td>
-                  <td id="voltageMin"></td>
+                <tr id="voltage">
+                  <td>Voltage</td>
+                  <td class="average"></td>
+                  <td class="integral"></td>
+                  <td class="sum"></td>
+                  <td class="count"></td>
+                  <td class="maximum"></td>
+                  <td class="minimum"></td>
                 </tr>
-                <tr>
-                  <td id="pointName">Temperature</td>
-                  <td id="temperatureAverage"></td>
-                  <td id="temperatureIntegral"></td>
-                  <td id="temperatureSum"></td>
-                  <td id="temperatureCount"></td>
-                  <td id="temperatureMax"></td>
-                  <td id="temperatureMin"></td>
+                <tr id="temperature">
+                  <td>Temperature</td>
+                  <td class="average"></td>
+                  <td class="integral"></td>
+                  <td class="sum"></td>
+                  <td class="count"></td>
+                  <td class="maximum"></td>
+                  <td class="minimum"></td>
                 </tr>
               </tbody>
            </table>
 </body>
 </html>
-
