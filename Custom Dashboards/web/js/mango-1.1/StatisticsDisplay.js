@@ -22,7 +22,7 @@ var StatisticsDisplay = function(options) {
  * Serial Chart Config
  */
 StatisticsDisplay.prototype = {
-    useXidContainer: false,
+    containerPerPoint: false,
     decimalPlaces: 2,
     separateValueAndTime: false,
     
@@ -38,13 +38,18 @@ StatisticsDisplay.prototype = {
      * Data Provider listener to clear data
      */
     onClear: function() {
-        var all = this.container.find('.minimum, .maximum, .average, .integral, .sum, .first, .last, .count');
+        var $all = this.container.find('.minimum, .maximum, .average, .integral, .sum, .first, .last, .count');
         if (this.separateValueAndTime) {
-            all.find('.value, .time, .value-time').text('');
-            all.hide();
+            $all.hide().find('.value, .time, .value-time').text('');
         } else {
-            all.text('').hide();
+            $all.hide().text('');
         }
+        
+        $('.starts-and-runtimes').hide().find('tbody').empty();
+    },
+    
+    containerForPoint: function(dataPoint) {
+        return this.container.find('.point-' + dataPoint.xid);
     },
     
     /**
@@ -58,7 +63,7 @@ StatisticsDisplay.prototype = {
             this.container.find('.no-data').show();
         }
         
-        var container = this.useXidContainer ? this.container.find('.point-' + dataPoint.xid) : this.container;
+        var container = this.containerPerPoint ? this.containerForPoint(dataPoint) : this.container;
         
         var minimum = container.find('.minimum');
         var maximum = container.find('.maximum');
@@ -128,6 +133,12 @@ StatisticsDisplay.prototype = {
             sum.text(this.renderValue(data.sum.value)).show();
             count.text(this.renderValue(data.count)).show();
         }
+        
+        if (data.startsAndRuntimes) {
+            var $startsAndRuntimes = container.find('.starts-and-runtimes');
+            this.renderStartsAndRuntimes($startsAndRuntimes, data.startsAndRuntimes);
+            $startsAndRuntimes.show();
+        }
     },
     
     renderPointValueTime: function(pvt) {
@@ -146,6 +157,75 @@ StatisticsDisplay.prototype = {
     
     renderTime: function(timestamp) {
         return moment(timestamp).format('lll');
+    },
+    
+    renderStartsAndRuntimes: function($startsAndRuntimes, data) {
+        var columns = [];
+        
+        $startsAndRuntimes.find('thead tr:first-child').children('th').each(function(i, th) {
+            if ($(th).hasClass('value')) {
+                columns.push('value');
+            } else if ($(th).hasClass('starts')) {
+                columns.push('starts');
+            } else if ($(th).hasClass('runtime')) {
+                columns.push('runtime');
+            } else if ($(th).hasClass('proportion')) {
+                columns.push('proportion');
+            } else {
+                columns.push(null);
+            }
+        });
+        
+        for (var i = 0; i < data.length; i++) {
+            var $tbody = $startsAndRuntimes.find('tbody');
+            var $tr = $('<tr>').appendTo($tbody);
+            for (var j = 0; j < columns.length; j++) {
+                var $td = $('<td>').appendTo($tr);
+                if (columns[j]) {
+                    this.renderCell($td, columns[j], data[i]);
+                }
+            }
+        }
+    },
+    
+    renderCell: function($td, cssClass, rowData) {
+        $td.addClass(cssClass);
+        
+        var text = null;
+        switch(cssClass) {
+        case 'value':
+            text = this.renderMultistateValue(rowData.value);
+            break;
+        case 'starts':
+            text = this.renderCount(rowData.starts);
+            break;
+        case 'runtime':
+            text = this.renderRuntime(rowData.runtime);
+            break;
+        case 'proportion':
+            text = this.renderProportion(rowData.proportion);
+            break;
+        }
+        
+        if (text) $td.text(text);
+    },
+    
+    renderMultistateValue: function(value) {
+        if (typeof value === 'boolean') {
+            return value ? '1' : '0';
+        }
+        if (typeof value === 'number') {
+            return value.toFixed(0);
+        }
+        return value;
+    },
+    
+    renderRuntime: function(runtime) {
+        return moment.duration(runtime).humanize();
+    },
+    
+    renderProportion: function(proportion) {
+        return (proportion * 100).toFixed(2) + ' %';
     },
     
     loading: function() {
