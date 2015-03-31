@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Events Websocket Example</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        
+        
+        <!-- Page Style -->
+        <style type="text/css">
+        </style>
+        
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        
+        <!-- Map mango-1.1 overtop of mango link in loader configuration -->
+        <script>
+        	require.config({
+            	map: {'*': {'mango': 'mango-1.1'}}
+        	});
+          	
+        </script>
+        
+        <script type="text/javascript">
+        require(['mango/api', 'domReady!'],
+        function(MangoAPI) {
+            mangoRest = MangoAPI.defaultApi;
+            
+            /**
+             * Register with the given XID for ALL Events
+             */
+             $('#registerButton').on('click', function(){
+                socket = mangoRest.registerForAlarmEvents(
+                        ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED'],
+                        ['DO_NOT_LOG', 'NONE', 'INFORMATION', 'URGENT', 'CRITICAL', 'LIFE_SAFETY', 'DO_NOT_LOG'],
+                        function(message){ //On Message Received Method
+                           document.getElementById('errors').innerHTML = "";
+                           document.getElementById('lastMessageTime').innerHTML = new Date();
+                           if(message.status == 'OK'){
+                        	   document.getElementById('id').innerHTML = message.payload.id;
+                               document.getElementById('acknowledged').innerHTML = message.payload.acknowledged;
+                               document.getElementById('activeTime').innerHTML = message.payload.activeTime;
+                               document.getElementById('level').innerHTML = message.payload.level;
+                               document.getElementById('message').innerHTML = message.payload.message;
+                               document.getElementById('type').innerHTML = message.payload.type;
+                               
+                               
+                           }else{
+                               document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                           }
+                        },function(error){ //On Error Method
+                            document.getElementById('status').innerHTML = error;
+                        },function(){ //On Open Method
+                            document.getElementById('status').innerHTML = 'Connected';
+                            document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            document.getElementById('status').innerHTML = 'Closed';
+                            document.getElementById('errors').innerHTML = '';
+                        });
+            });
+            
+            /**
+             * Un-register for all events
+             */
+             $('#unRegisterButton').on('click', function(){
+                var xid = $('#xid').val();
+                if(xid == ""){
+                    document.getElementById('errors').innerHTML = "No XID provided";
+                    return;
+                }
+                mangoRest.modifyRegisteredAlarmEvents(socket, [], []);
+                document.getElementById('lastMessageTime').innerHTML = '';
+                document.getElementById('status').innerHTML = 'Closed';
+                document.getElementById('errors').innerHTML = '';
+                document.getElementById('id').innerHTML = '';
+                document.getElementById('acknowledged').innerHTML = '';
+                document.getElementById('activeTime').innerHTML = '';
+                document.getElementById('level').innerHTML = '';
+                document.getElementById('message').innerHTML = '';
+                document.getElementById('type').innerHTML = '';
+
+            });
+        });
+        </script>
+    </head>
+	<body>
+	    <button id="registerButton">Register</button>
+	    <button id="unRegisterButton">Un-Register</button>
+	    <div style="clear:both">
+	      <div style="float:left; padding-right:5px">Status: </div>
+	      <div id="status" style="float:left"></div>
+	    </div>
+	    
+	    <div style="clear:both">
+	      <div style="float:left; padding-right:5px">Last Message: </div>
+	      <div id="lastMessageTime" style="float:left"></div>
+	    </div>
+	    
+	    <div style="clear:both">
+	      <div style="float:left; padding-right:5px">Id: </div>
+	      <div id="id" style="float:left; padding-right:5px"></div>
+	    </div>
+
+      <div style="clear:both">
+        <div style="float:left; padding-right:5px">Acknowleged: </div>
+        <div id="acknowledged" style="float:left; padding-right:5px"></div>
+      </div>
+	   
+      <div style="clear:both">
+        <div style="float:left; padding-right:5px">Active: </div>
+        <div id="activeTime" style="float:left; padding-right:5px"></div>
+      </div>
+
+      <div style="clear:both">
+        <div style="float:left; padding-right:5px">Level: </div>
+        <div id="level" style="float:left; padding-right:5px"></div>
+      </div>
+      
+       <div style="clear:both">
+        <div style="float:left; padding-right:5px">Message: </div>
+        <div id="message" style="float:left; padding-right:5px"></div>
+      </div>          
+      <div style="clear:both">
+	      <div style="float:left; padding-right:5px">Message Type: </div>
+	      <div id="type" style="float:left"></div>
+	  </div>
+        
+	    
+	    <!-- Placeholder to log errors -->
+	    <div id="errors" style="color: red"></div>    
+    </body>
+</html>
