@@ -9,6 +9,9 @@ function($, extend, declare, Memory, Trackable, OnDemandGrid) {
 
 var GridDisplay = extend({
     constructor: function(options) {
+        // stores data which arrives while loading
+        this.cache = [];
+        
         this.store = new declare([Memory, Trackable])({
             data: [],
             idProperty: 'timestamp'
@@ -19,6 +22,10 @@ var GridDisplay = extend({
         
         $.extend(this.gridOptions, options.gridOptions);
         delete options.gridOptions;
+        
+        this.loadingMessage = this.gridOptions.loadingMessage;
+        this.noDataMessage = this.gridOptions.noDataMessage;
+        
         $.extend(this, options);
     },
     
@@ -31,6 +38,8 @@ var GridDisplay = extend({
      * Data Provider listener to clear data
      */
     onClear: function() {
+        this.cache = [];
+        this.grid.noDataMessage = this.noDataMessage;
         this.store.setData([]);
         this.grid.refresh();
     },
@@ -41,20 +50,31 @@ var GridDisplay = extend({
      */
     onLoad: function(data, dataPoint) {
         if ($.isArray(data)) {
-            this.store.setData(data);
+            this.removeLoading();
+            this.store.setData(this.cache.concat(data));
+            this.cache = [];
             this.grid.refresh();
         }
         else {
-            this.store.put(data);
+            if (this.isLoading) {
+                this.cache.push(data);
+            }
+            else {
+                this.store.put(data);
+            }
         }
     },
     
     loading: function() {
-        
+        this.isLoading = true;
+        this.grid.noDataMessage = this.loadingMessage;
+        this.grid.refresh();
     },
     
     removeLoading: function() {
-        
+        this.isLoading = false;
+        this.grid.noDataMessage = this.noDataMessage;
+        // refresh is called straight after by onLoad()
     }
 });
 

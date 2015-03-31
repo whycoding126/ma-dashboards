@@ -40,10 +40,9 @@ StatisticsDisplay.prototype = {
     onClear: function() {
         var all = this.container.find('.minimum, .maximum, .average, .integral, .sum, .first, .last, .count');
         if (this.separateValueAndTime) {
-            all.find('.value, .time, .formatted').text('');
+            all.find('.value, .time, .value-time').text('');
             all.hide();
-        }
-        else {
+        } else {
             all.text('').hide();
         }
     },
@@ -53,8 +52,11 @@ StatisticsDisplay.prototype = {
      * On Data Provider load we add new data
      */
     onLoad: function(data, dataPoint) {
-        if(!data.hasData)
-            return;
+        this.removeLoading();
+        
+        if (!data.hasData) {
+            this.container.find('.no-data').show();
+        }
         
         var container = this.useXidContainer ? this.container.find('.point-' + dataPoint.xid) : this.container;
         
@@ -71,28 +73,28 @@ StatisticsDisplay.prototype = {
             if (data.minimum) {
                 minimum.find('.value').text(this.renderValue(data.minimum.value));
                 minimum.find('.time').text(this.renderTime(data.minimum.timestamp));
-                minimum.find('.formatted').text(this.renderPointValueTime(data.minimum));
+                minimum.find('.value-time').text(this.renderPointValueTime(data.minimum));
                 minimum.show();
             }
             
             if (data.maximum) {
                 maximum.find('.value').text(this.renderValue(data.maximum.value));
                 maximum.find('.time').text(this.renderTime(data.maximum.timestamp));
-                maximum.find('.formatted').text(this.renderPointValueTime(data.maximum));
+                maximum.find('.value-time').text(this.renderPointValueTime(data.maximum));
                 maximum.show();
             }
             
             if (data.first) {
                 first.find('.value').text(this.renderValue(data.first.value));
                 first.find('.time').text(this.renderTime(data.first.timestamp));
-                first.find('.formatted').text(this.renderPointValueTime(data.first));
+                first.find('.value-time').text(this.renderPointValueTime(data.first));
                 first.show();
             }
             
             if (data.last) {
                 last.find('.value').text(this.renderValue(data.last.value));
                 last.find('.time').text(this.renderTime(data.last.timestamp));
-                last.find('.formatted').text(this.renderPointValueTime(data.last));
+                last.find('.value-time').text(this.renderPointValueTime(data.last));
                 last.show();
             }
             
@@ -129,23 +131,30 @@ StatisticsDisplay.prototype = {
     },
     
     renderPointValueTime: function(pvt) {
-       return this.renderValue(pvt.value) + " @ " + this.renderTime(pvt.timestamp);  
+       return this.renderValue(pvt.value) + ' @ ' + this.renderTime(pvt.timestamp);  
     },
     
     renderValue: function(value) {
-        if (typeof value === 'number')
-            return value.toFixed(this.decimalPlaces);
+        if (typeof value === 'number') return value.toFixed(this.decimalPlaces);
         return value;
     },
     
     renderCount: function(value) {
-        if (typeof value === 'number')
-            return value.toFixed(0);
+        if (typeof value === 'number') return value.toFixed(0);
         return value;
     },
     
     renderTime: function(timestamp) {
         return moment(timestamp).format('lll');
+    },
+    
+    loading: function() {
+        this.container.find('.loading').show();
+        this.container.find('.no-data').hide();
+    },
+    
+    removeLoading: function() {
+        this.container.find('.loading').hide();
     }
 };
 

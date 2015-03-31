@@ -38,8 +38,12 @@ TextDisplay.prototype = {
          */
         onLoad: function(data, dataPoint) {
             if ($.isArray(data)) {
-                data = data[0];
+                if (data.length) {
+                    data = data[0];
+                }
+                else return;
             }
+            
             if (typeof data.minimum == 'object') {
                 data.minimum = data.minimum.value;
                 data.maximum = data.maximum.value;
