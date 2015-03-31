@@ -460,6 +460,51 @@ var MangoAPI = extend({
         },
         
         /**
+         * Register for alarm events
+         * @param events - ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
+         * @param levels - ['DO_NOT_LOG', ''....]
+         * @param onMessage(message) - method to call on message received evt.data
+         * @param onError(message) - method to call on error
+         * @param onOpen - method to call on Socket 
+         * @param onClose - method to call on Close
+         * @returns webSocket
+         */
+        registerForAlarmEvents: function(events, levels, onMessage, onError, onOpen, onClose) {
+            if ('WebSocket' in window) {
+                var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/events');
+                socket.onopen = function() {
+                    //Register for recieving point values
+                    // using a PointValueRegistrationModel
+                    socket.send(JSON.stringify({
+                        eventTypes: events,
+                        levels: levels
+                    }));
+                    onOpen();
+                };
+                socket.onclose = onClose;
+                socket.onmessage = function(event) {
+                    onMessage(JSON.parse(event.data));
+                };
+                return socket;
+            } else {
+                alert('Websockets not supported!');
+            }
+        },
+        
+        /**
+         * Modify the existing events for the logged in user
+         * @param events - []
+         * @param 
+         * @returns
+         */
+        modifyRegisteredAlarmEvents: function(socket, events, levels) {
+            socket.send(JSON.stringify({
+                eventTypes: events,
+                levels: levels
+            }));
+        },
+        
+        /**
          * Get Mango translations for use with the Globalize JS library
          * 
          * @param namespace - (optional) limits results to the given namespace, i.e. the part of the key
