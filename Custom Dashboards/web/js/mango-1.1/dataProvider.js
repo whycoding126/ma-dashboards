@@ -235,12 +235,17 @@ var DataProvider = extend({
     },
     
     putPoint: function(point, value, options) {
-        // workaround until we can properly handle putting rendered text to
-        // numeric/multistate/binary points
+        /**
+         * TODO properly handle putting a rendered text string to REST endpoints
+         * This should work for numeric/multistate/binary points
+         * This is a workaround until then
+         */
         var putOptions = $.extend({}, this.apiOptions);
         if (putOptions.rendered) {
             putOptions.rendered = false;
-            putOptions.converted = true;
+            if (point.pointLocator.dataType === 'NUMERIC') {
+                putOptions.converted = true;
+            }
         }
         
         return this.mangoApi.putValue(point.xid, value, putOptions);

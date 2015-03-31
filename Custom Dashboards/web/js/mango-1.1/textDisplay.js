@@ -28,7 +28,15 @@ TextDisplay.prototype = {
          * Data Provider listener to clear data
          */
         onClear: function() {
-            this.selection.text('');
+            if (this.useVal) {
+                var inputs = this.selection.filter('input');
+                var others = this.selection.not(inputs);
+                inputs.val('');
+                others.text('');
+            }
+            else {
+                this.selection.text('');
+            }
             delete this.previous;
         },
         
