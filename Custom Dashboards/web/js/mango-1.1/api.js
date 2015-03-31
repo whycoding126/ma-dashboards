@@ -68,7 +68,7 @@ var MangoAPI = extend({
          */
         getAllPoints: function() {
             return this.ajax({
-                url: "/rest/v1/dataPoints.json"
+                url: "/rest/v1/data-points"
             });
         },
         
@@ -80,7 +80,7 @@ var MangoAPI = extend({
          */
         getPoint: function(xid) {
             return this.ajax({
-                url: "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".json"
+                url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
             });
         },
 
@@ -93,7 +93,7 @@ var MangoAPI = extend({
         putPoint: function(dataPoint) {
             return this.ajax({
                 type: "PUT",
-                url : "/rest/v1/dataPoints/" + encodeURIComponent(dataPoint.xid) + ".json",
+                url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid) + ".json",
                 contentType: "application/json",
                 data: JSON.stringify(dataPoint)
             });
@@ -109,7 +109,7 @@ var MangoAPI = extend({
         putCSVPoint: function(xid, csvData) {
             return this.ajax({
                 type: "PUT",
-                url : "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".csv",
+                url : "/rest/v1/data-points/" + encodeURIComponent(xid) + ".csv",
                 contentType: "text/csv",
                 data: csvData
             });
@@ -134,7 +134,7 @@ var MangoAPI = extend({
         getValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&to=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&to=" +
                 toISOString(to);
             
             if (options.rollup)
@@ -169,7 +169,7 @@ var MangoAPI = extend({
         getFirstLastValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
             
             if (typeof options.rendered !== 'undefined')
@@ -198,7 +198,7 @@ var MangoAPI = extend({
         getLatestValues: function(xid, limit, options) {
             options = options || {};
             
-            var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/latest.json?limit=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest.json?limit=" +
                 encodeURIComponent(limit);
             
             if (typeof options.rendered !== 'undefined')
@@ -229,7 +229,7 @@ var MangoAPI = extend({
         getStatistics: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/statistics.json?from=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics.json?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
             
             if (typeof options.rendered !== 'undefined')
@@ -257,7 +257,7 @@ var MangoAPI = extend({
         putValue: function(xid, pointValue, options) {
             options = options || {};
             
-            var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json";
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json";
             var data = JSON.stringify(pointValue);
             
             if (typeof options.converted !== 'undefined')
@@ -283,7 +283,7 @@ var MangoAPI = extend({
          */
         registerForEvents: function(xid, events, onMessage, onError, onOpen, onClose) {
             if ('WebSocket' in window) {
-                var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
+                var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/point-value');
                 socket.onopen = function() {
                     //Register for recieving point values
                     // using a PointValueRegistrationModel
@@ -333,7 +333,7 @@ var MangoAPI = extend({
             
             protocol = protocol === 'https:' ? 'wss:' : 'ws:';
             
-            return new WebSocket(protocol + '//' + host + '/rest/v1/websocket/pointValue');
+            return new WebSocket(protocol + '//' + host + '/rest/v1/websocket/point-value');
         },
 
         /**
