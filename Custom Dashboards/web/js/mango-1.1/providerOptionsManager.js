@@ -297,7 +297,20 @@ var ProviderOptionsManager = extend({
                     this.providerOptions.timePeriodType = 'MINUTES';
                 }
             }
-            // up to 12 hours: 12 hours * 60 minutes = 720 periods
+            else if (timePeriod >  moment.duration(1, 'hours').asMilliseconds()) {
+                // 1 hours to 12 hrs:  12 hours * 60 minutes / 1 =  720 periods
+                if (rollupPeriod < moment.duration(1, 'minutes').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
+                    this.providerOptions.timePeriodType = 'MINUTES';
+                }
+            }else if (timePeriod > 0){
+            	//For all time less than 1 hrs we can allow second level rollup
+            	// 0 to 1 hours: 3600 periods yikes!
+            	if (rollupPeriod < moment.duration(1, 'second').asMilliseconds()) {
+                    this.providerOptions.timePeriods = 1;
+                    this.providerOptions.timePeriodType = 'SECONDS';
+                }
+            }
         }
         
         this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
