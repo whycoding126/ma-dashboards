@@ -11,6 +11,7 @@ var GridDisplay = extend({
     constructor: function(options) {
         // stores data which arrives while loading
         this.cache = [];
+        this.maximumItems = null;
         
         this.store = new declare([Memory, Trackable])({
             data: [],
@@ -53,6 +54,7 @@ var GridDisplay = extend({
             this.removeLoading();
             this.store.setData(this.cache.concat(data));
             this.cache = [];
+            this.trimItems();
             this.grid.refresh();
         }
         else {
@@ -61,7 +63,19 @@ var GridDisplay = extend({
             }
             else {
                 this.store.put(data);
+                this.trimItems();
             }
+        }
+    },
+    
+    trimItems: function() {
+        if (!this.maximumItems) return;
+        
+        var sortedStore = this.store.sort(this.store.idProperty);
+        
+        while (this.store.data.length > this.maximumItems) {
+            var lowestIdItem = sortedStore.fetchRangeSync({start: 0, end: 1})[0];
+            this.store.removeSync(lowestIdItem[this.store.idProperty]);
         }
     },
     
