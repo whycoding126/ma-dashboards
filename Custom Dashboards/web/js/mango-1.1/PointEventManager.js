@@ -29,7 +29,7 @@ var PointEventManager = extend({
         
         var deferred = $.Deferred();
         
-        var socket = this.mangoApi.openSocket();
+        var socket = this.mangoApi.openSocket('/rest/v1/websocket/point-value');
         
         socket.onopen = function() {
             deferred.resolve(socket);

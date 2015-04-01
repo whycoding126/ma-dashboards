@@ -83,7 +83,12 @@ var RealtimeDataProvider = DataProvider.extend({
         if (this.enabled) {
             var point = this.toPoint(dataPointConfiguration);
             var xid = point.xid;
-            pointEventManager.subscribe(xid, this.eventType, this.eventHandler);
+            try {
+                pointEventManager.subscribe(xid, this.eventType, this.eventHandler);
+            }
+            catch (e) {
+                // fail silently if WebSocket not supported
+            }
         }
     },
 

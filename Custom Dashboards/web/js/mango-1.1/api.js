@@ -281,26 +281,22 @@ var MangoAPI = extend({
          * @param onClose - method to call on Close
          * @returns webSocket
          */
-        registerForEvents: function(xid, events, onMessage, onError, onOpen, onClose) {
-            if ('WebSocket' in window) {
-                var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/point-value');
-                socket.onopen = function() {
-                    //Register for recieving point values
-                    // using a PointValueRegistrationModel
-                    socket.send(JSON.stringify({
-                        xid: xid,
-                        eventTypes: events
-                    }));
-                    onOpen();
-                };
-                socket.onclose = onClose;
-                socket.onmessage = function(event) {
-                    onMessage(JSON.parse(event.data));
-                };
-                return socket;
-            } else {
-                alert('Websockets not supported!');
-            }
+        registerForPointEvents: function(xid, events, onMessage, onError, onOpen, onClose) {
+            var socket = this.openSocket('/rest/v1/websocket/point-value');
+            socket.onopen = function() {
+                //Register for recieving point values
+                // using a PointValueRegistrationModel
+                socket.send(JSON.stringify({
+                    xid: xid,
+                    eventTypes: events
+                }));
+                onOpen();
+            };
+            socket.onclose = onClose;
+            socket.onmessage = function(event) {
+                onMessage(JSON.parse(event.data));
+            };
+            return socket;
         },
         
         /**
@@ -309,14 +305,18 @@ var MangoAPI = extend({
          * @param events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
          * @returns
          */
-        modifyRegisteredEvents: function(socket, xid, events) {
+        modifyRegisteredPointEvents: function(socket, xid, events) {
             socket.send(JSON.stringify({
                 xid: xid,
                 eventTypes: events
             }));
         },
         
-        openSocket: function() {
+        openSocket: function(path) {
+            if (!'WebSocket' in window) {
+                throw new Error('WebSocket not supported');
+            };
+            
             var host = document.location.host;
             var protocol = document.location.protocol;
             
@@ -333,7 +333,7 @@ var MangoAPI = extend({
             
             protocol = protocol === 'https:' ? 'wss:' : 'ws:';
             
-            return new WebSocket(protocol + '//' + host + '/rest/v1/websocket/point-value');
+            return new WebSocket(protocol + '//' + host + path);
         },
 
         /**
@@ -459,6 +459,37 @@ var MangoAPI = extend({
             });
         },
         
+        getEventsActiveSummary: function() {
+            var url = '/rest/v1/events/active-summary';
+            
+            return this.ajax({
+                url: url
+            });
+        },
+        
+        acknowledgeEvent: function(event, message) {
+            var url = '/rest/v1/events/acknowledge/' + encodeURIComponent(event.id);
+            
+            var data;
+            if (typeof message === 'string') {
+                data = {
+                    key: 'literal',
+                    args: [message]
+                }
+            }
+            else {
+                data = message;
+            }
+            data = JSON.stringify(data);
+            
+            return this.ajax({
+                type: 'PUT',
+                url: url,
+                contentType: 'application/json',
+                data: data
+            });
+        },
+        
         /**
          * Register for alarm events
          * @param events - ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
@@ -470,25 +501,21 @@ var MangoAPI = extend({
          * @returns webSocket
          */
         registerForAlarmEvents: function(events, levels, onMessage, onError, onOpen, onClose) {
-            if ('WebSocket' in window) {
-                var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/events');
-                socket.onopen = function() {
-                    //Register for recieving point values
-                    // using a PointValueRegistrationModel
-                    socket.send(JSON.stringify({
-                        eventTypes: events,
-                        levels: levels
-                    }));
-                    onOpen();
-                };
-                socket.onclose = onClose;
-                socket.onmessage = function(event) {
-                    onMessage(JSON.parse(event.data));
-                };
-                return socket;
-            } else {
-                alert('Websockets not supported!');
-            }
+            var socket = this.openSocket('/rest/v1/websocket/events');
+            socket.onopen = function() {
+                //Register for recieving point values
+                // using a PointValueRegistrationModel
+                socket.send(JSON.stringify({
+                    eventTypes: events,
+                    levels: levels
+                }));
+                onOpen();
+            };
+            socket.onclose = onClose;
+            socket.onmessage = function(event) {
+                onMessage(JSON.parse(event.data));
+            };
+            return socket;
         },
         
         /**
