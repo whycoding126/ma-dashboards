@@ -495,7 +495,7 @@ var MangoAPI = extend({
          * 
          * TODO change the callbacks to events that are emitted
          * 
-         * @param events - ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
+         * @param events - ['ACKNOWLEGED', 'RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
          * @param levels - ['DO_NOT_LOG', ''....]
          * @param onMessage(message) - method to call on message received evt.data
          * @param onError(message) - method to call on error

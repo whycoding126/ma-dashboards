@@ -221,6 +221,9 @@ var ProviderOptionsManager = extend({
         
         if (this.rollupPicker.length > 0) {
             this.providerOptions.rollup = this.rollupPicker.val();
+            //Hack for Select2 not letting me use an empty value for none
+            if(this.providerOptions.rollup === 'NONE')
+            	this.providerOptions.rollup = null;
         }
         if (this.timePeriodTypePicker.length > 0) {
             this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
