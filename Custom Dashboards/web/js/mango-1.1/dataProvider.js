@@ -334,18 +334,23 @@ var DataProvider = extend({
         };
         if (!a.from || !b.from || a.from.valueOf() !== b.from.valueOf()) {
             result.from = true;
+            result.fromValue = b.from;
         }
         if (!a.to || !b.to || a.to.valueOf() !== b.to.valueOf()) {
             result.to = true;
+            result.toValue = b.to;
         }
         if (a.rollup !== b.rollup) {
             result.rollup = true;
+            result.rollupValue = b.rollup;
         }
         if (a.timePeriodType !== b.timePeriodType) {
             result.timePeriodType = true;
+            result.timePeriodTypeValue = b.timePeriodType;
         }
         if (a.timePeriods !== b.timePeriods) {
             result.timePeriods = true;
+            result.timePeriodsValue = b.timePeriods;
         }
         return result;
     }

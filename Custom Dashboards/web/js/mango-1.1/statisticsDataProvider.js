@@ -24,6 +24,8 @@ var StatisticsDataProvider = DataProvider.extend({
     needsToLoad: function(changedOptions) {
         if (changedOptions.from || changedOptions.to)
             return true;
+        if((changedOptions.rollup) && (changedOptions.rollupValue === 'NONE'))
+        	return true;
         return false;
     },
     

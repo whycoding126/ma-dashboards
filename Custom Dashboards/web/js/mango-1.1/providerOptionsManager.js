@@ -28,11 +28,6 @@ var ProviderOptionsManager = extend({
     timePeriodTypePicker: null,
     timePeriodsPicker: null,
     
-    //For Counts to limit options
-    maxPointValueCount: 5000,
-    api: MangoAPI.defaultApi,
-    
-    
     constructor: function(options) {
         this.pickerChanged = this.pickerChanged.bind(this);
         
@@ -144,8 +139,12 @@ var ProviderOptionsManager = extend({
         
         this.loadFromPickers();
         
-        if(triggerRefresh)
-        	this.tryRefresh();
+        if (triggerRefresh && this.refreshOnChange) {
+            this.refreshProviders();
+        }
+
+        $(this).trigger("change", this.providerOptions);
+
     },
 
     timePickerChanged: function(preset) {
@@ -242,32 +241,6 @@ var ProviderOptionsManager = extend({
         // disable the time period pickers when there is no rollup
         this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === 'NONE');
         this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === 'NONE');
-    },
-    
-    /**
-     * Attempt to refresh data providers
-     * Default is to perform a count first
-     * to check amount of data to be returned
-     */
-    tryRefresh: function(){
-    	var dataPoint = this.getDataPoint();
-    	var self = this;
-    	this.api.countValues(dataPoint.xid, this.providerOptions.from, this.providerOptions.to, this.providerOptions).done(function(count){
-
-    		if(count <= self.maxPointValueCount){
-	            if (self.refreshOnChange) {
-	                self.refreshProviders();
-	            }
-	
-	            $(self).trigger("change", this.providerOptions);
-    		}else{
-    			self.displayTooMuchData(count, self.maxPointValueCount);
-    		}
-    	});
-    },
-    
-    displayTooMuchData: function(amount, limit){
-    	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
     },
     
     /**
