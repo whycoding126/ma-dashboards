@@ -136,7 +136,7 @@ StatisticsDisplay.prototype = {
         
         if (data.startsAndRuntimes) {
             var $startsAndRuntimes = container.find('.starts-and-runtimes');
-            this.renderStartsAndRuntimes($startsAndRuntimes, data.startsAndRuntimes);
+            this.renderStartsAndRuntimes($startsAndRuntimes, data.startsAndRuntimes, dataPoint);
             $startsAndRuntimes.show();
         }
     },
@@ -159,7 +159,7 @@ StatisticsDisplay.prototype = {
         return moment(timestamp).format('lll');
     },
     
-    renderStartsAndRuntimes: function($startsAndRuntimes, data) {
+    renderStartsAndRuntimes: function($startsAndRuntimes, data, dataPoint) {
         var columns = [];
         
         $startsAndRuntimes.find('thead tr:first-child').children('th').each(function(i, th) {
@@ -182,19 +182,19 @@ StatisticsDisplay.prototype = {
             for (var j = 0; j < columns.length; j++) {
                 var $td = $('<td>').appendTo($tr);
                 if (columns[j]) {
-                    this.renderCell($td, columns[j], data[i]);
+                    this.renderCell($td, columns[j], data[i], dataPoint);
                 }
             }
         }
     },
     
-    renderCell: function($td, cssClass, rowData) {
+    renderCell: function($td, cssClass, rowData, dataPoint) {
         $td.addClass(cssClass);
         
         var text = null;
         switch(cssClass) {
         case 'value':
-            text = this.renderMultistateValue(rowData.value);
+            text = this.renderMultistateValue(rowData.value, dataPoint);
             break;
         case 'starts':
             text = this.renderCount(rowData.starts);
@@ -206,11 +206,27 @@ StatisticsDisplay.prototype = {
             text = this.renderProportion(rowData.proportion);
             break;
         }
-        
-        if (text) $td.text(text);
+        if (text) $td.html(text);
     },
     
-    renderMultistateValue: function(value) {
+    renderMultistateValue: function(value, dataPoint) {
+    	
+    	switch(dataPoint.textRenderer.type){
+	  		case 'textRendererBinary':
+	  			if(value === true)
+	  				return '<span style="color:' + dataPoint.textRenderer.oneColour + '">' + dataPoint.textRenderer.oneLabel + '</span>';
+	  			else if(value === false)
+	  				return 	'<span style="color:' + dataPoint.textRenderer.zeroColour + '">' + dataPoint.textRenderer.zeroLabel + '</span>';
+	  		break;
+	  		case 'textRendererMultistate':
+	  			for(var i=0; i<dataPoint.textRenderer.multistateValues.length; i++){
+	  				var mValue = dataPoint.textRenderer.multistateValues[i];
+	  				if(value === mValue.key)
+	  					return '<span style="color:' + mValue.colour + '">' + mValue.text + '</span>'
+	  			}
+	  		break;
+		}
+    	
         if (typeof value === 'boolean') {
             return value ? '1' : '0';
         }
