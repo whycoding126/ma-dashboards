@@ -4,10 +4,13 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery', 'extend', 'moment-timezone'],
-function($, extend, moment) {
+define(['jquery', 'mango/api', 'extend', 'moment-timezone'],
+function($, MangoAPI, extend, moment) {
 "use strict";
 
+/**
+ * Note that the NONE rollup is now a value instead of ''
+ */
 var ProviderOptionsManager = extend({
     providerOptions: null,
     providers: [],
@@ -17,10 +20,18 @@ var ProviderOptionsManager = extend({
      */
     graphType: 'bar',
     
+    //Used to signal to disable the NONE rollup type
+    allowNoneRollup: false,
+    
     timePicker: null,
     rollupPicker: null,
     timePeriodTypePicker: null,
     timePeriodsPicker: null,
+    
+    //For Counts to limit options
+    maxPointValueCount: 5000,
+    api: MangoAPI.defaultApi,
+    
     
     constructor: function(options) {
         this.pickerChanged = this.pickerChanged.bind(this);
@@ -128,14 +139,13 @@ var ProviderOptionsManager = extend({
             if (!data.triggerRefresh)
                 triggerRefresh = false;
             this.timePickerChanged(data.preset);
+            //Could suggest rollup values here
         }
+        
         this.loadFromPickers();
         
-        if (this.refreshOnChange && triggerRefresh) {
-            this.refreshProviders();
-        }
-
-        $(this).trigger("change", this.providerOptions);
+        if(triggerRefresh)
+        	this.tryRefresh();
     },
 
     timePickerChanged: function(preset) {
@@ -221,9 +231,6 @@ var ProviderOptionsManager = extend({
         
         if (this.rollupPicker.length > 0) {
             this.providerOptions.rollup = this.rollupPicker.val();
-            //Hack for Select2 not letting me use an empty value for none
-            if(this.providerOptions.rollup === 'NONE')
-            	this.providerOptions.rollup = null;
         }
         if (this.timePeriodTypePicker.length > 0) {
             this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
@@ -232,28 +239,59 @@ var ProviderOptionsManager = extend({
             this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
         }
         
-        this.limitRollupPeriod();
-        
         // disable the time period pickers when there is no rollup
-        this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === '');
-        this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === '');
+        this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === 'NONE');
+        this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === 'NONE');
     },
     
     /**
+     * Attempt to refresh data providers
+     * Default is to perform a count first
+     * to check amount of data to be returned
+     */
+    tryRefresh: function(){
+    	var dataPoint = this.getDataPoint();
+    	var self = this;
+    	this.api.countValues(dataPoint.xid, this.providerOptions.from, this.providerOptions.to, this.providerOptions).done(function(count){
+
+    		if(count <= self.maxPointValueCount){
+	            if (self.refreshOnChange) {
+	                self.refreshProviders();
+	            }
+	
+	            $(self).trigger("change", this.providerOptions);
+    		}else{
+    			self.displayTooMuchData(count, self.maxPointValueCount);
+    		}
+    	});
+    },
+    
+    displayTooMuchData: function(amount, limit){
+    	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
+    },
+    
+    /**
+     * This is no longer used, we are now checking the count.
+     * 
      * Dont allow tiny rollup periods for comparatively large date ranges
      * Also limit the use of no rollup to small periods
      */
     limitRollupPeriod: function() {
-        var timePeriod = this.providerOptions.to - this.providerOptions.from;
+    	
         
-        if (this.providerOptions.rollup === '' && timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
-            this.providerOptions.rollup = 'AVERAGE';
+    	var timePeriod = this.providerOptions.to - this.providerOptions.from;
+
+        
+        if (((this.providerOptions.rollup === 'NONE')||(this.providerOptions.rollup === ''))  && timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
+        	//We need to either choose a rollup that is available for all data types or track a data type here
+        	this.allowNoneRollup = false;
+        	this.providerOptions.rollup = 'FIRST'; 
             this.rollupPicker.val(this.providerOptions.rollup).trigger('change.select2');
             this.providerOptions.timePeriods = 1;
             this.providerOptions.timePeriodType = 'MINUTES';
         }
         
-        if (this.providerOptions.rollup !== '') {
+        if (this.providerOptions.rollup !== 'NONE') {
             var timePeriods = this.providerOptions.timePeriods;
             var timePeriodType = this.providerOptions.timePeriodType.toLowerCase();
             var rollupPeriod = moment.duration(timePeriods, timePeriodType).asMilliseconds();
@@ -309,6 +347,7 @@ var ProviderOptionsManager = extend({
             }else if (timePeriod > 0){
             	//For all time less than 1 hrs we can allow second level rollup
             	// 0 to 1 hours: 3600 periods yikes!
+            	this.allowNoneRollup = true;
             	if (rollupPeriod < moment.duration(1, 'second').asMilliseconds()) {
                     this.providerOptions.timePeriods = 1;
                     this.providerOptions.timePeriodType = 'SECONDS';
@@ -346,6 +385,10 @@ var ProviderOptionsManager = extend({
         picker = $(picker);
         picker.on('change', this.pickerChanged);
         this[pickerName] = picker;
+    },
+
+    getAllowNoneRollup: function(){
+    	return this.allowNoneRollup;
     }
 });
 

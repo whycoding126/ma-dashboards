@@ -154,6 +154,38 @@ var MangoAPI = extend({
         },
         
         /**
+         * Count values based on date ranges with optional rollup
+         * 
+         * @param xid - for point desired
+         * @param from - date from
+         * @param to - date to
+         * @param options - optional object
+         *        {
+         *            rollup: one of ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
+         *            timePeriodType: one of ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS'],
+         *            timePeriods: integer number of periods to use,
+         *        }
+         * @return promise, resolved with data when done
+         */
+        countValues: function(xid, from, to, options) {
+            options = options || {};
+            
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count.json?from=" + toISOString(from) + "&to=" +
+                toISOString(to);
+            
+            if (options.rollup)
+                url += "&rollup=" + encodeURIComponent(options.rollup);
+            if (options.timePeriodType)
+                url += "&timePeriodType=" + encodeURIComponent(options.timePeriodType);
+            if (options.timePeriods)
+                url += "&timePeriods=" + encodeURIComponent(options.timePeriods);
+            
+            return this.ajax({
+                url: url
+            });
+        },
+        
+        /**
          * Get first and last point values for a date range
          * 
          * @param xid - for point desired
