@@ -45,7 +45,6 @@ var PointValueDataProvider = DataProvider.extend({
     tryLoadPoint: function(point, options){
         var self = this;
     	return this.mangoApi.countValues(point.xid, options.from, options.to, options).then(function(count){
-
     		if(count <= self.maxPointValueCount){
     			return self.mangoApi.getValues(point.xid, options.from, options.to, options);
     		}else{
@@ -53,7 +52,7 @@ var PointValueDataProvider = DataProvider.extend({
     			//deferred.reject(null,'Too Much Data', 'Too Many PointValues Data', 'Max Allowed: ' + self.maxPointValueCount);
     			deferred.done({data: [], point: point});
     			self.tooMuchData(count, self.maxPointValueCount);
-    			return deferred;
+    			return deferred.promise();
     		}
     	});
     },
