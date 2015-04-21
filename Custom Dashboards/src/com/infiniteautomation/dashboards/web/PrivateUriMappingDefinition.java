@@ -4,9 +4,13 @@
  */
 package com.infiniteautomation.dashboards.web;
 
+import com.infiniteautomation.dashboards.DashboardsPermissionDefinition;
 import com.infiniteautomation.dashboards.Lifecycle;
+import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.module.UriMappingDefinition;
+import com.serotonin.m2m2.vo.User;
+import com.serotonin.m2m2.vo.permission.Permissions;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
 
 /**
@@ -20,8 +24,12 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public Permission getPermission() {
-		return Permission.USER;
+		return Permission.CUSTOM;
 	}
+    @Override
+    public boolean hasCustomPermission(User user){
+    	return Permissions.hasPermission(user, SystemSettingsDao.getValue(DashboardsPermissionDefinition.PERMISSION));
+    }
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.UriMappingDefinition#getPath()

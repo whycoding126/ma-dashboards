@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.serotonin.m2m2.Common;
+import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.MenuItemDefinition;
+import com.serotonin.m2m2.vo.permission.Permissions;
 
 /**
  * @author Terry Packer
@@ -28,6 +31,11 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
 		return Visibility.USER;
 	}
 
+    @Override
+    public boolean isVisible(HttpServletRequest request, HttpServletResponse response) {
+    	return Permissions.hasPermission(Common.getUser(request), SystemSettingsDao.getValue(DashboardsPermissionDefinition.PERMISSION));
+    }
+	
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.MenuItemDefinition#getTextKey(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
