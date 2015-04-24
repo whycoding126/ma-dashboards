@@ -389,7 +389,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getAllCurrentValues: function(limit) {
-            var url = "/rest/v1/realtime.json?limit=" + encodeURIComponent(limit);
+            var url = "/rest/v1/realtime/list.json?limit=" + encodeURIComponent(limit);
             
             return this.ajax({
                 url: url
@@ -401,7 +401,7 @@ var MangoAPI = extend({
          * @return promise when done
          */
         getHierarchy: function() {
-            var url = "/rest/v1/hierarchy.json";
+            var url = "/rest/v1/hierarchy/full.json";
             
             return this.ajax({
                 url: url
