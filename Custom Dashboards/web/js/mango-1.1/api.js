@@ -429,7 +429,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getFolderById: function(id) {
-            var url = "/rest/v1/hierarchy/byId/" + encodeURIComponent(id) + ".json";
+            var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id) + ".json";
             
             return this.ajax({
                 url: url

@@ -261,7 +261,7 @@ var mangoRest = {
              */
             getAll: function(done, fail, options) {
                 var promise = ajaxTemplate({
-                    url: "/rest/v1/dataPoints.json"
+                    url: "/rest/v1/data-points.json"
                 }).then(function(data, status, jqXHR) {
                     return resolvedPromise(data, options);
                 });
@@ -283,7 +283,7 @@ var mangoRest = {
              */
             get: function(xid, done, fail, options) {
                 var promise = ajaxTemplate({
-                    url: "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".json"
+                    url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
                 }).then(function(data, status, jqXHR) {
                     return resolvedPromise(data, options);
                 });
@@ -305,7 +305,7 @@ var mangoRest = {
             put: function(dataPoint, done, fail, options) {
                 var promise = ajaxTemplate({
                     type: "PUT",
-                    url : "/rest/v1/dataPoints/" + encodeURIComponent(dataPoint.xid) + ".json",
+                    url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid) + ".json",
                     contentType: "application/json",
                     data: JSON.stringify(dataPoint)
                 }).then(function(data, status, jqXHR) {
@@ -328,7 +328,7 @@ var mangoRest = {
             putCSV: function(xid, csvData, done, fail, options) {
                 var promise = ajaxTemplate({
                     type: "PUT",
-                    url : "/rest/v1/dataPoints/" + encodeURIComponent(xid) + ".csv",
+                    url : "/rest/v1/data-points/" + encodeURIComponent(xid) + ".csv",
                     contentType: "text/csv",
                     data: csvData
                 }).then(function(data, status, jqXHR) {
