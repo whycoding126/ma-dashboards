@@ -1,25 +1,42 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Data Provider for RealTime Updates Via Web Sockets
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/accumulatorDataProvider
+ * @module {AccumulatorDataProvider} mango/accumulatorDataProvider
+ * @augments DataProvider
  */
-
 define(['jquery', './dataProvider'], function($, DataProvider) {
 "use strict";
 
+/**
+ * 
+ */
 var AccumulatorDataProvider = DataProvider.extend({
     /**
-     * Data Provider constructor
-     * @param id
-     * @param options
-     * @returns
+     * Accumulator Data Providers compute accumulation of point values over time
+     * @constructs AccumulatorDataProvider
+     * @param {number} id - Data Provider ID
+     * @param {Object} options - Extra options desired
      */
     constructor: function(id, options) {
         DataProvider.apply(this, arguments);
     },
 
+    /** @member {string} [type='AccumulatorDataProvider'] - type of data provider*/
     type: 'AccumulatorDataProvider',
     
+    /**
+     * @typedef AccumulatorDataProviderChangedOptions
+     * @param {boolean} to - Has the to date changed?
+     * @param {boolean} from - Has the from date changed?
+     */
+    
+    /**
+     * Does the Data Provider Need to reload?
+     * @param {AccumulatorDataProviderChangedOptions}
+     */
     needsToLoad: function(changedOptions) {
         if (changedOptions.from || changedOptions.to)
             return true;

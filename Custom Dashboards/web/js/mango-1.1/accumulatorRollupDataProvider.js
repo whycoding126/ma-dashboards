@@ -1,14 +1,19 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Data Provider for RealTime Updates Via Web Sockets
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/accumulatorRollupDataProvider
+ * @module {AccumulatorRollupDataProvider} mango/accumulatorRollupDataProvider
+ * @augments PointValueDataProvider
  */
-
 define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone'],
         function($, DataProvider, PointValueDataProvider, moment) {
 "use strict";
 
 var AccumulatorRollupDataProvider = PointValueDataProvider.extend({
+	
+	/** @member {string} [type='AccumulatorRollupDataProvider'] - type of data provider*/
     type: 'AccumulatorRollupDataProvider',
     
     needsToLoad: function(changedOptions) {

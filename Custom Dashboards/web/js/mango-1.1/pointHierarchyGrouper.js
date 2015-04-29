@@ -11,13 +11,12 @@ define(['jquery', './dataPointGroup'], function($, DataPointGroup) {
 "use strict";
 
 /**
- * Point Hierarchy Grouper, 
+ * @constructs PointHierarchyGrouper, 
  * 
  * DataPointGroupConfiguration.matchBy can be one of ['All', 'Folder', 'DataPoint']
  * DataPointGroupConfiguration.matchConfig.mat
  * @param dataPoints
  * @param options
- * @returns
  */
 var PointHierarchyGrouper = function(root, groupConfigurations, onGroup, options){
     

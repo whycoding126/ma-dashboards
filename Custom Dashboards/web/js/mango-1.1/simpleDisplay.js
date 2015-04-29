@@ -11,11 +11,12 @@ define(['jquery'], function($) {
 
 /**
  * Configuration for Base Display Objects
+ * @constructs SimpleDisplayConfiguration
+ * 
  * @param divId
  * @param dataProviderIds
  * @param mixin
  * @param options
- * @returns
  */
 SimpleDisplayConfiguration = function(dataProviderIds, mangoDisplayMixin, options){
 
@@ -30,12 +31,13 @@ SimpleDisplayConfiguration = function(dataProviderIds, mangoDisplayMixin, option
 };
 
 /**
- * Simple Display Config
+ * @class SimpleDisplayConfiguration
  */
 SimpleDisplayConfiguration.prototype = {
-        divId: null, //Div of chart
-        
-        
+		
+        /** @member {string} [divId=null] divId - Div for displaying information */
+		divId: null,
+
         mangoDisplayMixin: null, //Any Mango Serial Chart mixins
         
         configuration: null, //The full config with mixin
@@ -47,7 +49,7 @@ SimpleDisplayConfiguration.prototype = {
         },
         /**
          * Do the heavy lifting and create the item
-         * @return AmChart created
+         * @return {SimpleDisplay} created display
          */
         createDisplay: function(){
             this.displayLoading();
@@ -60,11 +62,10 @@ SimpleDisplayConfiguration.prototype = {
 
 
 /**
- * Bar Chart Object
+ * @constructs - Mango Simple Display
  * @param amChart
  * @param dataProviderIds
  * @param options
- * @returns
  */
 MangoSimpleDisplay = function(dataProviderIds, dataPointMappings, options){
     this.dataProviderIds = dataProviderIds;

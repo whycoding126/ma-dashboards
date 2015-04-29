@@ -13,8 +13,8 @@ define(['jquery', './dataProvider', './accumulatorDataProvider', './accumulatorR
 
 /**
  * Data Display Manager
+ * @constructor
  * @param options
- * @returns
  */
 var DataDisplayManager = function(displayConfigurations, options){
     
@@ -145,6 +145,7 @@ DataDisplayManager.prototype = {
          * Do not use if you want multiple providers or different provider types
          * 
          * @param dataPointConfigurations - array of data point configurations
+         * @returns {Number} providerId
          */
         addDataPointConfigurations: function(dataPointConfigurations) {
             if (dataPointConfigurations.length <= 0) {
@@ -162,6 +163,7 @@ DataDisplayManager.prototype = {
         /**
          * Using a point and a configuration create or find an existing data provider
          * @param dataPointConfiguration - data point configuration
+         * @returns {Number} data provider Id
          */
         addDataPointConfiguration: function(dataPointConfiguration){
             var dataProvider; 
@@ -195,7 +197,6 @@ DataDisplayManager.prototype = {
          * Register a data provider with any displays that have it as one of
          * its dataProviderIds
          * @param dataProvider
-         * @returns
          */
         registerWithDisplays: function(dataProvider){
             //Search our displays and add them as listeners to the data provider

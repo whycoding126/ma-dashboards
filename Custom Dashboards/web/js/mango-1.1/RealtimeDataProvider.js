@@ -1,9 +1,12 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Data Provider for RealTime Updates Via Web Sockets
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/RealtimeDataProvider
+ * @module {RealtimeDataProvider} mango/RealtimeDataProvider
+ * @augments DataProvider
  */
-
 define(['jquery', './dataProvider', './PointEventManager'],
 function($, DataProvider, PointEventManager) {
 "use strict";
@@ -11,11 +14,22 @@ function($, DataProvider, PointEventManager) {
 //use a static PointEventManager which is shared between all RealtimeDataProviders
 var pointEventManager = new PointEventManager();
 
+
 var RealtimeDataProvider = DataProvider.extend({
+	
+	/** @member {string} [type='RealtimeDataProvider'] - type of data provider*/
     type: 'RealtimeDataProvider',
+    /** @member {string} [eventType='Update'] - What events do we register for*/
     eventType: 'UPDATE',
+    /** @member {number} [numInitialValues='1'] - Number of initial values to request at start*/
     numInitialValues: 1,
     
+    /**
+     * @constructs RealtimeDataProvider
+     * @augments DataProvider
+     * @param {string|number} id - ID for provider
+     * @param {Object} options - options for provider
+     */
     constructor: function(id, options) {
         DataProvider.apply(this, arguments);
         this.eventHandler = this.eventHandler.bind(this);
@@ -26,7 +40,7 @@ var RealtimeDataProvider = DataProvider.extend({
      * 
      * Signal to all Listeners to clear ALL their data
      * 
-     * @param clearConfigurations - boolean to clear pointConfigurations too
+     * @param {boolean} clearConfigurations - boolean to clear pointConfigurations too
      */
     clear: function(clearConfigurations) {
         var self = this;
@@ -41,6 +55,11 @@ var RealtimeDataProvider = DataProvider.extend({
         DataProvider.prototype.clear.apply(this, arguments);
     },
 
+    /**
+     * This provider never needs to reload as its continually updated
+     * @param {?Object} changedOptions
+     * @returns {boolean} 
+     */
     needsToLoad: function(changedOptions) {
         // never need to reload as its continually updated
         if (this.previousOptions)
@@ -48,10 +67,19 @@ var RealtimeDataProvider = DataProvider.extend({
         return true;
     },
 
+    /**
+     * @param {Object} point - point to load with xid member
+     * @param {Object} options - options {from: from date, to: to date}
+     * @returns {Object} Statistics Object
+     */
     loadPoint: function(point, options) {
         return this.mangoApi.getLatestValues(point.xid, this.numInitialValues, this.apiOptions);
     },
     
+    /**
+     * Disable the data provider by unsubscribing for events
+     * on the Web Socket
+     */
     disable: function() {
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
@@ -62,6 +90,10 @@ var RealtimeDataProvider = DataProvider.extend({
         DataProvider.prototype.disable.apply(this, arguments);
     },
 
+    /**
+     * Enable the data provider by subscribing for events 
+     * on the WebSocket
+     */
     enable: function() {
         var self = this;
         $.each(this.pointConfigurations, function(key, pointConfig) {
@@ -74,6 +106,7 @@ var RealtimeDataProvider = DataProvider.extend({
 
     /**
      * Add a data point configuration to our list
+     * @param {Object} dataPointConfiguration - configuration to add
      */
     addDataPoint: function(dataPointConfiguration) {
         var ret = DataProvider.prototype.addDataPoint.apply(this, arguments);
@@ -92,6 +125,11 @@ var RealtimeDataProvider = DataProvider.extend({
         }
     },
 
+    /**
+     * Handle the Events
+     * @param {Object} event
+     * @param {Object} payload
+     */
     eventHandler: function(event, payload) {
         if (payload.event !== this.eventType)
             return;

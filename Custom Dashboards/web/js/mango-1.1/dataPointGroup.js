@@ -10,11 +10,10 @@ define(['jquery'], function($) {
 "use strict";
 
 /**
- * Group Label 
- * @param id
- * @param label
- * @param options
- * @returns
+ * @constructs GroupLabel 
+ * @param {Number} id
+ * @param {string} label
+ * @param {Object} options
  */
 var GroupLabel = function(id, label, options){
     this.id = id;
@@ -25,7 +24,10 @@ var GroupLabel = function(id, label, options){
     }
 };
 
-
+/**
+ * @constructs DataPointGroupConfiguration
+ * @param {Object} options
+ */
 var DataPointGroupConfiguration = function(options){
     
     this.groupBy = 'All'; //When grouping by All if no label set it will be 'All'
@@ -49,6 +51,9 @@ DataPointGroupConfiguration.prototype = {
         
 };
 
+/**
+ * @constructs GroupMatchConfiguration 
+ */
 var GroupMatchConfiguration = function(matchAttribute, regex, options){
     this.matchAttribute = matchAttribute;
     this.regex = regex;
@@ -61,10 +66,10 @@ GroupMatchConfiguration.prototype = {
 
 /**
  * Group of Data Points
+ * @constructs DataPointGroup
  * @param label
  * @param dataPoints
  * @param options
- * @returns
  */
 var DataPointGroup = function(label, dataPoints, options){
     

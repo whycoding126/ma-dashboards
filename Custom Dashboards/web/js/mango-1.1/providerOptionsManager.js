@@ -1,14 +1,16 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Manager for Data Provider Options
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/RealtimeDataProvider
+ * @module {ProviderOptionsManager} mango/providerOptionsManager
  */
-
 define(['jquery', 'mango/api', 'extend', 'moment-timezone'],
 function($, MangoAPI, extend, moment) {
 "use strict";
 
-/**
+/*
  * Note that the NONE rollup is now a value instead of ''
  */
 var ProviderOptionsManager = extend({
@@ -28,6 +30,10 @@ var ProviderOptionsManager = extend({
     timePeriodTypePicker: null,
     timePeriodsPicker: null,
     
+    /**
+     * @constructs ProviderOptionsManager
+     * @param {Object} options - options for manager
+     */
     constructor: function(options) {
         this.pickerChanged = this.pickerChanged.bind(this);
         

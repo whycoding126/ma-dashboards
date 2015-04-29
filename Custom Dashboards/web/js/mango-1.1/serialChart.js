@@ -1,12 +1,19 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Serial Chart to display Data in a chart.
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/RealtimeDataProvider
+ * @module {SerialChart} mango/serialChart
  */
-
 define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
 
 var SerialChart = extend({
+	
+	/**
+	 * @constructs SerialChart
+	 * @param {Object} options - options for chart
+	 */
     constructor: function(options) {
         this.divId = null;
         this.amChart = null;
@@ -22,6 +29,14 @@ var SerialChart = extend({
         this.amChart = $.extend(true, {}, getBaseConfiguration(), this.amChart);
     },
     
+    /**
+     * Create the label for the categoryAxis
+     * 
+     * @param {string} valueText
+     * @param {date} date 
+     * @param {Axis} categoryAxis
+     * @param {string} periodFormat
+     */
     labelFunction: function(valueText, date, categoryAxis, periodFormat) {
         var formatString;
         switch (periodFormat) {
@@ -48,6 +63,9 @@ var SerialChart = extend({
         return moment(date).format(formatString);
     },
     
+    /**
+     * Method called when a balloon is shown on the chart
+     */
     balloonFunction: function(graphDataItem, amGraph) {
         if (!graphDataItem.values)
             return '';
@@ -78,6 +96,9 @@ var SerialChart = extend({
         $('#' + this.divId + ' .amcharts-main-div').prepend(loadingDiv);
     },
     
+    /**
+     * Remove the loading display
+     */
     removeLoading: function() {
         $('#' + this.divId + ' .amcharts-main-div').find('div.loading').remove();
     },
@@ -175,10 +196,17 @@ var SerialChart = extend({
         dataProvider.sort(this.sortCompare);
     },
     
+    /**
+     * Redraw the chart without reloading data
+     */
     redraw: function() {
         this.amChart.validateData();
     },
     
+    /**
+     * Find a graph with the provided ID
+     * @param {string} graphId
+     */
     findGraph: function(graphId) {
         for (var i = 0; i < this.amChart.graphs.length; i++) {
             var graph = this.amChart.graphs[i];
@@ -188,6 +216,9 @@ var SerialChart = extend({
         }
     },
     
+    /**
+     * Create a Graph
+     */
     createGraph: function(valueField, dataPoint) {
         var graph = new AmCharts.AmGraph();
         graph.valueField = valueField;
@@ -207,18 +238,38 @@ var SerialChart = extend({
         return graph;
     },
 
+    /**
+     * Return the graph type
+     * @returns {string} - defaults to 'smoothedLine'
+     */
     graphType: function(valueField, dataPoint) {
         return 'smoothedLine';
     },
     
+    /**
+     * Return the title for the chart
+     * @param valueField
+     * @param {Object} dataPoint
+     * @return {string} - defaults to dataPoint.name
+     */
     graphTitle: function(valueField, dataPoint) {
         return dataPoint.name;
     },
     
+    /**
+     * Return the graphID
+     * @param valueField
+     * @param {Object} dataPoint
+     * @return {string} - defaults to dataPoint.xid
+     */
     graphId: function(valueField, dataPoint) {
         return dataPoint.xid;
     },
     
+    /**
+     * Find the axis with the provided id
+     * @param {string} axisId
+     */
     findAxis: function(axisId) {
         for (var i = 0; i < this.amChart.valueAxes.length; i++) {
             var axis = this.amChart.valueAxes[i];
@@ -228,6 +279,9 @@ var SerialChart = extend({
         }
     },
     
+    /**
+     * Create an axis
+     */
     createAxis: function(graph, valueField, dataPoint) {
         var axis = new AmCharts.ValueAxis();
         axis.id = this.axisId(valueField, dataPoint);

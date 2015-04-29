@@ -1,4 +1,5 @@
 /**
+ * @file Data Provider Base Class
  * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
  * http://infiniteautomation.com/
  * @author Jared Wiltshire
@@ -6,14 +7,19 @@
 
 define(['jquery', 'extend', './api'], function($, extend, MangoAPI) {
 
+/**
+ * @exports mango/dataProvider
+ * @module {DataProvider} mango/dataProvider
+ */
 var DataProvider = extend({
     /**
      * Data Provider constructor
-     * @param id
-     * @param options
-     * @returns
+     * @constructs DataProvider
+     * @param {!number|string} id
+     * @param {Object} options
      */
     constructor: function(id, options) {
+    	
         this.id = id;
         this.listeners = [];
         this.pointConfigurations = [];
@@ -29,13 +35,19 @@ var DataProvider = extend({
             this.enable();
         }
     },
-    
+    /** @member {string} [type='DataProvider'] - type of data provider*/
     type: 'DataProvider',
-    id: null, //Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
-    pointConfigurations: null, //List of Points + configurations to use
-    listeners: null, //Listeners to send new data when load() completes
+    /** @member {?number|string} id - Unique ID for reference (use Alphanumerics as auto generated ones are numbers) */
+    id: null, 
+    /** @member {?Array.<Object>} pointConfigurations - List of Points + configurations to use */
+    pointConfigurations: null,
+    /** @member {?Array.<DataProviderListener>} [listeners - Listeners to send new data when load() completes  */
+    listeners: null,
+    /** @member {boolean} [enabled=true] - is this data provider enabled to request data from Mango */
     enabled: true,
+    /** @member {boolean} [cancelLastLoad=true] - This data provide will cancel the previous load if a new one is made */
     cancelLastLoad: true,
+    /** @member {boolean} [clearOnLoad=true] - This data provide will clear the displays prior to load() */
     clearOnLoad: true,
     
     /**
@@ -78,8 +90,8 @@ var DataProvider = extend({
     
     /**
      * Load our data and publish to listeners
-     * @param options - {from: date, to: date}
-     * @param error - method to call on error
+     * @param {Object} options - {from: date, to: date}
+     * @param {function} error - method to call on error
      * @return promise when done
      */
     load: function(options, error) {
@@ -187,7 +199,7 @@ var DataProvider = extend({
     
     /**
      * Put Point Value 
-     * @param options {
+     * @param {Object} options {
      *                  refresh: boolean to refresh displays,
      *                  putAll: boolean, true if value is written to all points
      *                  value: PointValueTime Model if putAll is true, otherwise
@@ -280,7 +292,7 @@ var DataProvider = extend({
     
     /**
      * Add a data point configuration to our list
-     * @return true if point was added, false if it already existed
+     * @return {boolean} true if point was added, false if it already existed
      */
     addDataPoint: function(dataPointConfiguration) {
         if (!dataPointConfiguration)

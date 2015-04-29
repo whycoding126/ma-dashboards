@@ -1,21 +1,21 @@
 /**
  * Javascript Objects for the Displaying Bar Charts using Statistics values
  * 
- * 
- * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
- * @author Terry Packer
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire
+ * @exports mango/statisticsBarChart
+ * @module {StatisticsBarChart} mango/statisticsBarChart
  */
 
 define(['jquery'], function($) {
 "use strict";
 
 /**
- * Configuration for Bar Charts
+ * @constructs StatisticsBarChartConfiguration
  * @param divId
  * @param dataProviderIds
  * @param mixin
  * @param options
- * @returns
  */
 StatisticsBarChartConfiguration = function(divId, dataProviderIds, amChartMixin, mangoChartMixin, options){
     this.divId = divId;
@@ -132,11 +132,10 @@ StatisticsBarChartConfiguration.prototype = {
 
 
 /**
- * Bar Chart Object
+ * @constructs BarChartObject
  * @param amChart
  * @param dataProviderIds
  * @param options
- * @returns
  */
 MangoStatisticsBarChart = function(divId, amChart, dataProviderIds, dataPointMappings, options){
     this.divId = divId;

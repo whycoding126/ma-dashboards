@@ -63,10 +63,10 @@ PointMatchConfiguration.prototype = {
 /**
  * Data Point Configuration Uses a data point
  * and matches to a provider Id
+ * @constructor
  * @param point
  * @param providerId
  * @param options
- * @returns
  */
 var DataPointConfiguration = function(point, providerId, providerType, options){
     this.point = point;
@@ -103,7 +103,7 @@ var DataPointMatcher = function(options) {
  * 
  * @param point - data point
  * @param configuration - point configuration
- * @return - true if match, false if not
+ * @return {boolean} - true if match, false if not
  */
 DataPointMatcher.matchPointToConfiguration = function(point, configuration) {
     //Does this point match this template
@@ -134,7 +134,7 @@ DataPointMatcher.prototype = {
          * 
          * @param configurations
          * @param dataPoints
-         * @return - List of DataPointConfigurations
+         * @return {Array} - List of DataPointConfigurations
          */
         match: function(first, second) {
             if (first && !$.isArray(first))
