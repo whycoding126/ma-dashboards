@@ -10,12 +10,11 @@ define(['jquery'], function($) {
 "use strict";
 
 /**
- * Configuration for Statistics
+ * @constructs Configuration for Statistics
  * @param divId
  * @param dataProviderIds
  * @param mixin
  * @param options
- * @returns
  */
 StartsAndRuntimeListConfiguration = function(divPrefix, dataProviderIds, mangoMixin, options){
     this.divPrefix = divPrefix;
@@ -52,10 +51,9 @@ StartsAndRuntimeListConfiguration.prototype = {
 
 
 /**
- * Statistics Object
+ * @constructs Statistics Starts and Runtimes List Display
  * @param dataProviderIds
  * @param options
- * @returns
  */
 MangoStartsAndRuntimeList = function(divPrefix, dataProviderIds, options){
     

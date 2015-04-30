@@ -10,12 +10,12 @@ define(['jquery'], function($) {
 
 /**
  * Gauge Chart Configuration
+ * @constructor
  * @param divId
  * @param dataProviderIds
  * @param amChartMixin
  * @param mangoChartMixin
  * @param options
- * @returns
  */
 GaugeChartConfiguration = function(divId, dataProviderIds, 
         amChartMixin, mangoChartMixin, options){
@@ -143,8 +143,8 @@ MangoGaugeChart.prototype = {
         
         /**
          * Render the value for the gauge
-         * @param value
-         * @returns
+         * @param {Object} - value
+         * @returns {Number} - Fixed to 2 decimal Points
          */
         renderValue: function(dataItem){
             return dataItem[this.valueAttribute].toFixed(2);

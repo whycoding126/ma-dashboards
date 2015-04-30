@@ -1,34 +1,26 @@
 /**
- * Access Historical Data by a count of samples back from latest value
+ * Javascript Objects for the Providing Data on HTML pages.  
  * 
- * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * @author Jared Wiltshire, Terry Packer
- * @exports mango/HTMLDisplay
- * @module {HistoricalDataProvider} mango/historicalDataProvider
- * @augments DataProvider
+ * 
+ * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+ * @author Terry Packer
  */
 
 define(['jquery', './dataProvider'], function($, DataProvider) {
 
 var HistoricalPointValueDataProvider = DataProvider.extend({
     /**
-     * @constructs HistoricalDataProvider
-     * @param {number|string} id - ID For provider
-     * @param {Object} options - options for provider
-     * @augments DataProvider
+     * Data Provider constructor
+     * @param id
+     * @param options
+     * @returns
      */
     constructor: function(id, options) {
         DataProvider.apply(this, arguments);
     },
 
-    /** @member {string} [type='HistoricalDataProvider'] - Type of Provider */
     type: 'HistoricalPointValueDataProvider',
 
-    /**
-     * @param {Object} point - point to load with xid member
-     * @param {Object} options - options {historicalSamples: number}
-     * @returns {Promise} - Promise of latest values to be returned
-     */
     loadPoint: function(point, options) {
         return this.mangoApi.getLatestValues(point.xid, options.historicalSamples, this.apiOptions);
     }

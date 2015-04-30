@@ -1,15 +1,12 @@
 /**
  * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
  * http://infiniteautomation.com/
- * 
- * Display HTML Content in a component
- * 
  * @author Jared Wiltshire
  */
 
 define(['jquery'], function($) {
 
-HTMLDisplay = function(options) {
+TextDisplay = function(options) {
     this.valueAttribute = 'value';
     this.suffix = '';
     this.decimalPlaces = 2;
@@ -22,7 +19,7 @@ HTMLDisplay = function(options) {
     this.dataProviderIds = [this.dataProviderId];
 };
 
-HTMLDisplay.prototype = {
+TextDisplay.prototype = {
         createDisplay: function() {
             return this;
         },
@@ -35,10 +32,10 @@ HTMLDisplay.prototype = {
                 var inputs = this.selection.filter('input');
                 var others = this.selection.not(inputs);
                 inputs.val('');
-                others.html('');
+                others.text('');
             }
             else {
-                this.selection.html('');
+                this.selection.text('');
             }
             delete this.previous;
         },
@@ -87,10 +84,10 @@ HTMLDisplay.prototype = {
                 if (this.inhibitUpdateOnFocus.filter(':focus').length === 0) {
                     inputs.filter(':not(:focus)').val(rendered);
                 }
-                others.html(rendered);
+                others.text(rendered);
             }
             else {
-                this.selection.html(rendered);
+                this.selection.text(rendered);
             }
         },
         
@@ -110,6 +107,6 @@ HTMLDisplay.prototype = {
         }
 };
 
-return HTMLDisplay;
+return TextDisplay;
 
 }); // define

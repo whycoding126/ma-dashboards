@@ -285,6 +285,7 @@ DashboardTemplater.prototype = {
         
         /**
          * Called when custom period has been changed
+         * @param {Number} custom period type
          */
         customPeriodChanged: function(value){
             if(this.debug)
@@ -404,8 +405,8 @@ DashboardTemplater.prototype = {
         
         /**
          * Have one or many data providers put a value to Mango
-         * @param ids - Array of integer Ids of data providers
-         * @param options - { 
+         * @param {Array} ids - Array of integer Ids of data providers
+         * @param {Object} options - { 
          *                    value: PointValueTimeModel {value: object, time: long},
          *                    refresh: boolean to indicate a refresh of displays with this data
          *                  }

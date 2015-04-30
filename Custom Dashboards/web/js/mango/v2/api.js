@@ -1,17 +1,23 @@
 /**
- * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
- * @author Terry Packer
+ * Access to the Mango Rest API
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @author Jared Wiltshire, Terry Packer
+ * @module {MangoAPI} mango/api
  */
-
 define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
 "use strict";
 
-/**
- * 
- * Mango Rest API Object
- */
+
 var MangoAPI = extend({
+		/**
+		 * Mango Rest API Object
+		 * 
+		 * @constructs MangoAPI
+		 * @param {Object} options
+		 */
         constructor: function(options) {
+        	/** @member {string} [baseUrl=''] Base URL for API calls*/
             this.baseUrl = '';
             $.extend(this, options);
         },
@@ -19,10 +25,10 @@ var MangoAPI = extend({
         /**
          * Login via GET
          * 
-         * @param username
-         * @param password
-         * @param logout - optional, logout existing user
-         * @return promise, resolved with data when done
+         * @param {string} username
+         * @param {string} password
+         * @param {boolean} logout - optional, logout existing user
+         * @return {Promise} promise, resolved with data when done
          */
         login: function(username, password, logout) {
             if (logout === undefined)
@@ -118,10 +124,10 @@ var MangoAPI = extend({
         /**
          * Get values based on date ranges with optional rollup
          * 
-         * @param xid - for point desired
-         * @param from - date from
-         * @param to - date to
-         * @param options - optional object
+         * @param {string} xid - for point desired
+         * @param {date} from - date from
+         * @param {date} to - date to
+         * @param {Object} options - optional object
          *        {
          *            rollup: one of ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
          *            timePeriodType: one of ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS'],
@@ -156,10 +162,10 @@ var MangoAPI = extend({
         /**
          * Count values based on date ranges with optional rollup
          * 
-         * @param xid - for point desired
-         * @param from - date from
-         * @param to - date to
-         * @param options - optional object
+         * @param {string} xid - for point desired
+         * @param {date} from - date from
+         * @param {date} to - date to
+         * @param {Object} options - optional object
          *        {
          *            rollup: one of ['AVERAGE', 'MAXIMUM', 'MINIMUM', 'SUM', 'FIRST', 'LAST', 'COUNT'],
          *            timePeriodType: one of ['MILLISECONS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTHS', 'YEARS'],
@@ -188,10 +194,10 @@ var MangoAPI = extend({
         /**
          * Get first and last point values for a date range
          * 
-         * @param xid - for point desired
-         * @param from - date from
-         * @param to - date to
-         * @param options - optional object
+         * @param {string} xid - for point desired
+         * @param {date} from - date from
+         * @param {date} to - date to
+         * @param {Object} options - optional object
          *        {
          *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
          *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number)
@@ -217,9 +223,9 @@ var MangoAPI = extend({
         /**
          * Get the latest limit number of values
          * 
-         * @param xid - for point desired
-         * @param limit - number of results
-         * @param options - optional object
+         * @param {string} xid - for point desired
+         * @param {Number} limit - number of results
+         * @param {Object} options - optional object
          *        {
          *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
          *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number),
@@ -248,10 +254,10 @@ var MangoAPI = extend({
         /**
          * Get the point statistics
          * 
-         * @param xid - for point desired
-         * @param from - date from
-         * @param to - date to
-         * @param options - optional object
+         * @param {string} xid - for point desired
+         * @param {date} from - date from
+         * @param {date} to - date to
+         * @param {Object} - optional object
          *        {
          *            rendered: boolean (default false), function returns a rendered string instead of numeric value,
          *            converted: boolean (default false), function returns the point value converted to the chosen display unit (as a number)
@@ -277,9 +283,9 @@ var MangoAPI = extend({
         /**
          * 
          * Save Point Value
-         * @param xid - for data point to save to
-         * @param value - PointValueTimeModel Number, boolean or String
-         * @param options - optional object
+         * @param {string} xid - for data point to save to
+         * @param {PointValueTimeModel} value - PointValueTimeModel Number, boolean or String
+         * @param {Object} options - optional object
          *        {
          *            converted: boolean (default false), numeric value to save is in display units,
          *                       convert to original units before saving to database
@@ -306,7 +312,7 @@ var MangoAPI = extend({
         /**
          * Register for point value events
          * @param xid - xid of data point
-         * @param events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
+         * @param {Array} events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
          * @param onMessage(message) - method to call on message received evt.data
          * @param onError(message) - method to call on error
          * @param onOpen - method to call on Socket 
@@ -333,9 +339,10 @@ var MangoAPI = extend({
         
         /**
          * Modify the existing events for a point on a socket
+         * @param socket - web socket
          * @param xid - xid of data point
-         * @param events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
-         * @returns
+         * @param {Array} events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
+         * 
          */
         modifyRegisteredPointEvents: function(socket, xid, events) {
             socket.send(JSON.stringify({
@@ -344,6 +351,9 @@ var MangoAPI = extend({
             }));
         },
         
+        /**
+         * @param {string} path to web socket 
+         */
         openSocket: function(path) {
             if (!'WebSocket' in window) {
                 throw new Error('WebSocket not supported');
@@ -555,9 +565,10 @@ var MangoAPI = extend({
         
         /**
          * Modify the existing events for the logged in user
-         * @param events - []
-         * @param 
-         * @returns
+         * @param {Object} web socket 
+         * @param {Array} - ['ACKNOWLEGED', 'RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
+         * @param {Array} - ['DO_NOT_LOG', ''....]
+         *  
          */
         modifyRegisteredAlarmEvents: function(socket, events, levels) {
             socket.send(JSON.stringify({
@@ -573,8 +584,7 @@ var MangoAPI = extend({
          * before the first period
          * @param language - (optional) returns translations for the given language, otherwise returns
          * the language specified by the browser or otherwise specified by the user
-         * @returns object:
-         *     { locale: "languageCode-countryCode",
+         * @returns {Object} { locale: "languageCode-countryCode",
          *       translations: {
          *         root: {
          *           "namespace.key": "translation"
@@ -680,8 +690,8 @@ MangoAPI.defaultApi = new MangoAPI();
  * The cancel function should stop the action which the promise represents then
  * reject the deferred
  * 
- * @param promise
- * @param cancel - function to call to cancel the promise
+ * @param {Promise} promise - promise to cancel
+ * @param {method} cancel - function to call to cancel the promise
  */
 MangoAPI.cancellable = function(promise, cancel) {
     // assume promise.then has been replaced if cancel exists
@@ -693,6 +703,12 @@ MangoAPI.cancellable = function(promise, cancel) {
     return promise;
 };
 
+/**
+ * Replace Then On a Promise with the Mango Promise
+ * 
+ * @param {Promise} promise - promise to replace then on
+ * @returns {Promise} promise with new Mango Then in place
+ */
 MangoAPI.replaceThen = function(promise) {
     var originalThen = promise.then;
     promise.then = function() {
@@ -736,16 +752,30 @@ MangoAPI.when = function(promises) {
     return promise;
 };
 
+/**
+ * Create a Rejected Promise
+ * @returns {Promise} promise that has been rejected
+ */
 MangoAPI.rejectedPromise = function() {
     var deferred = $.Deferred();
     return deferred.reject.apply(deferred, arguments).promise();
 };
 
+/**
+ * Create a Resolved Promise
+ * 
+ * @returns {Promise} promise that has been resolved
+ */
 MangoAPI.resolvedPromise = function() {
     var deferred = $.Deferred();
     return deferred.resolve.apply(deferred, arguments).promise();
 };
 
+/**
+ * Create a Promise with a set of Require Dependencies
+ * @param {Array} dependencyArray - Array of required dependencies
+ * @returns {Promise}
+ */
 MangoAPI.requirePromise = function(dependencyArray) {
     var deferred = $.Deferred();
     
@@ -758,10 +788,17 @@ MangoAPI.requirePromise = function(dependencyArray) {
     return deferred.promise();
 };
 
+/**
+ * Get the User Language
+ * @returns {Object} user language
+ */
 MangoAPI.userLanguage = function() {
     return navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
 };
 
+/**
+ * Not sure what this does
+ */
 MangoAPI.firstArrayArg = function() {
     var firstArgs = [];
     for (var i = 0; i < arguments.length; i++) {
@@ -810,6 +847,12 @@ MangoAPI.pointsInFolder = function(folder, path, points) {
     return points;
 };
 
+/**
+ * Parse up some folder paths?
+ * @param {Folder} folder - Folder Object
+ * @param {Array.<string>} path - Path array
+ * @param {Object} result - final result
+ */
 MangoAPI.folderPaths = function(folder, path, result) {
     if (typeof path === 'undefined')
         path = [];
@@ -830,6 +873,10 @@ MangoAPI.folderPaths = function(folder, path, result) {
 
 /**
  * Logs an error to the console
+ * @param {Object} jqXHR JQuery XHR Object
+ * @param {string} textStatus response status
+ * @param {Object} error response error
+ * @param {string} mangoMessage Message from Mango REST API
  */
 MangoAPI.logError = function(jqXHR, textStatus, error, mangoMessage) {
     if (!console)
@@ -863,6 +910,7 @@ MangoAPI.logError = function(jqXHR, textStatus, error, mangoMessage) {
 
 /**
  * Retrieves a url parameter
+ * @param {string} name parameter name
  */
 MangoAPI.urlParameter = function(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[undefined,""])[1].replace(/\+/g, '%20'))||null;

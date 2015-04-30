@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
+ * @copyright 2015 Infinite Automation Systems, Inc. All rights reserved.
  * http://infiniteautomation.com/
  * @author Jared Wiltshire
  */
@@ -9,8 +9,8 @@ define(['jquery', 'moment-timezone'], function($, moment) {
 
 /**
  * Configuration for StatisticsDisplay
+ * @constructor
  * @param options
- * @returns
  */
 var StatisticsDisplay = function(options) {
     this.container = $('body');

@@ -11,10 +11,9 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
 
 var PointValueDataProvider = DataProvider.extend({
     /**
-     * Data Provider constructor
-     * @param id
-     * @param options
-     * @returns
+     * @constructs Data Provider
+     * @param {Number} id
+     * @param {Object} options
      */
     constructor: function(id, options) {
         DataProvider.apply(this, arguments);

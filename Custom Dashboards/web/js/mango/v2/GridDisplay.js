@@ -1,13 +1,20 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Grid Display using DStore
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @exports mango/RealtimeDataProvider
+ * @module {GridDisplay} mango/GridDisplay
  */
-
 define(['jquery', 'extend', 'dojo/_base/declare', 'dstore/Memory', 'dstore/Trackable', 'dgrid/OnDemandGrid'],
 function($, extend, declare, Memory, Trackable, OnDemandGrid) {
 
 var GridDisplay = extend({
+	
+	/**
+	 * @constructs GridDisplay
+	 * @param {Object} options - options for grid
+	 */
     constructor: function(options) {
         // stores data which arrives while loading
         this.cache = [];

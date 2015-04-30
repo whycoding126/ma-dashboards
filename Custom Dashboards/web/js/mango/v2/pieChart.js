@@ -9,13 +9,12 @@ define(['jquery'], function($) {
 "use strict";
 
 /**
- * Pie Chart Configuration
+ * @constructs Pie Chart Configuration
  * @param divId
  * @param dataProviderIds
  * @param amChartMixin
  * @param mangoPieMixin
  * @param options
- * @returns
  */
 PieChartConfiguration = function(divId, dataProviderIds, 
         amChartMixin, mangoPieMixin, options){
