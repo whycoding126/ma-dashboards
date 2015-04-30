@@ -3,21 +3,31 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
- * @exports mango/accumulatorRollupDataProvider
- * @module {AccumulatorRollupDataProvider} mango/accumulatorRollupDataProvider
+ * @module {AccumulatorRollupDataProvider} mango/AccumulatorRollupDataProvider
  * @augments PointValueDataProvider
  */
 define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone'],
         function($, DataProvider, PointValueDataProvider, moment) {
 "use strict";
 
+/**
+ * Constructor
+ * @constructs AccumulatorDataProvider
+ * @param {!number|string} id - Data Provider ID
+ * @param {Object} options - Options for provider
+ */
 function AccumulatorRollupDataProvider() {
     PointValueDataProvider.apply(this, arguments);
 }
 
 AccumulatorRollupDataProvider.prototype = Object.create(PointValueDataProvider.prototype);
 
-/** @member {string} [type='AccumulatorRollupDataProvider'] - type of data provider*/
+/**
+ * Type of Data Provider
+ * @type {string}
+ * @default 'AccumulatorRollupDataProvider'
+ * @const
+ */
 AccumulatorRollupDataProvider.prototype.type = 'AccumulatorRollupDataProvider';
 
 AccumulatorRollupDataProvider.prototype.needsToLoad = function(changedOptions) {
@@ -30,6 +40,8 @@ AccumulatorRollupDataProvider.prototype.needsToLoad = function(changedOptions) {
 /**
  * Method that is called before publishing the data to the Displays
  * it is here that we can modify the data
+ * @param {Array|Object} pointValues - Value(s) to manipulate
+ * @param {DataPoint} dataPoint - Data Point of corresponding data
  */
 AccumulatorRollupDataProvider.prototype.manipulateData = function(pointValues, dataPoint) {
     var newData = [];
@@ -54,6 +66,12 @@ AccumulatorRollupDataProvider.prototype.manipulateData = function(pointValues, d
     return newData;
 };
 
+/**
+ * Load Point
+ * @todo Document better
+ * @param {DataPoint} point - Point To load
+ * @param {Object} options - options for load
+ */
 AccumulatorRollupDataProvider.prototype.loadPoint = function(point, options) {
     // clone so we can change rollup without affecting options elsewhere
     options = $.extend({}, options);

@@ -1,24 +1,22 @@
 /**
  * Data Provider Base Class
- * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
- * @module module:DataProvider
- * @version 1.0
- * 
+ * @module {DataProvider} mango/DataProvider
+ * @see DataProvider
  */
 define(['jquery', './api'], function($, MangoAPI) {
 "use strict";
 
+
 /**
  * Data Provider constructor
- * 
- * @param {!number|string} id
- * @param {Object} options
  * @constructs DataProvider
- * @alias module:DataProvider
+ * @param {!number|string} id - Data Provider ID
+ * @param {Object} options - Options for provider
  */
 function DataProvider(id, options) {
+	
     this.id = id;
     this.listeners = [];
     this.pointConfigurations = [];
@@ -34,20 +32,57 @@ function DataProvider(id, options) {
         this.enable();
     }
 }
-
-/** @member {string} [type='DataProvider'] - type of data provider*/
-DataProvider.prototype.type = 'DataProvider';
-/** @member {?number|string} id - Unique ID for reference (use Alphanumerics as auto generated ones are numbers) */
-DataProvider.prototype.id = null;
-/** @member {?Array.<Object>} pointConfigurations - List of Points + configurations to use */
-DataProvider.prototype.pointConfigurations = null;
-/** @member {?Array.<DataProviderListener>} [listeners - Listeners to send new data when load() completes  */
-DataProvider.prototype.listeners = null;
-/** @member {boolean} [enabled=true] - is this data provider enabled to request data from Mango */
-DataProvider.prototype.enabled = true;
-/** @member {boolean} [cancelLastLoad=true] - This data provide will cancel the previous load if a new one is made */
+/**
+ * Cancel previous load on new load?
+ * @default true
+ * @type {boolean}
+ * 
+ */
 DataProvider.prototype.cancelLastLoad = true;
-/** @member {boolean} [clearOnLoad=true] - This data provide will clear the displays prior to load() */
+
+/**
+ * Type of Data Provider
+ * @type {string}
+ * @default 'DataProvider'
+ * @const
+ */
+DataProvider.prototype.type = 'DataProvider';
+
+/**
+ * Unique ID for reference (use Alphanumerics as auto generated ones are numbers)
+ * @default null
+ * @type{?number|string}  
+ */
+DataProvider.prototype.id = null;
+
+/**
+ *  List of Points + configurations to use
+ *  @default null
+ *  @type {?Array.<Object>}  
+ */
+DataProvider.prototype.pointConfigurations = null;
+
+/** 
+ * Listeners to send new data when load() completes
+ * @default null
+ * @type {?Array.<DataProviderListener>}
+ */
+DataProvider.prototype.listeners = null;
+
+/**
+ * Is this data provider enabled to request data from Mango?
+ * @default true
+ * @type {boolean}  
+ */
+DataProvider.prototype.enabled = true;
+
+
+/**
+ * This data provide will clear the displays prior to load()
+ * @default true
+ * @type {boolean} 
+ */
+
 DataProvider.prototype.clearOnLoad = true;
 
 /**
@@ -63,11 +98,9 @@ DataProvider.prototype.manipulateData = function(data, point) {
     return data;
 };
     
-    /**
+/**
  * Clear out our pointConfigurations if required
- * 
  * Signal to all Listeners to clear ALL their data
- * 
  * @param clearConfigurations - boolean to clear pointConfigurations too
  */
 DataProvider.prototype.clear = function(clearConfigurations) {
@@ -145,6 +178,11 @@ DataProvider.prototype.load = function(options, error) {
     return combinedPromise;
 };
 
+/**
+ * Load point, should always be overridden
+ * @param {DataPoint} point - Point To load
+ * @param {Object} options - options for load
+ */
 DataProvider.prototype.loadPoint = function(point, options) {
     // fail. need to override
     var deferred = $.Deferred();
@@ -152,6 +190,9 @@ DataProvider.prototype.loadPoint = function(point, options) {
     return deferred.promise();
 };
 
+/**
+ * Cancel the current load()
+ */
 DataProvider.prototype.cancelLoad = function() {
     if (this.lastLoadPromise &&
             this.lastLoadPromise.state() === 'pending' &&
@@ -162,8 +203,8 @@ DataProvider.prototype.cancelLoad = function() {
 
 /**
  * Notifies the listeners of new data
- * @param the new data
- * @param the point that the data came from
+ * @param {Object} data - the new data
+ * @param {DataPoint} point - the point that the data came from
  */
 DataProvider.prototype.notifyListeners = function(data, point) {
     // Optionally manipulate the data
@@ -188,7 +229,6 @@ DataProvider.prototype.redrawListeners = function() {
 
 /**
  * Notifies the listeners that data is loading
- * @param
  */
 DataProvider.prototype.notifyLoading = function() {
     for (var i=0; i<this.listeners.length; i++) {
@@ -199,7 +239,7 @@ DataProvider.prototype.notifyLoading = function() {
 
 /**
  * Put Point Value 
- * @param {Object} options {
+ * @param {Object} options - {
  *                  refresh: boolean to refresh displays,
  *                  putAll: boolean, true if value is written to all points
  *                  value: PointValueTime Model if putAll is true, otherwise
@@ -246,6 +286,9 @@ DataProvider.prototype.put = function(options) {
     return combinedPromise;
 };
 
+/**
+ * Put value for point via PUT REST endpoint
+ */
 DataProvider.prototype.putPoint = function(point, value, options) {
     /**
      * TODO properly handle putting a rendered text string to REST endpoints
@@ -270,6 +313,9 @@ DataProvider.prototype.addListener = function(dataProviderListener) {
     this.listeners.push(dataProviderListener);
 };
 
+/**
+ * Remove a listener
+ */
 DataProvider.prototype.removeListener = function(dataProviderListener) {
     var index = $.inArray(dataProviderListener, this.listeners);
     if (index >= 0) {
@@ -277,15 +323,24 @@ DataProvider.prototype.removeListener = function(dataProviderListener) {
     }
 };
 
+/**
+ * Remove all listeners
+ */
 DataProvider.prototype.removeAllListeners = function() {
     while(this.listeners.length > 0)
         this.listeners.pop();
 };
 
+/**
+ * Disable the provider
+ */
 DataProvider.prototype.disable = function() {
     this.enabled = false;
 };
 
+/**
+ * Enable the provider
+ */
 DataProvider.prototype.enable = function() {
     this.enabled = true;
 };
@@ -321,6 +376,9 @@ DataProvider.prototype.toPoint = function(pointConfig) {
     return typeof pointConfig.xid === 'undefined' ? pointConfig.point : pointConfig;
 };
 
+/**
+ * Add data points to provider
+ */
 DataProvider.prototype.addDataPoints = function(dataPointConfiguration) {
     for (var i in dataPointConfigurations) {
         this.addDataPoint(dataPointConfigurations[i]);

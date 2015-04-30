@@ -3,9 +3,9 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
- * @exports mango/accumulatorDataProvider
- * @module {AccumulatorDataProvider} mango/accumulatorDataProvider
+ * @module {AccumulatorDataProvider} mango/AccumulatorDataProvider
  * @augments DataProvider
+ * @see AccumulatorDataProvider
  */
 define(['jquery', './dataProvider'], function($, DataProvider) {
 "use strict";
@@ -22,18 +22,17 @@ function AccumulatorDataProvider(id, options) {
 
 AccumulatorDataProvider.prototype = Object.create(DataProvider.prototype);
 
-/** @member {string} [type='AccumulatorDataProvider'] - type of data provider*/
+/**
+ * Type of Data Provider
+ * @type {string}
+ * @default 'AccumulatorDataProvider'
+ * @const
+ */
 AccumulatorDataProvider.prototype.type = 'AccumulatorDataProvider';
 
 /**
- * @typedef AccumulatorDataProviderChangedOptions
- * @param {boolean} to - Has the to date changed?
- * @param {boolean} from - Has the from date changed?
- */
-
-/**
  * Does the Data Provider Need to reload?
- * @param {AccumulatorDataProviderChangedOptions}
+ * @param {Object} changedOptions - {to: boolean, from: boolean}
  */
 AccumulatorDataProvider.prototype.needsToLoad = function(changedOptions) {
     if (changedOptions.from || changedOptions.to)
@@ -41,6 +40,11 @@ AccumulatorDataProvider.prototype.needsToLoad = function(changedOptions) {
     return false;
 };
 
+/**
+ * Load Point
+ * @param {DataPoint} point - Point To load
+ * @param {Object} options - options to load
+ */
 AccumulatorDataProvider.prototype.loadPoint = function(point, options) {
     var promise = this.mangoApi.getFirstLastValues(point.xid, options.from, options.to, this.apiOptions)
     .then(function(data) {

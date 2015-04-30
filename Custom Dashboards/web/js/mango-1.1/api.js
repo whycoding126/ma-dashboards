@@ -3,11 +3,11 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire, Terry Packer
- * @exports mango/api
  * @module {MangoAPI} mango/api
  */
 define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
 "use strict";
+
 
 var MangoAPI = extend({
 		/**
