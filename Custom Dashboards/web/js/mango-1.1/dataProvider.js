@@ -1,22 +1,22 @@
 /**
- * @file Data Provider Base Class
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Data Provider Base Class
+ * 
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @module module:DataProvider
+ * @version 1.0
+ * 
  */
-
 define(['jquery', 'extend', './api'], function($, extend, MangoAPI) {
 
-/**
- * @exports mango/dataProvider
- * @module {DataProvider} mango/dataProvider
- */
 var DataProvider = extend({
     /**
      * Data Provider constructor
-     * @constructs DataProvider
+     * 
      * @param {!number|string} id
      * @param {Object} options
+     * @constructs DataProvider
+     * @alias module:DataProvider
      */
     constructor: function(id, options) {
     	
