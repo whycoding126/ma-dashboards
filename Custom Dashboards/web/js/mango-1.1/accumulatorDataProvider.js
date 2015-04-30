@@ -11,50 +11,47 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
 "use strict";
 
 /**
- * 
+ * Accumulator Data Providers compute accumulation of point values over time
+ * @constructs AccumulatorDataProvider
+ * @param {number} id - Data Provider ID
+ * @param {Object} options - Extra options desired
  */
-var AccumulatorDataProvider = DataProvider.extend({
-    /**
-     * Accumulator Data Providers compute accumulation of point values over time
-     * @constructs AccumulatorDataProvider
-     * @param {number} id - Data Provider ID
-     * @param {Object} options - Extra options desired
-     */
-    constructor: function(id, options) {
-        DataProvider.apply(this, arguments);
-    },
+function AccumulatorDataProvider(id, options) {
+    DataProvider.apply(this, arguments);
+}
 
-    /** @member {string} [type='AccumulatorDataProvider'] - type of data provider*/
-    type: 'AccumulatorDataProvider',
-    
-    /**
-     * @typedef AccumulatorDataProviderChangedOptions
-     * @param {boolean} to - Has the to date changed?
-     * @param {boolean} from - Has the from date changed?
-     */
-    
-    /**
-     * Does the Data Provider Need to reload?
-     * @param {AccumulatorDataProviderChangedOptions}
-     */
-    needsToLoad: function(changedOptions) {
-        if (changedOptions.from || changedOptions.to)
-            return true;
-        return false;
-    },
+AccumulatorDataProvider.prototype = Object.create(DataProvider.prototype);
 
-    loadPoint: function(point, options) {
-        var promise = this.mangoApi.getFirstLastValues(point.xid, options.from, options.to, this.apiOptions)
-        .then(function(data) {
-            var result = {};
-            result.value = data[1].value - data[0].value;
-            result.first = data[0];
-            result.last = data[1];
-            return result;
-        });
-        return promise;
-    }
-});
+/** @member {string} [type='AccumulatorDataProvider'] - type of data provider*/
+AccumulatorDataProvider.prototype.type = 'AccumulatorDataProvider';
+
+/**
+ * @typedef AccumulatorDataProviderChangedOptions
+ * @param {boolean} to - Has the to date changed?
+ * @param {boolean} from - Has the from date changed?
+ */
+
+/**
+ * Does the Data Provider Need to reload?
+ * @param {AccumulatorDataProviderChangedOptions}
+ */
+AccumulatorDataProvider.prototype.needsToLoad = function(changedOptions) {
+    if (changedOptions.from || changedOptions.to)
+        return true;
+    return false;
+};
+
+AccumulatorDataProvider.prototype.loadPoint = function(point, options) {
+    var promise = this.mangoApi.getFirstLastValues(point.xid, options.from, options.to, this.apiOptions)
+    .then(function(data) {
+        var result = {};
+        result.value = data[1].value - data[0].value;
+        result.first = data[0];
+        result.last = data[1];
+        return result;
+    });
+    return promise;
+};
 
 DataProvider.registerProvider(AccumulatorDataProvider);
 return AccumulatorDataProvider;
