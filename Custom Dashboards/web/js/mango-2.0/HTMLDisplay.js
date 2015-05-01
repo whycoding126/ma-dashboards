@@ -40,6 +40,7 @@ define(['jquery'], function($) {
 			
 			/**
 			 * Create the display - legacy use
+			 * 
 			 */
 	        createDisplay: function() {
 	            return this;

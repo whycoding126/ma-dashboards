@@ -11,12 +11,12 @@
 
 define(['jquery', './dataProvider'], function($, DataProvider) {
 
-    /**
-     * @constructs HistoricalDataProvider
-     * @param {number|string} id - ID For provider
-     * @param {Object} options - options for provider
-     * @augments DataProvider
-     */
+/**
+ * @constructs HistoricalDataProvider
+ * @param {number|string} id - ID For provider
+ * @param {Object} options - options for provider
+ * @augments DataProvider
+ */
 function HistoricalDataProvider(id, options) {
 	DataProvider.apply(this, arguments);
 };

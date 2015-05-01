@@ -36,7 +36,7 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return Lifecycle.privateUrlPrefix + "/**";
+		return Lifecycle.privateUrlPrefix + "/**/*";
 	}
 
 	/* (non-Javadoc)

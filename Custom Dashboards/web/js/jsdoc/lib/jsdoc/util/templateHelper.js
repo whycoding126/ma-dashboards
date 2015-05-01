@@ -29,7 +29,7 @@ exports.setTutorials = function(root) {
 };
 
 exports.globalName = name.SCOPE.NAMES.GLOBAL;
-exports.fileExtension = '.html';
+exports.fileExtension = '.shtm';
 exports.scopeToPunc = name.scopeToPunc;
 
 var linkMap = {

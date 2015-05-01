@@ -29,6 +29,10 @@ import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
  */
 public class MangoJavascriptApiUriMappingDefinition extends UriMappingDefinition{
     
+	/**
+	 * The base url to use as a reference, this mapping is in the Spring Dispatch Servlet so it
+	 * will ensure that this Handler is Used for anything starting with /mango-javascript/
+	 */
 	private static final String baseUrl = "/mango-javascript/";
 	
 	/* (non-Javadoc)
@@ -45,7 +49,7 @@ public class MangoJavascriptApiUriMappingDefinition extends UriMappingDefinition
 	@Override
 	public String getPath() {
 		//Since we have a javascript mapping for /mango-javascript/ to the core's Dispatch Servlet we can simply add ** to this and capture our urls this way
-		return "/**";
+		return "/mango-javascript/**";
 	}
 
 	/* (non-Javadoc)

@@ -1,1 +1,1 @@
-./jsdoc -d ../../doc ../mango/v2/*.js
+./jsdoc --tutorials ../../private/tutorials -d ../../private/api-docs ../mango-2.0/*.js

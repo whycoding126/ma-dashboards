@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Data Points Query</title>
+        <title>Data Points Chart</title>
         <!-- Add the Mango Favicon -->
         <link rel="icon" href="/images/favicon.ico">
         
         <!-- Page Style -->
+        <style type="text/css">
+          @import url("/resources/jquery-ui/jquery.datetimepicker.css");
+          @import url("/resources/select2/css/select2.min.css");
+        </style>
         <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
 
@@ -17,10 +21,21 @@
        
         <script type="text/javascript">
 		//The current list of points
-        var points; 
+        var points = [{name: 'test', id:1}];
 		
-        require(['jquery', 'mango/api'],
+        require(['jquery', 'mango/api','jquery.select2'],
         function($, MangoAPI) {
+        	
+            // setup the point picker
+            var $pointPicker = $('#pointPicker');
+            $pointPicker.select2({
+            	data: function() { return {results: points}; }
+            });       
+            $pointPicker.on('select2:select', function(event) {
+            	console.log(event);
+				//Fire up chart here
+            });
+        	
        		$('#queryNow').on('click', function(){  
        			//Clear out table
        			$('#dataPoints').html('');
@@ -43,7 +58,7 @@
               MangoAPI.defaultApi.queryPoints($('#query').val()).then(function(results){
               	
               	//Fill the Drop Down here
-					
+				points = results.items;
               	
              }).fail(MangoAPI.logError);
 
@@ -73,6 +88,7 @@
       <div class="row">
         <div class="col-md-12">
          <!-- Data Point Drop Down and Time Pickers -->
+         <select id="pointPicker" class="select2-style" style="width: 200px"></select>
         </div>
       </div>
       

@@ -16,10 +16,6 @@
         <script type="text/javascript" src="/resources/main.js"></script>
                
         <script type="text/javascript">
-        /* Map mango js api to the desired version */
-        require.config({
-            map: {'*': {'mango': 'mango/v2'}}
-        });
 
         require(['jquery', 'mango/api'],
         function($, MangoAPI) {

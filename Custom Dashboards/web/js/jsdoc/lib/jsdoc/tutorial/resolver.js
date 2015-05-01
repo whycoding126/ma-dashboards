@@ -19,7 +19,7 @@ var hasOwnProp = Object.prototype.hasOwnProperty;
 
 // TODO: make this an instance member of `RootTutorial`?
 var conf = {};
-var finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|json)$/i;
+var finder = /^(.*)\.(x(?:ht)?ml|html?|md|markdown|json|shtm)$/i;
 
 /** checks if `conf` is the metadata for a single tutorial.
  * A tutorial's metadata has a property 'title' and/or a property 'children'.
@@ -127,6 +127,7 @@ exports.load = function(filepath) {
                 case 'xhtml':
                 case 'html':
                 case 'htm':
+                case 'shtm':
                     type = tutorial.TYPES.HTML;
                     break;
 
