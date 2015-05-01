@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Points Query</title>
+        <!-- Add the Mango Favicon -->
+        <link rel="icon" href="/images/favicon.ico">
+        
+        <!-- Page Style -->
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+
+        
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
+       
+        <script type="text/javascript">
+		//The current list of points
+        var points; 
+		
+        require(['jquery', 'mango/api'],
+        function($, MangoAPI) {
+       		$('#queryNow').on('click', function(){  
+       			//Clear out table
+       			$('#dataPoints').html('');
+       			loadPoints();
+           });
+          
+          function createRow(columns){
+          	var tr = $('<tr>');
+          	for(var i=0; i<columns.length; i++){
+          		 var td = $('<td>');
+       			  td.text(columns[i]);
+       			  tr.append(td);
+          	}
+          	return tr;
+          }
+          
+          function loadPoints(){
+        	  
+    		  //Do Query
+              MangoAPI.defaultApi.queryPoints($('#query').val()).then(function(results){
+              	
+              	//Fill the Drop Down here
+					
+              	
+             }).fail(MangoAPI.logError);
+
+          }
+          
+        });
+        </script>
+        
+    </head>
+  <body>
+    <div id="main">
+     <h1>Data Point Chart</h1>
+     <p>
+      Perform a query to modify the contents of the Select List.  Then select a Data Point from the Drop Down list to display it on the chart.
+     </p>
+     <p>
+      <b>Note:</b> Not all members of the dataPoint object are query-able.  See what is available <a href="/rest/v1/data-points/explain-query.json">here</a>.  
+      The JSON output explains the RQL properties available as 'aliases' for the columns.  
+     </p>
+     <div class="row">
+      <div class="col-md-12">
+        <label for="query">Query:</label><input type="text" id="query" value="limit(10)" style="width:400px"/>
+        <button type="button" id="queryNow">Query Now</button>
+       </div>
+      </div>
+     
+      <div class="row">
+        <div class="col-md-12">
+         <!-- Data Point Drop Down and Time Pickers -->
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+         <div id="chart"></div>
+        </div>
+      </div>
+     
+    </div>
+  </body>
+</html>

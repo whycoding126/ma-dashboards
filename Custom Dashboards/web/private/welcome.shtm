@@ -3,7 +3,7 @@
     <head>
         <title>Templated Dashboard</title>
         <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,27 +12,15 @@
         <!-- Page Style -->
         <style type="text/css">
         </style>
-        <link href="/modules/dashboards/web/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
         
+        <!-- All scripts -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
+        <script type="text/javascript" src="/modules/dashboards/web/js/welcome.js"></script>
         
-        <!-- JQuery and Plugins -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery-ui.js"></script> <!-- Can use min.js -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery-ui/jquery.datetimepicker.js"></script>
-        <!-- Charting Library -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/pie.js"></script>
-        
-        <!-- Bootstrap -->
-        <script src="/modules/dashboards/web/js/bootstrap/js/bootstrap.min.js"></script>
-        
-        
-        <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
         
     </head>
     <body>
@@ -92,14 +80,16 @@
           </ul>
           <h2>Data Point Examples</h2>
           <ul class="nav nav-sidebar">
-            <li><a href="/private-dashboards/dataPointExamples/dataPointMatcher.shtm" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointMatcher.shtm');return false">Data Point Matcher</a></li>
+            <li><a href="/private-dashboards/dataPointExamples/dataPointQuery.shtm" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointQuery.shtm');return false">Query Data Points</a></li>
+            <li><a href="/private-dashboards/dataPointExamples/dataPointChart.shtm" onclick="$('#content').load('/private-dashboards/dataPointExamples/dataPointChart.shtm');return false">Chart Data Points</a></li>
           </ul>
           <h2>REST API Examples</h2>
           <ul class="nav nav-sidebar">
             <li><a href="/private-dashboards/restApiExamples/currentValue.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/currentValue.shtm');return false">Current Value</a></li>
             <li><a href="/private-dashboards/restApiExamples/setPointValue.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/setPointValue.shtm');return false">Set Point Value</a></li>
-            <li><a href="/private-dashboards/restApiExamples/simpleDashboard.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/simpleDashboard.shtm');return false">Simple Dashboard</a></li>
-            <li><a href="/private-dashboards/restApiExamples/webSocket.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/webSocket.shtm');return false">Point Values Web Socket</a></li>
+            <li><a href="/private-dashboards/restApiExamples/pointValueWebSocket.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/pointValueWebSocket.shtm');return false">Realtime Point Values</a></li>
+            <li><a href="/private-dashboards/restApiExamples/events.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/events.shtm');return false">Events Query</a></li>
+            <li><a href="/private-dashboards/restApiExamples/eventWebSocket.shtm" onclick="$('#content').load('/private-dashboards/restApiExamples/eventWebSocket.shtm');return false">Realtime Events</a></li>
           </ul>
 
          </div>
@@ -116,13 +106,8 @@
                 <li>Ensure all points have data and are regularly being updated</li>
                 <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these points</li>
             </ul>
-         <p> <a href="/modules/dashboards/web/private/MangoJavascriptAPI-UserGuide.pdf" target="download">Here</a> is a link to the Javascript API User Guide. </p>
-         
-         <p> <a href="https://vimeo.com/114367359" target="video">Here</a> is a link to a tutorial video about how to create your first dashboard.</p>
-         
-         <p>Please note that currently only Numeric point types can be charted.</p>
+         <p> <a href="/modules/dashboards/web/doc/index.html" target="docs">Here</a> is a link to the Javascript API Documentation. </p>
          <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>
-         
          </div>
       </div>
     </div>

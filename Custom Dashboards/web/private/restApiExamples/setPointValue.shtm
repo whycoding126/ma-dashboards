@@ -3,63 +3,108 @@
     <head>
         <title>Set Point Value</title>
         <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         <!-- Page Style -->
-        <style type="text/css">
-        </style>
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
         
-        <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
-        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
-       
         <script type="text/javascript">
+
+        require(['jquery', 'mango/api'],
+                function($, MangoAPI) {
+        
+          $('#updateValue').on('click', function(){
+  			
+          	//We need the data type for the point
+          	var xid = $("#xid").val();
+          	MangoAPI.defaultApi.getPoint(xid).then(function(point){
+          		
+          		//Check to see if settable
+          		if(point.pointLocator.settable === false){
+          			var statusRow = [];
+                  	statusRow.push(xid + ' not settable.');
+                  	statusRow.push(new Date());
+                  	//Append a status row
+                  	$('#status').append(createRow(statusRow));
+                  	return;
+          		}
+              	var pvt = getPointValueTime(point);
+              	MangoAPI.defaultApi.putValue(xid, pvt).then(function(response){
+                    	var statusRow = [];
+                    	statusRow.push('Set Value For ' + xid + ' to ' + pvt.value);
+                    	statusRow.push(new Date());
+                    	//Append a status row
+                    	$('#status').append(createRow(statusRow));
+              	}).fail(MangoAPI.logError);        		
+          	}).fail(MangoAPI.logError);
+          });
           
-          //Set this to the desired point XID
-          var pointXid = "voltage";
-          var pointType = "NUMERIC"; //Set to NUMERIC, MULTISTATE, BINARY or ALPHANUMERIC
+          function createRow(columns){
+          	var tr = $('<tr>');
+          	for(var i=0; i<columns.length; i++){
+          		 var td = $('<td>');
+       			  td.text(columns[i]);
+       			  tr.append(td);
+          	}
+          	return tr;
+          }
+  
           
-          function updatePointValue(){
-              
-              //Create an empty point value object to send to mango after we fill it in
-              var pointValue = mangoRest.pointValues.createNew();
-              pointValue.dataType = pointType;
-              pointValue.annotation = "Set by default dashboard";
-              //pointValue.dataType = pointType; //Set the point type
-              
+          function getPointValueTime(dataPoint){
+  			
+          	var value = null;
               //Set the value depending on the data point type
-              if((pointType === "MULTISTATE")||(pointType === "NUMERIC")){
+              if((dataPoint.pointLocator.dataType == "MULTISTATE")||(dataPoint.pointLocator.dataType == "NUMERIC")){
                   //Since the input is text type we must convert
-                  pointValue.value = new Number($('#pointValueInput').val());
+                  value = new Number($('#pointValueInput').val());
               }
-              else if(pointType === "BINARY"){
+              else if(dataPoint.pointLocator.dataType == "BINARY"){
                   //Since the input is text type we must convert
                   pointValue.value = new Boolean();
               } 
               else{
                   //For Alphanumeric
-                  pointValue.value = $('#pointValueInput').val();
+                  value = $('#pointValueInput').val();
               }
-              
-              pointValue.timestamp = new Date().getTime();
-             
-              
-              //Using the global XID and the value from the input box set the point's value
-	          mangoRest.pointValues.put(pointXid, pointValue, function(data){
-	              $('#status').text('Point Value Saved');
-	              }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-	                  $('#status').text(textStatus + " - " + mangoMessage);
-	         });        
+          	return {
+              		value: value,
+              		timestamp: new Date().getTime(),
+              		annotation: 'Set by custom dashboard',
+              		dataType: dataPoint.pointLocator.dataType,
+              	};
           }
-          
+        });
         </script>
         
     </head>
-<body>
-   <div>
-       <label id="pointValueLabel" class="formLabel" for="pointValue">Value:</label>
-       <div id="pointValue" ><input id="pointValueInput" type="number" value="100.01"></input><button type="button" onclick="updatePointValue();">Update</button></div>
-   </div>
-   <div id="status"></div>
-</body>
+    <body>
+      <div id="main">
+        <h1>Set Point Values</h1>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="xid">Xid: </label><input type="text" id="xid" value="voltage"/>
+            <label id="pointValueLabel" class="formLabel" for="pointValue">Value:</label>
+            <input id="pointValueInput" type="number" value="100.01"></input>
+            <button type="button" id="updateValue">Update</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <tr><th>Status</th><th>Time</th></tr>
+              <tbody id="status"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </body>
 </html>

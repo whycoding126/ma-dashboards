@@ -1,77 +1,79 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Current Value</title>
+        <title>Events Query</title>
         <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         <!-- Page Style -->
-        <style type="text/css">
-        </style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+
         
-        <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/config.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/require.js"></script>
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
        
         <script type="text/javascript">
-                  
-          $( document ).ready(function(){
-        	  var query = {
-        			  offset: null,
-        			  limit: 100,
-        			  query: [{ attribute: "alarmLevel", condition: "Int:>1"}],
-        			  sort: [{ attribute: "rtnts", desc: true}],
-        			  useOr: false
-        			  };
-        	  MangoAPI.queryEvents(query, function(results){
-				  var table = $('#events');
-        		  for(var i=0; i<results.length; i++){
-        			  var event = results[i];
-        			  var tr = $('<tr>');
-        			  
-        			  var td = $('<td>');
-        			  td.text(event.id);
-        			  tr.append(td);
-        			  
-        			  td = $('<td>');
-        			  td.text(event.alarmLevel);
-        			  tr.append(td);
-        			  
-        			  td = $('<td>');
-        			  td.text(event.activeTimestamp);
-        			  tr.append(td);
-        			  
-        			  td = $('<td>');
-        			  td.text(event.message);
-        			  tr.append(td);
-        			  
-        			  //add the row
-        			  table.append(tr);
-        		  }
-	              
-	              
-	          }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-	              //alert user on fail
-	              alert(errorThrown + " " + mangoMessage);
-	          });
+        /* Map mango js api to the desired version */
+        require.config({
+            map: {'*': {'mango': 'mango/v2'}}
+        });
+
+        require(['jquery', 'mango/api'],
+          function($, MangoAPI) {
+          	  var query = {
+          			  offset: null,
+          			  andComparisons: [MangoAPI.createQueryComparison('alarmLevel', 'GREATER_THAN_EQUAL_TO', "INFORMATION")],
+          			  sort: [{ attribute: "rtnts", desc: true}],
+				};
+          	  
+          	  MangoAPI.defaultApi.queryEvents(query).then(function(results){
+  				  var table = $('#events');
+          		  for(var i=0; i<results.items.length; i++){
+          			  var event = results.items[i];
+          			  var tr = $('<tr>');
+          			  
+          			  var td = $('<td>');
+          			  td.text(event.id);
+          			  tr.append(td);
+          			  
+          			  td = $('<td>');
+          			  td.text(event.alarmLevel);
+          			  tr.append(td);
+          			  
+          			  td = $('<td>');
+          			  td.text(event.activeTimestamp);
+          			  tr.append(td);
+          			  
+          			  td = $('<td>');
+          			  td.html(event.message);
+          			  tr.append(td);
+          			  
+          			  //add the row
+          			  table.append(tr);
+          		  }
+  	          }).fail(MangoAPI.logError);
            });
         </script>
         
     </head>
-<body>
+  <body>
     <div id="main">
-           <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Level</th>
-                  <th>Active Ts</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody id="events">
-              </tbody>
-            </table>
+     <h1>Events Query</h1>
+     <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Level</th>
+            <th>Active Ts</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody id="events">
+        </tbody>
+      </table>
     </div>
-</body>
+  </body>
 </html>

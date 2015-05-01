@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Websocket Example</title>
+        <title>Live Point Values</title>
         <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         
         <!-- Page Style -->
-        <style type="text/css">
-        </style>
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
         
+        <!-- Base Library -->
         <script type="text/javascript" src="/resources/loaderConfig.js"></script>
         <script type="text/javascript" src="/resources/require.js"></script>
+        <script type="text/javascript" src="/resources/main.js"></script>
         
-        <!-- Map mango-1.1 overtop of mango link in loader configuration -->
-        <script>
-        	require.config({
-            	map: {'*': {'mango': 'mango-1.1'}}
-        	});
-          	
-        </script>
         
         <script type="text/javascript">
-        require(['mango/api', 'domReady!'],
-        function(MangoAPI) {
-            mangoRest = MangoAPI.defaultApi;
+
+        //Map of Xid to Web Socket for comms
+        var xidSocketMap = {};
+		
+        require(['jquery', 'mango/api'],
+        function($, MangoAPI) {
             
             /**
              * Register with the given XID for ALL Events
@@ -32,31 +31,65 @@
              $('#registerButton').on('click', function(){
                  var xid = $('#xid').val();
                  if(xid == ""){
-                     document.getElementById('errors').innerHTML = "No XID provided";
-                     return;
+                   	var statusRow = [];
+                  	statusRow.push('No Xid To Register');
+                  	statusRow.push(new Date());
+                  	//Append a status row
+                  	$('#status').append(createRow(statusRow));
+                  	return;
                  }
-                socket = mangoRest.registerForPointEvents(xid,
+                var socket =  MangoAPI.defaultApi.registerForPointEvents(xid,
                         ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
                         function(message){ //On Message Received Method
-                           document.getElementById('errors').innerHTML = "";
-                           document.getElementById('lastMessageTime').innerHTML = new Date();
                            if(message.status == 'OK'){
-                               document.getElementById('value').innerHTML = message.payload.value.value;
-                               document.getElementById('time').innerHTML = message.payload.value.timestamp;
-                               document.getElementById('type').innerHTML = message.payload.event;
-                               
+                           	var valueRow = [];
+                           	valueRow.push(message.payload.xid);
+                           	valueRow.push(message.payload.renderedValue);
+                           	valueRow.push(message.payload.convertedValue);
+                        	if(message.payload.value != null){
+                               	valueRow.push(message.payload.value.value);
+                           		valueRow.push(new Date(message.payload.value.timestamp));
+                           		valueRow.push(message.payload.value.annotation);
+                        	}else{
+                              	valueRow.push('no data');
+                              	valueRow.push('no data');
+                              	valueRow.push('no data');                             	                        		
+                        	}
+                           	valueRow.push(message.payload.enabled);
+                           	valueRow.push(message.payload.event);
+                        	//Append the Event 
+                        	$('#values').append(createRow(valueRow));
                            }else{
-                               document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                             	var statusRow = [];
+                              	statusRow.push(message.payload.type + " - " + message.payload.message + ' for ' + xid);
+                              	statusRow.push(new Date());
+                              	//Append a status row
+                              	$('#status').append(createRow(statusRow));
                            }
                         },function(error){ //On Error Method
-                            document.getElementById('status').innerHTML = error;
+                          	var statusRow = [];
+                          	statusRow.push(xid + ' has error ' + error);
+                          	statusRow.push(new Date());
+                          	//Append a status row
+                          	$('#status').append(createRow(statusRow));
+
                         },function(){ //On Open Method
-                            document.getElementById('status').innerHTML = 'Connected';
-                            document.getElementById('errors').innerHTML = '';
+                          	var statusRow = [];
+                          	statusRow.push(xid + ' Connected');
+                          	statusRow.push(new Date());
+                          	//Append a status row
+                          	$('#status').append(createRow(statusRow));
+
                         },function(){ //On Close Method
-                            document.getElementById('status').innerHTML = 'Closed';
-                            document.getElementById('errors').innerHTML = '';
+                          	var statusRow = [];
+                          	statusRow.push('Closed');
+                          	statusRow.push(new Date());
+                          	//Append a status row
+                          	$('#status').append(createRow(statusRow));
+
                         });
+                //Store the reference
+                xidSocketMap[xid] = socket;
             });
             
             /**
@@ -65,47 +98,86 @@
              $('#unRegisterButton').on('click', function(){
                 var xid = $('#xid').val();
                 if(xid == ""){
-                    document.getElementById('errors').innerHTML = "No XID provided";
-                    return;
+                  	var statusRow = [];
+                  	statusRow.push('No Xid To Un-register');
+                  	statusRow.push(new Date());
+                  	//Append a status row
+                  	$('#status').append(createRow(statusRow));
                 }
-                mangoRest.modifyRegisteredEvents(socket, xid, []);
-                document.getElementById('lastMessageTime').innerHTML = '';
-                document.getElementById('status').innerHTML = 'Closed';
-                document.getElementById('errors').innerHTML = '';
-                document.getElementById('value').innerHTML = '';
-                document.getElementById('time').innerHTML = '';
-                document.getElementById('type').innerHTML = '';
+                
+                var socket = xidSocketMap[xid];
+                if(typeof socket == 'undefined'){
+                  	var statusRow = [];
+                  	statusRow.push('No Connection for ' + xid + ' to un-register.');
+                  	statusRow.push(new Date());
+                  	//Append a status row
+                  	$('#status').append(createRow(statusRow));
+					return;
+                }
+                
+                MangoAPI.defaultApi.modifyRegisteredPointEvents(socket, xid, []);
+				delete xidSocketMap[xid];
+              	var statusRow = [];
+              	statusRow.push('Un-Registered ' + xid);
+              	statusRow.push(new Date());
+              	//Append a status row
+              	$('#status').append(createRow(statusRow));
 
             });
+            
+             function createRow(columns){
+             	var tr = $('<tr>');
+             	for(var i=0; i<columns.length; i++){
+             		 var td = $('<td>');
+          			  td.text(columns[i]);
+          			  tr.append(td);
+             	}
+             	return tr;
+             }
         });
         </script>
     </head>
 	<body>
-	    <label for="xid">Xid: </label><input type="text" id="xid"/>
-	    <button id="registerButton">Register</button>
-	    <button id="unRegisterButton">Un-Register</button>
-	    <div style="clear:both">
-	      <div style="float:left; padding-right:5px">Status: </div>
-	      <div id="status" style="float:left"></div>
-	    </div>
-	    
-	    <div style="clear:both">
-	      <div style="float:left; padding-right:5px">Last Message: </div>
-	      <div id="lastMessageTime" style="float:left"></div>
-	    </div>
-	    
-	    <div style="clear:both">
-	      <div style="float:left; padding-right:5px">Value: </div>
-	      <div id="value" style="float:left; padding-right:5px"></div><div style="float:left">&nbsp@&nbsp</div><div id="time" style="float:left"></div>
-	    </div>
-	    
-	    <div style="clear:both">
-	      <div style="float:left; padding-right:5px">Message Type: </div>
-	      <div id="type" style="float:left"></div>
-	    </div>
+      <div id="main">
+        <h1>Live Point Values</h1>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="xid">Xid: </label><input type="text" id="xid" value="voltage"/>
+            <button id="registerButton" class="btn btn-default">Register</button>
+            <button id="unRegisterButton" class="btn btn-default">Un-Register</button>
+          </div>
+        </div>
         
-	    
-	    <!-- Placeholder to log errors -->
-	    <div id="errors" style="color: red"></div>    
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <tr><th>Status</th><th>Time</th></tr>
+              <tbody id="status"></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>XID</th>
+                <th>Rendered Value</th>
+                <th>Converted Value</th>
+                <th>Value</th>
+                <th>Time</th>
+                <th>Annotation</th>
+                <th>Enabled</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="values">
+            </tbody>
+          </table>
+          </div>
+        </div>
+        
+       </div>  
     </body>
 </html>

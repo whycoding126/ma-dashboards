@@ -27,9 +27,9 @@ import com.serotonin.m2m2.web.mvc.rest.v1.exception.ResourceNotFoundException;
  * @author Terry Packer
  *
  */
-public class MangoJavascriptApiV1UriMappingDefinition extends UriMappingDefinition{
+public class MangoJavascriptApiUriMappingDefinition extends UriMappingDefinition{
     
-	private static final String baseUrl = "/mango-javascript/v1/";
+	private static final String baseUrl = "/mango-javascript/";
 	
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.module.UriMappingDefinition#getPermission()
@@ -44,8 +44,8 @@ public class MangoJavascriptApiV1UriMappingDefinition extends UriMappingDefiniti
 	 */
 	@Override
 	public String getPath() {
-		//Since we have a javascript mapping for /mango-javascript/ to the core's Dispatch Servlet we can simply add /v1/** to this and capture our urls this way
-		return "/v1/**";
+		//Since we have a javascript mapping for /mango-javascript/ to the core's Dispatch Servlet we can simply add ** to this and capture our urls this way
+		return "/**";
 	}
 
 	/* (non-Javadoc)
@@ -69,7 +69,7 @@ public class MangoJavascriptApiV1UriMappingDefinition extends UriMappingDefiniti
 		private String dashboardsBasePath;
 		
 		public MangoApiUrlHandler(String modulePath){
-			this.dashboardsBasePath = modulePath + "/web/js/mango/v1/" ;
+			this.dashboardsBasePath = modulePath + "/web/js/" ;
 		}
 
 		/* (non-Javadoc)

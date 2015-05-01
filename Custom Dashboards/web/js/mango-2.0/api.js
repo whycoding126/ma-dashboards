@@ -89,6 +89,46 @@ var MangoAPI = extend({
                 url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
             });
         },
+        
+        /**
+         * Query the Data Points Table
+         * @see MangoAPI.createQueryComparison()
+         * 
+         * @param {QueryModel|string} query - Query Model:
+         * { 
+         *	offset: start position (can  be null)
+         *	limit: limit results to this Number (can be null)
+         *	andComparisons: Array.<QueryComparison>
+         *  orComparisons: Array.<QueryComparison>,
+         *  sort: {
+         *  	attribute: String name
+         *  	desc: true or false to order by descending
+         *  }
+         *  useOr: true or false to apply query conditions with OR or AND
+         *  
+         * 
+         *  
+         * @return promise, resolved with data when done
+         */
+        queryPoints: function(query){
+        	
+        	if(typeof query == 'string'){
+                return this.ajax({
+                    url: "/rest/v1/data-points.json?" + encodeURIComponent(query)
+                });
+        	}else{
+        		var url = '/rest/v1/data-points/query.json';
+                var data = JSON.stringify(query);
+                
+                return this.ajax({
+                    type: 'POST',
+                    url: url,
+                    contentType: 'application/json',
+                    data: data
+                });        		
+        	}
+
+        },
 
         /**
          * Save Data Point
@@ -385,7 +425,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getCurrentValue: function(xid) {
-            var url = "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json";
+            var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid) + ".json";
             
             return this.ajax({
                 url: url
@@ -461,44 +501,40 @@ var MangoAPI = extend({
         
         /**
          * Query the Events Table
+         * @see MangoAPI.createQueryComparison()
          * 
          * @param query - Query Model:
          * { 
          *	offset: start position (can  be null)
          *	limit: limit results to this Number (can be null)
-         *	query: {
-         * 		attribute: String name
-         * 		condition: See below
-         *		}
+         *	andComparisons: Array.<QueryComparison>
+         *  orComparisons: Array.<QueryComparison>,
          *  sort: {
          *  	attribute: String name
          *  	desc: true or false to order by descending
          *  }
          *  useOr: true or false to apply query conditions with OR or AND
          *  
-         *  conditions:
-         *  Conditions are all Strings.
-         *  
-         *  Javascript Regex: RegExp:^.*$
-         *  Integer Compare: Int:=1, Int:>1, Int:>=1, Int:<1, Int:<=1
-         *  Long Compare: Long:=1, Long:>1, Long:<1
-         *  Long Range: LongRange:>startValue:<endValue
-         *  Duration: Duration:>1:00:00, Duration:<1:00:00
-         *  Boolean Compare: BooleanIs:true, BooleanIs:false
-         *  Null Check: NullCheck:true, NullCheck:false
          * 
+         *  
          * @return promise, resolved with data when done
          */
         queryEvents: function(query){
-        	var url = "/rest/v1/events/query.json";
-            var data = JSON.stringify(query);
-            
-            return this.ajax({
-                type: "POST",
-                url: url,
-                contentType: "application/json",
-                data: data
-            });
+        	if(typeof query == 'string'){
+                return this.ajax({
+                    url: "/rest/v1/events.json?" + encodeURIComponent(query)
+                });
+        	}else{
+	        	var url = "/rest/v1/events/query.json";
+	            var data = JSON.stringify(query);
+	            
+	            return this.ajax({
+	                type: "POST",
+	                url: url,
+	                contentType: "application/json",
+	                data: data
+	            });
+        	}
         },
         
         getEventsActiveSummary: function() {
@@ -914,6 +950,21 @@ MangoAPI.logError = function(jqXHR, textStatus, error, mangoMessage) {
  */
 MangoAPI.urlParameter = function(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[undefined,""])[1].replace(/\+/g, '%20'))||null;
+};
+
+/**
+ * Create Query Comparison
+ * @param {string} attribute - Attribute of item to compare
+ * @param {string} ['EQUAL_TO', 'NOT_EQUAL_TO', 'LESS_THAN'] type - Type of comparison
+ * @param {number|string} condition - value to compare to 
+ * @returns {QueryComparison}
+ */
+MangoAPI.createQueryComparison = function(attribute, type, condition){
+	return {
+		attribute: attribute,
+		comparisonType: type,
+		condition: condition
+	};
 };
 
 return MangoAPI;

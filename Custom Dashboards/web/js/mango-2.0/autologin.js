@@ -1,12 +1,17 @@
 /**
- * Copyright (C) 2015 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
+ * Data Provider Base Class
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
+ * @module {autologin} mango/autologin
  */
-
 define(['./api'], function(MangoAPI) {
 "use strict";
 
+/**
+ * @function Perform Login
+ * @param {Object} config - {username: string, password: string}
+ * @returns {Promise} - Resolved when logged in
+ */
 var autologin = function(config) {
     if (typeof config.username === 'undefined') {
         config.username = 'guest';

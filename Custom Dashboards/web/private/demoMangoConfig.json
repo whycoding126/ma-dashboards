@@ -11,6 +11,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"SECONDS",
          "updatePeriods":5,
+         "editPermission":null,
          "purgeOverride":false,
          "purgePeriod":1
       },
@@ -25,6 +26,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"MINUTES",
          "updatePeriods":5,
+         "editPermission":null,
          "purgeOverride":false,
          "purgePeriod":1
       },
@@ -39,6 +41,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"SECONDS",
          "updatePeriods":5,
+         "editPermission":null,
          "purgeOverride":false,
          "purgePeriod":1
       }
@@ -66,7 +69,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"℃",
          "chartColour":null,
          "chartRenderer":null,
          "dataSourceXid":"DS_997094",
@@ -80,11 +83,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"PLAIN",
             "useUnitAsSuffix":true,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"℃",
+            "renderedUnit":"℃",
             "suffix":""
          },
          "tolerance":0.0
@@ -110,7 +115,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -124,11 +129,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -155,7 +162,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -169,11 +176,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"PF",
             "format":"0.0"
          },
@@ -200,7 +209,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -214,11 +223,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -245,7 +256,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -259,11 +270,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -306,6 +319,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -337,7 +352,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -351,11 +366,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -396,6 +413,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -427,7 +446,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -441,11 +460,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -472,7 +493,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -486,11 +507,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -517,7 +540,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -531,11 +554,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -576,6 +601,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -607,7 +634,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -621,11 +648,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -652,7 +681,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -666,11 +695,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -697,7 +728,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -711,11 +742,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -742,7 +775,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -756,11 +789,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"PF",
             "format":"0.0"
          },
@@ -787,7 +822,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -801,11 +836,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -832,7 +869,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -846,11 +883,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -893,6 +932,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -924,7 +965,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -938,11 +979,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -983,6 +1026,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1014,7 +1059,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1028,11 +1073,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -1059,7 +1106,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1073,11 +1120,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -1104,7 +1153,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1118,11 +1167,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -1163,6 +1214,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1208,6 +1261,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1253,6 +1308,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1298,6 +1355,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1343,6 +1402,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1388,6 +1449,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1433,6 +1496,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1480,6 +1545,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1525,6 +1592,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1570,6 +1639,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1615,6 +1686,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1660,6 +1733,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1705,6 +1780,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1750,6 +1827,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1795,6 +1874,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1840,6 +1921,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
@@ -1870,10 +1953,16 @@
             "settable":true
          },
          "eventDetectors":[
+            {
+               "xid":"PED_541852",
+               "type":"POINT_CHANGE",
+               "alarmLevel":"INFORMATION",
+               "alias":"Voltage Changed"
+            }
          ],
          "plotType":"STEP",
-         "unit":"",
-         "chartColour":null,
+         "unit":"V",
+         "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"DS_997094",
          "defaultCacheSize":1,
@@ -1886,12 +1975,14 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":"",
+         "setPermission":"",
          "textRenderer":{
-            "type":"PLAIN",
+            "type":"ANALOG",
             "useUnitAsSuffix":true,
-            "unit":"",
-            "renderedUnit":"",
-            "suffix":""
+            "unit":"V",
+            "renderedUnit":"V",
+            "format":"#.00"
          },
          "tolerance":0.0
       },
@@ -1940,6 +2031,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"PLAIN",
             "useUnitAsSuffix":false,
@@ -1986,6 +2079,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"PLAIN",
             "useUnitAsSuffix":true,
@@ -2028,6 +2123,8 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
+         "readPermission":null,
+         "setPermission":null,
          "textRenderer":{
             "type":"PLAIN",
             "useUnitAsSuffix":false,
@@ -2036,108 +2133,6 @@
             "suffix":""
          },
          "tolerance":0.0
-      }
-   ],
-   "pointHierarchy":[
-      {
-         "points":[
-         ],
-         "name":"Buildings",
-         "subfolders":[
-            {
-               "points":[
-               ],
-               "name":"City Plex",
-               "subfolders":[
-                  {
-                     "points":[
-                     ],
-                     "name":"Meters",
-                     "subfolders":[
-                        {
-                           "points":[
-                              "DP_993944"
-                           ],
-                           "name":"Dummy",
-                           "subfolders":[
-                           ]
-                        },
-                        {
-                           "points":[
-                              "DP_119588",
-                              "DP_278103",
-                              "DP_331467",
-                              "DP_614346",
-                              "DP_984239",
-                              "DP_686983",
-                              "DP_806477",
-                              "DP_355369",
-                              "DP_368591",
-                              "DP_241169",
-                              "DP_698831",
-                              "DP_549856",
-                              "DP_596850"
-                           ],
-                           "name":"Meter 1",
-                           "subfolders":[
-                           ]
-                        },
-                        {
-                           "points":[
-                              "DP_370045",
-                              "DP_394777",
-                              "DP_222324",
-                              "DP_622129",
-                              "DP_348223",
-                              "DP_347418",
-                              "DP_077116",
-                              "DP_556556",
-                              "DP_364171",
-                              "DP_422050",
-                              "DP_287036",
-                              "DP_924123",
-                              "DP_390622"
-                           ],
-                           "name":"Meter 2",
-                           "subfolders":[
-                           ]
-                        },
-                        {
-                           "points":[
-                              "DP_992791",
-                              "DP_840606",
-                              "DP_100375",
-                              "DP_399285",
-                              "DP_268535",
-                              "DP_916776",
-                              "DP_279767",
-                              "DP_805604",
-                              "DP_029774",
-                              "DP_202333",
-                              "DP_033512",
-                              "DP_440955",
-                              "DP_077192"
-                           ],
-                           "name":"Meter 3",
-                           "subfolders":[
-                           ]
-                        }
-                     ]
-                  }
-               ]
-            }
-         ]
-      },
-      {
-         "points":[
-            "binary",
-            "multistate",
-            "temperature",
-            "voltage"
-         ],
-         "name":"Target Folder",
-         "subfolders":[
-         ]
       }
    ]
 }

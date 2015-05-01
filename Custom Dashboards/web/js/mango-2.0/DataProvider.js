@@ -385,6 +385,17 @@ DataProvider.prototype.addDataPoints = function(dataPointConfiguration) {
     }
 };
 
+/**
+ * 
+ * Compare 2 Change Options and return the result as 
+ * an object with members that have changed set to true 
+ * and members that have not set to false
+ * 
+ * 
+ * @param {Object} a - First Options
+ * @param {Object} b - Second Options
+ * @return {Object} Result of comparison with each member set to true or false
+ */
 DataProvider.prototype.changedOptions = function(a, b) {
     if (!a || !b) {
         return {
@@ -425,18 +436,34 @@ DataProvider.prototype.changedOptions = function(a, b) {
     return result;
 };
 
+/**
+ * Helper RejectedPromose
+ */
 function rejectedPromise(reason, description) {
     var deferred = $.Deferred();
     deferred.reject(null, reason, description);
     return deferred.promise();
 }
 
+/**
+ * @member {Object} providers - Map of Available Providers
+ */
 var providers = {};
 
+/**
+ * Register New Data Provider
+ * @param {DataProvider} provider - Data Provider to register
+ */
 DataProvider.registerProvider = function(provider) {
     providers[provider.prototype.type] = provider;
 };
 
+/**
+ * Create a New Data Provider
+ * @param {string|number} id - ID for provider
+ * @param {string} type - Type of Data Provider
+ * @param {options} options - Options for Provider
+ */
 DataProvider.newProvider = function(type, id, options) {
     return new providers[type](id, options);
 };
