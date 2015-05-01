@@ -39,9 +39,7 @@ var DataDisplayManager = function(displayConfigurations, options){
         for(i=0; i<this.displayConfigurations.length; i++) {
             var display = this.displayConfigurations[i].createDisplay();
             if (typeof display.then === 'function') {
-                var displayPromise = display.then(function(resolvedDisplay) {
-                    self.displays.push(resolvedDisplay);
-                });
+                var displayPromise = display.then(self.addDisplay.bind(self));
                 displayPromises.push(displayPromise);
             }
             else {
@@ -69,6 +67,10 @@ DataDisplayManager.prototype = {
          */
         ready: function() {
             return this.readyDeferred.promise();
+        },
+        
+        addDisplay: function(display) {
+            this.displays.push(display);
         },
 
         /**

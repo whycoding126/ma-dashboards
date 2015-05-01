@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
-included=web/js/config.js\:web/js/extend.js\:web/js/mango//*.js
+excluded=web/js/jsdoc//*
+included=web/js//*.js
 projectSpecificOptions=true

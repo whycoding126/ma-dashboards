@@ -345,9 +345,9 @@ var MangoAPI = extend({
         },
         
         openSocket: function(path) {
-            if (!'WebSocket' in window) {
+            if (!('WebSocket' in window)) {
                 throw new Error('WebSocket not supported');
-            };
+            }
             
             var host = document.location.host;
             var protocol = document.location.protocol;
@@ -507,7 +507,7 @@ var MangoAPI = extend({
                 data = {
                     key: 'literal',
                     args: [message]
-                }
+                };
             }
             else {
                 data = message;

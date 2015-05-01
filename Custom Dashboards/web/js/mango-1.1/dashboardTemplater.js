@@ -195,8 +195,6 @@ var DashboardTemplater = function(options){
     }
     this.groupSelectConfiguration.create();
     
-    var self = this;
-    
     //Display Manager
     if(this.displayManager === null)
         this.displayManager = new DataDisplayManager(this.displayConfigurations);

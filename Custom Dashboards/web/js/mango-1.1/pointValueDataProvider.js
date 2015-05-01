@@ -59,7 +59,7 @@ var PointValueDataProvider = DataProvider.extend({
     
     tooMuchData: function(amount, limit){
     	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
-    },
+    }
 });
 
 DataProvider.registerProvider(PointValueDataProvider);
