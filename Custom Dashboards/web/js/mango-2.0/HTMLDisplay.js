@@ -1,21 +1,23 @@
 /**
  * Display Raw HTML in a Dom Node
  * 
- * This doc needs work, probably do a base class like the Data Providers
- * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire, Terry Packer
  * @module {HTMLDisplay} mango/HTMLDisplay
  * @see HTMLDisplay
+ * @augments TextDisplay
  */
-define(['jquery'], function($) {
-	
+define(['jquery', './TextDisplay'], function($, TextDisplay) {
+'use strict';
+
 /**
  * @constructs HTMLDisplay
+ * @augments TextDisplay
  * @param {Object} options - options for display
  */
 function HTMLDisplay(options) {
-	
+	TextDisplay.apply(this, arguments);
+
     this.valueAttribute = 'value';
     this.suffix = '';
     this.decimalPlaces = 2;
@@ -27,46 +29,9 @@ function HTMLDisplay(options) {
     
     this.dataProviderIds = [this.dataProviderId];
 };
-	
-/** 
- * Dom Node to Place Displayed data in
- * @type {!Object}
- */
-HTMLDisplay.prototype.selection = null;
 
-/** 
- * Member of data to use in rendering 
- * @type {string} 
- * @default 'value'
- */
-HTMLDisplay.prototype.valueAttribute = 'value';
-/** 
- * any appending text for rendering the value
- * @type {string} 
- * @default ''
- */
-HTMLDisplay.prototype.suffix = '';
-/** 
- * number of decimal places to round the rendered value
- * @type {number}  
- * @default 2
- */
-HTMLDisplay.prototype.decimalPlaces = 2;
-/** 
- * Don't update the node if it is in focus
- * @type {?Object}
- */
-HTMLDisplay.prototype.inhibitUpdateOnFocus = $(null);
+HTMLDisplay.prototype = Object.create(TextDisplay.prototype);
 
-
-
-/**
- * Create the display - legacy use
- * 
- */
-HTMLDisplay.prototype.createDisplay = function() {
-    return this;
-};
 
 /**
  * Data Provider listener to clear data
@@ -87,7 +52,7 @@ HTMLDisplay.prototype.onClear = function() {
 /**
  * Data Provider Listener
  * On Data Provider load we add new data
- * @param {Array | number} data - Value to update with if array then data[0] is used
+ * @param {Array|number|PointValueTime} data - Value to update with if array then data[0] is used
  * @param {Object} dataPoint - data point that corresponds to the value
  */
 HTMLDisplay.prototype.onLoad = function(data, dataPoint) {
@@ -114,7 +79,7 @@ HTMLDisplay.prototype.onLoad = function(data, dataPoint) {
     if (typeof this.manipulateValue === 'function')
         value = this.manipulateValue(value, dataPoint);
 
-    var rendered = this.renderText(value);
+    var rendered = this.renderHTML(value);
     
     if (typeof this.onChange === 'function') {
         if (this.previous !== undefined && rendered !== this.previous) {
@@ -138,28 +103,15 @@ HTMLDisplay.prototype.onLoad = function(data, dataPoint) {
 };
 
 /**
- * Render The Point Value Time as String
- * @param {PointValueTimeModel|number} value - Point Value Time
- * @returns {string}
+ * @param {object} value - Value to render
+ * @param {DataPoint} dataPoint - Data Point to render
  */
-HTMLDisplay.prototype.renderText = function(value) {
+HTMLDisplay.prototype.renderHTML = function(value, dataPoint) {
     // PointValueTime
     if (value && typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
-        return this.renderValue(value.value);
+    	return this.renderValue(value.value);
     }
-    
     return this.renderValue(value);
-};
-
-/**
- * Render a number as a string
- * @param {number} value - Number value to render
- * @return {string} rendered text
- */
-HTMLDisplay.prototype.renderValue = function(value) {
-    if (typeof value === 'number')
-        return value.toFixed(this.decimalPlaces) + this.suffix;
-    return value;
 };
 
 return HTMLDisplay;

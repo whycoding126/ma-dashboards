@@ -4,9 +4,17 @@
  * @author Jared Wiltshire
  * @module {TextDisplay} mango/TextDisplay
  * @see TextDisplay
+ * @augments BaseDisplay
+ * @tutorial textDisplay
  */
-define(['jquery'], function($) {
+define(['jquery', './BaseDisplay'], function($, BaseDisplay) {
 
+/**
+ * @constructs TextDisplay
+ * @augments BaseDisplay
+ * @example var display = new TextDisplay({selection: $('#div')});
+ * @param {Object} options - options for display
+ */
 function TextDisplay(options) {
 	BaseDisplay.apply(this, arguments);
 	
@@ -23,7 +31,18 @@ function TextDisplay(options) {
 
 TextDisplay.prototype = Object.create(BaseDisplay.prototype);
 
-        
+/** 
+ * Don't update the node if it is in focus
+ * @type {?Object}
+ */
+TextDisplay.prototype.inhibitUpdateOnFocus = $(null);
+
+/**
+ * Array of Data provider IDs
+ * @type {?Array} 
+ */
+TextDisplay.prototype.dataProviderIds = null;
+
 /**
  * Data Provider listener to clear data
  */
@@ -91,6 +110,19 @@ TextDisplay.prototype.onLoad = function(data, dataPoint) {
     }
 };
 
+/**
+ * Manipulate a value, override as necessary
+ * by default does nothing.
+ * @function
+ * @param {Object|number} value
+ * @param {DataPoint} dataPoint
+ */
+TextDisplay.prototype.manipulateValue = null;
+
+/**
+ * Render the text from a value or Object
+ * @param {Object|number}
+ */
 TextDisplay.prototype.renderText = function(value) {
     // PointValueTime
     if (value && typeof value === 'object' && 'value' in value && 'timestamp' in valuevalue) {
@@ -100,6 +132,10 @@ TextDisplay.prototype.renderText = function(value) {
     return this.renderValue(value);
 };
 
+/**
+ * Render the Value
+ * @param {number}
+ */
 TextDisplay.prototype.renderValue = function(value) {
     if (typeof value === 'number')
         return value.toFixed(this.decimalPlaces) + this.suffix;

@@ -17,12 +17,12 @@
                
         <script type="text/javascript">
 
-        require(['jquery', 'mango/api', 'mango/TextDisplay'],
-        function($, MangoAPI, TextDisplay) {
+        require(['jquery', 'mango/api', 'mango/TextDisplay', 'mango/HTMLDisplay', 'mango/BaseDisplay'],
+        function($, MangoAPI, TextDisplay, HTMLDisplay) {
             
         	var xidDisplay = new TextDisplay({valueAttribute: 'xid', selection: $('#xid')})
         	var valueDisplay = new TextDisplay({selection: $('#value')});
-        	var renderedValueDisplay = new TextDisplay({valueAttribute: 'renderedValue', selection: $('#rendered')})
+        	var renderedValueDisplay = new HTMLDisplay({valueAttribute: 'renderedValue', selection: $('#rendered')})
 
         	//Clear the Display when the button is clicked
         	$('#clear').on('click', function(){

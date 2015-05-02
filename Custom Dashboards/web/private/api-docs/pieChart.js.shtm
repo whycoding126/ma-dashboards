@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pieChart.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pieChart.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Javascript Object for the Configuring a Pie Chart
+ * 
+ * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+ * @author Terry Packer
+ */
+
+define(['jquery'], function($) {
+"use strict";
+
+/**
+ * @constructs Pie Chart Configuration
+ * @param divId
+ * @param dataProviderIds
+ * @param amChartMixin
+ * @param mangoPieMixin
+ * @param options
+ */
+PieChartConfiguration = function(divId, dataProviderIds, 
+        amChartMixin, mangoPieMixin, options){
+    this.divId = divId;
+    this.amChartMixin = amChartMixin;
+    this.mangoPieMixin = mangoPieMixin;
+    this.dataProviderIds = dataProviderIds;
+    
+    for(var i in options) {
+        this[i] = options[i];
+    }
+
+    this.configuration = $.extend(true, {}, this.getBaseConfiguration(), this.amChartMixin);
+    //Ensure we have a data provider
+    if(typeof this.configuration.dataProvider == 'undefined')
+        this.configuration.dataProvider = [];
+    
+};
+
+PieChartConfiguration.prototype = {
+        divId: null, //Div of chart
+        
+        mangoPieMixin: null, //Any mixins for the MangoPie chart
+        
+        amChartMixin: null, //Any AmChart JSON configuration to override
+        
+        configuration: null, //The full config with mixin
+       
+        dataProviderIds: null, //List of my data provider ids
+        
+        /**
+         * Displaying Loading... on top of chart div
+         */
+        chartLoading: function(){
+            $('#' + this.divId).html('&lt;b>Loading Chart...&lt;/b>');
+        },
+        
+        /**
+         * Do the heavy lifting and create the item
+         * @return AmChart created
+         */
+        createDisplay: function(){
+            this.chartLoading();
+            var pie = new MangoPieChart(
+                    AmCharts.makeChart(this.divId, this.configuration), 
+                    this.dataProviderIds);
+            return $.extend(true, {}, pie, this.mangoPieMixin);
+        },
+        
+        
+        /**
+         * Return the base Serial Chart Configuration
+         */
+        getBaseConfiguration: function(){
+            return  {                    
+            type: "pie",
+            theme: "none",
+            valueField: "total",
+            titleField: "name",
+            balloonFunction: function(graphDataItem, text){
+                if(typeof graphDataItem.value != 'undefined'){
+                    return "&lt;b>" + graphDataItem.title +  "&lt;/b>&lt;br>" + graphDataItem.value.toFixed(2) + " (" + graphDataItem.percents.toFixed(2) + "%)";
+                }else{
+                    return "";
+                }
+            },
+
+            exportConfig:{    
+                menuItems: [{
+                icon: "/modules/dashboards/web/js/amcharts/images/export.png",
+                format: "png"   
+                }]
+            }
+        };
+     }
+};
+
+/**
+ * Mango Pie Chart
+ */
+MangoPieChart = function(amChart, dataProviderIds, options){
+    
+    this.amChart = amChart;
+    this.dataProviderIds = dataProviderIds;
+    this.valueAttribute = 'value'; //Can override with options
+    
+    for(var i in options) {
+        this[i] = options[i];
+    }
+};
+
+MangoPieChart.prototype = {
+        
+        titleField: 'name', //Data Point Member to use for titles
+        /**
+         * Data Provider listener to clear data
+         */
+        onClear: function(){
+            while(this.amChart.dataProvider.length >0){
+                this.amChart.dataProvider.pop();
+            }
+            this.amChart.validateData();   
+        },
+        
+        /**
+         * Default action is to total per name
+         * Data Provider Listener
+         * On Data Provider load we add new data
+         */
+        onLoad: function(data, dataPoint){
+
+            var total = 0;
+            for(var i=0; i&lt;data.length; i++){
+                total += data[i][this.valueAttribute];
+            }
+            
+            //Check to see if it already exists in the chart
+            for(i=0; i&lt;this.amChart.dataProvider.length; i++){
+                if(this.amChart.dataProvider[i][this.titleField] == dataPoint[this.titleField]){
+                    this.amChart.dataProvider[i].total = total;
+                    this.amChart.validateData();
+                    return; //Done
+                }
+            }
+            //We didn't find our set, so add a brand new one
+            var entry = {total: total};
+            entry[this.titleField] = dataPoint[this.titleField];
+            this.amChart.dataProvider.push(entry);
+            this.amChart.validateData();        
+      }
+};
+
+//make the related sub types accessible through the returned type
+//alternatively could make only visible internally or put them in separate files
+PieChartConfiguration.MangoPieChart = MangoPieChart;
+
+return PieChartConfiguration;
+
+}); // close define
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_providerOptionsManager.shtm">mango/providerOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-currentValue.shtm">currentValue</a></li><li><a href="tutorial-dataPointChart.shtm">dataPointChart</a></li><li><a href="tutorial-dataPointQuery.shtm">dataPointQuery</a></li><li><a href="tutorial-events.shtm">events</a></li><li><a href="tutorial-eventWebSocket.shtm">eventWebSocket</a></li><li><a href="tutorial-listDisplay_.shtm">listDisplay</a></li><li><a href="tutorial-pointValueWebSocket.shtm">pointValueWebSocket</a></li><li><a href="tutorial-setPointValue.shtm">setPointValue</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">statisticsTableDisplay</a></li><li><a href="tutorial-textDisplay_.shtm">textDisplay</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Fri May 01 2015 18:34:24 GMT-1000 (HST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

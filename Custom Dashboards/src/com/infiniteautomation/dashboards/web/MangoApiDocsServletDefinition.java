@@ -38,6 +38,6 @@ public class MangoApiDocsServletDefinition extends ServletDefinition{
 	 */
 	@Override
 	public HttpServlet getServlet() {
-		return new ResourceServlet(baseUrl, ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath() + "/web/api-docs/");
+		return new ResourceServlet(baseUrl, ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath() + "/web/private/api-docs/");
 	}
 }
