@@ -15,6 +15,7 @@ define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone
  * @constructs AccumulatorDataProvider
  * @param {!number|string} id - Data Provider ID
  * @param {Object} options - Options for provider
+ * @augments DataProvider
  */
 function AccumulatorRollupDataProvider() {
     PointValueDataProvider.apply(this, arguments);
@@ -30,6 +31,10 @@ AccumulatorRollupDataProvider.prototype = Object.create(PointValueDataProvider.p
  */
 AccumulatorRollupDataProvider.prototype.type = 'AccumulatorRollupDataProvider';
 
+/**
+ * Needs to load Values?
+ * @param {Object} changedOptions
+ */
 AccumulatorRollupDataProvider.prototype.needsToLoad = function(changedOptions) {
     if (changedOptions.from || changedOptions.to ||
             changedOptions.timePeriodType || changedOptions.timePeriods)

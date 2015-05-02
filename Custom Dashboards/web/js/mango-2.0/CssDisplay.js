@@ -5,8 +5,9 @@
  * @author Jared Wiltshire
  * @module {CssDisplay} mango/CssDisplay
  * @see CssDisplay
+ * @augments BaseDisplay
  */
-define(['jquery'], function($) {
+define(['jquery', './BaseDisplay'], function($, BaseDisplay) {
 "use strict";
 
 
@@ -14,12 +15,14 @@ define(['jquery'], function($) {
  * Css Display Constructor
  * @constructs CssDisplay
  * @param {Object} options - Options for Display
+ * @augments BaseDisplay
  */
 function CssDisplay(options) {
+	BaseDisplay.apply(this, arguments);
+	
     this.min = 0;
     this.max = 100;
     this.property = 'width';
-    this.valueAttribute = 'value';
     this.limitPercentage = true;
 
     for(var i in options) {
@@ -29,12 +32,7 @@ function CssDisplay(options) {
     this.dataProviderIds = [this.dataProviderId];
 };
 
-/**
- * Dom Node of Display
- * @default null
- * @type {Object}
- */
-CssDisplay.prototype.selection = null;
+CssDisplay.prototype = Object.create(BaseDisplay.prototype);
 
 /**
  * Minimum Value for data
@@ -54,26 +52,13 @@ CssDisplay.prototype.max = 100;
  * @type {Object}
  */
 CssDisplay.prototype.property = 'width';
-/**
- * Value Attribute of Data
- * @default 'value'
- * @type {string}
- */
-CssDisplay.prototype.valueAttribute = 'value';
+
 /**
  * Limit the property to values 0-1
  * @default true
  * @type {boolean}
  */
 CssDisplay.prototype.limitPercentage = true;
-
-
-/**
- * Create the display
- */
-CssDisplay.prototype.createDisplay = function() {
-    return this;
-};
 
 
 /**

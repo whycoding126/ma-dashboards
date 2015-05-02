@@ -15,6 +15,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  * @constructs AccumulatorDataProvider
  * @param {number} id - Data Provider ID
  * @param {Object} options - Extra options desired
+ * @augments DataProvider
  */
 function AccumulatorDataProvider(id, options) {
     DataProvider.apply(this, arguments);
