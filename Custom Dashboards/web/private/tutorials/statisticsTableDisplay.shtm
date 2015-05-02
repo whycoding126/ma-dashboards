@@ -17,7 +17,7 @@
                
         <script type="text/javascript">
 
-        require(['jquery', 'mango/api','mango/StatisticsTableDisplay', 'mango/BaseDisplay'],
+        require(['jquery', 'mango/api','mango/StatisticsTableDisplay'],
         function($, MangoAPI, StatisticsTableDisplay) {
             
         	var display = new StatisticsTableDisplay({selection: $('#statistics')});

@@ -21,49 +21,94 @@
        
         <script type="text/javascript">
 		//The current list of points
-        var points = [{name: 'test', id:1}];
+        var points = {}; //Map of xids to points where points['xid'] = point;
 		
-        require(['jquery', 'mango/api','jquery.select2'],
-        function($, MangoAPI) {
+        require(['jquery', 'mango/api','mango/TimePresetPicker', 'mango/SerialChart','jquery.notify'],
+        function($, MangoAPI, TimePresetPicker, SerialChart) {
         	
-            // setup the point picker
-            var $pointPicker = $('#pointPicker');
-            $pointPicker.select2({
-            	data: function() { return {results: points}; }
-            });       
-            $pointPicker.on('select2:select', function(event) {
-            	console.log(event);
-				//Fire up chart here
+            chart = new SerialChart({
+                divId: 'chart',
+                amChart: {        
+                			chartScrollbar: null,
+                    		categoryAxis: {
+                        		minPeriod: 'ss'
+                    		},
+                    		legend: null
+                    	},
             });
+        	chart.createDisplay();
         	
-       		$('#queryNow').on('click', function(){  
-       			//Clear out table
-       			$('#dataPoints').html('');
+        	var timePicker = new TimePresetPicker({
+        		presetPicker: $('#presetPicker'),
+        		fromPicker: $('#fromPicker'),
+        		toPicker: $('#toPicker'),
+        		rollupPicker: $('#rollup'),
+        		timePeriodTypePicker: $('#timePeriodTypes'),
+        		timePeriodInput: $('#timePeriods')
+        	});
+        	
+        	$(timePicker).on('change', function(event, data){
+        		var pointXid = $('#pointPicker').val();
+        		
+        		var options = {
+        			rollup: data.rollup,
+        			timePeriodType: data.timePeriodType,
+        			timePeriods: data.timePeriods
+        		};
+        		
+        		MangoAPI.defaultApi.getValues(pointXid, 
+        				data.from.toDate(), //timestamp in  
+        				data.to.toDate(), 
+        				options).then(function(values){
+        			//Stream data to chart
+        			if(data.persistChart !== true)
+        				chart.onClear();
+        			chart.loading();
+        			if(values.length > 5000){
+        	        	$('#chart').notify("Can't chart more that 5000 values, trying to load: " + values.length);
+        				return;
+        			}
+        			chart.onLoad(values, points[pointXid]);
+        			chart.redraw();
+        		}).fail(MangoAPI.logError);
+        	});
+        	
+        	$('#queryNow').on('click', function(){  
        			loadPoints();
-           });
-          
-          function createRow(columns){
-          	var tr = $('<tr>');
-          	for(var i=0; i<columns.length; i++){
-          		 var td = $('<td>');
-       			  td.text(columns[i]);
-       			  tr.append(td);
-          	}
-          	return tr;
-          }
-          
-          function loadPoints(){
-        	  
-    		  //Do Query
-              MangoAPI.defaultApi.queryPoints($('#query').val()).then(function(results){
-              	
-              	//Fill the Drop Down here
-				points = results.items;
-              	
-             }).fail(MangoAPI.logError);
-
-          }
-          
+           	});
+        	$('#clearChart').on('click', function(){  
+       			chart.onClear();
+           	});            
+        	$('#pointPicker').on('change', function(){  
+       			timePicker.triggerChange(true, {persistChart: true});
+           	});
+        	
+            /**
+             * Run the query and load the points
+             */
+            function loadPoints(){
+          	  
+      		  //Do Query
+                MangoAPI.defaultApi.queryPoints($('#query').val()).then(function(results){
+                	var picker = $('#pointPicker');
+                	picker.html('');
+                	points = {}; //clear the points
+                    for (var i=0; i<results.items.length; i++) {
+                    	var point = results.items[i];
+                        var option = $('<option>');
+                        option.attr('value', point.xid);
+                        option.text(point.name);
+                        picker.append(option);
+                        //Save for later
+                        points[point.xid] = point;
+                    }
+                	
+               }).fail(MangoAPI.logError);
+  
+            }
+          	
+            //Start by loading the points
+            loadPoints();
         });
         </script>
         
@@ -72,7 +117,9 @@
     <div id="main">
      <h1>Data Point Chart</h1>
      <p>
-      Perform a query to modify the contents of the Select List.  Then select a Data Point from the Drop Down list to display it on the chart.
+      Perform a query to modify the contents of the Select List.  Then select a Data Point from the Drop Down list to add it to the chart. 
+      Selecting additional data points adds them to the chart with the current date settings.  Changing the date will remove all points and 
+      chart the selected point.
      </p>
      <p>
       <b>Note:</b> Not all members of the dataPoint object are query-able.  See what is available <a href="/rest/v1/data-points/explain-query.json">here</a>.  
@@ -82,19 +129,39 @@
       <div class="col-md-12">
         <label for="query">Query:</label><input type="text" id="query" value="limit(10)" style="width:400px"/>
         <button type="button" id="queryNow">Query Now</button>
+        <button type="button" id="clearChart">Clear Chart</button>
        </div>
       </div>
-     
+      <hr></hr>
+      <!-- Chart Inputs -->
       <div class="row">
-        <div class="col-md-12">
-         <!-- Data Point Drop Down and Time Pickers -->
-         <select id="pointPicker" class="select2-style" style="width: 200px"></select>
+        <div class="col-md-3">
+         <select id="pointPicker" class="form-control"></select>
+        </div>
+        <div class="col-md-3">
+          <select id="presetPicker" class="form-control"></select>
+        </div>
+        <div class="col-md-3">
+          <input id="fromPicker" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <input id="toPicker" class="form-control">
         </div>
       </div>
-      
+      <div class="row">
+        <div class="col-md-4">
+         <select id="rollup" class="form-control"></select>
+        </div>
+        <div class="col-md-4">
+         <input id="timePeriods"  type="number" class="form-control" value="1"></input>
+        </div>
+        <div class="col-md-4">
+         <select id="timePeriodTypes" class="form-control"></select>
+        </div>
+      </div>      
       <div class="row">
         <div class="col-md-12">
-         <div id="chart"></div>
+         <div id="chart" style="height: 400px"></div>
         </div>
       </div>
      

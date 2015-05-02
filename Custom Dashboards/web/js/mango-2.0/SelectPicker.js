@@ -1,16 +1,17 @@
 /**
- * Javascript Objects Used for Configuration of Rollups Picker
+ * Select Input
+ * getting Point Value Data.  
  * 
- * 
- * 
- * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+ * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Terry Packer
+ * @module {PointValueQueryInput} mango/PointValueQueryInput
+ * @see PointValueQueryInput
+ * @tutorial dataPointChart
  */
-
 define(['jquery'], function($) {
 "use strict";
 
-var RollupConfiguration = function(divId, mixin, options){
+SelectInput = function(divId, mixin, options){
     
     this.divId = divId;
     
@@ -28,21 +29,35 @@ var RollupConfiguration = function(divId, mixin, options){
     };
 };
 
-RollupConfiguration.prototype = {
+
+
+
+
+
+
+SelectPickerConfiguration.prototype = {
         divId: null, //Id of div to place Picker
         mixin: null, //Configuration overload
         configuration: null, //Full mixed-in config
-        selected: 0,
-        placeholder: null, //Placeholder for text
+        selected: 0, //Index selected
+        placeholder: null, //Optional placeholder text
         
         addItem: function(label, id, selected){
             var html = "<option></option>";
             $('#' + this.divId).append( $(html).text(label).val(id));
+            if($('#' + this.divId).selectpicker !== undefined)
+                $('#' + this.divId).selectpicker('refresh');
+        },
+        
+        onChange: function(value){
+            console.log(value);
         },
         
         create: function(){
             var self = this;
             var select = $('#' + this.divId);
+            if($('#' + this.divId).selectpicker !== undefined)
+                $('#' + this.divId).selectpicker();
             //Add the options
             for(var k in this.configuration.options){
                 if(k == this.selected)
@@ -54,39 +69,29 @@ RollupConfiguration.prototype = {
             
             if(this.placeholder !== null)
                 $('#' + this.divId).attr("placeholder", this.placeholder);
- 
+
             //Add the onChange method
             select.change(self.configuration.onChange);
             if(this.configuration.options.length > 0){
                 $('#' + this.divId).val(this.configuration.options[this.selected].value);
-                if($('#' + this.divId).selectmenu !== undefined)
-                    $('#' + this.divId).selectmenu('refresh', true);
+                if($('#' + this.divId).selectpicker !== undefined)
+                    $('#' + this.divId).selectpicker('refresh');
             }
+            
+           
+            
         },
         
-        onChange: function(value){
-            console.log(value);
-        },
+
         
         getBaseConfiguration: function(){
             return {
-                options: [
-                          {label: 'AVERAGE', value: 'AVERAGE'}, 
-                          {label: 'MAXIMUM', value: 'MAXIMUM'},
-                          {label: 'MINIMUM', value: 'MINIMUM'},
-                          {label: 'SUM', value: 'SUM'},
-                          {label: 'FIRST', value: 'FIRST'},
-                          {label: 'LAST', value: 'LAST'},
-                          {label: 'COUNT', value: 'COUNT'}
-                         ],
-                onChange: function(rollup){
-                    console.log(rollup);
-                }
+                options: [] //Array of {label, value}
             };
         }
         
 };
 
-return RollupConfiguration;
+return SelectPickerConfiguration;
 
 }); // close define

@@ -5,15 +5,18 @@
  * @author Jared Wiltshire
  * @module {GridDisplay} mango/GridDisplay
  * @see GridDisplay
+ * @augments BaseDisplay
  */
-define(['jquery', 'extend', 'dojo/_base/declare', 'dstore/Memory', 'dstore/Trackable', 'dgrid/OnDemandGrid'],
-function($, extend, declare, Memory, Trackable, OnDemandGrid) {
+define(['jquery', 'dojo/_base/declare', 'dstore/Memory', 'dstore/Trackable', 'dgrid/OnDemandGrid', './BaseDisplay'],
+function($, declare, Memory, Trackable, OnDemandGrid, BaseDisplay) {
 
 /**
  * @constructs GridDisplay
  * @param {Object} options - options for grid
+ * @augments BaseDisplay
  */	
 function GridDisplay(options){
+	BaseDisplay.apply(this, arguments);
     // stores data which arrives while loading
     this.cache = [];
     this.maximumItems = null;
@@ -34,6 +37,16 @@ function GridDisplay(options){
     
     $.extend(this, options);
 };	
+
+GridDisplay.prototype = Object.create(BaseDisplay.prototype);
+
+/**
+ * Type of Display
+ * @type {string}
+ * @default 'GridDisplay'
+ * @const
+ */
+GridDisplay.prototype.type = 'GridDisplay';
 
 /**
  * OnDemandGrid created by createDisplay
@@ -85,9 +98,10 @@ GridDisplay.prototype.noDataMessage = null;
 
 /**
  * Create the Display
+ * @override
  */
 GridDisplay.prototype.createDisplay = function() {
-    this.grid = new OnDemandGrid(this.gridOptions, this.gridId);
+    this.grid = new OnDemandGrid(this.gridOptions, this.selection.attr('id'));
     return this;
 };
 

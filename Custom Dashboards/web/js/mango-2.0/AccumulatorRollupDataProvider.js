@@ -12,10 +12,10 @@ define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone
 
 /**
  * Constructor
- * @constructs AccumulatorDataProvider
+ * @constructs AccumulatorRollupDataProvider
  * @param {!number|string} id - Data Provider ID
  * @param {Object} options - Options for provider
- * @augments DataProvider
+ * @augments PointValueDataProvider
  */
 function AccumulatorRollupDataProvider() {
     PointValueDataProvider.apply(this, arguments);

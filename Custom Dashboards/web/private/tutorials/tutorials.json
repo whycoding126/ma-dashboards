@@ -1,0 +1,36 @@
+{
+     "currentValue": {
+         "title": "Current Value"
+     },
+     "dataPointChart": {
+         "title": "Data Point Charting"
+     },
+     "dataPointQuery": {
+         "title": "Query Data Points"
+     },
+     "events": {
+         "title": "Events Query"
+     },
+     "eventWebSocket": {
+         "title": "Live Events"
+     },
+     "gridDisplay": {
+         "title": "Grid Display"
+     },
+     "listDisplay": {
+         "title": "List Display"
+     },
+     "textDisplay": {
+         "title": "Text Display"
+     },
+     "statisticsTableDisplay": {
+         "title": "Statistics Table Display"
+     },
+     "pointValueWebSocket": {
+         "title": "Live Data"
+     },
+     "setPointValue": {
+         "title": "Setting a Value"
+     }
+     
+ }

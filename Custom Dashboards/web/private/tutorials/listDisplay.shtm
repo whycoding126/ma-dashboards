@@ -17,7 +17,7 @@
                
         <script type="text/javascript">
 
-        require(['jquery', 'mango/api', 'mango/ListDisplay', 'mango/TextDisplay', 'mango/BaseDisplay'],
+        require(['jquery', 'mango/api', 'mango/ListDisplay'],
         function($, MangoAPI, ListDisplay) {
             
         	var listDisplay = new ListDisplay(
@@ -57,7 +57,7 @@
 <body>
     <div id="main">
         <h1>List Display Usage</h1>
-        <p>Click one of the data points in the list to see its information</p>
+        <p>Click one of the data points in the list to add its information to the table.</p>
         
         <div class="row">
           <div class="col-md-2">

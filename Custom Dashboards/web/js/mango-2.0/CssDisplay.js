@@ -35,6 +35,14 @@ function CssDisplay(options) {
 CssDisplay.prototype = Object.create(BaseDisplay.prototype);
 
 /**
+ * Type of Display
+ * @type {string}
+ * @default 'CssDisplay'
+ * @const
+ */
+CssDisplay.prototype.type = 'CssDisplay';
+
+/**
  * Minimum Value for data
  * @default 0
  * @type {number}
