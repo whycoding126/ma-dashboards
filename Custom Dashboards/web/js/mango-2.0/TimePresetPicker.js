@@ -7,7 +7,8 @@
  * @see TimePresetPicker
  * @tutorial dataPointChart
  */
-define(['jquery', 'moment-timezone', 'jquery-ui/jquery.datetimepicker'], function($, moment) {
+define(['jquery', 'moment-timezone', 'mango/TimePresetStore', 'mango/TimePeriodTypeStore', 'mango/RollupStore', 'dstore/legacy/DstoreAdapter', 'dstore/Memory', 'jquery-ui/jquery.datetimepicker'], 
+		function($, moment, TimePresetStore, TimePeriodTypeStore, RollupStore, DstoreAdapter, Memory) {
 
 /*
  * The time period options and values are taken from the Java class
@@ -157,7 +158,9 @@ TimePresetPicker.prototype.setPresetPicker = function(picker) {
     if (picker) {
         picker.on('change', this.presetPickerChanged);
         this.presetPicker = picker;
-        this.populatePicker(this.presetPicker, this.presets);
+        if(this.presetPicker.store.data.length === 0)
+			this.presetPicker.set('store',new DstoreAdapter(new TimePresetStore())); 
+        this.preset = this.presetPicker.get('value');
     }
 };
 
@@ -173,8 +176,9 @@ TimePresetPicker.prototype.setRollupPicker = function(picker) {
     if (picker) {
         picker.on('change', this.rollupPickerChanged);
         this.rollupPicker = picker;
-        this.populatePicker(this.rollupPicker, this.rollups);
-        this.rollup = this.rollupPicker.val();
+        if(this.rollupPicker.store.data.length === 0)
+			this.rollupPicker.set('store',new DstoreAdapter(new RollupStore())); 
+        this.rollup = this.rollupPicker.get('value');
     }
 };
 
@@ -189,8 +193,9 @@ TimePresetPicker.prototype.setTimePeriodTypePicker = function(picker) {
     if (picker) {
         picker.on('change', this.timePeriodTypePickerChanged);
         this.timePeriodTypePicker = picker;
-        this.populatePicker(this.timePeriodTypePicker, this.timePeriodTypes);
-        this.timePeriodType = this.timePeriodTypePicker.val();
+        if(this.timePeriodTypePicker.store.data.length === 0)
+			this.timePeriodTypePicker.set('store',new DstoreAdapter(new TimePeriodTypeStore())); 
+        this.timePeriodType = this.timePeriodTypePicker.get('value');
     }
 };
 
@@ -335,7 +340,7 @@ TimePresetPicker.prototype.fromToPickerChanged = function(event) {
  * @param event
  */
 TimePresetPicker.prototype.presetPickerChanged = function(event) {
-    var preset = this.presetPicker.val();
+    var preset = this.presetPicker.get('value');
     this.setPreset(preset);
 };
 
@@ -344,7 +349,7 @@ TimePresetPicker.prototype.presetPickerChanged = function(event) {
  * @param event
  */
 TimePresetPicker.prototype.rollupPickerChanged = function(event) {
-    this.rollup = this.rollupPicker.val();
+    this.rollup = this.rollupPicker.get('value');
     this.triggerChange(this.rollupPickerTriggersRefresh);
 };
 
@@ -353,7 +358,7 @@ TimePresetPicker.prototype.rollupPickerChanged = function(event) {
  * @param event
  */
 TimePresetPicker.prototype.timePeriodTypePickerChanged = function(event) {
-    this.timePeriodType = this.timePeriodTypePicker.val();
+    this.timePeriodType = this.timePeriodTypePicker.get('value');
     this.triggerChange(this.timePeriodTypePickerTriggersRefresh);
 };
 
@@ -387,7 +392,7 @@ TimePresetPicker.prototype.setPreset = function(preset, triggerRefresh) {
     
     this.preset = preset;
     if (this.presetPicker) {
-        this.presetPicker.val(preset).trigger('change.select2');
+        this.presetPicker.set('value',preset);
     }
     
     var period = TimePresetPicker.calculatePeriod(preset);

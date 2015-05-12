@@ -74,7 +74,12 @@ PointValueDataProvider.prototype.loadPoint = function(point, options) {
 PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
     var self = this;
 	return this.mangoApi.countValues(point.xid, options.from, options.to, options).then(function(count){
-		if(count <= self.maxPointValueCount){
+		if(count === 0){
+			var deferred = $.Deferred();
+			deferred.done({data: [], point: point});
+			self.noData(options);
+			return deferred.promise();
+		}else if(count <= self.maxPointValueCount){
 			return self.mangoApi.getValues(point.xid, options.from, options.to, options);
 		}else{
 			var deferred = $.Deferred();
@@ -92,7 +97,15 @@ PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
  */
 PointValueDataProvider.prototype.tooMuchData = function(amount, limit){
 	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
-},
+};
+
+/**
+ * Called when no much data is going to be returned.
+ * @param {Object} options - Request options
+ */
+PointValueDataProvider.prototype.noData = function(options){
+	alert('No Data in range: ' + options.from + " to " + options.to);
+};
 
 DataProvider.registerProvider(PointValueDataProvider);
 

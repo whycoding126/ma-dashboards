@@ -209,10 +209,20 @@ var ProviderOptionsManager = extend({
             return;
         }
         
-        if (this.timePeriodsPicker)
-            this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
-        if (this.timePeriodTypePicker)
-            this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
+        if (this.timePeriodsPicker){
+            if (this.timePeriodsPicker.length > 0) {
+            	this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
+            }else if(typeof this.timePeriodsPicker.set == 'function'){
+            	this.timePeriodsPicker.set('value', this.providerOptions.timePeriods);
+            }
+        }
+        if (this.timePeriodTypePicker){
+            if (this.timePeriodTypePicker.length > 0) {
+            	this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
+            }else if(typeof this.timePeriodTypePicker.set == 'function'){
+            	this.timePeriodTypePicker.set('value', this.providerOptions.timePeriodType);
+            }
+        }
     },
     
     quantizationPeriod: function() {
@@ -236,17 +246,27 @@ var ProviderOptionsManager = extend({
         
         if (this.rollupPicker.length > 0) {
             this.providerOptions.rollup = this.rollupPicker.val();
-        }
-        if (this.timePeriodTypePicker.length > 0) {
-            this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
-        }
-        if (this.timePeriodsPicker.length > 0) {
-            this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
+        }else if(typeof this.rollupPicker.get == 'function'){
+        	this.providerOptions.rollup = this.rollupPicker.get('value');
         }
         
-        // disable the time period pickers when there is no rollup
-        this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === 'NONE');
-        this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === 'NONE');
+        if (this.timePeriodTypePicker.length > 0) {
+            this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
+            // disable the time period pickers when there is no rollup
+            this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === 'NONE');
+        }else if(typeof this.timePeriodTypePicker.get == 'function'){
+        	this.providerOptions.timePeriodType = this.timePeriodTypePicker.get('value');
+        	this.timePeriodTypePicker.set('disabled', this.providerOptions.rollup === 'NONE');
+        }
+        
+        if (this.timePeriodsPicker.length > 0) {
+            this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
+            this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === 'NONE');
+        }else  if(typeof this.timePeriodsPicker.get == 'function'){
+        	this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.get('value'), 10);
+        	this.timePeriodsPicker.set('disabled', this.providerOptions.rollup === 'NONE');
+        }
+        
     },
     
     /**
@@ -361,7 +381,9 @@ var ProviderOptionsManager = extend({
         var existingPicker = this[pickerName];
         if (existingPicker)
             existingPicker.off('change', this.pickerChanged);
-        picker = $(picker);
+        
+        if(picker == null)
+        	picker = $(picker);
         picker.on('change', this.pickerChanged);
         this[pickerName] = picker;
     },

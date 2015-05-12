@@ -30,11 +30,6 @@ SelectInput = function(divId, mixin, options){
 };
 
 
-
-
-
-
-
 SelectPickerConfiguration.prototype = {
         divId: null, //Id of div to place Picker
         mixin: null, //Configuration overload
@@ -81,9 +76,7 @@ SelectPickerConfiguration.prototype = {
            
             
         },
-        
 
-        
         getBaseConfiguration: function(){
             return {
                 options: [] //Array of {label, value}

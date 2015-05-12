@@ -69,7 +69,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"℃",
+         "unit":"",
          "chartColour":null,
          "chartRenderer":null,
          "dataSourceXid":"DS_997094",
@@ -88,8 +88,8 @@
          "textRenderer":{
             "type":"PLAIN",
             "useUnitAsSuffix":true,
-            "unit":"℃",
-            "renderedUnit":"℃",
+            "unit":"",
+            "renderedUnit":"",
             "suffix":""
          },
          "tolerance":0.0
@@ -2015,10 +2015,19 @@
             "settable":true
          },
          "eventDetectors":[
+            {
+               "xid":"PED_697100",
+               "type":"MULTISTATE_STATE",
+               "alarmLevel":"NONE",
+               "state":5,
+               "durationType":"SECONDS",
+               "duration":10,
+               "alias":"At state 5."
+            }
          ],
          "plotType":"STEP",
          "unit":"",
-         "chartColour":null,
+         "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"DS_997094",
          "defaultCacheSize":1,
@@ -2031,14 +2040,57 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
-         "setPermission":null,
+         "readPermission":"",
+         "setPermission":"",
          "textRenderer":{
-            "type":"PLAIN",
-            "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
-            "suffix":""
+            "type":"MULTISTATE",
+            "multistateValues":[
+               {
+                  "colour":"#000000",
+                  "key":1,
+                  "text":"One"
+               },
+               {
+                  "colour":"#00ff00",
+                  "key":2,
+                  "text":"Two"
+               },
+               {
+                  "colour":"#008000",
+                  "key":3,
+                  "text":"Three"
+               },
+               {
+                  "colour":"#0000ff",
+                  "key":4,
+                  "text":"Four"
+               },
+               {
+                  "colour":"#c0c0c0",
+                  "key":5,
+                  "text":"Five"
+               },
+               {
+                  "colour":"#ffff00",
+                  "key":6,
+                  "text":"Six"
+               },
+               {
+                  "colour":"#ff00ff",
+                  "key":7,
+                  "text":"Seven"
+               },
+               {
+                  "colour":"#000080",
+                  "key":8,
+                  "text":"Eight"
+               },
+               {
+                  "colour":"#ff0000",
+                  "key":9,
+                  "text":"Nine"
+               }
+            ]
          },
          "tolerance":0.0
       },
@@ -2123,14 +2175,14 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
-         "setPermission":null,
+         "readPermission":"",
+         "setPermission":"",
          "textRenderer":{
-            "type":"PLAIN",
-            "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
-            "suffix":""
+            "type":"BINARY",
+            "oneColour":"#00ff00",
+            "oneLabel":"one",
+            "zeroColour":"#0000ff",
+            "zeroLabel":"zero"
          },
          "tolerance":0.0
       }
