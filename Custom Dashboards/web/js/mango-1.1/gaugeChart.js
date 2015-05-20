@@ -17,7 +17,7 @@ define(['jquery'], function($) {
  * @param options
  * @returns
  */
-GaugeChartConfiguration = function(divId, dataProviderIds, 
+var GaugeChartConfiguration = function(divId, dataProviderIds, 
         amChartMixin, mangoChartMixin, options){
     this.divId = divId;
     this.amChartMixin = amChartMixin;

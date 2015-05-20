@@ -50,6 +50,10 @@ AccumulatorDataProvider.prototype.loadPoint = function(point, options) {
     var promise = this.mangoApi.getFirstLastValues(point.xid, options.from, options.to, this.apiOptions)
     .then(function(data) {
         var result = {};
+        if (data.length < 2 || !data[0] || !data[1]) {
+            result.value = null;
+            return result;
+        }
         result.value = data[1].value - data[0].value;
         result.first = data[0];
         result.last = data[1];
