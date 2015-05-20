@@ -7,7 +7,7 @@
 define(['jquery'], function($) {
 "use strict";
 
-CssDisplay = function(options) {
+var CssDisplay = function(options) {
     this.min = 0;
     this.max = 100;
     this.property = 'width';

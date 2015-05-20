@@ -128,7 +128,7 @@ GaugeChartConfiguration.prototype = {
 /**
  * Mango Gauge Chart
  */
-MangoGaugeChart = function(amChart, dataProviderIds, options){
+var MangoGaugeChart = function(amChart, dataProviderIds, options){
     
     this.amChart = amChart;
     this.dataProviderIds = dataProviderIds;
