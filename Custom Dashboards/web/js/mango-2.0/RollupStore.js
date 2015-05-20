@@ -38,7 +38,7 @@ RollupStore.prototype.defaultOptions = [
     {id:'MINIMUM', text: 'Minimum', disabled: false, nonNumericSupport: false},
     {id:'SUM', text: 'Sum', disabled: false, nonNumericSupport: false},
     {id:'FIRST', text: 'First', disabled: false, nonNumericSupport: true},
-    {id:'LAST', text: 'Last', disabled: false, nonNumericSupport: true},
+    {id:'LAST', text: 'Last', disabled: false, nonNumericSupport: true}
 ];
 
 

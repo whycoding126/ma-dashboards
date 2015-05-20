@@ -27,8 +27,8 @@ var pointEventManager = new PointEventManager();
 function RealtimeDataProvider(id, options) {
     DataProvider.apply(this, arguments);
     this.eventHandler = this.eventHandler.bind(this);
-};
-	
+}
+
 RealtimeDataProvider.prototype = Object.create(DataProvider.prototype);
 
 

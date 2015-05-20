@@ -36,7 +36,7 @@ function GridDisplay(options){
     this.noDataMessage = this.gridOptions.noDataMessage;
     
     $.extend(this, options);
-};	
+}
 
 GridDisplay.prototype = Object.create(BaseDisplay.prototype);
 
@@ -80,7 +80,7 @@ GridDisplay.prototype.store = null;
  * @type {Object}
  * @default null
  */
-GridDisplay.prototype.gridOptions = null
+GridDisplay.prototype.gridOptions = null;
 
 /**
  * Message displayed while loading data

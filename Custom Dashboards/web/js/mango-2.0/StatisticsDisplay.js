@@ -222,7 +222,7 @@ StatisticsDisplay.prototype = {
 	  			for(var i=0; i<dataPoint.textRenderer.multistateValues.length; i++){
 	  				var mValue = dataPoint.textRenderer.multistateValues[i];
 	  				if(value === mValue.key)
-	  					return '<span style="color:' + mValue.colour + '">' + mValue.text + '</span>'
+	  					return '<span style="color:' + mValue.colour + '">' + mValue.text + '</span>';
 	  			}
 	  		break;
 		}

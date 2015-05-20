@@ -15,7 +15,7 @@ define(['jquery', 'moment-timezone'], function($, moment) {
  */
 function BaseDisplay(options){
     $.extend(this, options);
-};
+}
 
 /**
  * Type of Display
@@ -97,7 +97,7 @@ BaseDisplay.prototype.renderValue = function(value) {
     if (typeof value === 'number')
         return value.toFixed(this.decimalPlaces);
     return value;
-},
+};
 
 /**
  * Render Timestamp using BaseDisplay#timeFormat

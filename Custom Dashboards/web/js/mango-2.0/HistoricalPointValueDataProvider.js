@@ -19,7 +19,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  */
 function HistoricalDataProvider(id, options) {
 	DataProvider.apply(this, arguments);
-};
+}
 	
 HistoricalDataProvider.prototype = Object.create(DataProvider.prototype);
 	

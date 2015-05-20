@@ -418,9 +418,9 @@ MangoAPI.prototype.modifyRegisteredPointEvents = function(socket, xid, events) {
  * @return {WebSocket}
  */
 MangoAPI.prototype.openSocket = function(path) {
-    if (!'WebSocket' in window) {
+    if (!('WebSocket' in window)) {
         throw new Error('WebSocket not supported');
-    };
+    }
     
     var host = document.location.host;
     var protocol = document.location.protocol;
@@ -585,7 +585,7 @@ MangoAPI.prototype.acknowledgeEvent = function(event, message) {
         data = {
             key: 'literal',
             args: [message]
-        }
+        };
     }
     else {
         data = message;
@@ -753,7 +753,7 @@ MangoAPI.prototype.setupGlobalize = function() {
         
         return Globalize;
     });
-}
+};
 
 
 /**

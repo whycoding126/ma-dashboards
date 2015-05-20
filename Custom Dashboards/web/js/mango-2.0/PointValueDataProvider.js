@@ -21,7 +21,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  */
 function PointValueDataProvider(id, options) {
 	DataProvider.apply(this, arguments);
-};
+}
     
 PointValueDataProvider.prototype = Object.create(DataProvider.prototype);
 
@@ -74,16 +74,17 @@ PointValueDataProvider.prototype.loadPoint = function(point, options) {
 PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
     var self = this;
 	return this.mangoApi.countValues(point.xid, options.from, options.to, options).then(function(count){
+	    var deferred;
 		if(count === 0){
-			var deferred = $.Deferred();
-			deferred.done({data: [], point: point});
+		    deferred = $.Deferred();
+			deferred.resolve({data: [], point: point});
 			self.noData(options);
 			return deferred.promise();
 		}else if(count <= self.maxPointValueCount){
 			return self.mangoApi.getValues(point.xid, options.from, options.to, options);
 		}else{
-			var deferred = $.Deferred();
-			deferred.done({data: [], point: point});
+            deferred = $.Deferred();
+			deferred.resolve({data: [], point: point});
 			self.tooMuchData(count, self.maxPointValueCount);
 			return deferred.promise();
 		}
@@ -96,6 +97,7 @@ PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
  * @param {limit} limit - Maximum amount this provider allows
  */
 PointValueDataProvider.prototype.tooMuchData = function(amount, limit){
+    // TODO J.W. alert is nasty
 	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
 };
 
@@ -104,6 +106,7 @@ PointValueDataProvider.prototype.tooMuchData = function(amount, limit){
  * @param {Object} options - Request options
  */
 PointValueDataProvider.prototype.noData = function(options){
+    // TODO J.W. alert is nasty
 	alert('No Data in range: ' + options.from + " to " + options.to);
 };
 

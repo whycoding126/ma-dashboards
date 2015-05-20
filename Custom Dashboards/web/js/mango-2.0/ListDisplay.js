@@ -23,7 +23,7 @@ function ListDisplay(options){
     for(var i in options) {
         this[i] = options[i];
     }
-};
+}
 
 ListDisplay.prototype = Object.create(TextDisplay.prototype);
 
@@ -79,7 +79,7 @@ ListDisplay.prototype.onLoad = function(data, dataPoint) {
 		}
 		this.selection.append(li);
 	}
-}
+};
 
 /**
  * Called when the <li> is clicked.

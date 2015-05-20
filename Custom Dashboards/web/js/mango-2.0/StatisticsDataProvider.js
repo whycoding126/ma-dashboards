@@ -17,7 +17,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  */
 function StatisticsDataProvider(id, options){
 	 DataProvider.apply(this, arguments);
-};
+}
 	
 StatisticsDataProvider.prototype = Object.create(DataProvider.prototype);
 

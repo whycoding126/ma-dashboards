@@ -30,7 +30,7 @@ function CssDisplay(options) {
     }
     
     this.dataProviderIds = [this.dataProviderId];
-};
+}
 
 CssDisplay.prototype = Object.create(BaseDisplay.prototype);
 

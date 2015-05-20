@@ -315,7 +315,7 @@ TimePresetPicker.prototype.populatePicker = function(picker, presets){
         option.text(presets[preset].description);
         picker.append(option);
     }
-}
+};
 
 /**
  * From/To Picker has changed
@@ -557,7 +557,7 @@ TimePresetPicker.prototype.rollups = {
 	    'Integral': {
 	        id: 9,
 	        description: 'Integral'
-	    },		
+	    }	
 };
 
 /** 

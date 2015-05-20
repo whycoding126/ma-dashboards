@@ -27,7 +27,7 @@ function TextDisplay(options) {
     }
     
     this.dataProviderIds = [this.dataProviderId];
-};
+}
 
 TextDisplay.prototype = Object.create(BaseDisplay.prototype);
 

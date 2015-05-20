@@ -382,7 +382,7 @@ var ProviderOptionsManager = extend({
         if (existingPicker)
             existingPicker.off('change', this.pickerChanged);
         
-        if(picker == null)
+        if (picker === null)
         	picker = $(picker);
         picker.on('change', this.pickerChanged);
         this[pickerName] = picker;

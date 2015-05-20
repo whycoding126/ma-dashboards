@@ -30,7 +30,7 @@ TimePresetStore.prototype.data = [
         {id:'FIXED_TO_FIXED', text: 'Custom time period'},
         {id:'FIXED_TO_NOW', text: 'Custom time up to now'},
         {id:'INCEPTION_TO_FIXED', text: 'First value up to custom time'},
-        {id:'INCEPTION_TO_NOW', text: 'First value up to now'},
+        {id:'INCEPTION_TO_NOW', text: 'First value up to now'}
 ];
 
 
