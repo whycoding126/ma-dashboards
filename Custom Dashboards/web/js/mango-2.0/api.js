@@ -72,6 +72,48 @@ MangoAPI.prototype.logout = function() {
 };
         
 /**
+ * Save Existing User
+ * 
+ * @param user - user to save
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.putUser = function(user) {
+    return this.ajax({
+        type: "PUT",
+        url : "/rest/v1/users/" + encodeURIComponent(user.username) + ".json",
+        contentType: "application/json",
+        data: JSON.stringify(user)
+    });
+};
+
+/**
+ * Save New User
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.postUser = function(user) {
+    return this.ajax({
+        type: "POST",
+        url : "/rest/v1/users.json",
+        contentType: "application/json",
+        data: JSON.stringify(user)
+    });
+};
+
+/**
+ * Get New User with defaults set
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.newUser = function(user) {
+    return this.ajax({
+        url : "/rest/v1/users/new/user.json"
+    });
+};
+
+/**
  * Make a request for any JSON data
  * 
  * @param url
