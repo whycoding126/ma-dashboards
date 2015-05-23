@@ -102,6 +102,19 @@ MangoAPI.prototype.postUser = function(user) {
 };
 
 /**
+ * Save New User
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.deleteUser = function(username) {
+    return this.ajax({
+        type: "DELETE",
+        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json",
+    });
+};
+
+/**
  * Get New User with defaults set
  * 
  * @param user - user to add
@@ -112,6 +125,79 @@ MangoAPI.prototype.newUser = function(user) {
         url : "/rest/v1/users/new/user.json"
     });
 };
+
+/**
+ * Toggle mute setting
+ * 
+ * @param username - user to toggle
+ * @param mute - optional boolean if not provided the current setting is toggled
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.toggleUserMute = function(username, mute) {
+	var url = "/rest/v1/users/";
+	url += encodeURIComponent(username) + "/mute.json";
+	
+	if(mute)
+		url += "?mute=" + mute;
+    return this.ajax({
+        type: "PUT",
+        url : url
+    });
+};
+
+/**
+ * Set Home URL
+ * 
+ * @param username - user to set
+ * @param url - url to set to
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
+	var url = "/rest/v1/users/";
+	url += encodeURIComponent(username) + "/homepage.json?url=";
+	url += encodeURIComponent(homeUrl);
+    return this.ajax({
+        type: "PUT",
+        url : url
+    });
+};
+
+/**
+ * Get All Permissions Information
+ * 
+ * @param query - comma separated String of permissions that are returned as already added to user
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getAllPermissionsInformation = function(query) {
+    return this.ajax({
+        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json",
+    });
+};
+
+/**
+ * Get User Groups
+ * 
+ * @param exclude - comma separated String of groups
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getAllUserGroups = function(exclude) {
+    return this.ajax({
+        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json",
+    });
+};
+
+/**
+ * Get Help
+ * 
+ * @param helpId - help id to load
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getHelp = function(helpId) {
+    return this.ajax({
+        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json",
+    });
+};
+
 
 /**
  * Make a request for any JSON data
@@ -145,6 +231,46 @@ MangoAPI.prototype.getAllPoints = function() {
 MangoAPI.prototype.getPoint = function(xid) {
     return this.ajax({
         url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
+    });
+};
+
+/**
+ * Bulk apply set permissions
+ * 
+ * @param permissions {String} set permissions 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.applyBulkPointSetPermissions = function(permissions, query) {
+	var data = JSON.stringify(permissions);
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+        url: "/rest/v1/data-points/bulk-apply-set-permissions.json" + extraUrl,
+        contentType: 'application/json',
+        data: data
+    });
+};
+
+/**
+ * Bulk apply read permissions
+ * 
+ * @param permissions {String} read permissions 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.applyBulkPointReadPermissions = function(permissions, query) {
+	var data = JSON.stringify(permissions);
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+        url: "/rest/v1/data-points/bulk-apply-read-permissions.json" + extraUrl,
+        contentType: 'application/json',
+        data: data
     });
 };
 
