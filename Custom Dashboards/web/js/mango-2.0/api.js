@@ -275,6 +275,40 @@ MangoAPI.prototype.applyBulkPointReadPermissions = function(permissions, query) 
 };
 
 /**
+ * Bulk clear set permissions
+ * 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.clearBulkPointSetPermissions = function(query) {
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+    	contentType: 'application/json',
+        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl,
+    });
+};
+
+/**
+ * Bulk clear read permissions
+ * 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.clearBulkPointReadPermissions = function(query) {
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+    	contentType: 'application/json',
+        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl,
+    });
+};
+
+/**
  * Query the Data Points Table
  * @see MangoAPI.createQueryComparison()
  * 
