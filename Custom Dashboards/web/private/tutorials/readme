@@ -13,3 +13,4 @@ XIDs from your instance into the page.</p>
        <li>Create a folder named 'Target Folder' at the root of the point hierarchy that contains these points</li> 
    </ul>
 <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>
+<p> <a href="/swagger/index.html">Here</a> is a link to the REST api documentation that will be available if you have enabled swagger.</p>
