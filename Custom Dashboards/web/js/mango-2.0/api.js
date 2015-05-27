@@ -6,7 +6,7 @@
  * @module {MangoAPI} mango/api
  * @see MangoAPI
  */
-define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
+define(['jquery', 'moment-timezone'], function($, moment) {
 "use strict";
 
 /**
@@ -110,7 +110,7 @@ MangoAPI.prototype.postUser = function(user) {
 MangoAPI.prototype.deleteUser = function(username) {
     return this.ajax({
         type: "DELETE",
-        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json",
+        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json"
     });
 };
 
@@ -170,7 +170,7 @@ MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
  */
 MangoAPI.prototype.getAllPermissionsInformation = function(query) {
     return this.ajax({
-        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json",
+        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json"
     });
 };
 
@@ -182,7 +182,7 @@ MangoAPI.prototype.getAllPermissionsInformation = function(query) {
  */
 MangoAPI.prototype.getAllUserGroups = function(exclude) {
     return this.ajax({
-        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json",
+        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json"
     });
 };
 
@@ -194,7 +194,7 @@ MangoAPI.prototype.getAllUserGroups = function(exclude) {
  */
 MangoAPI.prototype.getHelp = function(helpId) {
     return this.ajax({
-        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json",
+        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json"
     });
 };
 
@@ -287,7 +287,7 @@ MangoAPI.prototype.clearBulkPointSetPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl
     });
 };
 
@@ -304,7 +304,7 @@ MangoAPI.prototype.clearBulkPointReadPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl
     });
 };
 
