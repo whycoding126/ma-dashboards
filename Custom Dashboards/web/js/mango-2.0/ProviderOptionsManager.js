@@ -211,14 +211,14 @@ ProviderOptionsManager.prototype.timePickerChanged = function(preset) {
         if (this.timePeriodsPicker.length > 0) {
         	this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
         }else if(typeof this.timePeriodsPicker.set == 'function'){
-        	this.timePeriodsPicker.set('value', this.providerOptions.timePeriods);
+        	this.timePeriodsPicker.set('value', this.providerOptions.timePeriods, false);
         }
     }
     if (this.timePeriodTypePicker){
         if (this.timePeriodTypePicker.length > 0) {
         	this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
         }else if(typeof this.timePeriodTypePicker.set == 'function'){
-        	this.timePeriodTypePicker.set('value', this.providerOptions.timePeriodType);
+        	this.timePeriodTypePicker.set('value', this.providerOptions.timePeriodType, false);
         }
     }
 };
