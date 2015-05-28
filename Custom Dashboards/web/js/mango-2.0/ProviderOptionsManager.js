@@ -156,6 +156,21 @@ ProviderOptionsManager.prototype.pickerChanged = function(event, data) {
 
 ProviderOptionsManager.prototype.timePickerChanged = function(preset) {
     switch(preset) {
+    case 'PREVIOUS_1_HR':
+     this.providerOptions.timePeriodType = 'MINUTES';
+     this.providerOptions.timePeriods = 1;
+	 break;
+    case 'PREVIOUS_6_HRS':
+   	 if (this.graphType === 'line') {
+         this.providerOptions.timePeriodType = 'MINUTES';
+         this.providerOptions.timePeriods = 1;
+     }
+     else { // assume bar
+         this.providerOptions.timePeriodType = 'MINUTES';
+         this.providerOptions.timePeriods = 10;
+     }
+	 break;
+    case 'PREVIOUS_12_HRS':
     case 'PREVIOUS_DAY':
     case 'YESTERDAY':
     case 'DAY_TO_DATE':

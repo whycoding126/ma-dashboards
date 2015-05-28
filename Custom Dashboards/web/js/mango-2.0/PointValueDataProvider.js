@@ -77,14 +77,14 @@ PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
 	    var deferred;
 		if(count === 0){
 		    deferred = $.Deferred();
-			deferred.resolve({data: [], point: point});
+			deferred.resolve([]); //({data: [], point: point});
 			self.noData(options);
 			return deferred.promise();
 		}else if(count <= self.maxPointValueCount){
 			return self.mangoApi.getValues(point.xid, options.from, options.to, options);
 		}else{
             deferred = $.Deferred();
-			deferred.resolve({data: [], point: point});
+			deferred.resolve([]); //{data: [], point: point});
 			self.tooMuchData(count, self.maxPointValueCount);
 			return deferred.promise();
 		}

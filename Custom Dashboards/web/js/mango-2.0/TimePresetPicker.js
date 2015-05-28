@@ -268,88 +268,103 @@ TimePresetPicker.prototype.setInputValue = function(pickerName, value) {
  */
 TimePresetPicker.presetValues = [
     {
+    	id: "PREVIOUS_1_HR",
+    	value: 10,
+    	name: "Previous hr"
+    },
+    {
+    	id: "PREVIOUS_6_HRS",
+    	value: 15,
+    	name: "Previous 6 hrs"
+    },
+    {
+    	id: "PREVIOUS_12_HRS",
+    	value: 20,
+    	name: "Previous 12 hrs"
+    },
+    {
         id: "PREVIOUS_DAY",
-        value: 1,
+        value: 25,
         name: "Previous day"
     },
     {
         id: "PREVIOUS_WEEK",
-        value: 7,
+        value: 30,
         name: "Previous week"
     },
     {
         id: "PREVIOUS_4WEEKS",
-        value: 28,
+        value: 35,
         name: "Previous 4 weeks"
     },
     {
         id: "PREVIOUS_MONTH",
-        value: 5,
+        value: 40,
         name: "Previous month"
     },
     {
         id: "PREVIOUS_YEAR",
-        value: 6,
+        value: 45,
         name: "Previous year"
     },
     {
         id: "YESTERDAY",
-        value: 4,
+        value: 50,
         name: "Yesterday"
     },
     {
         id: "LAST_WEEK",
-        value: 3,
+        value: 55,
         name: "Last week"
     },
     {
         id: "LAST_MONTH",
-        value: 2,
+        value: 60,
         name: "Last month"
     },
     {
         id: "LAST_YEAR",
-        value: 8,
+        value: 65,
         name: "Last year"
     },
     {
         id: "DAY_TO_DATE",
-        value: 9,
+        value: 70,
         name: "Day to date"
     },
     {
         id: "WEEK_TO_DATE",
-        value: 10,
+        value: 75,
         name: "Week to date"
     },
     {
         id: "MONTH_TO_DATE",
-        value: 11,
+        value: 80,
         name: "Month to date"
     },
     {
         id: "YEAR_TO_DATE",
-        value: 12,
+        value: 85,
         name: "Year to date"
     },
     {
         id: "FIXED_TO_FIXED",
-        value: 0,
+        value: 90,
         name: "Custom time period"
     },
     {
         id: "FIXED_TO_NOW",
-        value: -1,
+        value: 95,
         name: "Custom time up to now"
     },
     {
         id: "INCEPTION_TO_FIXED",
-        value: -2,
+        value: 100,
         name: "First value up to custom time"
     },
     {
         id: "INCEPTION_TO_NOW",
-        value: -3,
+        value: 105,
         name: "First value up to now"
     }
 ];
