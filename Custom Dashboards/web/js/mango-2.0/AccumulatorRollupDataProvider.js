@@ -6,7 +6,7 @@
  * @module {AccumulatorRollupDataProvider} mango/AccumulatorRollupDataProvider
  * @augments PointValueDataProvider
  */
-define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone'],
+define(['jquery', './DataProvider', './PointValueDataProvider', 'moment-timezone'],
         function($, DataProvider, PointValueDataProvider, moment) {
 "use strict";
 

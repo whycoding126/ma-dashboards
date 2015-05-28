@@ -7,7 +7,7 @@
  * @see RealtimeDataProvider
  * @augments DataProvider
  */
-define(['jquery', './dataProvider', './PointEventManager'],
+define(['jquery', './DataProvider', './PointEventManager'],
 function($, DataProvider, PointEventManager) {
 "use strict";
 

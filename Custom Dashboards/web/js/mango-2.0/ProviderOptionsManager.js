@@ -6,7 +6,7 @@
  * @exports mango/RealtimeDataProvider
  * @module {ProviderOptionsManager} mango/providerOptionsManager
  */
-define(['jquery', 'mango/api', 'moment-timezone'],
+define(['jquery', './api', 'moment-timezone'],
 function($, MangoAPI, moment) {
 "use strict";
 

@@ -7,7 +7,7 @@
  * @see StatisticsDataProvider
  * @augments DataProvider
  */
-define(['jquery', './dataProvider'], function($, DataProvider) {
+define(['jquery', './DataProvider'], function($, DataProvider) {
 
 /**
  * @constructs StatisticsDataProvider

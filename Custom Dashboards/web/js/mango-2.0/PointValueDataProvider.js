@@ -9,7 +9,7 @@
  * @see PointValueDataProvider
  */
 
-define(['jquery', './dataProvider'], function($, DataProvider) {
+define(['jquery', './DdataProvider'], function($, DataProvider) {
 "use strict";
 
 

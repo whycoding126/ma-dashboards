@@ -7,7 +7,7 @@
  * @augments DataProvider
  * @see AccumulatorDataProvider
  */
-define(['jquery', './dataProvider'], function($, DataProvider) {
+define(['jquery', './DataProvider'], function($, DataProvider) {
 "use strict";
 
 /**

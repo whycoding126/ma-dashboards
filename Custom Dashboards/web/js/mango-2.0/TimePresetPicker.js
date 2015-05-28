@@ -601,6 +601,15 @@ TimePresetPicker.calculatePeriod = function(preset) {
     var from = moment(to);
     
     switch(preset) {
+    case "PREVIOUS_1_HR":
+    	from.subtract(1, 'hours');
+    	break;
+    case "PREVIOUS_6_HRS":
+    	from.subtract(6, 'hours');
+    	break;
+    case "PREVIOUS_12_HRS":
+    	from.subtract(12, 'hours');
+    	break;
     case "PREVIOUS_DAY":
         from.subtract(1, 'days');
         break;

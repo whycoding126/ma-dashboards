@@ -14,6 +14,10 @@ function TimePresetStore() {
 TimePresetStore.prototype = Object.create(Memory.prototype);
 
 TimePresetStore.prototype.data = [
+
+        {id:'PREVIOUS_1_HR', text: 'Previous 1 hrs'},                         
+        {id:'PREVIOUS_6_HRS', text: 'Previous 6 hrs'},                         
+        {id:'PREVIOUS_12_HRS', text: 'Previous 12 hrs'},                         
         {id:'PREVIOUS_DAY', text: 'Previous day'},
         {id:'PREVIOUS_WEEK', text: 'Previous week'},
         {id:'PREVIOUS_4WEEKS', text: 'Previous 4 weeks'},
