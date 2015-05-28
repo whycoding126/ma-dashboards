@@ -42,13 +42,10 @@
 <body>
     <div id="main">
         <h1>Statistics For Past Hour</h1>
-        <p>This page loads the statistics for the Voltage point.</p>
+        <p>This page loads some statistics for the Voltage point.</p>
         
         <div class="row">
-          <div class="col-md-2">
-            <ul id="list"></ul>
-          </div>
-          <div class="col-md-10">
+          <div class="col-md-12">
            <table id="statistics" class="table table-striped">
             <thead>
               <tr>

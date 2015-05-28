@@ -332,7 +332,7 @@ MangoAPI.prototype.queryPoints = function(query){
 	
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/data-points.json?" + encodeURIComponent(query)
+            url: "/rest/v1/data-points.json?" + query
         });
 	}else{
 		var url = '/rest/v1/data-points/query.json';
@@ -747,7 +747,7 @@ MangoAPI.prototype.getCurrentUser = function() {
 MangoAPI.prototype.queryEvents = function(query){
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/events.json?" + encodeURIComponent(query)
+            url: "/rest/v1/events.json?" + query
         });
 	}else{
     	var url = "/rest/v1/events/query.json";

@@ -36,7 +36,7 @@
         				}
         			});
 
-        	MangoAPI.defaultApi.queryPoints('limit(25)').then(function(results){
+        	MangoAPI.defaultApi.queryPoints('limit(100)').then(function(results){
             	listDisplay.onLoad(results.items);
         }).fail(MangoAPI.logError);
         
@@ -61,7 +61,7 @@
         
         <div class="row">
           <div class="col-md-2">
-            <ul id="list"></ul>
+            <ul id="list" style="font-weight: bold"></ul>
           </div>
           <div class="col-md-10">
            <table class="table table-striped">

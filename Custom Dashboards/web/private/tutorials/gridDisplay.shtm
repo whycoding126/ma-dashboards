@@ -40,7 +40,6 @@
                     loadingMessage: 'Loading',
                     noDataMessage: 'No Data Found'
                 },
-                maximumItems: 100,
             });
             display.createDisplay();
             
@@ -71,10 +70,7 @@
         <p>Displaying a sortable table of the Voltage point's last 200 values.</p>
         
         <div class="row">
-          <div class="col-md-2">
-            <ul id="list"></ul>
-          </div>
-          <div class="col-md-10">
+          <div class="col-md-12">
             <div id="grid"></div>
           </div>
         </div>
