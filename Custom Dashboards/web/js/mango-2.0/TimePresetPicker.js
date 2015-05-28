@@ -7,8 +7,9 @@
  * @see TimePresetPicker
  * @tutorial dataPointChart
  */
-define(['jquery', 'moment-timezone', 'mango/TimePresetStore', 'mango/TimePeriodTypeStore', 'mango/RollupStore', 'dstore/legacy/DstoreAdapter', 'dstore/Memory', 'jquery-ui/jquery.datetimepicker'], 
-		function($, moment, TimePresetStore, TimePeriodTypeStore, RollupStore, DstoreAdapter, Memory) {
+define(['jquery', 'moment-timezone', 'dstore/legacy/DstoreAdapter',
+        'dstore/Memory', 'jquery-ui/jquery.datetimepicker'], 
+		function($, moment, DstoreAdapter, Memory) {
 
 /*
  * The time period options and values are taken from the Java class
@@ -22,23 +23,15 @@ define(['jquery', 'moment-timezone', 'mango/TimePresetStore', 'mango/TimePeriodT
 TimePresetPicker = function(options) {
     this.presetPickerChanged = this.presetPickerChanged.bind(this);
     this.fromToPickerChanged = this.fromToPickerChanged.bind(this);
-    this.rollupPickerChanged = this.rollupPickerChanged.bind(this);
-    this.timePeriodTypePickerChanged = this.timePeriodTypePickerChanged.bind(this);
-    this.timePeriodInputChanged = this.timePeriodInputChanged.bind(this);
-    
     
     $.extend(this, options);
     
     this.setPresetPicker(this.presetPicker);
     this.setFromPicker(this.fromPicker);
     this.setToPicker(this.toPicker);
-    this.setRollupPicker(this.rollupPicker);
-    this.setTimePeriodTypePicker(this.timePeriodTypePicker);
-    this.setTimePeriodInput(this.timePeriodInput);
     
     this.setDefaultPreset(false);
 };
-
 
 /**
  * Preset Date Range Picker
@@ -57,38 +50,6 @@ TimePresetPicker.prototype.fromPicker = null;
  */
 TimePresetPicker.prototype.toPicker = null;
 /**
- * @type {?Object}
- * @default null
- */
-TimePresetPicker.prototype.rollupPicker = null;
-/**
- * @type {boolean}
- * @default true
- */
-TimePresetPicker.prototype.rollupPickerTriggersRefresh = true;
-
-/**
- * @type {?Object}
- * @default null
- */
-TimePresetPicker.prototype.timePeriodTypePicker = null;
-/**
- * @type {boolean}
- * @default true
- */
-TimePresetPicker.prototype.timePeriodTypePickerTriggersRefresh = true;
-/**
- * Input for time periods
- * @type {?Object}
- * @default null
- */
-TimePresetPicker.prototype.timePeriodsInput = null;
-/**
- * @type {boolean}
- * @default true
- */
-TimePresetPicker.prototype.timePeriodsInputTriggersRefresh = true;
-/**
  * Current preset
  * @type {string}
  * @default null
@@ -106,26 +67,6 @@ TimePresetPicker.prototype.from = null;
  * @default null
  */
 TimePresetPicker.prototype.to = null;
-/**
- * Current preset
- * @type {string}
- * @default null
- */
-TimePresetPicker.prototype.rollup = null;
-/**
- * Current time period type
- * @type {string}
- * @default null
- */
-TimePresetPicker.prototype.timePeriodType = null;
-/**
- * Current timePeriods
- * @type {number}
- * @default null
- */
-TimePresetPicker.prototype.timePeriods = null;
-
-
 /**
  * Format
  * @type {string}
@@ -152,66 +93,11 @@ TimePresetPicker.prototype.defaultPeriod = 'PREVIOUS_DAY';
  * @param {Object} picker
  */
 TimePresetPicker.prototype.setPresetPicker = function(picker) {
-    if (this.presetPicker) {
-        this.presetPicker.off('change', this.presetPickerChanged);
-    }
-    if (picker) {
-        picker.on('change', this.presetPickerChanged);
-        this.presetPicker = picker;
-        if(this.presetPicker.store.data.length === 0)
-			this.presetPicker.set('store',new DstoreAdapter(new TimePresetStore())); 
-        this.preset = this.presetPicker.get('value');
-    }
-};
-
-
-/**
- * Set Rollup picker
- * @param {Object} picker
- */
-TimePresetPicker.prototype.setRollupPicker = function(picker) {
-    if (this.rollupPicker) {
-        this.rollupPicker.off('change', this.rollupPickerChanged);
-    }
-    if (picker) {
-        picker.on('change', this.rollupPickerChanged);
-        this.rollupPicker = picker;
-        if(this.rollupPicker.store.data.length === 0)
-			this.rollupPicker.set('store',new DstoreAdapter(new RollupStore())); 
-        this.rollup = this.rollupPicker.get('value');
-    }
-};
-
-/**
- * Set TimePeriodType picker
- * @param {Object} picker
- */
-TimePresetPicker.prototype.setTimePeriodTypePicker = function(picker) {
-    if (this.timePeriodTypePicker) {
-        this.timePeriodTypePicker.off('change', this.timePeriodTypePickerChanged);
-    }
-    if (picker) {
-        picker.on('change', this.timePeriodTypePickerChanged);
-        this.timePeriodTypePicker = picker;
-        if(this.timePeriodTypePicker.store.data.length === 0)
-			this.timePeriodTypePicker.set('store',new DstoreAdapter(new TimePeriodTypeStore())); 
-        this.timePeriodType = this.timePeriodTypePicker.get('value');
-    }
-};
-
-/**
- * Set TimePeriodType picker
- * @param {Object} picker
- */
-TimePresetPicker.prototype.setTimePeriodInput = function(input) {
-    if (this.timePeriodInput) {
-        this.timePeriodInput.off('change', this.timePeriodInputChanged);
-    }
-    if (input) {
-        input.on('change', this.timePeriodInputChanged);
-        this.timePeriodInput = input;
-        this.timePeriods = this.timePeriodInput.val();
-    }
+    if (!picker) return;
+    
+    picker.on('change', this.presetPickerChanged);
+    this.presetPicker = picker;
+    TimePresetPicker.populatePresetPicker(this.presetPicker);
 };
 
 /**
@@ -220,18 +106,15 @@ TimePresetPicker.prototype.setTimePeriodInput = function(input) {
  * @param {string} pickerName
  */
 TimePresetPicker.prototype.setToFromPicker = function(pickerName, picker) {
-    if (this[pickerName]) {
-        this[pickerName].off('change', this.fromToPickerChanged);
-    }
-    if (picker) {
-        picker.datetimepicker({
-            format: this.format,
-            formatTime: this.formatTime,
-            formatDate: this.formatDate
-        });
-        picker.on('change', this.fromToPickerChanged);
-        this[pickerName] = picker;
-    }
+    if (!picker) return;
+    
+    picker.datetimepicker({
+        format: this.format,
+        formatTime: this.formatTime,
+        formatDate: this.formatDate
+    });
+    picker.on('change', this.fromToPickerChanged);
+    this[pickerName + 'Picker'] = picker;
 };
 
 /**
@@ -239,7 +122,7 @@ TimePresetPicker.prototype.setToFromPicker = function(pickerName, picker) {
  * @param {Object} picker
  */
 TimePresetPicker.prototype.setFromPicker = function(picker) {
-    this.setToFromPicker('fromPicker', picker);
+    this.setToFromPicker('from', picker);
 };
 
 /**
@@ -247,7 +130,7 @@ TimePresetPicker.prototype.setFromPicker = function(picker) {
  * @param {Object} picker
  */
 TimePresetPicker.prototype.setToPicker = function(picker) {
-    this.setToFromPicker('toPicker', picker);
+    this.setToFromPicker('to', picker);
 };
 
 /**
@@ -283,49 +166,14 @@ TimePresetPicker.prototype.hours = function() {
 };
 
 /**
- * Populate Preset Picker
- */
-TimePresetPicker.prototype.populatePresetPicker = function() {
-	this.populatePicker(this.presetPicker, this.presets);
-};
-
-/**
- * Populate Rollup Picker
- */
-TimePresetPicker.prototype.populateRollupPicker = function() {
-	this.populatePicker(this.rollupPicker, this.rollups);
-};
-
-/**
- * Populate Time Period Type Picker
- */
-TimePresetPicker.prototype.populateTimePeriodTypePicker = function() {
-	this.populatePicker(this.timePeriodTypePicker, this.timePeriodTypes);
-};
-
-/**
- * Populate the picker
- * @param {Object} picker - select node
- * @param {Object} presets - presets for picker
- */
-TimePresetPicker.prototype.populatePicker = function(picker, presets){
-    for (var preset in presets) {
-        var option = $('<option>');
-        option.attr('value', preset);
-        option.text(presets[preset].description);
-        picker.append(option);
-    }
-};
-
-/**
  * From/To Picker has changed
  */
 TimePresetPicker.prototype.fromToPickerChanged = function(event) {
     var zone = moment.defaultZone && moment.defaultZone.name;
-    var from = zone ? moment.tz(this.fromPicker.val(), this.format, zone) :
-        moment(this.fromPicker.val(), this.format);
-    var to = zone ? moment.tz(this.toPicker.val(), this.format, zone) :
-        moment(this.toPicker.val(), this.format);
+    var from = zone ? moment.tz(this.getInputValue('from'), this.format, zone) :
+        moment(this.getInputValue('from'), this.format);
+    var to = zone ? moment.tz(this.getInputValue('to'), this.format, zone) :
+        moment(this.getInputValue('to'), this.format);
     
     if (from.isValid())
         this.from = from;
@@ -340,45 +188,18 @@ TimePresetPicker.prototype.fromToPickerChanged = function(event) {
  * @param event
  */
 TimePresetPicker.prototype.presetPickerChanged = function(event) {
-    var preset = this.presetPicker.get('value');
+    var preset = this.getInputValue('preset');
     this.setPreset(preset);
-};
-
-/**
- * Rollup Picker Changed
- * @param event
- */
-TimePresetPicker.prototype.rollupPickerChanged = function(event) {
-    this.rollup = this.rollupPicker.get('value');
-    this.triggerChange(this.rollupPickerTriggersRefresh);
-};
-
-/**
- * TimePeriodType Picker Changed
- * @param event
- */
-TimePresetPicker.prototype.timePeriodTypePickerChanged = function(event) {
-    this.timePeriodType = this.timePeriodTypePicker.get('value');
-    this.triggerChange(this.timePeriodTypePickerTriggersRefresh);
-};
-
-/**
- * TimePeriod Input Changed
- * @param event
- */
-TimePresetPicker.prototype.timePeriodInputChanged = function(event) {
-    this.timePeriods = this.timePeriodInput.val();
-    this.triggerChange(this.timePeriodInputTriggersRefresh);
 };
 
 /**
  * Set the default preset
  * @param {boolean} triggerRefresh
  */
-TimePresetPicker.prototype.setDefaultPreset = function(triggerEvent) {
-    if (typeof triggerEvent === 'undefined')
-        triggerEvent = true;
-    this.setPreset(this.defaultPeriod, triggerEvent);
+TimePresetPicker.prototype.setDefaultPreset = function(triggerRefresh) {
+    if (typeof triggerRefresh === 'undefined')
+        triggerRefresh = true;
+    this.setPreset(this.defaultPeriod, triggerRefresh);
 };
 
 /**
@@ -391,207 +212,167 @@ TimePresetPicker.prototype.setPreset = function(preset, triggerRefresh) {
         triggerRefresh = true;
     
     this.preset = preset;
-    if (this.presetPicker) {
-        this.presetPicker.set('value',preset);
-    }
+    this.setInputValue('preset', preset);
     
     var period = TimePresetPicker.calculatePeriod(preset);
     if (period.from) {
         this.from = period.from;
-        if (this.fromPicker) {
-            this.fromPicker.val(period.from.format(this.format));
-        }
+        this.setInputValue('from', period.from.format(this.format));
     }
     if (period.to) {
         this.to = period.to;
-        if (this.toPicker) {
-            this.toPicker.val(period.to.format(this.format));
-        }
+        this.setInputValue('to', period.to.format(this.format));
     }
     
     $(this).trigger("change", {
-    	preset: this.preset, 
-    	from: this.from, 
-    	to: this.to, 
-    	rollup: this.rollup, 
-    	timePeriodType: this.timePeriodType, 
-    	timePeriods: this.timePeriods,
+    	preset: this.preset,
+    	from: this.from,
+    	to: this.to,
     	triggerRefresh: triggerRefresh
-    	});
+	});
 };
 
-/**
- * Trigger the on change event
- * @param {boolean} triggerRefresh - Passed in onchange
- * @param {Object} options - Any additional options to pass along with the event
- */
-TimePresetPicker.prototype.triggerChange = function(triggerRefresh, options){
-	
-	var data = {
-	    	preset: this.preset, 
-	    	from: this.from, 
-	    	to: this.to, 
-	    	rollup: this.rollup, 
-	    	timePeriodType: this.timePeriodType, 
-	    	timePeriods: this.timePeriods,
-	    	triggerRefresh: triggerRefresh
-	    };
-    $.extend(data, options);
-	
-    $(this).trigger("change", data);
+TimePresetPicker.prototype.getInputValue = function(pickerName) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return undefined;
+    
+    if (picker instanceof $) {
+        // jquery
+        return picker.val();
+    } else if (typeof picker.get == 'function') {
+        // dojo
+        return picker.get('value');
+    }
+    
+    return null;
+};
+
+TimePresetPicker.prototype.setInputValue = function(pickerName, value) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return;
+    
+    if (picker instanceof $) {
+        // jquery
+        picker.val(value).trigger('change.select2');
+    } else if (typeof picker.set == 'function') {
+        // dojo
+        picker.set('value', value, false);
+    }
 };
 
 /**
  * Presets for Custom Time Periods
  * @type {Object} 
  */
-TimePresetPicker.prototype.presets = {
-    "PREVIOUS_DAY": {
-        id: 1,
-        description: "Previous day"
+TimePresetPicker.presetValues = [
+    {
+        id: "PREVIOUS_DAY",
+        value: 1,
+        name: "Previous day"
     },
-    "PREVIOUS_WEEK": {
-        id: 7,
-        description: "Previous week"
+    {
+        id: "PREVIOUS_WEEK",
+        value: 7,
+        name: "Previous week"
     },
-    "PREVIOUS_4WEEKS": {
-        id: 28,
-        description: "Previous 4 weeks"
+    {
+        id: "PREVIOUS_4WEEKS",
+        value: 28,
+        name: "Previous 4 weeks"
     },
-    "PREVIOUS_MONTH": {
-        id: 5,
-        description: "Previous month"
+    {
+        id: "PREVIOUS_MONTH",
+        value: 5,
+        name: "Previous month"
     },
-    "PREVIOUS_YEAR": {
-        id: 6,
-        description: "Previous year"
+    {
+        id: "PREVIOUS_YEAR",
+        value: 6,
+        name: "Previous year"
     },
-    "YESTERDAY": {
-        id: 4,
-        description: "Yesterday"
+    {
+        id: "YESTERDAY",
+        value: 4,
+        name: "Yesterday"
     },
-    "LAST_WEEK": {
-        id: 3,
-        description: "Last week"
+    {
+        id: "LAST_WEEK",
+        value: 3,
+        name: "Last week"
     },
-    "LAST_MONTH": {
-        id: 2,
-        description: "Last month"
+    {
+        id: "LAST_MONTH",
+        value: 2,
+        name: "Last month"
     },
-    "LAST_YEAR": {
-        id: 8,
-        description: "Last year"
+    {
+        id: "LAST_YEAR",
+        value: 8,
+        name: "Last year"
     },
-    "DAY_TO_DATE": {
-        id: 9,
-        description: "Day to date"
+    {
+        id: "DAY_TO_DATE",
+        value: 9,
+        name: "Day to date"
     },
-    "WEEK_TO_DATE": {
-        id: 10,
-        description: "Week to date"
+    {
+        id: "WEEK_TO_DATE",
+        value: 10,
+        name: "Week to date"
     },
-    "MONTH_TO_DATE": {
-        id: 11,
-        description: "Month to date"
+    {
+        id: "MONTH_TO_DATE",
+        value: 11,
+        name: "Month to date"
     },
-    "YEAR_TO_DATE": {
-        id: 12,
-        description: "Year to date"
+    {
+        id: "YEAR_TO_DATE",
+        value: 12,
+        name: "Year to date"
     },
-    "FIXED_TO_FIXED": {
-        id: 0,
-        description: "Custom time period"
+    {
+        id: "FIXED_TO_FIXED",
+        value: 0,
+        name: "Custom time period"
     },
-    "FIXED_TO_NOW": {
-        id: -1,
-        description: "Custom time up to now"
+    {
+        id: "FIXED_TO_NOW",
+        value: -1,
+        name: "Custom time up to now"
     },
-    "INCEPTION_TO_FIXED": {
-        id: -2,
-        description: "First value up to custom time"
+    {
+        id: "INCEPTION_TO_FIXED",
+        value: -2,
+        name: "First value up to custom time"
     },
-    "INCEPTION_TO_NOW": {
-        id: -3,
-        description: "First value up to now"
+    {
+        id: "INCEPTION_TO_NOW",
+        value: -3,
+        name: "First value up to now"
+    }
+];
+
+TimePresetPicker.populatePresetPicker = function(picker) {
+    if (!picker) return;
+    var values = TimePresetPicker.presetValues.slice();
+    
+    if (picker instanceof $) {
+        // jquery
+        if (picker.children().length) return;
+        
+        for (var i = 0; i < values.length; i++) {
+            var option = $('<option>');
+            option.attr('value', values[i].id);
+            option.text(values[i].name);
+            picker.append(option);
+        }
+    } else if (picker.store && picker.store.data && !picker.store.data.length) {
+        // dojo
+        picker.set('store', new DstoreAdapter(new Memory({data: values}))); 
     }
 };
-
-/** 
- * Select Items for Rollups
- * @type {Object}
- * @default All Rollups Available
- */
-TimePresetPicker.prototype.rollups = {
-	    'NONE': {
-	        id: 1,
-	        description: 'None'
-	    },
-	    'AVERAGE': {
-	        id: 2,
-	        description: 'Average'
-	    },
-	    'MAXIMUM': {
-	        id: 3,
-	        description: 'Maximum'
-	    },
-	    'MINIMUM': {
-	        id: 4,
-	        description: 'Minimum'
-	    },
-	    'SUM': {
-	        id: 5,
-	        description: 'Sum'
-	    },
-	    'FIRST': {
-	        id: 6,
-	        description: 'First'
-	    },
-	    'LAST': {
-	        id: 7,
-	        description: 'Last'
-	    },
-	    'COUNT': {
-	        id: 8,
-	        description: 'Count'
-	    },	
-	    'Integral': {
-	        id: 9,
-	        description: 'Integral'
-	    }	
-};
-
-/** 
- * Select Items for Rollups
- * @type {Object}
- * @default All Rollups Available
- */
-TimePresetPicker.prototype.timePeriodTypes = {
-	    'SECONDS': {
-	        id: 1,
-	        description: 'Seconds'
-	    },
-	    'MINUTES': {
-	        id: 2,
-	        description: 'Minutes'
-	    },
-	    'HOURS': {
-	        id: 3,
-	        description: 'Hours'
-	    },
-	    'DAYS': {
-	        id: 4,
-	        description: 'Days'
-	    },
-	    'WEEKS': {
-	        id: 5,
-	        description: 'Weeks'
-	    },
-	    'MONTHS': {
-	        id: 6,
-	        description: 'Months'
-	    }	
-};
-
 
 /**
  * @param {string} preset - Preset to use for calculation

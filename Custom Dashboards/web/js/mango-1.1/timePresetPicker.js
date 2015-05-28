@@ -112,10 +112,10 @@ TimePresetPicker.prototype = {
         this.setPreset(preset);
     },
     
-    setDefaultPreset: function(triggerEvent) {
-        if (typeof triggerEvent === 'undefined')
-            triggerEvent = true;
-        this.setPreset(this.defaultPeriod, triggerEvent);
+    setDefaultPreset: function(triggerRefresh) {
+        if (typeof triggerRefresh === 'undefined')
+            triggerRefresh = true;
+        this.setPreset(this.defaultPeriod, triggerRefresh);
     },
     
     setPreset: function(preset, triggerRefresh) {
@@ -141,7 +141,12 @@ TimePresetPicker.prototype = {
             }
         }
         
-        $(this).trigger("change", {preset: this.preset, from: this.from, to: this.to, triggerRefresh: triggerRefresh});
+        $(this).trigger("change", {
+            preset: this.preset,
+            from: this.from,
+            to: this.to,
+            triggerRefresh: triggerRefresh
+        });
     },
     
     presets: {

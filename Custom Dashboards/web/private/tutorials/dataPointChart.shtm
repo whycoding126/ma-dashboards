@@ -23,75 +23,81 @@
 		//The current list of points
         var points = {}; //Map of xids to points where points['xid'] = point;
 		
-        require(['jquery', 'mango/api','mango/TimePresetPicker', 'mango/SerialChart','jquery.notify'],
-        function($, MangoAPI, TimePresetPicker, SerialChart) {
+        require(['jquery', 'mango/api', 'mango/TimePresetPicker', 'mango/SerialChart',
+                 'mango/PointValueDataProvider', 'mango/ProviderOptionsManager', 'jquery.notify'],
+        function($, MangoAPI, TimePresetPicker, SerialChart, PointValueDataProvider,
+                ProviderOptionsManager) {
         	
-            chart = new SerialChart({
+            // setup a new serial chart
+            var chart = new SerialChart({
                 divId: 'chart',
-                amChart: {        
-                			chartScrollbar: null,
-                    		categoryAxis: {
-                        		minPeriod: 'ss'
-                    		},
-                    		legend: null
-                    	},
+                amChart: {
+                    chartScrollbar: null,
+                    categoryAxis: {
+                        minPeriod: 'ss'
+                    }
+                }
             });
+            // actually create the display on the page
         	chart.createDisplay();
         	
-        	var timePicker = new TimePresetPicker({
-        		presetPicker: $('#presetPicker'),
-        		fromPicker: $('#fromPicker'),
-        		toPicker: $('#toPicker'),
-        		rollupPicker: $('#rollup'),
-        		timePeriodTypePicker: $('#timePeriodTypes'),
-        		timePeriodInput: $('#timePeriods')
-        	});
+            // setup the time picker with its inputs
+            var timePicker = new TimePresetPicker({
+                presetPicker: $('#presetPicker'),
+                fromPicker: $('#fromPicker'),
+                toPicker: $('#toPicker')
+            });
+            
+            // the provider manager notifies the data providers when the
+            // inputs change and refreshes the displays
+        	var providerManager = new ProviderOptionsManager({
+        	    errorFunction: MangoAPI.logError,
+        	    timePicker: timePicker,
+                rollupPicker: $('#rollup'),
+                timePeriodTypePicker: $('#timePeriodTypes'),
+                timePeriodsPicker: $('#timePeriods')
+            });
         	
-        	$(timePicker).on('change', function(event, data){
-        		var pointXid = $('#pointPicker').val();
-        		
-        		var options = {
-        			rollup: data.rollup,
-        			timePeriodType: data.timePeriodType,
-        			timePeriods: data.timePeriods
-        		};
-        		
-        		MangoAPI.defaultApi.getValues(pointXid, 
-        				data.from.toDate(), //timestamp in  
-        				data.to.toDate(), 
-        				options).then(function(values){
-        			//Stream data to chart
-        			if(data.persistChart !== true)
-        				chart.onClear();
-        			chart.loading();
-        			if(values.length > 5000){
-        	        	$('#chart').notify("Can't chart more that 5000 values, trying to load: " + values.length);
-        				return;
-        			}
-        			chart.onLoad(values, points[pointXid]);
-        			chart.redraw();
-        		}).fail(MangoAPI.logError);
-        	});
+            // create a point value data provider
+            var dataProvider = new PointValueDataProvider(null, {
+                // convert point values to their specified unit
+                apiOptions: { converted: true }
+            });
+            
+            // link the chart to the data provider
+            dataProvider.addListener(chart);
+            
+            // link the provider to the provider manager
+            providerManager.addProvider(dataProvider);
         	
-        	$('#queryNow').on('click', function(){  
+        	$('#queryNow').on('click', function() {
        			loadPoints();
            	});
-        	$('#clearChart').on('click', function(){  
-       			chart.onClear();
-           	});            
-        	$('#pointPicker').on('change', function(){  
-       			timePicker.triggerChange(true, {persistChart: true});
+        	
+        	$('#clearChart').on('click', function() {
+        	    dataProvider.clear(true);
+           	});
+        	
+        	$('#pointPicker').on('change', function() {
+        	    var xid = $('#pointPicker').val();
+        	    $('#pointPicker').val('');
+        	    var point = points[xid];
+        	    
+        	    // update the data provider
+        	    dataProvider.addDataPoint(point);
+        	    providerManager.refreshProviders();
            	});
         	
             /**
              * Run the query and load the points
              */
-            function loadPoints(){
-          	  
+            function loadPoints() {
       		  //Do Query
                 MangoAPI.defaultApi.queryPoints($('#query').val()).then(function(results){
                 	var picker = $('#pointPicker');
-                	picker.html('');
+                	picker.empty();
+                	picker.append('<option selected disabled value="">Choose a point</option>');
+                	
                 	points = {}; //clear the points
                     for (var i=0; i<results.items.length; i++) {
                     	var point = results.items[i];
@@ -102,9 +108,7 @@
                         //Save for later
                         points[point.xid] = point;
                     }
-                	
                }).fail(MangoAPI.logError);
-  
             }
           	
             //Start by loading the points

@@ -6,8 +6,8 @@
  * @exports mango/RealtimeDataProvider
  * @module {ProviderOptionsManager} mango/providerOptionsManager
  */
-define(['jquery', './api', 'moment-timezone'],
-function($, MangoAPI, moment) {
+define(['jquery', './api', 'moment-timezone', 'dstore/legacy/DstoreAdapter', 'dstore/Memory'],
+function($, MangoAPI, moment, DstoreAdapter, Memory) {
 "use strict";
 
 /**
@@ -31,10 +31,14 @@ function ProviderOptionsManager(options) {
     
     $.extend(this, options);
     
+    // call the setXXXPicker methods to register the on change events
     this.setTimePicker(this.timePicker);
     this.setRollupPicker(this.rollupPicker);
     this.setTimePeriodTypePicker(this.timePeriodTypePicker);
     this.setTimePeriodsPicker(this.timePeriodsPicker);
+    
+    // ensure user specified provider options take precedence
+    $.extend(this.providerOptions, options.providerOptions);
 }
 
 ProviderOptionsManager.prototype.refreshOnChange = true;
@@ -42,7 +46,7 @@ ProviderOptionsManager.prototype.refreshOnChange = true;
 /**
  * Used to set the default rollup period when a time preset is picked
  */
-ProviderOptionsManager.prototype.graphType = 'bar';
+ProviderOptionsManager.prototype.graphType = 'line';
 
 //Used to signal to disable the NONE rollup type
 ProviderOptionsManager.prototype.allowNoneRollup = false;
@@ -148,7 +152,6 @@ ProviderOptionsManager.prototype.pickerChanged = function(event, data) {
     }
 
     $(this).trigger("change", this.providerOptions);
-
 };
 
 ProviderOptionsManager.prototype.timePickerChanged = function(preset) {
@@ -207,20 +210,8 @@ ProviderOptionsManager.prototype.timePickerChanged = function(preset) {
         return;
     }
     
-    if (this.timePeriodsPicker){
-        if (this.timePeriodsPicker.length > 0) {
-        	this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
-        }else if(typeof this.timePeriodsPicker.set == 'function'){
-        	this.timePeriodsPicker.set('value', this.providerOptions.timePeriods, false);
-        }
-    }
-    if (this.timePeriodTypePicker){
-        if (this.timePeriodTypePicker.length > 0) {
-        	this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
-        }else if(typeof this.timePeriodTypePicker.set == 'function'){
-        	this.timePeriodTypePicker.set('value', this.providerOptions.timePeriodType, false);
-        }
-    }
+    this.setInputValue('timePeriods', this.providerOptions.timePeriods);
+    this.setInputValue('timePeriodType', this.providerOptions.timePeriodType);
 };
 
 ProviderOptionsManager.prototype.quantizationPeriod = function() {
@@ -228,7 +219,7 @@ ProviderOptionsManager.prototype.quantizationPeriod = function() {
             this.providerOptions.timePeriodType.toLowerCase());
 };
 
-ProviderOptionsManager.prototype.loadFromPickers = function(event) {
+ProviderOptionsManager.prototype.loadFromTimePicker = function() {
     if (this.timePicker) {
         var from = this.timePicker.from;
         var to = this.timePicker.to;
@@ -241,30 +232,29 @@ ProviderOptionsManager.prototype.loadFromPickers = function(event) {
         this.providerOptions.fromMoment = from;
         this.providerOptions.toMoment = to;
     }
+};
+
+ProviderOptionsManager.prototype.loadFromPickers = function() {
+    this.loadFromTimePicker();
     
-    if (this.rollupPicker.length > 0) {
-        this.providerOptions.rollup = this.rollupPicker.val();
-    }else if(typeof this.rollupPicker.get == 'function'){
-    	this.providerOptions.rollup = this.rollupPicker.get('value');
+    var rollup = this.getInputValue('rollup');
+    if (rollup || rollup === '') {
+        this.providerOptions.rollup = rollup;
     }
     
-    if (this.timePeriodTypePicker.length > 0) {
-        this.providerOptions.timePeriodType = this.timePeriodTypePicker.val();
-        // disable the time period pickers when there is no rollup
-        this.timePeriodTypePicker.prop('disabled', this.providerOptions.rollup === 'NONE');
-    }else if(typeof this.timePeriodTypePicker.get == 'function'){
-    	this.providerOptions.timePeriodType = this.timePeriodTypePicker.get('value');
-    	this.timePeriodTypePicker.set('disabled', this.providerOptions.rollup === 'NONE');
+    var timePeriodType = this.getInputValue('timePeriodType');
+    if (timePeriodType) {
+        this.providerOptions.timePeriodType = timePeriodType;
     }
     
-    if (this.timePeriodsPicker.length > 0) {
-        this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.val(), 10);
-        this.timePeriodsPicker.prop('disabled', this.providerOptions.rollup === 'NONE');
-    }else  if(typeof this.timePeriodsPicker.get == 'function'){
-    	this.providerOptions.timePeriods = parseInt(this.timePeriodsPicker.get('value'), 10);
-    	this.timePeriodsPicker.set('disabled', this.providerOptions.rollup === 'NONE');
+    var timePeriods = parseInt(this.getInputValue('timePeriods'), 10);
+    if (timePeriods) {
+        this.providerOptions.timePeriods = timePeriods;
     }
     
+    var noRollup = !this.providerOptions.rollup || this.providerOptions.rollup === 'NONE';
+    this.disableInput('timePeriodType', noRollup);
+    this.disableInput('timePeriods', noRollup);
 };
 
 /**
@@ -274,16 +264,14 @@ ProviderOptionsManager.prototype.loadFromPickers = function(event) {
  * Also limit the use of no rollup to small periods
  */
 ProviderOptionsManager.prototype.limitRollupPeriod = function() {
-	
-    
 	var timePeriod = this.providerOptions.to - this.providerOptions.from;
 
-    
-    if (((this.providerOptions.rollup === 'NONE')||(this.providerOptions.rollup === ''))  && timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
+    if ((!this.providerOptions.rollup || this.providerOptions.rollup === 'NONE') &&
+            timePeriod > moment.duration(1, 'hours').asMilliseconds()) {
     	//We need to either choose a rollup that is available for all data types or track a data type here
     	this.allowNoneRollup = false;
     	this.providerOptions.rollup = 'FIRST'; 
-        this.rollupPicker.val(this.providerOptions.rollup).trigger('change.select2');
+    	this.setInputValue('rollup', this.providerOptions.rollup);
         this.providerOptions.timePeriods = 1;
         this.providerOptions.timePeriodType = 'MINUTES';
     }
@@ -351,44 +339,139 @@ ProviderOptionsManager.prototype.limitRollupPeriod = function() {
             }
         }
     }
-    
-    this.timePeriodsPicker.val(this.providerOptions.timePeriods).trigger('change.select2');
-    this.timePeriodTypePicker.val(this.providerOptions.timePeriodType).trigger('change.select2');
+
+    this.setInputValue('timePeriods', this.providerOptions.timePeriods);
+    this.setInputValue('timePeriodType', this.providerOptions.timePeriodType);
 };
 
 ProviderOptionsManager.prototype.setTimePicker = function(picker) {
-    var existingPicker = this.timePicker;
-    $(existingPicker).off('change', this.pickerChanged);
+    if (!picker) return;
+    
     $(picker).on('change', this.pickerChanged);
     this.timePicker = picker;
+    
+    // load the default time set on the time picker
+    this.loadFromTimePicker();
+    
+    // change the provider options to match the default preset
+    this.timePickerChanged(this.timePicker.preset);
 };
 
 ProviderOptionsManager.prototype.setRollupPicker = function(picker) {
-    this.setPicker('rollupPicker', picker);
+    this.setPicker('rollup', picker);
+    ProviderOptionsManager.populatePicker(picker, 'rollup');
+    this.setInputValue('rollup', this.providerOptions.rollup);
 };
 
 ProviderOptionsManager.prototype.setTimePeriodTypePicker = function(picker) {
-    this.setPicker('timePeriodTypePicker', picker);
+    this.setPicker('timePeriodType', picker);
+    ProviderOptionsManager.populatePicker(picker, 'timePeriodType');
+    this.setInputValue('timePeriodType', this.providerOptions.timePeriodType);
 };
 
 ProviderOptionsManager.prototype.setTimePeriodsPicker = function(picker) {
-    this.setPicker('timePeriodsPicker', picker);
+    this.setPicker('timePeriods', picker);
+    this.setInputValue('timePeriods', this.providerOptions.timePeriods);
 };
 
 ProviderOptionsManager.prototype.setPicker = function(pickerName, picker) {
-    var existingPicker = this[pickerName];
-    if (existingPicker)
-        existingPicker.off('change', this.pickerChanged);
+    if (!picker) return;
     
-    if (picker === null)
-    	picker = $(picker);
     picker.on('change', this.pickerChanged);
-    this[pickerName] = picker;
+    this[pickerName + 'Picker'] = picker;
 };
 
-ProviderOptionsManager.prototype.getAllowNoneRollup = function(){
-	return this.allowNoneRollup;
+ProviderOptionsManager.prototype.getInputValue = function(pickerName) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return undefined;
+    
+    if (picker instanceof $) {
+        // jquery
+        return picker.val();
+    } else if (typeof picker.get == 'function') {
+        // dojo
+        return picker.get('value');
+    }
+    
+    return null;
 };
+
+ProviderOptionsManager.prototype.setInputValue = function(pickerName, value) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return;
+    
+    if (picker instanceof $) {
+        // jquery
+        picker.val(value).trigger('change.select2');
+    } else if (typeof picker.set == 'function') {
+        // dojo
+        picker.set('value', value, false);
+    }
+};
+
+ProviderOptionsManager.prototype.disableInput = function(pickerName, disable) {
+    var picker = this[pickerName + 'Picker'];
+    if (!picker)
+        return;
+    
+    if (picker instanceof $) {
+        // jquery
+        picker.attr('disabled', disable);
+    } else if (typeof picker.set == 'function') {
+        // dojo
+        picker.set('disabled', disable);
+    }
+};
+
+ProviderOptionsManager.populatePicker = function(picker, name) {
+    if (!picker) return;
+    var values = ProviderOptionsManager[name + 'Values'];
+    if (!values) return;
+    values = values.slice();
+    
+    if (picker instanceof $) {
+        // jquery
+        if (picker.children().length) return;
+        
+        for (var i = 0; i < values.length; i++) {
+            var option = $('<option>');
+            option.attr('value', values[i].id);
+            option.text(values[i].name);
+            picker.append(option);
+        }
+    } else if (picker.store && picker.store.data && !picker.store.data.length) {
+        // dojo
+        picker.set('store', new DstoreAdapter(new Memory({data: values}))); 
+    }
+};
+
+ProviderOptionsManager.rollupValues = [
+    //TODO change text to use: tr('datapointdetailsview.rollup.none')
+    {id:'NONE', name: 'None', nonNumericSupport: true},
+    {id:'AVERAGE', name: 'Average', nonNumericSupport: false},
+    {id:'ACCUMULATOR', name: 'Accumulator', nonNumericSupport: false},
+    {id:'COUNT', name: 'Count', nonNumericSupport: true},
+    {id:'DELTA', name: 'Delta', nonNumericSupport: false},
+    {id:'INTEGRAL', name: 'Integral', nonNumericSupport: false},
+    {id:'MAXIMUM', name: 'Maximum', nonNumericSupport: false},
+    {id:'MINIMUM', name: 'Minimum', nonNumericSupport: false},
+    {id:'SUM', name: 'Sum', nonNumericSupport: false},
+    {id:'FIRST', name: 'First', nonNumericSupport: true},
+    {id:'LAST', name: 'Last', nonNumericSupport: true}
+];
+
+ProviderOptionsManager.timePeriodTypeValues = [
+    //TODO change text to use: tr('datapointdetailsview.rollup.none')
+    {id:'SECONDS', name: 'Seconds'},
+    {id:'MINUTES', name: 'Minutes'},
+    {id:'HOURS', name: 'Hours'},
+    {id:'DAYS', name: 'Days'},
+    {id:'WEEKS', name: 'Weeks'},
+    {id:'MONTHS', name: 'Months'},
+    {id:'YEARS', name: 'Years'}
+];
 
 return ProviderOptionsManager;
 
