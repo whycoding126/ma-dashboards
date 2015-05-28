@@ -439,6 +439,7 @@ ProviderOptionsManager.populatePicker = function(picker, name) {
             var option = $('<option>');
             option.attr('value', values[i].id);
             option.text(values[i].name);
+            option.data('valueObject', values[i]);
             picker.append(option);
         }
     } else if (picker.store && picker.store.data && !picker.store.data.length) {
