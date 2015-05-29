@@ -89,6 +89,22 @@ BaseDisplay.prototype.loading = function(){
 };
 
 /**
+ * Remove the loading display
+ */
+BaseDisplay.prototype.removeLoading = function() {
+    
+};
+
+/**
+ * Optionally display a message or do something when a point fails to load
+ * By default does nothing, override as necessary
+ * @param {Object} errorObject describing the failure
+ */
+BaseDisplay.prototype.loadPointFailed = function(errorObject) {
+    this.removeLoading();
+};
+
+/**
  * Render A number to BaseDisplay#decimalPlaces. If anything 
  * else is provided it is returned unchanged.
  * @param {Object|number}

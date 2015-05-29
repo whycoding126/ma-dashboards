@@ -195,6 +195,13 @@ SerialChart.prototype.onLoad = function(data, dataPoint) {
 };
 
 /**
+ * Loading data failed
+ */
+SerialChart.prototype.loadPointFailed = function(errorObject) {
+    this.removeLoading();
+};
+
+/**
  * Redraw the chart without reloading data
  */
 SerialChart.prototype.redraw = function() {

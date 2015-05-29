@@ -124,18 +124,17 @@ DataProvider.prototype.needsToLoad = function(changedOptions) {
 /**
  * Load our data and publish to listeners
  * @param {Object} options - {from: date, to: date}
- * @param {function} error - method to call on error
  * @return promise when done
  */
-DataProvider.prototype.load = function(options, error) {
+DataProvider.prototype.load = function(options) {
     if (!this.enabled) {
-        return rejectedPromise("disabled", "Data provider is not enabled");
+        return rejectedPromise({type: 'providerDisabled', description: 'Data provider is not enabled'});
     }
     
     // check if we should reload
     var changedOptions = this.changedOptions(this.previousOptions, options);
     if (!options.forceRefresh && !this.needsToLoad(changedOptions)) {
-        return rejectedPromise("notNeeded", "Load is not needed");
+        return rejectedPromise({type: 'loadNotNeeded', description: 'Load is not needed'});
     }
     
     this.previousOptions = options;
@@ -158,6 +157,9 @@ DataProvider.prototype.load = function(options, error) {
         var promise = self.loadPoint(point, options).then(function(data) {
             // filter promise so we supply point to promise.done
             return {data: data, point: point};
+        }, function(errorObject) {
+            errorObject.point = point;
+            return errorObject;
         });
         promises.push(promise);
     });
@@ -171,9 +173,17 @@ DataProvider.prototype.load = function(options, error) {
             self.notifyListeners(resolved.data, resolved.point);
         }
         self.redrawListeners();
+    }).fail(function() {
+        for (var i in arguments) {
+            var errorObject = arguments[i];
+            
+            // trigger a jquery event
+            $(self).trigger('loadPointFailed', errorObject);
+            
+            self.notifyLoadPointFailed(errorObject);
+        }
+        self.redrawListeners();
     });
-    
-    if (typeof error == 'function') combinedPromise.fail(error);
     
     return combinedPromise;
 };
@@ -234,6 +244,17 @@ DataProvider.prototype.notifyLoading = function() {
     for (var i=0; i<this.listeners.length; i++) {
         if (typeof this.listeners[i].loading === 'function')
             this.listeners[i].loading();
+    }
+};
+
+/**
+ * Notifies the listeners that a point failed to load
+ */
+DataProvider.prototype.notifyLoadPointFailed = function(errorObject) {
+    for (var i=0; i<this.listeners.length; i++) {
+        var listener = this.listeners[i];
+        if (typeof listener.loadPointFailed === 'function')
+            listener.loadPointFailed(errorObject);
     }
 };
 

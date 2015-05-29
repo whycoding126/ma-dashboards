@@ -899,13 +899,19 @@ MangoAPI.prototype.ajax = function(ajaxOptions) {
     var ajax = $.ajax(ajaxOptions).done(function() {
         deferred.resolve.apply(deferred, arguments);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        jqXHR.url = this.url;
-        var mangoMessage = jqXHR.getResponseHeader("errors");
-        deferred.reject(jqXHR, textStatus, errorThrown, mangoMessage);
+        var failObject = {
+            type: 'jqXHR',
+            jqXHR: jqXHR,
+            url: this.url,
+            mangoMessage: jqXHR.getResponseHeader("errors"),
+            textStatus: textStatus,
+            errorThrown: errorThrown
+        };
+        deferred.reject(failObject);
     });
     
     var promise = deferred.promise();
-    MangoAPI.cancellable(promise, ajax.abort.bind(ajax));
+    MangoAPI.makeCancellable(promise, ajax.abort.bind(ajax));
     
     return promise;
 };
@@ -972,7 +978,7 @@ MangoAPI.defaultApi = new MangoAPI();
  * @param {Promise} promise - promise to cancel
  * @param {method} cancel - function to call to cancel the promise
  */
-MangoAPI.cancellable = function(promise, cancel) {
+MangoAPI.makeCancellable = function(promise, cancel) {
     // assume promise.then has been replaced if cancel exists
     if (!promise.cancel) {
         promise.cancel = cancel;
@@ -1157,33 +1163,45 @@ MangoAPI.folderPaths = function(folder, path, result) {
  * @param {Object} error response error
  * @param {string} mangoMessage Message from Mango REST API
  */
-MangoAPI.logError = function(jqXHR, textStatus, error, mangoMessage) {
-    if (!console)
+MangoAPI.logError = function(errorObject) {
+    if (!console || !errorObject)
         return;
     
-    var logLevel, message;
-    switch(textStatus) {
-    case 'notNeeded':
-        // request cancelled as it wasn't needed
+    var logLevel = 'error';
+    var message;
+    switch(errorObject.type) {
+    case 'loadNotNeeded':
+    case 'tooMuchData':
+    case 'noData':
+        // dont log these messages
         return;
-    case 'abort':
-        message = "Mango API request was cancelled";
-        logLevel = console.warn ? 'warn' : 'log';
+    case 'providerDisabled':
+        message = errorObject.description;
+        logLevel = 'warn';
+        break;
+    case 'jqXHR':
+        if (errorObject.textStatus === 'abort') {
+            message = 'Mango XHR request was cancelled';
+            logLevel = 'warn';
+        } else {
+            message = "Mango XHR request failed";
+            if (errorObject.textStatus)
+                message += ", status=" + errorObject.textStatus;
+            if (errorObject.errorThrown)
+                message += ", error=" + errorObject.errorThrown;
+            if (errorObject.mangoMessage)
+                message += ", message=" + errorObject.mangoMessage;
+        }
+        message += ", url=" + errorObject.url;
         break;
     default:
-        message = "Mango API request failed";
-        if (textStatus)
-            message += ", status=" + textStatus;
-        if (error)
-            message += ", error=" + error;
-        logLevel = console.error ? 'error' : 'log';
-        break;
+        message = "Generic error: " + errorObject.type;
     }
-
-    if (jqXHR && jqXHR.url)
-        message += ", url=" + jqXHR.url;
-    if (mangoMessage)
-        message += ", message=" + mangoMessage;
+    
+    // default to console.log() if console.error() etc aren't available 
+    logLevel = console[logLevel] ? logLevel : 'log';
+    
+    // log the message
     console[logLevel](message);
 };
 
