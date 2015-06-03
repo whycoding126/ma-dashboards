@@ -51,7 +51,7 @@ function StatisticsTableDisplay(options) {
     for(var i in options) {
         this[i] = options[i];
     }
-};
+}
 
 StatisticsTableDisplay.prototype = Object.create(BaseDisplay.prototype);
 

@@ -48,58 +48,77 @@
         <script type="text/javascript">
 
         require(['jquery', 'mango/api'],
-          function($, MangoAPI) {
-          	  var query = {
-          			  offset: null,
-          			  andComparisons: [MangoAPI.createQueryComparison('alarmLevel', 'GREATER_THAN_EQUAL_TO', "INFORMATION")],
-          			  sort: [{ attribute: "rtnts", desc: true}],
-				};
-          	  
-          	  MangoAPI.defaultApi.queryEvents(query).then(function(results){
-  				  var table = $('#events');
-          		  for(var i=0; i<results.items.length; i++){
-          			  var event = results.items[i];
-          			  var tr = $('<tr>');
-          			  
-          			  var td = $('<td>');
-          			  td.text(event.id);
-          			  tr.append(td);
-          			  
-          			  td = $('<td>');
-          			  td.text(event.alarmLevel);
-          			  tr.append(td);
-          			  
-          			  td = $('<td>');
-          			  td.text(event.activeTimestamp);
-          			  tr.append(td);
-          			  
-          			  td = $('<td>');
-          			  td.html(event.message);
-          			  tr.append(td);
-          			  
-          			  //add the row
-          			  table.append(tr);
-          		  }
-  	          }).fail(MangoAPI.logError);
-           });
+                function($, MangoAPI) {
+               		$('#queryNow').on('click', function(){  
+               			//Clear out table
+               			$('#events').html('');
+               			//Do Query
+                        MangoAPI.defaultApi.queryEvents($('#query').val()).then(function(results){
+                        	var table = $('#events');
+                            for(var i=0; i<results.items.length; i++){
+                            	var columns = [];
+                            	columns.push(results.items[i].id);
+                            	columns.push(results.items[i].alarmLevel);
+                            	columns.push(results.items[i].activeTimestamp);
+                            	columns.push(results.items[i].message);
+            					table.append(createRow(columns));
+                            }
+                       }).fail(MangoAPI.logError);
+                  });
+                  
+                  function createRow(columns){
+                  	var tr = $('<tr>');
+                  	for(var i=0; i<columns.length; i++){
+                  		 var td = $('<td>');
+               			  td.html(columns[i]);
+               			  tr.append(td);
+                  	}
+                  	return tr;
+                  }
+                });
         </script>
         
     </head>
-  <body>
+  <body>    
     <div id="main">
      <h1>Events Query</h1>
-     <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Level</th>
-            <th>Active Ts</th>
-            <th>Message</th>
-          </tr>
-        </thead>
-        <tbody id="events">
-        </tbody>
-      </table>
+     <p>
+      Enter an RQL Query and hit Query Now to see the results. 
+      If you turn on DEBUG level logging in Mango you can see the SQL query that is generated from the RQL.
+     </p>
+      Example Queries are:<br>
+     <ul>
+        <li>limit(10)</li>
+        <li>alarmLevel=gt=NONE&limit(10)sort(+activeTimestamp)</li>
+        <li>alarmLevel=gt=2&limit(10)sort(+activeTimestamp)</li>
+     </ul>
+     <p>
+      <b>Note:</b> Not all members of the event object are query-able.  See what is available <a href="/rest/v1/events/explain-query.json">here</a>.  
+      The JSON output explains the RQL properties available as 'aliases' for the columns.  
+     </p>
+     <div class="row">
+      <div class="col-md-12">
+        <label for="query">Query:</label><input type="text" id="query" value="limit(10)" style="width:400px"/>
+        <button type="button" id="queryNow">Query Now</button>
+       </div>
+      </div>
+     
+      <div class="row">
+        <div class="col-md-12">
+         <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Level</th>
+                <th>Active Timestamp</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody id="events">
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </body>
 </html>

@@ -34,7 +34,7 @@
  * @module {MangoAPI} mango/api
  * @see MangoAPI
  */
-define(['jquery', 'extend', 'moment-timezone'], function($, extend, moment) {
+define(['jquery', 'moment-timezone'], function($, moment) {
 "use strict";
 
 /**
@@ -100,6 +100,134 @@ MangoAPI.prototype.logout = function() {
 };
         
 /**
+ * Save Existing User
+ * 
+ * @param user - user to save
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.putUser = function(user) {
+    return this.ajax({
+        type: "PUT",
+        url : "/rest/v1/users/" + encodeURIComponent(user.username) + ".json",
+        contentType: "application/json",
+        data: JSON.stringify(user)
+    });
+};
+
+/**
+ * Save New User
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.postUser = function(user) {
+    return this.ajax({
+        type: "POST",
+        url : "/rest/v1/users.json",
+        contentType: "application/json",
+        data: JSON.stringify(user)
+    });
+};
+
+/**
+ * Save New User
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.deleteUser = function(username) {
+    return this.ajax({
+        type: "DELETE",
+        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json"
+    });
+};
+
+/**
+ * Get New User with defaults set
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.newUser = function(user) {
+    return this.ajax({
+        url : "/rest/v1/users/new/user.json"
+    });
+};
+
+/**
+ * Toggle mute setting
+ * 
+ * @param username - user to toggle
+ * @param mute - optional boolean if not provided the current setting is toggled
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.toggleUserMute = function(username, mute) {
+	var url = "/rest/v1/users/";
+	url += encodeURIComponent(username) + "/mute.json";
+	
+	if(mute)
+		url += "?mute=" + mute;
+    return this.ajax({
+        type: "PUT",
+        url : url
+    });
+};
+
+/**
+ * Set Home URL
+ * 
+ * @param username - user to set
+ * @param url - url to set to
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
+	var url = "/rest/v1/users/";
+	url += encodeURIComponent(username) + "/homepage.json?url=";
+	url += encodeURIComponent(homeUrl);
+    return this.ajax({
+        type: "PUT",
+        url : url
+    });
+};
+
+/**
+ * Get All Permissions Information
+ * 
+ * @param query - comma separated String of permissions that are returned as already added to user
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getAllPermissionsInformation = function(query) {
+    return this.ajax({
+        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json"
+    });
+};
+
+/**
+ * Get User Groups
+ * 
+ * @param exclude - comma separated String of groups
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getAllUserGroups = function(exclude) {
+    return this.ajax({
+        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json"
+    });
+};
+
+/**
+ * Get Help
+ * 
+ * @param helpId - help id to load
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getHelp = function(helpId) {
+    return this.ajax({
+        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json"
+    });
+};
+
+
+/**
  * Make a request for any JSON data
  * 
  * @param url
@@ -135,6 +263,80 @@ MangoAPI.prototype.getPoint = function(xid) {
 };
 
 /**
+ * Bulk apply set permissions
+ * 
+ * @param permissions {String} set permissions 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.applyBulkPointSetPermissions = function(permissions, query) {
+	var data = JSON.stringify(permissions);
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+        url: "/rest/v1/data-points/bulk-apply-set-permissions.json" + extraUrl,
+        contentType: 'application/json',
+        data: data
+    });
+};
+
+/**
+ * Bulk apply read permissions
+ * 
+ * @param permissions {String} read permissions 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.applyBulkPointReadPermissions = function(permissions, query) {
+	var data = JSON.stringify(permissions);
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+        url: "/rest/v1/data-points/bulk-apply-read-permissions.json" + extraUrl,
+        contentType: 'application/json',
+        data: data
+    });
+};
+
+/**
+ * Bulk clear set permissions
+ * 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.clearBulkPointSetPermissions = function(query) {
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+    	contentType: 'application/json',
+        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl
+    });
+};
+
+/**
+ * Bulk clear read permissions
+ * 
+ * @param query {String} rql query
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.clearBulkPointReadPermissions = function(query) {
+	var extraUrl = '';
+	if(query !== '')
+		extraUrl = '?' + query;
+	return this.ajax({
+    	type: 'POST',
+    	contentType: 'application/json',
+        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl
+    });
+};
+
+/**
  * Query the Data Points Table
  * @see MangoAPI.createQueryComparison()
  * 
@@ -158,7 +360,7 @@ MangoAPI.prototype.queryPoints = function(query){
 	
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/data-points.json?" + encodeURIComponent(query)
+            url: "/rest/v1/data-points.json?" + query
         });
 	}else{
 		var url = '/rest/v1/data-points/query.json';
@@ -446,9 +648,9 @@ MangoAPI.prototype.modifyRegisteredPointEvents = function(socket, xid, events) {
  * @return {WebSocket}
  */
 MangoAPI.prototype.openSocket = function(path) {
-    if (!'WebSocket' in window) {
+    if (!('WebSocket' in window)) {
         throw new Error('WebSocket not supported');
-    };
+    }
     
     var host = document.location.host;
     var protocol = document.location.protocol;
@@ -573,7 +775,7 @@ MangoAPI.prototype.getCurrentUser = function() {
 MangoAPI.prototype.queryEvents = function(query){
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/events.json?" + encodeURIComponent(query)
+            url: "/rest/v1/events.json?" + query
         });
 	}else{
     	var url = "/rest/v1/events/query.json";
@@ -613,7 +815,7 @@ MangoAPI.prototype.acknowledgeEvent = function(event, message) {
         data = {
             key: 'literal',
             args: [message]
-        }
+        };
     }
     else {
         data = message;
@@ -725,13 +927,19 @@ MangoAPI.prototype.ajax = function(ajaxOptions) {
     var ajax = $.ajax(ajaxOptions).done(function() {
         deferred.resolve.apply(deferred, arguments);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        jqXHR.url = this.url;
-        var mangoMessage = jqXHR.getResponseHeader("errors");
-        deferred.reject(jqXHR, textStatus, errorThrown, mangoMessage);
+        var failObject = {
+            type: 'jqXHR',
+            jqXHR: jqXHR,
+            url: this.url,
+            mangoMessage: jqXHR.getResponseHeader("errors"),
+            textStatus: textStatus,
+            errorThrown: errorThrown
+        };
+        deferred.reject(failObject);
     });
     
     var promise = deferred.promise();
-    MangoAPI.cancellable(promise, ajax.abort.bind(ajax));
+    MangoAPI.makeCancellable(promise, ajax.abort.bind(ajax));
     
     return promise;
 };
@@ -781,7 +989,7 @@ MangoAPI.prototype.setupGlobalize = function() {
         
         return Globalize;
     });
-}
+};
 
 
 /**
@@ -798,7 +1006,7 @@ MangoAPI.defaultApi = new MangoAPI();
  * @param {Promise} promise - promise to cancel
  * @param {method} cancel - function to call to cancel the promise
  */
-MangoAPI.cancellable = function(promise, cancel) {
+MangoAPI.makeCancellable = function(promise, cancel) {
     // assume promise.then has been replaced if cancel exists
     if (!promise.cancel) {
         promise.cancel = cancel;
@@ -983,33 +1191,45 @@ MangoAPI.folderPaths = function(folder, path, result) {
  * @param {Object} error response error
  * @param {string} mangoMessage Message from Mango REST API
  */
-MangoAPI.logError = function(jqXHR, textStatus, error, mangoMessage) {
-    if (!console)
+MangoAPI.logError = function(errorObject) {
+    if (!console || !errorObject)
         return;
     
-    var logLevel, message;
-    switch(textStatus) {
-    case 'notNeeded':
-        // request cancelled as it wasn't needed
+    var logLevel = 'error';
+    var message;
+    switch(errorObject.type) {
+    case 'loadNotNeeded':
+    case 'tooMuchData':
+    case 'noData':
+        // dont log these messages
         return;
-    case 'abort':
-        message = "Mango API request was cancelled";
-        logLevel = console.warn ? 'warn' : 'log';
+    case 'providerDisabled':
+        message = errorObject.description;
+        logLevel = 'warn';
+        break;
+    case 'jqXHR':
+        if (errorObject.textStatus === 'abort') {
+            message = 'Mango XHR request was cancelled';
+            logLevel = 'warn';
+        } else {
+            message = "Mango XHR request failed";
+            if (errorObject.textStatus)
+                message += ", status=" + errorObject.textStatus;
+            if (errorObject.errorThrown)
+                message += ", error=" + errorObject.errorThrown;
+            if (errorObject.mangoMessage)
+                message += ", message=" + errorObject.mangoMessage;
+        }
+        message += ", url=" + errorObject.url;
         break;
     default:
-        message = "Mango API request failed";
-        if (textStatus)
-            message += ", status=" + textStatus;
-        if (error)
-            message += ", error=" + error;
-        logLevel = console.error ? 'error' : 'log';
-        break;
+        message = "Generic error: " + errorObject.type;
     }
-
-    if (jqXHR &amp;&amp; jqXHR.url)
-        message += ", url=" + jqXHR.url;
-    if (mangoMessage)
-        message += ", message=" + mangoMessage;
+    
+    // default to console.log() if console.error() etc aren't available 
+    logLevel = console[logLevel] ? logLevel : 'log';
+    
+    // log the message
     console[logLevel](message);
 };
 

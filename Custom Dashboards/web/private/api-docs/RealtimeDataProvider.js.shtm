@@ -35,7 +35,7 @@
  * @see RealtimeDataProvider
  * @augments DataProvider
  */
-define(['jquery', './dataProvider', './PointEventManager'],
+define(['jquery', './DataProvider', './PointEventManager'],
 function($, DataProvider, PointEventManager) {
 "use strict";
 
@@ -55,8 +55,8 @@ var pointEventManager = new PointEventManager();
 function RealtimeDataProvider(id, options) {
     DataProvider.apply(this, arguments);
     this.eventHandler = this.eventHandler.bind(this);
-};
-	
+}
+
 RealtimeDataProvider.prototype = Object.create(DataProvider.prototype);
 
 

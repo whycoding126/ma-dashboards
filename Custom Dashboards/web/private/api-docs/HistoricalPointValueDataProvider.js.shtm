@@ -37,7 +37,7 @@
  * @see HistoricalDataProvider
  */
 
-define(['jquery', './dataProvider'], function($, DataProvider) {
+define(['jquery', './DataProvider'], function($, DataProvider) {
 
 /**
  * @constructs HistoricalDataProvider
@@ -47,7 +47,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  */
 function HistoricalDataProvider(id, options) {
 	DataProvider.apply(this, arguments);
-};
+}
 	
 HistoricalDataProvider.prototype = Object.create(DataProvider.prototype);
 	

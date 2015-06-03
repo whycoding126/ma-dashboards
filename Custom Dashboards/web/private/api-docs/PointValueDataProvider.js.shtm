@@ -37,7 +37,7 @@
  * @see PointValueDataProvider
  */
 
-define(['jquery', './dataProvider'], function($, DataProvider) {
+define(['jquery', './DataProvider'], function($, DataProvider) {
 "use strict";
 
 
@@ -49,7 +49,7 @@ define(['jquery', './dataProvider'], function($, DataProvider) {
  */
 function PointValueDataProvider(id, options) {
 	DataProvider.apply(this, arguments);
-};
+}
     
 PointValueDataProvider.prototype = Object.create(DataProvider.prototype);
 
@@ -101,26 +101,28 @@ PointValueDataProvider.prototype.loadPoint = function(point, options) {
  */
 PointValueDataProvider.prototype.tryLoadPoint = function(point, options){
     var self = this;
-	return this.mangoApi.countValues(point.xid, options.from, options.to, options).then(function(count){
-		if(count &lt;= self.maxPointValueCount){
-			return self.mangoApi.getValues(point.xid, options.from, options.to, options);
-		}else{
-			var deferred = $.Deferred();
-			deferred.done({data: [], point: point});
-			self.tooMuchData(count, self.maxPointValueCount);
+	return this.mangoApi.countValues(point.xid, options.from, options.to, options).then(function(count) {
+	    if (count > 0 &amp;&amp; count &lt;= self.maxPointValueCount) {
+	        return self.mangoApi.getValues(point.xid, options.from, options.to, options);
+	    }
+	    
+	    var deferred = $.Deferred();
+	    
+		if (count &lt;= 0) {
+			deferred.reject({type: 'noData', providerOptions: options});
 			return deferred.promise();
+		} else {
+			deferred.reject({
+			    type: 'tooMuchData',
+			    providerOptions: options,
+			    count: count,
+			    maxCount: self.maxPointValueCount
+			});
 		}
+		
+        return deferred.promise();
 	});
 };
-
-/**
- * Called when too much data is going to be returned.
- * @param {number} amount - Count of point values that would have been returned
- * @param {limit} limit - Maximum amount this provider allows
- */
-PointValueDataProvider.prototype.tooMuchData = function(amount, limit){
-	alert('Cannot Display ' + amount + ' point values.  Maximum is: ' + limit);
-},
 
 DataProvider.registerProvider(PointValueDataProvider);
 

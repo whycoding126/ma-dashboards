@@ -250,7 +250,7 @@ StatisticsDisplay.prototype = {
 	  			for(var i=0; i&lt;dataPoint.textRenderer.multistateValues.length; i++){
 	  				var mValue = dataPoint.textRenderer.multistateValues[i];
 	  				if(value === mValue.key)
-	  					return '&lt;span style="color:' + mValue.colour + '">' + mValue.text + '&lt;/span>'
+	  					return '&lt;span style="color:' + mValue.colour + '">' + mValue.text + '&lt;/span>';
 	  			}
 	  		break;
 		}

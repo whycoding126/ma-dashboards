@@ -43,7 +43,7 @@ define(['jquery', 'moment-timezone'], function($, moment) {
  */
 function BaseDisplay(options){
     $.extend(this, options);
-};
+}
 
 /**
  * Type of Display
@@ -117,6 +117,22 @@ BaseDisplay.prototype.loading = function(){
 };
 
 /**
+ * Remove the loading display
+ */
+BaseDisplay.prototype.removeLoading = function() {
+    
+};
+
+/**
+ * Optionally display a message or do something when a point fails to load
+ * By default does nothing, override as necessary
+ * @param {Object} errorObject describing the failure
+ */
+BaseDisplay.prototype.loadPointFailed = function(errorObject) {
+    this.removeLoading();
+};
+
+/**
  * Render A number to BaseDisplay#decimalPlaces. If anything 
  * else is provided it is returned unchanged.
  * @param {Object|number}
@@ -125,7 +141,7 @@ BaseDisplay.prototype.renderValue = function(value) {
     if (typeof value === 'number')
         return value.toFixed(this.decimalPlaces);
     return value;
-},
+};
 
 /**
  * Render Timestamp using BaseDisplay#timeFormat

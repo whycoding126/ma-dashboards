@@ -698,7 +698,7 @@ If more than this, the too much data method will be called.
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="PointValueDataProvider.shtm#tooMuchData">PointValueDataProvider#tooMuchData</a></li>
+            <li>PointValueDataProvider#tooMuchData</li>
         </ul>
     </dd>
     
@@ -942,7 +942,7 @@ If more than this, the too much data method will be called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line352">line 352</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line373">line 373</a>
     </li></ul></dd>
     
 
@@ -1051,7 +1051,7 @@ If more than this, the too much data method will be called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line382">line 382</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line403">line 403</a>
     </li></ul></dd>
     
 
@@ -1138,7 +1138,7 @@ If more than this, the too much data method will be called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line312">line 312</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line333">line 333</a>
     </li></ul></dd>
     
 
@@ -1225,7 +1225,7 @@ If more than this, the too much data method will be called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line196">line 196</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1386,7 +1386,7 @@ and members that have not set to false
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line399">line 399</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line420">line 420</a>
     </li></ul></dd>
     
 
@@ -1627,7 +1627,7 @@ Signal to all Listeners to clear ALL their data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line337">line 337</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line358">line 358</a>
     </li></ul></dd>
     
 
@@ -1714,7 +1714,7 @@ Signal to all Listeners to clear ALL their data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line344">line 344</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line365">line 365</a>
     </li></ul></dd>
     
 
@@ -1745,7 +1745,7 @@ Signal to all Listeners to clear ALL their data
 
     
 
-    <h4 class="name" id="load"><span class="type-signature"></span>load<span class="signature">(options, error)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="load"><span class="type-signature"></span>load<span class="signature">(options)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1808,29 +1808,6 @@ Signal to all Listeners to clear ALL their data
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">method to call on error</td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -1873,7 +1850,7 @@ Signal to all Listeners to clear ALL their data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line130">line 130</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line129">line 129</a>
     </li></ul></dd>
     
 
@@ -2507,7 +2484,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line209">line 209</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -2594,7 +2571,94 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line233">line 233</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="notifyLoadPointFailed"><span class="type-signature"></span>notifyLoadPointFailed<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Notifies the listeners that a point failed to load
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="DataProvider.shtm#notifyLoadPointFailed">DataProvider#notifyLoadPointFailed</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -2735,7 +2799,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line251">line 251</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -2832,7 +2896,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line292">line 292</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line313">line 313</a>
     </li></ul></dd>
     
 
@@ -2919,7 +2983,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line223">line 223</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -3006,7 +3070,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line329">line 329</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line350">line 350</a>
     </li></ul></dd>
     
 
@@ -3093,166 +3157,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line319">line 319</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="tooMuchData"><span class="type-signature"></span>tooMuchData<span class="signature">(amount, limit)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Called when too much data is going to be returned.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>amount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Count of point values that would have been returned</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>limit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">limit</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Maximum amount this provider allows</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="PointValueDataProvider.shtm#tooMuchData">PointValueDataProvider#tooMuchData</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PointValueDataProvider.js.shtm">PointValueDataProvider.js</a>, <a href="PointValueDataProvider.js.shtm#line93">line 93</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line340">line 340</a>
     </li></ul></dd>
     
 
@@ -3339,7 +3244,7 @@ it is here that we can modify the data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line375">line 375</a>
+        <a href="DataProvider.js.shtm">DataProvider.js</a>, <a href="DataProvider.js.shtm#line396">line 396</a>
     </li></ul></dd>
     
 
