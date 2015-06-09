@@ -10,114 +10,110 @@
         <style type="text/css">
         </style>
         
-        <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>    	
-        
-        <!-- Charting Library -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/amcharts.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/serial.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/amcharts/gauge.js"></script>
-        
-        <!-- Mango Rest API Helper -->
-        <script type="text/javascript" src="/mango-javascript/v1/mangoApi.js"></script>         
-        
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+                
         <!-- JS For this page -->
     <script type="text/javascript">
-     var socket;
-     var currentUsername; //Global to assist in logout
-     
-     /** User Login Code **/
-     function doLogin(){
-         
-         var username = $('#username').val();
-         var password = $('#password').val();
-         
-         //Make the login request to server
-         mangoRest.loginPost(username,password, function(user, defaultUrl){
-             
-             $('#loggedInAs').text("Logged in as: " + user.username); //Show who is logged in
-             $('#main').css("display", "block"); //Display the Point Info
-             $('#loginForm').css("display", "none"); //Hide the login form
-         }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-             var msg = "";
-             if(textStatus != null)
-                 msg += (textStatus + " ");
-             if(errorThrown != null)
-                 msg += (errorThrown + " ");
-             if(mangoMessage != null)
-                 msg += (mangoMessage + " ");
-             msg += "\n";
-             $("#errors").text(msg);
+    var socket;
+    var currentUsername; //Global to assist in logout
+    var mangoRest;
+    
+    require(['jquery', 'mango/api'],
+            function($, MangoAPI) {
+		//Setup a default API reference
+    	mangoRest = MangoAPI.defaultApi;
+		
+    	$('#login').on('click', function(){
+            var username = $('#username').val();
+            var password = $('#password').val();
+            
+            //Make the login request to server
+            mangoRest.login(username,password, false).then(function(user, defaultUrl){
+                
+                $('#loggedInAs').text("Logged in as: " + user.username); //Show who is logged in
+                $('#main').css("display", "block"); //Display the Point Info
+                $('#loginForm').css("display", "none"); //Hide the login form
+            }).fail(function(jqXHR, textStatus, errorThrown, mangoMessage){
+                var msg = "";
+                if(textStatus != null)
+                    msg += (textStatus + " ");
+                if(errorThrown != null)
+                    msg += (errorThrown + " ");
+                if(mangoMessage != null)
+                    msg += (mangoMessage + " ");
+                msg += "\n";
+                $("#errors").text(msg);
+            });    		
+    	});
+    	
+        
+        /**
+         * Perform the logout via the api
+         */
+         $('#logout').on('click', function(){
+            mangoRest.logout(currentUsername).then(function(user){
+                window.location.reload();
+            }).fail(function(jqXHR, textStatus, errorThrown, mangoMessage){
+                var msg = "";
+                if(textStatus != null)
+                    msg += (textStatus + " ");
+                if(errorThrown != null)
+                    msg += (errorThrown + " ");
+                if(mangoMessage != null)
+                    msg += (mangoMessage + " ");
+                msg += "\n";
+                $("#errors").text(msg);
+            });
+        });
+        
+         /**
+          * Register with the given XID for ALL Events
+          */
+          $('#register').on('click', function(){
+              var xid = $('#xid').val();
+              if(xid == ""){
+                  document.getElementById('errors').innerHTML = "No XID provided";
+                  return;
+              }
+             socket = mangoRest.registerForPointEvents(xid,
+                     ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
+                     function(message){ //On Message Received Method
+                        document.getElementById('errors').innerHTML = "";
+                        document.getElementById('lastMessageTime').innerHTML = new Date();
+                        if(message.status == 'OK'){
+                            document.getElementById('value').innerHTML = message.payload.value.value;
+                            document.getElementById('time').innerHTML = message.payload.value.timestamp;
+                            document.getElementById('type').innerHTML = message.payload.event;
+                            
+                        }else{
+                            document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                        }
+                     },function(error){ //On Error Method
+                         document.getElementById('status').innerHTML = error;
+                     },function(){ //On Open Method
+                         document.getElementById('status').innerHTML = 'Connected';
+                         document.getElementById('errors').innerHTML = '';
+                     },function(){ //On Close Method
+                         document.getElementById('status').innerHTML = 'Closed';
+                         document.getElementById('errors').innerHTML = '';
+                     });
          });
          
-         
-     }
-     
-     /**
-      * Perform the logout via the api
-      */
-     function doLogout(){
-         mangoRest.logoutPost(currentUsername, function(user){
-             window.location.reload();
-         },function(jqXHR, textStatus, errorThrown, mangoMessage){
-             var msg = "";
-             if(textStatus != null)
-                 msg += (textStatus + " ");
-             if(errorThrown != null)
-                 msg += (errorThrown + " ");
-             if(mangoMessage != null)
-                 msg += (mangoMessage + " ");
-             msg += "\n";
-             $("#errors").text(msg);
+         /**
+          * Un-register for all events
+          */
+         $('#unRegister').on('click', function(){
+            var xid = $('#xid').val();
+            if(xid == ""){
+                 document.getElementById('errors').innerHTML = "No XID provided";
+                 return;
+            }
+            mangoRest.modifyRegisteredPointEvents(socket, xid, []);
+			$('#status').text('Disconnected');
          });
-     }
-     
-      /**
-       * Register with the given XID for ALL Events
-       */
-      function register(){
-           var xid = $('#xid').val();
-           if(xid == ""){
-               document.getElementById('errors').innerHTML = "No XID provided";
-               return;
-           }
-          socket = mangoRest.pointValues.registerForEvents(xid,
-                  ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
-                  function(message){ //On Message Received Method
-                     document.getElementById('errors').innerHTML = "";
-                     document.getElementById('lastMessageTime').innerHTML = new Date();
-                     if(message.status == 'OK'){
-                         document.getElementById('value').innerHTML = message.payload.value.value;
-                         document.getElementById('time').innerHTML = message.payload.value.timestamp;
-                         document.getElementById('type').innerHTML = message.payload.event;
-                         
-                     }else{
-                         document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
-                     }
-                  },function(error){ //On Error Method
-                      document.getElementById('status').innerHTML = error;
-                  },function(){ //On Open Method
-                      document.getElementById('status').innerHTML = 'Connected';
-                      document.getElementById('errors').innerHTML = '';
-                  },function(){ //On Close Method
-                      document.getElementById('status').innerHTML = 'Closed';
-                      document.getElementById('errors').innerHTML = '';
-                  });
-      }
-      
-      /**
-       * Un-register for all events
-       */
-      function unRegister(){
-          var xid = $('#xid').val();
-          if(xid == ""){
-              document.getElementById('errors').innerHTML = "No XID provided";
-              return;
-          }
-          mangoRest.pointValues.modifyRegisteredEvents(socket, xid, []);
-          
-      }
-
+    });
     </script>
     </head>
 	<body>
@@ -126,18 +122,14 @@
           <div id="loginError"></div>
           <label for="username">Username:</label><input type="text" id="username"/>
           <label for="password">Password:</label><input type="password" id="password"/>
-          <button type="button" onclick="doLogin();">Login</button>
-          <button id="logout" style="display:none" type="button" onclick="doLogout();">Logout</button>
+          <button id="login" type="button">Login</button>
       </div>
       <br>
       <div id="main" style="display:none">
-          <div id="loggedInAs"></div><button type="button" onclick="doLogout();">Logout</button></br>
-      </div>
-  
-  
+        <button id="logout" style="display:none" type="button">Logout</button><br>
 	    <label for="xid">Xid: </label><input type="text" id="xid"/>
-	    <button onclick="register()">Register</button>
-	    <button onclick="unRegister()">Un-Register</button>
+	    <button id="register" >Register</button>
+	    <button id="unRegister" >Un-Register</button>
 	    <div style="clear:both">
 	      <div style="float:left; padding-right:5px">Status: </div>
 	      <div id="status" style="float:left"></div>
@@ -157,7 +149,7 @@
 	      <div style="float:left; padding-right:5px">Message Type: </div>
 	      <div id="type" style="float:left"></div>
 	    </div>
-        
+      </div>
 	    
 	    <!-- Placeholder to log errors -->
 	    <div id="errors" style="color: red"></div>    

@@ -3,6 +3,7 @@
 * Added documentation for API
 * New examples for API version 2.0
 * Upgraded to work with core version 2.6.x
+* Modified RealTimeModel to use 'timestamp' instead of 'time' for its timestamp
 
 *Version 1.0.4*
 * Bugfixes
