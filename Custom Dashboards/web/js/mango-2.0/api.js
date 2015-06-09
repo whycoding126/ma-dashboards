@@ -932,37 +932,78 @@ MangoAPI.prototype.loadJson = function() {
 };
 
 /**
+ * Stores promises for translation namespaces
+ */
+MangoAPI.prototype.loadedTranslationNamespaces = {};
+
+/**
+ * Stores promise for globalize
+ */
+MangoAPI.prototype.globalizePromise = null;
+
+/**
+ * Locale to use for translations, empty for server default
+ */
+MangoAPI.prototype.locale = '';
+
+/**
  * Sets up Globalize by retrieving translations from Mango
  * 
  * @param namespace... - zero or more namespace strings
  * @returns promise, resolved when Globalize is ready
  */
 MangoAPI.prototype.setupGlobalize = function() {
-    var promiseArray = [
-        MangoAPI.requirePromise(['globalize', 'globalize/message', 'cldr/unresolved']),
-        this.loadJson('/resources/cldr-data/supplemental/likelySubtags.json')
-    ];
+    var self = this;
     
+    // Load globalize using RequireJS and load likelySubtags
+    if (!this.globalizePromise) {
+        this.globalizePromise = MangoAPI.when([
+                MangoAPI.requirePromise(['globalize', 'globalize/message', 'cldr/unresolved']),
+                self.loadJson('/resources/cldr-data/supplemental/likelySubtags.json')])
+            .then(MangoAPI.firstArrayArg)
+            .then(function(Globalize, likelySubtags) {
+                Globalize.load(likelySubtags);
+                return Globalize;
+            });
+    }
+    
+    var locale = null;
+    
+    var promiseArray = [this.globalizePromise];
+    
+    // request each namespace (if we havent already fetched it) and call
+    // Globalize.loadMessages()
     for (var i = 0; i < arguments.length; i++) {
-        promiseArray.push(this.getTranslations(arguments[i]));
+        var namespace = arguments[i];
+        var nsPromise = this.loadedTranslationNamespaces[namespace];
+        if (!nsPromise) {
+            var trRequest = self.locale ? self.getTranslations(namespace, self.locale) :
+                self.getTranslations(namespace);
+            nsPromise = MangoAPI.when([this.globalizePromise, trRequest])
+            .then(MangoAPI.firstArrayArg)
+            .then(function(Globalize, translations) {
+                Globalize.loadMessages(translations.translations);
+                return translations;
+            });
+            this.loadedTranslationNamespaces[namespace] = nsPromise;
+        }
+        promiseArray.push(nsPromise);
     }
     
     return MangoAPI.when(promiseArray).then(MangoAPI.firstArrayArg)
-        .then(function(Globalize, likelySubtags) {
-        Globalize.load(likelySubtags);
-        var locale = null;
-        for (var i = 2; i < arguments.length; i++) {
-            Globalize.loadMessages(arguments[i].translations);
-            if (!locale)
-                locale = arguments[i].locale;
-        }
-        if (locale)
-            Globalize.locale(locale);
-        
+        .then(function(Globalize) {
+            // check a locale is set on Globalize
+            if (!Globalize.locale()) {
+                if (self.locale) {
+                    Globalize.locale(self.locale);
+                } else if (arguments.length > 1) {
+                    // use whatever locale the server returned
+                    Globalize.locale(arguments[1].locale);
+                }
+            }
         return Globalize;
     });
 };
-
 
 /**
  * The default MangoAPI instance - i.e. no baseUrl, but can be replaced
