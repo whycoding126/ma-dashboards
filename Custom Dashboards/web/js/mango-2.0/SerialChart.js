@@ -19,6 +19,10 @@ function SerialChart(options) {
     this.axisLeftRight = true;
     this.axisOffset = 0;
     
+    //Bind ourself for access to our zoomDuration
+    this.chartZoomed.bind(this);
+    this.balloonFunction.bind(this);
+    
     $.extend(this, options);
     
     if (!baseConfiguration.categoryAxis.labelFunction)
@@ -68,7 +72,29 @@ SerialChart.prototype.balloonFunction = function(graphDataItem, amGraph) {
     if (!graphDataItem.values)
         return '';
     
-    var dateFormatted = moment(graphDataItem.category).format('lll Z z');
+    //var dateFormatted = moment(graphDataItem.category).format('lll Z z');
+    
+    var duration;
+    if(typeof this.zoomDuration === 'undefined'){
+    	duration = moment.duration(amGraph.data[amGraph.data.length-1].time - amGraph.data[0].time);
+    }else{
+    	//Set if we are zoomed in, via us, the zoom listener
+    	duration = this.zoomDuration;
+    }
+    var formatString;
+    if(duration.years() > 0){
+        formatString = 'YYYY';
+    }else if(duration.months() > 0){
+        formatString = 'MMM';
+    }else if(duration.days() > 0){
+        formatString = 'MMM DD';
+    }else if(duration.hours() > 0){
+        formatString = 'LT';
+    }else{
+        formatString = 'LTS';
+    }
+    var dateFormatted = moment(graphDataItem.category).format(formatString);
+    
     var label = amGraph.title + '<br>' +
         dateFormatted + "<br><strong>" +
         graphDataItem.values.value.toFixed(2);
@@ -102,6 +128,15 @@ SerialChart.prototype.removeLoading = function() {
 };
 
 /**
+ * Event when chart has zoomed
+ * @param zoomEvent
+ */
+SerialChart.prototype.chartZoomed = function(zoomEvent){
+	this.zoomDuration = moment.duration(zoomEvent.endDate.getTime() - zoomEvent.startDate.getTime());
+};
+
+
+/**
  * Do the heavy lifting and create the item
  * @return AmChart created
  */
@@ -111,6 +146,7 @@ SerialChart.prototype.createDisplay = function() {
     
     require(['amcharts.serial'], function() {
         self.amChart = AmCharts.makeChart(self.divId, self.amChart);
+        self.amChart.addListener('zoomed', self.chartZoomed);
         deferred.resolve(self);
     });
     
