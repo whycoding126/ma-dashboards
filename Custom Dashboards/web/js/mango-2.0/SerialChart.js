@@ -83,13 +83,11 @@ SerialChart.prototype.balloonFunction = function(graphDataItem, amGraph) {
     }
     var formatString;
     if(duration.years() > 0){
-        formatString = 'YYYY';
+        formatString = 'YYYY MMM DD LTS';
     }else if(duration.months() > 0){
-        formatString = 'MMM';
+        formatString = 'MMM DD LTS';
     }else if(duration.days() > 0){
-        formatString = 'MMM DD';
-    }else if(duration.hours() > 0){
-        formatString = 'LT';
+    	formatString = 'DD LTS';
     }else{
         formatString = 'LTS';
     }
