@@ -1001,7 +1001,18 @@ MangoAPI.prototype.setupGlobalize = function() {
                     Globalize.locale(arguments[1].locale);
                 }
             }
-        return Globalize;
+            
+            // easy access to formatMessage which catches errors
+            Globalize.tr = function() {
+                try {
+                    return this.formatMessage.apply(this, arguments);
+                }
+                catch(error) {
+                    return 'Error translating "' + arguments[0] + '"';
+                }
+            };
+            
+            return Globalize;
     });
 };
 
