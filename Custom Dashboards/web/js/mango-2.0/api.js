@@ -6,7 +6,7 @@
  * @module {MangoAPI} mango/api
  * @see MangoAPI
  */
-define(['jquery', 'moment-timezone'], function($, moment) {
+define(['jquery', 'moment-timezone', 'jstz', './User'], function($, moment, jstz, User) {
 "use strict";
 
 /**
@@ -714,14 +714,21 @@ MangoAPI.prototype.getFolderById = function(id) {
 /**
  * Get the current user
  * 
+ * @param {boolean} ignoreCache - ignore the cached user
  * @return promise, resolved with data when done
  */
-MangoAPI.prototype.getCurrentUser = function() {
+MangoAPI.prototype.getCurrentUser = function(ignoreCache) {
     var url = "/rest/v1/users/current.json";
     
-    return this.ajax({
+    if (this._cachedUser && !ignoreCache) return this._cachedUser;
+    
+    this._cachedUser = this.ajax({
         url: url
+    }).then(function(_user) {
+        return new User(_user);
     });
+    
+    return this._cachedUser;
 };
 
 /**
@@ -1013,6 +1020,52 @@ MangoAPI.prototype.setupGlobalize = function() {
             };
             
             return Globalize;
+    });
+};
+
+/**
+ * Retrieves the client (browser), server or user (set on the users page) timezone
+ * 
+ * @param {string} source - 'client', 'server' or 'user'
+ * @param {Object} user - required for 'server' or 'user'
+ */
+MangoAPI.getTimezone = function(source, user) {
+    var timezone;
+    if (source === 'client') {
+        timezone = jstz.determine().name();
+    } else if (source === 'server') {
+        timezone = user.systemTimezone;
+    } else if (source === 'user') {
+        timezone = user.timezone || user.systemTimezone;
+    }
+    return timezone;
+};
+
+/**
+ * Sets the default timezone for moment-timezone
+ * 
+ * @param {string} source - 'client', 'server' or 'user'
+ * @param {Object} user - required for 'server' or 'user'
+ */
+MangoAPI.setDefaultTimezone = function(source, user) {
+    var timezone = MangoAPI.getTimezone(source, user);
+    if (timezone) moment.tz.setDefault(timezone);
+    return timezone;
+};
+
+MangoAPI.prototype.getTimezone = function(source) {
+    if (source === 'client')
+        return MangoAPI.resolvedPromise(MangoAPI.getTimezone(source));
+    
+    return this.getCurrentUser().then(function(user) {
+        return MangoAPI.getTimezone(source, user);
+    });
+};
+
+MangoAPI.prototype.setDefaultTimezone = function(source) {
+    return this.getTimezone(source).then(function(timezone) {
+        if (timezone) moment.tz.setDefault(timezone);
+        return timezone;
     });
 };
 
