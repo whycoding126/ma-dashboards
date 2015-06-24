@@ -15,6 +15,8 @@ function User(options) {
  * Check if a user has any of the given permissions
  */
 User.prototype.hasPermission = function(desiredPerms) {
+    if (this.admin) return true;
+    
     if (typeof desiredPerms === 'string') {
         desiredPerms = desiredPerms.split(',');
     }
