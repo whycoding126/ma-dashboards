@@ -91,7 +91,7 @@ StatisticsBarChartConfiguration.prototype = {
             return  {                    
             type: "serial",
             //Note the path to images
-            pathToImages: "/modules/dashboards/web/js/amcharts/images/",
+            pathToImages: "/resources/amcharts/images/",
             //Set to date field in result data
             categoryField: "xid",
             rotate: true,
@@ -173,9 +173,9 @@ MangoStatisticsBarChart.prototype = {
                 var entry = {};
                 entry.minimum = statistics.minimum.value;
                 entry.maximum = statistics.maximum.value;
-                entry.average = statistics.average;
-                entry.integral = statistics.integral;
-                entry.sum = statistics.sum;
+                entry.average = statistics.average.value;
+                entry.integral = statistics.integral.value;
+                entry.sum = statistics.sum.value;
                 entry.first = statistics.first.value;
                 entry.last = statistics.last.value;
                 entry.count = statistics.count;

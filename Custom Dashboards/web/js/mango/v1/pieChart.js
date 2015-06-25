@@ -83,7 +83,7 @@ PieChartConfiguration.prototype = {
 
             exportConfig:{    
                 menuItems: [{
-                icon: "/modules/dashboards/web/js/amcharts/images/export.png",
+                icon: "/resources/amcharts/images/export.png",
                 format: "png"   
                 }]
             }

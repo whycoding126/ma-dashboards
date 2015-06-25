@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<!-- Add the Mango Favicon -->
-    <link rel="icon" href="/2.5.0/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
         
 	<!-- Page Style -->
     <style type="text/css">
@@ -169,6 +169,8 @@
 
 </head>
 <body>
+    <h2>This example is deprecated because it uses the legacy Javascript API.  For more up-to-date examples see the tutorial's folder.</h2>
+
     <div id="errors"></div> <!-- The templater defaults to using a div with id errors if it exists -->
     <ul id="groupsList"></ul>
     <p>Bar Chart using a PointValueDataProvider mapped to the voltage and temperature points.  The first chart shows the default behavior 

@@ -384,7 +384,7 @@ var mangoRest = {
                     params += "&timePeriodType=" + timePeriodType;
                 if(timePeriods)
                     params += "&timePeriods=" + timePeriods;
-                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json?from=" + from + "&to=" + to + params;
+                var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json?from=" + from + "&to=" + to + params;
                 
                 var promise = ajaxTemplate({
                     url: url
@@ -399,7 +399,7 @@ var mangoRest = {
             },
             
             getFirstLast: function(xid, from, to) {
-                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
+                var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
                     from + "&to=" + to;
                 
                 var promise = ajaxTemplate({
@@ -421,7 +421,7 @@ var mangoRest = {
              * @return promise after if (typeof done == 'function') done()
              */
             getLatest: function(xid, limit, done, fail, options){
-                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/latest.json?limit=" + limit;
+                var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest.json?limit=" + limit;
                 
                 var promise = ajaxTemplate({
                     url: url
@@ -448,7 +448,7 @@ var mangoRest = {
              * @return promise that will be resolved when done
              */
             getStatistics: function(xid, from, to, done, fail, options) {
-                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + "/statistics.json?from=" +
+                var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics.json?from=" +
                     from + "&to=" + to;
                 
                 var promise = ajaxTemplate({
@@ -475,7 +475,7 @@ var mangoRest = {
              * @return promise when done
              */
             put: function(xid, pointValue, done, fail, options){
-                var url = "/rest/v1/pointValues/" + encodeURIComponent(xid) + ".json";
+                var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json";
                 var data = JSON.stringify(pointValue);
                 
                 var promise = ajaxTemplate({
@@ -505,7 +505,7 @@ var mangoRest = {
              */
             registerForEvents: function(xid, events, onMessage, onError, onOpen, onClose){
                 if ('WebSocket' in window){
-                    var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
+                    var socket = new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/point-value');
                     socket.onopen = function(){
                         //Register for recieving point values
                         // using a PointValueRegistrationModel
@@ -539,7 +539,7 @@ var mangoRest = {
             },
             
             openSocket: function() {
-                return new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/pointValue');
+                return new WebSocket('ws://' + document.location.host + '/rest/v1/websocket/point-value');
             }
         },
 
@@ -558,7 +558,7 @@ var mangoRest = {
              * @return promise that will be resolved when done
              */
             getCurrentValue: function(xid, done, fail){
-                var url = "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json";
+                var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid) + ".json";
                 
                 var promise = ajaxTemplate({
                     url: url
@@ -609,7 +609,7 @@ var mangoRest = {
              * @return promise when done
              */
             getRoot: function(done, fail, options) {
-                var url = "/rest/v1/hierarchy.json";
+                var url = "/rest/v1/hierarchy/full.json";
                 
                 var promise = ajaxTemplate({
                     url: url
@@ -632,7 +632,7 @@ var mangoRest = {
              * @return promise that will be resolved when done
              */
             getFolderByName: function(name, done, fail) {
-                var url = "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json";
+                var url = "/rest/v1/hierarchy/by-name/" + encodeURIComponent(name) + ".json";
                 
                 var promise = ajaxTemplate({
                     url: url
@@ -655,7 +655,7 @@ var mangoRest = {
              * @return promise that will be resolved when done
              */
             getFolderById: function(id, done, fail) {
-                var url = "/rest/v1/hierarchy/byId/" + encodeURIComponent(id) + ".json";
+                var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id) + ".json";
                 
                 var promise = ajaxTemplate({
                     url: url

@@ -4,7 +4,16 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery', 'moment-timezone'], function($, moment) {
+(function(factory) { // anonymous function
+    // Support multiple module loading scenarios
+    if (typeof define === 'function' && define.amd) {
+        // AMD anonymous module
+        define(['jquery', 'moment-timezone'], factory);
+    } else {
+        // No module loader (plain <script> tag) - put directly in global namespace
+        this.StatisticsTableDisplay = factory(jQuery, moment);
+    }
+}(function($, moment) {
 
 var StatisticsTableDisplay = function(options) {
     this.table = null;
@@ -118,4 +127,4 @@ StatisticsTableDisplay.prototype = {
 };
 
 return StatisticsTableDisplay;
-}); // define
+})); // define

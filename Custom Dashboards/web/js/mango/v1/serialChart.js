@@ -91,7 +91,7 @@ SerialChartConfiguration.prototype = {
             return  {                    
             type: "serial",
             //Note the path to images
-            pathToImages: "/modules/dashboards/web/js/amcharts/images/",
+            pathToImages: "/resources/amcharts/images/",
             //Set to date field in result data
             categoryField: "timestamp",
             categoryAxis: {

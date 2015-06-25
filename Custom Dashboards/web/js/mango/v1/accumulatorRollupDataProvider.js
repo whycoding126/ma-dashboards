@@ -11,7 +11,7 @@
         define(['jquery', './dataProvider', './pointValueDataProvider', 'moment-timezone'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
-        this.AccumulatorDataProvider = factory(jQuery, DataProvider, mangoRest);
+        this.AccumulatorRollupDataProvider = factory(jQuery, DataProvider, PointValueDataProvider, moment);
     }
 }(function($, DataProvider, PointValueDataProvider, moment) { // factory function
 

@@ -70,7 +70,7 @@ GaugeChartConfiguration.prototype = {
         getBaseConfiguration: function(){
             return  {                    
                 "type": "gauge",
-                "pathToImages": "/modules/dashboards/web/js/amcharts/images/",
+                "pathToImages": "/resources/amcharts/images/",
                 "marginBottom": 20,
                 "marginTop": 40,
                 "startDuration": 0,
