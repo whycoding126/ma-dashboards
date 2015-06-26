@@ -10,77 +10,174 @@
     <style type="text/css">
     </style>
 	
+	
 	<title>Bar Chart</title>
-
-    <script type="text/javascript" src="/resources/loaderConfig.js"></script>
-    <script type="text/javascript" src="/resources/require.js"></script>
-    
-    <!-- Map mango-1.1 overtop of mango link in loader configuration -->
-    <script>
-    	require.config({
-    		map: {'*': {'mango': 'mango-1.1'}}
-		});
-    </script>
-    
-    <script type="text/javascript">
-    require(['mango/serialChart', 'mango/dataPointMatcher', 'mango/dataPointGroup', 'mango/listView',
-             'mango/dashboardTemplater', 'mango/pointValueDataProvider', 'domReady!'],
-    function(SerialChart, DataPointMatcher, DataPointGroup, ListViewConfiguration, DashboardTemplater, PointValueDataProvider) {
-    
-    // get subtypes we need
-    var DataPointMatchConfiguration = DataPointMatcher.DataPointMatchConfiguration;
-    var DataPointMatchConfiguration = DataPointMatcher.DataPointMatchConfiguration;
-    var DataPointGroupConfiguration = DataPointGroup.DataPointGroupConfiguration;
         
+    <!-- JQuery -->
+    <script type="text/javascript" src="/resources/jquery/jquery-1.11.2.js"></script>    	
+
+    <link href="/resources/jquery-ui/jquery.datetimepicker.css" rel="stylesheet">
+ 
+    <script type="text/javascript" src="/resources/jquery-ui/jquery.datetimepicker.js"></script>
+    <!-- Charting Library -->
+    <script type="text/javascript" src="/resources/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="/resources/amcharts/serial.js"></script>
+    <script type="text/javascript" src="/resources/amcharts/gauge.js"></script>
+
+    <!-- Mango Rest API Helper -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/mangoApi.js"></script>         
+        
+    <!-- Mango Templating API -->
+    <!-- Display Widgets -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/serialChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/barChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statisticsBarChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pieChart.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statistics.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/gaugeChart.js"></script>
+    
+    <!-- Data Providers -->
+    <script type="text/javascript" src="/resources/extend.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/realtimePointValueDataProvider.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/statisticsDataProvider.js"></script>
+
+    <!-- Input Widgets -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dateTimePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/rollupPicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/timePeriodTypePicker.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/input.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/select.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/listView.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/select.js"></script>
+    
+    <!-- Templater Core -->
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataDisplayManager.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataPointMatcher.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dataPointGroup.js"></script>  
+    <script type="text/javascript" src="/mango-javascript/mango/v1/pointHierarchyGrouper.js"></script>
+    <script type="text/javascript" src="/mango-javascript/mango/v1/dashboardTemplater.js"></script>
+
+
+
+
+   <script type="text/javascript">
+   
    //Define Global Variables
    var templater;
    
-		//Setup Display Configurations
-		var displayConfigurations = new Array();
-        var bar1 = new SerialChart({
-        	divId: 'chart1', //Chart DIV id
-        	dataProviderIds: [1], //List of data provider Ids for this chart
-        	amChart: { chartScrollbar: null},
-        	graphId: function(valueField, dataPoint){
-           		return 'bar1';
-           	},
-        	graphType: function(valueField, dataPoint){
-        		return 'column';
-			}
-        });
-        displayConfigurations.push(bar1);
+   $( document ).ready(function(){
        
-		var bar2 = new SerialChart({
-			divId: 'chart2', //Chart DIV id
-			dataProviderIds: [2], //List of data provider Ids for this chart
-            amChart: { 
-            	categoryField: "name",
-            	chartScrollbar: null,
-            },
-			onLoad: function(data, dataPoint){
-				this.removeLoading();
-				
-				//Ensure we have the graphs created
-		        var totalGraph = this.findGraph('total') || this.createGraph('total', dataPoint);
-				
-		        var minGraph = this.findGraph('minimum') || this.createGraph('minimum', dataPoint);
-		        var maxGraph = this.findGraph('maximum') || this.createGraph('maximum', dataPoint);
-
-				this.amChart.dataProvider = new Array(); //Clear out old data
-				this.amChart.dataProvider.push(data[0]);
-				
-			},
-		    graphType: function(valueField, dataPoint) {
-		        return 'column';
-		    },
-		    
-		    graphTitle: function(valueField, dataPoint) {
-		        return valueField;
-		    },
-		    
-		    graphId: function(valueField, dataPoint) {
-		        return valueField;
-		    },
+       //Setup Display Configurations
+       var displayConfigurations = new Array();
+       var bar1 = new  BarChartConfiguration(
+               'chart1', //Chart DIV id
+               [1], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Average:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Average",
+                                  "type": "column",
+                                  "valueField": "value"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{//Empty Mango Chart Mixins
+           categoryField: "name", //What member of the data point to use as category label/separator
+       },{
+       });
+       displayConfigurations.push(bar1);
+       
+       var bar2 = new  BarChartConfiguration(
+               'chart2', //Chart DIV id
+               [1], //List of data provider Ids for this chart
+               { //AmChart Mixins
+                   "categoryField": "name",
+                   "graphs": [
+                              {
+                                  "balloonText": "Total:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-1",
+                                  "lineAlpha": 0.2,
+                                  "title": "Total",
+                                  "type": "column",
+                                  "valueField": "total"
+                              },
+                              {
+                                  "balloonText": "Maximum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-2",
+                                  "lineAlpha": 0.2,
+                                  "title": "Maximum",
+                                  "type": "column",
+                                  "valueField": "maximum"
+                              },
+                              {
+                                  "balloonText": "Minimum:[[value]]",
+                                  "fillAlphas": 0.8,
+                                  "id": "AmGraph-3",
+                                  "lineAlpha": 0.2,
+                                  "title": "Minimum",
+                                  "type": "column",
+                                  "valueField": "minimum"
+                              }
+                          ],
+                          "guides": [],
+                          "valueAxes": [
+                              {
+                                  "id": "ValueAxis-1",
+                                  "position": "top",
+                                  "axisAlpha": 0
+                              }
+                          ],
+       },{
+           /**
+            * on load of data
+            * @param data - list of point value time
+            * @param dataPoint - data point for the values
+            */
+           onLoad: function(data, dataPoint){
+               this.removeLoading();
+               
+               //Create some statistis as an example
+               var total = 0;
+               var max = data[0].value;
+               var min = data[0].value;
+               for(var i=0; i<data.length; i++){
+                   total = total + data[i].value;
+                   if(max < data[i].value)
+                       max = data[i].value;
+                   if(min > data[i].value)
+                       min = data[i].value;
+               }
+               
+               //Create one entry per Data Point
+               var entry = {
+                       name: dataPoint.name,
+                       total: total,
+                       maximum: max,
+                       minimum: min
+               };
+               
+               this.amChart.dataProvider.push(entry);
+               
+               //Refresh the data       
+               this.amChart.validateData();
+           }
+       },{
        });
        displayConfigurations.push(bar2);
        
@@ -88,48 +185,11 @@
        
        //Create Data Providers
        var dataProviders = new Array();
-       var customDataProvider = new PointValueDataProvider(2,{
-    	   loadPoint: function(point, options){
-    		   
-    		   var apiOptions = $.extend({}, this.apiOptions, {
-    	            rollup: options.rollup,
-    	            timePeriodType: options.timePeriodType,
-    	            timePeriods: options.timePeriods
-    	        });
-    	        var promise = this.mangoApi.getValues(point.xid, options.from, options.to, apiOptions).
-    	        then(function(data){
-    	               //Create some statistis as an example
-    	               var total = 0;
-    	               var max = data[0].value;
-    	               var min = data[0].value;
-    	               for(var i=0; i<data.length; i++){
-    	                   total = total + data[i].value;
-    	                   if(max < data[i].value)
-    	                       max = data[i].value;
-    	                   if(min > data[i].value)
-    	                       min = data[i].value;
-    	               }
-    	               
-    	               //Create one entry per Data Point
-    	               var entry = {
-    	                       name: point.name,
-    	                       total: total,
-    	                       maximum: max,
-    	                       minimum: min
-    	               };  
-    	               var newData = new Array();
-    	               newData.push(entry);
-    	               return newData;
-    	        });
-    	        return promise;
-    	   }
-       });
-       dataProviders.push(customDataProvider);
  
        //Setup Point Configurations
        var pointConfigurations = new Array();
        pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /voltage/}], {providerType: 'PointValue'}))
-       pointConfigurations.push(new DataPointMatchConfiguration(2, [{matchAttribute: 'xid', regex: /temperature/}]))
+       pointConfigurations.push(new DataPointMatchConfiguration(1, [{matchAttribute: 'xid', regex: /temperature/}], {providerType: 'PointValue'}))
 
        //Setup Groups
        var group = new DataPointGroupConfiguration({
@@ -158,14 +218,12 @@
                groupSelectConfiguration: groupListView,
        }
        
-       templater = new DashboardTemplater(templaterConfig);    
-
-    }); // require
-    </script>
-
-
-
-
+       templater = new DashboardTemplater(templaterConfig);
+       
+       
+            
+   });// End When page Ready
+   </script>
 
 </head>
 <body>
