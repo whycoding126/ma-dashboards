@@ -644,6 +644,36 @@ MangoAPI.prototype.openSocket = function(path) {
 };
 
 /**
+ * Opens a WebSocket to a DaoNotificationWebSocketHandler and emits notifications
+ * to a dstore about VO creates, updates and deletes
+ * 
+ * @param {string} path to web socket on host
+ * @param {object} dstore object, must be trackable
+ * @param {string} initiatorId, if the received message matches this id the store will not be notified
+ */
+MangoAPI.prototype.registerForDaoNotifications = function(path, store, initiatorId) {
+    var socket = this.openSocket(path);
+    var idProperty = store.idProperty;
+    socket.onmessage = function(event) {
+        var data = $.parseJSON(event.data);
+        if (data.status === 'OK') {
+            var action = data.payload.action;
+            var object = data.payload.object;
+            if (initiatorId && initiatorId === data.payload.initiatorId)
+                return;
+            store.emit(action, {target: object, id: object[idProperty]});
+        }
+    };
+};
+
+/**
+ * Generate a random initiatorId string
+ */
+MangoAPI.prototype.generateInitiatorId = function() {
+    return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+};
+
+/**
  * Get Current Value of Data Point
  * 
  * @param xid - for point desired
