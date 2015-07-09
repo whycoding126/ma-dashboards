@@ -101,9 +101,8 @@
     <div id="main">
      <h1>Data Point Chart</h1>
      <p>
-      Perform a query to modify the contents of the Select List.  Then select a Data Point from the Drop Down list to add it to the chart. 
-      Selecting additional data points adds them to the chart with the current date settings.  Changing the date will remove all points and 
-      chart the selected point.
+      Enter an RQL query then press the 'Query Now' button, all points returned from the query will 
+      be placed into the chart.  Press the Clear Chart button to remove all charted points. 
      </p>
      <p>
       <b>Note:</b> Not all members of the dataPoint object are query-able.  See what is available <a href="/rest/v1/data-points/explain-query.json">here</a>.  
