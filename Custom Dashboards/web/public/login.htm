@@ -3,120 +3,48 @@
     <head>
         <title>Login</title>
          <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         <!-- Page Style -->
-        <style type="text/css">
-        body{
-            background-color: #D35400;
-        }
-        .loginDiv{
-            width: 70%; 
-            height: 600px;
-            background-color: #BDC3C7;
-            margin-right: 0%; 
-            margin-left: 15% ; 
-            margin-top: 5%;
-        }
-        .textInput{
-            border: 1px solid;
-            border-color: transparent;
-            border-radius: 5px;
-            font-size: 35px;
-            width: 800px;
-            height: 48px; 
-            margin-right: 0%; 
-            margin-left: 25% ; 
-
-        }
-        .textLabel1{
-            color: #2a2626;
-            height: 22px;
-            font-weight: bold;
-            margin-left: 25% ; 
-            font-size: 22px;
-            position: relative;
-            margin-top: -5%;
-        }
+        <style></style>
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
         
-          .textLabel2{
-            color: #2a2626;
-            height: 22px;
-            position: relative;
-            font-weight: bold;
-            font-size: 22px;
-            margin-left: 25% ; 
-        }
-        
-        .logoImg{
-            margin-right: 0%; 
-            margin-left: 42% ;
-            margin-bottom: 5%;
-            margin-top: -3%; 
-        }
-        .loginButton{
-            background-color: #4183D7;
-            width: 800px;
-            height: 48px; 
-            margin-right: 0%; 
-            margin-left: 25% ; 
-            margin-top: 5%;
-            border: 1px solid;
-            border-color: #d3d3d3;
-            border-radius: 5px;
-            color: whitesmoke;
-            font-weight: bold;
-            font-size: 28px;
-        }
-        
-        .forgotLoginLink{
-            margin-right: 0%; 
-            margin-left: 65% ; 
-            margin-top: 25%;
-            color: #F22613;
-        }
-        #logout{42%
-            display:none
-          
-        }
-        </style>
-        <!-- Scripts from Module Directory -->
-        <script type="text/javascript" src="/modules/dashboards/web/js/jquery/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="/modules/dashboards/web/js/mango/v1/mangoApi.js"></script>         
+        <!-- Base Library -->
+        <script type="text/javascript" src="/resources/loaderConfig.js"></script>
+        <script type="text/javascript" src="/resources/require.js"></script>
+               
         <script type="text/javascript">
-        /** User Login Code **/
-        function doLogin(){
-            
-            var username = $('#username').val();
-            var password = $('#password').val();
-            
-            //Make the login request to server
-            mangoRest.loginPost(username,password, function(user, defaultUrl){
+        require(['jquery', 'mango/api', 'mango/autologin'],
+                function($, MangoAPI, autologin) {
+        	
+        	$('#loginButton').click(function(){
+        		var username = $('#username').val();
+                var password = $('#password').val();
                 
-                window.location = defaultUrl;
-                
-            }, function(jqXHR, textStatus, errorThrown, mangoMessage){
-                //alert user on fail
-                $('#loginError').text("Sorry but that username and or password is incorrect. Please try again.");
-                console.log(errorThrown + " " + mangoMessage)
-            });
-            
-            
-        }
+            	autologin({username: username, password: password}).then(function(user){
+            		console.log('logged in as admin');
+            		window.location = user.homeUrl;
+            	}).fail(function(e){
+            		$('#loginError').text('Failed to login: ' + e.mangoMessage);
+            	});
+        	});
+        	
+        });
+
         </script>
     </head>
 <body>
     <div class="loginDiv">
-<!--FIXME add in the correct img also add transition for onclick-->
-    <image class="logoImg" src="/images/logo.png"></img>
+    <img class="logoImg" src="/images/logo.png"></img>
     <div id="loginForm">
-        <div id="loginError"></div>
+        <div id="loginError" style="color: red"></div>
             <table >
                 <tr>
                 <td>
                     <label class="textLabel1" for="username">Username</label>
-                </tr>
                 </td>
+                </tr>
                 <tr>
                 <td>    
                    <input class="textInput" type="text" id="username"/>
@@ -125,29 +53,19 @@
                 <tr height=22px >
                 <td>
                     <label class="textLabel2" for="password">Password</label>
-                </tr>
                 </td>
+                </tr>
                 <tr>
                 <td>
                     <input class="textInput" type="password" id="password"/>
-                </tr>
-                </td>
-                <tr>
-                <td>
-                    <!--FIXME Add transition for when the button is clicked-->
-                    <button class="loginButton" type="button" onclick="doLogin();">Login</button>
                 </td>
                 </tr>
                 <tr>
                 <td>
-                    <a class="forgotLoginLink" href="#">Forgot Your Password ?</a>
-                </tr>
+                    <button id="loginButton" type="button">Login</button>
                 </td>
+                </tr>
                 <tr>
-                <td>
-                    <button id="logout" type="button" onclick="doLogout();">Logout</button>
-                </td>
-                </tr>
             </table>
         </div>
     </div>

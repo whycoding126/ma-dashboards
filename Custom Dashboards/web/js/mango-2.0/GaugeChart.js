@@ -76,9 +76,12 @@ define(['jquery', 'moment-timezone'], function($, moment) {
 	 * On Data Provider load we add new data
 	 */
 	GaugeChart.prototype.onLoad = function(data, dataPoint) {
-        this.amChart.arrows[0].setValue(data.value);
-        this.amChart.axes[0].setBottomText(data.renderedValue);
-        this.amChart.validateData();  
+		if(this.amChart.arrows[0].setValue){
+	        this.amChart.arrows[0].setValue(data.value);
+	        this.amChart.axes[0].setBottomText(data.renderedValue);
+	        this.amChart.validateData();  //Not necessary?
+		}
+        
 	};
 	
 	/**
@@ -93,7 +96,6 @@ define(['jquery', 'moment-timezone'], function($, moment) {
             pathToImages: "/resources/amcharts/images/",
             marginBottom: 20,
             marginTop: 40,
-            startDuration: 0,
             fontSize: 13,
             theme: "dark",
             arrows: [

@@ -28,6 +28,7 @@ public class ResourceServlet extends HttpServlet {
 	/* Useful Mime Types */
     private static final String TEXT_JAVASCRIPT = "text/javascript";
     private static final String TEXT_CSS = "text/css";
+    private static final String IMAGE_PNG = "image/png";
     
 	/**
 	 * The base url to use as a reference, part of the UriPattern without the wildcards 
@@ -88,6 +89,8 @@ public class ResourceServlet extends HttpServlet {
 				response.setContentType(TEXT_JAVASCRIPT);
 			else if(baseFilePath.endsWith(".css"))
 				response.setContentType(TEXT_CSS);
+			else if(baseFilePath.endsWith(".png"))
+				response.setContentType(IMAGE_PNG);
 			response.getWriter().write(FileUtils.readFileToString(ofr.getFile()));
 			ofr.close();
 		}else{

@@ -26,6 +26,8 @@
             var chart = new GaugeChart({
                 divId: 'gaugeChart',
                 amChart: {
+                	   startEffect: 'bounce',
+                	   startDuration: 1,
                     axes: [
                            {
                                axisThickness: 1,
