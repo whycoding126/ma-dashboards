@@ -60,8 +60,10 @@ PointEventManager.prototype.subscribe = function(xid, eventType, eventHandler) {
         this.subscriptions[xid] = {eventEmitter: {}};
     var xidSubscriptions = this.subscriptions[xid];
     
-    if (typeof eventHandler === 'function')
+    if (typeof eventHandler === 'function'){
         $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
+        $(xidSubscriptions.eventEmitter).on('REGISTERED', eventHandler);
+    }
     
     if (!xidSubscriptions[eventType]) {
         xidSubscriptions[eventType] = 1;

@@ -33,6 +33,13 @@ RealtimeDataProvider.prototype = Object.create(DataProvider.prototype);
 
 
 /**
+ * Return data as Array of size 1
+ * @type {boolean}
+ * @default false
+ */
+RealtimeDataProvider.prototype.asArray = false;
+
+/**
  * Type of Data Provider
  * @type {string}
  * @default 'RealtimeDataProvider'
@@ -151,7 +158,7 @@ RealtimeDataProvider.prototype.addDataPoint = function(dataPointConfiguration) {
  * @param {Object} payload
  */
 RealtimeDataProvider.prototype.eventHandler = function(event, payload) {
-    if (payload.event !== this.eventType)
+    if ((payload.event !== this.eventType) && (payload.event !== 'REGISTERED'))
         return;
     
     var value = $.extend({}, payload.value);
@@ -165,6 +172,8 @@ RealtimeDataProvider.prototype.eventHandler = function(event, payload) {
     else if (this.apiOptions.converted)
         value.value = value.convertedValue;
     
+    if(this.asArray === true)
+    	value = [value];
     var self = this;
     $.each(this.pointConfigurations, function(key, pointConfig) {
         var point = self.toPoint(pointConfig);
