@@ -52,7 +52,7 @@ MangoAPI.prototype.login = function(username, password, logout) {
     logout = logout ? true : false; // coerce to actual boolean
     
     return this.ajax({
-        url : "/rest/v1/login/" + encodeURIComponent(username) + ".json",
+        url : "/rest/v1/login/" + encodeURIComponent(username),
         headers: {
             password: password,
             logout: logout
@@ -80,7 +80,7 @@ MangoAPI.prototype.logout = function() {
 MangoAPI.prototype.putUser = function(user) {
     return this.ajax({
         type: "PUT",
-        url : "/rest/v1/users/" + encodeURIComponent(user.username) + ".json",
+        url : "/rest/v1/users/" + encodeURIComponent(user.username),
         contentType: "application/json",
         data: JSON.stringify(user)
     });
@@ -95,7 +95,7 @@ MangoAPI.prototype.putUser = function(user) {
 MangoAPI.prototype.postUser = function(user) {
     return this.ajax({
         type: "POST",
-        url : "/rest/v1/users.json",
+        url : "/rest/v1/users",
         contentType: "application/json",
         data: JSON.stringify(user)
     });
@@ -110,7 +110,7 @@ MangoAPI.prototype.postUser = function(user) {
 MangoAPI.prototype.deleteUser = function(username) {
     return this.ajax({
         type: "DELETE",
-        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json"
+        url : "/rest/v1/users/" + encodeURIComponent(username)
     });
 };
 
@@ -122,7 +122,7 @@ MangoAPI.prototype.deleteUser = function(username) {
  */
 MangoAPI.prototype.newUser = function(user) {
     return this.ajax({
-        url : "/rest/v1/users/new/user.json"
+        url : "/rest/v1/users/new/user"
     });
 };
 
@@ -135,7 +135,7 @@ MangoAPI.prototype.newUser = function(user) {
  */
 MangoAPI.prototype.toggleUserMute = function(username, mute) {
 	var url = "/rest/v1/users/";
-	url += encodeURIComponent(username) + "/mute.json";
+	url += encodeURIComponent(username) + "/mute";
 	
 	if(mute)
 		url += "?mute=" + mute;
@@ -154,7 +154,7 @@ MangoAPI.prototype.toggleUserMute = function(username, mute) {
  */
 MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
 	var url = "/rest/v1/users/";
-	url += encodeURIComponent(username) + "/homepage.json?url=";
+	url += encodeURIComponent(username) + "/homepage?url=";
 	url += encodeURIComponent(homeUrl);
     return this.ajax({
         type: "PUT",
@@ -170,7 +170,7 @@ MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
  */
 MangoAPI.prototype.getAllPermissionsInformation = function(query) {
     return this.ajax({
-        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json"
+        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query)
     });
 };
 
@@ -182,7 +182,7 @@ MangoAPI.prototype.getAllPermissionsInformation = function(query) {
  */
 MangoAPI.prototype.getAllUserGroups = function(exclude) {
     return this.ajax({
-        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json"
+        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude)
     });
 };
 
@@ -194,7 +194,7 @@ MangoAPI.prototype.getAllUserGroups = function(exclude) {
  */
 MangoAPI.prototype.getHelp = function(helpId) {
     return this.ajax({
-        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json"
+        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId)
     });
 };
 
@@ -230,7 +230,7 @@ MangoAPI.prototype.getAllPoints = function() {
  */
 MangoAPI.prototype.getPoint = function(xid) {
     return this.ajax({
-        url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
+        url: "/rest/v1/data-points/" + encodeURIComponent(xid)
     });
 };
 
@@ -248,7 +248,7 @@ MangoAPI.prototype.applyBulkPointSetPermissions = function(permissions, query) {
 		extraUrl = '?' + query;
 	return this.ajax({
     	type: 'POST',
-        url: "/rest/v1/data-points/bulk-apply-set-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-apply-set-permissions" + extraUrl,
         contentType: 'application/json',
         data: data
     });
@@ -268,7 +268,7 @@ MangoAPI.prototype.applyBulkPointReadPermissions = function(permissions, query) 
 		extraUrl = '?' + query;
 	return this.ajax({
     	type: 'POST',
-        url: "/rest/v1/data-points/bulk-apply-read-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-apply-read-permissions" + extraUrl,
         contentType: 'application/json',
         data: data
     });
@@ -287,7 +287,7 @@ MangoAPI.prototype.clearBulkPointSetPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl
+        url: "/rest/v1/data-points/bulk-clear-set-permissions" + extraUrl
     });
 };
 
@@ -304,7 +304,7 @@ MangoAPI.prototype.clearBulkPointReadPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl
+        url: "/rest/v1/data-points/bulk-clear-read-permissions" + extraUrl
     });
 };
 
@@ -332,10 +332,10 @@ MangoAPI.prototype.queryPoints = function(query){
 	
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/data-points.json?" + query
+            url: "/rest/v1/data-points?" + query
         });
 	}else{
-		var url = '/rest/v1/data-points/query.json';
+		var url = '/rest/v1/data-points/query';
         var data = JSON.stringify(query);
         
         return this.ajax({
@@ -357,7 +357,7 @@ MangoAPI.prototype.queryPoints = function(query){
 MangoAPI.prototype.putPoint = function(dataPoint) {
     return this.ajax({
         type: "PUT",
-        url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid) + ".json",
+        url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid),
         contentType: "application/json",
         data: JSON.stringify(dataPoint)
     });
@@ -398,7 +398,7 @@ MangoAPI.prototype.putCSVPoint = function(xid, csvData) {
 MangoAPI.prototype.getValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&to=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "?from=" + toISOString(from) + "&to=" +
         toISOString(to);
     
     if (options.rollup)
@@ -434,7 +434,7 @@ MangoAPI.prototype.getValues = function(xid, from, to, options) {
 MangoAPI.prototype.countValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count.json?from=" + toISOString(from) + "&to=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count?from=" + toISOString(from) + "&to=" +
         toISOString(to);
     
     if (options.rollup)
@@ -465,7 +465,7 @@ MangoAPI.prototype.countValues = function(xid, from, to, options) {
 MangoAPI.prototype.getFirstLastValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast?from=" +
         toISOString(from) + "&to=" + toISOString(to);
     
     if (typeof options.rendered !== 'undefined')
@@ -494,7 +494,7 @@ MangoAPI.prototype.getFirstLastValues = function(xid, from, to, options) {
 MangoAPI.prototype.getLatestValues = function(xid, limit, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest.json?limit=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest?limit=" +
         encodeURIComponent(limit);
     
     if (typeof options.rendered !== 'undefined')
@@ -525,7 +525,7 @@ MangoAPI.prototype.getLatestValues = function(xid, limit, options) {
 MangoAPI.prototype.getStatistics = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics.json?from=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics?from=" +
         toISOString(from) + "&to=" + toISOString(to);
     
     if (typeof options.rendered !== 'undefined')
@@ -553,7 +553,7 @@ MangoAPI.prototype.getStatistics = function(xid, from, to, options) {
 MangoAPI.prototype.putValue = function(xid, pointValue, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json";
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid);
     var data = JSON.stringify(pointValue);
     
     if (typeof options.converted !== 'undefined')
@@ -680,7 +680,7 @@ MangoAPI.prototype.generateInitiatorId = function() {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getCurrentValue = function(xid) {
-    var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid) + ".json";
+    var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid);
     
     return this.ajax({
         url: url
@@ -694,7 +694,7 @@ MangoAPI.prototype.getCurrentValue = function(xid) {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getAllCurrentValues = function(limit) {
-    var url = "/rest/v1/realtime/list.json?limit=" + encodeURIComponent(limit);
+    var url = "/rest/v1/realtime/list?limit=" + encodeURIComponent(limit);
     
     return this.ajax({
         url: url
@@ -706,7 +706,7 @@ MangoAPI.prototype.getAllCurrentValues = function(limit) {
  * @return promise when done
  */
 MangoAPI.prototype.getHierarchy = function() {
-    var url = "/rest/v1/hierarchy/full.json";
+    var url = "/rest/v1/hierarchy/full";
     
     return this.ajax({
         url: url
@@ -720,7 +720,7 @@ MangoAPI.prototype.getHierarchy = function() {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getFolderByName = function(name) {
-    var url = "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json";
+    var url = "/rest/v1/hierarchy/by-name/" + encodeURIComponent(name);
     
     return this.ajax({
         url: url
@@ -734,7 +734,7 @@ MangoAPI.prototype.getFolderByName = function(name) {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getFolderById = function(id) {
-    var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id) + ".json";
+    var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id);
     
     return this.ajax({
         url: url
@@ -748,7 +748,7 @@ MangoAPI.prototype.getFolderById = function(id) {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getCurrentUser = function(ignoreCache) {
-    var url = "/rest/v1/users/current.json";
+    var url = "/rest/v1/users/current";
     
     if (this._cachedUser && !ignoreCache) return this._cachedUser;
     
@@ -784,10 +784,10 @@ MangoAPI.prototype.getCurrentUser = function(ignoreCache) {
 MangoAPI.prototype.queryEvents = function(query){
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/events.json?" + query
+            url: "/rest/v1/events?" + query
         });
 	}else{
-    	var url = "/rest/v1/events/query.json";
+    	var url = "/rest/v1/events/query";
         var data = JSON.stringify(query);
         
         return this.ajax({

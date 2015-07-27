@@ -30,7 +30,7 @@ var MangoAPI = extend({
             logout = logout ? true : false; // coerce to actual boolean
             
             return this.ajax({
-                url : "/rest/v1/login/" + encodeURIComponent(username) + ".json",
+                url : "/rest/v1/login/" + encodeURIComponent(username),
                 headers: {
                     password: password,
                     logout: logout
@@ -80,7 +80,7 @@ var MangoAPI = extend({
          */
         getPoint: function(xid) {
             return this.ajax({
-                url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
+                url: "/rest/v1/data-points/" + encodeURIComponent(xid)
             });
         },
 
@@ -93,7 +93,7 @@ var MangoAPI = extend({
         putPoint: function(dataPoint) {
             return this.ajax({
                 type: "PUT",
-                url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid) + ".json",
+                url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid),
                 contentType: "application/json",
                 data: JSON.stringify(dataPoint)
             });
@@ -109,7 +109,7 @@ var MangoAPI = extend({
         putCSVPoint: function(xid, csvData) {
             return this.ajax({
                 type: "PUT",
-                url : "/rest/v1/data-points/" + encodeURIComponent(xid) + ".csv",
+                url : "/rest/v1/data-points/" + encodeURIComponent(xid),
                 contentType: "text/csv",
                 data: csvData
             });
@@ -134,7 +134,7 @@ var MangoAPI = extend({
         getValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&to=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "?from=" + toISOString(from) + "&to=" +
                 toISOString(to);
             
             if (options.rollup)
@@ -170,7 +170,7 @@ var MangoAPI = extend({
         countValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count.json?from=" + toISOString(from) + "&to=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count?from=" + toISOString(from) + "&to=" +
                 toISOString(to);
             
             if (options.rollup)
@@ -201,7 +201,7 @@ var MangoAPI = extend({
         getFirstLastValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
             
             if (typeof options.rendered !== 'undefined')
@@ -230,7 +230,7 @@ var MangoAPI = extend({
         getLatestValues: function(xid, limit, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest.json?limit=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest?limit=" +
                 encodeURIComponent(limit);
             
             if (typeof options.rendered !== 'undefined')
@@ -261,7 +261,7 @@ var MangoAPI = extend({
         getStatistics: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics.json?from=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
             
             if (typeof options.rendered !== 'undefined')
@@ -289,7 +289,7 @@ var MangoAPI = extend({
         putValue: function(xid, pointValue, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json";
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid);
             var data = JSON.stringify(pointValue);
             
             if (typeof options.converted !== 'undefined')
@@ -375,7 +375,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getCurrentValue: function(xid) {
-            var url = "/rest/v1/realtime/byXid/" + encodeURIComponent(xid) + ".json";
+            var url = "/rest/v1/realtime/byXid/" + encodeURIComponent(xid);
             
             return this.ajax({
                 url: url
@@ -389,7 +389,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getAllCurrentValues: function(limit) {
-            var url = "/rest/v1/realtime/list.json?limit=" + encodeURIComponent(limit);
+            var url = "/rest/v1/realtime/list?limit=" + encodeURIComponent(limit);
             
             return this.ajax({
                 url: url
@@ -401,7 +401,7 @@ var MangoAPI = extend({
          * @return promise when done
          */
         getHierarchy: function() {
-            var url = "/rest/v1/hierarchy/full.json";
+            var url = "/rest/v1/hierarchy/full";
             
             return this.ajax({
                 url: url
@@ -415,7 +415,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getFolderByName: function(name) {
-            var url = "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json";
+            var url = "/rest/v1/hierarchy/by-name/" + encodeURIComponent(name);
             
             return this.ajax({
                 url: url
@@ -429,7 +429,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getFolderById: function(id) {
-            var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id) + ".json";
+            var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id);
             
             return this.ajax({
                 url: url
@@ -442,7 +442,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         getCurrentUser: function() {
-            var url = "/rest/v1/users/current.json";
+            var url = "/rest/v1/users/current";
             
             return this.ajax({
                 url: url
@@ -480,7 +480,7 @@ var MangoAPI = extend({
          * @return promise, resolved with data when done
          */
         queryEvents: function(query){
-        	var url = "/rest/v1/events/query.json";
+        	var url = "/rest/v1/events/query";
             var data = JSON.stringify(query);
             
             return this.ajax({
