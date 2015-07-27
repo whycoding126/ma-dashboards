@@ -63,7 +63,7 @@
         <li>alarmLevel=gt=2&limit(10)sort(+activeTimestamp)</li>
      </ul>
      <p>
-      <b>Note:</b> Not all members of the event object are query-able.  See what is available <a href="/rest/v1/events/explain-query.json">here</a>.  
+      <b>Note:</b> Not all members of the event object are query-able.  See what is available <a href="/rest/v1/events/explain-query">here</a>.  
       The JSON output explains the RQL properties available as 'aliases' for the columns.  
      </p>
      <div class="row">

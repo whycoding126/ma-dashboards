@@ -34,7 +34,7 @@
            */
           function sendMessage(){
               var xhr = new XMLHttpRequest();
-              var source = "http://localhost:8080/rest/v1/login/admin.json?password=admin";
+              var source = "http://localhost:8080/rest/v1/login/admin?password=admin";
               xhr.open("POST", source,true);
               xhr.setRequestHeader(
                           "Content-Type",

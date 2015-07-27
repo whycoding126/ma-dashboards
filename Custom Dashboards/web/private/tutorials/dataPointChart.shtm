@@ -126,7 +126,7 @@
       chart the selected point.
      </p>
      <p>
-      <b>Note:</b> Not all members of the dataPoint object are query-able.  See what is available <a href="/rest/v1/data-points/explain-query.json">here</a>.  
+      <b>Note:</b> Not all members of the dataPoint object are query-able.  See what is available <a href="/rest/v1/data-points/explain-query">here</a>.  
       The JSON output explains the RQL properties available as 'aliases' for the columns.  
      </p>
      <div class="row">
