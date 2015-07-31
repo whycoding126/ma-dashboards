@@ -39,7 +39,7 @@
                   	return;
                  }
                 var socket =  MangoAPI.defaultApi.registerForPointEvents(xid,
-                        ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
+                        ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'], //Message types to register for
                         function(message){ //On Message Received Method
                            if(message.status == 'OK'){
                            	var valueRow = [];
