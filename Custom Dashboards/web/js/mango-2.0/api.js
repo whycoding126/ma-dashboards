@@ -75,12 +75,17 @@ MangoAPI.prototype.logout = function() {
  * Save Existing User
  * 
  * @param user - user to save
+ * @param username - optional, if updating the username this is required.
  * @return promise, resolved with data when done
  */
-MangoAPI.prototype.putUser = function(user) {
+MangoAPI.prototype.putUser = function(user, username) {
+
+	if(typeof username == 'undefined')
+		username = user.username;
+	
     return this.ajax({
         type: "PUT",
-        url : "/rest/v1/users/" + encodeURIComponent(user.username),
+        url : "/rest/v1/users/" + encodeURIComponent(username),
         contentType: "application/json",
         data: JSON.stringify(user)
     });
