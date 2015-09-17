@@ -4,8 +4,8 @@
  */
 package com.infiniteautomation.dashboards.web;
 
-import com.infiniteautomation.dashboards.Lifecycle;
-import com.serotonin.m2m2.module.ModuleRegistry;
+import com.infiniteautomation.dashboards.DashboardsCommon;
+import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.UriMappingDefinition;
 import com.serotonin.m2m2.web.mvc.UrlHandler;
 
@@ -28,7 +28,7 @@ public class PublicUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return Lifecycle.publicUrlPrefix + "/**";
+		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, "/public-dashboards/")  + "/**/*";
 	}
 
 	/* (non-Javadoc)
@@ -36,8 +36,9 @@ public class PublicUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public UrlHandler getHandler() {
-		return new DashboardUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath(),
-				Lifecycle.publicFilesLocation, Lifecycle.publicUrlPrefix);
+		return new DashboardUrlHandler(getModule().getDirectoryPath(), 
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION, "/web/public/"),
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, "/public-dashboards/"));
 	}
 
 	/* (non-Javadoc)

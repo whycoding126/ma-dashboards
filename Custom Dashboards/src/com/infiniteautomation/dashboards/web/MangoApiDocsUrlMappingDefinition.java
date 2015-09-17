@@ -5,9 +5,7 @@
 package com.infiniteautomation.dashboards.web;
 
 import com.infiniteautomation.dashboards.DashboardsPermissionDefinition;
-import com.infiniteautomation.dashboards.Lifecycle;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
-import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.module.UriMappingDefinition;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.permission.Permissions;
@@ -46,7 +44,7 @@ public class MangoApiDocsUrlMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public UrlHandler getHandler() {
-		return new DashboardUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath(), 
+		return new DashboardUrlHandler(getModule().getDirectoryPath(), 
 				"/web/private/api-docs/", "/mango-api-docs/");
 	}
 

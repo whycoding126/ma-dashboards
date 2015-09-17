@@ -51,7 +51,7 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
 	@Override
 	public String getImage(HttpServletRequest request,
 			HttpServletResponse response) {
-		return Lifecycle.iconLocation;
+		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_LOCATION, "/web/img/dashboards.png");
 	}
 	
 	/*
@@ -73,11 +73,6 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-    	return Lifecycle.iconDestination;
-    }
-    
-    @Override
-    public void preInitialize() {
-    	Lifecycle.moduleName = getModule().getName(); //Could save ref to entire module here
+    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, "/mango-api-docs/index.shtm");
     }
 }

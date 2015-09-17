@@ -1,39 +1,34 @@
-// sets the default page for Mango
-
+/**
+ * Copyright (C) 2014 Infinite Automation Software. All rights reserved.
+ * @author Terry Packer
+ */
 package com.infiniteautomation.dashboards;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.serotonin.m2m2.module.DefaultPagesDefinition;
-import com.serotonin.m2m2.vo.User;
+import org.apache.commons.lang.StringUtils;
 
+import com.serotonin.m2m2.db.dao.SystemSettingsDao;
+import com.serotonin.m2m2.module.DefaultPagesDefinition;
+
+/**
+ * Class that will allow overidding the default login page if the system setting is set to a valid string
+ * @author Terry Packer
+ *
+ */
 public class DefaultPagesDef extends DefaultPagesDefinition {
-    @Override
+    
+	@Override
     public String getLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
     	
-    	//Edit by T.P. to grab the property for the login mapping, instead of hard code.
-    	//Options: dglux sends user to /dglux/login.htm, mango sends user to /login.htm
-    	if(Lifecycle.props != null){
-	    	String loginMapping = Lifecycle.props.getString("loginPage", "dglux");
-	    	if(loginMapping.equalsIgnoreCase("mango")){
-	    		return "/login.htm";
-	    	}else{
-	    		return "/dglux/login.htm"; //Default URL
-	    	}
-    	}else{
-    		return "/login.htm";
-    	}
-    	
-        //return "/dglux/login.htm";
-    }
-    @Override
-    public String getLoggedInPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-     String loginMapping = Lifecycle.props.getString("loginPage", "dglux");
-     if(loginMapping.equalsIgnoreCase("mango")){
-      return "/data_point_details.shtm";
-     }else{
-      return "/dglux/view"; 
-    }
+		String loginPage = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE, null);
+		
+		if(!StringUtils.isEmpty(loginPage)){
+			return loginPage;
+		}else{
+			return null;
+		}
     }
 }

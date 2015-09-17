@@ -5,9 +5,8 @@
 package com.infiniteautomation.dashboards.web;
 
 import com.infiniteautomation.dashboards.DashboardsPermissionDefinition;
-import com.infiniteautomation.dashboards.Lifecycle;
+import com.infiniteautomation.dashboards.DashboardsCommon;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
-import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.module.UriMappingDefinition;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.permission.Permissions;
@@ -36,7 +35,7 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return Lifecycle.privateUrlPrefix + "/**/*";
+		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, "/private-dashboards/") + "/**/*";
 	}
 
 	/* (non-Javadoc)
@@ -44,8 +43,9 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public UrlHandler getHandler() {
-		return new DashboardUrlHandler(ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath(), 
-				Lifecycle.privateFilesLocation, Lifecycle.privateUrlPrefix);
+		return new DashboardUrlHandler(getModule().getDirectoryPath(), 
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION, "/web/private/"),
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, "/private-dashboards/"));
 	}
 
 	/* (non-Javadoc)

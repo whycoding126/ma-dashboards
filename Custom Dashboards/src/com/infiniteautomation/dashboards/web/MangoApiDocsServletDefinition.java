@@ -6,8 +6,6 @@ package com.infiniteautomation.dashboards.web;
 
 import javax.servlet.http.HttpServlet;
 
-import com.infiniteautomation.dashboards.Lifecycle;
-import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.module.ServletDefinition;
 
 /**
@@ -38,6 +36,6 @@ public class MangoApiDocsServletDefinition extends ServletDefinition{
 	 */
 	@Override
 	public HttpServlet getServlet() {
-		return new ResourceServlet(baseUrl, ModuleRegistry.getModule(Lifecycle.moduleName).getDirectoryPath() + "/web/private/api-docs/");
+		return new ResourceServlet(baseUrl, getModule().getDirectoryPath() + "/web/private/api-docs/");
 	}
 }
