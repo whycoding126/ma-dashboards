@@ -470,6 +470,7 @@ ProviderOptionsManager.rollupValues = [
     {id:'ACCUMULATOR', name: 'Accumulator', nonNumericSupport: false},
     {id:'COUNT', name: 'Count', nonNumericSupport: true},
     {id:'DELTA', name: 'Delta', nonNumericSupport: false},
+    {id:'FFT', name: 'Fft', nonNumericSupport: false},
     {id:'INTEGRAL', name: 'Integral', nonNumericSupport: false},
     {id:'MAXIMUM', name: 'Maximum', nonNumericSupport: false},
     {id:'MINIMUM', name: 'Minimum', nonNumericSupport: false},

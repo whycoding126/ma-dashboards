@@ -22,6 +22,7 @@ function SerialChart(options) {
     //Bind ourself for access to our zoomDuration
     this.chartZoomed.bind(this);
     this.balloonFunction.bind(this);
+    this.labelFunction.bind(this);
     
     $.extend(this, options);
     
@@ -32,6 +33,11 @@ function SerialChart(options) {
 }
 
 /**
+ * Is the category Axis date based
+ */
+SerialChart.prototype.categoryIsDate = true;
+
+/**
  * Create the label for the categoryAxis
  * 
  * @param {string} valueText
@@ -40,29 +46,33 @@ function SerialChart(options) {
  * @param {string} periodFormat
  */
 SerialChart.prototype.labelFunction = function(valueText, date, categoryAxis, periodFormat) {
-    var formatString;
-    switch (periodFormat) {
-    case 'fff':
-    case 'ss':
-        formatString = 'LTS';
-        break;
-    case 'mm':
-    case 'hh':
-        formatString = 'LT';
-        break;
-    case 'DD':
-    case 'WW':
-        formatString = 'MMM DD';
-        break;
-    case 'MM':
-        formatString = 'MMM';
-        break;
-    case 'YYYY':
-        formatString = 'YYYY';
-        break;
-    }
-    
-    return moment(date).format(formatString);
+	if(categoryAxis.parseDates === true){
+	    var formatString;
+	    switch (periodFormat) {
+	    case 'fff':
+	    case 'ss':
+	        formatString = 'LTS';
+	        break;
+	    case 'mm':
+	    case 'hh':
+	        formatString = 'LT';
+	        break;
+	    case 'DD':
+	    case 'WW':
+	        formatString = 'MMM DD';
+	        break;
+	    case 'MM':
+	        formatString = 'MMM';
+	        break;
+	    case 'YYYY':
+	        formatString = 'YYYY';
+	        break;
+	    }
+	    
+	    return moment(date).format(formatString);
+	}else{
+		return date.dataContext[categoryAxis.chart.categoryField].toFixed(2); //Date isn't actually a date in this situation
+	}
 };
 
 /**
@@ -72,36 +82,46 @@ SerialChart.prototype.balloonFunction = function(graphDataItem, amGraph) {
     if (!graphDataItem.values)
         return '';
     
+    var label;
     //var dateFormatted = moment(graphDataItem.category).format('lll Z z');
-    
-    var duration;
-    if(typeof this.zoomDuration === 'undefined'){
-    	duration = moment.duration(amGraph.data[amGraph.data.length-1].time - amGraph.data[0].time);
+    if(this.categoryIsDate){
+	    var duration;
+	    if(typeof this.zoomDuration === 'undefined'){
+	    	duration = moment.duration(amGraph.data[amGraph.data.length-1].time - amGraph.data[0].time);
+	    }else{
+	    	//Set if we are zoomed in, via us, the zoom listener
+	    	duration = this.zoomDuration;
+	    }
+	    var formatString;
+	    if(duration.years() > 0){
+	        formatString = 'YYYY MMM DD LTS';
+	    }else if(duration.months() > 0){
+	        formatString = 'MMM DD LTS';
+	    }else if(duration.days() > 0){
+	    	formatString = 'DD LTS';
+	    }else{
+	        formatString = 'LTS';
+	    }
+	    var dateFormatted = moment(graphDataItem.category).format(formatString);
+	    
+	    label = amGraph.title + '<br>' +
+	        dateFormatted + "<br><strong>" +
+	        graphDataItem.values.value.toFixed(2);
+	    
+	    if (amGraph.unit) {
+	        label += ' ' + amGraph.unit;
+	    }
+	    
+	    label += "</strong>";
     }else{
-    	//Set if we are zoomed in, via us, the zoom listener
-    	duration = this.zoomDuration;
+    	label = amGraph.title + '<br>' +
+    	graphDataItem.category +
+    	"<br><strong>" + graphDataItem.values.value.toFixed(2);
+    	
+    	if (amGraph.unit) {
+	        label += ' ' + amGraph.unit;
+	    }
     }
-    var formatString;
-    if(duration.years() > 0){
-        formatString = 'YYYY MMM DD LTS';
-    }else if(duration.months() > 0){
-        formatString = 'MMM DD LTS';
-    }else if(duration.days() > 0){
-    	formatString = 'DD LTS';
-    }else{
-        formatString = 'LTS';
-    }
-    var dateFormatted = moment(graphDataItem.category).format(formatString);
-    
-    var label = amGraph.title + '<br>' +
-        dateFormatted + "<br><strong>" +
-        graphDataItem.values.value.toFixed(2);
-    
-    if (amGraph.unit) {
-        label += ' ' + amGraph.unit;
-    }
-    
-    label += "</strong>";
     
     return label;
 };
@@ -130,7 +150,8 @@ SerialChart.prototype.removeLoading = function() {
  * @param zoomEvent
  */
 SerialChart.prototype.chartZoomed = function(zoomEvent){
-	this.zoomDuration = moment.duration(zoomEvent.endDate.getTime() - zoomEvent.startDate.getTime());
+	if(this.categoryIsDate === true)
+		this.zoomDuration = moment.duration(zoomEvent.endDate.getTime() - zoomEvent.startDate.getTime());
 };
 
 
@@ -194,38 +215,51 @@ SerialChart.prototype.onLoad = function(data, dataPoint) {
     var graph = this.findGraph(graphId) || this.createGraph(valueField, dataPoint);
     
     var dataProvider = this.amChart.dataProvider;
-    for (i = 0; i < data.length; i++) {
-        var dataItem = data[i];
-        var date = this.dataItemToDate(dataItem, dataPoint);
-        
-        // look for existing item with same date, makes cursor behave nicely
-        var existing = null;
-        for (var j = 0; j < dataProvider.length; j++) {
-            if (dataProvider[j].date.valueOf() === date.valueOf()) {
-                existing = dataProvider[j];
-                break;
-            }
-        }
-        
-        var value = dataItem[fromField];
-        if (typeof this.manipulateValue === 'function')
-            value = this.manipulateValue(value, dataPoint);
-        
-        // if it exists then update the item, otherwise insert new item
-        if (existing) {
-            existing[valueField] = value;
-        }
-        else {
-            var entry = {};
-            entry[valueField] = value;
-            entry.date = date;
-            dataProvider.push(entry);
-        }
+    if(this.categoryIsDate === true){
+	    for (i = 0; i < data.length; i++) {
+	        var dataItem = data[i];
+	        var date = this.dataItemToDate(dataItem, dataPoint);
+	        
+	        // look for existing item with same date, makes cursor behave nicely
+	        var existing = null;
+	        for (var j = 0; j < dataProvider.length; j++) {
+	            if (dataProvider[j].date.valueOf() === date.valueOf()) {
+	                existing = dataProvider[j];
+	                break;
+	            }
+	        }
+	        
+	        var value = dataItem[fromField];
+	        if (typeof this.manipulateValue === 'function')
+	            value = this.manipulateValue(value, dataPoint);
+	        
+	        // if it exists then update the item, otherwise insert new item
+	        if (existing) {
+	            existing[valueField] = value;
+	        }
+	        else {
+	            var entry = {};
+	            entry[valueField] = value;
+	            entry.date = date;
+	            dataProvider.push(entry);
+	        }
+	    }
+	    
+	    // sort the data as items could have been pushed to end of array
+	    // not needed if categoryAxis.parseDates === true
+	    dataProvider.sort(this.sortCompare);
+    }else{
+    	//Not date based
+    	for (i = 0; i < data.length; i++) {
+	        var val = data[i][fromField];
+	        var category = data[i][this.amChart.categoryField];
+	        var ent = {};
+            ent[valueField] = val;
+            ent[this.amChart.categoryField] = category;
+            dataProvider.push(ent);
+    	}
     }
-    
-    // sort the data as items could have been pushed to end of array
-    // not needed if categoryAxis.parseDates === true
-    dataProvider.sort(this.sortCompare);
+
 };
 
 /**

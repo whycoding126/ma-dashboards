@@ -15,7 +15,7 @@
         <script type="text/javascript" src="/resources/require.js"></script>
                
         <script type="text/javascript">
-        require(['jquery', 'mango/api', 'mango/autologin'],
+        require(['jquery', 'mango/api', 'mango/autologin', 'domReady!'],
                 function($, MangoAPI, autologin) {
         	
         	$('#loginButton').click(function(){
@@ -29,6 +29,8 @@
             		$('#loginError').text('Failed to login: ' + e.mangoMessage);
             	});
         	});
+        	
+        	$('#username').focus();
         	
         });
 
@@ -47,7 +49,7 @@
                 </tr>
                 <tr>
                 <td>    
-                   <input class="textInput" type="text" id="username"/>
+                   <input class="textInput" type="text" id="username" tabindex="1"/>
                 </td>
                 </tr>
                 <tr height=22px >
@@ -57,13 +59,13 @@
                 </tr>
                 <tr>
                 <td>
-                    <input class="textInput" type="password" id="password"/>
+                    <input class="textInput" type="password" id="password" tabindex="2"/>
                 </td>
                 </tr>
                 <tr style="height: 10px"></tr>
                 <tr>
                 <td>
-                    <button id="loginButton" type="button">Login</button>
+                    <button id="loginButton" type="button" tabindex="3">Login</button>
                 </td>
                 </tr>
                 <tr>
