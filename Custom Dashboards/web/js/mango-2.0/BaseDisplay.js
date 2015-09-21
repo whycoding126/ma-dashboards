@@ -3,7 +3,7 @@
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  * @module {BaseDisplay} mango/BaseDisplay
- * @see TextDisplay
+ * @see BaseDisplay
  */
 define(['jquery', 'moment-timezone'], function($, moment) {
 

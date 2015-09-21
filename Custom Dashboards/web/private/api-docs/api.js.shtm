@@ -34,7 +34,7 @@
  * @module {MangoAPI} mango/api
  * @see MangoAPI
  */
-define(['jquery', 'moment-timezone'], function($, moment) {
+define(['jquery', 'moment-timezone', 'jstz', './User'], function($, moment, jstz, User) {
 "use strict";
 
 /**
@@ -80,7 +80,7 @@ MangoAPI.prototype.login = function(username, password, logout) {
     logout = logout ? true : false; // coerce to actual boolean
     
     return this.ajax({
-        url : "/rest/v1/login/" + encodeURIComponent(username) + ".json",
+        url : "/rest/v1/login/" + encodeURIComponent(username),
         headers: {
             password: password,
             logout: logout
@@ -103,12 +103,17 @@ MangoAPI.prototype.logout = function() {
  * Save Existing User
  * 
  * @param user - user to save
+ * @param username - optional, if updating the username this is required.
  * @return promise, resolved with data when done
  */
-MangoAPI.prototype.putUser = function(user) {
+MangoAPI.prototype.putUser = function(user, username) {
+
+	if(typeof username == 'undefined')
+		username = user.username;
+	
     return this.ajax({
         type: "PUT",
-        url : "/rest/v1/users/" + encodeURIComponent(user.username) + ".json",
+        url : "/rest/v1/users/" + encodeURIComponent(username),
         contentType: "application/json",
         data: JSON.stringify(user)
     });
@@ -123,7 +128,7 @@ MangoAPI.prototype.putUser = function(user) {
 MangoAPI.prototype.postUser = function(user) {
     return this.ajax({
         type: "POST",
-        url : "/rest/v1/users.json",
+        url : "/rest/v1/users",
         contentType: "application/json",
         data: JSON.stringify(user)
     });
@@ -138,7 +143,7 @@ MangoAPI.prototype.postUser = function(user) {
 MangoAPI.prototype.deleteUser = function(username) {
     return this.ajax({
         type: "DELETE",
-        url : "/rest/v1/users/" + encodeURIComponent(username) + ".json"
+        url : "/rest/v1/users/" + encodeURIComponent(username)
     });
 };
 
@@ -150,7 +155,7 @@ MangoAPI.prototype.deleteUser = function(username) {
  */
 MangoAPI.prototype.newUser = function(user) {
     return this.ajax({
-        url : "/rest/v1/users/new/user.json"
+        url : "/rest/v1/users/new/user"
     });
 };
 
@@ -163,7 +168,7 @@ MangoAPI.prototype.newUser = function(user) {
  */
 MangoAPI.prototype.toggleUserMute = function(username, mute) {
 	var url = "/rest/v1/users/";
-	url += encodeURIComponent(username) + "/mute.json";
+	url += encodeURIComponent(username) + "/mute";
 	
 	if(mute)
 		url += "?mute=" + mute;
@@ -182,7 +187,7 @@ MangoAPI.prototype.toggleUserMute = function(username, mute) {
  */
 MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
 	var url = "/rest/v1/users/";
-	url += encodeURIComponent(username) + "/homepage.json?url=";
+	url += encodeURIComponent(username) + "/homepage?url=";
 	url += encodeURIComponent(homeUrl);
     return this.ajax({
         type: "PUT",
@@ -198,7 +203,7 @@ MangoAPI.prototype.setHomeURL = function(username, homeUrl) {
  */
 MangoAPI.prototype.getAllPermissionsInformation = function(query) {
     return this.ajax({
-        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query) + ".json"
+        url : "/rest/v1/users/permissions/"+ encodeURIComponent(query)
     });
 };
 
@@ -210,7 +215,7 @@ MangoAPI.prototype.getAllPermissionsInformation = function(query) {
  */
 MangoAPI.prototype.getAllUserGroups = function(exclude) {
     return this.ajax({
-        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude) + ".json"
+        url : "/rest/v1/users/permissions-groups/"+ encodeURIComponent(exclude)
     });
 };
 
@@ -222,7 +227,7 @@ MangoAPI.prototype.getAllUserGroups = function(exclude) {
  */
 MangoAPI.prototype.getHelp = function(helpId) {
     return this.ajax({
-        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId) + ".json"
+        url : '/rest/v1/help/by-id/' + encodeURIComponent(helpId)
     });
 };
 
@@ -258,7 +263,7 @@ MangoAPI.prototype.getAllPoints = function() {
  */
 MangoAPI.prototype.getPoint = function(xid) {
     return this.ajax({
-        url: "/rest/v1/data-points/" + encodeURIComponent(xid) + ".json"
+        url: "/rest/v1/data-points/" + encodeURIComponent(xid)
     });
 };
 
@@ -276,7 +281,7 @@ MangoAPI.prototype.applyBulkPointSetPermissions = function(permissions, query) {
 		extraUrl = '?' + query;
 	return this.ajax({
     	type: 'POST',
-        url: "/rest/v1/data-points/bulk-apply-set-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-apply-set-permissions" + extraUrl,
         contentType: 'application/json',
         data: data
     });
@@ -296,7 +301,7 @@ MangoAPI.prototype.applyBulkPointReadPermissions = function(permissions, query) 
 		extraUrl = '?' + query;
 	return this.ajax({
     	type: 'POST',
-        url: "/rest/v1/data-points/bulk-apply-read-permissions.json" + extraUrl,
+        url: "/rest/v1/data-points/bulk-apply-read-permissions" + extraUrl,
         contentType: 'application/json',
         data: data
     });
@@ -315,7 +320,7 @@ MangoAPI.prototype.clearBulkPointSetPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-set-permissions.json" + extraUrl
+        url: "/rest/v1/data-points/bulk-clear-set-permissions" + extraUrl
     });
 };
 
@@ -332,7 +337,7 @@ MangoAPI.prototype.clearBulkPointReadPermissions = function(query) {
 	return this.ajax({
     	type: 'POST',
     	contentType: 'application/json',
-        url: "/rest/v1/data-points/bulk-clear-read-permissions.json" + extraUrl
+        url: "/rest/v1/data-points/bulk-clear-read-permissions" + extraUrl
     });
 };
 
@@ -360,10 +365,10 @@ MangoAPI.prototype.queryPoints = function(query){
 	
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/data-points.json?" + query
+            url: "/rest/v1/data-points?" + query
         });
 	}else{
-		var url = '/rest/v1/data-points/query.json';
+		var url = '/rest/v1/data-points/query';
         var data = JSON.stringify(query);
         
         return this.ajax({
@@ -385,7 +390,7 @@ MangoAPI.prototype.queryPoints = function(query){
 MangoAPI.prototype.putPoint = function(dataPoint) {
     return this.ajax({
         type: "PUT",
-        url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid) + ".json",
+        url : "/rest/v1/data-points/" + encodeURIComponent(dataPoint.xid),
         contentType: "application/json",
         data: JSON.stringify(dataPoint)
     });
@@ -426,7 +431,7 @@ MangoAPI.prototype.putCSVPoint = function(xid, csvData) {
 MangoAPI.prototype.getValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json?from=" + toISOString(from) + "&amp;to=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "?from=" + toISOString(from) + "&amp;to=" +
         toISOString(to);
     
     if (options.rollup)
@@ -462,7 +467,7 @@ MangoAPI.prototype.getValues = function(xid, from, to, options) {
 MangoAPI.prototype.countValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count.json?from=" + toISOString(from) + "&amp;to=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/count?from=" + toISOString(from) + "&amp;to=" +
         toISOString(to);
     
     if (options.rollup)
@@ -493,7 +498,7 @@ MangoAPI.prototype.countValues = function(xid, from, to, options) {
 MangoAPI.prototype.getFirstLastValues = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast.json?from=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast?from=" +
         toISOString(from) + "&amp;to=" + toISOString(to);
     
     if (typeof options.rendered !== 'undefined')
@@ -522,7 +527,7 @@ MangoAPI.prototype.getFirstLastValues = function(xid, from, to, options) {
 MangoAPI.prototype.getLatestValues = function(xid, limit, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest.json?limit=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/latest?limit=" +
         encodeURIComponent(limit);
     
     if (typeof options.rendered !== 'undefined')
@@ -553,7 +558,7 @@ MangoAPI.prototype.getLatestValues = function(xid, limit, options) {
 MangoAPI.prototype.getStatistics = function(xid, from, to, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics.json?from=" +
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/statistics?from=" +
         toISOString(from) + "&amp;to=" + toISOString(to);
     
     if (typeof options.rendered !== 'undefined')
@@ -581,7 +586,7 @@ MangoAPI.prototype.getStatistics = function(xid, from, to, options) {
 MangoAPI.prototype.putValue = function(xid, pointValue, options) {
     options = options || {};
     
-    var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + ".json";
+    var url = "/rest/v1/point-values/" + encodeURIComponent(xid);
     var data = JSON.stringify(pointValue);
     
     if (typeof options.converted !== 'undefined')
@@ -672,13 +677,43 @@ MangoAPI.prototype.openSocket = function(path) {
 };
 
 /**
+ * Opens a WebSocket to a DaoNotificationWebSocketHandler and emits notifications
+ * to a dstore about VO creates, updates and deletes
+ * 
+ * @param {string} path to web socket on host
+ * @param {object} dstore object, must be trackable
+ * @param {string} initiatorId, if the received message matches this id the store will not be notified
+ */
+MangoAPI.prototype.registerForDaoNotifications = function(path, store, initiatorId) {
+    var socket = this.openSocket(path);
+    var idProperty = store.idProperty;
+    socket.onmessage = function(event) {
+        var data = $.parseJSON(event.data);
+        if (data.status === 'OK') {
+            var action = data.payload.action;
+            var object = data.payload.object;
+            if (initiatorId &amp;&amp; initiatorId === data.payload.initiatorId)
+                return;
+            store.emit(action, {target: object, id: object[idProperty]});
+        }
+    };
+};
+
+/**
+ * Generate a random initiatorId string
+ */
+MangoAPI.prototype.generateInitiatorId = function() {
+    return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+};
+
+/**
  * Get Current Value of Data Point
  * 
  * @param xid - for point desired
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getCurrentValue = function(xid) {
-    var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid) + ".json";
+    var url = "/rest/v1/realtime/by-xid/" + encodeURIComponent(xid);
     
     return this.ajax({
         url: url
@@ -692,7 +727,7 @@ MangoAPI.prototype.getCurrentValue = function(xid) {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getAllCurrentValues = function(limit) {
-    var url = "/rest/v1/realtime/list.json?limit=" + encodeURIComponent(limit);
+    var url = "/rest/v1/realtime/list?limit=" + encodeURIComponent(limit);
     
     return this.ajax({
         url: url
@@ -704,7 +739,7 @@ MangoAPI.prototype.getAllCurrentValues = function(limit) {
  * @return promise when done
  */
 MangoAPI.prototype.getHierarchy = function() {
-    var url = "/rest/v1/hierarchy/full.json";
+    var url = "/rest/v1/hierarchy/full";
     
     return this.ajax({
         url: url
@@ -718,7 +753,7 @@ MangoAPI.prototype.getHierarchy = function() {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getFolderByName = function(name) {
-    var url = "/rest/v1/hierarchy/byName/" + encodeURIComponent(name) + ".json";
+    var url = "/rest/v1/hierarchy/by-name/" + encodeURIComponent(name);
     
     return this.ajax({
         url: url
@@ -732,7 +767,7 @@ MangoAPI.prototype.getFolderByName = function(name) {
  * @return promise, resolved with data when done
  */
 MangoAPI.prototype.getFolderById = function(id) {
-    var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id) + ".json";
+    var url = "/rest/v1/hierarchy/by-id/" + encodeURIComponent(id);
     
     return this.ajax({
         url: url
@@ -742,14 +777,21 @@ MangoAPI.prototype.getFolderById = function(id) {
 /**
  * Get the current user
  * 
+ * @param {boolean} ignoreCache - ignore the cached user
  * @return promise, resolved with data when done
  */
-MangoAPI.prototype.getCurrentUser = function() {
-    var url = "/rest/v1/users/current.json";
+MangoAPI.prototype.getCurrentUser = function(ignoreCache) {
+    var url = "/rest/v1/users/current";
     
-    return this.ajax({
+    if (this._cachedUser &amp;&amp; !ignoreCache) return this._cachedUser;
+    
+    this._cachedUser = this.ajax({
         url: url
+    }).then(function(_user) {
+        return new User(_user);
     });
+    
+    return this._cachedUser;
 };
 
 /**
@@ -775,10 +817,10 @@ MangoAPI.prototype.getCurrentUser = function() {
 MangoAPI.prototype.queryEvents = function(query){
 	if(typeof query == 'string'){
         return this.ajax({
-            url: "/rest/v1/events.json?" + query
+            url: "/rest/v1/events?" + query
         });
 	}else{
-    	var url = "/rest/v1/events/query.json";
+    	var url = "/rest/v1/events/query";
         var data = JSON.stringify(query);
         
         return this.ajax({
@@ -960,37 +1002,135 @@ MangoAPI.prototype.loadJson = function() {
 };
 
 /**
+ * Stores promises for translation namespaces
+ */
+MangoAPI.prototype.loadedTranslationNamespaces = {};
+
+/**
+ * Stores promise for globalize
+ */
+MangoAPI.prototype.globalizePromise = null;
+
+/**
+ * Locale to use for translations, empty for server default
+ */
+MangoAPI.prototype.locale = '';
+
+/**
  * Sets up Globalize by retrieving translations from Mango
  * 
  * @param namespace... - zero or more namespace strings
  * @returns promise, resolved when Globalize is ready
  */
 MangoAPI.prototype.setupGlobalize = function() {
-    var promiseArray = [
-        MangoAPI.requirePromise(['globalize', 'globalize/message', 'cldr/unresolved']),
-        this.loadJson('/resources/cldr-data/supplemental/likelySubtags.json')
-    ];
+    var self = this;
     
+    // Load globalize using RequireJS and load likelySubtags
+    if (!this.globalizePromise) {
+        this.globalizePromise = MangoAPI.when([
+                MangoAPI.requirePromise(['globalize', 'globalize/message', 'cldr/unresolved']),
+                self.loadJson('/resources/cldr-data/supplemental/likelySubtags.json')])
+            .then(MangoAPI.firstArrayArg)
+            .then(function(Globalize, likelySubtags) {
+                Globalize.load(likelySubtags);
+                return Globalize;
+            });
+    }
+    
+    var locale = null;
+    
+    var promiseArray = [this.globalizePromise];
+    
+    // request each namespace (if we havent already fetched it) and call
+    // Globalize.loadMessages()
     for (var i = 0; i &lt; arguments.length; i++) {
-        promiseArray.push(this.getTranslations(arguments[i]));
+        var namespace = arguments[i];
+        var nsPromise = this.loadedTranslationNamespaces[namespace];
+        if (!nsPromise) {
+            var trRequest = self.locale ? self.getTranslations(namespace, self.locale) :
+                self.getTranslations(namespace);
+            nsPromise = MangoAPI.when([this.globalizePromise, trRequest])
+            .then(MangoAPI.firstArrayArg)
+            .then(function(Globalize, translations) {
+                Globalize.loadMessages(translations.translations);
+                return translations;
+            });
+            this.loadedTranslationNamespaces[namespace] = nsPromise;
+        }
+        promiseArray.push(nsPromise);
     }
     
     return MangoAPI.when(promiseArray).then(MangoAPI.firstArrayArg)
-        .then(function(Globalize, likelySubtags) {
-        Globalize.load(likelySubtags);
-        var locale = null;
-        for (var i = 2; i &lt; arguments.length; i++) {
-            Globalize.loadMessages(arguments[i].translations);
-            if (!locale)
-                locale = arguments[i].locale;
-        }
-        if (locale)
-            Globalize.locale(locale);
-        
-        return Globalize;
+        .then(function(Globalize) {
+            // check a locale is set on Globalize
+            if (!Globalize.locale()) {
+                if (self.locale) {
+                    Globalize.locale(self.locale);
+                } else if (arguments.length > 1) {
+                    // use whatever locale the server returned
+                    Globalize.locale(arguments[1].locale);
+                }
+            }
+            
+            // easy access to formatMessage which catches errors
+            Globalize.tr = function() {
+                try {
+                    return this.formatMessage.apply(this, arguments);
+                }
+                catch(error) {
+                    return 'Error translating "' + arguments[0] + '"';
+                }
+            };
+            
+            return Globalize;
     });
 };
 
+/**
+ * Retrieves the client (browser), server or user (set on the users page) timezone
+ * 
+ * @param {string} source - 'client', 'server' or 'user'
+ * @param {Object} user - required for 'server' or 'user'
+ */
+MangoAPI.getTimezone = function(source, user) {
+    var timezone;
+    if (source === 'client') {
+        timezone = jstz.determine().name();
+    } else if (source === 'server') {
+        timezone = user.systemTimezone;
+    } else if (source === 'user') {
+        timezone = user.timezone || user.systemTimezone;
+    }
+    return timezone;
+};
+
+/**
+ * Sets the default timezone for moment-timezone
+ * 
+ * @param {string} source - 'client', 'server' or 'user'
+ * @param {Object} user - required for 'server' or 'user'
+ */
+MangoAPI.setDefaultTimezone = function(source, user) {
+    var timezone = MangoAPI.getTimezone(source, user);
+    if (timezone) moment.tz.setDefault(timezone);
+    return timezone;
+};
+
+MangoAPI.prototype.getTimezone = function(source) {
+    if (source === 'client')
+        return MangoAPI.resolvedPromise(MangoAPI.getTimezone(source));
+    
+    return this.getCurrentUser().then(function(user) {
+        return MangoAPI.getTimezone(source, user);
+    });
+};
+
+MangoAPI.prototype.setDefaultTimezone = function(source) {
+    return this.getTimezone(source).then(function(timezone) {
+        if (timezone) moment.tz.setDefault(timezone);
+        return timezone;
+    });
+};
 
 /**
  * The default MangoAPI instance - i.e. no baseUrl, but can be replaced
@@ -1269,7 +1409,7 @@ return MangoAPI;
 </div>
 
 <nav>
-    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_providerOptionsManager.shtm">mango/providerOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BarChart.shtm">mango/BarChart</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GaugeChart.shtm">mango/GaugeChart</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_ProviderOptionsManager.shtm">mango/ProviderOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_SerialChart.shtm">mango/SerialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li><li><a href="module-mango_User.shtm">mango/User</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BarChart.shtm">BarChart</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GaugeChart.shtm">GaugeChart</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="SerialChart.shtm">SerialChart</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-allDataPointsChart.shtm">Charting Multiple Data Points</a></li><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointBarChart.shtm">Data Point Bar Chart</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueGauge.shtm">Gauge Chart</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-realtimeTable.shtm">Realtime Table Display</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
 </nav>
 
 <br class="clear">

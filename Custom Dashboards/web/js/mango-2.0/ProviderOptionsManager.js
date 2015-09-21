@@ -4,17 +4,22 @@
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  * @exports mango/RealtimeDataProvider
- * @module {ProviderOptionsManager} mango/providerOptionsManager
+ * @module {ProviderOptionsManager} mango/ProviderOptionsManager
+ * @tutorial allDataPointsChart
  */
 define(['jquery', './api', 'moment-timezone', 'dstore/legacy/DstoreAdapter', 'dstore/Memory'],
 function($, MangoAPI, moment, DstoreAdapter, Memory) {
 "use strict";
 
+//Note that the NONE rollup is now a value instead of ''
+
 /**
- * Note that the NONE rollup is now a value instead of ''
+ * Provider Options Manager simplifies the work of collecting inputs to trigger data point value events such as charting.
  * 
  * @constructs ProviderOptionsManager
  * @param {Object} options - options for manager
+ * @tutorial allDataPointsChart
+ * 
  */
 function ProviderOptionsManager(options) {
     this.pickerChanged = this.pickerChanged.bind(this);

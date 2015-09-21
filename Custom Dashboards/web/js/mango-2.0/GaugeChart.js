@@ -3,14 +3,15 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Terry Packer
- * @module {GaugeChart} mango/gaugeChart
+ * @module {GaugeChart} mango/GaugeChart
+ * @tutorial pointValueGauge
  */
 define(['jquery', 'moment-timezone'], function($, moment) {
 
 	/**
 	 * @constructs GaugeChart
 	 * @param {Object} options - options for chart
-	 * @alias module:mango/gaugeChart
+	 * @tutorial pointValueGauge
 	 */
 	function GaugeChart(options) {
 	    this.divId = null;

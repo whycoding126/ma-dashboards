@@ -110,7 +110,7 @@
      </p>
      <div class="row">
       <div class="col-md-12">
-        <label for="query">Query:</label><input type="text" id="query" value="limit(10)" style="width:400px"/>
+        <label for="query">Query:</label><input type="text" id="query" value="xid=voltage|xid=temperature" style="width:400px"/>
         <button type="button" id="queryNow">Query Now</button>
         <button type="button" id="clearChart">Clear Chart</button>
        </div>

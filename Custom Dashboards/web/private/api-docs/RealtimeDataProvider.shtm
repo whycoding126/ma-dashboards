@@ -223,6 +223,83 @@
 
         
             
+<h4 class="name" id="asArray"><span class="type-signature"></span>asArray<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    Return data as Array of size 1
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="cancelLastLoad"><span class="type-signature"></span>cancelLastLoad<span class="type-signature"> :boolean</span></h4>
 
 
@@ -528,7 +605,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line48">line 48</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -759,7 +836,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line55">line 55</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -923,7 +1000,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line41">line 41</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -1055,7 +1132,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line131">line 131</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -1637,7 +1714,7 @@ Signal to all Listeners to clear ALL their data
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line65">line 65</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -1725,7 +1802,7 @@ on the Web Socket
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line103">line 103</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -1813,7 +1890,7 @@ on the WebSocket
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line117">line 117</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -1967,7 +2044,7 @@ on the WebSocket
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line153">line 153</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line160">line 160</a>
     </li></ul></dd>
     
 
@@ -2268,7 +2345,7 @@ on the WebSocket
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line95">line 95</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -2594,7 +2671,7 @@ on the WebSocket
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line83">line 83</a>
+        <a href="RealtimeDataProvider.js.shtm">RealtimeDataProvider.js</a>, <a href="RealtimeDataProvider.js.shtm#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -3573,7 +3650,7 @@ on the WebSocket
 </div>
 
 <nav>
-    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_providerOptionsManager.shtm">mango/providerOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="module-mango_serialChart.shtm">mango/serialChart</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
+    <h2><a href="index.shtm">Home</a></h2><h3>Modules</h3><ul><li><a href="module-mango_AccumulatorDataProvider.shtm">mango/AccumulatorDataProvider</a></li><li><a href="module-mango_AccumulatorRollupDataProvider.shtm">mango/AccumulatorRollupDataProvider</a></li><li><a href="module-mango_api.shtm">mango/api</a></li><li><a href="module-mango_autologin.shtm">mango/autologin</a></li><li><a href="module-mango_BarChart.shtm">mango/BarChart</a></li><li><a href="module-mango_BaseDisplay.shtm">mango/BaseDisplay</a></li><li><a href="module-mango_CssDisplay.shtm">mango/CssDisplay</a></li><li><a href="module-mango_DataProvider.shtm">mango/DataProvider</a></li><li><a href="module-mango_exportConfig.shtm">mango/exportConfig</a></li><li><a href="module-mango_GaugeChart.shtm">mango/GaugeChart</a></li><li><a href="module-mango_GridDisplay.shtm">mango/GridDisplay</a></li><li><a href="module-mango_HistoricalDataProvider.shtm">mango/HistoricalDataProvider</a></li><li><a href="module-mango_HTMLDisplay.shtm">mango/HTMLDisplay</a></li><li><a href="module-mango_ListDisplay.shtm">mango/ListDisplay</a></li><li><a href="module-mango_PointValueDataProvider.shtm">mango/PointValueDataProvider</a></li><li><a href="module-mango_PointValueQueryInput.shtm">mango/PointValueQueryInput</a></li><li><a href="module-mango_ProviderOptionsManager.shtm">mango/ProviderOptionsManager</a></li><li><a href="module-mango_RealtimeDataProvider.shtm">mango/RealtimeDataProvider</a></li><li><a href="module-mango_SerialChart.shtm">mango/SerialChart</a></li><li><a href="module-mango_statisticsBarChart.shtm">mango/statisticsBarChart</a></li><li><a href="module-mango_StatisticsDataProvider.shtm">mango/StatisticsDataProvider</a></li><li><a href="module-mango_StatisticsTableDisplay.shtm">mango/StatisticsTableDisplay</a></li><li><a href="module-mango_TextDisplay.shtm">mango/TextDisplay</a></li><li><a href="module-mango_TimePresetPicker.shtm">mango/TimePresetPicker</a></li><li><a href="module-mango_User.shtm">mango/User</a></li></ul><h3>Classes</h3><ul><li><a href="AccumulatorDataProvider.shtm">AccumulatorDataProvider</a></li><li><a href="AccumulatorRollupDataProvider.shtm">AccumulatorRollupDataProvider</a></li><li><a href="BarChart.shtm">BarChart</a></li><li><a href="BaseDisplay.shtm">BaseDisplay</a></li><li><a href="CssDisplay.shtm">CssDisplay</a></li><li><a href="DataProvider.shtm">DataProvider</a></li><li><a href="GaugeChart.shtm">GaugeChart</a></li><li><a href="GridDisplay.shtm">GridDisplay</a></li><li><a href="HistoricalDataProvider.shtm">HistoricalDataProvider</a></li><li><a href="HTMLDisplay.shtm">HTMLDisplay</a></li><li><a href="ListDisplay.shtm">ListDisplay</a></li><li><a href="MangoAPI.shtm">MangoAPI</a></li><li><a href="PointValueDataProvider.shtm">PointValueDataProvider</a></li><li><a href="ProviderOptionsManager.shtm">ProviderOptionsManager</a></li><li><a href="RealtimeDataProvider.shtm">RealtimeDataProvider</a></li><li><a href="SerialChart.shtm">SerialChart</a></li><li><a href="StatisticsDataProvider.shtm">StatisticsDataProvider</a></li><li><a href="StatisticsTableDisplay.shtm">StatisticsTableDisplay</a></li><li><a href="TextDisplay.shtm">TextDisplay</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-allDataPointsChart.shtm">Charting Multiple Data Points</a></li><li><a href="tutorial-currentValue.shtm">Current Value</a></li><li><a href="tutorial-dataPointBarChart.shtm">Data Point Bar Chart</a></li><li><a href="tutorial-dataPointChart.shtm">Data Point Charting</a></li><li><a href="tutorial-dataPointQuery.shtm">Query Data Points</a></li><li><a href="tutorial-events.shtm">Events Query</a></li><li><a href="tutorial-eventWebSocket.shtm">Live Events</a></li><li><a href="tutorial-gridDisplay_.shtm">Grid Display</a></li><li><a href="tutorial-listDisplay_.shtm">List Display</a></li><li><a href="tutorial-pointValueGauge.shtm">Gauge Chart</a></li><li><a href="tutorial-pointValueWebSocket.shtm">Live Data</a></li><li><a href="tutorial-realtimeTable.shtm">Realtime Table Display</a></li><li><a href="tutorial-setPointValue.shtm">Setting a Value</a></li><li><a href="tutorial-statisticsTableDisplay_.shtm">Statistics Table Display</a></li><li><a href="tutorial-textDisplay_.shtm">Text Display</a></li></ul>
 </nav>
 
 <br class="clear">

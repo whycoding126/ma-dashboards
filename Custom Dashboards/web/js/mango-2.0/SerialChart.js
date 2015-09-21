@@ -3,14 +3,17 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
- * @module {SerialChart} mango/serialChart
+ * @module {SerialChart} mango/SerialChart
+ * @tutorial allDataPointsChart
+ * @tutorial dataPointChart
  */
 define(['jquery', 'moment-timezone'], function($, moment) {
 
 /**
  * @constructs SerialChart
  * @param {Object} options - options for chart
- * @alias module:mango/serialChart
+ * @tutorial allDataPointsChart
+ * @tutorial dataPointChart
  */
 function SerialChart(options) {
     this.divId = null;

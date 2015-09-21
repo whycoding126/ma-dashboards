@@ -3,15 +3,16 @@
  * 
  * @copyright 2015 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Terry Packer
- * @module {BarChart} mango/barChart
+ * @module {BarChart} mango/BarChart
+ * @tutorial dataPointBarChart
  */
 define(['jquery', 'moment-timezone', './SerialChart'], function($, moment, SerialChart) {
 
 /**
  * @constructs BarChart
  * @param {Object} options - options for chart
- * @alias module:mango/barChart
  * @augments SerialChart
+ * @tutorial dataPointBarChart
  */
 function BarChart(options) {
 	SerialChart.apply(this, arguments);

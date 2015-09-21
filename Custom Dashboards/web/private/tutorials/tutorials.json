@@ -1,6 +1,12 @@
 {
+	 "allDataPointsChart" : {
+	 	 "title": "Charting Multiple Data Points"
+	 },
      "currentValue": {
          "title": "Current Value"
+     },
+     "dataPointBarChart": {
+         "title": "Data Point Bar Chart"
      },
      "dataPointChart": {
          "title": "Data Point Charting"
@@ -20,14 +26,20 @@
      "listDisplay": {
          "title": "List Display"
      },
-     "textDisplay": {
-         "title": "Text Display"
+     "pointValueGauge": {
+         "title": "Gauge Chart"
+     },
+     "pointValueWebSocket": {
+         "title": "Live Data"
      },
      "statisticsTableDisplay": {
          "title": "Statistics Table Display"
      },
-     "pointValueWebSocket": {
-         "title": "Live Data"
+     "realtimeTable": {
+         "title": "Realtime Table Display"
+     },
+     "textDisplay": {
+         "title": "Text Display"
      },
      "setPointValue": {
          "title": "Setting a Value"
