@@ -14,4 +14,10 @@ XIDs from your instance into the page.</p>
    </ul>
 <p> <a href="/modules/dashboards/web/private/demoMangoConfig.json" target="download">Here</a> is a link to a JSON Configuration to import to get going. </p>
 <p> <a href="/swagger/index.html">Here</a> is a link to the REST api documentation that will be available if you have enabled swagger.</p>
-<p> Please review the many examples in the web/private/tutorials folder of this module.</p>
+<p> For all tutorials and examples review the shtm and htm files at these locations:</p>
+<ul>
+<li>[MA_HOME]/web/modules/dashboards/web/private/tutorials/</li>
+<li>[MA_HOME]/web/modules/dashboards/web/private/pointHierarchyExamples/</li>
+<li>[MA_HOME]/web/modules/dashboards/web/private/powerMeterExamples/</li>
+<li>[MA_HOME]/web/modules/dashboards/web/public/</li>
+</ul>
