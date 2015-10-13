@@ -87,9 +87,7 @@
                 }else{
                 	// actually create the display on the page
                 	chart.createDisplay();
-                	
                     dataProvider.addDataPoint({xid: xidToUse});
-                    dataProvider.enable();
                     //Only allow one time try
                     $('#startButton').prop('disabled', true); 
                 }

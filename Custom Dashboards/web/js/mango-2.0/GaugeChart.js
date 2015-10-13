@@ -66,10 +66,10 @@ define(['jquery', 'moment-timezone'], function($, moment) {
 	 */
 	GaugeChart.prototype.onClear = function() {
 	    this.removeLoading();
-	    
-        this.amChart.arrows[0].setValue(0);
-        this.amChart.axes[0].setBottomText("");
-        this.amChart.validateData();   
+	    if(this.amChart.arrows[0].setValue){
+	        this.amChart.arrows[0].setValue(0);
+	        this.amChart.axes[0].setBottomText("");
+	    }
 	};
 	
 	/**
@@ -80,9 +80,7 @@ define(['jquery', 'moment-timezone'], function($, moment) {
 		if(this.amChart.arrows[0].setValue){
 	        this.amChart.arrows[0].setValue(data.value);
 	        this.amChart.axes[0].setBottomText(data.renderedValue);
-	        this.amChart.validateData();  //Not necessary?
 		}
-        
 	};
 	
 	/**
