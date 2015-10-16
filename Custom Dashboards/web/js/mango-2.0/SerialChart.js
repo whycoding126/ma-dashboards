@@ -302,7 +302,6 @@ SerialChart.prototype.createGraph = function(valueField, dataPoint) {
     graph.title = this.graphTitle(valueField, dataPoint);
     graph.id = this.graphId(valueField, dataPoint);
     graph.balloonFunction = this.balloonFunction;
-    
     if (this.uniqueAxes) {
         var axisId = this.axisId(valueField, dataPoint);
         
@@ -415,7 +414,7 @@ var baseConfiguration = {
             labelRotation: 45,
             boldPeriodBeginning: false,
             markPeriodChange: false,
-            equalSpacing: true
+            equalSpacing: true,
         },
         chartScrollbar: {},
         trendLines: [],
