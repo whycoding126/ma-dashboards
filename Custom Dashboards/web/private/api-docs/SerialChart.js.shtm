@@ -330,16 +330,27 @@ SerialChart.prototype.createGraph = function(valueField, dataPoint) {
     graph.title = this.graphTitle(valueField, dataPoint);
     graph.id = this.graphId(valueField, dataPoint);
     graph.balloonFunction = this.balloonFunction;
-    
     if (this.uniqueAxes) {
         var axisId = this.axisId(valueField, dataPoint);
         
         // find existing axis, it it doesn't exist create one
         graph.valueAxis = this.findAxis(axisId) || this.createAxis(graph, valueField, dataPoint);
     }
+    //Allow easy addition of graph properties
+    this.addGraphProperties(valueField, dataPoint, graph);
     
     this.amChart.addGraph(graph);
     return graph;
+};
+
+/**
+ * Allow easy addition of properties to graph
+ * @param valueField - value field for data point
+ * @param dataPoint - data point for graph
+ * @param graph - graph to modify
+ */
+SerialChart.prototype.addGraphProperties = function(valueField, dataPoint, graph) {
+
 };
 
 /**
@@ -443,7 +454,7 @@ var baseConfiguration = {
             labelRotation: 45,
             boldPeriodBeginning: false,
             markPeriodChange: false,
-            equalSpacing: true
+            equalSpacing: true,
         },
         chartScrollbar: {},
         trendLines: [],

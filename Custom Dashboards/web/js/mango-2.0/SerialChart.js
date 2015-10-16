@@ -308,9 +308,21 @@ SerialChart.prototype.createGraph = function(valueField, dataPoint) {
         // find existing axis, it it doesn't exist create one
         graph.valueAxis = this.findAxis(axisId) || this.createAxis(graph, valueField, dataPoint);
     }
+    //Allow easy addition of graph properties
+    this.addGraphProperties(valueField, dataPoint, graph);
     
     this.amChart.addGraph(graph);
     return graph;
+};
+
+/**
+ * Allow easy addition of properties to graph
+ * @param valueField - value field for data point
+ * @param dataPoint - data point for graph
+ * @param graph - graph to modify
+ */
+SerialChart.prototype.addGraphProperties = function(valueField, dataPoint, graph) {
+
 };
 
 /**
