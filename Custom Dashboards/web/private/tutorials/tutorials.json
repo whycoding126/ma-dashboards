@@ -35,6 +35,9 @@
      "pointValueWebSocket": {
          "title": "Live Data"
      },
+     "pointValuesWebSocket": {
+         "title": "Efficient Realtime Data"
+     },     
      "statisticsTableDisplay": {
          "title": "Statistics Table Display"
      },

@@ -6,6 +6,7 @@
  * @module {RealtimeDataProvider} mango/RealtimeDataProvider
  * @see RealtimeDataProvider
  * @augments DataProvider
+ * @tutorial pointValuesWebSocket
  */
 define(['jquery', './DataProvider', './PointEventManager'],
 function($, DataProvider, PointEventManager) {
@@ -151,6 +152,27 @@ RealtimeDataProvider.prototype.addDataPoint = function(dataPointConfiguration) {
         }
     }
 };
+
+/**
+ * Remove a data point configuration from our list
+ * @param {Object} dataPointConfiguration - configuration to remove
+ */
+RealtimeDataProvider.prototype.removeDataPoint = function(dataPointConfiguration) {
+    var ret = DataProvider.prototype.removeDataPoint.apply(this, arguments);
+    if (!ret)
+        return ret;
+
+	if (this.enabled) {
+    	var point = this.toPoint(dataPointConfiguration);
+    	var xid = point.xid;
+    	try{
+    		pointEventManager.unsubscribe(xid, this.eventType, this.eventHandler);
+    	}catch(e){
+            // fail silently if WebSocket not supported
+    	}
+    }
+};
+
 
 /**
  * Handle the Events

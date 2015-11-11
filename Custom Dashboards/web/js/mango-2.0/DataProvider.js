@@ -391,6 +391,30 @@ DataProvider.prototype.addDataPoint = function(dataPointConfiguration) {
 };
 
 /**
+ * Remove a data point configuration from our list
+ * @return {boolean} true if point was removed, false if it did not exist
+ */
+DataProvider.prototype.removeDataPoint = function(dataPointConfiguration) {
+    if (!dataPointConfiguration)
+        return false;
+    var newPoint = this.toPoint(dataPointConfiguration);
+    
+    //We only allow adding a Data Point Configuration once
+    for(var i=0; i<this.pointConfigurations.length; i++) {
+        var point = this.toPoint(this.pointConfigurations[i]);
+        
+        if(point.xid == newPoint.xid){
+        	this.pointConfigurations.splice(i, 1);
+            // ensures that next load() call actually loads
+            delete this.previousOptions;
+            return true;
+        }
+    }
+
+    return false;
+};
+
+/**
  * Enables data providers to use legacy pointConfigurations or just store plain points
  */
 DataProvider.prototype.toPoint = function(pointConfig) {

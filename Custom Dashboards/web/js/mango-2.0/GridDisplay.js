@@ -14,17 +14,22 @@ function($, declare, Memory, Trackable, OnDemandGrid, BaseDisplay) {
  * @constructs GridDisplay
  * @param {Object} options - options for grid
  * @augments BaseDisplay
+ * @tutorial pointValuesWebSocket
  */	
 function GridDisplay(options){
 	BaseDisplay.apply(this, arguments);
     // stores data which arrives while loading
     this.cache = [];
     this.maximumItems = null;
+    $.extend(this, options);
     
-    this.store = new declare([Memory, Trackable])({
-        data: [],
-        idProperty: 'timestamp'
-    });
+    //only create a store if it was not provided
+	if(this.store === null){
+	    this.store = new declare([Memory, Trackable])({
+	        data: [],
+	        idProperty: 'timestamp'
+	    });
+    }
     this.gridOptions = {
         collection: this.store
     };
@@ -35,7 +40,7 @@ function GridDisplay(options){
     this.loadingMessage = this.gridOptions.loadingMessage;
     this.noDataMessage = this.gridOptions.noDataMessage;
     
-    $.extend(this, options);
+    
 }
 
 GridDisplay.prototype = Object.create(BaseDisplay.prototype);
