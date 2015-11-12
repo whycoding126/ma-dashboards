@@ -574,7 +574,8 @@ MangoAPI.prototype.putValue = function(xid, pointValue, options) {
 
 /**
  * 
- * Register for point value events
+ * Register for point value events, once a socket is returned it can be used to 
+ * register for additional points.
  * 
  * @tutorial pointValueWebSocket
  * 
@@ -582,7 +583,7 @@ MangoAPI.prototype.putValue = function(xid, pointValue, options) {
  * @param {Array} events - ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE']
  * @param onMessage(message) - method to call on message received evt.data
  * @param onError(message) - method to call on error
- * @param onOpen - method to call on Socket 
+ * @param onOpen - method to call on Socket Connection, XID parameter is passed in
  * @param onClose - method to call on Close
  * @returns webSocket
  */
@@ -595,7 +596,7 @@ MangoAPI.prototype.registerForPointEvents = function(xid, events, onMessage, onE
             xid: xid,
             eventTypes: events
         }));
-        onOpen();
+        onOpen(xid);
     };
     socket.onclose = onClose;
     socket.onmessage = function(event) {

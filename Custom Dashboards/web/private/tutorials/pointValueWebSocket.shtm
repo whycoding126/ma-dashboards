@@ -73,9 +73,9 @@
                           	//Append a status row
                           	$('#status').append(createRow(statusRow));
 
-                        },function(){ //On Open Method
+                        },function(pointXid){ //On Open Method
                           	var statusRow = [];
-                          	statusRow.push(xid + ' Connected');
+                          	statusRow.push(pointXid + ' Connected');
                           	statusRow.push(new Date());
                           	//Append a status row
                           	$('#status').append(createRow(statusRow));
