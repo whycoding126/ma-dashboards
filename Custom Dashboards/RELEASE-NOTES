@@ -3,6 +3,8 @@
 * Added ability to remove Data Point From data provider
 * Added ability to de-register points for RealtimeDataProvider
 * Added ability to override data store in GridDisplay
+* Updated Documentation
+* Now passing point xid is onOpen method for MangoAPI.registerForPointEvents
 
 *Version 1.1.0
 * Added Javascript API version 2.0
