@@ -5,6 +5,7 @@
 * Added ability to override data store in GridDisplay
 * Updated Documentation
 * Now passing point xid is onOpen method for MangoAPI.registerForPointEvents
+* Changing SerialChart to use dataPoint.chartColor for line color on graph
 
 *Version 1.1.0
 * Added Javascript API version 2.0
