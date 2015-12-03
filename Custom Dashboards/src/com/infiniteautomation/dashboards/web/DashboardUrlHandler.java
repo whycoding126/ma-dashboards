@@ -84,12 +84,13 @@ public class DashboardUrlHandler implements UrlHandler{
 
         @Override
         public String getContentType() {
-            return "text/html";
+            return "text/html;charset=UTF-8";
         }
 
         @Override
         public void render(@SuppressWarnings("rawtypes") Map model, HttpServletRequest request,
                 HttpServletResponse response) throws Exception {
+        	response.setHeader("Content-Type", getContentType());
             response.getWriter().write(content);
         }
     }
@@ -110,6 +111,8 @@ public class DashboardUrlHandler implements UrlHandler{
         @Override
         public void render(@SuppressWarnings("rawtypes") Map model, HttpServletRequest request,
                 HttpServletResponse response) throws Exception {
+        	//Although this isn't used AFAIK
+        	response.setHeader("Content-Type", getContentType());
             response.getWriter().write(content);
         }
     }
