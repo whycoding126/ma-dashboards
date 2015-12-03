@@ -201,7 +201,7 @@ var MangoAPI = extend({
         getFirstLastValues: function(xid, from, to, options) {
             options = options || {};
             
-            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/firstLast?from=" +
+            var url = "/rest/v1/point-values/" + encodeURIComponent(xid) + "/first-last?from=" +
                 toISOString(from) + "&to=" + toISOString(to);
             
             if (typeof options.rendered !== 'undefined')
