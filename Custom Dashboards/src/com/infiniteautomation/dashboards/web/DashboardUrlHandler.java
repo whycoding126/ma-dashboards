@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.util.resource.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.View;
 
 import com.serotonin.ShouldNeverHappenException;
@@ -84,13 +85,13 @@ public class DashboardUrlHandler implements UrlHandler{
 
         @Override
         public String getContentType() {
-            return "text/html;charset=UTF-8";
+            return MediaType.TEXT_HTML_VALUE; //"text/html;charset=UTF-8";
         }
 
         @Override
         public void render(@SuppressWarnings("rawtypes") Map model, HttpServletRequest request,
                 HttpServletResponse response) throws Exception {
-        	response.setHeader("Content-Type", getContentType());
+        	response.setContentType(getContentType());
             response.getWriter().write(content);
         }
     }
