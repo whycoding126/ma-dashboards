@@ -251,6 +251,18 @@ MangoAPI.prototype.getJson = function(url) {
 };
             
 /**
+ * Force Data Point Refresh
+ * @return promise, resolved with empty response when done
+ */
+MangoAPI.prototype.forcePointRefresh = function(xid){
+	return this.ajax({
+        url: "/rest/v1/runtime-manager/force-refresh/" + encodeURIComponent(xid),
+        contentType: 'application/json',
+        type: 'PUT'
+    });
+};
+
+/**
  * Get All Data Points 
  * 
  * @return promise, resolved with data when done
