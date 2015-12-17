@@ -23,7 +23,8 @@ User.prototype.hasPermission = function(desiredPerms) {
     var userPerms = this.permissions.split(',');
     
     for (var i = 0; i < desiredPerms.length; i++) {
-        if ($.inArray(desiredPerms[i], userPerms)) return true;
+        if ($.inArray(desiredPerms[i], userPerms) > -1)
+        	return true;
     }
     
     return false;
