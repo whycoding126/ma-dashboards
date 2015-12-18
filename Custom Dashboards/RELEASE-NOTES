@@ -1,4 +1,9 @@
-*Version 1.1.1
+*Version 1.1.2*
+* Improving permissions utils for javascript User class
+* Adding CORS login test/example page
+* Adding api.js method to contact data source to force refresh a data point 
+
+*Version 1.1.1*
 * Adding additional examples
 * Added ability to remove Data Point From data provider
 * Added ability to de-register points for RealtimeDataProvider
@@ -8,7 +13,7 @@
 * Changing SerialChart to use dataPoint.chartColor for line color on graph
 * Upgraded to work with core version 2.7.x
 
-*Version 1.1.0
+*Version 1.1.0*
 * Added Javascript API version 2.0
 * Added documentation for API
 * New examples for API version 2.0
