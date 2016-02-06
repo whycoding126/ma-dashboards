@@ -4,7 +4,7 @@
     <head>
         <title>Current Value</title>
         <!-- Add the Mango Favicon -->
-        <link rel="icon" href="/2.5.0/images/favicon.ico">
+        <link rel="icon" href="/images/favicon.ico">
         
         <!-- Page Style -->
         <style type="text/css">
@@ -80,7 +80,7 @@
            */
           function doPoll(){
               var pointXid = $('#xid').val();
-	          mangoRest.realtime.getCurrentValue(pointXid, function(currentValue){
+	          mangoRest.getCurrentValue(pointXid, function(currentValue){
 	              var pointValueText = currentValue.name + " is currently " + currentValue.value;
 	              $('#pointValue').text(pointValueText);
 	              
@@ -100,6 +100,7 @@
         
     </head>
 <body>
+    <h2>This page is currently broken.</h2>
     <div id="loginForm">
         <div id="loginError"></div>
         <label for="username">Username:</label><input type="text" id="username"/>

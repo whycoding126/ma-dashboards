@@ -7,8 +7,8 @@
         
         <!-- Page Style -->
         <style></style>
-        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet">
+        <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/modules/dashboards/web/private/css/dashboard.css" rel="stylesheet"/>
         
         <!-- Base Library -->
         <script type="text/javascript" src="/resources/loaderConfig.js"></script>
@@ -16,27 +16,106 @@
                
         <script type="text/javascript">
         
-        var mangoRemoteHost = 'http://10.0.1.201:8080';
-        
+        var mangoRemoteHost = 'http://10.0.1.10:8080';
+        var socket;
         require(['jquery', 'mango/api', 'mango/autologin', 'domReady!'],
                 function($, MangoAPI, autologin) {
         	
+        	//TODO work out useAuthentication and XDomain 
+        	$.ajaxSetup({
+        	    beforeSend: function(xhr, settings) {
+        	        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE' || settings.type == 'GET' || settings.type == 'OPTIONS') {
+        	        	if(xsrfHeader != null) //Will be null on login request
+							xhr.setRequestHeader("X-XSRF-TOKEN", xsrfHeader);
+        	        }
+        	    }
+        	});
+        	
+        	var mangoApi = new MangoAPI({baseUrl: mangoRemoteHost});        	
         	$('#mangoHost').text(mangoRemoteHost);
         	
         	$('#loginButton').click(function(){
         		var username = $('#username').val();
                 var password = $('#password').val();
-                var mangoApi = new MangoAPI({baseUrl: mangoRemoteHost});
                 
-            	autologin({username: username, password: password, mangoApi: mangoApi}).then(function(user){
-            		console.log('logged in as admin');
-            		window.location = user.homeUrl;
+                mangoApi.login(username, password, false)
+                .done(function(user, status, jqXhr) {
+            		console.log('logged in as: ' + user.username);
+            		//Show the Point Value Div
+            		$('#main').show();
             	}).fail(function(e){
             		$('#loginError').text('Failed to login: ' + e.mangoMessage);
             	});
         	});
         	
         	$('#username').focus();
+        	
+            /**
+             * Register with the given XID for ALL Events
+             */
+             $('#register').on('click', function(){
+                 var xid = $('#xid').val();
+                 if(xid == ""){
+                     document.getElementById('errors').innerHTML = "No XID provided";
+                     return;
+                 }
+                socket = mangoApi.registerForPointEvents(xid,
+                        ['INITIALIZE', 'UPDATE', 'CHANGE', 'SET', 'BACKDATE', 'TERMINATE'],
+                        function(message){ //On Message Received Method
+                           document.getElementById('errors').innerHTML = "";
+                           document.getElementById('lastMessageTime').innerHTML = new Date();
+                           if(message.status == 'OK'){
+                               document.getElementById('value').innerHTML = message.payload.value.value;
+                               document.getElementById('time').innerHTML = message.payload.value.timestamp;
+                               document.getElementById('type').innerHTML = message.payload.event;
+                               
+                           }else{
+                               document.getElementById('errors').innerHTML = message.payload.type + " - " + message.payload.message;
+                           }
+                        },function(error){ //On Error Method
+                            document.getElementById('status').innerHTML = error;
+                        },function(){ //On Open Method
+                            document.getElementById('status').innerHTML = 'Connected';
+                            document.getElementById('errors').innerHTML = '';
+                        },function(){ //On Close Method
+                            document.getElementById('status').innerHTML = 'Closed';
+                            document.getElementById('errors').innerHTML = '';
+                        });
+            });
+            
+            /**
+             * Un-register for all events
+             */
+            $('#unRegister').on('click', function(){
+               var xid = $('#xid').val();
+               if(xid == ""){
+                    document.getElementById('errors').innerHTML = "No XID provided";
+                    return;
+               }
+               mangoApi.modifyRegisteredPointEvents(socket, xid, []);
+   			$('#status').text('Disconnected');
+            });
+            
+            /**
+             * Get Current Value
+             */
+        	$('#getCurrentValue').on('click', function(){
+        		mangoApi.getCurrentValue($('#xid').val(), function(currentValue){
+  	              var pointValueText = currentValue.name + " is currently " + currentValue.value;
+  	              $('#value').text(pointValueText);
+  	              
+  	          }, function(jqXHR, textStatus, errorThrown, mangoMessage){
+  	              var msg = "";
+  	              if(textStatus != null)
+  	                  msg += (textStatus + " ");
+  	              if(errorThrown != null)
+  	                  msg += (errorThrown + " ");
+  	              if(mangoMessage != null)
+  	                  msg += (mangoMessage + " ");
+  	              msg += "\n";
+  	              $("#errors").text(msg);
+  	          });
+        	})
         	
         });
 
@@ -79,5 +158,36 @@
             </table>
         </div>
     </div>
+    <div id="main" style="display:none">
+        <h2>Access Points On Remote System</h2>
+        <button id="logout" style="display:none" type="button">Logout</button><br>
+        <label for="xid">Xid: </label><input type="text" id="xid"/>
+        <button id="register" >Register</button>
+        <button id="unRegister" >Un-Register</button>
+        <button id="getCurrentValue">Get Current Value</button>
+        <hr>
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Status: </div>
+          <div id="status" style="float:left"></div>
+        </div>
+        
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Last Message: </div>
+          <div id="lastMessageTime" style="float:left"></div>
+        </div>
+        
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Value: </div>
+          <div id="value" style="float:left; padding-right:5px"></div><div style="float:left">&nbsp@&nbsp</div><div id="time" style="float:left"></div>
+        </div>
+        
+        <div style="clear:both">
+          <div style="float:left; padding-right:5px">Message Type: </div>
+          <div id="type" style="float:left"></div>
+        </div>
+      </div>
+      
+      <!-- Placeholder to log errors -->
+      <div id="errors" style="color: red"></div>
 </body>
 </html>
