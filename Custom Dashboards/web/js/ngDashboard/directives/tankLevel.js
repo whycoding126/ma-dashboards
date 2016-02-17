@@ -93,7 +93,7 @@ function defaultOptions() {
             columnWidth: 1,
             topRadius: 1,
             lineColor: '#cdcdcd',
-            fillColors: "#67b7dc",
+            fillColors: "#67b7dc"
             //showOnAxis: true,
             //clustered: false,
             //labelText: "[[percents]] %",

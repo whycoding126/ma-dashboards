@@ -90,7 +90,7 @@ function pointValues($http, $parse, pointEventManager, Point) {
                         
                         if ($scope.rollupInterval &&
                                 (rollupIntervalParts = $scope.rollupInterval.split(' ')).length == 2 &&
-                                (timePeriods = parseInt(rollupIntervalParts[0])) > 0) {
+                                (timePeriods = parseInt(rollupIntervalParts[0], 10)) > 0) {
                             timePeriodType = rollupIntervalParts[1].toUpperCase();
                         } else {
                             timePeriodType = 'DAYS';

@@ -12,7 +12,7 @@ function maTr() {
         restrict: 'A',
         scope: {
             maTr: '@',
-            maTrArgs: '=?',
+            maTrArgs: '=?'
         },
         link: function ($scope, $elem, $attrs) {
             var text;

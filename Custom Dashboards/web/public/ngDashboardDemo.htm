@@ -2,14 +2,18 @@
 <html>
 <head>
 	<title>ngDashboard Demo</title>
+	<link rel="stylesheet" href="/modules/dashboards/web/bower_components/angular/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	RQL: <input ng-model="rql" ng-model-options="{debounce:1000}"></input>
+	<point-list ng-model="myPoint" query="{{rql}}"></point-list>
+	<point-value point="myPoint" display-type="rendered"></point-value>
+
 	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
 	<script type="text/javascript" src="/resources/require.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/ngDashboard/config.js"></script>
 	<script type="text/javascript" src="/modules/dashboards/web/js/ngDashboard/ma-connection.js"></script>
-</head>
-<body>
-	<ma-connection></ma-connection>
-	<point-list ng-model="myPoint"></point-list>
-	<point-value point="myPoint" display-type="rendered"></point-value>
 </body>
 </html>

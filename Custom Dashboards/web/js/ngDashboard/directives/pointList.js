@@ -11,7 +11,8 @@ function pointList(Point) {
     return {
         restrict: 'E',
         scope: {
-            order: '@'
+            order: '@',
+            query: '@'
         },
         template: '<select ng-options="pointLabel(point) for point in points | orderBy: orderArray track by point.id"></select>',
         replace: true,
@@ -24,7 +25,16 @@ function pointList(Point) {
                 }
             });
             
-            $scope.points = Point.query();
+            $scope.$watch('query', function(value) {
+                if (value) {
+                	$scope.points = Point.rql({
+                    	query: value
+                    });
+                } else {
+                	$scope.points = Point.query();
+                }
+            });
+            
             $scope.pointLabel = function(point) {
                 return point.deviceName + ' - ' + point.name;
             };

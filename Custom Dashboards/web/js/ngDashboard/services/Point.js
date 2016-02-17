@@ -25,6 +25,19 @@ function PointFactory($resource) {
             withCredentials: true,
             cache: true
         },
+        rql: {
+        	url: '/rest/v1/data-points?:query',
+            method: 'GET',
+            isArray: true,
+            transformResponse: function(data, fn, code) {
+                if (code < 300) {
+                    return angular.fromJson(data).items;
+                }
+                return [];
+            },
+            withCredentials: true,
+            cache: true
+        },
         getById: {
             url: baseUrl + '/rest/v1/data-points/by-id/:id',
             method: 'GET',
