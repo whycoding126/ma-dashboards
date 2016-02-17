@@ -7,7 +7,7 @@
 define(['angular', './ngDashboardApp'], function(angular, ngDashboardApp) {
 'use strict';
 
-var appElement = document.getElementById('ngDashboardApp') || document.body;
+var appElement = document.getElementById('ngDashboardApp') || document.documentElement;
 angular.bootstrap(appElement, ['ngDashboardApp']);
 
 }); // require

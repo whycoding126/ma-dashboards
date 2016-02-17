@@ -20,13 +20,12 @@ define(['./services/Point',
         './directives/stateChart',
         './filters/momentFilter',
         'angular',
-        'angular-bootstrap',
         'angular-resource'
 ], function(Point, PointEventManager, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, momentFilter, angular) {
 'use strict';
 
-var ngDashboardApp = angular.module('ngDashboardApp', ['ui.bootstrap', 'ngResource']);
+var ngDashboardApp = angular.module('ngDashboardApp', ['ngResource']);
 
 ngDashboardApp.factory('Point', Point);
 ngDashboardApp.factory('PointEventManager', PointEventManager);

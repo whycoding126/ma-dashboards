@@ -2,8 +2,14 @@
 <html>
 <head>
 	<title>ngDashboard Demo</title>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/ngDashboard/config.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/ngDashboard/ma-connection.js"></script>
 </head>
 <body>
-	
+	<ma-connection></ma-connection>
+	<point-list ng-model="myPoint"></point-list>
+	<point-value point="myPoint" display-type="rendered"></point-value>
 </body>
 </html>
