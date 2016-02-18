@@ -76,7 +76,7 @@ PieChart.prototype.createDisplay = function() {
     var self = this;
     var deferred = $.Deferred();
     
-    require(['amcharts.pie'], function() {
+    require(['amcharts/pie'], function() {
         self.amChart = AmCharts.makeChart(self.divId, self.amChart);
         deferred.resolve(self);
     });

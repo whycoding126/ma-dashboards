@@ -90,7 +90,7 @@ var SerialChart = extend({
         var self = this;
         var deferred = $.Deferred();
         
-        require(['amcharts.serial'], function() {
+        require(['amcharts/serial'], function() {
             self.amChart = AmCharts.makeChart(self.divId, self.amChart);
             deferred.resolve(self);
         });

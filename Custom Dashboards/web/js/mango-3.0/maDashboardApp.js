@@ -6,6 +6,7 @@
 
 define(['./services/Point',
         './services/PointEventManager',
+        './services/translate',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -18,32 +19,37 @@ define(['./services/Point',
         './directives/pieChart',
         './directives/clock',
         './directives/stateChart',
+        './directives/copyBlurred',
+        './directives/tr',
         './filters/momentFilter',
         'angular',
         'angular-resource'
-], function(Point, PointEventManager, pointList, pointValue, pointValues, pointStatistics,
-        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, momentFilter, angular) {
+], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
+        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, momentFilter, angular) {
 'use strict';
 
-var ngDashboardApp = angular.module('ngDashboardApp', ['ngResource']);
+var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
 
-ngDashboardApp.factory('Point', Point);
-ngDashboardApp.factory('PointEventManager', PointEventManager);
-ngDashboardApp.directive('pointList', pointList);
-ngDashboardApp.directive('pointValue', pointValue);
-ngDashboardApp.directive('pointValues', pointValues);
-ngDashboardApp.directive('pointStatistics', pointStatistics);
-ngDashboardApp.directive('bandStyle', bandStyle);
-ngDashboardApp.directive('switchStyle', switchStyle);
-ngDashboardApp.directive('tankLevel', tankLevel);
-ngDashboardApp.directive('gaugeChart', gaugeChart);
-ngDashboardApp.directive('serialChart', serialChart);
-ngDashboardApp.directive('pieChart', pieChart);
-ngDashboardApp.directive('clock', clock);
-ngDashboardApp.directive('stateChart', stateChart);
-ngDashboardApp.filter('moment', momentFilter);
+maDashboardApp.factory('Point', Point);
+maDashboardApp.factory('PointEventManager', PointEventManager);
+maDashboardApp.factory('translate', translate);
+maDashboardApp.directive('maPointList', pointList);
+maDashboardApp.directive('maPointValue', pointValue);
+maDashboardApp.directive('maPointValues', pointValues);
+maDashboardApp.directive('maPointStatistics', pointStatistics);
+maDashboardApp.directive('maBandStyle', bandStyle);
+maDashboardApp.directive('maSwitchStyle', switchStyle);
+maDashboardApp.directive('maTankLevel', tankLevel);
+maDashboardApp.directive('maGaugeChart', gaugeChart);
+maDashboardApp.directive('maSerialChart', serialChart);
+maDashboardApp.directive('maPieChart', pieChart);
+maDashboardApp.directive('maClock', clock);
+maDashboardApp.directive('maStateChart', stateChart);
+maDashboardApp.directive('maCopyBlurred', copyBlurred);
+maDashboardApp.directive('maTr', tr);
+maDashboardApp.filter('moment', momentFilter);
 
-ngDashboardApp.run(['$rootScope', function($rootScope) {
+maDashboardApp.run(['$rootScope', function($rootScope) {
     $rootScope.rollupTypes = [
         {type: 'NONE', nonNumeric: true, label: 'None'},
         {type: 'AVERAGE', nonNumeric: false, label: 'Average'},
@@ -70,6 +76,6 @@ ngDashboardApp.run(['$rootScope', function($rootScope) {
       ];
 }]);
 
-return ngDashboardApp;
+return maDashboardApp;
 
 }); // require

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ngDashboard Demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection username="admin" password="admin"></ma-connection>
+	
+	RQL: <input ng-model="rql" ng-model-options="{debounce:1000}"></input>
+	<ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list>
+	<ma-point-value point="myPoint" display-type="rendered"></ma-point-value>
+	
+	<div ng-show="myPoint.pointLocator.settable">
+		<input ng-model="changeval" ma-copy-blurred="myPoint.value">
+		<button ng-click="myPoint.setValue(changeval)">Save</button>
+		{{disableUpdate}}
+	</div>
+	
+	<div ma-tr="common.help"></div>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

@@ -166,7 +166,7 @@ SerialChart.prototype.createDisplay = function() {
     var self = this;
     var deferred = $.Deferred();
     
-    require(['amcharts.serial'], function() {
+    require(['amcharts/serial'], function() {
         self.amChart = AmCharts.makeChart(self.divId, self.amChart);
         self.amChart.addListener('zoomed', self.chartZoomed);
         deferred.resolve(self);

@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'mango/api', 'moment-timezone'], function(angular, MangoAPI, moment) {
+define(['angular', '../api', 'moment-timezone'], function(angular, MangoAPI, moment) {
 'use strict';
 
 var baseUrl = MangoAPI.defaultApi.baseUrl;

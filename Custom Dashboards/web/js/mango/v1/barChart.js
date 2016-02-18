@@ -10,7 +10,7 @@
     // Support multiple module loading scenarios
     if (typeof define === 'function' && define.amd) {
         // AMD anonymous module
-        define(['jquery', 'amcharts.serial'], factory);
+        define(['jquery', 'amcharts/serial'], factory);
     } else {
         // No module loader (plain <script> tag) - put directly in global namespace
         this.BarChartConfiguration = factory(jQuery);

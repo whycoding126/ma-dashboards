@@ -27,7 +27,8 @@ var proto = Object.create(HTMLElement.prototype, {
             function() {
             if (this.configured) return;
             
-            var baseUrl = this.getAttribute('serverUrl') || '';
+            var _this = this;
+            var baseUrl = this.getAttribute('server-url') || '';
             var requireBaseUrl = require.toUrl('');
             
             var username = this.getAttribute('username');
@@ -39,17 +40,17 @@ var proto = Object.create(HTMLElement.prototype, {
                 baseUrl: baseUrl + requireBaseUrl
             });
             
-            require(['mango/api'], function(MangoAPI) {
-                MangoAPI.defaultApi = new MangoAPI({
+            require(['mango-3.0/api'], function(MangoAPI) {
+            	_this.api = MangoAPI.defaultApi = new MangoAPI({
                     baseUrl: baseUrl
                 });
                 
                 if (username) {
-                    MangoAPI.defaultApi.login(username, password, logout).then(function() {
-                        require(['ngDashboard/bootstrap']);
+                	_this.api.login(username, password, logout).then(function() {
+                        require(['mango-3.0/bootstrap']);
                     });
                 } else {
-                    require(['ngDashboard/bootstrap']);
+                    require(['mango-3.0/bootstrap']);
                 }
             });
             

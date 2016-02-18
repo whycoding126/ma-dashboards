@@ -53,7 +53,7 @@ define(['jquery', 'moment-timezone'], function($, moment) {
 	    var self = this;
 	    var deferred = $.Deferred();
 	    
-	    require(['amcharts.gauge'], function() {
+	    require(['amcharts/gauge'], function() {
 	        self.amChart = AmCharts.makeChart(self.divId, self.amChart);
 	        deferred.resolve(self);
 	    });

@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-define(['mango/PointEventManager'], function(PointEventManager) {
+define(['../PointEventManager'], function(PointEventManager) {
 'use strict';
 
 function PointEventManagerFactory() {

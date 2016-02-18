@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'mango/api'], function(angular, MangoAPI) {
+define(['angular', '../api'], function(angular, MangoAPI) {
 'use strict';
 
 /*
@@ -12,7 +12,9 @@ define(['angular', 'mango/api'], function(angular, MangoAPI) {
  */
 function PointFactory($resource) {
     var baseUrl = MangoAPI.defaultApi.baseUrl;
-    var Point = $resource(baseUrl + '/rest/v1/data-points/:xid', {}, {
+    var Point = $resource(baseUrl + '/rest/v1/data-points/:xid', {
+    		xid: '@xid'
+    	}, {
         query: {
             method: 'GET',
             isArray: true,
@@ -46,6 +48,24 @@ function PointFactory($resource) {
             cache: true
         }
     });
+
+    Point.prototype.setValue = function setValue(value, options) {
+    	var dataType = this.pointLocator.dataType;
+    	if (!value.value) {
+    		if (dataType === 'NUMERIC') {
+    			value = Number(value);
+    		} else if (dataType === 'MULTISTATE') {
+    			if (/^\d+$/.test(value)) {
+    				value = parseInt(value, 10);
+    			}
+    		}
+    		value = {
+    		    value: value,
+    		    dataType: dataType
+    		};
+    	}
+    	return MangoAPI.defaultApi.putValue(this.xid, value, options);
+    };
     
     return Point;
 }
