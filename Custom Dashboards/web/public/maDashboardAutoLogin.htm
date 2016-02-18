@@ -5,19 +5,18 @@
 	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
 </head>
 <body ng-cloak>
+	<!-- supply username and password for auto login -->
 	<ma-connection username="admin" password="admin"></ma-connection>
 	
-	RQL: <input ng-model="rql" ng-model-options="{debounce:1000}"></input>
-	<ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list>
-	<ma-point-value point="myPoint" display-type="rendered"></ma-point-value>
+	<div>Filter point list (RQL): <input ng-model="rql" ng-model-options="{debounce:1000}"></input></div>
+	<div>Point list: <ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list></div>
+	<div>Point value: <ma-point-value point="myPoint" display-type="rendered"></ma-point-value></div>
 	
 	<div ng-show="myPoint.pointLocator.settable">
+		Set point value:
 		<input ng-model="changeval" ma-copy-blurred="myPoint.value">
 		<button ng-click="myPoint.setValue(changeval)">Save</button>
-		{{disableUpdate}}
 	</div>
-	
-	<div ma-tr="common.help"></div>
 
 	<script type="text/javascript" src="/resources/require.js"></script>
 	<script type="text/javascript" src="/resources/loaderConfig.js"></script>

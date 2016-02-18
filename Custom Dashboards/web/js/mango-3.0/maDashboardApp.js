@@ -22,10 +22,11 @@ define(['./services/Point',
         './directives/copyBlurred',
         './directives/tr',
         './filters/momentFilter',
+        './filters/trFilter',
         'angular',
         'angular-resource'
 ], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
-        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, momentFilter, angular) {
+        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, momentFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -48,6 +49,7 @@ maDashboardApp.directive('maStateChart', stateChart);
 maDashboardApp.directive('maCopyBlurred', copyBlurred);
 maDashboardApp.directive('maTr', tr);
 maDashboardApp.filter('moment', momentFilter);
+maDashboardApp.filter('tr', trFilter);
 
 maDashboardApp.run(['$rootScope', function($rootScope) {
     $rootScope.rollupTypes = [

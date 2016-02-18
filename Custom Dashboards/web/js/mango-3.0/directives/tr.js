@@ -4,11 +4,10 @@
  * @author Jared Wiltshire
  */
 
-define(['globalize', '../api'], function(Globalize, MangoAPI) {
+define(['jquery'], function($) {
 'use strict';
 
-function maTr() {
-	var api = MangoAPI.defaultApi;
+function maTr(translate) {
     return {
         restrict: 'A',
         scope: {
@@ -18,24 +17,25 @@ function maTr() {
         link: function ($scope, $elem, $attrs) {
             var text;
             var args = $scope.maTrArgs || [];
-            api.setupGlobalize('common').then(function() {
-	            try {
-	            	text = Globalize.messageFormatter($scope.maTr).apply(Globalize, args);
-	            } catch(error) {
-	                text = '!!' + $scope.maTr + '!!';
-	            }
-	            
-	            if ($elem.get(0).nodeType === 3) {
-	                $elem.get(0).nodeValue = text;
-	            } else {
-	                $elem.prepend(document.createTextNode(text));
-	            }
-        	});
+            
+            translate($scope.maTr, args).then(function(translation) {
+            	return translation;
+            }, function(error) {
+            	return $.Deferred().resolve('!!' + $scope.maTr + '!!');
+            }).then(function(text) {
+            	// if element is a text node set the text value
+                if ($elem.get(0).nodeType === 3) {
+                    $elem.get(0).nodeValue = text;
+                } else {
+                	// else prepend a text node to its children
+                    $elem.prepend(document.createTextNode(text));
+                }
+            });
         }
     };
 }
 
-maTr.$inject = [];
+maTr.$inject = ['translate'];
 return maTr;
 
 }); // define
