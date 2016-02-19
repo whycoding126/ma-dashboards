@@ -22,13 +22,14 @@ define(['./services/Point',
         './directives/copyBlurred',
         './directives/tr',
         './directives/datePicker',
+        './directives/dateRangePicker',
         './filters/momentFilter',
         './filters/trFilter',
         'angular',
         'angular-resource'
 ], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        momentFilter, trFilter, angular) {
+        dateRangePicker, momentFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -51,6 +52,7 @@ maDashboardApp.directive('maStateChart', stateChart);
 maDashboardApp.directive('maCopyBlurred', copyBlurred);
 maDashboardApp.directive('maTr', tr);
 maDashboardApp.directive('maDatePicker', datePicker);
+maDashboardApp.directive('maDateRangePicker', dateRangePicker);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('tr', trFilter);
 
@@ -111,6 +113,32 @@ maDashboardApp.run(['$rootScope', function($rootScope) {
         {type: "moment:'startOf':'year'", label: 'Start of year'},
         {type: "moment:'subtract':1:'years'|moment:'startOf':'year'", label: 'Start of last year'},
         {type: "moment:'subtract':1:'years'", label: '1 year ago'}
+    ];
+    
+    $rootScope.dateRangePresets = [
+        {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
+        {type: "LAST_15_MINUTES", label: 'Last 15 minutes'},
+        {type: "LAST_30_MINUTES", label: 'Last 30 minutes'},
+        {type: "LAST_1_HOURS", label: 'Last 1 hours'},
+        {type: "LAST_3_HOURS", label: 'Last 3 hours'},
+        {type: "LAST_6_HOURS", label: 'Last 6 hours'},
+        {type: "LAST_12_HOURS", label: 'Last 12 hours'},
+        {type: "LAST_1_DAYS", label: 'Last 1 days'},
+        {type: "LAST_1_WEEKS", label: 'Last 1 weeks'},
+        {type: "LAST_2_WEEKS", label: 'Last 2 weeks'},
+        {type: "LAST_1_MONTHS", label: 'Last 1 months'},
+        {type: "LAST_3_MONTHS", label: 'Last 3 months'},
+        {type: "LAST_6_MONTHS", label: 'Last 6 months'},
+        {type: "LAST_1_YEARS", label: 'Last 1 years'},
+        {type: "LAST_2_YEARS", label: 'Last 2 years'},
+        {type: "DAY_SO_FAR", label: 'Today so far'},
+        {type: "WEEK_SO_FAR", label: 'This week so far'},
+        {type: "MONTH_SO_FAR", label: 'This month so far'},
+        {type: "YEAR_SO_FAR", label: 'This year so far'},
+        {type: "PREVIOUS_DAY", label: 'Yesterday'},
+        {type: "PREVIOUS_WEEK", label: 'Previous week'},
+        {type: "PREVIOUS_MONTH", label: 'Previous month'},
+        {type: "PREVIOUS_YEAR", label: 'Previous year'}
     ];
 }]);
 

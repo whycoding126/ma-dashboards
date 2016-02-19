@@ -27,7 +27,8 @@ function pointValues($http, $parse, pointEventManager, Point) {
             refreshInterval: '@',
             rollup: '@',
             rollupInterval: '@',
-            rendered: '@'
+            rendered: '@',
+            dateFormat: '@'
         },
         template: '<span style="display:none"></span>',
         replace: true,
@@ -194,6 +195,9 @@ function pointValues($http, $parse, pointEventManager, Point) {
             
             function toMoment(input, now) {
                 if (!input || input === 'now') return now;
+                if (typeof input === 'string') {
+                	return moment(input, $scope.dateFormat || 'lll');
+                }
                 return moment(input);
             }
             

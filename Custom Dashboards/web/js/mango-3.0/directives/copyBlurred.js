@@ -10,6 +10,7 @@ define([], function() {
 function copyBlurred() {
     return {
         restrict: 'A',
+        require: 'ngModel',
         scope: {
         	maCopyBlurred: '=',
             ngModel: '='

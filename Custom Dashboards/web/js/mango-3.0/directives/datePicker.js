@@ -11,7 +11,6 @@ function datePicker() {
     return {
         restrict: 'A',
         scope: {
-          maDatePicker: '@'
         },
         link: function ($scope, $element, attributes) {
         	if ($('#datetimpicker-style').length === 0) {

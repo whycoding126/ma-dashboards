@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Date preset picker demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<div>Choose point: <ma-point-list ng-model="point1"></ma-point-list></div>
+
+	<ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
+	From: <input ma-date-picker ng-model="from">
+	To: <input ma-date-picker ng-model="to">
+
+	<ma-point-values point="point1" values="point1Values"
+		from="from" to="to"
+		rollup="AVERAGE" rollup-interval="1 minutes">
+	</ma-point-values>
+
+	<ma-serial-chart style="height: 500px; width: 100%"
+		series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-type="{{chartType}}" series-1-color="{{color}}"
+		options="{legend:{}}">
+	</ma-serial-chart>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>
