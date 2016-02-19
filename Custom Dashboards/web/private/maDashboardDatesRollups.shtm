@@ -13,8 +13,8 @@
 	<div>Chart color: <input ng-model="color" type="color"></div>
 	
 	<div>
-		From: <input type="datetime-local" ng-model="from">
-		To: <input type="datetime-local" ng-model="to">
+		From: <input ma-date-picker ng-model="from">
+		To: <input ma-date-picker ng-model="to">
 		Rollup type: <select ng-model="rollupType" ng-options="t.type as t.label for t in rollupTypes track by t.type"></select>
 		Rollup period: <input type="number" ng-model="rollupPeriod">
 		<select ng-model="rollupPeriodType" ng-options="t.type as t.label for t in timePeriodTypes track by t.type"></select>

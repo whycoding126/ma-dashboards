@@ -21,12 +21,14 @@ define(['./services/Point',
         './directives/stateChart',
         './directives/copyBlurred',
         './directives/tr',
+        './directives/datePicker',
         './filters/momentFilter',
         './filters/trFilter',
         'angular',
         'angular-resource'
 ], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
-        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, momentFilter, trFilter, angular) {
+        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
+        momentFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -48,6 +50,7 @@ maDashboardApp.directive('maClock', clock);
 maDashboardApp.directive('maStateChart', stateChart);
 maDashboardApp.directive('maCopyBlurred', copyBlurred);
 maDashboardApp.directive('maTr', tr);
+maDashboardApp.directive('maDatePicker', datePicker);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('tr', trFilter);
 
