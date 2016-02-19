@@ -8,30 +8,23 @@ define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
 'use strict';
 
 function serialChart() {
+	var MAX_SERIES = 10;
+	var scope = {
+		options: '=?',
+	    categoryFormat: '@',
+	    stackType: '@'
+	};
+	for (var j = 1; j <= MAX_SERIES; j++) {
+		scope['series' + j + 'Values'] = '=';
+		scope['series' + j + 'Type'] = '@';
+		scope['series' + j + 'Title'] = '@';
+		scope['series' + j + 'Color'] = '@';
+	}
+	
     return {
         restrict: 'E',
         replace: true,
-        scope: {
-          series1Values: '=',
-          series1Type: '@',
-          series1Title: '@',
-          series1Color: '@',
-          series2Values: '=',
-          series2Type: '@',
-          series2Title: '@',
-          series2Color: '@',
-          series3Values: '=',
-          series3Type: '@',
-          series3Title: '@',
-          series3Color: '@',
-          series4Values: '=',
-          series4Type: '@',
-          series4Title: '@',
-          series4Color: '@',
-          options: '=?',
-          categoryFormat: '@',
-          stackType: '@'
-        },
+        scope: scope,
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
             var options = defaultOptions();
@@ -48,37 +41,30 @@ function serialChart() {
             
             var chart = AmCharts.makeChart($element[0], options);
             
-            /*
-            $scope.$watchCollection('values', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                chart.dataProvider = newValue;
-                chart.validateData();
-            });
-            */
+            for (var i = 1; i <= MAX_SERIES; i++) {
+        		$scope.$watchGroup(['series' + i + 'Type', 'series' + i + 'Title', 'series' + i + 'Color'], typeOrTitleChanged.bind(null, i));
+        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
+        	}
             
-            $scope.$watchCollection('series1Values', function(newValue, oldValue) {
-                if (!newValue) removeGraph(1);
-                else setupGraph(1);
-                updateValues();
-            });
+            function typeOrTitleChanged(graphNum, values) {
+            	var somethingSet = false;
+            	for (var i in values) {
+            		if (values[i]) {
+            			somethingSet = true;
+            			break;
+            		}
+            	}
+            	if (!somethingSet) return;
+            	
+            	setupGraph(graphNum);
+            	chart.validateData();
+            }
             
-            $scope.$watchCollection('series2Values', function(newValue, oldValue) {
-                if (!newValue) removeGraph(2);
-                else setupGraph(2);
+            function valuesChanged(graphNum, newValue) {
+            	if (!newValue) removeGraph(graphNum);
+                else setupGraph(graphNum);
                 updateValues();
-            });
-            
-            $scope.$watchCollection('series3Values', function(newValue, oldValue) {
-                if (!newValue) removeGraph(3);
-                else setupGraph(3);
-                updateValues();
-            });
-            
-            $scope.$watchCollection('series4Values', function(newValue, oldValue) {
-                if (!newValue) removeGraph(4);
-                else setupGraph(4);
-                updateValues();
-            });
+            }
             
             function removeGraph(graphNum) {
                 for (var i = 0; i < chart.graphs.length; i++) {
@@ -142,17 +128,12 @@ function serialChart() {
             }
             
             function updateValues() {
-                var values1 = $scope.series1Values;
-                var values2 = $scope.series2Values;
-                var values3 = $scope.series3Values;
-                var values4 = $scope.series4Values;
-                
-                var values = $scope.categoryFormat ? {} : [];
-                
-                combine(values, values1, 'value1');
-                combine(values, values2, 'value2');
-                combine(values, values3, 'value3');
-                combine(values, values4, 'value4');
+            	var values = $scope.categoryFormat ? {} : [];
+            	
+            	for (var i = 1; i <= MAX_SERIES; i++) {
+            		var seriesValues = $scope['series' + i + 'Values'];
+            		combine(values, seriesValues, 'value' + i);
+            	}
                 
                 // normalize sparse array or object into dense array
                 var output = [];

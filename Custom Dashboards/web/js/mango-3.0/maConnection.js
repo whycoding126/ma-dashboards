@@ -7,58 +7,34 @@
 (function(root) {
 'use strict';
 
-if (!document.registerElement) return;
+var connection = document.querySelector("ma-connection");
 
-var proto = Object.create(HTMLElement.prototype, {
-    attachedCallback: {
-        value:
-            /**
-             * Lifecycle callback that is invoked when this element is added to the
-             * DOM.
-             */
-            function() {
-            this.bootstrap();
-        },
-        enumerable: true
-    },
+var baseUrl = connection.getAttribute('server-url') || '';
+var requireBaseUrl = require.toUrl('');
 
-    bootstrap: {
-        value:
-            function() {
-            if (this.configured) return;
-            
-            var _this = this;
-            var baseUrl = this.getAttribute('server-url') || '';
-            var requireBaseUrl = require.toUrl('');
-            
-            var username = this.getAttribute('username');
-            var password = this.getAttribute('password');
-            var logout = this.getAttribute('logout');
-            logout = logout === null ? false : true;
-            
-            require.config({
-                baseUrl: baseUrl + requireBaseUrl
-            });
-            
-            require(['mango-3.0/api'], function(MangoAPI) {
-            	_this.api = MangoAPI.defaultApi = new MangoAPI({
-                    baseUrl: baseUrl
-                });
-                
-                if (username) {
-                	_this.api.login(username, password, logout).then(function() {
-                        require(['mango-3.0/bootstrap']);
-                    });
-                } else {
-                    require(['mango-3.0/bootstrap']);
-                }
-            });
-            
-            this.configured = true;
-        }
-    }
+var username = connection.getAttribute('username');
+var password = connection.getAttribute('password');
+var logout = connection.getAttribute('logout');
+logout = logout === null ? false : true;
+
+require.config({
+    baseUrl: baseUrl + requireBaseUrl
 });
 
-document.registerElement('ma-connection', {prototype: proto});
+require(['mango-3.0/api', 'jquery'], function(MangoAPI, $) {
+	var api = MangoAPI.defaultApi = new MangoAPI({
+        baseUrl: baseUrl
+    });
+    
+	$(connection).data('api', api);
+	
+    if (username) {
+    	api.login(username, password, logout).then(function() {
+            require(['mango-3.0/bootstrap']);
+        });
+    } else {
+        require(['mango-3.0/bootstrap']);
+    }
+});
 
 })(this);

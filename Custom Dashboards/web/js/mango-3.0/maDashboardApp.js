@@ -68,14 +68,21 @@ maDashboardApp.run(['$rootScope', function($rootScope) {
     ];
     
     $rootScope.timePeriodTypes = [
-          {type: 'SECONDS', label: 'Seconds'},
-          {type: 'MINUTES', label: 'Minutes'},
-          {type: 'HOURS', label: 'Hours'},
-          {type: 'DAYS', label: 'Days'},
-          {type: 'WEEKS', label: 'Weeks'},
-          {type: 'MONTHS', label: 'Months'},
-          {type: 'YEARS', label: 'Years'}
-      ];
+        {type: 'SECONDS', label: 'Seconds'},
+        {type: 'MINUTES', label: 'Minutes'},
+        {type: 'HOURS', label: 'Hours'},
+        {type: 'DAYS', label: 'Days'},
+        {type: 'WEEKS', label: 'Weeks'},
+        {type: 'MONTHS', label: 'Months'},
+        {type: 'YEARS', label: 'Years'}
+    ];
+    
+    $rootScope.chartTypes = [
+        {type: 'line', label: 'Line'},
+        {type: 'smoothedLine', label: 'Smoothed'},
+        {type: 'step', label: 'Step'},
+        {type: 'column', label: 'Bar'}
+    ];
 }]);
 
 return maDashboardApp;

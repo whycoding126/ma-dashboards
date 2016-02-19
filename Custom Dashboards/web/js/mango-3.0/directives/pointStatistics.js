@@ -28,7 +28,7 @@ function pointValues($http, $parse, Point) {
             function doQuery() {
                 if (!$scope.point || !$scope.point.xid) return;
                 
-                var url = baseUrl = '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
+                var url = baseUrl + '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
                     '/statistics';
                 var params = [];
                 
