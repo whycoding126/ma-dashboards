@@ -17,8 +17,10 @@ function pointValues($http, $parse, pointEventManager, Point) {
             pointXid: '@',
             values: '=',
             from: '=?',
+            fromOutput: '=?',
             fromFilter: '@',
             to: '=?',
+            toOutput: '=?',
             toFilter: '@',
             latest: '=?',
             realtime: '=?',
@@ -57,6 +59,21 @@ function pointValues($http, $parse, pointEventManager, Point) {
             var tempValues = [];
             
             function doQuery() {
+            	var now, from, to;
+            	
+            	if (!$scope.latest) {
+            		now = moment();
+            		from = toMoment($scope.from, now);
+            		to = toMoment($scope.to, now);
+	                from = filterMoment(from, $scope.fromFilter);
+	                to = filterMoment(to, $scope.toFilter);
+	                $scope.fromOutput = from;
+	                $scope.toOutput = to;
+            	} else {
+            		$scope.fromOutput = null;
+	                $scope.toOutput = null;
+            	}
+                
                 if (!$scope.point || !$scope.point.xid) return;
 
                 var url = baseUrl + '/rest/v1/point-values/'  + encodeURIComponent($scope.point.xid);
@@ -70,13 +87,10 @@ function pointValues($http, $parse, pointEventManager, Point) {
                     params.push('unitConversion=true');
                     reverseData = true;
                 } else {
-                    var now = moment();
-                    var from = toMoment($scope.from, now);
-                    var to = toMoment($scope.to, now);
-                    from = filterMoment(from, $scope.fromFilter);
-                    to = filterMoment(to, $scope.toFilter);
-                    
-                    if (from.valueOf() === to.valueOf()) return;
+                    if (from.valueOf() === to.valueOf()) {
+                    	$scope.values = [];
+                    	return;
+                    }
                     
                     params.push('from=' + encodeURIComponent(from.toISOString()));
                     params.push('to=' + encodeURIComponent(to.toISOString()));

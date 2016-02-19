@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dates and rollup demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<div>Choose point: <ma-point-list ng-model="point1"></ma-point-list></div>
+	
+	<div ng-init="fromType='relative'; fromFilter=''">
+		From:
+		<label><input type="radio" ng-model="fromType" value="relative" ng-click="from='now'">Relative</label>
+		<label><input type="radio" ng-model="fromType" value="fixed" ng-click="from=fromOutput.format('lll'); fromFilter=''">Fixed</label>
+		<input ng-show="fromType == 'fixed'" ma-date-picker ng-model="from">
+		<select ng-show="fromType == 'relative'" ng-model="fromFilter" ng-options="t.type as t.label for t in relativeDateTypes"></select>
+	</div>
+	
+	<div ng-init="toType='relative'; toFilter=''">
+		To:
+		<label><input type="radio" ng-model="toType" value="relative" ng-click="to='now'">Relative</label>
+		<label><input type="radio" ng-model="toType" value="fixed" ng-click="to=toOutput.format('lll'); toFilter=''">Fixed</label>
+		<input ng-show="toType == 'fixed'" ma-date-picker ng-model="to">
+		<select ng-show="toType == 'relative'" ng-model="toFilter" ng-options="t.type as t.label for t in relativeDateTypes"></select>
+	</div>
+
+	<ma-point-values point="point1" values="point1Values"
+		from="from" from-filter="{{fromFilter}}" from-output="fromOutput"
+		to="to" to-filter="{{toFilter}}" to-output="toOutput"
+		rollup="AVERAGE" rollup-interval="1 minutes" refresh-interval="1 minutes">
+	</ma-point-values>
+
+	<div>Charting date range "{{fromOutput.format('lll')}}" &mdash; "{{toOutput.format('lll')}}"</div>
+
+	<ma-serial-chart style="height: 500px; width: 100%"
+		series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-type="{{chartType}}" series-1-color="{{color}}"
+		options="{legend:{}}">
+	</ma-serial-chart>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>
