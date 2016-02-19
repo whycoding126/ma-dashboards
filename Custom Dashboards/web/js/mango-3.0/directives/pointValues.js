@@ -81,20 +81,19 @@ function pointValues($http, $parse, pointEventManager, Point) {
                     params.push('from=' + encodeURIComponent(from.toISOString()));
                     params.push('to=' + encodeURIComponent(to.toISOString()));
                     
-                    if ($scope.rollup && $scope.rollup != 'NONE') {
+                    if (!isEmpty($scope.rollup) && $scope.rollup !== 'NONE') {
                         params.push('rollup=' + encodeURIComponent($scope.rollup));
                         
-                        var rollupIntervalParts;
-                        var timePeriodType;
-                        var timePeriods;
+                        var timePeriodType = 'DAYS';
+                        var timePeriods = 1;
                         
-                        if ($scope.rollupInterval &&
-                                (rollupIntervalParts = $scope.rollupInterval.split(' ')).length == 2 &&
-                                (timePeriods = parseInt(rollupIntervalParts[0], 10)) > 0) {
-                            timePeriodType = rollupIntervalParts[1].toUpperCase();
-                        } else {
-                            timePeriodType = 'DAYS';
-                            timePeriods = 1;
+                        if (!isEmpty($scope.rollupInterval)) {
+                        	var parts = $scope.rollupInterval.split(' ');
+                        	if (parts.length == 2 && !isEmpty(parts[0]) && !isEmpty(parts[1])) {
+                        		var intVal = parseInt(parts[0], 10);
+                        		timePeriods = intVal > 0 ? intVal : 1;
+                        		timePeriodType = parts[1].toUpperCase();
+                        	}
                         }
                         
                         params.push('timePeriodType=' + encodeURIComponent(timePeriodType));
@@ -191,10 +190,15 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 return fn(scope);
             }
             
+            $scope.$watch('refreshInterval', function() {
+            	startRefreshTimer();
+            });
+            
             var timerId;
             function startRefreshTimer() {
                 cancelRefreshTimer();
-                if (!$scope.refreshInterval) return;
+                
+                if (isEmpty($scope.refreshInterval)) return;
                 
                 var fromIsRelative = !$scope.from || $scope.from === 'now';
                 var toIsRelative = !$scope.to || $scope.to === 'now';
@@ -203,14 +207,24 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 var parts = $scope.refreshInterval.split(' ');
                 if (parts.length < 2) return;
                 
+                if (isEmpty(parts[0]) || isEmpty(parts[1])) return;
+                
                 var duration = moment.duration(parseFloat(parts[0]), parts[1]);
                 var millis = duration.asMilliseconds();
+                
+                // dont allow continuous loops
+                if (millis === 0) return;
                 
                 timerId = setInterval(function() {
                     $scope.$apply(function() {
                         doQuery();
                     });
                 }, millis);
+            }
+            
+            // test for null, undefined or whitespace
+            function isEmpty(str) {
+            	return !str || /^\s*$/.test(str);
             }
             
             function cancelRefreshTimer() {

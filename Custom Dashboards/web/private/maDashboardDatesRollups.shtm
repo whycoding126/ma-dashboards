@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dates and rollup demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="point1" query="{{'name=like=*' + pointsFilter + '*'}}"></ma-point-list></div>
+	<div>Chart type: <select ng-model="chartType" ng-options="t.type as t.label for t in chartTypes track by t.type"></select></div>
+	<div>Chart color: <input ng-model="color" type="color"></div>
+	
+	<div>
+		From: <input type="datetime-local" ng-model="from">
+		To: <input type="datetime-local" ng-model="to">
+		Rollup type: <select ng-model="rollupType" ng-options="t.type as t.label for t in rollupTypes track by t.type"></select>
+		Rollup period: <input type="number" ng-model="rollupPeriod">
+		<select ng-model="rollupPeriodType" ng-options="t.type as t.label for t in timePeriodTypes track by t.type"></select>
+		Refresh chart every: <input ng-model="refreshPeriod" type="number">
+		<select ng-model="refreshPeriodType" ng-options="t.type as t.label for t in timePeriodTypes track by t.type"></select>
+	</div>
+
+	<ma-point-values point="point1" values="point1Values" from="from" to="to"
+		rollup="{{rollupType}}" rollup-interval="{{rollupPeriod}} {{rollupPeriodType}}" refresh-interval="{{refreshPeriod}} {{refreshPeriodType}}">
+	</ma-point-values>
+
+	<ma-serial-chart style="height: 500px; width: 100%"
+		series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-type="{{chartType}}" series-1-color="{{color}}"
+		options="{legend:{}}">
+	</ma-serial-chart>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

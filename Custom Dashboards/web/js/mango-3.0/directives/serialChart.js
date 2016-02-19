@@ -42,7 +42,12 @@ function serialChart() {
             var chart = AmCharts.makeChart($element[0], options);
             
             for (var i = 1; i <= MAX_SERIES; i++) {
-        		$scope.$watchGroup(['series' + i + 'Type', 'series' + i + 'Title', 'series' + i + 'Color'], typeOrTitleChanged.bind(null, i));
+        		$scope.$watchGroup([
+        		    'series' + i + 'Type',
+        		    'series' + i + 'Title',
+        		    'series' + i + 'Color'
+        		], typeOrTitleChanged.bind(null, i));
+        		
         		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
         	}
             
@@ -93,9 +98,10 @@ function serialChart() {
                 if (!graphType) graphType = 'smoothedLine';
                 
                 if (!graph) {
-                    graph = graphType === 'column' ? defaultColumnGraph(graphNum) : defaultLineGraph(graphNum);
+                    graph = {};
                     chart.graphs.push(graph);
                 }
+                $.extend(graph, graphType === 'column' ? defaultColumnGraph(graphNum) : defaultLineGraph(graphNum));
                 graph.valueField = 'value' + graphNum;
                 graph.title = $scope['series' + graphNum + 'Title'] || ('Series ' + graphNum);
                 graph.type = graphType;
