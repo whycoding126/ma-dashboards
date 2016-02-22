@@ -3,7 +3,7 @@
 	<input ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" ng-model="input.value" ma-copy-blurred="point.value">
 	<select ng-if="point.pointLocator.dataType === 'BINARY' || point.pointLocator.dataType === 'MULTISTATE'"
 		ng-model="input.value"  ma-copy-blurred="point.value"
-		ng-options="option.id as option.label for option in options track by option.id">
+		ng-options="option.id as option.label for option in options">
 	</select>
 	<button ng-click="point.setValue(input.value)" ma-tr="common.set"></button>
 </div>

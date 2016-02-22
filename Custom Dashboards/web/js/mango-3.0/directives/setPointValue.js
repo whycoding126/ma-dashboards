@@ -4,10 +4,10 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'jquery'], function(require, $) {
 'use strict';
 
-function setPointValue() {
+function setPointValue(translate) {
     return {
         restrict: 'E',
         scope: {
@@ -17,44 +17,69 @@ function setPointValue() {
         templateUrl: require.toUrl('./setPointValue.html'),
         controller: function($scope) {
         	$scope.input = {};
+        	
+        	$scope.defaultBinaryOptions = [];
+        	var trPromise = $.when(translate('common.false'), translate('common.true')).then(function(trFalse, trTrue) {
+        		$scope.defaultBinaryOptions.push({
+					id: false,
+					label: trFalse
+				});
+        		$scope.defaultBinaryOptions.push({
+        			id: true,
+					label: trTrue
+				});
+			});
+        	
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
         		var locator = $scope.point.pointLocator;
         		var type = locator.dataType;
-
-        		if (type === 'BINARY' || type === 'MULTISTATE') {
+        		var textRenderer = $scope.point.textRenderer;
+        		$scope.options = null;
+        		
+        		if (type === 'MULTISTATE') {
         			var values = locator.values;
-        			var i, rendererMap = {}, options = [];
+        			var i, rendererMap = {};
         			
-        			// TODO deal with binary text renderer
-        			
-        			if ($scope.point.textRenderer && $scope.point.textRenderer.multistateValues) {
+        			if (textRenderer && textRenderer.multistateValues) {
         				var msv = $scope.point.textRenderer.multistateValues;
             			for (i = 0; i < msv.length; i++) {
             				rendererMap[msv[i].key] = msv[i];
             			}
         			}
         			
+        			$scope.options = [];
         			for (i = 0; i < values.length; i++) {
         				var renderer = rendererMap[values[i]];
         				var label = renderer ? renderer.text : values[i];
-
-        				// TODO translate true false for binary
-        				
-        				options.push({
+        				var option = {
         					id: values[i],
         					label: label
-        				});
+        				};
+        				if (renderer && renderer.color) option.color = renderer.colour;
+        				$scope.options.push(option);
         			}
-        			
-        			$scope.options = options;
-        		} else {
-        			$scope.options = null;
+        		} else if (type === 'BINARY') {
+        			if (textRenderer.type === 'textRendererBinary') {
+        				$scope.options = [{
+        					id: false,
+        					label: textRenderer.zeroLabel,
+        					color: textRenderer.zeroColour
+        				}, {
+        					id: true,
+        					label: textRenderer.oneLabel,
+        					color: textRenderer.oneColour
+        				}];
+        			} else {
+        				$scope.options = $scope.defaultBinaryOptions;
+        			}
         		}
         	});
         }
     };
 }
+
+setPointValue.$inject = ['translate'];
 
 return setPointValue;
 

@@ -27,13 +27,16 @@ function pointValue($filter, pointEventManager, Point) {
                 var displayType = $scope.displayType || 'rendered';
                 var displayValue = payload.value.value;
                 var dateTimeFormat = $scope.dateTimeFormat || 'lll';
-
+                
+                var textRenderer = $scope.point.textRenderer;
                 var color;
                 if (multiStateRendererMap) {
             		var rendererOptions = multiStateRendererMap[payload.value.value];
             		if (rendererOptions) {
                 		color = rendererOptions.colour;
             		}
+            	} else if (textRenderer.type === 'textRendererBinary') {
+            		color = payload.value.value ? textRenderer.oneColour : textRenderer.zeroColour;
             	}
                 
                 var style = {};
