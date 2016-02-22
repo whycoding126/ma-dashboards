@@ -20,7 +20,8 @@ function pointValues($http, $parse, Point) {
             fromFilter: '@',
             to: '=?',
             toFilter: '@',
-            refreshInterval: '@'
+            refreshInterval: '@',
+            dateFormat: '@'
         },
         template: '<span style="display:none"></span>',
         replace: true,
@@ -55,7 +56,24 @@ function pointValues($http, $parse, Point) {
                         'Accept': 'application/json'
                     }
                 }).then(function(response) {
-                    $scope.statistics = response.data;
+                	var data = response.data;
+                	
+                	if (data.startsAndRuntimes && $scope.point.textRenderer && $scope.point.textRenderer.multistateValues) {
+                		var msv = $scope.point.textRenderer.multistateValues;
+                		var msvMap = {};
+                		for (var i = 0; i < msv.length; i++) {
+                			msvMap[msv[i].key] = msv[i];
+                		}
+                		for (i = 0; i < data.startsAndRuntimes.length; i++) {
+                			var statsObj = data.startsAndRuntimes[i];
+                			var msvObj = msvMap[statsObj.value];
+                			if (!msvObj) continue;
+                			statsObj.renderedValue = msvObj.text;
+                			statsObj.renderedColor = msvObj.colour;
+                		}
+                	}
+                	
+                    $scope.statistics = data;
                 }, function() {
                     $scope.statistics = {};
                 });
@@ -73,6 +91,9 @@ function pointValues($http, $parse, Point) {
             
             function toMoment(input, now) {
                 if (!input || input === 'now') return now;
+                if (typeof input === 'string') {
+                	return moment(input, $scope.dateFormat || 'lll');
+                }
                 return moment(input);
             }
             

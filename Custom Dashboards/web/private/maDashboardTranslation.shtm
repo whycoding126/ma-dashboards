@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Translation demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<h1>Translation demo</h1>
+	<p>The translation for "common.pointWarning" is "<span ma-tr="common.pointWarning"></span>"</p>
+	<p>Example with argument - "<span ma-tr="common.copyPrefix" ma-tr-args="['myArg1']"></span>"</p>
+	<p>Example with 2 arguments - "<span ma-tr="common.alarmLevel.numOfEvents" ma-tr-args="['myArg1', 'myArg2']"></span>"</p>
+	
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

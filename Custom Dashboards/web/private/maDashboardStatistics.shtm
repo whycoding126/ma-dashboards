@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Statistics demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+	<style>
+		table.statistics {
+			border: 1px solid black;
+		}
+		table.statistics,
+		table.statistics .statistics-summary table {
+			border-collapse: collapse;
+		}
+		table.statistics td {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<h1>Statistics demo</h1>
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+	<div>Time period: <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker></div>
+	
+	<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+	
+	<div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}</div>
+
+	<ma-statistics-table statistics="statsObj"></ma-statistics-table>
+	
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>
