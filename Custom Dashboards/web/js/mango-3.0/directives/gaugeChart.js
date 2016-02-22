@@ -16,9 +16,13 @@ function gaugeChart() {
           point: '=',
           options: '=?',
           start: '@',
-          stop1: '@',
-          stop2: '@',
-          stop3: '@',
+          end: '@',
+          band1End: '@',
+          band1Color: '@',
+          band2End: '@',
+          band2Color: '@',
+          band3End: '@',
+          band3Color: '@',
           interval: '@'
         },
         template: '<div class="amchart"></div>',
@@ -27,35 +31,41 @@ function gaugeChart() {
             if ($scope.start) {
                 options.axes[0].startValue = parseFloat($scope.start);
             }
-            if ($scope.stop1) {
-                var stop1 = parseFloat($scope.stop1);
+            if ($scope.end) {
+            	options.axes[0].endValue = parseFloat($scope.end);
+            }
+            if ($scope.band1End) {
+                var stop1 = parseFloat($scope.band1End);
                 options.axes[0].bands.push({
                     id: 'band1',
-                    color: "#84b761",
+                    color: $scope.band1Color || "#84b761",
                     startValue: options.axes[0].startValue,
                     endValue: stop1
                 });
-                options.axes[0].endValue = stop1;
+                if (!$scope.end)
+                	options.axes[0].endValue = stop1;
             }
-            if ($scope.stop2) {
-                var stop2 = parseFloat($scope.stop2);
+            if ($scope.band2End) {
+                var stop2 = parseFloat($scope.band2End);
                 options.axes[0].bands.push({
                     id: 'band2',
-                    color: "#fdd400",
-                    startValue: options.axes[0].endValue,
+                    color: $scope.band2Color || "#fdd400",
+                    startValue: options.axes[0].bands[0].endValue,
                     endValue: stop2
                 });
-                options.axes[0].endValue = stop2;
+                if (!$scope.end)
+                	options.axes[0].endValue = stop2;
             }
-            if ($scope.stop3) {
-                var stop3 = parseFloat($scope.stop3);
+            if ($scope.band3End) {
+                var stop3 = parseFloat($scope.band3End);
                 options.axes[0].bands.push({
                     id: 'band3',
-                    color: "#cc4748",
-                    startValue: options.axes[0].endValue,
+                    color: $scope.band3Color || "#cc4748",
+                    startValue: options.axes[0].bands[1].endValue,
                     endValue: stop3
                 });
-                options.axes[0].endValue = stop3;
+                if (!$scope.end)
+                	options.axes[0].endValue = stop3;
             }
             if ($scope.interval) {
                 options.axes[0].valueInterval = parseFloat($scope.interval);

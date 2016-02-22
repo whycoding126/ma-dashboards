@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Live values demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	<h1>Live values demo</h1>
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+
+	<h2>Use of &lt;ma-point-value&gt; directive</h2>
+	<div>Rendered point value: <ma-point-value point="myPoint"></ma-point-value></div>
+	<div>Unit converted point value: <ma-point-value point="myPoint" display-type="converted"></ma-point-value></div>
+	<div>Time of point value: <ma-point-value point="myPoint" display-type="dateTime"></ma-point-value></div>
+	<div>Format time using <a href="http://momentjs.com/">Moment.js</a> format string:
+		<ma-point-value point="myPoint" display-type="dateTime" date-time-format="LTS"></ma-point-value>
+	</div>
+	<div>Get point value but don't display it: <ma-point-value point="myPoint" display-type="none"></ma-point-value></div>
+	
+	<h2>Alternative method of displaying value</h2>
+	<p>Note that you still need to have a &lt;ma-point-value&gt; tag for these to work. Use display type "none".</p>
+	<div>Raw point value is {{myPoint.value}} at epoch timestamp {{myPoint.time}}.</div>
+	<div>Unit converted point value is {{myPoint.convertedValue}} at time {{myPoint.time | moment:'format':'LLL'}}.</div>
+	<div>Unit converted point value rounded to 4 decimal places is {{myPoint.convertedValue | number:4}}.</div>
+	<div>Rendered point value is {{myPoint.renderedValue}}.</div>
+
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

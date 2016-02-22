@@ -16,7 +16,7 @@ function pointValue($filter, pointEventManager, Point) {
             displayType: '@',
             dateTimeFormat: '@'
         },
-        template: '<span>{{displayValue}}</span>',
+        template: '<span ng-style="style">{{displayValue}}</span>',
         controller: function ($scope, $element) {
             function eventHandler(event, payload) {
                 if (!(payload.event == 'UPDATE' || payload.event == 'REGISTERED')) return;
@@ -24,20 +24,23 @@ function pointValue($filter, pointEventManager, Point) {
                 
                 var displayType = $scope.displayType || 'rendered';
                 var displayValue = payload.value.value;
-                var dateTimeFormat = $scope.dateTimeFormat || 'medium';
-                
+                var dateTimeFormat = $scope.dateTimeFormat || 'lll';
+
+                var style = {};
                 switch(displayType) {
                 case 'converted':
                     displayValue = payload.convertedValue; break;
                 case 'rendered':
                     displayValue = payload.renderedValue; break;
                 case 'dateTime':
-                    displayValue = $filter('date')(payload.value.timestamp, dateTimeFormat); break;
+                    displayValue = $filter('moment')(payload.value.timestamp, 'format', dateTimeFormat); break;
                 case 'none':
+                	style = {display: 'none'};
                     displayValue = '';
                 }
                 
                 $scope.$apply(function() {
+                	$scope.style = style;
                     $scope.displayValue = displayValue;
                     
                     $scope.point.value = payload.value.value;

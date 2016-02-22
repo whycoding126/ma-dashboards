@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gauges demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	<h1>Gauges demo</h1>
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+
+	<h2>Use of &lt;ma-gauge-chart&gt; directive</h2>
+	<p>Note you must give the gauge a width and height, and you must use a &lt;ma-point-value&gt; tag to get the value.</p>
+	<ma-point-value point="myPoint" display-type="none"></ma-point-value>
+	
+	<div style="display: inline-block; margin-right: 50px">
+	Basic (defaults to 0-100)
+	<ma-gauge-chart point="myPoint" style="width:250px; height:250px"></ma-gauge-chart>
+	</div>
+	
+	<div style="display: inline-block; margin-right: 50px">
+	Set axis interval and start and end value
+	<ma-gauge-chart point="myPoint" interval="10" start="-20" end="120" style="width:250px; height:250px"></ma-gauge-chart>
+	</div>
+	
+	<div style="display: inline-block; margin-right: 50px">
+	Set color bands
+	<ma-gauge-chart point="myPoint" start="-20" band-1-end="20" band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:250px; height:250px"></ma-gauge-chart>
+	</div>
+	
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

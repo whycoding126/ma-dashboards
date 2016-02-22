@@ -29,27 +29,36 @@ function tankLevel() {
             }
             
             var options = defaultOptions();
-            var max = 100.0;
-            if ($scope.max) {
-                max = parseFloat($scope.max);
-            }
-            if ($scope.color) {
-                options.graphs[0].fillColors = $scope.color;
-            }
-            
             var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
+            var max = 100;
+            var tankLevel = 0;
+            
+            $scope.$watch('max', function(newValue, oldValue) {
+            	if (newValue === undefined) return;
+            	max = parseFloat(newValue);
+                chart.dataProvider[0].remainder = max - tankLevel;
+                chart.validateData();
+            });
+            
+            $scope.$watch('color', function(newValue, oldValue) {
+            	if (newValue === undefined) return;
+            	options.graphs[0].fillColors = newValue;
+                chart.validateData();
+            });
             
             $scope.$watch('value', function(newValue, oldValue) {
                 if (newValue === undefined) return;
-                chart.dataProvider[0].tankLevel = newValue;
-                chart.dataProvider[0].remainder = max - newValue;
+                tankLevel = newValue;
+                chart.dataProvider[0].tankLevel = tankLevel;
+                chart.dataProvider[0].remainder = max - tankLevel;
                 chart.validateData();
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
                 if (newValue === undefined) return;
-                chart.dataProvider[0].tankLevel = newValue;
-                chart.dataProvider[0].remainder = max - newValue;
+                tankLevel = newValue;
+                chart.dataProvider[0].tankLevel = tankLevel;
+                chart.dataProvider[0].remainder = max - tankLevel;
                 chart.dataProvider[0].renderedValue = $scope.point.renderedValue;
                 chart.validateData();
             });
