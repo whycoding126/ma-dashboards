@@ -14,7 +14,6 @@ function statisticsTable() {
             statistics: '='
         },
         replace: true,
-        transclude: true,
         templateUrl: require.toUrl('./statisticsTable.html')
     };
 }
