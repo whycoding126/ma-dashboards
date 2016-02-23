@@ -1,6 +1,4 @@
-<div class="statistics">
-<span ng-if="!statistics.hasData" ma-tr="common.stats.noDataForPeriod"></span>
-<table ng-if="statistics.hasData" class="statistics">
+<table class="statistics table table-striped">
 	<thead>
 		<tr>
 			<th></th>
@@ -8,7 +6,12 @@
 			<th ma-tr="common.time"></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody ng-if="!statistics.hasData">
+		<tr>
+			<td colspan="3" ma-tr="common.stats.noDataForPeriod"></td>
+		</tr>
+	</tbody>
+	<tbody ng-if="statistics.hasData">
 		<tr ng-if="statistics.first" class="statistics-first">
 			<td ma-tr="common.stats.start"></td>
 			<td>{{statistics.first.value}}</td>
@@ -54,29 +57,11 @@
 			<td>{{statistics.changes}}</td>
 			<td></td>
 		</tr>
-		<tr ng-if="statistics.startsAndRuntimes" class="statistics-summary">
+		<tr ng-if="statistics.startsAndRuntimes && !hideStartsAndRuntimes" class="statistics-summary">
 			<td ma-tr="common.stats.summary"></td>
 			<td colspan="2">
-				<table>
-					<thead>
-						<tr>
-							<th ma-tr="common.value"></th>
-							<th ma-tr="common.stats.starts"></th>
-							<th ma-tr="common.stats.runtime"></th>
-							<th ma-tr="common.proportion"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="state in statistics.startsAndRuntimes">
-							<td ng-style="{color:state.renderedColor}">{{ state.renderedValue || state.value }}</td>
-							<td ng-bind="state.starts"></td>
-							<td>{{ state.runtime | duration:'humanize'}}</td>
-							<td>{{ state.proportion * 100 | number:2 }}%</td>
-						</tr>
-					</tbody>
-				</table>
+				<ma-starts-and-runtimes-table starts-and-runtimes="statistics.startsAndRuntimes"></ma-starts-and-runtimes-table>
 			</td>
 		</tr>
 	</tbody>
 </table>
-</div>

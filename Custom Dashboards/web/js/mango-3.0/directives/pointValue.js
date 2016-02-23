@@ -26,7 +26,7 @@ function pointValue($filter, pointEventManager, Point) {
                 
                 var displayType = $scope.displayType || 'rendered';
                 var displayValue = payload.value.value;
-                var dateTimeFormat = $scope.dateTimeFormat || 'lll';
+                var dateTimeFormat = $scope.dateTimeFormat || 'll LTS';
                 
                 var textRenderer = $scope.point.textRenderer;
                 var color;

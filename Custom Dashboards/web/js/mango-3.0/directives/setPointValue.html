@@ -1,9 +1,9 @@
-<div ng-show="point.pointLocator.settable">
-	<input ng-if="point.pointLocator.dataType === 'NUMERIC'" type="number" ng-model="input.value" ma-copy-blurred="point.value">
-	<input ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" ng-model="input.value" ma-copy-blurred="point.value">
+<div ng-hide="!point.pointLocator.settable && !showIfNotSettable">
+	<input ng-if="point.pointLocator.dataType === 'NUMERIC'" type="number" ng-model="input.value" ma-copy-blurred="point.value" class="form-control">
+	<input ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" ng-model="input.value" ma-copy-blurred="point.value" type="text" class="form-control">
 	<select ng-if="point.pointLocator.dataType === 'BINARY' || point.pointLocator.dataType === 'MULTISTATE'"
 		ng-model="input.value"  ma-copy-blurred="point.value"
-		ng-options="option.id as option.label for option in options">
+		ng-options="option.id as option.label for option in options" class="form-control">
 	</select>
-	<button ng-click="point.setValue(input.value)" ma-tr="common.set"></button>
+	<button ng-show="point.pointLocator.settable" ng-click="point.setValue(input.value)" ma-tr="common.set" class="btn btn-default"></button>
 </div>

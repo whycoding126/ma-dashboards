@@ -78,7 +78,7 @@ function dateRangePicker($rootScope) {
         			break;
         		}
         		
-        		var format = $scope.format || 'lll';
+        		var format = $scope.format || 'll LTS';
         		if (format === 'false') {
         			$scope.from = from;
             		$scope.to = to;

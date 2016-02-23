@@ -11,7 +11,8 @@ function setPointValue(translate) {
     return {
         restrict: 'E',
         scope: {
-            point: '='
+            point: '=',
+            showIfNotSettable: '@'
         },
         replace: true,
         templateUrl: require.toUrl('./setPointValue.html'),

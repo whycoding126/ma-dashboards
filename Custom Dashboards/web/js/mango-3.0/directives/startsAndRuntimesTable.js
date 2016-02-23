@@ -7,18 +7,17 @@
 define(['require'], function(require) {
 'use strict';
 
-function statisticsTable() {
+function startsAndRuntimesTable() {
     return {
         restrict: 'E',
         scope: {
-            statistics: '=',
-            hideStartsAndRuntimes: '@'
+        	startsAndRuntimes: '='
         },
         replace: true,
-        templateUrl: require.toUrl('./statisticsTable.html')
+        templateUrl: require.toUrl('./startsAndRuntimesTable.html')
     };
 }
 
-return statisticsTable;
+return startsAndRuntimesTable;
 
 }); // define

@@ -92,7 +92,7 @@ function pointValues($http, $parse, Point) {
             function toMoment(input, now) {
                 if (!input || input === 'now') return now;
                 if (typeof input === 'string') {
-                	return moment(input, $scope.dateFormat || 'lll');
+                	return moment(input, $scope.dateFormat || 'll LTS');
                 }
                 return moment(input);
             }
