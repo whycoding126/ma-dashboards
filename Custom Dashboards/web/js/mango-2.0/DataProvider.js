@@ -168,13 +168,13 @@ DataProvider.prototype.load = function(options) {
     
     // notify all listeners at once in order
     combinedPromise.done(function() {
-        for (var i in arguments) {
+        for (var i = 0; i < arguments.length; i++) {
             var resolved = arguments[i];
             self.notifyListeners(resolved.data, resolved.point);
         }
         self.redrawListeners();
     }).fail(function() {
-        for (var i in arguments) {
+        for (var i = 0; i < arguments.length; i++) {
             var errorObject = arguments[i];
             
             // trigger a jquery event
