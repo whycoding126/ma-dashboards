@@ -167,41 +167,21 @@ DataProvider.prototype.load = function(options) {
     var combinedPromise = this.lastLoadPromise = MangoAPI.when(promises);
     
     // notify all listeners at once in order
-    combinedPromise.done(function(input) {
-    	if(typeof input.length == 'undefined'){
-    		self.notifyListeners(input.data, input.point);
-    	}else{
-          for (var i in arguments) {
-        	  var resolved = arguments[i];
-          	self.notifyListeners(resolved.data, resolved.point);
-          }
-    	}
-//        for (var i in arguments) {
-//            var resolved = arguments[i];
-//            self.notifyListeners(resolved.data, resolved.point);
-//        }
+    combinedPromise.done(function() {
+        for (var i in arguments) {
+            var resolved = arguments[i];
+            self.notifyListeners(resolved.data, resolved.point);
+        }
         self.redrawListeners();
-    }).fail(function(error) {
-    	if(typeof error.length == 'undefined'){
-    		$(self).trigger('loadPointFailed', error);
-    		 self.notifyLoadPointFailed(errorObject);
-    	}else{
-	        for (var i in arguments) {
-	            var errorObject = arguments[i];
-	            // trigger a jquery event
-	            $(self).trigger('loadPointFailed', errorObject);
-	            self.notifyLoadPointFailed(errorObject);
-	        }
-    	}
-//        for (var i in arguments) {
-//            var errorObject = arguments[i];
-//            
-//            // trigger a jquery event
-//            $(self).trigger('loadPointFailed', errorObject);
-//            
-//            self.notifyLoadPointFailed(errorObject);
-//        }
-
+    }).fail(function() {
+        for (var i in arguments) {
+            var errorObject = arguments[i];
+            
+            // trigger a jquery event
+            $(self).trigger('loadPointFailed', errorObject);
+            
+            self.notifyLoadPointFailed(errorObject);
+        }
         self.redrawListeners();
     });
     
