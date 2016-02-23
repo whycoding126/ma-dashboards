@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>State chart demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	
+	<h1>State chart demo</h1>
+	
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose multistate point 1: <ma-point-list ng-model="point1" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+	<div>Choose multistate point 2: <ma-point-list ng-model="point2" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+
+	<ma-point-values point="point1" values="point1Values" from-filter="moment:'subtract':5:'minutes'"
+		refresh-interval="30 seconds">
+	</ma-point-values>
+	<ma-point-values point="point2" values="point2Values" from-filter="moment:'subtract':5:'minutes'"
+		refresh-interval="30 seconds">
+	</ma-point-values>
+	
+	<ma-state-chart style="height: 500px; width: 100%"
+		series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.textRenderer"
+		series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point1.textRenderer">
+	</ma-state-chart>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>

@@ -8,56 +8,36 @@ define(['amcharts/gantt', 'jquery', 'moment'], function(AmCharts, $, moment) {
 'use strict';
 
 function stateChart() {
+	var MAX_SERIES = 10;
+	var scope = {
+		options: '=?',
+		endDate: '@'
+	};
+	for (var j = 1; j <= MAX_SERIES; j++) {
+		scope['series' + j + 'Values'] = '=';
+		scope['series' + j + 'Title'] = '@';
+		scope['series' + j + 'Labels'] = '=';
+	}
+	
     return {
         restrict: 'E',
         replace: true,
-        scope: {
-          series1Values: '=',
-          series1Title: '@',
-          series1Labels: '=',
-          series2Values: '=',
-          series2Title: '@',
-          series2Labels: '=',
-          series3Values: '=',
-          series3Title: '@',
-          series3Labels: '=',
-          series4Values: '=',
-          series4Title: '@',
-          series4Labels: '=',
-          options: '=?',
-          endDate: '='
-        },
+        scope: scope,
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
             var options = defaultOptions();
-            
             options = $.extend(options, $scope.options);
-            
             var chart = AmCharts.makeChart($element[0], options);
-
-            $scope.$watchCollection('series1Values', function(newValue, oldValue) {
-                if (!newValue) removeProvider(1);
-                else setupProvider(1);
-                updateValues();
-            });
             
-            $scope.$watchCollection('series2Values', function(newValue, oldValue) {
-                if (!newValue) removeProvider(2);
-                else setupProvider(2);
-                updateValues();
-            });
+            for (var i = 1; i <= MAX_SERIES; i++) {
+        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
+        	}
             
-            $scope.$watchCollection('series3Values', function(newValue, oldValue) {
-                if (!newValue) removeProvider(3);
-                else setupProvider(3);
+            function valuesChanged(seriesNumber, newValue, oldValue) {
+            	if (!newValue) removeProvider(seriesNumber);
+                else setupProvider(seriesNumber);
                 updateValues();
-            });
-            
-            $scope.$watchCollection('series4Values', function(newValue, oldValue) {
-                if (!newValue) removeProvider(4);
-                else setupProvider(4);
-                updateValues();
-            });
+            }
             
             function createLabelFn(input) {
                 var labels;
@@ -135,11 +115,10 @@ function stateChart() {
             function updateValues() {
                 var endDate = moment($scope.endDate);
                 
-                for (var i = 0; i < 4; i++) {
-                    var graphNum = i+1;
-                    var graph = findProvider(graphNum);
-                    var values = $scope['series' + graphNum + 'Values'];
-                    var labels = $scope['series' + graphNum + 'Labels'];
+                for (var i = 1; i <= MAX_SERIES; i++) {
+                    var graph = findProvider(i);
+                    var values = $scope['series' + i + 'Values'];
+                    var labels = $scope['series' + i + 'Labels'];
                     var labelFn = createLabelFn(labels);
                     
                     if (graph && values) {
