@@ -7,7 +7,9 @@
 define(['angular', './maDashboardApp'], function(angular) {
 'use strict';
 
-var appElement = document.getElementById('ma-dashboard-app') || document.documentElement;
-angular.bootstrap(appElement, ['maDashboardApp']);
+angular.element(document).ready(function() {
+	var appElement = document.getElementById('ma-dashboard-app') || document.documentElement;
+	angular.bootstrap(appElement, ['maDashboardApp']);
+});
 
 }); // require
