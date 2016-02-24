@@ -25,6 +25,6 @@
 
 	<script type="text/javascript" src="/resources/require.js"></script>
 	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
-	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+	<script type="text/javascript">require(['mango-3.0/bootstrap']);</script>
 </body>
 </html>

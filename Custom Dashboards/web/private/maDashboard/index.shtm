@@ -5,19 +5,48 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css"></link>
 	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.min.css"></link>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			font-family: 'Montserrat', sans-serif;
+		}
+		iframe {
+			border: 0;
+			width: 100%;
+			height: 400px;
+		}
+	</style>
 </head>
 <body>
-	<h1>Mango Dashboards v3 Documentation</h1>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-5 form-horizontal">
-				HTML
+			<header class="col-md-10 col-md-offset-1"><h1>Mango Dashboards v3 Documentation</h1></header>
+		</div>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-1 col-md-push-8">
+				<nav><a href="#datePresets">Date presets</a></nav>
+				<nav><a href="#example2">Example 2</a></nav>
+				<nav><a href="#datePresets">Date presets</a></nav>
+				<nav><a href="#datePresets">Date presets</a></nav>
+				<nav><a href="#datePresets">Date presets</a></nav>
 			</div>
-			<div class="col-md-5 form-horizontal">
-				Live view
-			</div>
-			<div class="col-md-2 form-horizontal">
-				Menu right
+			<div class="col-md-8 col-sm-12 col-md-pull-2">
+				<div class="row" id="datePresets">
+					<div class="col-sm-6">
+						Example HTML 1
+					</div>
+					<div class="col-sm-6">
+						<iframe src="datePresets.shtm"></iframe>
+					</div>
+				</div>
+				<div class="row" id="example2">
+					<div class="col-sm-6">
+						Example HTML 2
+					</div>
+					<div class="col-sm-6">
+						Live view 2
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
