@@ -8,7 +8,10 @@ define(['jquery', './api'], function($, MangoAPI) {
 "use strict";
 
 function PointEventManager(options) {
+	 // keys are xid, value is object where key is event type and value is the number of subscriptions
     this.subscriptions = {};
+    // keys are xid, value is array of event types
+    this.activeSubscriptions = {};
     
     $.extend(this, options);
     
@@ -55,47 +58,52 @@ PointEventManager.prototype.messageReceived = function(message) {
     }
 };
 
-PointEventManager.prototype.subscribe = function(xid, eventType, eventHandler) {
+PointEventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {
     if (!this.subscriptions[xid])
         this.subscriptions[xid] = {eventEmitter: {}};
     var xidSubscriptions = this.subscriptions[xid];
     
-    if (typeof eventHandler === 'function'){
-        $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
-        $(xidSubscriptions.eventEmitter).on('REGISTERED', eventHandler);
+    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
+    
+    for (var i = 0; i < eventTypes.length; i++) {
+    	var eventType = eventTypes[i];
+        if (typeof eventHandler === 'function') {
+            $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
+        }
+        
+        if (!xidSubscriptions[eventType]) {
+            xidSubscriptions[eventType] = 1;
+        }
+        else {
+            xidSubscriptions[eventType] = xidSubscriptions[eventType] + 1;
+        }
     }
     
-    if (!xidSubscriptions[eventType]) {
-        xidSubscriptions[eventType] = 1;
-        this.updateSubscriptions(xid);
-    }
-    else {
-        xidSubscriptions[eventType] = xidSubscriptions[eventType] + 1;
-    }
-};
-    
-PointEventManager.prototype.unsubscribe = function(xid, eventType, eventHandler) {
-    var xidSubscriptions = this.subscriptions[xid];
-    if (!xidSubscriptions)
-        return;
-    
-    if (typeof eventHandler === 'function')
-        $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
-    
-    var count = xidSubscriptions[eventType];
-    if (!count)
-        return;
-    
-    if (count > 1) {
-        xidSubscriptions[eventType] = count - 1;
-        return;
-    }
-    
-    // count is 1, i.e. we are removing the last subscription for this event type
-    delete xidSubscriptions[eventType];
     this.updateSubscriptions(xid);
 };
     
+PointEventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
+    var xidSubscriptions = this.subscriptions[xid];
+    if (!xidSubscriptions)
+        return;
+
+    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
+    
+    for (var i = 0; i < eventTypes.length; i++) {
+    	var eventType = eventTypes[i];
+    	if (typeof eventHandler === 'function') {
+            $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
+    	}
+    	
+        var count = xidSubscriptions[eventType];
+        if (count >= 1) {
+            xidSubscriptions[eventType] = count - 1;
+        }
+    }
+    
+    this.updateSubscriptions(xid);
+};
+
 PointEventManager.prototype.updateSubscriptions = function(xid) {
     var xidSubscriptions = this.subscriptions[xid];
     if (!xidSubscriptions)
@@ -105,21 +113,44 @@ PointEventManager.prototype.updateSubscriptions = function(xid) {
     for (var key in xidSubscriptions) {
         if (key === 'eventEmitter')
             continue;
-        eventTypes.push(key);
+        
+        if (xidSubscriptions[key] === 0) {
+        	delete xidSubscriptions[key];
+        } else {
+        	eventTypes.push(key);
+        }
     }
+    eventTypes.sort();
+
+    var activeSubs = this.activeSubscriptions[xid];
     
     // there are no subscriptions for any event types for this xid
-    if (eventTypes.length === 0)
+    if (eventTypes.length === 0) {
         delete this.subscriptions[xid];
-    
-    var message = {};
-    message.xid = xid;
-    message.eventTypes = eventTypes;
-    
-    this.getSocketPromise().done(function(socket) {
-        socket.send(JSON.stringify(message));
-    });
+        delete this.activeSubscriptions[xid];
+    }
+
+    if (!activeSubs || !arraysEqual(activeSubs, eventTypes)) {
+    	if (eventTypes.length)
+    		this.activeSubscriptions[xid] = eventTypes;
+    	
+        var message = {};
+        message.xid = xid;
+        message.eventTypes = eventTypes;
+        
+        this.getSocketPromise().done(function(socket) {
+            socket.send(JSON.stringify(message));
+        });
+    }
 };
+
+function arraysEqual(a, b) {
+	if (a.length !== b.length) return false;
+	for (var i = 0; i < a.length; i++) {
+		if (a[i] !== b[i]) return false;
+	}
+	return true;
+}
 
 return PointEventManager;
 
