@@ -82,18 +82,12 @@ function gaugeChart() {
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                chart.arrows[0].setValue(newValue);
-                chart.axes[0].setBottomText($scope.point.renderedValue);
+            	if (newValue === oldValue) return;
+            	var renderered = $scope.point ? $scope.point.renderedValue : '';
+                chart.arrows[0].setValue(newValue || 0);
+                chart.axes[0].setBottomText(renderered);
             });
-            
-            $scope.$watch('point.xid', function(newValue, oldValue) {
-            	if (oldValue) {
-            		$scope.point.value = 0;
-            		$scope.point.renderedValue = '';
-            	}
-            });
-            
+
             $scope.$watch('point.enabled', function(newValue) {
             	var disabled = newValue !== undefined && !newValue;
             	$scope.classes['point-disabled'] = disabled;

@@ -57,21 +57,15 @@ function tankLevel() {
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                tankLevel = newValue;
+                if (newValue === oldValue) return;
+                tankLevel = newValue || 0;
+                var renderered = $scope.point ? $scope.point.renderedValue : '';
                 chart.dataProvider[0].tankLevel = tankLevel;
                 chart.dataProvider[0].remainder = max - tankLevel;
-                chart.dataProvider[0].renderedValue = $scope.point.renderedValue;
+                chart.dataProvider[0].renderedValue = renderered;
                 chart.validateData();
             });
 
-            $scope.$watch('point.xid', function(newValue, oldValue) {
-            	if (oldValue) {
-            		$scope.point.value = 0;
-            		$scope.point.renderedValue = '';
-            	}
-            });
-            
             $scope.$watch('point.enabled', function(newValue) {
             	var disabled = newValue !== undefined && !newValue;
             	$scope.classes['point-disabled'] = disabled;

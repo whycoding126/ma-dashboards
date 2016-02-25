@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Switch image demo</title>
+	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+	<link rel="stylesheet" href="/modules/dashboards/web/private/maDashboard/examples.css"></link>
+</head>
+<body ng-cloak>
+	<ma-connection></ma-connection>
+	<h1>Switch image  demo</h1>
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+
+	<h2>Use of &lt;ma-switch-img&gt; directive</h2>
+	<div>Rendered point value: <ma-point-value point="myPoint"></ma-point-value></div>
+	<div>
+		<p>Map notation example</p>
+		<ma-switch-img point="myPoint" 
+			default-src="/modules/dashboards/web/private/maDashboard/img/close.png"
+			src-map="{'false': '/modules/dashboards/web/private/maDashboard/img/ligthbulb_off.png', 'true': '/modules/dashboards/web/private/maDashboard/img/ligthbulb_on.png'}">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>Binary example</p>
+		<ma-switch-img point="myPoint"
+			src-false="/modules/dashboards/web/private/maDashboard/img/ligthbulb_off.png"
+			src-true="/modules/dashboards/web/private/maDashboard/img/ligthbulb_on.png"
+			default-src="/modules/dashboards/web/private/maDashboard/img/close.png">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>Multistate example</p>
+		<ma-switch-img point="myPoint"
+			src-1="/modules/dashboards/web/private/maDashboard/img/arrow_up.png"
+			src-2="/modules/dashboards/web/private/maDashboard/img/arrow_right.png"
+			src-3="/modules/dashboards/web/private/maDashboard/img/arrow_down.png"
+			src-4="/modules/dashboards/web/private/maDashboard/img/arrow_left.png"
+			default-src="/modules/dashboards/web/private/maDashboard/img/close.png">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>String example</p>
+		<ma-switch-img point="myPoint"
+			src-test="/modules/dashboards/web/private/maDashboard/img/ligthbulb_off.png"
+			src-test-my-string="/modules/dashboards/web/private/maDashboard/img/ligthbulb_on.png"
+			default-src="/modules/dashboards/web/private/maDashboard/img/close.png">
+		</ma-switch-img>
+	</div>
+
+	<script type="text/javascript" src="/resources/require.js"></script>
+	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
+	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+</body>
+</html>
