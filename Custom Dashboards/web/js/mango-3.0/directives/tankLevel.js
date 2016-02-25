@@ -18,8 +18,10 @@ function tankLevel() {
           max: '@',
           color: '@'
         },
-        template: '<div class="amchart"></div>',
+        template: '<div class="amchart" ng-class="classes"></div>',
         link: function ($scope, $element, attributes) {
+        	$scope.classes = {};
+        	
             if (!$('#tank-level-style').length) {
                 $('<style>', {
                     id: 'tank-level-style',
@@ -61,6 +63,18 @@ function tankLevel() {
                 chart.dataProvider[0].remainder = max - tankLevel;
                 chart.dataProvider[0].renderedValue = $scope.point.renderedValue;
                 chart.validateData();
+            });
+
+            $scope.$watch('point.xid', function(newValue, oldValue) {
+            	if (oldValue) {
+            		$scope.point.value = 0;
+            		$scope.point.renderedValue = '';
+            	}
+            });
+            
+            $scope.$watch('point.enabled', function(newValue) {
+            	var disabled = newValue !== undefined && !newValue;
+            	$scope.classes['point-disabled'] = disabled;
             });
         }
     };

@@ -25,8 +25,10 @@ function gaugeChart() {
           band3Color: '@',
           interval: '@'
         },
-        template: '<div class="amchart"></div>',
+        template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
+        	$scope.classes = {};
+        	
             var options = defaultOptions();
             if ($scope.start) {
                 options.axes[0].startValue = parseFloat($scope.start);
@@ -83,6 +85,18 @@ function gaugeChart() {
                 if (newValue === undefined) return;
                 chart.arrows[0].setValue(newValue);
                 chart.axes[0].setBottomText($scope.point.renderedValue);
+            });
+            
+            $scope.$watch('point.xid', function(newValue, oldValue) {
+            	if (oldValue) {
+            		$scope.point.value = 0;
+            		$scope.point.renderedValue = '';
+            	}
+            });
+            
+            $scope.$watch('point.enabled', function(newValue) {
+            	var disabled = newValue !== undefined && !newValue;
+            	$scope.classes['point-disabled'] = disabled;
             });
         }
     };

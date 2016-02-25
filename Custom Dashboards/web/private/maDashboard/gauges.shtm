@@ -3,6 +3,7 @@
 <head>
 	<title>Gauges demo</title>
 	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+	<link rel="stylesheet" href="/modules/dashboards/web/private/maDashboard/examples.css"></link>
 </head>
 <body ng-cloak>
 	<ma-connection></ma-connection>

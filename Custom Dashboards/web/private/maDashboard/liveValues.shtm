@@ -3,16 +3,7 @@
 <head>
 	<title>Live values demo</title>
 	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
-	<style>
-		.point-disabled .value {
-			opacity: 0.5;
-			background-color: rgba(255, 0, 0, 0.3);
-			text-decoration: line-through;
-		}
-		.point-disabled .disabled-text {
-			color: #aaa;
-		}
-	</style>
+	<link rel="stylesheet" href="/modules/dashboards/web/private/maDashboard/examples.css"></link>
 </head>
 <body ng-cloak>
 	<ma-connection></ma-connection>

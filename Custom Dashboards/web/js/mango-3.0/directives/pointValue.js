@@ -20,6 +20,7 @@ function pointValue($filter, pointEventManager, Point) {
         controller: function ($scope, $element) {
         	var multiStateRendererMap = null;
             $scope.style = {};
+            $scope.valueStyle = {};
             $scope.classes = {};
             
         	var displayType = $scope.displayType || 'rendered';
@@ -52,7 +53,7 @@ function pointValue($filter, pointEventManager, Point) {
 	                        break;
 	                    case 'rendered':
 	                    	$scope.displayValue = payload.renderedValue;
-	                        $scope.style.color = color;
+	                        $scope.valueStyle.color = color;
 	                        break;
 	                    case 'dateTime':
 	                    	$scope.displayValue = $filter('moment')(payload.value.timestamp, 'format', dateTimeFormat);
@@ -83,7 +84,7 @@ function pointValue($filter, pointEventManager, Point) {
                 if (oldXid) {
                     pointEventManager.unsubscribe(oldXid, ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'], eventHandler);
                     delete $scope.displayValue;
-                    $scope.style = {};
+                    $scope.valueStyle = {};
                     $scope.classes = {};
                 }
                 if (newXid) {
