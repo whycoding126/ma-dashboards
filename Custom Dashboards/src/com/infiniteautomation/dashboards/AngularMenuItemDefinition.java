@@ -51,7 +51,7 @@ public class AngularMenuItemDefinition extends MenuItemDefinition{
 	@Override
 	public String getImage(HttpServletRequest request,
 			HttpServletResponse response) {
-		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_LOCATION, "/web/img/ng-logo.png");
+		return "/web/img/ng-logo.png";
 	}
 	
 	/*
@@ -73,6 +73,6 @@ public class AngularMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, "/private-dashboards/maDashboard/index.shtm");
+    	return "/modules/dashboards/web/private/sb-admin/";
     }
 }
