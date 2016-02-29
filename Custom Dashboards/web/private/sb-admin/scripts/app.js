@@ -1,6 +1,6 @@
 require(['angular', 'mango-3.0/maDashboardApp',
          'bootstrap', 'angular-ui-router', 'oclazyload', 'angular-loading-bar', 'angular-bootstrap',
-         'metisMenu', 'Chart'],
+         'metisMenu'],
          function(angular, maDashboardApp) {
 
 'use strict';
@@ -18,7 +18,8 @@ angular.module('sbAdminApp', [
     'ui.bootstrap',
     'angular-loading-bar',
     'maDashboardApp'
-  ]).config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
+  ]).config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
+      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
     
     $ocLazyLoadProvider.config({
       debug:false,
