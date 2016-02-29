@@ -110,6 +110,26 @@ angular.module('sbAdminApp', [
         templateUrl:'views/pages/login.html',
         url:'/login'
     })
+    .state('dashboard.toggle', {
+        templateUrl:'views/togglePointValue.html',
+        url:'/setPoint/toggle',
+        resolve: {
+            loadMyFile: ['$ocLazyLoad', function($ocLazyLoad) {
+            	$ocLazyLoad.load({
+            		name: 'ace.js',
+            		files:['bower_components/ace-builds/src-min-noconflict/ace.js']
+            	});
+            	$ocLazyLoad.load({
+            		name: 'ui.ace',
+            		files:['bower_components/angular-ui-ace/ui-ace.min.js']
+            	});
+            	$ocLazyLoad.load({
+            		name: 'sbAdminApp',
+            		files:['scripts/directives/liveEditor/liveEditor.js']
+            	});
+            }]
+        }
+    })
     .state('dashboard.mangoCharts',{
         templateUrl:'views/mangoCharts.html',
         url:'/mangoCharts'

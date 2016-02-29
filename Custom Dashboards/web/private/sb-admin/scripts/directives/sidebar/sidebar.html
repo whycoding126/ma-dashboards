@@ -15,6 +15,16 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li ng-class="{active: collapseVar==6}">
+                <a href="" ng-click="check(6)"><i class="fa fa-pencil-square-o fa-fw"></i> <span ma-tr="dashboards.v3.dox.settingPoint"></span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=6">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.toggle" ma-tr="dashboards.v3.dox.toggle"></a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
             <li ui-sref-active="active">
                 <a ui-sref="dashboard.table"><i class="fa fa-table fa-fw"></i> Tables</a>
             </li>

@@ -81,3 +81,16 @@ body {
 text-decoration: none;
 background-color: #eee;
 }
+
+#loading-bar-spinner {
+	left: 50% !important;
+	transform: translate(-50%, 0);
+}
+
+.dropdown .dropdown-toggle {
+	cursor: pointer;
+}
+
+.ace_editor {
+	height: 200px;
+}
