@@ -67,6 +67,13 @@ function PointFactory($resource) {
     	return MangoAPI.defaultApi.putValue(this.xid, value, options);
     };
     
+    Point.prototype.toggleValue = function toggleValue() {
+    	var dataType = this.pointLocator.dataType;
+    	if (dataType === 'BINARY' && this.value !== undefined) {
+    		this.setValue(!this.value);
+		}
+    };
+    
     return Point;
 }
 
