@@ -357,3 +357,7 @@ table.dataTable thead .sorting:after {
 	left: 50% !important;
 	transform: translate(-50%, 0);
 }
+
+.dropdown .dropdown-toggle {
+	cursor: pointer;
+}
