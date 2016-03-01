@@ -5,8 +5,7 @@
     <!-- /.col-lg-12 -->
 </div>
 
-<live-editor>
-
+<dual-pane-editor>
 <ma-point-list ng-model="myPoint"></ma-point-list>
 <ma-point-values point="myPoint" values="point1Values"
 	from="from" to="to"
@@ -20,5 +19,4 @@
 <ma-serial-chart style="height: 300px; width: 100%"
 	series-1-title="{{point1.name}}" series-1-values="point1Values">
 </ma-serial-chart>
-
-</live-editor>
+</dual-pane-editor>

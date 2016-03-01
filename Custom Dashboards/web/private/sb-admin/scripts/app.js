@@ -125,10 +125,11 @@ angular.module('sbAdminApp', [
                 		files:['bower_components/angular-ui-ace/ui-ace.min.js']
                 	});
             	}).then(function() {
-            		return $ocLazyLoad.load({
-                		name: 'sbAdminApp',
-                		files:['scripts/directives/liveEditor/liveEditor.js']
-                	});
+            		return $ocLazyLoad.load(
+            			['scripts/directives/liveEditor/liveEditor.js',
+            			 'scripts/directives/liveEditor/livePreview.js',
+            			 'scripts/directives/liveEditor/dualPaneEditor.js',]
+                	);
             	});
             }]
         }
