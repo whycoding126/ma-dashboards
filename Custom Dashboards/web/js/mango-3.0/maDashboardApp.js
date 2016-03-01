@@ -27,6 +27,7 @@ define(['./services/Point',
         './directives/startsAndRuntimesTable',
         './directives/setPointValue',
         './directives/switchImg',
+        './directives/calc',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
@@ -34,7 +35,7 @@ define(['./services/Point',
         'angular-resource'
 ], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, momentFilter, durationFilter, trFilter,
+        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, momentFilter, durationFilter, trFilter,
         angular) {
 'use strict';
 
@@ -63,6 +64,7 @@ maDashboardApp.directive('maStatisticsTable', statisticsTable);
 maDashboardApp.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
 maDashboardApp.directive('maSetPointValue', setPointValue);
 maDashboardApp.directive('maSwitchImg', switchImg);
+maDashboardApp.directive('maCalc', calc);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);

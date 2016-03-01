@@ -108,7 +108,6 @@ function serialChart() {
                 graph.lineColor = $scope['series' + graphNum + 'Color'] || null;
                 if (options.valueAxes[0].stackType) {
                 	graph.fillAlphas = 0.8;
-                	graph.lineAlpha = 0;
                 }
                 
                 chart.graphs.sort(function(a, b) {

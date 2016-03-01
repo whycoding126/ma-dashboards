@@ -18,9 +18,13 @@ angular.module('sbAdminApp', [
     'ui.bootstrap',
     'angular-loading-bar',
     'maDashboardApp'
-  ]).config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
+  ])
+  .run(['$rootScope', function($rootScope) {
+	  $rootScope.Math = Math;
+  }])
+  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
       function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
-    
+
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
@@ -151,6 +155,15 @@ angular.module('sbAdminApp', [
     .state('dashboard.thermal.mdf', {
         templateUrl:'views/thermal/mdf.html',
         url:'/mdf'
+    })
+    .state('dashboard.electric', {
+    	'abstract': true,
+    	url: '/electric',
+    	template: '<ui-view/>'
+    })
+    .state('dashboard.electric.total', {
+        templateUrl:'views/electric/total.html',
+        url:'/total'
     })
       .state('dashboard.table',{
         templateUrl:'views/table.html',
