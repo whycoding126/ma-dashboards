@@ -6,8 +6,8 @@
 </div>
 
 <dual-pane-editor>
-<ma-point-list ng-model="myPoint"></ma-point-list>
-<ma-point-values point="myPoint" values="point1Values"
+<ma-point-list ng-model="point1"></ma-point-list>
+<ma-point-values point="point1" values="point1Values"
 	from="from" to="to"
 	rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>
@@ -17,6 +17,6 @@
 <input ma-date-picker ng-model="to">
 
 <ma-serial-chart style="height: 300px; width: 100%"
-	series-1-title="{{point1.name}}" series-1-values="point1Values">
+	series-1-values="point1Values" series-1-color="{{point1.chartColour}}">
 </ma-serial-chart>
 </dual-pane-editor>

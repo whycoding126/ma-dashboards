@@ -106,7 +106,8 @@ function serialChart() {
                 graph.title = $scope['series' + graphNum + 'Title'] || ('Series ' + graphNum);
                 graph.type = graphType;
                 graph.lineColor = $scope['series' + graphNum + 'Color'] || null;
-                if (options.valueAxes[0].stackType) {
+                var stackType = options.valueAxes[0].stackType;
+                if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
                 }
                 

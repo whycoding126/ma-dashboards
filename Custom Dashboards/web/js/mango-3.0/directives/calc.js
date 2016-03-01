@@ -7,29 +7,21 @@
 define([], function() {
 'use strict';
 
-function calc($parse) {
+function calc() {
     return {
-        restrict: 'E',
         scope: {
-        	input: '@',
             output: '='
         },
         link: function($scope, $element, attr) {
-        	var unbindWatch;
-        	
-        	$scope.$watch('input', function(newValue) {
-        		newValue = newValue || '';
-        		if (unbindWatch) unbindWatch();
-        		unbindWatch = $scope.$parent.$watch(newValue, function(newValue) {
-        			//$element.html(newValue);
-                	$scope.output = newValue;
-        		});
-        	});
+        	var deregister = $scope.$parent.$watch(attr.input, function(newValue) {
+            	$scope.output = newValue;
+    		});
+        	$scope.$on('$destroy', deregister);
         }
     };
 }
 
-calc.$inject = ['$parse'];
+calc.$inject = [];
 
 return calc;
 
