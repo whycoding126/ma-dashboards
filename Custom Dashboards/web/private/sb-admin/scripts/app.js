@@ -41,7 +41,8 @@ angular.module('sbAdminApp', [
                     'scripts/directives/header/header.js',
                     'scripts/directives/header/header-notification/header-notification.js',
                     'scripts/directives/sidebar/sidebar.js',
-                    'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
+                    'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
+                    'scripts/directives/sidebar/sidebar-date-controls/sidebar-date-controls.js'
                     ]
                 }),
                 $ocLazyLoad.load(
@@ -141,6 +142,15 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.serialChart',{
         templateUrl:'views/serialChart.html',
         url:'/serialChart'
+    })
+    .state('dashboard.thermal', {
+    	'abstract': true,
+    	url: '/thermal',
+    	template: '<ui-view/>'
+    })
+    .state('dashboard.thermal.mdf', {
+        templateUrl:'views/thermal/mdf.html',
+        url:'/mdf'
     })
       .state('dashboard.table',{
         templateUrl:'views/table.html',

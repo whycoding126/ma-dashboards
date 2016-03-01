@@ -57,7 +57,7 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 				$scope.$apply(function() {
 					aceChangedImpl();
 				});
-			}, 500);
+			}, 1000);
 			
 			function aceChanged() {
 				if (programaticChange) {

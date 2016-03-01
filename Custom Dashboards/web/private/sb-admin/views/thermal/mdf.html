@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><span ma-tr="intelict.thermal">Thermisch</span> -
+        <span ma-tr="intelict.dryer" ma-tr-args="['MDF']">MDF Trockner</span></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ma-point-values point-xid="DP_499683" point="gas" values="gasValues"
+	from="dateControls.from" to="dateControls.to"
+	rollup="{{dateControls.rollup}}" rollup-interval="{{dateControls.rollupInterval}}">
+</ma-point-values>
+
+<ma-point-values point-xid="DP_816963" point="dust" values="dustValues"
+	from="dateControls.from" to="dateControls.to"
+	rollup="{{dateControls.rollup}}" rollup-interval="{{dateControls.rollupInterval}}">
+</ma-point-values>
+
+<ma-point-values point-xid="DP_610404" point="steam" values="steamValues"
+	from="dateControls.from" to="dateControls.to"
+	rollup="{{dateControls.rollup}}" rollup-interval="{{dateControls.rollupInterval}}">
+</ma-point-values>
+
+<ma-point-values point-xid="DP_460229" point="oil" values="oilValues"
+	from="dateControls.from" to="dateControls.to"
+	rollup="{{dateControls.rollup}}" rollup-interval="{{dateControls.rollupInterval}}">
+</ma-point-values>
+
+<ma-serial-chart style="height: 500px; width: 100%"
+	series-1-title="{{gas.name}}" series-1-color="{{gas.chartColour}}" series-1-values="gasValues"
+	series-2-title="{{dust.name}}" series-2-color="{{dust.chartColour}}" series-2-values="dustValues"
+	series-3-title="{{steam.name}}" series-3-color="{{steam.chartColour}}" series-3-values="steamValues"
+	series-4-title="{{oil.name}}" series-4-color="{{oil.chartColour}}" series-4-values="oilValues"
+	stack-type="regular" options="{ legend:{}, chartScrollbar:{}, chartCursor:{} }">
+</ma-serial-chart>

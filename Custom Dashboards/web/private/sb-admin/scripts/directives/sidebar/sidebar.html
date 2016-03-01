@@ -1,7 +1,7 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav in" id="side-menu">
-            <sidebar-search></sidebar-search>
+            <sidebar-date-controls></sidebar-date-controls>
             <li ui-sref-active="active">
                 <a ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
@@ -21,6 +21,32 @@
                 <ul class="nav nav-second-level" collapse="collapseVar!=6">
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.toggle" ma-tr="dashboards.v3.dox.toggle"></a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li ng-class="{active: collapseVar==7}">
+                <a href="" ng-click="check(7)"><i class="fa fa-sun-o fa-fw"></i> <span ma-tr="intelict.thermal">Thermisch</span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=7">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.thermal.mdf" ma-tr="intelict.dryer" ma-tr-args="['MDF']">MDF Trockner</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.thermal.span" ma-tr="intelict.dryer" ma-tr-args="['SPAN']">SPAN Trockner</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.thermal.osb" ma-tr="intelict.dryer" ma-tr-args="['OSB']">OSB Trockner</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li ng-class="{active: collapseVar==8}">
+                <a href="" ng-click="check(8)"><i class="fa fa-bolt fa-fw"></i> <span ma-tr="intelict.electric">Elektrisch</span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=8">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.electric.total" ma-tr="intelict.total">Gesamt</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

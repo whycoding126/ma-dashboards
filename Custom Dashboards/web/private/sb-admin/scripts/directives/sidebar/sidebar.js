@@ -14,8 +14,6 @@ angular.module('sbAdminApp')
       templateUrl:'scripts/directives/sidebar/sidebar.html',
       restrict: 'E',
       replace: true,
-      scope: {
-      },
       controller:function($scope){
     	$('#side-menu').metisMenu();
         $scope.selectedMenu = 'dashboard';

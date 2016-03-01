@@ -103,3 +103,7 @@ background-color: #eee;
     display: initial;
     max-height: 20px;
 }
+
+.sidebar .sidebar-date-controls {
+    padding: 15px;
+}
