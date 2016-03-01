@@ -8,7 +8,7 @@ angular.module('sbAdminApp').directive('liveEditor', ['$rootScope', '$templateRe
 	    	src: '@'
 	    },
 	    compile: function($element, $attr, $transclude) {
-	    	var text = $element.html();
+	    	var text = $element.html().trim();
 	    	$element.empty();
 	    	
 	    	return function($scope, $element, $attr) {

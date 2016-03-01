@@ -1,7 +1,7 @@
-require(['angular', 'mango-3.0/maDashboardApp',
+require(['angular', 'mango-3.0/maDashboardApp', 'jquery',
          'bootstrap', 'angular-ui-router', 'oclazyload', 'angular-loading-bar', 'angular-bootstrap',
          'metisMenu'],
-         function(angular, maDashboardApp) {
+         function(angular, maDashboardApp, $) {
 
 'use strict';
 /**
@@ -110,49 +110,36 @@ angular.module('sbAdminApp', [
         templateUrl:'views/pages/login.html',
         url:'/login'
     })
-    .state('dashboard.toggle', {
-        templateUrl:'views/togglePointValue.html',
-        url:'/setPoint/toggle',
-        resolve: {
+    .state('dashboard.examples', {
+    	'abstract': true,
+    	url: '/examples',
+    	template: '<ui-view/>',
+    	resolve: {
             loadMyFile: ['$ocLazyLoad', function($ocLazyLoad) {
-            	$ocLazyLoad.load({
+            	return $ocLazyLoad.load({
             		name: 'ace.js',
             		files:['bower_components/ace-builds/src-min-noconflict/ace.js']
-            	});
-            	$ocLazyLoad.load({
-            		name: 'ui.ace',
-            		files:['bower_components/angular-ui-ace/ui-ace.min.js']
-            	});
-            	$ocLazyLoad.load({
-            		name: 'sbAdminApp',
-            		files:['scripts/directives/liveEditor/liveEditor.js']
+            	}).then(function() {
+            		return $ocLazyLoad.load({
+                		name: 'ui.ace',
+                		files:['bower_components/angular-ui-ace/ui-ace.min.js']
+                	});
+            	}).then(function() {
+            		return $ocLazyLoad.load({
+                		name: 'sbAdminApp',
+                		files:['scripts/directives/liveEditor/liveEditor.js']
+                	});
             	});
             }]
         }
     })
-    .state('dashboard.mangoCharts',{
-        templateUrl:'views/mangoCharts.html',
-        url:'/mangoCharts'
+    .state('dashboard.examples.toggle', {
+        templateUrl:'views/toggle.html',
+        url:'/toggle'
     })
-      .state('dashboard.chart',{
-        templateUrl:'views/chart.html',
-        url:'/chart',
-        controller:'ChartCtrl',
-        resolve: {
-          loadMyFile:function($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name:'chart.js',
-              files:[
-                'bower_components/angular-chart.js/dist/angular-chart.min.js',
-                'bower_components/angular-chart.js/dist/angular-chart.css'
-              ]
-            }),
-            $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:['scripts/controllers/chartContoller.js']
-            })
-          }
-        }
+    .state('dashboard.examples.serialChart',{
+        templateUrl:'views/serialChart.html',
+        url:'/serialChart'
     })
       .state('dashboard.table',{
         templateUrl:'views/table.html',
@@ -185,7 +172,7 @@ angular.module('sbAdminApp', [
 }]);
 
 angular.element(document).ready(function() {
-	angular.bootstrap(document.body, ['sbAdminApp']);
+	angular.bootstrap(document.documentElement, ['sbAdminApp']);
 });
 
 });

@@ -7,17 +7,20 @@
 define([], function() {
 'use strict';
 
-function pointList(Point) {
+function pointList(Point, $filter) {
     return {
         restrict: 'E',
         scope: {
             order: '@',
-            query: '@'
+            query: '@',
+            ngModel: '=?',
+            initPoint: '@'
         },
         template: '<select ng-options="pointLabel(point) for point in points | orderBy: orderArray track by point.id"></select>',
         replace: true,
-        controller: function ($scope, $element) {
+        link: function ($scope, $element, attr) {
             $scope.orderArray = ['deviceName', 'name'];
+            $scope.initPoint = 'true';
             
             $scope.$watch('order', function() {
                 if ($scope.order) {
@@ -33,6 +36,14 @@ function pointList(Point) {
                 } else {
                 	$scope.points = Point.query();
                 }
+                
+                if ($scope.initPoint.toLowerCase().trim() === 'true') {
+                    $scope.points.$promise.then(function(points) {
+                    	if (points.length) {
+                        	$scope.ngModel = $filter('orderBy')(points, $scope.orderArray)[0];
+                    	}
+                    });
+                }
             });
             
             $scope.pointLabel = function(point) {
@@ -42,7 +53,7 @@ function pointList(Point) {
     };
 }
 
-pointList.$inject = ['Point'];
+pointList.$inject = ['Point', '$filter'];
 return pointList;
 
 }); // define
