@@ -98,3 +98,8 @@ background-color: #eee;
 [ng-click] {
 	cursor: pointer;
 }
+
+.navbar-brand > img {
+    display: initial;
+    max-height: 20px;
+}

@@ -23,6 +23,11 @@ function maTr(translate) {
             }, function(error) {
             	return $.Deferred().resolve('!!' + $scope.maTr + '!!');
             }).then(function(text) {
+            	if ($elem.prop('tagName') === 'IMG') {
+            		$elem.attr('alt', text);
+            		return;
+            	}
+            	
             	var firstChild = $elem.contents().length && $elem.contents().get(0);
             	// if first child is a text node set the text value
                 if (firstChild && firstChild.nodeType === 3) {
