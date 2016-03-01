@@ -1,3 +1,7 @@
+*Version 1.1.3*
+* Adding Angular API
+* Adding Angular icon and page for evaluating new directives
+
 *Version 1.1.2*
 * Improving permissions utils for javascript User class
 * Adding CORS login test/example page
