@@ -179,10 +179,15 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 if (!$scope.pointXid || $scope.point) return;
                 $scope.point = Point.get({xid: $scope.pointXid});
             });
-            
+
             $scope.$watchGroup(['point.xid', 'realtime', 'from', 'to', 'latest','fromFilter', 'toFilter',
                                 'rollup', 'rollupInterval'],
                     function(newValues, oldValues) {
+            	
+            	// point changed, clear out values to avoid strange looking style transitions on graphs
+            	if (newValues[0] !== oldValues[0]) {
+            		$scope.values = [];
+            	}
                 
                 if ($scope.realtime && $scope.point && $scope.point.xid && $scope.latest) {
                     subscribe($scope.point.xid);

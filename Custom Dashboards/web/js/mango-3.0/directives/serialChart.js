@@ -19,6 +19,7 @@ function serialChart() {
 		scope['series' + j + 'Type'] = '@';
 		scope['series' + j + 'Title'] = '@';
 		scope['series' + j + 'Color'] = '@';
+		scope['series' + j + 'Point'] = '=?';
 	}
 	
     return {
@@ -45,7 +46,8 @@ function serialChart() {
         		$scope.$watchGroup([
         		    'series' + i + 'Type',
         		    'series' + i + 'Title',
-        		    'series' + i + 'Color'
+        		    'series' + i + 'Color',
+        		    'series' + i + 'Point'
         		], typeOrTitleChanged.bind(null, i));
         		
         		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
@@ -93,19 +95,31 @@ function serialChart() {
             
             function setupGraph(graphNum) {
                 var graph = findGraph(graphNum);
+                var point = $scope['series' + graphNum + 'Point'];
                 
-                var graphType = $scope['series' + graphNum + 'Type'];
-                if (!graphType) graphType = 'smoothedLine';
+                var graphType = $scope['series' + graphNum + 'Type'] ||
+                	(point && point.plotType.toLowerCase()) ||
+                	'smoothedLine';
                 
+                // change mango plotType to amCharts graphType
+                // step and line are equivalent
+                if (graphType === 'spline') {
+                	graphType = 'smoothedLine';
+                }
+
                 if (!graph) {
                     graph = {};
                     chart.graphs.push(graph);
                 }
                 $.extend(graph, graphType === 'column' ? defaultColumnGraph(graphNum) : defaultLineGraph(graphNum));
                 graph.valueField = 'value' + graphNum;
-                graph.title = $scope['series' + graphNum + 'Title'] || ('Series ' + graphNum);
+                graph.title = $scope['series' + graphNum + 'Title'] ||
+                	(point && point.name) ||
+                	('Series ' + graphNum);
                 graph.type = graphType;
-                graph.lineColor = $scope['series' + graphNum + 'Color'] || null;
+                graph.lineColor = $scope['series' + graphNum + 'Color'] ||
+                	(point && point.chartColour) ||
+                	null;
                 var stackType = options.valueAxes[0].stackType;
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
