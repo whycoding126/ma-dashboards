@@ -24,6 +24,8 @@ angular.module('sbAdminApp', [
 
 	  $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
 		  if (error.status === 403) {
+			  event.preventDefault();
+			  $state.loginRedirect = toState;
 			  $state.go('login');
 		  }
 	  });

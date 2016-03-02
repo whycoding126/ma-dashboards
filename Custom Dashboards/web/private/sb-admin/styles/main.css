@@ -107,3 +107,8 @@ background-color: #eee;
 .sidebar .sidebar-date-controls {
     padding: 15px;
 }
+
+.login-branding {
+	margin-top: 50px;
+	margin-bottom: 20px;
+}

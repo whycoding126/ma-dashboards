@@ -56,6 +56,7 @@ function translateFactory(mangoBaseUrl, $http) {
 							//language: 'XXX'
 						}
 					});
+					request.then(null, removeFromLoaded.bind(null, namespace));
 					Translate.loadedNamespaces[namespace] = request;
 				}
 				namespaceRequests.push(request);
@@ -75,6 +76,10 @@ function translateFactory(mangoBaseUrl, $http) {
 			}
 		});
 	};
+	
+	function removeFromLoaded(namespace) {
+		delete Translate.loadedNamespaces[namespace];
+	}
 	
 	return Translate;
 }
