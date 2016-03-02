@@ -6,17 +6,21 @@
 </div>
 
 <dual-pane-editor>
-<ma-point-list ng-model="point1"></ma-point-list>
-<ma-point-values point="point1" values="point1Values"
-	from="from" to="to"
-	rollup="AVERAGE" rollup-interval="1 minutes">
-</ma-point-values>
 
-<ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
-<input ma-date-picker ng-model="from">
-<input ma-date-picker ng-model="to">
+<div class="form-inline">
+	<ma-point-list ng-model="point1" class="form-control"></ma-point-list>
+	<ma-point-values point="point1" values="point1Values"
+		from="from" to="to"
+		rollup="AVERAGE" rollup-interval="1 minutes">
+	</ma-point-values>
+	
+	<ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
+	<input class="form-control" ma-date-picker ng-model="from">
+	<input class="form-control" ma-date-picker ng-model="to">
+</div>
 
 <ma-serial-chart style="height: 300px; width: 100%"
 	series-1-values="point1Values" series-1-point="point1">
 </ma-serial-chart>
+
 </dual-pane-editor>
