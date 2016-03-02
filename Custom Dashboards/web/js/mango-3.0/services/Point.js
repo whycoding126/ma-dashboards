@@ -10,7 +10,7 @@ define(['angular'], function(angular) {
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource, mangoBaseUrl) {
+function PointFactory($resource, $http, mangoBaseUrl) {
     var Point = $resource(mangoBaseUrl + '/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
@@ -49,6 +49,8 @@ function PointFactory($resource, mangoBaseUrl) {
     });
 
     Point.prototype.setValue = function setValue(value, options) {
+    	options = options || {};
+    	
     	var dataType = this.pointLocator.dataType;
     	if (!value.value) {
     		if (dataType === 'NUMERIC') {
@@ -63,7 +65,13 @@ function PointFactory($resource, mangoBaseUrl) {
     		    dataType: dataType
     		};
     	}
-    	return MangoAPI.defaultApi.putValue(this.xid, value, options);
+    	
+    	var url = mangoBaseUrl + "/rest/v1/point-values/" + encodeURIComponent(this.xid);
+    	return $http.put(url, value, {
+    		params: {
+    			'unitConversion': options.converted
+    		}
+    	});
     };
     
     Point.prototype.toggleValue = function toggleValue() {
@@ -76,7 +84,7 @@ function PointFactory($resource, mangoBaseUrl) {
     return Point;
 }
 
-PointFactory.$inject = ['$resource', 'mangoBaseUrl'];
+PointFactory.$inject = ['$resource', '$http', 'mangoBaseUrl'];
 return PointFactory;
 
 }); // define
