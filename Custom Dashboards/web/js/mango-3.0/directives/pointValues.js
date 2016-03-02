@@ -180,15 +180,18 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 $scope.point = Point.get({xid: $scope.pointXid});
             });
 
+            // for some reason the old value of the xid in the $watchGroup below is always undefined
+            // so can't do this check below
+            $scope.$watch('point.xid', function(newValue, oldValue) {
+            	if (newValue === oldValue) return;
+            	// point changed, clear out values to avoid strange looking style transitions on graphs
+            	$scope.values = [];
+            });
+            
             $scope.$watchGroup(['point.xid', 'realtime', 'from', 'to', 'latest','fromFilter', 'toFilter',
                                 'rollup', 'rollupInterval'],
                     function(newValues, oldValues) {
-            	
-            	// point changed, clear out values to avoid strange looking style transitions on graphs
-            	if (newValues[0] !== oldValues[0]) {
-            		$scope.values = [];
-            	}
-                
+
                 if ($scope.realtime && $scope.point && $scope.point.xid && $scope.latest) {
                     subscribe($scope.point.xid);
                 } else {
