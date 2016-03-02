@@ -19,8 +19,15 @@ angular.module('sbAdminApp', [
     'angular-loading-bar',
     'maDashboardApp'
   ])
-  .run(['$rootScope', function($rootScope) {
+  .run(['$rootScope', '$state', function($rootScope, $state) {
 	  $rootScope.Math = Math;
+
+	  $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+		  if (error.status === 403) {
+			  $state.go('login');
+		  }
+	  });
+	  
   }])
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
       function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
@@ -37,7 +44,15 @@ angular.module('sbAdminApp', [
         url:'/dashboard',
         templateUrl: 'views/dashboard/main.html',
         resolve: {
-            loadMyDirectives:function($ocLazyLoad){
+        	auth: ['$rootScope', 'User', function($rootScope, User) {
+        		$rootScope.user = User.current();
+        		return $rootScope.user.$promise;
+        	}],
+        	translations: ['$rootScope', 'User', function($rootScope, User) {
+        		$rootScope.user = User.current();
+        		return $rootScope.user.$promise;
+        	}],
+            loadMyDirectives: function($ocLazyLoad) {
                 return $ocLazyLoad.load(
                 {
                     name:'sbAdminApp',
@@ -111,9 +126,14 @@ angular.module('sbAdminApp', [
         templateUrl:'views/pages/blank.html',
         url:'/blank'
     })
-      .state('login',{
-        templateUrl:'views/pages/login.html',
-        url:'/login'
+      .state('login', {
+        templateUrl: 'views/pages/login.html',
+        url: '/login',
+        resolve: {
+        	deps: ['$ocLazyLoad', function($ocLazyLoad) {
+        		return $ocLazyLoad.load('scripts/directives/login/login.js');
+        	}]
+        }
     })
     .state('dashboard.examples', {
     	'abstract': true,

@@ -7,7 +7,7 @@
 define(['jquery'], function($) {
 'use strict';
 
-function maTr(translate) {
+function maTr(Translate) {
     return {
         restrict: 'A',
         scope: {
@@ -18,7 +18,7 @@ function maTr(translate) {
             var text;
             var args = $scope.maTrArgs || [];
             
-            translate($scope.maTr, args).then(function(translation) {
+            Translate.tr($scope.maTr, args).then(function(translation) {
             	return {
             		failed: false,
             		text: translation
@@ -56,7 +56,7 @@ function maTr(translate) {
     };
 }
 
-maTr.$inject = ['translate'];
+maTr.$inject = ['Translate'];
 return maTr;
 
 }); // define

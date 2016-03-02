@@ -4,19 +4,19 @@
  * @author Jared Wiltshire
  */
 
-define(['globalize'], function(Globalize) {
+define([], function() {
 'use strict';
 
 /*
  * The translate filter cannot asynchronously load the translation namespace and display the translation.
  * Translation namespace must be loaded into Globalize prior to filter being run.
  */
-function trFilter() {
+function trFilter(Translate) {
     return function(key) {
     	var args = Array.prototype.slice.call(arguments, 1);
     	var text;
     	try {
-        	text = Globalize.messageFormatter(key).apply(Globalize, args);
+        	text = Translate.trSync(key, args);
     	} catch (e) {
     		text = '!!' + key + '!!';
     	}
@@ -24,7 +24,7 @@ function trFilter() {
     };
 }
 
-trFilter.$inject = [];
+trFilter.$inject = ['Translate'];
 return trFilter;
 
 }); // define

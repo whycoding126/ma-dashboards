@@ -4,15 +4,14 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', '../api'], function(angular, MangoAPI) {
+define(['angular'], function(angular) {
 'use strict';
 
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource) {
-    var baseUrl = MangoAPI.defaultApi.baseUrl;
-    var Point = $resource(baseUrl + '/rest/v1/data-points/:xid', {
+function PointFactory($resource, mangoBaseUrl) {
+    var Point = $resource(mangoBaseUrl + '/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
         query: {
@@ -28,7 +27,7 @@ function PointFactory($resource) {
             cache: true
         },
         rql: {
-        	url: '/rest/v1/data-points?:query',
+        	url: mangoBaseUrl + '/rest/v1/data-points?:query',
             method: 'GET',
             isArray: true,
             transformResponse: function(data, fn, code) {
@@ -41,7 +40,7 @@ function PointFactory($resource) {
             cache: true
         },
         getById: {
-            url: baseUrl + '/rest/v1/data-points/by-id/:id',
+            url: mangoBaseUrl + '/rest/v1/data-points/by-id/:id',
             method: 'GET',
             isArray: false,
             withCredentials: true,
@@ -77,7 +76,7 @@ function PointFactory($resource) {
     return Point;
 }
 
-PointFactory.$inject = ['$resource'];
+PointFactory.$inject = ['$resource', 'mangoBaseUrl'];
 return PointFactory;
 
 }); // define

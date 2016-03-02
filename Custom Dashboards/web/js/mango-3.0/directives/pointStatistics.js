@@ -4,12 +4,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', '../api', 'moment-timezone'], function(angular, MangoAPI, moment) {
+define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
-var baseUrl = MangoAPI.defaultApi.baseUrl;
-
-function pointValues($http, $parse, Point) {
+function pointValues($http, $parse, Point, mangoBaseUrl) {
     return {
         restrict: 'E',
         scope: {
@@ -26,10 +24,11 @@ function pointValues($http, $parse, Point) {
         template: '<span style="display:none"></span>',
         replace: true,
         controller: function ($scope, $element) {
+        	// TODO use service to get statistics
             function doQuery() {
                 if (!$scope.point || !$scope.point.xid) return;
                 
-                var url = baseUrl + '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
+                var url = mangoBaseUrl + '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
                     '/statistics';
                 var params = [];
                 
@@ -140,7 +139,7 @@ function pointValues($http, $parse, Point) {
     };
 }
 
-pointValues.$inject = ['$http', '$parse', 'Point'];
+pointValues.$inject = ['$http', '$parse', 'Point', 'mangoBaseUrl'];
 return pointValues;
 
 }); // define

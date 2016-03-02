@@ -5,8 +5,9 @@
  */
 
 define(['./services/Point',
+        './services/User',
         './services/PointEventManager',
-        './services/translate',
+        './services/Translate',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -33,7 +34,7 @@ define(['./services/Point',
         './filters/trFilter',
         'angular',
         'angular-resource'
-], function(Point, PointEventManager, translate, pointList, pointValue, pointValues, pointStatistics,
+], function(Point, User, PointEventManager, Translate, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, momentFilter, durationFilter, trFilter,
         angular) {
@@ -42,8 +43,9 @@ define(['./services/Point',
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
 
 maDashboardApp.factory('Point', Point);
+maDashboardApp.factory('User', User);
 maDashboardApp.factory('PointEventManager', PointEventManager);
-maDashboardApp.factory('translate', translate);
+maDashboardApp.factory('Translate', Translate);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);
 maDashboardApp.directive('maPointValues', pointValues);
@@ -68,6 +70,8 @@ maDashboardApp.directive('maCalc', calc);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
+
+maDashboardApp.value('mangoBaseUrl', '');
 
 maDashboardApp.run(['$rootScope', function($rootScope) {
     $rootScope.rollupTypes = [
