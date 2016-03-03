@@ -4,15 +4,14 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'jquery'], function(require, $) {
+define(['require'], function(require) {
 'use strict';
 
-function setPointValue(translate) {
+function setPointValue(Translate, $q) {
     return {
         restrict: 'E',
         scope: {
-            point: '=',
-            showIfNotSettable: '@'
+            point: '='
         },
         replace: true,
         templateUrl: require.toUrl('./setPointValue.html'),
@@ -20,14 +19,14 @@ function setPointValue(translate) {
         	$scope.input = {};
         	
         	$scope.defaultBinaryOptions = [];
-        	var trPromise = $.when(translate('common.false'), translate('common.true')).then(function(trFalse, trTrue) {
+        	var trPromise = $q.all([Translate.tr('common.false'), Translate.tr('common.true')]).then(function(trs) {
         		$scope.defaultBinaryOptions.push({
 					id: false,
-					label: trFalse
+					label: trs[0]
 				});
         		$scope.defaultBinaryOptions.push({
         			id: true,
-					label: trTrue
+					label: trs[1]
 				});
 			});
         	
@@ -80,7 +79,7 @@ function setPointValue(translate) {
     };
 }
 
-setPointValue.$inject = ['translate'];
+setPointValue.$inject = ['Translate', '$q'];
 
 return setPointValue;
 

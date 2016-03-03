@@ -4,10 +4,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'jquery', 'globalize', 'globalize/message', 'cldr/unresolved'], function(angular, $, Globalize) {
+define(['angular', 'globalize', 'globalize/message', 'cldr/unresolved'], function(angular, Globalize) {
 'use strict';
 
-function translateFactory($http) {
+function translateFactory($http, $q) {
 	var Translate = function() {};
 	
 	var likelySubtagsUrl = '/resources/cldr-data/supplemental/likelySubtags.json';
@@ -61,10 +61,10 @@ function translateFactory($http) {
 				}
 				namespaceRequests.push(request);
 			}
-			return $.when.apply($, namespaceRequests);
-		}).then(function() {
-			for (var i = 0; i < arguments.length; i++) {
-				var data = arguments[i].data;
+			return $q.all(namespaceRequests);
+		}).then(function(result) {
+			for (var i = 0; i < result.length; i++) {
+				var data = result[i].data;
 				if (!data.loaded) {
 					Globalize.loadMessages(data.translations);
 					data.loaded = true;
@@ -84,7 +84,7 @@ function translateFactory($http) {
 	return Translate;
 }
 
-translateFactory.$inject = ['$http'];
+translateFactory.$inject = ['$http', '$q'];
 
 return translateFactory;
 

@@ -165,13 +165,17 @@ angular.module('sbAdminApp', [
             }]
         }
     })
+    .state('dashboard.examples.setPoint', {
+        templateUrl:'views/examples/setPoint.html',
+        url:'/setPoint'
+    })
     .state('dashboard.examples.toggle', {
-        templateUrl:'views/toggle.html',
+        templateUrl:'views/examples/toggle.html',
         url:'/toggle'
     })
-    .state('dashboard.examples.serialChart',{
-        templateUrl:'views/serialChart.html',
-        url:'/serialChart'
+    .state('dashboard.examples.lineChart',{
+        templateUrl:'views/examples/lineChart.html',
+        url:'/lineChart'
     })
     .state('dashboard.thermal', {
     	'abstract': true,
