@@ -7,19 +7,17 @@
 
 <dual-pane-editor>
 
-<form>
-    <div class="form-group">
-        <label>Chose a point</label>
-        <ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
-    </div>
-	<div class="form-group">
-        <label>Set point value</label>
-	    <ma-set-point-value point="myPoint"></ma-set-point-value>
-	</div>
-	<div class="form-group">
-        <label>Current point value</label>
-        <p class="form-control-static"><ma-point-value point="myPoint"></ma-point-value></p>
-	</div>
-</form>
+<div class="form-group">
+	<label>Chose a point</label>
+	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
+</div>
+<div class="form-group">
+	<label>Set point value</label>
+	<ma-set-point-value point="myPoint"></ma-set-point-value>
+</div>
+<div class="form-group">
+	<label>Current point value</label>
+	<p class="form-control-static"><ma-point-value point="myPoint"></ma-point-value></p>
+</div>
 
 </dual-pane-editor>

@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><span ma-tr="dashboards.v3.dox.settingPoint"></span> - <span ma-tr="dashboards.v3.dox.toggle"></span></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<dual-pane-editor>
+	<h1>Switch image  demo</h1>
+	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
+	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
+
+	<h2>Use of &lt;ma-switch-img&gt; directive</h2>
+	<div>Rendered point value: <ma-point-value point="myPoint"></ma-point-value></div>
+	<div>
+		<p>Map notation example</p>
+		<ma-switch-img point="myPoint" 
+			default-src="img/close.png"
+			src-map="{'false': 'img/ligthbulb_off.png', 'true': 'img/ligthbulb_on.png'}">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>Binary example</p>
+		<ma-switch-img point="myPoint"
+			src-false="img/ligthbulb_off.png"
+			src-true="img/ligthbulb_on.png"
+			default-src="img/close.png">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>Multistate example</p>
+		<ma-switch-img point="myPoint"
+			src-1="img/arrow_up.png"
+			src-2="img/arrow_right.png"
+			src-3="img/arrow_down.png"
+			src-4="img/arrow_left.png"
+			default-src="img/close.png">
+		</ma-switch-img>
+	</div>
+	<div>
+		<p>String example</p>
+		<ma-switch-img point="myPoint"
+			src-test="img/ligthbulb_off.png"
+			src-test-my-string="img/ligthbulb_on.png"
+			default-src="img/close.png">
+		</ma-switch-img>
+	</div>
+
+</dual-pane-editor>

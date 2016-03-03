@@ -5,12 +5,43 @@
             <li ui-sref-active="active">
                 <a ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
+            <li ng-class="{active: collapseVar==9}">
+                <a href="" ng-click="check(9)"><i class="fa fa-area-chart fa-fw"></i> <span ma-tr="dashboards.v3.dox.basics"></span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=9">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.liveValues" ma-tr="dashboards.v3.dox.liveValues"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.datePresets" ma-tr="dashboards.v3.dox.datePresets"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.datesRollups" ma-tr="dashboards.v3.dox.datesRollups"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.relativeDates" ma-tr="dashboards.v3.dox.relativeDates"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.switchImage" ma-tr="dashboards.v3.dox.switchImage"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.tanks" ma-tr="dashboards.v3.dox.tanks"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.translation" ma-tr="dashboards.v3.dox.translation"></a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
             <li ng-class="{active: collapseVar==5}">
                 <a href="" ng-click="check(5)"><i class="fa fa-area-chart fa-fw"></i> <span ma-tr="dashboards.v3.dox.charts"></span><span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=5">
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.lineChart" ma-tr="dashboards.v3.dox.lineChart"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.stateChart" ma-tr="dashboards.v3.dox.stateChart"></a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

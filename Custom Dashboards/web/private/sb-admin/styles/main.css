@@ -101,7 +101,9 @@ background-color: #eee;
 
 .navbar-brand > img {
     display: initial;
-    max-height: 20px;
+    max-height: 40px;
+    margin-top: -15px;
+    margin-bottom: -15px;
 }
 
 .sidebar .sidebar-date-controls {
@@ -111,4 +113,15 @@ background-color: #eee;
 .login-branding {
 	margin-top: 50px;
 	margin-bottom: 20px;
+}
+
+[live-editor] {
+	resize: vertical;
+	overflow: auto;
+	padding-bottom: 10px;
+	min-height: 200px;
+}
+
+[live-editor] [ui-ace] {
+	height: 100%;
 }

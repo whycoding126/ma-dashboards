@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Gauges demo</title>
-	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
-	<link rel="stylesheet" href="/modules/dashboards/web/private/maDashboard/examples.css"></link>
-</head>
-<body ng-cloak>
-	<ma-connection></ma-connection>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><span ma-tr="dashboards.v3.dox.settingPoint"></span> - <span ma-tr="dashboards.v3.dox.toggle"></span></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<dual-pane-editor>
 	<h1>Gauges demo</h1>
 	<div>Filter points by name: <input ng-model="pointsFilter" ng-model-options="{debounce:1000}"></div>
 	<div>Choose point: <ma-point-list ng-model="myPoint" query="{{'name=like=*'+pointsFilter+'*'}}"></ma-point-list></div>
@@ -29,9 +28,4 @@
 	Set color bands
 	<ma-gauge-chart point="myPoint" start="-20" band-1-end="20" band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:250px; height:250px"></ma-gauge-chart>
 	</div>
-	
-	<script type="text/javascript" src="/resources/require.js"></script>
-	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
-	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
-</body>
-</html>
+</dual-pane-editor>

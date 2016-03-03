@@ -35,7 +35,6 @@ angular.module('sbAdminApp', [
 			  $state.go('login');
 		  }
 	  });
-	  
   }])
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
       function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
@@ -165,6 +164,42 @@ angular.module('sbAdminApp', [
             }]
         }
     })
+    .state('dashboard.examples.liveValues', {
+        templateUrl:'views/examples/liveValues.html',
+        url:'/liveValues'
+    })
+    .state('dashboard.examples.datePresets', {
+        templateUrl:'views/examples/datePresets.html',
+        url:'/datePresets'
+    })
+    .state('dashboard.examples.datesRollups', {
+        templateUrl:'views/examples/datesRollups.html',
+        url:'/datesRollups'
+    })
+    .state('dashboard.examples.relativeDates', {
+        templateUrl:'views/examples/relativeDates.html',
+        url:'/relativeDates'
+    })
+    .state('dashboard.examples.switchImage', {
+        templateUrl:'views/examples/switchImage.html',
+        url:'/switchImage'
+    })
+    .state('dashboard.examples.tanks', {
+        templateUrl:'views/examples/tanks.html',
+        url:'/tanks'
+    })
+    .state('dashboard.examples.translation', {
+        templateUrl:'views/examples/translation.html',
+        url:'/translation'
+    })
+    .state('dashboard.examples.lineChart',{
+        templateUrl:'views/examples/lineChart.html',
+        url:'/lineChart'
+    })
+    .state('dashboard.examples.stateChart',{
+        templateUrl:'views/examples/stateChart.html',
+        url:'/stateChart'
+    })
     .state('dashboard.examples.setPoint', {
         templateUrl:'views/examples/setPoint.html',
         url:'/setPoint'
@@ -172,10 +207,6 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.toggle', {
         templateUrl:'views/examples/toggle.html',
         url:'/toggle'
-    })
-    .state('dashboard.examples.lineChart',{
-        templateUrl:'views/examples/lineChart.html',
-        url:'/lineChart'
     })
     .state('dashboard.thermal', {
     	'abstract': true,

@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><span ma-tr="dashboards.v3.dox.charts"></span> - <span ma-tr="dashboards.v3.dox.stateChart"></span></h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<dual-pane-editor>
+
+<div class="form-inline">
+	<ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
+	<ma-point-list ng-model="point1" class="form-control"></ma-point-list>
+	<ma-point-list ng-model="point2" class="form-control"></ma-point-list>
+</div>
+
+<ma-point-values point="point1" values="point1Values" from="from" to="to">
+</ma-point-values>
+<ma-point-values point="point2" values="point2Values" from="from" to="to">
+</ma-point-values>
+
+<ma-state-chart style="height: 500px; width: 100%"
+	series-1-title="{{point1.name}}" series-1-values="point1Values" series-1-labels="point1.textRenderer"
+	series-2-title="{{point2.name}}" series-2-values="point2Values" series-2-labels="point1.textRenderer">
+</ma-state-chart>
+
+</dual-pane-editor>
