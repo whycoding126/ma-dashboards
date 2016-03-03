@@ -10,8 +10,8 @@ define(['angular', 'jquery'], function(angular, $) {
 /*
  * Provides service for getting list of users and create, update, delete
  */
-function UserFactory($resource, mangoBaseUrl) {
-    var User = $resource(mangoBaseUrl + '/rest/v1/users/:xid', {
+function UserFactory($resource) {
+    var User = $resource('/rest/v1/users/:xid', {
     		xid: '@xid'
     	}, {
         query: {
@@ -27,7 +27,7 @@ function UserFactory($resource, mangoBaseUrl) {
             cache: true
         },
         rql: {
-        	url: mangoBaseUrl + '/rest/v1/users?:query',
+        	url: '/rest/v1/users?:query',
             method: 'GET',
             isArray: true,
             transformResponse: function(data, fn, code) {
@@ -40,21 +40,21 @@ function UserFactory($resource, mangoBaseUrl) {
             cache: true
         },
         getById: {
-            url: mangoBaseUrl + '/rest/v1/users/by-id/:id',
+            url: '/rest/v1/users/by-id/:id',
             method: 'GET',
             isArray: false,
             withCredentials: true,
             cache: true
         },
         current: {
-            url: mangoBaseUrl + '/rest/v1/users/current',
+            url: '/rest/v1/users/current',
             method: 'GET',
             isArray: false,
             withCredentials: true,
             cache: true
         },
         login: {
-            url: mangoBaseUrl + '/rest/v1/login/:username',
+            url: '/rest/v1/login/:username',
             method: 'GET',
             headers: {
             	password: function(config) {
@@ -88,7 +88,7 @@ function UserFactory($resource, mangoBaseUrl) {
     return User;
 }
 
-UserFactory.$inject = ['$resource', 'mangoBaseUrl'];
+UserFactory.$inject = ['$resource'];
 return UserFactory;
 
 }); // define

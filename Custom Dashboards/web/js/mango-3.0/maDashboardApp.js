@@ -8,6 +8,7 @@ define(['./services/Point',
         './services/User',
         './services/PointEventManager',
         './services/Translate',
+        './services/mangoHttpInterceptor',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -34,7 +35,7 @@ define(['./services/Point',
         './filters/trFilter',
         'angular',
         'angular-resource'
-], function(Point, User, PointEventManager, Translate, pointList, pointValue, pointValues, pointStatistics,
+], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, momentFilter, durationFilter, trFilter,
         angular) {
@@ -46,6 +47,7 @@ maDashboardApp.factory('Point', Point);
 maDashboardApp.factory('User', User);
 maDashboardApp.factory('PointEventManager', PointEventManager);
 maDashboardApp.factory('Translate', Translate);
+maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);
 maDashboardApp.directive('maPointValues', pointValues);
@@ -71,7 +73,11 @@ maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
 
-maDashboardApp.value('mangoBaseUrl', '');
+maDashboardApp.constant('mangoBaseUrl', '');
+
+maDashboardApp.config(['$httpProvider', function($httpProvider) {
+	$httpProvider.interceptors.push('mangoHttpInterceptor');
+}]);
 
 maDashboardApp.run(['$rootScope', function($rootScope) {
     $rootScope.rollupTypes = [

@@ -1,7 +1,7 @@
-require(['angular', 'mango-3.0/maDashboardApp', 'jquery',
+require(['angular', 'mango-3.0/maDashboardApp', 'jquery', 'scripts/services/errorInterceptor.js',
          'bootstrap', 'angular-ui-router', 'oclazyload', 'angular-loading-bar', 'angular-bootstrap',
          'metisMenu'],
-         function(angular, maDashboardApp, $) {
+         function(angular, maDashboardApp, $, errorInterceptorFactory) {
 
 'use strict';
 /**
@@ -19,11 +19,17 @@ angular.module('sbAdminApp', [
     'angular-loading-bar',
     'maDashboardApp'
   ])
+  .factory('errorInterceptor', errorInterceptorFactory)
   .run(['$rootScope', '$state', function($rootScope, $state) {
 	  $rootScope.Math = Math;
+	  
+	  $rootScope.errors = [];
+	  $rootScope.clearErrors = function() {
+		  $rootScope.errors = [];
+	  }
 
 	  $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-		  if (error.status === 403) {
+		  if (error && (error.status === 401 || error.status === 403)) {
 			  event.preventDefault();
 			  $state.loginRedirect = toState;
 			  $state.go('login');
@@ -31,9 +37,11 @@ angular.module('sbAdminApp', [
 	  });
 	  
   }])
-  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
-      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
+      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
 
+	$httpProvider.interceptors.push('errorInterceptor');
+	  
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
@@ -47,10 +55,6 @@ angular.module('sbAdminApp', [
         templateUrl: 'views/dashboard/main.html',
         resolve: {
         	auth: ['$rootScope', 'User', function($rootScope, User) {
-        		$rootScope.user = User.current();
-        		return $rootScope.user.$promise;
-        	}],
-        	translations: ['$rootScope', 'User', function($rootScope, User) {
         		$rootScope.user = User.current();
         		return $rootScope.user.$promise;
         	}],

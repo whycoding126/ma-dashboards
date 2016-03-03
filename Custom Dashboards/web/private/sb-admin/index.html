@@ -6,6 +6,7 @@
 	    <meta name="description" content="">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	
+		<link rel="stylesheet" href="/resources/angular-csp.css"></link>
 	    <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" />
 	    <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.min.css" />
 	
@@ -16,15 +17,16 @@
 	    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
 	    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" type="text/css">
 
+    </head>
+   
+    <body ng-cloak>
+	    <div>
+	    	<div ui-view></div>
+	    </div>
+
 		<script src="/resources/require.js"></script>
 		<script src="/resources/loaderConfig.js"></script>
 		<script src="scripts/loaderConfig.js"></script>
 		<script src="scripts/app.js"></script>
-    </head>
-   
-    <body>
-	    <div>
-	    	<div ui-view></div>
-	    </div>
     </body>
 </html>

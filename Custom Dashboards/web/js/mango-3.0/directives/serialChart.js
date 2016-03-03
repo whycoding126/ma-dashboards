@@ -98,7 +98,7 @@ function serialChart() {
                 var point = $scope['series' + graphNum + 'Point'];
                 
                 var graphType = $scope['series' + graphNum + 'Type'] ||
-                	(point && point.plotType.toLowerCase()) ||
+                	(point && point.plotType && point.plotType.toLowerCase()) ||
                 	'smoothedLine';
                 
                 // change mango plotType to amCharts graphType

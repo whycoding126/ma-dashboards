@@ -7,10 +7,10 @@
 define(['angular', 'jquery', 'globalize', 'globalize/message', 'cldr/unresolved'], function(angular, $, Globalize) {
 'use strict';
 
-function translateFactory(mangoBaseUrl, $http) {
+function translateFactory($http) {
 	var Translate = function() {};
 	
-	var likelySubtagsUrl = mangoBaseUrl + '/resources/cldr-data/supplemental/likelySubtags.json';
+	var likelySubtagsUrl = '/resources/cldr-data/supplemental/likelySubtags.json';
 	Translate.likelySubtags = $http.get(likelySubtagsUrl).then(function(likelySubtags) {
 		Globalize.load(likelySubtags.data);
 	});
@@ -51,7 +51,7 @@ function translateFactory(mangoBaseUrl, $http) {
 				var namespace = namespaces[i];
 				var request = Translate.loadedNamespaces[namespace];
 				if (!request) {
-					request = $http.get(mangoBaseUrl + '/rest/v1/translations/' + encodeURIComponent(namespace), {
+					request = $http.get('/rest/v1/translations/' + encodeURIComponent(namespace), {
 						params: {
 							//language: 'XXX'
 						}
@@ -84,7 +84,7 @@ function translateFactory(mangoBaseUrl, $http) {
 	return Translate;
 }
 
-translateFactory.$inject = ['mangoBaseUrl', '$http'];
+translateFactory.$inject = ['$http'];
 
 return translateFactory;
 

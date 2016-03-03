@@ -10,8 +10,8 @@ define(['angular'], function(angular) {
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource, $http, mangoBaseUrl) {
-    var Point = $resource(mangoBaseUrl + '/rest/v1/data-points/:xid', {
+function PointFactory($resource, $http) {
+    var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
         query: {
@@ -27,7 +27,7 @@ function PointFactory($resource, $http, mangoBaseUrl) {
             cache: true
         },
         rql: {
-        	url: mangoBaseUrl + '/rest/v1/data-points?:query',
+        	url: '/rest/v1/data-points?:query',
             method: 'GET',
             isArray: true,
             transformResponse: function(data, fn, code) {
@@ -40,7 +40,7 @@ function PointFactory($resource, $http, mangoBaseUrl) {
             cache: true
         },
         getById: {
-            url: mangoBaseUrl + '/rest/v1/data-points/by-id/:id',
+            url: '/rest/v1/data-points/by-id/:id',
             method: 'GET',
             isArray: false,
             withCredentials: true,
@@ -66,7 +66,7 @@ function PointFactory($resource, $http, mangoBaseUrl) {
     		};
     	}
     	
-    	var url = mangoBaseUrl + "/rest/v1/point-values/" + encodeURIComponent(this.xid);
+    	var url = '/rest/v1/point-values/' + encodeURIComponent(this.xid);
     	return $http.put(url, value, {
     		params: {
     			'unitConversion': options.converted
@@ -84,7 +84,7 @@ function PointFactory($resource, $http, mangoBaseUrl) {
     return Point;
 }
 
-PointFactory.$inject = ['$resource', '$http', 'mangoBaseUrl'];
+PointFactory.$inject = ['$resource', '$http'];
 return PointFactory;
 
 }); // define

@@ -7,7 +7,7 @@
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
-function pointValues($http, $parse, Point, mangoBaseUrl) {
+function pointValues($http, $parse, Point) {
     return {
         restrict: 'E',
         scope: {
@@ -28,7 +28,7 @@ function pointValues($http, $parse, Point, mangoBaseUrl) {
             function doQuery() {
                 if (!$scope.point || !$scope.point.xid) return;
                 
-                var url = mangoBaseUrl + '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
+                var url = '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
                     '/statistics';
                 var params = [];
                 
@@ -139,7 +139,7 @@ function pointValues($http, $parse, Point, mangoBaseUrl) {
     };
 }
 
-pointValues.$inject = ['$http', '$parse', 'Point', 'mangoBaseUrl'];
+pointValues.$inject = ['$http', '$parse', 'Point'];
 return pointValues;
 
 }); // define
