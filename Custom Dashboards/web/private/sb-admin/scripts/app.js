@@ -164,6 +164,14 @@ angular.module('sbAdminApp', [
             }]
         }
     })
+    .state('dashboard.examples.angular', {
+        templateUrl:'views/examples/angular.html',
+        url:'/angular'
+    })
+    .state('dashboard.examples.pointList', {
+        templateUrl:'views/examples/pointList.html',
+        url:'/pointList'
+    })
     .state('dashboard.examples.liveValues', {
         templateUrl:'views/examples/liveValues.html',
         url:'/liveValues'
@@ -183,6 +191,14 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.switchImage', {
         templateUrl:'views/examples/switchImage.html',
         url:'/switchImage'
+    })
+    .state('dashboard.examples.bars', {
+        templateUrl:'views/examples/bars.html',
+        url:'/bars'
+    })
+    .state('dashboard.examples.gauges', {
+        templateUrl:'views/examples/gauges.html',
+        url:'/gauges'
     })
     .state('dashboard.examples.tanks', {
         templateUrl:'views/examples/tanks.html',

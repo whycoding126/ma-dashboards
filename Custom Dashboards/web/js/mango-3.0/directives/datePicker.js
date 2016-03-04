@@ -9,9 +9,10 @@ define(['require', 'jquery', 'jquery-ui/jquery.datetimepicker'], function(requir
 
 function datePicker() {
     return {
-        restrict: 'A',
         scope: {
         },
+        replace: true,
+        template: '<input type="text">',
         link: function ($scope, $element, attributes) {
         	if ($('#datetimpicker-style').length === 0) {
         		var url = require.toUrl('jquery-ui/jquery.datetimepicker.css');

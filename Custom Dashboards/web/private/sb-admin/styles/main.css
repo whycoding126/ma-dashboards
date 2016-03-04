@@ -119,7 +119,7 @@ background-color: #eee;
 	resize: vertical;
 	overflow: auto;
 	padding-bottom: 10px;
-	min-height: 200px;
+	min-height: 400px;
 }
 
 [live-editor] [ui-ace] {

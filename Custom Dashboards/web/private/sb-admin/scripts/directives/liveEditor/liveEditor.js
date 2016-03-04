@@ -23,7 +23,7 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 					useWrapMode : true,
 					showGutter: false,
 					theme:'chrome',
-					mode: 'xml',
+					mode: 'html',
 					onLoad: function(editor_) {
 						editor = editor_;
 						editor.$blockScrolling = Infinity;
