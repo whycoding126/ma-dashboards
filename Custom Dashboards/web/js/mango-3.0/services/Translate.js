@@ -51,7 +51,12 @@ function translateFactory($http, $q) {
 				var namespace = namespaces[i];
 				var request = Translate.loadedNamespaces[namespace];
 				if (!request) {
-					request = $http.get('/rest/v1/translations/' + encodeURIComponent(namespace), {
+					var translationsUrl = '/rest/v1/translations/';
+					if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
+						translationsUrl += 'public/';
+					}
+					
+					request = $http.get(translationsUrl + encodeURIComponent(namespace), {
 						params: {
 							//language: 'XXX'
 						}

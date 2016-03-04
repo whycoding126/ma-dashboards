@@ -158,7 +158,8 @@ angular.module('sbAdminApp', [
             		return $ocLazyLoad.load(
             			['scripts/directives/liveEditor/liveEditor.js',
             			 'scripts/directives/liveEditor/livePreview.js',
-            			 'scripts/directives/liveEditor/dualPaneEditor.js',]
+            			 'scripts/directives/liveEditor/dualPaneEditor.js',
+            			 'styles/examples.css']
                 	);
             	});
             }]
