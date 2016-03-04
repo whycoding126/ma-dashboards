@@ -30,6 +30,7 @@ define(['./services/Point',
         './directives/setPointValue',
         './directives/switchImg',
         './directives/calc',
+        './directives/intervalPicker',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
@@ -37,8 +38,8 @@ define(['./services/Point',
         'angular-resource'
 ], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, momentFilter, durationFilter, trFilter,
-        angular) {
+        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, momentFilter,
+        durationFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -69,6 +70,7 @@ maDashboardApp.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
 maDashboardApp.directive('maSetPointValue', setPointValue);
 maDashboardApp.directive('maSwitchImg', switchImg);
 maDashboardApp.directive('maCalc', calc);
+maDashboardApp.directive('maIntervalPicker', intervalPicker);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
@@ -80,6 +82,7 @@ maDashboardApp.config(['$httpProvider', function($httpProvider) {
 }]);
 
 maDashboardApp.run(['$rootScope', function($rootScope) {
+
     $rootScope.rollupTypes = [
         {type: 'NONE', nonNumeric: true, label: 'None'},
         {type: 'AVERAGE', nonNumeric: false, label: 'Average'},

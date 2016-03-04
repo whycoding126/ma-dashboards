@@ -169,6 +169,10 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/angular.html',
         url:'/angular'
     })
+    .state('dashboard.examples.pageTemplate', {
+        templateUrl:'views/examples/pageTemplate.html',
+        url:'/pageTemplate'
+    })
     .state('dashboard.examples.pointList', {
         templateUrl:'views/examples/pointList.html',
         url:'/pointList'
@@ -212,6 +216,14 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.lineChart',{
         templateUrl:'views/examples/lineChart.html',
         url:'/lineChart'
+    })
+    .state('dashboard.examples.barChart',{
+        templateUrl:'views/examples/barChart.html',
+        url:'/barChart'
+    })
+    .state('dashboard.examples.advancedChart',{
+        templateUrl:'views/examples/advancedChart.html',
+        url:'/advancedChart'
     })
     .state('dashboard.examples.stateChart',{
         templateUrl:'views/examples/stateChart.html',
