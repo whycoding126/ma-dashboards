@@ -74,6 +74,16 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li ng-class="{active: collapseVar==11}">
+                <a href="" ng-click="check(11)"><i class="fa fa-area-chart fa-fw"></i> <span ma-tr="dashboards.v3.dox.statistics"></span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=11">
+                	<li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.statisticsTable" ma-tr="dashboards.v3.dox.statisticsTable"></a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
             <li ng-class="{active: collapseVar==6}">
                 <a href="" ng-click="check(6)"><i class="fa fa-pencil-square-o fa-fw"></i> <span ma-tr="dashboards.v3.dox.settingPoint"></span><span
                         class="fa arrow"></span></a>

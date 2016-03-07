@@ -229,6 +229,10 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/stateChart.html',
         url:'/stateChart'
     })
+    .state('dashboard.examples.statisticsTable',{
+        templateUrl:'views/examples/statisticsTable.html',
+        url:'/statisticsTable'
+    })
     .state('dashboard.examples.setPoint', {
         templateUrl:'views/examples/setPoint.html',
         url:'/setPoint'

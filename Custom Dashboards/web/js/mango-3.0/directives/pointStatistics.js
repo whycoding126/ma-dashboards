@@ -19,7 +19,8 @@ function pointValues($http, $parse, Point) {
             to: '=?',
             toFilter: '@',
             refreshInterval: '@',
-            dateFormat: '@'
+            dateFormat: '@',
+            firstLast: '@'
         },
         template: '<span style="display:none"></span>',
         replace: true,
@@ -28,8 +29,14 @@ function pointValues($http, $parse, Point) {
             function doQuery() {
                 if (!$scope.point || !$scope.point.xid) return;
                 
-                var url = '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
+                var url;
+                if ($scope.firstLast === 'true') {
+                	url = '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
+                    '/first-last';
+                } else {
+                	url = '/rest/v1/point-values/' + encodeURIComponent($scope.point.xid) +
                     '/statistics';
+                }
                 var params = [];
                 
                 var now = moment();

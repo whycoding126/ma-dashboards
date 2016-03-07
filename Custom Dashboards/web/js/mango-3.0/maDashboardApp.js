@@ -75,6 +75,44 @@ maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
 
+maDashboardApp.filter('sum', function() {
+	return function(rowData) {
+		var sum = 0;
+		if (!rowData) {
+			return sum;
+		}
+		if (rowData.length !== undefined) {
+			for (var i = 0; i < rowData.length; i++) {
+				sum += rowData[i];
+			}
+		} else {
+			for (var key in rowData) {
+				sum += rowData[key];
+			}
+		}
+		return sum;
+	};
+});
+
+maDashboardApp.filter('sumColumn', function() {
+	return function(tableData, colNum) {
+		var sum = 0;
+		if (!tableData) {
+			return sum;
+		}
+		if (tableData.length !== undefined) {
+			for (var i = 0; i < tableData.length; i++) {
+				sum += tableData[i][colNum];
+			}
+		} else {
+			for (var key in tableData) {
+				sum += tableData[key][colNum];
+			}
+		}
+		return sum;
+	};
+});
+
 maDashboardApp.constant('mangoBaseUrl', '');
 
 maDashboardApp.config(['$httpProvider', function($httpProvider) {
