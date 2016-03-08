@@ -81,7 +81,7 @@ function pointValue($filter, pointEventManager, Point) {
             
             $scope.$watch('point.xid', function(newXid, oldXid) {
             	multiStateRendererMap = null;
-                if (oldXid) {
+                if (oldXid && oldXid !== newXid) {
                     pointEventManager.unsubscribe(oldXid, ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'], eventHandler);
                     delete $scope.displayValue;
                     $scope.valueStyle = {};
