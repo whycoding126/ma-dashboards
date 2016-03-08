@@ -13,8 +13,8 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             point: '=?',
             points: '=?',
             pointXid: '@',
-            values: '=',
-            valuesCombined: '=?',
+            values: '=?',
+            combinedValues: '=?',
             from: '=?',
             to: '=?',
             latest: '=?',
@@ -108,8 +108,8 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             				if (!$scope.values) $scope.values = {};
             				$scope.values[point.xid] = values;
             			}
-            			
             		}
+            		combineValues();
             	}, function() {
             		pendingRequest();
             		pendingRequest = null;
@@ -129,6 +129,50 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             	$scope.values = [];
             	$scope.points = [$scope.point];
             });
+            
+            function combineValues() {
+            	if ($scope.point) return;
+
+            	var combined = $scope.categoryFormat ? {} : [];
+            	
+            	for (var key in $scope.values) {
+            		var seriesValues = $scope.values[key];
+            		combine(combined, seriesValues, 'value_' + key);
+            	}
+                
+                // normalize sparse array or object into dense array
+                var output = [];
+                for (var category in combined) {
+                    output.push(combined[category]);
+                }
+                
+                // XXX sparse array to dense array doesnt result in sorted array
+                // manually sort here
+                if (output.length && typeof output[0].category === 'number') {
+                    output.sort(function(a,b) {
+                        return a.category - b.category;
+                    });
+                }
+                
+                $scope.combinedValues = output;
+            }
+            
+            function combine(output, newValues, valueField) {
+                if (!newValues) return;
+                
+                for (var i = 0; i < newValues.length; i++) {
+                    var value = newValues[i];
+                    var category = $scope.categoryFormat ?
+                            moment(value.timestamp).format($scope.categoryFormat) :
+                            value.timestamp;
+                    
+                    if (!output[category]) {
+                        output[category] = {category: category};
+                    }
+                    
+                    output[category][valueField] = value.value;
+                }
+            }
             
             function cancelAll(cancelFns) {
             	for (var i = 0; i < cancelFns.length; i++)
