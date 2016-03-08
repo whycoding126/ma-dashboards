@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header" ma-tr="dashboards.v3.dox.statisticsTable"></h1>
+        <h1 class="page-header" ma-tr="dashboards.v3.dox.statePieChart"></h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -16,6 +16,6 @@
 
 <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
 
-<ma-statistics-table statistics="statsObj"></ma-statistics-table>
+<ma-pie-chart style="height: 300px; width: 600px" values="statsObj.startsAndRuntimes" value-labels="myPoint.textRenderer" options="{depth3D:15,angle:30}"></ma-pie-chart>
 
 </dual-pane-editor>

@@ -185,14 +185,6 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/datePresets.html',
         url:'/datePresets'
     })
-    .state('dashboard.examples.datesRollups', {
-        templateUrl:'views/examples/datesRollups.html',
-        url:'/datesRollups'
-    })
-    .state('dashboard.examples.relativeDates', {
-        templateUrl:'views/examples/relativeDates.html',
-        url:'/relativeDates'
-    })
     .state('dashboard.examples.switchImage', {
         templateUrl:'views/examples/switchImage.html',
         url:'/switchImage'
@@ -228,6 +220,14 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.stateChart',{
         templateUrl:'views/examples/stateChart.html',
         url:'/stateChart'
+    })
+    .state('dashboard.examples.getStatistics',{
+        templateUrl:'views/examples/getStatistics.html',
+        url:'/getStatistics'
+    })
+    .state('dashboard.examples.statePieChart',{
+        templateUrl:'views/examples/statePieChart.html',
+        url:'/statePieChart'
     })
     .state('dashboard.examples.statisticsTable',{
         templateUrl:'views/examples/statisticsTable.html',

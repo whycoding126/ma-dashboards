@@ -25,12 +25,6 @@
                         <a ui-sref="dashboard.examples.datePresets" ma-tr="dashboards.v3.dox.datePresets"></a>
                     </li>
                     <li ui-sref-active="active">
-                        <a ui-sref="dashboard.examples.datesRollups" ma-tr="dashboards.v3.dox.datesRollups"></a>
-                    </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref="dashboard.examples.relativeDates" ma-tr="dashboards.v3.dox.relativeDates"></a>
-                    </li>
-                    <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.translation" ma-tr="dashboards.v3.dox.translation"></a>
                     </li>
                 </ul>
@@ -75,11 +69,17 @@
                 <!-- /.nav-second-level -->
             </li>
             <li ng-class="{active: collapseVar==11}">
-                <a href="" ng-click="check(11)"><i class="fa fa-area-chart fa-fw"></i> <span ma-tr="dashboards.v3.dox.statistics"></span><span
+                <a href="" ng-click="check(11)"><i class="fa fa-table fa-fw"></i> <span ma-tr="dashboards.v3.dox.statistics"></span><span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=11">
                 	<li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.getStatistics" ma-tr="dashboards.v3.dox.getStatistics"></a>
+                    </li>
+                    <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.statisticsTable" ma-tr="dashboards.v3.dox.statisticsTable"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.statePieChart" ma-tr="dashboards.v3.dox.statePieChart"></a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
