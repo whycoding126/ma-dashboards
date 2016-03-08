@@ -7,34 +7,163 @@
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
-function pointValues($http, $parse, pointEventManager, Point) {
+function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTimeout) {
     return {
-        restrict: 'E',
         scope: {
             point: '=?',
+            points: '=?',
             pointXid: '@',
             values: '=',
+            valuesCombined: '=?',
             from: '=?',
-            fromOutput: '=?',
-            fromFilter: '@',
             to: '=?',
-            toOutput: '=?',
-            toFilter: '@',
             latest: '=?',
             realtime: '=?',
-            refreshInterval: '@',
             rollup: '@',
             rollupInterval: '@',
             rendered: '@',
             dateFormat: '@'
         },
-        template: '<span style="display:none"></span>',
-        replace: true,
         controller: function ($scope, $element) {
+            var pendingRequest = null;
+            var tempValues = {};
+            var subscriptions = {};
+            
+            if ($scope.realtime === undefined) $scope.realtime = true;
+            
+            $scope.$on('$destroy', function() {
+            	unsubscribe();
+            });
+            
+            $scope.$watch('realtime', function(newValue, oldValue) {
+            	if (newValue !== oldValue) {
+            		if (newValue) {
+            			subscribe();
+            		} else {
+            			unsubscribe();
+            		}
+            	}
+            });
+
+            $scope.$watch(function() {
+            	var xids = [];
+            	if ($scope.points) {
+	            	for (var i = 0; i < $scope.points.length; i++)
+	            		xids.push($scope.points[i].xid);
+            	}
+            	
+            	return {
+            		xids: xids,
+            		from: $scope.from,
+            		to: $scope.to,
+            		latest: $scope.latest,
+            		rollup: $scope.rollup,
+            		rollupInterval: $scope.rollupInterval,
+            		rendered: $scope.rendered
+            	};
+            }, function(newValue, oldValue) {
+            	var changedXids = arrayDiff(newValue.xids, oldValue.xids);
+            	var i;
+            	
+            	if ($scope.realtime && $scope.latest) {
+	            	for (i = 0; i < changedXids.added.length; i++) {
+	            		subscribe(changedXids.added[i]);
+	            	}
+            	}
+            	
+            	for (i = 0; i < changedXids.removed.length; i++) {
+            		var removedXid = changedXids.removed[i];
+                	unsubscribe(removedXid);
+                	delete tempValues[removedXid];
+                	if (!$scope.point)
+                		delete $scope.values[removedXid];
+            	}
+            	
+            	if (!$scope.points || !$scope.points.length) return;
+
+            	var promises = [];
+            	var cancels = [];
+
+            	if (pendingRequest) pendingRequest();
+            	pendingRequest = cancelAll.bind(null, cancels);
+            	
+            	for (i = 0; i < $scope.points.length; i++) {
+            		var query = doQuery($scope.points[i]);
+            		promises.push(query.promise);
+            		cancels.push(query.cancel);
+            	}
+            	$q.all(promises).then(function(results) {
+            		pendingRequest = null;
+            		for (var i = 0; i < results.length; i++) {
+            			var point = results[i].point;
+            			var values = results[i].values;
+            			
+            			values.concat(tempValues[point.xid]);
+                        delete tempValues[point.xid];
+                        limitValues(values);
+            			
+            			if ($scope.point) {
+            				$scope.values = values;
+            			} else {
+            				if (!$scope.values) $scope.values = {};
+            				$scope.values[point.xid] = values;
+            			}
+            			
+            		}
+            	}, function() {
+            		pendingRequest();
+            		pendingRequest = null;
+            	});
+            }, true);
+
+            $scope.$watch('pointXid', function(newXid) {
+                if (!newXid || $scope.point) return;
+                $scope.point = Point.get({xid: newXid});
+            });
+
+            // for some reason the old value of the xid in the $watchGroup below is always undefined
+            // so can't do this check below
+            $scope.$watch('point.xid', function(newValue, oldValue) {
+            	if (newValue === oldValue) return;
+            	// point changed, clear out values to avoid strange looking style transitions on graphs
+            	$scope.values = [];
+            	$scope.points = [$scope.point];
+            });
+            
+            function cancelAll(cancelFns) {
+            	for (var i = 0; i < cancelFns.length; i++)
+            		cancelFns[i]();
+            }
+
+            function subscribe(xid) {
+            	if (!xid) {
+            		for (var i = 0; i < $scope.points.length; i++) {
+            			subscribe($scope.points[i].xid);
+            		}
+            	} else {
+            		if (subscriptions[xid]) return;
+            		pointEventManager.subscribe(xid, ['UPDATE'], eventHandler);
+                    subscriptions[xid] = true;
+            	}
+            }
+            
+            function unsubscribe(xid) {
+            	if (!xid) {
+            		for (var key in subscriptions) {
+            			unsubscribe(key);
+            		}
+            	} else if (subscriptions[xid]) {
+            		pointEventManager.unsubscribe(xid, ['UPDATE'], eventHandler);
+            		delete subscriptions[xid];
+            	}
+            }
+            
             function eventHandler(event, payload) {
-                if (!(payload.event == 'UPDATE' || payload.event == 'REGISTERED')) return;
-                if (payload.xid !== $scope.point.xid) return;
+                var xid = payload.xid;
+                
                 $scope.$apply(function() {
+                	if (!payload.value) return;
+                	
                     var dataType = $scope.point.pointLocator.dataType;
 
                     var item = {
@@ -47,46 +176,43 @@ function pointValues($http, $parse, pointEventManager, Point) {
                     } else if (dataType === 'NUMERIC') {
                     	item.value = payload.convertedValue;
                     }
+                    
+                    var destArray = $scope.point ? $scope.values : $scope.values[xid];
 
-                    if (requestPending || !$scope.values) {
-                        tempValues.push(item);
+                    if (pendingRequest || !destArray) {
+                    	if (!tempValues[xid]) tempValues[xid] = [];
+                    	tempValues[xid].push(item);
                     } else {
-                        $scope.values.push(item);
+                    	destArray.push(item);
                         
                         if ($scope.latest) {
-                            while ($scope.values.length > $scope.latest) {
-                                $scope.values.shift();
-                            }
+                        	limitValues(destArray);
                         }
                     }
                 });
             }
             
-            var requestPending = false;
-            var tempValues = [];
+            function limitValues(values) {
+            	while (values.length > $scope.latest) {
+            		values.shift();
+                }
+            }
             
-            function doQuery() {
+            function doQuery(point) {
             	var now, from, to;
             	
             	if (!$scope.latest) {
             		now = moment();
             		from = toMoment($scope.from, now);
             		to = toMoment($scope.to, now);
-	                from = filterMoment(from, $scope.fromFilter);
-	                to = filterMoment(to, $scope.toFilter);
-	                $scope.fromOutput = from;
-	                $scope.toOutput = to;
-            	} else {
-            		$scope.fromOutput = null;
-	                $scope.toOutput = null;
             	}
                 
-                if (!$scope.point || !$scope.point.xid) return;
+                if (!point || !point.xid) return;
 
-                var url = '/rest/v1/point-values/'  + encodeURIComponent($scope.point.xid);
+                var url = '/rest/v1/point-values/'  + encodeURIComponent(point.xid);
                 var params = [];
                 var reverseData = false;
-                var dataType = $scope.point.pointLocator.dataType;
+                var dataType = point.pointLocator.dataType;
 
                 if ($scope.latest) {
                     url += '/latest';
@@ -94,8 +220,7 @@ function pointValues($http, $parse, pointEventManager, Point) {
                     reverseData = true;
                 } else {
                     if (from.valueOf() === to.valueOf()) {
-                    	$scope.values = [];
-                    	return;
+                    	return $q.defer().resolve([]);
                     }
                     
                     params.push('from=' + encodeURIComponent(from.toISOString()));
@@ -131,16 +256,16 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 for (var i = 0; i < params.length; i++) {
                     url += (i === 0 ? '?' : '&') + params[i];
                 }
+
+    			var cancel = $q.defer();
+    			setTimeout(cancel.resolve, mangoDefaultTimeout);
                 
-                startRefreshTimer();
-                
-                requestPending = true;
                 var promise = $http.get(url, {
+                	timeout: cancel.promise,
                     headers: {
                         'Accept': 'application/json'
                     }
                 }).then(function(response) {
-                    requestPending = false;
                     var values = response.data;
                     
                     if (reverseData)
@@ -155,57 +280,23 @@ function pointValues($http, $parse, pointEventManager, Point) {
                         }
                     }
                     
-                    $scope.values = values;
-                    $scope.values.concat(tempValues);
-                    tempValues = [];
-                    
-                    if ($scope.latest) {
-                        while ($scope.values.length > $scope.latest) {
-                            $scope.values.shift();
-                        }
-                    }
-                    
-                    //angular.copy(response.data, $scope.values);
-                    // splice new data into start of array
-                    //Array.prototype.splice.apply($scope.values, [0,0].concat(response.data));
+                    return {
+                    	point: point,
+                    	values: values
+                    };
                 }, function() {
-                    requestPending = false;
-                    $scope.values = [];
-                    tempValues = [];
+                	return $q.when({
+                    	point: point,
+                    	values: []
+                    });
                 });
+                
+                return {
+                	promise: promise,
+                	cancel: cancel.resolve
+                };
             }
 
-            var subscribed = false;
-            if ($scope.realtime === undefined) {
-                $scope.realtime = true;
-            }
-            
-            $scope.$watch('pointXid', function() {
-                if (!$scope.pointXid || $scope.point) return;
-                $scope.point = Point.get({xid: $scope.pointXid});
-            });
-
-            // for some reason the old value of the xid in the $watchGroup below is always undefined
-            // so can't do this check below
-            $scope.$watch('point.xid', function(newValue, oldValue) {
-            	if (newValue === oldValue) return;
-            	// point changed, clear out values to avoid strange looking style transitions on graphs
-            	$scope.values = [];
-            });
-            
-            $scope.$watchGroup(['point.xid', 'realtime', 'from', 'to', 'latest','fromFilter', 'toFilter',
-                                'rollup', 'rollupInterval', 'rendered'],
-                    function(newValues, oldValues) {
-
-                if ($scope.realtime && $scope.point && $scope.point.xid && $scope.latest) {
-                    subscribe($scope.point.xid);
-                } else {
-                    unsubscribe();
-                }
-
-                doQuery();
-            }, true);
-            
             function toMoment(input, now) {
                 if (!input || input === 'now') return now;
                 if (typeof input === 'string') {
@@ -213,83 +304,30 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 }
                 return moment(input);
             }
-            
-            function filterMoment(m, filterString) {
-                if (!filterString) return m;
-                var fn = $parse('date|' + filterString);
-                var scope = {date: m};
-                return fn(scope);
-            }
-            
-            $scope.$watch('refreshInterval', function() {
-            	startRefreshTimer();
-            });
-            
-            var timerId;
-            function startRefreshTimer() {
-                cancelRefreshTimer();
-                
-                if (isEmpty($scope.refreshInterval)) return;
-                
-                var fromIsRelative = !$scope.from || $scope.from === 'now';
-                var toIsRelative = !$scope.to || $scope.to === 'now';
-                if (!fromIsRelative && !toIsRelative) return;
-                
-                var parts = $scope.refreshInterval.split(' ');
-                if (parts.length < 2) return;
-                
-                if (isEmpty(parts[0]) || isEmpty(parts[1])) return;
-                
-                var duration = moment.duration(parseFloat(parts[0]), parts[1]);
-                var millis = duration.asMilliseconds();
-                
-                // dont allow continuous loops
-                if (millis === 0) return;
-                
-                timerId = setInterval(function() {
-                    $scope.$apply(function() {
-                        doQuery();
-                    });
-                }, millis);
-            }
-            
+
             // test for null, undefined or whitespace
             function isEmpty(str) {
             	return !str || /^\s*$/.test(str);
             }
             
-            function cancelRefreshTimer() {
-                if (timerId) {
-                    clearInterval(timerId);
-                    timerId = null;
-                }
-            }
-            
-            $scope.$on('$destroy', function() {
-                unsubscribe();
-                cancelRefreshTimer();
-            });
-            
-            var subscribedXid = null;
-            
-            function subscribe(xid) {
-                if (!xid || xid === subscribedXid) return;
-                unsubscribe();
-                pointEventManager.subscribe(xid, 'UPDATE', eventHandler);
-                subscribedXid = xid;
-            }
-            
-            function unsubscribe() {
-                if (subscribedXid) {
-                    pointEventManager.unsubscribe(subscribedXid, 'UPDATE', eventHandler);
-                    subscribedXid = null;
-                }
+            function arrayDiff(newArray, oldArray) {
+            	if (newArray === undefined) newArray = [];
+            	if (oldArray === undefined) oldArray = [];
+            	
+            	var added = angular.element(newArray).not(oldArray);
+            	var removed = angular.element(oldArray).not(newArray);
+
+            	return {
+            		added: added,
+            		removed: removed,
+            		changed: !!(added.length || removed.length)
+            	};
             }
         }
     };
 }
 
-pointValues.$inject = ['$http', '$parse', 'PointEventManager', 'Point'];
+pointValues.$inject = ['$http', '$parse', 'PointEventManager', 'Point', '$q', 'mangoDefaultTimeout'];
 return pointValues;
 
 }); // define

@@ -7,18 +7,21 @@
 define([], function() {
 'use strict';
 
-function mangoHttpInterceptorFactory(mangoBaseUrl) {
+function mangoHttpInterceptorFactory(mangoBaseUrl, mangoDefaultTimeout, $q) {
     return {
     	request: function(config) {
     		if (config.url.indexOf('/') === 0) {
     			config.url = mangoBaseUrl + config.url;
+    		}
+    		if (!config.timeout) {
+    			config.timeout = mangoDefaultTimeout;
     		}
     		return config;
     	}
     };
 }
 
-mangoHttpInterceptorFactory.$inject = ['mangoBaseUrl'];
+mangoHttpInterceptorFactory.$inject = ['mangoBaseUrl', 'mangoDefaultTimeout', '$q'];
 
 return mangoHttpInterceptorFactory;
 

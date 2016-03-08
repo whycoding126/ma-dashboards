@@ -31,6 +31,7 @@ define(['./services/Point',
         './directives/switchImg',
         './directives/calc',
         './directives/intervalPicker',
+        './directives/pointQuery',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
@@ -38,7 +39,7 @@ define(['./services/Point',
         'angular-resource'
 ], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, momentFilter,
+        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, momentFilter,
         durationFilter, trFilter, angular) {
 'use strict';
 
@@ -71,6 +72,7 @@ maDashboardApp.directive('maSetPointValue', setPointValue);
 maDashboardApp.directive('maSwitchImg', switchImg);
 maDashboardApp.directive('maCalc', calc);
 maDashboardApp.directive('maIntervalPicker', intervalPicker);
+maDashboardApp.directive('maPointQuery', pointQuery);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
@@ -114,6 +116,7 @@ maDashboardApp.filter('sumColumn', function() {
 });
 
 maDashboardApp.constant('mangoBaseUrl', '');
+maDashboardApp.constant('mangoDefaultTimeout', 10000);
 
 maDashboardApp.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');

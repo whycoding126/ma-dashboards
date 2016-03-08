@@ -28,7 +28,6 @@ function pointValue($filter, pointEventManager, Point) {
             if (displayType === 'none') $scope.style.display = 'none';
             
             function eventHandler(event, payload) {
-                //if (!(payload.event == 'UPDATE' || payload.event == 'REGISTERED')) return;
                 if (payload.xid !== $scope.point.xid) return;
 
                 $scope.$apply(function() {
