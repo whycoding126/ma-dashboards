@@ -35,11 +35,19 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 if (!(payload.event == 'UPDATE' || payload.event == 'REGISTERED')) return;
                 if (payload.xid !== $scope.point.xid) return;
                 $scope.$apply(function() {
+                    var dataType = $scope.point.pointLocator.dataType;
+
                     var item = {
-                        value : payload.convertedValue,
+                        value : payload.value.value,
                         timestamp : payload.value.timestamp
                     };
                     
+                    if ($scope.rendered === 'true') {
+                    	item.value = payload.renderedValue;
+                    } else if (dataType === 'NUMERIC') {
+                    	item.value = payload.convertedValue;
+                    }
+
                     if (requestPending || !$scope.values) {
                         tempValues.push(item);
                     } else {
@@ -79,11 +87,10 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 var params = [];
                 var reverseData = false;
                 var dataType = $scope.point.pointLocator.dataType;
-                
+
                 if ($scope.latest) {
                     url += '/latest';
                     params.push('limit=' + encodeURIComponent($scope.latest));
-                    params.push('unitConversion=true');
                     reverseData = true;
                 } else {
                     if (from.valueOf() === to.valueOf()) {
@@ -112,13 +119,13 @@ function pointValues($http, $parse, pointEventManager, Point) {
                         params.push('timePeriodType=' + encodeURIComponent(timePeriodType));
                         params.push('timePeriods=' + encodeURIComponent(timePeriods));
                     }
-                    
-                    if (dataType === 'NUMERIC' || $scope.rendered === 'true') {
-                        // TODO unit conversion not working with rollups
-                        // use rendered and parse strings
-                        //params.push('unitConversion=true');
-                        params.push('useRendered=true');
-                    }
+                }
+                
+                if (dataType === 'NUMERIC' || $scope.rendered === 'true') {
+                    // TODO unit conversion not working with rollups
+                    // use rendered and parse strings
+                    //params.push('unitConversion=true');
+                    params.push('useRendered=true');
                 }
                 
                 for (var i = 0; i < params.length; i++) {
@@ -132,7 +139,7 @@ function pointValues($http, $parse, pointEventManager, Point) {
                     headers: {
                         'Accept': 'application/json'
                     }
-                }).then(function(response) {    
+                }).then(function(response) {
                     requestPending = false;
                     var values = response.data;
                     
@@ -187,7 +194,7 @@ function pointValues($http, $parse, pointEventManager, Point) {
             });
             
             $scope.$watchGroup(['point.xid', 'realtime', 'from', 'to', 'latest','fromFilter', 'toFilter',
-                                'rollup', 'rollupInterval'],
+                                'rollup', 'rollupInterval', 'rendered'],
                     function(newValues, oldValues) {
 
                 if ($scope.realtime && $scope.point && $scope.point.xid && $scope.latest) {
@@ -195,7 +202,7 @@ function pointValues($http, $parse, pointEventManager, Point) {
                 } else {
                     unsubscribe();
                 }
-                
+
                 doQuery();
             }, true);
             

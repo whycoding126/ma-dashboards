@@ -181,9 +181,21 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/liveValues.html',
         url:'/liveValues'
     })
+    .state('dashboard.examples.filters', {
+        templateUrl:'views/examples/filters.html',
+        url:'/filters'
+    })
     .state('dashboard.examples.datePresets', {
         templateUrl:'views/examples/datePresets.html',
         url:'/datePresets'
+    })
+    .state('dashboard.examples.pointValues', {
+        templateUrl:'views/examples/pointValues.html',
+        url:'/pointValues'
+    })
+    .state('dashboard.examples.latestPointValues', {
+        templateUrl:'views/examples/latestPointValues.html',
+        url:'/latestPointValues'
     })
     .state('dashboard.examples.switchImage', {
         templateUrl:'views/examples/switchImage.html',

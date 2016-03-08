@@ -18,7 +18,7 @@
 
 <label>Date/time point value:</label> <ma-point-value point="myPoint" display-type="dateTime"></ma-point-value><br>
 
-<label>Format time using <a href="http://momentjs.com/">Moment.js</a> format string:</label>
+<label>Format time using <a href="http://momentjs.com/docs/#/displaying/">Moment.js format string</a>:</label>
 <ma-point-value point="myPoint" display-type="dateTime" date-time-format="LTS"></ma-point-value><br>
 
 <label>Get point value but don't display it: </label> <ma-point-value point="myPoint" display-type="none"></ma-point-value><br>
@@ -27,8 +27,6 @@
 <p><strong>Note: You still need to have a &lt;ma-point-value&gt; tag for these to work. Use display type "none".</strong></p>
 
 <p>Raw point value is {{myPoint.value}} at epoch timestamp {{myPoint.time}}.</p>
-<p>Unit converted point value is {{myPoint.convertedValue}} at time {{myPoint.time | moment:'format':'LLL'}}.</p>
-<p>Unit converted point value rounded to 4 decimal places is {{myPoint.convertedValue | number:4}}.</p>
 <p>Rendered point value is <span ng-style="{color:myPoint.renderedColor}">{{myPoint.renderedValue}}</span>.</p>
 
 </dual-pane-editor>
