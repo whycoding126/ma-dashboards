@@ -296,8 +296,8 @@
 			<td><ma-calc input="row10Col11.last.value - row10Col11.first.value" output="tableData[10][11]">{{tableData[10][11] | number:2}}</ma-calc></td>
 			<td><ma-calc input="tableData[10] | sum" output="rowTotals[10]">{{rowTotals[10] | number:2}}</ma-calc></td>
 		</tr>
-		<tr class="info">
-			<td>Total</td>
+		<tr>
+			<td>Totals</td>
 			<td><ma-calc input="tableData | sumColumn:01" output="colTotals[01]">{{colTotals[01] | number:2}}</ma-calc></td>
 			<td><ma-calc input="tableData | sumColumn:02" output="colTotals[02]">{{colTotals[02] | number:2}}</ma-calc></td>
 			<td><ma-calc input="tableData | sumColumn:03" output="colTotals[03]">{{colTotals[03] | number:2}}</ma-calc></td>
@@ -309,7 +309,14 @@
 			<td><ma-calc input="tableData | sumColumn:09" output="colTotals[09]">{{colTotals[09] | number:2}}</ma-calc></td>
 			<td><ma-calc input="tableData | sumColumn:10" output="colTotals[10]">{{colTotals[10] | number:2}}</ma-calc></td>
 			<td><ma-calc input="tableData | sumColumn:11" output="colTotals[11]">{{colTotals[11] | number:2}}</ma-calc></td>
-			<td><ma-calc input="rowTotals | sum" output="grandTotal">{{grandTotal | number:2}}</ma-calc></td>
+			<td rowspan="2" style="background-color:DarkGray">GESAMTVERBRAUCH<br><ma-calc input="rowTotals | sum" output="grandTotal">{{grandTotal | number:2}}</ma-calc></td>
+		</tr>
+		<tr>
+			<td>Group totals</td>
+			<td colspan="3" style="background-color:IndianRed"><ma-calc input="colTotals[1] + colTotals[2] + colTotals[3]" output="group1Total">{{group1Total | number:2}}</ma-calc></td>
+			<td style="background-color:LightSkyBlue"><ma-calc input="colTotals[4]" output="group2Total">{{group2Total | number:2}}</ma-calc></td>
+			<td colspan="5" style="background-color:Khaki"><ma-calc input="colTotals[5] + colTotals[6] + colTotals[7] + colTotals[8] + colTotals[9]" output="group3Total">{{group3Total | number:2}}</ma-calc></td>
+			<td colspan="2" style="background-color:DarkSeaGreen" ><ma-calc input="colTotals[10] + colTotals[11]" output="group4Total">{{group4Total | number:2}}</ma-calc></td>
 		</tr>
 	</tbody>
 </table>
