@@ -89,8 +89,8 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                 		for (var j = 0; j < combined.length; j++) {
                 			var item = combined[j];
                 			delete item['value_' + removedXid];
-                			if (Object.keys(item).length <= 1) {
-                				combined.splice(j, 1);
+                			if (numValueKeys(item) === 0) {
+                				combined.splice(j--, 1);
                 			}
                 		}
                 	}
@@ -400,6 +400,14 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             		removed: removed,
             		changed: !!(added.length || removed.length)
             	};
+            }
+            
+            function numValueKeys(obj) {
+            	var count = 0;
+            	for (var key in obj) {
+            		if (key.indexOf('value') === 0) count++;
+            	}
+            	return count;
             }
         }
     };

@@ -76,19 +76,22 @@ function serialChart() {
             function watchValues(newValues, oldValues) {
                 chart.dataProvider = newValues;
                 chart.validateData();
-                console.log('watchValues validateData');
             }
             
             function watchPoints(newPoints, oldPoints) {
             	var i, point, graphNum;
             	chart.graphs = [];
             	
-            	for (i = 0; i < newPoints.length; i++) {
-            		point = newPoints[i];
-            		if (!point) continue;
-            		setupGraph(i + 1, point);
+            	if (newPoints) {
+	            	for (i = 0; i < newPoints.length; i++) {
+	            		point = newPoints[i];
+	            		if (!point) continue;
+	            		setupGraph(i + 1, point);
+	            	}
             	}
+            	
             	sortGraphs();
+                chart.validateData();
             }
 
             function findGraph(propName, prop, removeGraph) {
@@ -107,7 +110,6 @@ function serialChart() {
             	setupGraph(graphNum);
             	sortGraphs();
             	chart.validateData();
-                console.log('typeOrTitleChanged validateData');
             }
             
             function valuesChanged(graphNum, newValues, oldValues) {
@@ -213,7 +215,6 @@ function serialChart() {
                 
                 chart.dataProvider = output;
                 chart.validateData();
-                console.log('updateValues validateData');
             }
             
             function isAllUndefined(a) {

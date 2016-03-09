@@ -19,7 +19,7 @@
 
 <div class="form-group col-md-12">
 	<label>Time period</label>
-    <ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_30_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
+    <ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
 </div>
 
 <ma-point-query query="dataSourceName=like=*{{dsName}}*&name=like=*{{ptName}}*" points="points"></ma-point-query>
@@ -27,9 +27,19 @@
 <ma-point-values points="points" combined-values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>
 
-<ma-serial-chart style="height: 300px; width: 100%"
-	values="combined" points="points"
-	options="{legend:{}}">
-</ma-serial-chart>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Time</th>
+			<th ng-repeat="point in points">{{point.name}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="value in combined">
+			<td>{{value.timestamp | moment:'format':'ll LTS'}}</td>
+			<td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
+		</tr>
+	</tbody>
+</table>
 
 </dual-pane-editor>
