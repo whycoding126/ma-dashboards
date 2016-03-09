@@ -4,16 +4,20 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
+define(['amcharts/serial', 'jquery', 'moment', '../lodash.min'], function(AmCharts, $, moment, _) {
 'use strict';
 
 function serialChart() {
 	var MAX_SERIES = 10;
+	
 	var scope = {
 		options: '=?',
-	    categoryFormat: '@',
-	    stackType: '@'
+	    timeFormat: '@',
+	    stackType: '@',
+	    values: '=?',
+	    points: '=?'
 	};
+	
 	for (var j = 1; j <= MAX_SERIES; j++) {
 		scope['series' + j + 'Values'] = '=';
 		scope['series' + j + 'Type'] = '@';
@@ -27,10 +31,10 @@ function serialChart() {
         replace: true,
         scope: scope,
         template: '<div class="amchart"></div>',
-        link: function ($scope, $element, attributes) {
+        link: function ($scope, $element, attrs) {
             var options = defaultOptions();
 
-            if ($scope.categoryFormat) {
+            if ($scope.timeFormat) {
                 options.categoryAxis.parseDates = false;
             }
             
@@ -38,64 +42,96 @@ function serialChart() {
                 options.valueAxes[0].stackType = $scope.stackType;
             }
             
+            var valueArray = !!attrs.values;
+            
             options = $.extend(options, $scope.options);
             
             var chart = AmCharts.makeChart($element[0], options);
             
-            for (var i = 1; i <= MAX_SERIES; i++) {
-        		$scope.$watchGroup([
-        		    'series' + i + 'Type',
-        		    'series' + i + 'Title',
-        		    'series' + i + 'Color',
-        		    'series' + i + 'Point'
-        		], typeOrTitleChanged.bind(null, i));
-        		
-        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
-        	}
+            var i;
+            if (valueArray) {
+            	$scope.$watchCollection('values', watchValues);
+            	$scope.$watchCollection('points', watchPoints);
+            	
+            	for (i = 1; i <= MAX_SERIES; i++) {
+	        		$scope.$watchGroup([
+	        		    'series' + i + 'Type',
+	        		    'series' + i + 'Title',
+	        		    'series' + i + 'Color'
+	        		], typeOrTitleChanged.bind(null, i));
+	        	}
+            } else {
+            	for (i = 1; i <= MAX_SERIES; i++) {
+	        		$scope.$watchGroup([
+	        		    'series' + i + 'Type',
+	        		    'series' + i + 'Title',
+	        		    'series' + i + 'Color',
+	        		    'series' + i + 'Point'
+	        		], typeOrTitleChanged.bind(null, i));
+	        		
+	        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
+	        	}
+            }
+            
+            function watchValues(newValues, oldValues) {
+                chart.dataProvider = newValues;
+                chart.validateData();
+                console.log('watchValues validateData');
+            }
+            
+            function watchPoints(newPoints, oldPoints) {
+            	var i, point, graphNum;
+            	chart.graphs = [];
+            	
+            	for (i = 0; i < newPoints.length; i++) {
+            		point = newPoints[i];
+            		if (!point) continue;
+            		setupGraph(i + 1, point);
+            	}
+            	sortGraphs();
+            }
+
+            function findGraph(propName, prop, removeGraph) {
+                for (var i = 0; i < chart.graphs.length; i++) {
+                    if (chart.graphs[i][propName] === prop) {
+                    	var graph = chart.graphs[i];
+                    	if (removeGraph) chart.graphs.splice(i, 1);
+                    	return graph;
+                    }
+                }
+            }
             
             function typeOrTitleChanged(graphNum, values) {
-            	var somethingSet = false;
-            	for (var i in values) {
-            		if (values[i]) {
-            			somethingSet = true;
-            			break;
-            		}
-            	}
-            	if (!somethingSet) return;
+            	if (isAllUndefined(values)) return;
             	
             	setupGraph(graphNum);
+            	sortGraphs();
             	chart.validateData();
+                console.log('typeOrTitleChanged validateData');
             }
             
-            function valuesChanged(graphNum, newValue) {
-            	if (!newValue) removeGraph(graphNum);
-                else setupGraph(graphNum);
+            function valuesChanged(graphNum, newValues, oldValues) {
+            	if (newValues === oldValues && newValues === undefined) return;
+            	
+            	if (!newValues) {
+            		findGraph('graphNum', graphNum, true);
+            	} else  {
+                	setupGraph(graphNum);
+                	sortGraphs();
+                }
                 updateValues();
             }
-            
-            function removeGraph(graphNum) {
-                for (var i = 0; i < chart.graphs.length; i++) {
-                    if (chart.graphs[i].valueField === "value" + graphNum) {
-                        chart.graphs.splice(i, 1);
-                        break;
-                    }
+
+            function setupGraph(graphNum, point) {
+            	if (!point) {
+                	if (valueArray) {
+                		point = $scope.points[graphNum - 1];
+                	} else {
+                		point = $scope['series' + graphNum + 'Point'];
+                	}
                 }
-            }
-            
-            function findGraph(graphNum) {
-                var graph;
-                for (var i = 0; i < chart.graphs.length; i++) {
-                    if (chart.graphs[i].id === "series-" + graphNum) {
-                        graph = chart.graphs[i];
-                        break;
-                    }
-                }
-                return graph;
-            }
-            
-            function setupGraph(graphNum) {
-                var graph = findGraph(graphNum);
-                var point = $scope['series' + graphNum + 'Point'];
+            	
+                var graph = findGraph('graphNum', graphNum);
                 
                 var graphType = $scope['series' + graphNum + 'Type'] ||
                 	(point && point.plotType && point.plotType.toLowerCase()) ||
@@ -111,8 +147,12 @@ function serialChart() {
                     graph = {};
                     chart.graphs.push(graph);
                 }
-                $.extend(graph, graphType === 'column' ? defaultColumnGraph(graphNum) : defaultLineGraph(graphNum));
-                graph.valueField = 'value' + graphNum;
+                $.extend(graph, graphType === 'column' ? defaultColumnGraph() : defaultLineGraph());
+
+                graph.graphNum = graphNum;
+                graph.id = 'series-' + graphNum;
+                graph.xid = point ? point.xid : null;
+                graph.valueField = valueArray && point ? 'value_' + point.xid : 'value' + graphNum;
                 graph.title = $scope['series' + graphNum + 'Title'] ||
                 	(point && point.name) ||
                 	('Series ' + graphNum);
@@ -124,13 +164,11 @@ function serialChart() {
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
                 }
-                
-                chart.graphs.sort(function(a, b) {
-                    if (a.id < b.id)
-                        return -1;
-                      if (a.id > b.id)
-                        return 1;
-                      return 0;
+            }
+            
+            function sortGraphs() {
+            	chart.graphs.sort(function(a, b) {
+                    return a.graphNum - b.graphNum;
                 });
             }
             
@@ -139,20 +177,20 @@ function serialChart() {
                 
                 for (var i = 0; i < newValues.length; i++) {
                     var value = newValues[i];
-                    var category = $scope.categoryFormat ?
-                            moment(value.timestamp).format($scope.categoryFormat) :
+                    var timestamp = $scope.timeFormat ?
+                            moment(value.timestamp).format($scope.timeFormat) :
                             value.timestamp;
                     
-                    if (!output[category]) {
-                        output[category] = {category: category};
+                    if (!output[timestamp]) {
+                        output[timestamp] = {timestamp: timestamp};
                     }
                     
-                    output[category][valueField] = value.value;
+                    output[timestamp][valueField] = value.value;
                 }
             }
             
             function updateValues() {
-            	var values = $scope.categoryFormat ? {} : [];
+            	var values = $scope.timeFormat ? {} : [];
             	
             	for (var i = 1; i <= MAX_SERIES; i++) {
             		var seriesValues = $scope['series' + i + 'Values'];
@@ -161,37 +199,43 @@ function serialChart() {
                 
                 // normalize sparse array or object into dense array
                 var output = [];
-                for (var category in values) {
-                    output.push(values[category]);
+                for (var timestamp in values) {
+                    output.push(values[timestamp]);
                 }
                 
                 // XXX sparse array to dense array doesnt result in sorted array
                 // manually sort here
-                if (output.length && typeof output[0].category === 'number') {
+                if (output.length && typeof output[0].timestamp === 'number') {
                     output.sort(function(a,b) {
-                        return a.category - b.category;
+                        return a.timestamp - b.timestamp;
                     });
                 }
                 
                 chart.dataProvider = output;
                 chart.validateData();
+                console.log('updateValues validateData');
+            }
+            
+            function isAllUndefined(a) {
+            	for (var i = 0; i < a.length; i++) {
+            		if (a[i] !== undefined) return false;
+            	}
+            	return true;
             }
         }
     };
 }
 
-function defaultLineGraph(graphNum) {
+function defaultLineGraph() {
     return {
-        id: "series-" + graphNum,
         fillAlphas: 0,
         lineAlpha: 0.8,
         lineThickness: 2.0
     };
 }
 
-function defaultColumnGraph(graphNum) {
+function defaultColumnGraph() {
     return {
-        id: "series-" + graphNum,
         fillAlphas: 0.8,
         lineAlpha: 0.9,
         lineThickness: 1
@@ -215,7 +259,7 @@ function defaultOptions() {
         startDuration: 0,
         graphs: [],
         plotAreaFillAlphas: 0.0,
-        categoryField: "category",
+        categoryField: "timestamp",
         'export': {
             enabled: false
         }

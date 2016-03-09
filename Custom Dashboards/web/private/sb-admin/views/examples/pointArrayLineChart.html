@@ -8,7 +8,7 @@
 <dual-pane-editor>
 
 <div class="form-inline">
-    <input class="form-control" ng-init="name='bin'" ng-model="name">
+    <input class="form-control" ng-init="name='bin'" ng-model="name" ng-model-options="{debounce:1000}">
 	<ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_5_MINUTES" update-interval="1 minutes"></ma-date-range-picker>
 	<input class="form-control" ma-date-picker="" ng-model="from">
 	<input class="form-control" ma-date-picker="" ng-model="to">
@@ -16,7 +16,7 @@
 
 <ma-point-query query="name=like=*{{name}}*" points="points"></ma-point-query>
 
-<ma-point-values points="points" values="pointValues" combined-values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
+<ma-point-values points="points" combined-values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>
 
 <table class="table">
@@ -28,19 +28,14 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="value in combined">
-			<td>{{value.category | moment:'format':'ll LTS'}}</td>
-			<td ng-repeat="point in points">{{value['value_'+point.xid]}}</td>
+			<td>{{value.timestamp | moment:'format':'ll LTS'}}</td>
+			<td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
 		</tr>
 	</tbody>
 </table>
 
 <ma-serial-chart style="height: 300px; width: 100%"
-	series-1-values="pointValues[points[0].xid]" series-1-point="points[0]"
-	series-2-values="pointValues[points[1].xid]" series-2-point="points[1]"
-	series-3-values="pointValues[points[2].xid]" series-3-point="points[2]"
-	series-4-values="pointValues[points[3].xid]" series-4-point="points[3]"
-	series-5-values="pointValues[points[4].xid]" series-5-point="points[4]"
-	series-6-values="pointValues[points[5].xid]" series-6-point="points[5]"
+	values="combined" points="points"
 	options="{legend:{}}">
 </ma-serial-chart>
 

@@ -22,13 +22,15 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             rollup: '@',
             rollupInterval: '@',
             rendered: '@',
-            dateFormat: '@'
+            toFromFormat: '@'
         },
-        controller: function ($scope, $element) {
+        link: function ($scope, $element, attrs) {
             var pendingRequest = null;
             var tempValues = {};
             var subscriptions = {};
-            
+
+            var singlePoint = !attrs.points;
+            var doCombine = !singlePoint && !!attrs.combinedValues;
             if ($scope.realtime === undefined) $scope.realtime = true;
             
             $scope.$on('$destroy', function() {
@@ -48,8 +50,10 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             $scope.$watch(function() {
             	var xids = [];
             	if ($scope.points) {
-	            	for (var i = 0; i < $scope.points.length; i++)
+	            	for (var i = 0; i < $scope.points.length; i++) {
+	            		if (!$scope.points[i]) continue;
 	            		xids.push($scope.points[i].xid);
+	            	}
             	}
             	
             	return {
@@ -64,19 +68,38 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             }, function(newValue, oldValue) {
             	var changedXids = arrayDiff(newValue.xids, oldValue.xids);
             	var i;
-            	
-            	if ($scope.realtime && $scope.latest) {
-	            	for (i = 0; i < changedXids.added.length; i++) {
-	            		subscribe(changedXids.added[i]);
-	            	}
-            	}
-            	
+
             	for (i = 0; i < changedXids.removed.length; i++) {
             		var removedXid = changedXids.removed[i];
                 	unsubscribe(removedXid);
+                	
+                	// delete temp values if they exist
                 	delete tempValues[removedXid];
-                	if (!$scope.point)
+                	
+                	// remove old values
+                	if (singlePoint) {
+                		delete $scope.values;
+                	} else {
                 		delete $scope.values[removedXid];
+                	}
+                	
+                	// remove values for xid from combined values
+                	var combined = $scope.combinedValues;
+                	if (combined) {
+                		for (var j = 0; j < combined.length; j++) {
+                			var item = combined[j];
+                			delete item['value_' + removedXid];
+                			if (Object.keys(item).length <= 1) {
+                				combined.splice(j, 1);
+                			}
+                		}
+                	}
+            	}
+
+            	for (i = 0; i < changedXids.added.length; i++) {
+            		if ($scope.realtime && $scope.latest) {
+            			subscribe(changedXids.added[i]);
+            		}
             	}
             	
             	if (!$scope.points || !$scope.points.length) return;
@@ -88,6 +111,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             	pendingRequest = cancelAll.bind(null, cancels);
             	
             	for (i = 0; i < $scope.points.length; i++) {
+            		if (!$scope.points[i]) continue;
             		var query = doQuery($scope.points[i]);
             		promises.push(query.promise);
             		cancels.push(query.cancel);
@@ -102,17 +126,23 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                         delete tempValues[point.xid];
                         limitValues(values);
             			
-            			if ($scope.point) {
+            			if (singlePoint) {
             				$scope.values = values;
             			} else {
             				if (!$scope.values) $scope.values = {};
             				$scope.values[point.xid] = values;
             			}
             		}
-            		combineValues();
-            	}, function() {
-            		pendingRequest();
-            		pendingRequest = null;
+            		
+            		if (doCombine)
+            			combineValues();
+            	}, function(reason) {
+            		if (cancels.length) {
+            			// cancel hasn't been called, single failure
+            			console.log(reason);
+            		} else {
+            			console.log('cancelled');
+            		}
             	});
             }, true);
 
@@ -131,50 +161,44 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             });
             
             function combineValues() {
-            	if ($scope.point) return;
-
-            	var combined = $scope.categoryFormat ? {} : [];
+            	var combined = {};
             	
-            	for (var key in $scope.values) {
-            		var seriesValues = $scope.values[key];
-            		combine(combined, seriesValues, 'value_' + key);
+            	for (var xid in $scope.values) {
+            		var seriesValues = $scope.values[xid];
+            		combineInto(combined, seriesValues, 'value_' + xid);
             	}
                 
-                // normalize sparse array or object into dense array
+                // convert object into array
                 var output = [];
-                for (var category in combined) {
-                    output.push(combined[category]);
+                for (var timestamp in combined) {
+                    output.push(combined[timestamp]);
                 }
                 
-                // XXX sparse array to dense array doesnt result in sorted array
-                // manually sort here
-                if (output.length && typeof output[0].category === 'number') {
-                    output.sort(function(a,b) {
-                        return a.category - b.category;
-                    });
-                }
+                // sort array by timestamp
+                output.sort(function(a,b) {
+                    return a.timestamp - b.timestamp;
+                });
                 
                 $scope.combinedValues = output;
             }
             
-            function combine(output, newValues, valueField) {
+            function combineInto(output, newValues, valueField) {
                 if (!newValues) return;
                 
                 for (var i = 0; i < newValues.length; i++) {
                     var value = newValues[i];
-                    var category = $scope.categoryFormat ?
-                            moment(value.timestamp).format($scope.categoryFormat) :
-                            value.timestamp;
+                    var timestamp = value.timestamp;
                     
-                    if (!output[category]) {
-                        output[category] = {category: category};
+                    if (!output[timestamp]) {
+                        output[timestamp] = {timestamp: timestamp};
                     }
                     
-                    output[category][valueField] = value.value;
+                    output[timestamp][valueField] = value.value;
                 }
             }
             
             function cancelAll(cancelFns) {
+            	cancelFns = cancelFns.splice(0, cancelFns.length);
             	for (var i = 0; i < cancelFns.length; i++)
             		cancelFns[i]();
             }
@@ -182,6 +206,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             function subscribe(xid) {
             	if (!xid) {
             		for (var i = 0; i < $scope.points.length; i++) {
+                		if (!$scope.points[i]) continue;
             			subscribe($scope.points[i].xid);
             		}
             	} else {
@@ -208,24 +233,37 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                 $scope.$apply(function() {
                 	if (!payload.value) return;
                 	
-                    var dataType = $scope.point.pointLocator.dataType;
-
+                	var value;
+                    if ($scope.rendered === 'true') {
+                    	value = payload.renderedValue;
+                    } else if (payload.convertedValue !== undefined) {
+                    	value = payload.convertedValue;
+                    } else {
+                    	value = payload.value.value;
+                    }
+                    
                     var item = {
-                        value : payload.value.value,
+                        value : value,
                         timestamp : payload.value.timestamp
                     };
-                    
-                    if ($scope.rendered === 'true') {
-                    	item.value = payload.renderedValue;
-                    } else if (dataType === 'NUMERIC') {
-                    	item.value = payload.convertedValue;
-                    }
                     
                     var destArray = $scope.point ? $scope.values : $scope.values[xid];
 
                     if (pendingRequest || !destArray) {
                     	if (!tempValues[xid]) tempValues[xid] = [];
                     	tempValues[xid].push(item);
+                    	
+                    	var combinedVals = $scope.combinedValues;
+                    	if (combinedVals) {
+                    		var last = combinedVals.length && combinedVals[combinedVals.length - 1];
+                    		if (last && last.time === item.timestamp) {
+                    			last['value_' + xid] = item.value;
+                    		} else {
+                    			var newVal = {time: item.timestamp};
+                    			newVal['value_' + xid] = item.value;
+                    			combinedVals.push(newVal);
+                    		}
+                    	}
                     } else {
                     	destArray.push(item);
                         
@@ -301,11 +339,12 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                     url += (i === 0 ? '?' : '&') + params[i];
                 }
 
-    			var cancel = $q.defer();
-    			setTimeout(cancel.resolve, mangoDefaultTimeout);
+    			var cancelDefer = $q.defer();
+    			var cancelFn = cancelDefer.resolve;
+    			setTimeout(cancelFn, mangoDefaultTimeout);
                 
                 var promise = $http.get(url, {
-                	timeout: cancel.promise,
+                	timeout: cancelDefer.promise,
                     headers: {
                         'Accept': 'application/json'
                     }
@@ -328,23 +367,18 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                     	point: point,
                     	values: values
                     };
-                }, function() {
-                	return $q.when({
-                    	point: point,
-                    	values: []
-                    });
                 });
                 
                 return {
                 	promise: promise,
-                	cancel: cancel.resolve
+                	cancel: cancelFn
                 };
             }
 
             function toMoment(input, now) {
                 if (!input || input === 'now') return now;
                 if (typeof input === 'string') {
-                	return moment(input, $scope.dateFormat || 'll LTS');
+                	return moment(input, $scope.toFromFormat || 'll LTS');
                 }
                 return moment(input);
             }
