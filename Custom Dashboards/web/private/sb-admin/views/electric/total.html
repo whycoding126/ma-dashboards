@@ -8,11 +8,6 @@
 
 <div ng-init="stats=[]; tableData=[]; rowTitles=[null, 'HOLZAUFBEREITUNG', 'DRUCKLUFTANLAGEN', 'WAERMEGEWINNUNG','ZERFASERUNG / REFINING', 'TROCKNUNG', 'KERNPROZESS', 'SCHLEIFSTRASSE', 'ELEKTROFILTER', 'BIOKLAERANLAGE', 'GESAMTWERBRAUCH']"></div>
 
-<div ng-repeat="i in range(1,10)" ng-init="stats[i]=[]">
-	<ma-point-statistics ng-repeat="j in range(1,11)" point-xid="Accum{{(i-1)*11+j | pad:3}}"
-		statistics="stats[i][j]" from="dateControls.from" to="dateControls.to"></ma-point-statistics>
-</div>
-
 <div class="row">
 <div class="col-lg-12 table-responsive">
 <table class="table table-bordered table-hover">
