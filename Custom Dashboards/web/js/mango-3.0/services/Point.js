@@ -81,6 +81,11 @@ function PointFactory($resource, $http) {
 		}
     };
     
+    Point.prototype.valueFn = function(setValue) {
+    	if (setValue === undefined) return this.value;
+    	this.setValue(setValue);
+    };
+    
     return Point;
 }
 

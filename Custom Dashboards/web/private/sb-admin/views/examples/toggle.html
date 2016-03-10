@@ -32,7 +32,7 @@
 <div class="form-group">
 	<label>Angular Bootstrap toggle button</label>
 	<p class="form-control-static">
-	    <button type="button" class="btn btn-primary" ng-change="myPoint.setValue(myPoint.value)" ng-model="myPoint.value" uib-btn-checkbox="">
+	    <button type="button" class="btn btn-primary" uib-btn-checkbox ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
         	Toggle
         </button>
 	</p>
@@ -41,7 +41,7 @@
 <div class="form-group">
 	<label>Checkbox</label>
 	<p class="form-control-static">
-	    <input type="checkbox" ng-change="myPoint.setValue(myPoint.value)" ng-model="myPoint.value">
+	    <input type="checkbox" ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
     </p>
 </div>
 
