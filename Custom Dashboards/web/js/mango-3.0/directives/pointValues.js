@@ -4,10 +4,10 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone'], function(angular, moment) {
+define(['angular'], function(angular) {
 'use strict';
 
-function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTimeout) {
+function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTimeout, Util) {
     return {
         scope: {
             point: '=?',
@@ -66,7 +66,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             		rendered: $scope.rendered
             	};
             }, function(newValue, oldValue) {
-            	var changedXids = arrayDiff(newValue.xids, oldValue.xids);
+            	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
             	var i;
 
             	for (i = 0; i < changedXids.removed.length; i++) {
@@ -89,7 +89,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                 		for (var j = 0; j < combined.length; j++) {
                 			var item = combined[j];
                 			delete item['value_' + removedXid];
-                			if (numValueKeys(item) === 0) {
+                			if (Util.numKeys(item, 'value') === 0) {
                 				combined.splice(j--, 1);
                 			}
                 		}
@@ -211,7 +211,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             		}
             	} else {
             		if (subscriptions[xid]) return;
-            		pointEventManager.subscribe(xid, ['UPDATE'], eventHandler);
+            		pointEventManager.subscribe(xid, ['UPDATE'], websocketHandler);
                     subscriptions[xid] = true;
             	}
             }
@@ -222,12 +222,12 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             			unsubscribe(key);
             		}
             	} else if (subscriptions[xid]) {
-            		pointEventManager.unsubscribe(xid, ['UPDATE'], eventHandler);
+            		pointEventManager.unsubscribe(xid, ['UPDATE'], websocketHandler);
             		delete subscriptions[xid];
             	}
             }
             
-            function eventHandler(event, payload) {
+            function websocketHandler(event, payload) {
                 var xid = payload.xid;
                 
                 $scope.$apply(function() {
@@ -284,9 +284,9 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             	var now, from, to;
             	
             	if (!$scope.latest) {
-            		now = moment();
-            		from = toMoment($scope.from, now);
-            		to = toMoment($scope.to, now);
+            		now = new Date();
+            		from = Util.toMoment($scope.from, now, $scope.toFromFormat);
+            		to = Util.toMoment($scope.to, now, $scope.toFromFormat);
             	}
                 
                 if (!point || !point.xid) return;
@@ -308,15 +308,15 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                     params.push('from=' + encodeURIComponent(from.toISOString()));
                     params.push('to=' + encodeURIComponent(to.toISOString()));
                     
-                    if (!isEmpty($scope.rollup) && $scope.rollup !== 'NONE') {
+                    if (!Util.isEmpty($scope.rollup) && $scope.rollup !== 'NONE') {
                         params.push('rollup=' + encodeURIComponent($scope.rollup));
                         
                         var timePeriodType = 'DAYS';
                         var timePeriods = 1;
                         
-                        if (!isEmpty($scope.rollupInterval)) {
+                        if (!Util.isEmpty($scope.rollupInterval)) {
                         	var parts = $scope.rollupInterval.split(' ');
-                        	if (parts.length == 2 && !isEmpty(parts[0]) && !isEmpty(parts[1])) {
+                        	if (parts.length == 2 && !Util.isEmpty(parts[0]) && !Util.isEmpty(parts[1])) {
                         		var intVal = parseInt(parts[0], 10);
                         		timePeriods = intVal > 0 ? intVal : 1;
                         		timePeriodType = parts[1].toUpperCase();
@@ -374,46 +374,11 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                 	cancel: cancelFn
                 };
             }
-
-            function toMoment(input, now) {
-                if (!input || input === 'now') return now;
-                if (typeof input === 'string') {
-                	return moment(input, $scope.toFromFormat || 'll LTS');
-                }
-                return moment(input);
-            }
-
-            // test for null, undefined or whitespace
-            function isEmpty(str) {
-            	return !str || /^\s*$/.test(str);
-            }
-            
-            function arrayDiff(newArray, oldArray) {
-            	if (newArray === undefined) newArray = [];
-            	if (oldArray === undefined) oldArray = [];
-            	
-            	var added = angular.element(newArray).not(oldArray);
-            	var removed = angular.element(oldArray).not(newArray);
-
-            	return {
-            		added: added,
-            		removed: removed,
-            		changed: !!(added.length || removed.length)
-            	};
-            }
-            
-            function numValueKeys(obj) {
-            	var count = 0;
-            	for (var key in obj) {
-            		if (key.indexOf('value') === 0) count++;
-            	}
-            	return count;
-            }
         }
     };
 }
 
-pointValues.$inject = ['$http', '$parse', 'PointEventManager', 'Point', '$q', 'mangoDefaultTimeout'];
+pointValues.$inject = ['$http', '$parse', 'PointEventManager', 'Point', '$q', 'mangoDefaultTimeout', 'Util'];
 return pointValues;
 
 }); // define

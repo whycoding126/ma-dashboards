@@ -9,6 +9,7 @@ define(['./services/Point',
         './services/PointEventManager',
         './services/Translate',
         './services/mangoHttpInterceptor',
+        './services/Util',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -32,15 +33,16 @@ define(['./services/Point',
         './directives/calc',
         './directives/intervalPicker',
         './directives/pointQuery',
+        './directives/getPointValue',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
         'angular',
         'angular-resource'
-], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, pointList, pointValue, pointValues, pointStatistics,
+], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, Util, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, momentFilter,
-        durationFilter, trFilter, angular) {
+        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
+        momentFilter, durationFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -50,6 +52,7 @@ maDashboardApp.factory('User', User);
 maDashboardApp.factory('PointEventManager', PointEventManager);
 maDashboardApp.factory('Translate', Translate);
 maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
+maDashboardApp.factory('Util', Util);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);
 maDashboardApp.directive('maPointValues', pointValues);
@@ -73,6 +76,7 @@ maDashboardApp.directive('maSwitchImg', switchImg);
 maDashboardApp.directive('maCalc', calc);
 maDashboardApp.directive('maIntervalPicker', intervalPicker);
 maDashboardApp.directive('maPointQuery', pointQuery);
+maDashboardApp.directive('maGetPointValue', getPointValue);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);

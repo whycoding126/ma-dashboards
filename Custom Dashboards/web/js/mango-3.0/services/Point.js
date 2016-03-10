@@ -86,6 +86,40 @@ function PointFactory($resource, $http) {
     	this.setValue(setValue);
     };
     
+    Point.prototype.rendererMap = function() {
+    	if (this._rendererMap) return this._rendererMap;
+    	var textRenderer = this.textRenderer;
+    	if (!textRenderer) return;
+    	
+    	if (textRenderer.multistateValues) {
+    		this._rendererMap = {};
+    		var multistateValues = textRenderer.multistateValues;
+    		for (var i = 0; i < multistateValues.length; i++) {
+    			var item = multistateValues[i];
+    			item.color = item.colour;
+    			this._rendererMap[item.key] = item;
+    		}
+    	} else if (textRenderer.type === 'textRendererBinary') {
+    		this._rendererMap = {
+    			'true': {
+    				color: textRenderer.oneColour,
+    				text: textRenderer.oneText
+    			},
+    			'false': {
+    				color: textRenderer.zeroColour,
+    				text: textRenderer.zeroText
+    			}
+    		};
+    	}
+    	
+    	return this._rendererMap;
+    };
+    
+    Point.prototype.valueRenderer = function(value) {
+    	var rendererMap = this.rendererMap();
+    	if (rendererMap) return rendererMap[value];
+    };
+    
     return Point;
 }
 

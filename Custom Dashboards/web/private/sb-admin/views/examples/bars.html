@@ -19,7 +19,7 @@
 	<input type="number" ng-model="max" ng-init="max=100" class="form-control">
 </div>
 
-<ma-point-value point="myPoint" display-type="none"></ma-point-value>
+<ma-get-point-value point="myPoint"></ma-get-point-value>
 
 <uib-progressbar value="myPoint.convertedValue" max="max" ng-class="{'point-disabled': !myPoint.enabled}">
 	<b>{{myPoint.renderedValue}}</b>

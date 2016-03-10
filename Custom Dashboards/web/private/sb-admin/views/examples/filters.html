@@ -16,7 +16,7 @@
 	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
 </div>
 
-<ma-point-value point="myPoint" display-type="none"></ma-point-value>
+<ma-get-point-value point="myPoint"></ma-get-point-value>
 
 <p>The raw point value is {{myPoint.value}} at epoch timestamp {{myPoint.time}}.</p>
 <p>The formatted point value is {{myPoint.value | number:2}} at time {{myPoint.time | moment:'format':'ll LTS'}}.</p>

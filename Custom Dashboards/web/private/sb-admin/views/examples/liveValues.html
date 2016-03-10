@@ -21,10 +21,10 @@
 <label>Format time using <a href="http://momentjs.com/docs/#/displaying/">Moment.js format string</a>:</label>
 <ma-point-value point="myPoint" display-type="dateTime" date-time-format="LTS"></ma-point-value><br>
 
-<label>Get point value but don't display it: </label> <ma-point-value point="myPoint" display-type="none"></ma-point-value><br>
-
 <h3>Using AngularJS interpolation</h3>
-<p><strong>Note: You still need to have a &lt;ma-point-value&gt; tag for these to work. Use display type "none".</strong></p>
+<p><strong>Note: You need to have a &lt;ma-get-point-value&gt; tag for these to work.</strong></p>
+
+<ma-get-point-value point="myPoint"></ma-get-point-value>
 
 <p>Raw point value is {{myPoint.value}} at epoch timestamp {{myPoint.time}}.</p>
 <p>Rendered point value is <span ng-style="{color:myPoint.renderedColor}">{{myPoint.renderedValue}}</span>.</p>
