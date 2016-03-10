@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'jquery', 'moment', '../lodash.min'], function(AmCharts, $, moment, _) {
+define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
 'use strict';
 
 function serialChart() {

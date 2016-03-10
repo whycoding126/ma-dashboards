@@ -89,11 +89,13 @@ maDashboardApp.filter('sum', function() {
 		}
 		if (rowData.length !== undefined) {
 			for (var i = 0; i < rowData.length; i++) {
-				sum += rowData[i];
+				if (rowData[i] !== undefined)
+					sum += rowData[i];
 			}
 		} else {
 			for (var key in rowData) {
-				sum += rowData[key];
+				if (rowData[key] !== undefined)
+					sum += rowData[key];
 			}
 		}
 		return sum;
@@ -108,11 +110,13 @@ maDashboardApp.filter('sumColumn', function() {
 		}
 		if (tableData.length !== undefined) {
 			for (var i = 0; i < tableData.length; i++) {
-				sum += tableData[i][colNum];
+				if (tableData[i] && tableData[i][colNum] !== undefined)
+					sum += tableData[i][colNum];
 			}
 		} else {
 			for (var key in tableData) {
-				sum += tableData[key][colNum];
+				if (tableData[key] && tableData[key][colNum] !== undefined)
+					sum += tableData[key][colNum];
 			}
 		}
 		return sum;
@@ -120,7 +124,7 @@ maDashboardApp.filter('sumColumn', function() {
 });
 
 maDashboardApp.constant('mangoBaseUrl', '');
-maDashboardApp.constant('mangoDefaultTimeout', 10000);
+maDashboardApp.constant('mangoDefaultTimeout', 30000);
 
 maDashboardApp.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');

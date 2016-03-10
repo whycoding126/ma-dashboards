@@ -35,7 +35,20 @@ angular.module('sbAdminApp', [
 			  $state.go('login');
 		  }
 	  });
+	  
+	  $rootScope.range = function(start, end) {
+		  var result = [];
+		  for (var i = start; i <= end; i++)
+			  result.push(i);
+		  return result;
+	  };
   }])
+  .filter('pad', function() {
+	  var zeros = '0000000000';
+	  return function(a, b) {
+		  return (zeros + a).slice(-b);
+	  };
+  })
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
       function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
 
