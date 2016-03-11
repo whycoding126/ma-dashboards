@@ -968,6 +968,155 @@ MangoAPI.prototype.getTranslations = function(namespace, language) {
 };
 
 /**
+ * Save Existing JSON Data
+ * 
+ * @param data - data to save
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.putJsonData = function(xid, path, readPermissions, editPermissions, name, jsonData) {
+    var url = "/rest/v1/json-data/" + encodeURIComponent(xid);
+    
+    if((typeof path != 'undefined') && (path !== ''))
+    	url += "/" + encodeURIComponent(path);
+    
+    var hasQuestion = false;
+    if((typeof readPermissions != 'undefined') && (readPermissions !== "")){
+    	if(hasQuestion === false){
+    		url += "?readPermissions=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&readPermissions=";
+    	}
+    	url += readPermissions;
+    }
+	
+    if((typeof editPermissions != 'undefined') && (editPermissions !== "")){
+    	if(hasQuestion === false){
+    		url += "?editPermissions=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&editPermissions=";
+    	}
+    	url += editPermissions;
+    }
+    
+    if((typeof name != 'undefined')&& (name !== "")){
+    	if(hasQuestion === false){
+    		url += "?name=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&name=";
+    	}
+    	url += name;
+    }
+    
+	return this.ajax({
+        type: "PUT",
+        url : url,
+        contentType: "application/json",
+        data: JSON.stringify(jsonData)
+    });
+};
+
+/**
+ * Save JSON Data
+ * 
+ * @param user - user to add
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.postJsonData = function(xid, path, readPermissions, editPermissions, name, jsonData) {
+    var url = "/rest/v1/json-data/" + encodeURIComponent(xid);
+    
+    if((typeof path != 'undefined') && (path !== ''))
+    	url += "/" + encodeURIComponent(path);
+    
+    var hasQuestion = false;
+    if((typeof readPermissions != 'undefined') && (readPermissions !== "")){
+    	if(hasQuestion === false){
+    		url += "?readPermissions=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&readPermissions=";
+    	}
+    	url += readPermissions;
+    }
+	
+    if((typeof editPermissions != 'undefined') && (editPermissions !== "")){
+    	if(hasQuestion === false){
+    		url += "?editPermissions=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&editPermissions=";
+    	}
+    	url += editPermissions;
+    }
+    
+    if((typeof name != 'undefined')&& (name !== "")){
+    	if(hasQuestion === false){
+    		url += "?name=";
+    		hasQuestion = true;
+    	}else{
+    		url += "&name=";
+    	}
+    	url += name;
+    }
+    
+	return this.ajax({
+        type: "POST",
+        url : url,
+        contentType: "application/json",
+        data: JSON.stringify(jsonData)
+    });
+};
+
+/**
+ * Delete JSON Data
+ * 
+ * @param xid - xid to remove
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.deleteJsonData = function(xid, path) {
+	
+	var url = "/rest/v1/json-data/" + encodeURIComponent(xid);
+	if((typeof path != 'undefined')&&( path !== ''))
+		url += "/" + encodeURIComponent(path);
+	
+    return this.ajax({
+        type: "DELETE",
+        url : url
+    });
+};
+
+/**
+ * Get JSON Data
+ * 
+ * @param path - path to data
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getJsonData = function(xid, path) {
+	
+	 var url = "/rest/v1/json-data/" + encodeURIComponent(xid);
+	 if((typeof path != 'undefined')&&( path !== ''))
+		 url += "/" + path;
+	 
+    return this.ajax({
+        url : url
+    });
+};
+
+/**
+ * Get JSON Data
+ * 
+ * @param xid - xid of data
+ * @return promise, resolved with data when done
+ */
+MangoAPI.prototype.getJsonDataFull = function(xid) {
+    return this.ajax({
+        url : "/rest/v1/json-data/full/" + encodeURIComponent(xid)
+    });
+};
+
+/**
  * Default Options for Ajax
  * @type {Object} 
  */
