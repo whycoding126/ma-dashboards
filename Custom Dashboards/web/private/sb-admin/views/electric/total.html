@@ -50,17 +50,9 @@
 		</tr>
 		<tr>
 			<td>Totals</td>
-			<td><ma-calc input="tableData | sumColumn:01" output="colTotals[01]">{{colTotals[01] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:02" output="colTotals[02]">{{colTotals[02] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:03" output="colTotals[03]">{{colTotals[03] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:04" output="colTotals[04]">{{colTotals[04] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:05" output="colTotals[05]">{{colTotals[05] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:06" output="colTotals[06]">{{colTotals[06] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:07" output="colTotals[07]">{{colTotals[07] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:08" output="colTotals[08]">{{colTotals[08] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:09" output="colTotals[09]">{{colTotals[09] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:10" output="colTotals[10]">{{colTotals[10] | number:2}}</ma-calc></td>
-			<td><ma-calc input="tableData | sumColumn:11" output="colTotals[11]">{{colTotals[11] | number:2}}</ma-calc></td>
+			<td ng-repeat="i in range(1,11)">
+				<ma-calc input="tableData | sumColumn:i" output="colTotals[i]">{{colTotals[i] | number:2}}</ma-calc>
+			</td>
 			<td rowspan="2" style="background-color:DarkGray">GESAMTVERBRAUCH<br><ma-calc input="rowTotals | sum" output="grandTotal">{{grandTotal | number:2}}</ma-calc></td>
 		</tr>
 		<tr>
