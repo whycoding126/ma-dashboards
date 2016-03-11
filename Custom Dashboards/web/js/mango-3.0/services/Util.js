@@ -56,6 +56,14 @@ function UtilFactory() {
     	return count;
     };
     
+    
+    Util.cancelAll = function(cancelFns) {
+    	// remove all elements from cancelFns array so cancel fns are never called again
+    	cancelFns = cancelFns.splice(0, cancelFns.length);
+    	for (var i = 0; i < cancelFns.length; i++)
+    		cancelFns[i]();
+    }
+    
     return Util;
 }
 
