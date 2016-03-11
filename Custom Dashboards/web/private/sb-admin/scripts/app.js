@@ -35,20 +35,7 @@ angular.module('sbAdminApp', [
 			  $state.go('login');
 		  }
 	  });
-	  
-	  $rootScope.range = function(start, end) {
-		  var result = [];
-		  for (var i = start; i <= end; i++)
-			  result.push(i);
-		  return result;
-	  };
   }])
-  .filter('pad', function() {
-	  var zeros = '0000000000';
-	  return function(a, b) {
-		  return (zeros + a).slice(-b);
-	  };
-  })
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
       function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
 
@@ -249,6 +236,10 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.pointArrayLineChart',{
         templateUrl:'views/examples/pointArrayLineChart.html',
         url:'/pointArrayLineChart'
+    })
+    .state('dashboard.examples.pointArrayTable',{
+        templateUrl:'views/examples/pointArrayTable.html',
+        url:'/pointArrayTable'
     })
     .state('dashboard.examples.getStatistics',{
         templateUrl:'views/examples/getStatistics.html',

@@ -73,6 +73,6 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, "/mango-api-docs/index.shtm");
+    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, "/modules/dashboards/web/private/sb-admin/");
     }
 }

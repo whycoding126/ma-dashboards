@@ -14,7 +14,6 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             points: '=?',
             pointXid: '@',
             values: '=?',
-            combinedValues: '=?',
             from: '=?',
             to: '=?',
             latest: '=?',
@@ -26,11 +25,11 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
+            var values = {};
             var tempValues = {};
             var subscriptions = {};
 
             var singlePoint = !attrs.points;
-            var doCombine = !singlePoint && !!attrs.combinedValues;
             if ($scope.realtime === undefined) $scope.realtime = true;
             
             $scope.$on('$destroy', function() {
@@ -73,24 +72,22 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             		var removedXid = changedXids.removed[i];
                 	unsubscribe(removedXid);
                 	
-                	// delete temp values if they exist
+                	// delete values and temp values if they exist
+                	delete values[removedXid];
                 	delete tempValues[removedXid];
                 	
                 	// remove old values
                 	if (singlePoint) {
                 		delete $scope.values;
-                	} else {
-                		delete $scope.values[removedXid];
-                	}
-                	
-                	// remove values for xid from combined values
-                	var combined = $scope.combinedValues;
-                	if (combined) {
-                		for (var j = 0; j < combined.length; j++) {
-                			var item = combined[j];
+                	} else if ($scope.values) {
+                		// remove values for xid from combined values
+                		for (var j = 0; j < $scope.values.length; j++) {
+                			var item = $scope.values[j];
                 			delete item['value_' + removedXid];
+                			// if this was the last value for this timestamp remove
+                			// the item from the combined values
                 			if (Util.numKeys(item, 'value') === 0) {
-                				combined.splice(j--, 1);
+                				$scope.values.splice(j--, 1);
                 			}
                 		}
                 	}
@@ -107,6 +104,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             	var promises = [];
             	var cancels = [];
 
+            	// cancel existing requests if there are any
             	if (pendingRequest) pendingRequest();
             	pendingRequest = cancelAll.bind(null, cancels);
             	
@@ -118,24 +116,26 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             	}
             	$q.all(promises).then(function(results) {
             		pendingRequest = null;
+            		
             		for (var i = 0; i < results.length; i++) {
             			var point = results[i].point;
-            			var values = results[i].values;
+            			var pointValues = results[i].values;
             			
-            			values.concat(tempValues[point.xid]);
+            			pointValues.concat(tempValues[point.xid]);
                         delete tempValues[point.xid];
-                        limitValues(values);
-            			
-            			if (singlePoint) {
-            				$scope.values = values;
-            			} else {
-            				if (!$scope.values) $scope.values = {};
-            				$scope.values[point.xid] = values;
-            			}
+                        
+                        if ($scope.latest) {
+                        	limitValues(pointValues);
+                        }
+                        
+                        values[point.xid] = pointValues;
             		}
             		
-            		if (doCombine)
+            		if (singlePoint) {
+            			$scope.values = values[$scope.point.xid];
+            		} else {
             			combineValues();
+            		}
             	}, function(reason) {
             		if (cancels.length) {
             			// cancel hasn't been called, single failure
@@ -163,8 +163,8 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
             function combineValues() {
             	var combined = {};
             	
-            	for (var xid in $scope.values) {
-            		var seriesValues = $scope.values[xid];
+            	for (var xid in values) {
+            		var seriesValues = values[xid];
             		combineInto(combined, seriesValues, 'value_' + xid);
             	}
                 
@@ -179,7 +179,7 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                     return a.timestamp - b.timestamp;
                 });
                 
-                $scope.combinedValues = output;
+                $scope.values = output;
             }
             
             function combineInto(output, newValues, valueField) {
@@ -247,29 +247,27 @@ function pointValues($http, $parse, pointEventManager, Point, $q, mangoDefaultTi
                         timestamp : payload.value.timestamp
                     };
                     
-                    var destArray = $scope.point ? $scope.values : $scope.values[xid];
+                    var destArray = singlePoint ? $scope.values : values[xid];
 
-                    if (pendingRequest || !destArray) {
+                    if (pendingRequest) {
                     	if (!tempValues[xid]) tempValues[xid] = [];
                     	tempValues[xid].push(item);
-                    	
-                    	var combinedVals = $scope.combinedValues;
-                    	if (combinedVals) {
-                    		var last = combinedVals.length && combinedVals[combinedVals.length - 1];
+                    } else {
+                    	values[xid].push(item);
+                    	if ($scope.latest) {
+                        	limitValues(values[xid]);
+                        }
+                    	// TODO limit combined values, just run combineValues() again?
+                    	if (!singlePoint) {
+                    		var last = $scope.values.length && $scope.values[$scope.values.length - 1];
                     		if (last && last.time === item.timestamp) {
                     			last['value_' + xid] = item.value;
                     		} else {
                     			var newVal = {time: item.timestamp};
                     			newVal['value_' + xid] = item.value;
-                    			combinedVals.push(newVal);
+                    			$scope.values.push(newVal);
                     		}
                     	}
-                    } else {
-                    	destArray.push(item);
-                        
-                        if ($scope.latest) {
-                        	limitValues(destArray);
-                        }
                     }
                 });
             }

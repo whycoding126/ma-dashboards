@@ -123,6 +123,35 @@ maDashboardApp.filter('sumColumn', function() {
 	};
 });
 
+maDashboardApp.filter('pad', function() {
+	  var zeros = '0000000000';
+	  return function(a, b) {
+		  return (zeros + a).slice(-b);
+	  };
+});
+
+maDashboardApp.filter('unique', function() {
+	
+	function addUnique(result, item, propName) {
+		var propValue = item[propName];
+		if (result.indexOf(propValue) >= 0) return;
+		result.push(propValue);
+	}
+	
+	return function(collection, propName) {
+		if (!collection) return;
+		var result = [];
+		if (collection.length !== undefined) {
+			for (var i = 0; i < collection.length; i++)
+				addUnique(result, collection[i], propName);
+		} else {
+			for (var key in collection)
+				addUnique(result, collection[key], propName);
+		}
+		return result;
+	}
+});
+
 maDashboardApp.constant('mangoBaseUrl', '');
 maDashboardApp.constant('mangoDefaultTimeout', 30000);
 
@@ -131,6 +160,13 @@ maDashboardApp.config(['$httpProvider', function($httpProvider) {
 }]);
 
 maDashboardApp.run(['$rootScope', function($rootScope) {
+	  
+	$rootScope.range = function(start, end) {
+		var result = [];
+		for (var i = start; i <= end; i++)
+			result.push(i);
+		return result;
+	};
 
     $rootScope.rollupTypes = [
         {type: 'NONE', nonNumeric: true, label: 'None'},
