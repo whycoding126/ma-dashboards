@@ -22,8 +22,6 @@ function pointValues($http, $parse, Point) {
             dateFormat: '@',
             firstLast: '@'
         },
-        template: '<span style="display:none"></span>',
-        replace: true,
         controller: function ($scope, $element) {
         	// TODO use service to get statistics
             function doQuery() {
@@ -64,18 +62,13 @@ function pointValues($http, $parse, Point) {
                 }).then(function(response) {
                 	var data = response.data;
                 	
-                	if (data.startsAndRuntimes && $scope.point.textRenderer && $scope.point.textRenderer.multistateValues) {
-                		var msv = $scope.point.textRenderer.multistateValues;
-                		var msvMap = {};
-                		for (var i = 0; i < msv.length; i++) {
-                			msvMap[msv[i].key] = msv[i];
-                		}
+                	if (data.startsAndRuntimes) {
                 		for (i = 0; i < data.startsAndRuntimes.length; i++) {
                 			var statsObj = data.startsAndRuntimes[i];
-                			var msvObj = msvMap[statsObj.value];
-                			if (!msvObj) continue;
-                			statsObj.renderedValue = msvObj.text;
-                			statsObj.renderedColor = msvObj.colour;
+                			var valueRenderer = $scope.point.valueRenderer(statsObj.value);
+                			if (!valueRenderer) continue;
+                			statsObj.renderedValue = valueRenderer.text;
+                			statsObj.renderedColor = valueRenderer.colour;
                 		}
                 	}
                 	

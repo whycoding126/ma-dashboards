@@ -39,18 +39,11 @@ function setPointValue(Translate, $q) {
         		
         		if (type === 'MULTISTATE') {
         			var values = locator.values;
-        			var i, rendererMap = {};
-        			
-        			if (textRenderer && textRenderer.multistateValues) {
-        				var msv = $scope.point.textRenderer.multistateValues;
-            			for (i = 0; i < msv.length; i++) {
-            				rendererMap[msv[i].key] = msv[i];
-            			}
-        			}
+        			var i;
         			
         			$scope.options = [];
         			for (i = 0; i < values.length; i++) {
-        				var renderer = rendererMap[values[i]];
+        				var renderer = $scope.point.valueRenderer(values[i]);
         				var label = renderer ? renderer.text : values[i];
         				var option = {
         					id: values[i],
@@ -60,15 +53,17 @@ function setPointValue(Translate, $q) {
         				$scope.options.push(option);
         			}
         		} else if (type === 'BINARY') {
-        			if (textRenderer.type === 'textRendererBinary') {
+        			if ($scope.point.rendererMap()) {
+        				var falseRenderer = $scope.point.valueRenderer(false);
+        				var trueRenderer = $scope.point.valueRenderer(true);
         				$scope.options = [{
         					id: false,
-        					label: textRenderer.zeroLabel,
-        					color: textRenderer.zeroColour
+        					label: falseRenderer.text,
+        					color: falseRenderer.color
         				}, {
         					id: true,
-        					label: textRenderer.oneLabel,
-        					color: textRenderer.oneColour
+        					label: trueRenderer.text,
+        					color: trueRenderer.color
         				}];
         			} else {
         				$scope.options = $scope.defaultBinaryOptions;

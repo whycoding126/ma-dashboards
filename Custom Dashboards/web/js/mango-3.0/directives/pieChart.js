@@ -44,21 +44,7 @@ function pieChart($http) {
                 chart.validateData();
             });
             
-            function createLabelFn(input) {
-                var labels;
-                
-                // we have been passed a point
-                if (input && input.multistateValues) {
-                    var msv = input.multistateValues;
-                    labels = {};
-                    for (var i = 0; i < msv.length; i++) {
-                        labels[msv[i].key] = msv[i];
-                    }
-                } else {
-                    // just use input as a map
-                    labels = input;
-                }
-                
+            function createLabelFn(labels) {
                 return function(value) {
                     var label = labels && labels[value] || {};
                     

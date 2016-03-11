@@ -103,11 +103,11 @@ function PointFactory($resource, $http) {
     		this._rendererMap = {
     			'true': {
     				color: textRenderer.oneColour,
-    				text: textRenderer.oneText
+    				text: textRenderer.oneLabel
     			},
     			'false': {
     				color: textRenderer.zeroColour,
-    				text: textRenderer.zeroText
+    				text: textRenderer.zeroLabel
     			}
     		};
     	}
