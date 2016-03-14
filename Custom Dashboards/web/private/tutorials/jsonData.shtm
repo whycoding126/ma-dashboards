@@ -21,6 +21,18 @@
         function($, MangoAPI) {
             var api = MangoAPI.defaultApi;
             
+            //Register Websocket
+            var initiatorId = api.generateInitiatorId();
+            
+            //Mock up Store
+            var notificationStore = {
+            	emit: function(action, data){
+            		console.log(data.target);
+            		$('#websocketMessages').append(data.target.xid + ' --> ' + action + "</br>");
+            	}	
+            };
+        	api.registerForDaoNotifications('/rest/v1/websocket/json-data', notificationStore, initiatorId);
+            
             //Post
         	$('#postData').on('click', function(){
         		$('#message').text('');
@@ -32,10 +44,6 @@
         				$('#name').val(),
         				JSON.parse($('#json').val())).then(function(response){
         			$('#json').val(JSON.stringify(response.jsonData));
-        			showMessage({
-        				errorThrown: '',
-        				mangoMessage: 'Created'
-        			});
         		}).fail(function(response){
         			showMessage(response);
         		});
@@ -52,10 +60,6 @@
         				$('#name').val(),
         				JSON.parse($('#json').val())).then(function(response){
         			$('#json').val(JSON.stringify(response.jsonData));
-        			showMessage({
-        				errorThrown: '',
-        				mangoMessage: 'Updated'
-        			});
         		}).fail(function(response){
         			showMessage(response);
         		});
@@ -68,10 +72,6 @@
         		api.deleteJsonData(
         				$('#xid').val(),
         				$('#path').val()).then(function(response){
-        			showMessage({
-        				errorThrown: '',
-        				mangoMessage: 'Deleted'
-        			});
         		}).fail(function(response){
         			showMessage(response);
         		});
@@ -129,7 +129,8 @@
 <body>
     <div id="main">
         <h1>Store JSON Data</h1>
-        <p>Store JSON Data in Mango by providing a xid location for the storage.  The subsets of the data can be returned by using the <b>path</b> parameter.  
+        <p>Store JSON Data in Mango by providing a xid location for the storage.  Websocket registration allows to recieve notifications on CRUD operations.
+          Subsets of the data can be returned by using the <b>path</b> parameter.  
          For example if you place the following data into mango with an xid of 'test':
         </p>
         <pre>
@@ -144,6 +145,10 @@
         <p>http://mango-host/rest/v1/json-data/test/integer will return 1</p>
         <p>http://mango-host/rest/v1/json-data/test/list will return ["home", "green"]</p>
         <p>http://mango-host/rest/v1/json-data/test/map.value will return "Test1"</p>
+        <hr>
+        <p id="websocketMessages" style="color:green;"></p>
+        <div style="clearfix"></div>
+        <div id="message" style="color: red"></div>
         <hr>
         <label for="json" style="width: 50px">JSON:</label>
         <textarea id="json" cols="100" rows="20"></textarea>
@@ -169,14 +174,13 @@
         <input type="text" id="editPermissions"></input>
 
         <div style="clearfix"></div>
-        <div id="message" style="color: red"></div>
-        
-        <div style="clearfix"></div>
         <button id="getData">Get Data</button>
         <button id="getFull">Get Full</button>
         <button id="postData">Post</button>
         <button id="putData">Put</button>
         <button id="deleteData">Delete</button>
+        <button id="register">Register</button>
+        
     </div>
 </body>
 </html>
