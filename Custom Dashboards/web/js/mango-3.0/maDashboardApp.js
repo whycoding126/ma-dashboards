@@ -9,6 +9,7 @@ define(['./services/Point',
         './services/PointEventManager',
         './services/Translate',
         './services/mangoHttpInterceptor',
+        './services/JsonStore',
         './services/Util',
         './directives/pointList',
         './directives/pointValue',
@@ -34,15 +35,16 @@ define(['./services/Point',
         './directives/intervalPicker',
         './directives/pointQuery',
         './directives/getPointValue',
+        './directives/jsonStore',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
         'angular',
         'angular-resource'
-], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, Util, pointList, pointValue, pointValues, pointStatistics,
+], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, JsonStore, Util, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
-        momentFilter, durationFilter, trFilter, angular) {
+        jsonStore, momentFilter, durationFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -52,6 +54,7 @@ maDashboardApp.factory('User', User);
 maDashboardApp.factory('PointEventManager', PointEventManager);
 maDashboardApp.factory('Translate', Translate);
 maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
+maDashboardApp.factory('JsonStore', JsonStore);
 maDashboardApp.factory('Util', Util);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);
@@ -76,7 +79,7 @@ maDashboardApp.directive('maSwitchImg', switchImg);
 maDashboardApp.directive('maCalc', calc);
 maDashboardApp.directive('maIntervalPicker', intervalPicker);
 maDashboardApp.directive('maPointQuery', pointQuery);
-maDashboardApp.directive('maGetPointValue', getPointValue);
+maDashboardApp.directive('maJsonStore', jsonStore);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
@@ -149,7 +152,7 @@ maDashboardApp.filter('unique', function() {
 				addUnique(result, collection[key], propName);
 		}
 		return result;
-	}
+	};
 });
 
 maDashboardApp.constant('mangoBaseUrl', '');
