@@ -35,7 +35,7 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, "/private-dashboards/") + "/**/*";
+		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX) + "/**/*";
 	}
 
 	/* (non-Javadoc)
@@ -44,8 +44,8 @@ public class PrivateUriMappingDefinition extends UriMappingDefinition{
 	@Override
 	public UrlHandler getHandler() {
 		return new DashboardUrlHandler(getModule().getDirectoryPath(), 
-				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION, "/web/private/"),
-				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, "/private-dashboards/"));
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_FILES_LOCATION, DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_FILES_LOCATION),
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PRIVATE_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX));
 	}
 
 	/* (non-Javadoc)

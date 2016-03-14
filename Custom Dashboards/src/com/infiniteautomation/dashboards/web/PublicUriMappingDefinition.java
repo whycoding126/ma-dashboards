@@ -28,7 +28,7 @@ public class PublicUriMappingDefinition extends UriMappingDefinition{
 	 */
 	@Override
 	public String getPath() {
-		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, "/public-dashboards/")  + "/**/*";
+		return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX)  + "/**/*";
 	}
 
 	/* (non-Javadoc)
@@ -37,8 +37,8 @@ public class PublicUriMappingDefinition extends UriMappingDefinition{
 	@Override
 	public UrlHandler getHandler() {
 		return new DashboardUrlHandler(getModule().getDirectoryPath(), 
-				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION, "/web/public/"),
-				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, "/public-dashboards/"));
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION, DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION),
+				SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX));
 	}
 
 	/* (non-Javadoc)
