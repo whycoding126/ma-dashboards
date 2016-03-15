@@ -84,19 +84,7 @@
         		var path = $('#path').val();
         		var xid = $('#xid').val();
         		api.getJsonData(xid, path).then(function(response){
-        			$('#json').val(JSON.stringify(response));
-        		}).fail(function(response){
-        			showMessage(response);
-        		});
-        	});
-			
-            //Get Full Model
-        	$('#getFull').on('click', function(){
-        		$('#message').text('');
-        		$('#json').val('');
-        		var xid = $('#xid').val();
-        		api.getJsonDataFull(xid).then(function(response){
-    				$('#name').val(response.name),
+        			$('#name').val(response.name),
     				$('#readPermissions').val(response.readPermission),
     				$('#editPermissions').val(response.editPermission),
         			$('#json').val(JSON.stringify(response.jsonData));
@@ -105,6 +93,7 @@
         		});
         	});
             
+            //Show error messages
             function showMessage(response){
     			console.log(response);
     			
@@ -174,13 +163,10 @@
         <input type="text" id="editPermissions"></input>
 
         <div style="clearfix"></div>
-        <button id="getData">Get Data</button>
-        <button id="getFull">Get Full</button>
+        <button id="getData">Get</button>
         <button id="postData">Post</button>
         <button id="putData">Put</button>
         <button id="deleteData">Delete</button>
-        <button id="register">Register</button>
-        
     </div>
 </body>
 </html>

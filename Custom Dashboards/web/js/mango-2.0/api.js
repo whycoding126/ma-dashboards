@@ -1105,18 +1105,6 @@ MangoAPI.prototype.getJsonData = function(xid, path) {
 };
 
 /**
- * Get JSON Data
- * 
- * @param xid - xid of data
- * @return promise, resolved with data when done
- */
-MangoAPI.prototype.getJsonDataFull = function(xid) {
-    return this.ajax({
-        url : "/rest/v1/json-data/full/" + encodeURIComponent(xid)
-    });
-};
-
-/**
  * Default Options for Ajax
  * @type {Object} 
  */
