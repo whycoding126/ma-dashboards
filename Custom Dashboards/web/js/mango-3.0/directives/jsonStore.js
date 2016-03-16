@@ -7,37 +7,34 @@
 define([], function() {
 'use strict';
 
-function jsonStore(JsonStore) {
+function jsonStore(JsonStore, $q) {
     return {
         scope: {
-        	key: '@',
-            value: '='
+        	xid: '@',
+            item: '=',
+            value: '=?'
         },
         link: function ($scope, $element, attr) {
-        	var knownValue;
         	
-            $scope.$watch('key', function(newValue, oldValue) {
-            	if (!newValue) return;
-
-            	JsonStore.get({key: newValue}).$promise.then(function(value) {
-            		knownValue = angular.copy(value);
-            		$scope.value = value;
+            $scope.$watch('xid', function(newXid, oldXid) {
+            	if (!newXid) return;
+            	
+            	JsonStore.get({xid: newXid}).$promise.then(function(item) {
+            		return item;
+            	}, function() {
+            		var item = new JsonStore();
+            		item.xid = newXid;
+            		item.name = '';
+            		return $q.when(item);
+            	}).then(function(item) {
+            		$scope.item = item;
             	});
             });
-            
-            $scope.$watch('value', function(newValue, oldValue) {
-            	if (newValue === oldValue || angular.equals(newValue, knownValue)) return;
-            	
-            	JsonStore.save({key: $scope.key, name: $scope.key}, newValue).$promise.then(function(value) {
-            		knownValue = angular.copy(value);
-            		$scope.value = value;
-            	});
-            }, true);
         }
     };
 }
 
-jsonStore.$inject = ['JsonStore'];
+jsonStore.$inject = ['JsonStore', '$q'];
 return jsonStore;
 
 }); // define

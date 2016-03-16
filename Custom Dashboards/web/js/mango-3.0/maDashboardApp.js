@@ -36,6 +36,8 @@ define(['./services/Point',
         './directives/pointQuery',
         './directives/getPointValue',
         './directives/jsonStore',
+        './directives/focusOn',
+        './directives/enter',
         './filters/momentFilter',
         './filters/durationFilter',
         './filters/trFilter',
@@ -44,7 +46,7 @@ define(['./services/Point',
 ], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, JsonStore, Util, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
-        jsonStore, momentFilter, durationFilter, trFilter, angular) {
+        jsonStore, focusOn, enter, momentFilter, durationFilter, trFilter, angular) {
 'use strict';
 
 var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
@@ -79,7 +81,10 @@ maDashboardApp.directive('maSwitchImg', switchImg);
 maDashboardApp.directive('maCalc', calc);
 maDashboardApp.directive('maIntervalPicker', intervalPicker);
 maDashboardApp.directive('maPointQuery', pointQuery);
+maDashboardApp.directive('maGetPointValue', getPointValue);
 maDashboardApp.directive('maJsonStore', jsonStore);
+maDashboardApp.directive('maFocusOn', focusOn);
+maDashboardApp.directive('maEnter', enter);
 maDashboardApp.filter('moment', momentFilter);
 maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);

@@ -8,17 +8,18 @@ define(['angular'], function(angular) {
 'use strict';
 
 function JsonStoreFactory($resource) {
-    var JsonStore = $resource('/rest/v1/json-data/:key', {}, {
-        save: {
+
+    var JsonStore = $resource('/rest/v1/json-data/:xid', {
+    	xid: '@xid'
+    }, {
+    	save: {
             method: 'POST',
-            transformResponse: function(data, fn, code) {
-                if (code < 300) {
-                    var obj = angular.fromJson(data);
-                    return obj.jsonData;
-                }
+            transformRequest: function(data, headersGetter) {
+            	return angular.toJson(data.jsonData);
             }
         }
     });
+
     return JsonStore;
 }
 
