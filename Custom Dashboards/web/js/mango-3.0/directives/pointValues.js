@@ -372,7 +372,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoDefaultTimeout, U
     };
 }
 
-pointValues.$inject = ['$http', 'PointEventManager', 'Point', '$q', 'mangoDefaultTimeout', 'Util'];
+pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoDefaultTimeout', 'Util'];
 return pointValues;
 
 }); // define
