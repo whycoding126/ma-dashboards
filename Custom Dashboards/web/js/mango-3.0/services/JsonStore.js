@@ -18,6 +18,14 @@ function JsonStoreFactory($resource) {
             transformRequest: function(data, headersGetter) {
             	return angular.toJson(data.jsonData);
             }
+        },
+        'delete': {
+        	method: 'DELETE',
+        	transformResponse: function(data, headersGetter) {
+            	var item = angular.fromJson(data);
+            	item.jsonData = {};
+            	return item;
+            }
         }
     });
 

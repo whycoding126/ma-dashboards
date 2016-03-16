@@ -265,6 +265,10 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/toggle.html',
         url:'/toggle'
     })
+    .state('dashboard.examples.jsonStore', {
+        templateUrl:'views/examples/jsonStore.html',
+        url:'/json-store'
+    })
     .state('dashboard.thermal', {
     	'abstract': true,
     	url: '/thermal',
