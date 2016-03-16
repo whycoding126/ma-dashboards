@@ -4,23 +4,43 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery', './api'], function($, MangoAPI) {
+define(['jquery'], function($) {
 "use strict";
 
-function PointEventManager(options) {
+function EventManager(options) {
 	 // keys are xid, value is object where key is event type and value is the number of subscriptions
     this.subscriptions = {};
     // keys are xid, value is array of event types
     this.activeSubscriptions = {};
     
     $.extend(this, options);
-    
-    if (!this.mangoApi) {
-        this.mangoApi = MangoAPI.defaultApi;
-    }
 }
 
-PointEventManager.prototype.getSocketPromise = function() {
+EventManager.prototype.openSocket = function(path) {
+    if (!('WebSocket' in window)) {
+        throw new Error('WebSocket not supported');
+    }
+    
+    var host = document.location.host;
+    var protocol = document.location.protocol;
+    
+    if (this.baseUrl) {
+        var i = this.baseUrl.indexOf('//');
+        if (i >= 0) {
+            protocol = this.baseUrl.substring(0, i);
+            host = this.baseUrl.substring(i+2);
+        }
+        else {
+            host = this.baseUrl;
+        }
+    }
+    
+    protocol = protocol === 'https:' ? 'wss:' : 'ws:';
+    
+    return new WebSocket(protocol + '//' + host + path);
+};
+
+EventManager.prototype.getSocketPromise = function() {
     var self = this;
     
     if (self.socketPromise)
@@ -28,7 +48,7 @@ PointEventManager.prototype.getSocketPromise = function() {
     
     var deferred = $.Deferred();
     
-    var socket = this.mangoApi.openSocket('/rest/v1/websocket/point-value');
+    var socket = this.openSocket(this.url);
     
     socket.onopen = function() {
         deferred.resolve(socket);
@@ -47,18 +67,21 @@ PointEventManager.prototype.getSocketPromise = function() {
     return promise;
 };
 
-PointEventManager.prototype.messageReceived = function(message) {
+EventManager.prototype.messageReceived = function(message) {
     if (message.status === 'OK') {
         var payload = message.payload;
-        var xidSubscriptions = this.subscriptions[payload.xid];
+        var eventType = payload.event || payload.action;
+        var xid = payload.xid || payload.object.xid;
+        
+        var xidSubscriptions = this.subscriptions[xid];
         if (!xidSubscriptions)
             return;
-        $(xidSubscriptions.eventEmitter).trigger(payload.event, payload);
-        $(this).trigger(payload.xid, payload);
+        $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
+        $(this).trigger(xid, payload);
     }
 };
 
-PointEventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {
+EventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {
     if (!this.subscriptions[xid])
         this.subscriptions[xid] = {eventEmitter: {}};
     var xidSubscriptions = this.subscriptions[xid];
@@ -82,7 +105,7 @@ PointEventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) 
     this.updateSubscriptions(xid);
 };
     
-PointEventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
+EventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
     var xidSubscriptions = this.subscriptions[xid];
     if (!xidSubscriptions)
         return;
@@ -104,7 +127,7 @@ PointEventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler
     this.updateSubscriptions(xid);
 };
 
-PointEventManager.prototype.updateSubscriptions = function(xid) {
+EventManager.prototype.updateSubscriptions = function(xid) {
     var xidSubscriptions = this.subscriptions[xid];
     if (!xidSubscriptions)
         return;
@@ -152,6 +175,6 @@ function arraysEqual(a, b) {
 	return true;
 }
 
-return PointEventManager;
+return EventManager;
 
 });

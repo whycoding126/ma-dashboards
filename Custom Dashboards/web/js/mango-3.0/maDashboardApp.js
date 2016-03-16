@@ -6,10 +6,11 @@
 
 define(['./services/Point',
         './services/User',
-        './services/PointEventManager',
+        './services/PointEventManagerFactory',
         './services/Translate',
         './services/mangoHttpInterceptor',
         './services/JsonStore',
+        './services/JsonStoreEventManagerFactory',
         './services/Util',
         './directives/pointList',
         './directives/pointValue',
@@ -43,7 +44,8 @@ define(['./services/Point',
         './filters/trFilter',
         'angular',
         'angular-resource'
-], function(Point, User, PointEventManager, Translate, mangoHttpInterceptor, JsonStore, Util, pointList, pointValue, pointValues, pointStatistics,
+], function(Point, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore, JsonStoreEventManagerFactory, Util,
+		pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, momentFilter, durationFilter, trFilter, angular) {
@@ -53,10 +55,11 @@ var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
 
 maDashboardApp.factory('Point', Point);
 maDashboardApp.factory('User', User);
-maDashboardApp.factory('PointEventManager', PointEventManager);
+maDashboardApp.factory('pointEventManager', PointEventManagerFactory);
 maDashboardApp.factory('Translate', Translate);
 maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
 maDashboardApp.factory('JsonStore', JsonStore);
+maDashboardApp.factory('jsonStoreEventManager', JsonStoreEventManagerFactory);
 maDashboardApp.factory('Util', Util);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);

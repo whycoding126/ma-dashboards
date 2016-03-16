@@ -95,7 +95,7 @@ function getPointValue(pointEventManager, Point, Util) {
     };
 }
 
-getPointValue.$inject = ['PointEventManager', 'Point', 'Util'];
+getPointValue.$inject = ['pointEventManager', 'Point', 'Util'];
 return getPointValue;
 
 }); // define

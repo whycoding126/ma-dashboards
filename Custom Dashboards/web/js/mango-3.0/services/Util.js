@@ -7,7 +7,7 @@
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
-function UtilFactory() {
+function UtilFactory(mangoBaseUrl) {
 	function Util() {}
 	
 	/**
@@ -62,12 +62,36 @@ function UtilFactory() {
     	cancelFns = cancelFns.splice(0, cancelFns.length);
     	for (var i = 0; i < cancelFns.length; i++)
     		cancelFns[i]();
-    }
+    };
+    
+    Util.openSocket = function(path) {
+        if (!('WebSocket' in window)) {
+            throw new Error('WebSocket not supported');
+        }
+        
+        var host = document.location.host;
+        var protocol = document.location.protocol;
+        
+        if (mangoBaseUrl) {
+            var i = mangoBaseUrl.indexOf('//');
+            if (i >= 0) {
+                protocol = mangoBaseUrl.substring(0, i);
+                host = mangoBaseUrl.substring(i+2);
+            }
+            else {
+                host = mangoBaseUrl;
+            }
+        }
+        
+        protocol = protocol === 'https:' ? 'wss:' : 'ws:';
+        
+        return new WebSocket(protocol + '//' + host + path);
+    };
     
     return Util;
 }
 
-UtilFactory.$inject = [];
+UtilFactory.$inject = ['mangoBaseUrl'];
 return UtilFactory;
 
 }); // define

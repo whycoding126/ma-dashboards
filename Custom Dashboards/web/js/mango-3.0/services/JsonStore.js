@@ -7,7 +7,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function JsonStoreFactory($resource) {
+function JsonStoreFactory($resource, Util) {
 
     var JsonStore = $resource('/rest/v1/json-data/:xid', {
     	xid: '@xid',
@@ -32,7 +32,7 @@ function JsonStoreFactory($resource) {
     return JsonStore;
 }
 
-JsonStoreFactory.$inject = ['$resource'];
+JsonStoreFactory.$inject = ['$resource', 'Util'];
 return JsonStoreFactory;
 
 }); // define

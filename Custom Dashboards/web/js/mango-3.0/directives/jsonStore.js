@@ -4,10 +4,12 @@
  * @author Jared Wiltshire
  */
 
-define([], function() {
+define(['angular'], function(angular) {
 'use strict';
 
-function jsonStore(JsonStore, $q) {
+function jsonStore(JsonStore, jsonStoreEventManager, $q) {
+	var SUBSCRIPTION_TYPES = ['update'];
+	
     return {
         scope: {
         	xid: '@',
@@ -29,6 +31,11 @@ function jsonStore(JsonStore, $q) {
             	}).then(function(item) {
             		$scope.item = item;
             	});
+
+                jsonStoreEventManager.subscribe(newXid, SUBSCRIPTION_TYPES, websocketHandler);
+                if (oldXid && oldXid !== newXid) {
+                	jsonStoreEventManager.unsubscribe(oldXid, SUBSCRIPTION_TYPES, websocketHandler);
+                }
             });
             
             $scope.$watch('item.jsonData', function(newData) {
@@ -36,11 +43,25 @@ function jsonStore(JsonStore, $q) {
             		$scope.value = newData;
             	}
             });
+            
+            $scope.$on('$destroy', function() {
+                if ($scope.item) {
+                	jsonStoreEventManager.unsubscribe($scope.item.xid, SUBSCRIPTION_TYPES, websocketHandler);
+                }
+            });
+            
+            function websocketHandler(event, payload) {
+                $scope.$apply(function() {
+                	if (!angular.equals(payload.object, $scope.item)) {
+                		angular.copy(payload.object, $scope.item);
+                	}
+                });
+            }
         }
     };
 }
 
-jsonStore.$inject = ['JsonStore', '$q'];
+jsonStore.$inject = ['JsonStore', 'jsonStoreEventManager', '$q'];
 return jsonStore;
 
 }); // define
