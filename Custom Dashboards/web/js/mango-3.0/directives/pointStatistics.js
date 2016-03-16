@@ -137,7 +137,7 @@ function pointValues($http, Point, Util, $q, mangoDefaultTimeout) {
                 	return {
                 		promise: $q.when(result),
                 		cancel: angular.noop
-                	}
+                	};
                 }
                 
                 params.push('from=' + encodeURIComponent(from.toISOString()));

@@ -10,7 +10,8 @@ define(['angular'], function(angular) {
 function JsonStoreFactory($resource) {
 
     var JsonStore = $resource('/rest/v1/json-data/:xid', {
-    	xid: '@xid'
+    	xid: '@xid',
+        name: '@name'
     }, {
     	save: {
             method: 'POST',

@@ -11,10 +11,16 @@ function jsonStore(JsonStore, $q) {
     return {
         scope: {
         	xid: '@',
-            item: '=',
+            item: '=?',
             value: '=?'
         },
         link: function ($scope, $element, attr) {
+        	
+        	$scope.$watch('value', function(newValue, oldValue) {
+        		if (newValue !== undefined) {
+        			
+        		}
+        	});
         	
             $scope.$watch('xid', function(newXid, oldXid) {
             	if (!newXid) return;
@@ -24,10 +30,13 @@ function jsonStore(JsonStore, $q) {
             	}, function() {
             		var item = new JsonStore();
             		item.xid = newXid;
-            		item.name = '';
+            		item.name = newXid;
+            		if ($scope.value)
+            			item.jsonData = $scope.value;
             		return $q.when(item);
             	}).then(function(item) {
             		$scope.item = item;
+            		$scope.value = item.jsonData;
             	});
             });
         }

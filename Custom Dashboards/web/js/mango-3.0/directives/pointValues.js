@@ -286,7 +286,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoDefaultTimeout, U
                 var dataType = point.pointLocator.dataType;
                 var result = {
                 	point: point
-                }
+                };
 
                 if ($scope.latest) {
                     url += '/latest';
@@ -298,7 +298,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoDefaultTimeout, U
                     	return {
                     		promise: $q.when(result),
                     		cancel: angular.noop
-                    	}
+                    	};
                     }
                     
                     params.push('from=' + encodeURIComponent(from.toISOString()));
