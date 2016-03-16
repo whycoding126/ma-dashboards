@@ -14,10 +14,15 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 			text: '=liveEditor'
 		},
 		controller: function($scope, $element) {
-			var editor;
+			
 			var initialText = $element.data('htmlContent');
 			$element.removeData('htmlContent');
+			
+			var editor;
 			var programaticChange = false;
+			var currentText;
+
+			this.setText = setText;
 
 			$scope.aceConfig = {
 					useWrapMode : true,
@@ -28,8 +33,7 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 						editor = editor_;
 						editor.$blockScrolling = Infinity;
 						if (initialText) {
-							programaticChange = true;
-							editor.setValue(initialText, -1);
+							setText(initialText);
 						}
 					},
 					onChange: aceChanged
@@ -44,13 +48,23 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 				});
 			});
 			
-			this.setText = function(text) {
+			$scope.$watch('text', function(newValue) {
+				if (newValue && newValue !== currentText) {
+					if (editor) {
+						setText(newValue);
+					} else {
+						initialText = initialText || newValue;
+					}
+				}
+			});
+			
+			function setText(text) {
 				programaticChange = true;
 				editor.setValue(text, -1);
 			};
 			
 			function aceChangedImpl() {
-				$scope.text = editor.getValue();
+				$scope.text = currentText = editor.getValue();
 			}
 			
 			var aceChangedDebounced = debounce(function() {

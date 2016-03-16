@@ -123,15 +123,15 @@ angular.module('sbAdminApp', [
           }
         }
       })
-      .state('dashboard.form',{
+    .state('dashboard.form',{
         templateUrl:'views/form.html',
         url:'/form'
     })
-      .state('dashboard.blank',{
+    .state('dashboard.blank',{
         templateUrl:'views/pages/blank.html',
         url:'/blank'
     })
-      .state('login', {
+    .state('login', {
         templateUrl: 'views/pages/login.html',
         url: '/login',
         resolve: {
@@ -165,21 +165,25 @@ angular.module('sbAdminApp', [
             }]
         }
     })
+    .state('dashboard.examples.playArea', {
+        templateUrl:'views/examples/playArea.html',
+        url:'/play-area'
+    })
     .state('dashboard.examples.angular', {
         templateUrl:'views/examples/angular.html',
         url:'/angular'
     })
     .state('dashboard.examples.pageTemplate', {
         templateUrl:'views/examples/pageTemplate.html',
-        url:'/pageTemplate'
+        url:'/page-template'
     })
     .state('dashboard.examples.pointList', {
         templateUrl:'views/examples/pointList.html',
-        url:'/pointList'
+        url:'/point-list'
     })
     .state('dashboard.examples.liveValues', {
         templateUrl:'views/examples/liveValues.html',
-        url:'/liveValues'
+        url:'/live-values'
     })
     .state('dashboard.examples.filters', {
         templateUrl:'views/examples/filters.html',
@@ -187,19 +191,19 @@ angular.module('sbAdminApp', [
     })
     .state('dashboard.examples.datePresets', {
         templateUrl:'views/examples/datePresets.html',
-        url:'/datePresets'
+        url:'/date-presets'
     })
     .state('dashboard.examples.pointValues', {
         templateUrl:'views/examples/pointValues.html',
-        url:'/pointValues'
+        url:'/point-values'
     })
     .state('dashboard.examples.latestPointValues', {
         templateUrl:'views/examples/latestPointValues.html',
-        url:'/latestPointValues'
+        url:'/latest-point-values'
     })
     .state('dashboard.examples.switchImage', {
         templateUrl:'views/examples/switchImage.html',
-        url:'/switchImage'
+        url:'/switch-image'
     })
     .state('dashboard.examples.bars', {
         templateUrl:'views/examples/bars.html',
@@ -219,43 +223,43 @@ angular.module('sbAdminApp', [
     })
     .state('dashboard.examples.lineChart',{
         templateUrl:'views/examples/lineChart.html',
-        url:'/lineChart'
+        url:'/line-chart'
     })
     .state('dashboard.examples.barChart',{
         templateUrl:'views/examples/barChart.html',
-        url:'/barChart'
+        url:'/bar-chart'
     })
     .state('dashboard.examples.advancedChart',{
         templateUrl:'views/examples/advancedChart.html',
-        url:'/advancedChart'
+        url:'/advanced-chart'
     })
     .state('dashboard.examples.stateChart',{
         templateUrl:'views/examples/stateChart.html',
-        url:'/stateChart'
+        url:'/state-chart'
     })
     .state('dashboard.examples.pointArrayLineChart',{
         templateUrl:'views/examples/pointArrayLineChart.html',
-        url:'/pointArrayLineChart'
+        url:'/point-array-line-chart'
     })
     .state('dashboard.examples.pointArrayTable',{
         templateUrl:'views/examples/pointArrayTable.html',
-        url:'/pointArrayTable'
+        url:'/point-array-table'
     })
     .state('dashboard.examples.getStatistics',{
         templateUrl:'views/examples/getStatistics.html',
-        url:'/getStatistics'
+        url:'/get-statistics'
     })
     .state('dashboard.examples.statePieChart',{
         templateUrl:'views/examples/statePieChart.html',
-        url:'/statePieChart'
+        url:'/state-pie-chart'
     })
     .state('dashboard.examples.statisticsTable',{
         templateUrl:'views/examples/statisticsTable.html',
-        url:'/statisticsTable'
+        url:'/statistics-table'
     })
     .state('dashboard.examples.setPoint', {
         templateUrl:'views/examples/setPoint.html',
-        url:'/setPoint'
+        url:'/set-point'
     })
     .state('dashboard.examples.toggle', {
         templateUrl:'views/examples/toggle.html',
