@@ -169,6 +169,14 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/playArea.html',
         url:'/play-area'
     })
+    .state('dashboard.examples.playAreaBig', {
+        templateUrl:'views/examples/playAreaBig.html',
+        url:'/play-area-big'
+    })
+    .state('dashboard.examples.templating', {
+        templateUrl:'views/examples/templating.html',
+        url:'/templating'
+    })
     .state('dashboard.examples.angular', {
         templateUrl:'views/examples/angular.html',
         url:'/angular'

@@ -5,7 +5,7 @@ angular.module('sbAdminApp')
 	$rootScope.dateControls = {
 		rollup: 'AVERAGE',
 		rollupInterval: '1 minutes',
-		updateInterval: '1 minutes'
+		updateInterval: '5 minutes'
 	};
 	return {
 		templateUrl:'scripts/directives/sidebar/sidebar-date-controls/sidebar-date-controls.html',

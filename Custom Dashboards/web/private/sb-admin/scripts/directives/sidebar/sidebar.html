@@ -40,9 +40,6 @@
                         <a ui-sref="dashboard.examples.latestPointValues" ma-tr="dashboards.v3.dox.latestPointValues"></a>
                     </li>
                     <li ui-sref-active="active">
-                        <a ui-sref="dashboard.examples.pointArrayTable" ma-tr="dashboards.v3.dox.pointArrayTable"></a>
-                    </li>
-                    <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.jsonStore" ma-tr="dashboards.v3.dox.jsonStore"></a>
                     </li>
                 </ul>
@@ -83,9 +80,6 @@
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.stateChart" ma-tr="dashboards.v3.dox.stateChart"></a>
                     </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref="dashboard.examples.pointArrayLineChart" ma-tr="dashboards.v3.dox.pointArrayLineChart"></a>
-                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
@@ -114,6 +108,22 @@
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.toggle" ma-tr="dashboards.v3.dox.toggle"></a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li ng-class="{active: collapseVar==12}">
+                <a href="" ng-click="check(12)"><i class="fa fa-pencil-square-o fa-fw"></i> <span ma-tr="dashboards.v3.dox.pointArrayTemplating"></span><span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=12">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.pointArrayTable" ma-tr="dashboards.v3.dox.pointArrayTable"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.pointArrayLineChart" ma-tr="dashboards.v3.dox.pointArrayLineChart"></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.templating" ma-tr="dashboards.v3.dox.templating"></a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

@@ -141,6 +141,14 @@ maDashboardApp.filter('pad', function() {
 	  };
 });
 
+maDashboardApp.filter('first', function() {
+	  return function(a) {
+		  if (a && typeof a.length === 'number')
+			  return a[0];
+		  return a;
+	  };
+});
+
 maDashboardApp.filter('unique', function() {
 	
 	function addUnique(result, item, propName) {
