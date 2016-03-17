@@ -24,6 +24,7 @@ function serialChart() {
 		scope['series' + j + 'Title'] = '@';
 		scope['series' + j + 'Color'] = '@';
 		scope['series' + j + 'Point'] = '=?';
+		scope['series' + j + 'Axis'] = '@';
 	}
 	
     return {
@@ -57,7 +58,8 @@ function serialChart() {
 	        		$scope.$watchGroup([
 	        		    'series' + i + 'Type',
 	        		    'series' + i + 'Title',
-	        		    'series' + i + 'Color'
+	        		    'series' + i + 'Color',
+	        		    'series' + i + 'Axis'
 	        		], typeOrTitleChanged.bind(null, i));
 	        	}
             } else {
@@ -66,7 +68,8 @@ function serialChart() {
 	        		    'series' + i + 'Type',
 	        		    'series' + i + 'Title',
 	        		    'series' + i + 'Color',
-	        		    'series' + i + 'Point'
+	        		    'series' + i + 'Point',
+	        		    'series' + i + 'Axis'
 	        		], typeOrTitleChanged.bind(null, i));
 	        		
 	        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
@@ -162,6 +165,7 @@ function serialChart() {
                 graph.lineColor = $scope['series' + graphNum + 'Color'] ||
                 	(point && point.chartColour) ||
                 	null;
+                graph.valueAxis = $scope['series' + graphNum + 'Axis'] || 'value-axis-left';
                 var stackType = options.valueAxes[0].stackType;
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
@@ -250,7 +254,11 @@ function defaultOptions() {
         addClassNames: true,
         dataProvider: [],
         valueAxes: [{
+        	id: "value-axis-left",
             position: "left"
+        },{
+        	id: "value-axis-right",
+            position: "right"
         }],
         categoryAxis: {
             parseDates: true,
