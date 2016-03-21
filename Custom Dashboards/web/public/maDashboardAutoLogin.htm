@@ -4,22 +4,22 @@
 	<title>Auto login demo</title>
 	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
 </head>
-<body ng-cloak>
+<body>
 	<!-- supply username and password for auto login -->
-	<ma-connection username="admin" password="admin"></ma-connection>
-	
-	<div>Filter point list (RQL): <input ng-model="rql" ng-model-options="{debounce:1000}"></input></div>
-	<div>Point list: <ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list></div>
-	<div>Point value: <ma-point-value point="myPoint" display-type="rendered"></ma-point-value></div>
-	
-	<div ng-show="myPoint.pointLocator.settable">
-		Set point value:
-		<input ng-model="changeval" ma-copy-blurred="myPoint.value">
-		<button ng-click="myPoint.setValue(changeval)">Save</button>
-	</div>
+	<ma-connection username="admin" password="admin" ng-cloak>
+		<div>Filter point list (RQL): <input ng-model="rql" ng-model-options="{debounce:1000}"></input></div>
+		<div>Point list: <ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list></div>
+		<div>Point value: <ma-point-value point="myPoint" display-type="rendered"></ma-point-value></div>
+		
+		<div ng-show="myPoint.pointLocator.settable">
+			Set point value:
+			<input ng-model="changeval" ma-copy-blurred="myPoint.value">
+			<button ng-click="myPoint.setValue(changeval)">Save</button>
+		</div>
+	</ma-connection>
 
 	<script type="text/javascript" src="/resources/require.js"></script>
 	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
-	<script type="text/javascript" src="/modules/dashboards/web/js/mango-3.0/maConnection.js"></script>
+	<script type="text/javascript">require(['mango-3.0/bootstrap']);</script>
 </body>
 </html>

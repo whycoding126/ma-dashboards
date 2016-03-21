@@ -75,7 +75,7 @@ define(['angular', './maDashboardApp'], function(angular, maDashboardApp) {
 	}
 	
 	function doBootstrap(element, appName) {
-		angular.bootstrap(element, [appName], {strictDi: true});
+		angular.bootstrap(element, [appName]);
 	}
 	
 }); // define
