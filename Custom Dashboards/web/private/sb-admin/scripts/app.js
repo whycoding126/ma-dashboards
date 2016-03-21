@@ -205,6 +205,10 @@ angular.module('sbAdminApp', [
         templateUrl:'views/examples/pointValues.html',
         url:'/point-values'
     })
+    .state('dashboard.examples.getPointByXid', {
+        templateUrl:'views/examples/getPointByXid.html',
+        url:'/get-point-by-xid'
+    })
     .state('dashboard.examples.latestPointValues', {
         templateUrl:'views/examples/latestPointValues.html',
         url:'/latest-point-values'
