@@ -4,16 +4,8 @@
  * @author Jared Wiltshire
  */
 
-define(['./services/Point',
-        './services/User',
-        './services/PointEventManagerFactory',
-        './services/Translate',
-        './services/mangoHttpInterceptor',
-        './services/JsonStore',
-        './services/JsonStoreEventManagerFactory',
-        './services/Util',
-        './services/mangoWatchdog',
-        './services/EventManager',
+define(['./maServices',
+        './maFilters',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -41,168 +33,46 @@ define(['./services/Point',
         './directives/jsonStore',
         './directives/focusOn',
         './directives/enter',
-        './filters/momentFilter',
-        './filters/durationFilter',
         './filters/trFilter',
-        'angular',
-        'angular-resource'
-], function(Point, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore, JsonStoreEventManagerFactory, Util,
-		mangoWatchdog, EventManager, pointList, pointValue, pointValues, pointStatistics,
+        'angular'
+], function(maServices, maFilters, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, momentFilter, durationFilter, trFilter, angular) {
+        jsonStore, focusOn, enter, trFilter, angular) {
 'use strict';
 
-var maDashboardApp = angular.module('maDashboardApp', ['ngResource']);
+var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngResource']);
 
-maDashboardApp.factory('Point', Point);
-maDashboardApp.factory('User', User);
-maDashboardApp.factory('pointEventManager', PointEventManagerFactory);
-maDashboardApp.factory('Translate', Translate);
-maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
-maDashboardApp.factory('JsonStore', JsonStore);
-maDashboardApp.factory('jsonStoreEventManager', JsonStoreEventManagerFactory);
-maDashboardApp.factory('Util', Util);
-maDashboardApp.factory('mangoWatchdog', mangoWatchdog);
-maDashboardApp.factory('EventManager', EventManager);
-maDashboardApp.directive('maPointList', pointList);
-maDashboardApp.directive('maPointValue', pointValue);
-maDashboardApp.directive('maPointValues', pointValues);
-maDashboardApp.directive('maPointStatistics', pointStatistics);
-maDashboardApp.directive('maBandStyle', bandStyle);
-maDashboardApp.directive('maSwitchStyle', switchStyle);
-maDashboardApp.directive('maTankLevel', tankLevel);
-maDashboardApp.directive('maGaugeChart', gaugeChart);
-maDashboardApp.directive('maSerialChart', serialChart);
-maDashboardApp.directive('maPieChart', pieChart);
-maDashboardApp.directive('maClock', clock);
-maDashboardApp.directive('maStateChart', stateChart);
-maDashboardApp.directive('maCopyBlurred', copyBlurred);
-maDashboardApp.directive('maTr', tr);
-maDashboardApp.directive('maDatePicker', datePicker);
-maDashboardApp.directive('maDateRangePicker', dateRangePicker);
-maDashboardApp.directive('maStatisticsTable', statisticsTable);
-maDashboardApp.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
-maDashboardApp.directive('maSetPointValue', setPointValue);
-maDashboardApp.directive('maSwitchImg', switchImg);
-maDashboardApp.directive('maCalc', calc);
-maDashboardApp.directive('maIntervalPicker', intervalPicker);
-maDashboardApp.directive('maPointQuery', pointQuery);
-maDashboardApp.directive('maGetPointValue', getPointValue);
-maDashboardApp.directive('maJsonStore', jsonStore);
-maDashboardApp.directive('maFocusOn', focusOn);
-maDashboardApp.directive('maEnter', enter);
-maDashboardApp.filter('moment', momentFilter);
-maDashboardApp.filter('duration', durationFilter);
-maDashboardApp.filter('tr', trFilter);
+maDashboards.directive('maPointList', pointList);
+maDashboards.directive('maPointValue', pointValue);
+maDashboards.directive('maPointValues', pointValues);
+maDashboards.directive('maPointStatistics', pointStatistics);
+maDashboards.directive('maBandStyle', bandStyle);
+maDashboards.directive('maSwitchStyle', switchStyle);
+maDashboards.directive('maTankLevel', tankLevel);
+maDashboards.directive('maGaugeChart', gaugeChart);
+maDashboards.directive('maSerialChart', serialChart);
+maDashboards.directive('maPieChart', pieChart);
+maDashboards.directive('maClock', clock);
+maDashboards.directive('maStateChart', stateChart);
+maDashboards.directive('maCopyBlurred', copyBlurred);
+maDashboards.directive('maTr', tr);
+maDashboards.directive('maDatePicker', datePicker);
+maDashboards.directive('maDateRangePicker', dateRangePicker);
+maDashboards.directive('maStatisticsTable', statisticsTable);
+maDashboards.directive('maStartsAndRuntimesTable', startsAndRuntimesTable);
+maDashboards.directive('maSetPointValue', setPointValue);
+maDashboards.directive('maSwitchImg', switchImg);
+maDashboards.directive('maCalc', calc);
+maDashboards.directive('maIntervalPicker', intervalPicker);
+maDashboards.directive('maPointQuery', pointQuery);
+maDashboards.directive('maGetPointValue', getPointValue);
+maDashboards.directive('maJsonStore', jsonStore);
+maDashboards.directive('maFocusOn', focusOn);
+maDashboards.directive('maEnter', enter);
+maDashboards.filter('tr', trFilter);
 
-maDashboardApp.filter('sum', function() {
-	return function(arrayData, propName) {
-		var sum = 0;
-		var val;
-		if (!arrayData) {
-			return sum;
-		}
-		if (arrayData.length !== undefined) {
-			for (var i = 0; i < arrayData.length; i++) {
-				if (arrayData[i] !== undefined) {
-					val = arrayData[i];
-					if (!propName) {
-						sum += val;
-					} else if (val[propName]) {
-						sum += val[propName];
-					}
-				}
-			}
-		} else {
-			for (var key in arrayData) {
-				if (arrayData[key] !== undefined) {
-					val = arrayData[key];
-					if (!propName) {
-						sum += val;
-					} else if (val[propName]) {
-						sum += val[propName];
-					}
-				}
-			}
-		}
-		return sum;
-	};
-});
-
-maDashboardApp.filter('sumColumn', function() {
-	return function(tableData, colNum) {
-		var sum = 0;
-		if (!tableData) {
-			return sum;
-		}
-		if (tableData.length !== undefined) {
-			for (var i = 0; i < tableData.length; i++) {
-				if (tableData[i] && tableData[i][colNum] !== undefined)
-					sum += tableData[i][colNum];
-			}
-		} else {
-			for (var key in tableData) {
-				if (tableData[key] && tableData[key][colNum] !== undefined)
-					sum += tableData[key][colNum];
-			}
-		}
-		return sum;
-	};
-});
-
-maDashboardApp.filter('pad', function() {
-	  var zeros = '0000000000';
-	  return function(a, b) {
-		  return (zeros + a).slice(-b);
-	  };
-});
-
-maDashboardApp.filter('first', function() {
-	  return function(a) {
-		  if (a && typeof a.length === 'number')
-			  return a[0];
-		  return a;
-	  };
-});
-
-maDashboardApp.filter('unique', function() {
-	
-	function addUnique(result, item, propName) {
-		var propValue = item[propName];
-		if (result.indexOf(propValue) >= 0) return;
-		result.push(propValue);
-	}
-	
-	return function(collection, propName) {
-		if (!collection) return;
-		var result = [];
-		if (collection.length !== undefined) {
-			for (var i = 0; i < collection.length; i++)
-				addUnique(result, collection[i], propName);
-		} else {
-			for (var key in collection)
-				addUnique(result, collection[key], propName);
-		}
-		return result;
-	};
-});
-
-maDashboardApp.constant('mangoBaseUrl', '');
-maDashboardApp.constant('mangoUsername', '');
-maDashboardApp.constant('mangoPassword', '');
-maDashboardApp.constant('mangoLogout', false);
-maDashboardApp.constant('mangoTimeout', 30000);
-maDashboardApp.constant('mangoWatchdogTimeout', 60000);
-
-maDashboardApp.config(['$httpProvider', function($httpProvider) {
-	$httpProvider.interceptors.push('mangoHttpInterceptor');
-}]);
-
-maDashboardApp.run(['$rootScope', '$timeout', 'mangoWatchdog', function($rootScope, $timeout, mangoWatchdog) {
-
-	$rootScope.mangoWatchdog = mangoWatchdog;
-	mangoWatchdog.reset();
+maDashboards.run(['$rootScope', function($rootScope) {
 
 	$rootScope.range = function(start, end) {
 		var result = [];
@@ -296,6 +166,6 @@ maDashboardApp.run(['$rootScope', '$timeout', 'mangoWatchdog', function($rootSco
     ];
 }]);
 
-return maDashboardApp;
+return maDashboards;
 
 }); // require

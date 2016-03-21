@@ -7,8 +7,12 @@
 	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css"></link>
 	<link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-theme.min.css"></link>
 </head>
-<body ng-cloak>
-	<div class="container">
+<body>
+	<div ng-if="appLoading" class="text-center">
+		<p>App is loading...</p>
+    </div>
+    
+	<div class="container" ng-cloak>
 		<div class="row">
 			<div class="col-md-12">
 				<h1 class="page-header">Bootstrap page template</h1>

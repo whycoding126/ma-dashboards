@@ -61,6 +61,11 @@ function UserFactory($resource) {
             		var password = config.params.password;
             		delete config.params.password;
                     return password;
+                },
+                logout: function(config) {
+            		var logout = config.params.logout;
+            		delete config.params.logout;
+                    return !!logout;
                 }
             },
             isArray: false,

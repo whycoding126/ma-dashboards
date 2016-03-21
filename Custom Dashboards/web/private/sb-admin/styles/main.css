@@ -125,3 +125,8 @@ background-color: #eee;
 [live-editor] [ui-ace] {
 	height: 100%;
 }
+
+.app-loading {
+	margin-top: 50px;
+	font-size: 50px;
+}

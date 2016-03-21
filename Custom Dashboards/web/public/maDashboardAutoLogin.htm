@@ -4,9 +4,19 @@
 	<title>Auto login demo</title>
 	<link rel="stylesheet" href="/resources/angular-csp.css"></link>
 </head>
-<body>
-	<!-- supply username and password for auto login -->
-	<ma-connection username="admin" password="admin" ng-cloak>
+<!--
+supply username and password for auto login,
+angular app bootstraps on element where ma-connection is specified
+-->
+<body ma-connection username="admin" password="admin">
+
+	<!-- This div will disappear when the app has loaded -->
+	<div ng-if="appLoading">
+	    <p>App loading...</p>
+	</div>
+
+	<!-- Cloak the app so it is hidden until app is loaded  -->
+	<div ng-cloak>
 		<div>Filter point list (RQL): <input ng-model="rql" ng-model-options="{debounce:1000}"></input></div>
 		<div>Point list: <ma-point-list ng-model="myPoint" query="{{rql}}"></ma-point-list></div>
 		<div>Point value: <ma-point-value point="myPoint" display-type="rendered"></ma-point-value></div>
@@ -16,8 +26,8 @@
 			<input ng-model="changeval" ma-copy-blurred="myPoint.value">
 			<button ng-click="myPoint.setValue(changeval)">Save</button>
 		</div>
-	</ma-connection>
-
+	</div>
+	
 	<script type="text/javascript" src="/resources/require.js"></script>
 	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
 	<script type="text/javascript">require(['mango-3.0/bootstrap']);</script>

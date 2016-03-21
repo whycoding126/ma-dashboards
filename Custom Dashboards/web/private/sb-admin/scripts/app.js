@@ -1,7 +1,7 @@
-require(['angular', 'mango-3.0/maDashboardApp', 'jquery', 'scripts/services/errorInterceptor.js',
+require(['angular', 'mango-3.0/maDashboards', 'jquery', 'scripts/services/errorInterceptor.js',
          'bootstrap', 'angular-ui-router', 'oclazyload', 'angular-loading-bar', 'angular-bootstrap',
          'metisMenu'],
-         function(angular, maDashboardApp, $, errorInterceptorFactory) {
+         function(angular, maDashboards, $, errorInterceptorFactory) {
 
 'use strict';
 /**
@@ -17,7 +17,7 @@ angular.module('sbAdminApp', [
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
-    'maDashboardApp'
+    'maDashboards'
   ])
   .factory('errorInterceptor', errorInterceptorFactory)
   .run(['$rootScope', '$state', function($rootScope, $state) {

@@ -22,8 +22,12 @@
 
     </head>
    
-    <body ng-cloak>
-	    <div>
+    <body>
+    	<div ng-if="appLoading" class="app-loading text-center">
+    		<i class="fa fa-cog fa-spin"></i>
+    	</div>
+    
+	    <div ng-cloak>
 	    	<div ui-view></div>
 	    </div>
 
