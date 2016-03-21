@@ -19,8 +19,8 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 			$element.removeData('htmlContent');
 			
 			var editor;
-			var programaticChange = false;
 			var currentText;
+			var programaticChange = false;
 
 			this.setText = setText;
 
@@ -58,47 +58,13 @@ angular.module('sbAdminApp').directive('liveEditor', ['$templateRequest', '$sce'
 				}
 			});
 			
+			function aceChanged() {
+				$scope.text = currentText = editor.getValue();
+			}
+
 			function setText(text) {
 				programaticChange = true;
 				editor.setValue(text, -1);
-			};
-			
-			function aceChangedImpl() {
-				$scope.text = currentText = editor.getValue();
-			}
-			
-			var aceChangedDebounced = debounce(function() {
-				$scope.$apply(function() {
-					aceChangedImpl();
-				});
-			}, 1000);
-			
-			function aceChanged() {
-				if (programaticChange) {
-					programaticChange = false;
-					aceChangedImpl();
-				} else {
-					aceChangedDebounced();
-				}
-			}
-
-			// Returns a function, that, as long as it continues to be invoked, will not
-			// be triggered. The function will be called after it stops being called for
-			// N milliseconds. If `immediate` is passed, trigger the function on the
-			// leading edge, instead of the trailing.
-			function debounce(func, wait, immediate) {
-				var timeout;
-				return function() {
-					var context = this, args = arguments;
-					var later = function() {
-						timeout = null;
-						if (!immediate) func.apply(context, args);
-					};
-					var callNow = immediate && !timeout;
-					clearTimeout(timeout);
-					timeout = setTimeout(later, wait);
-					if (callNow) func.apply(context, args);
-				};
 			};
 		}
 	};
