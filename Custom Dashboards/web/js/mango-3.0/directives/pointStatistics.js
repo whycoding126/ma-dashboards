@@ -7,7 +7,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function pointValues($http, Point, Util, $q, mangoDefaultTimeout) {
+function pointValues($http, Point, Util, $q, mangoTimeout) {
     return {
         restrict: 'E',
         scope: {
@@ -150,7 +150,7 @@ function pointValues($http, Point, Util, $q, mangoDefaultTimeout) {
 
                 var cancelDefer = $q.defer();
     			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, mangoDefaultTimeout);
+    			setTimeout(cancelFn, mangoTimeout);
                 
                 var promise = $http.get(url, {
                 	timeout: cancelDefer.promise,
@@ -183,7 +183,7 @@ function pointValues($http, Point, Util, $q, mangoDefaultTimeout) {
     };
 }
 
-pointValues.$inject = ['$http', 'Point', 'Util', '$q', 'mangoDefaultTimeout'];
+pointValues.$inject = ['$http', 'Point', 'Util', '$q', 'mangoTimeout'];
 return pointValues;
 
 }); // define

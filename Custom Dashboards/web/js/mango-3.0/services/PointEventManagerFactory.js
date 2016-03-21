@@ -4,17 +4,16 @@
  * @author Jared Wiltshire
  */
 
-define(['../EventManager'], function(EventManager) {
+define([], function() {
 'use strict';
 
-function PointEventManagerFactory(mangoBaseUrl) {
+function PointEventManagerFactory(EventManager) {
     return new EventManager({
-    	url: '/rest/v1/websocket/point-value',
-    	baseUrl: mangoBaseUrl
+    	url: '/rest/v1/websocket/point-value'
     });
 }
 
-PointEventManagerFactory.$inject = ['mangoBaseUrl'];
+PointEventManagerFactory.$inject = ['EventManager'];
 return PointEventManagerFactory;
 
 }); // define

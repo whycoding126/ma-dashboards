@@ -4,17 +4,16 @@
  * @author Jared Wiltshire
  */
 
-define(['../EventManager'], function(EventManager) {
+define([], function() {
 'use strict';
 
-function JsonStoreEventManagerFactory(mangoBaseUrl) {
+function JsonStoreEventManagerFactory(EventManager) {
     return new EventManager({
-    	url: '/rest/v1/websocket/json-data',
-    	baseUrl: mangoBaseUrl
+    	url: '/rest/v1/websocket/json-data'
     });
 }
 
-JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl'];
+JsonStoreEventManagerFactory.$inject = ['EventManager'];
 return JsonStoreEventManagerFactory;
 
 }); // define

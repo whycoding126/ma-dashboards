@@ -45,6 +45,9 @@
                     <li ui-sref-active="active">
                         <a ui-sref="dashboard.examples.jsonStore" ma-tr="dashboards.v3.dox.jsonStore"></a>
                     </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.examples.watchdog" ma-tr="dashboards.v3.dox.watchdog"></a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
@@ -216,19 +219,6 @@
 
                         </ul>
                         <!-- /.nav-third-level -->
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            </li>
-            <li ng-class="{active:collapseVar==4}">
-                <a href="" ng-click="check(4)"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span
-                        class="fa arrow"></span></a>
-                <ul class="nav nav-second-level" collapse="collapseVar!=4">
-                    <li ng-class="{active: selectedMenu=='blank'}">
-                        <a ui-sref="dashboard.blank" ng-click="selectedMenu='blank'">Blank Page</a>
-                    </li>
-                    <li>
-                        <a ui-sref="login">Login Page</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

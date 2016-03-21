@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" ma-tr="dashboards.v3.dox.watchdog"></h1>
+        <p>There is a watchdog timer which resets every time an API response or WebSocket frame is received. Check the value of
+        <code>mangoWatchdog.failed</code> to see if the watchdog timer has timed out.</p>
+        <p>If your page template is setup to display a message when the watchdog times out then you may want to call
+        <code>mangoWatchdog.disable()</code> on pages which do not make repeated requests.</p>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<dual-pane-editor>
+
+<div ng-if="!mangoWatchdog.failed" class="alert alert-success" role="alert">
+    <strong>Good</strong> Connection to Mango is OK.
+</div>
+
+<div ng-if="mangoWatchdog.failed" class="alert alert-danger" role="alert">
+    <strong>Failure</strong> Connection to Mango has failed.
+</div>
+
+</dual-pane-editor>

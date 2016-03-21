@@ -127,10 +127,6 @@ angular.module('sbAdminApp', [
         templateUrl:'views/form.html',
         url:'/form'
     })
-    .state('dashboard.blank',{
-        templateUrl:'views/pages/blank.html',
-        url:'/blank'
-    })
     .state('login', {
         templateUrl: 'views/pages/login.html',
         url: '/login',
@@ -212,6 +208,10 @@ angular.module('sbAdminApp', [
     .state('dashboard.examples.latestPointValues', {
         templateUrl:'views/examples/latestPointValues.html',
         url:'/latest-point-values'
+    })
+    .state('dashboard.examples.watchdog', {
+        templateUrl:'views/examples/watchdog.html',
+        url:'/watchdog'
     })
     .state('dashboard.examples.switchImage', {
         templateUrl:'views/examples/switchImage.html',

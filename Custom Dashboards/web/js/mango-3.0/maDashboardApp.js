@@ -12,6 +12,8 @@ define(['./services/Point',
         './services/JsonStore',
         './services/JsonStoreEventManagerFactory',
         './services/Util',
+        './services/mangoWatchdog',
+        './services/EventManager',
         './directives/pointList',
         './directives/pointValue',
         './directives/pointValues',
@@ -45,7 +47,7 @@ define(['./services/Point',
         'angular',
         'angular-resource'
 ], function(Point, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore, JsonStoreEventManagerFactory, Util,
-		pointList, pointValue, pointValues, pointStatistics,
+		mangoWatchdog, EventManager, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, momentFilter, durationFilter, trFilter, angular) {
@@ -61,6 +63,8 @@ maDashboardApp.factory('mangoHttpInterceptor', mangoHttpInterceptor);
 maDashboardApp.factory('JsonStore', JsonStore);
 maDashboardApp.factory('jsonStoreEventManager', JsonStoreEventManagerFactory);
 maDashboardApp.factory('Util', Util);
+maDashboardApp.factory('mangoWatchdog', mangoWatchdog);
+maDashboardApp.factory('EventManager', EventManager);
 maDashboardApp.directive('maPointList', pointList);
 maDashboardApp.directive('maPointValue', pointValue);
 maDashboardApp.directive('maPointValues', pointValues);
@@ -172,14 +176,21 @@ maDashboardApp.filter('unique', function() {
 });
 
 maDashboardApp.constant('mangoBaseUrl', '');
-maDashboardApp.constant('mangoDefaultTimeout', 30000);
+maDashboardApp.constant('mangoUsername', '');
+maDashboardApp.constant('mangoPassword', '');
+maDashboardApp.constant('mangoLogout', false);
+maDashboardApp.constant('mangoTimeout', 30000);
+maDashboardApp.constant('mangoWatchdogTimeout', 60000);
 
 maDashboardApp.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboardApp.run(['$rootScope', function($rootScope) {
-	  
+maDashboardApp.run(['$rootScope', '$timeout', 'mangoWatchdog', function($rootScope, $timeout, mangoWatchdog) {
+
+	$rootScope.mangoWatchdog = mangoWatchdog;
+	mangoWatchdog.reset();
+
 	$rootScope.range = function(start, end) {
 		var result = [];
 		for (var i = start; i <= end; i++)
