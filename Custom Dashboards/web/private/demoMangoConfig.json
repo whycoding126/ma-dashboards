@@ -41,7 +41,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"SECONDS",
          "updatePeriods":5,
-         "editPermission":null,
+         "editPermission":"",
          "purgeOverride":false,
          "purgePeriod":1
       }
@@ -105,9 +105,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -129,7 +130,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -152,17 +153,18 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"A",
+         "unit":"",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -176,13 +178,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"A",
-            "renderedUnit":"A",
+            "unit":"",
+            "renderedUnit":"",
             "suffix":"PF",
             "format":"0.0"
          },
@@ -199,9 +201,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -210,8 +213,13 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
-         "chartRenderer":null,
+         "chartRenderer":{
+            "type":"IMAGE",
+            "timePeriodType":"DAYS",
+            "numberOfPeriods":1
+         },
          "dataSourceXid":"vmeters",
          "defaultCacheSize":1,
          "deviceName":"Meter 1",
@@ -223,7 +231,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -246,9 +254,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -270,7 +279,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -296,7 +305,7 @@
                "type":"INCREMENT_ANALOG",
                "change":5.0,
                "max":9.99999999E8,
-               "min":100.0,
+               "min":0.0,
                "roll":false,
                "startValue":"100"
             },
@@ -305,7 +314,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -319,13 +328,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW·h",
+            "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
          },
@@ -342,9 +351,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -366,7 +376,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -389,10 +399,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -413,7 +424,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -436,9 +447,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -447,6 +459,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -460,7 +473,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -483,9 +496,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -507,7 +521,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -530,9 +544,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -554,7 +569,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -577,10 +592,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -601,7 +617,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -624,9 +640,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -635,6 +652,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -648,7 +666,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -671,9 +689,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -695,7 +714,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -718,9 +737,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -742,7 +762,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -765,17 +785,18 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"A",
+         "unit":"",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -789,13 +810,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"A",
-            "renderedUnit":"A",
+            "unit":"",
+            "renderedUnit":"",
             "suffix":"PF",
             "format":"0.0"
          },
@@ -812,9 +833,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -823,6 +845,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -836,7 +859,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -859,9 +882,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -883,7 +907,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -909,7 +933,7 @@
                "type":"INCREMENT_ANALOG",
                "change":5.0,
                "max":9.99999999E8,
-               "min":100.0,
+               "min":0.0,
                "roll":false,
                "startValue":"100"
             },
@@ -918,7 +942,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -932,13 +956,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW·h",
+            "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
          },
@@ -955,9 +979,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -979,7 +1004,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1002,10 +1027,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -1026,7 +1052,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1049,9 +1075,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -1060,6 +1087,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1073,7 +1101,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1096,9 +1124,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -1120,7 +1149,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1143,9 +1172,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -1167,7 +1197,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1190,10 +1220,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -1214,7 +1245,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1237,9 +1268,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -1247,7 +1279,8 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1261,13 +1294,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -1284,9 +1317,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -1294,7 +1328,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1308,13 +1342,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -1331,9 +1365,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -1341,7 +1376,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1355,13 +1390,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -1378,10 +1413,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -1402,7 +1438,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1425,9 +1461,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -1435,7 +1472,8 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1449,13 +1487,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -1472,9 +1510,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -1482,7 +1521,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1496,13 +1535,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -1522,7 +1561,7 @@
                "type":"INCREMENT_ANALOG",
                "change":5.0,
                "max":9.99999999E8,
-               "min":100.0,
+               "min":0.0,
                "roll":false,
                "startValue":"100"
             },
@@ -1531,7 +1570,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1545,13 +1584,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW·h",
+            "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
          },
@@ -1568,9 +1607,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -1578,7 +1618,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1592,13 +1632,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -1615,10 +1655,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -1639,7 +1680,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1662,9 +1703,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -1672,7 +1714,8 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1686,13 +1729,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -1709,9 +1752,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -1719,7 +1763,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1733,13 +1777,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },
@@ -1756,9 +1800,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":300.0,
-               "min":50.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"50"
             },
             "settable":false
@@ -1766,7 +1811,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"A",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1780,13 +1825,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"A",
+            "renderedUnit":"A",
             "suffix":"A",
             "format":"0.0"
          },
@@ -1803,10 +1848,11 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":1.0,
-               "min":0.8,
-               "startValue":".85"
+               "maxChange":0.1,
+               "min":0.0,
+               "startValue":"0.85"
             },
             "settable":false
          },
@@ -1827,7 +1873,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
@@ -1850,9 +1896,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":200.0,
-               "min":20.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"25"
             },
             "settable":false
@@ -1860,7 +1907,8 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"kW",
+         "integralUnit":"kW·h",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1874,13 +1922,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"kW",
+            "renderedUnit":"kW",
             "suffix":"kW",
             "format":"0.0"
          },
@@ -1897,9 +1945,10 @@
          "pointLocator":{
             "dataType":"NUMERIC",
             "changeType":{
-               "type":"RANDOM_ANALOG",
+               "type":"BROWNIAN",
                "max":287.0,
-               "min":269.0,
+               "maxChange":2.0,
+               "min":0.0,
                "startValue":"270"
             },
             "settable":false
@@ -1907,7 +1956,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"",
+         "unit":"V",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1921,13 +1970,13 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"",
-            "renderedUnit":"",
+            "unit":"V",
+            "renderedUnit":"V",
             "suffix":"V",
             "format":"0.0"
          },

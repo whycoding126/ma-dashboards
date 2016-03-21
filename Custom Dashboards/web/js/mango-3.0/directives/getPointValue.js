@@ -37,7 +37,7 @@ function getPointValue(pointEventManager, Point, Util) {
                 	if (!point) return;
                 	
 	                point.enabled = !!payload.enabled;
-	                if (payload.value !== undefined) {
+	                if (payload.value) {
 	                	var valueRenderer = point.valueRenderer(payload.value.value);
 	                    var color = valueRenderer ? valueRenderer.color : null;
 	                    
