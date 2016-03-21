@@ -97,20 +97,33 @@ maDashboardApp.filter('duration', durationFilter);
 maDashboardApp.filter('tr', trFilter);
 
 maDashboardApp.filter('sum', function() {
-	return function(rowData) {
+	return function(arrayData, propName) {
 		var sum = 0;
-		if (!rowData) {
+		var val;
+		if (!arrayData) {
 			return sum;
 		}
-		if (rowData.length !== undefined) {
-			for (var i = 0; i < rowData.length; i++) {
-				if (rowData[i] !== undefined)
-					sum += rowData[i];
+		if (arrayData.length !== undefined) {
+			for (var i = 0; i < arrayData.length; i++) {
+				if (arrayData[i] !== undefined) {
+					val = arrayData[i];
+					if (!propName) {
+						sum += val;
+					} else if (val[propName]) {
+						sum += val[propName];
+					}
+				}
 			}
 		} else {
-			for (var key in rowData) {
-				if (rowData[key] !== undefined)
-					sum += rowData[key];
+			for (var key in arrayData) {
+				if (arrayData[key] !== undefined) {
+					val = arrayData[key];
+					if (!propName) {
+						sum += val;
+					} else if (val[propName]) {
+						sum += val[propName];
+					}
+				}
 			}
 		}
 		return sum;
