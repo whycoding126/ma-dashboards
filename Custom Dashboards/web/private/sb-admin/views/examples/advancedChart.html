@@ -1,6 +1,14 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header" ma-tr="dashboards.v3.dox.advancedChart"></h1>
+        <p>It is possible to override chart options, titles, colors, types and axes.</p>
+        <p>Use <code>series-X-title</code>, <code>series-X-type</code> &amp; <code>series-X-color</code> to change the
+        title, type and color of a series.</p>
+        <p>Use <code>series-X-axis</code> to change the axis ID for a series. The default axis IDs which are available are
+        <code>left</code>, <code>right</code>, <code>left-2</code> &amp; <code>right-2</code> or you can specify your own in <code>options</code></p>
+        <p>Use <code>options</code> to set an <a href="https://docs.amcharts.com/3/javascriptcharts/AmSerialChart">AmCharts options</a>
+        for the chart. The options will be merged with the default options. Use caution when dynamically setting options as some values
+        may cause the chart rendering to fail.</p>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -68,8 +76,8 @@
 
 <ma-serial-chart style="height: 300px; width: 100%"
 	series-1-values="point1Values" series-1-point="point1" series-1-type="{{point1ChartType}}" series-1-color="{{point1Color}}"
-	series-2-values="point2Values" series-2-point="point2" series-2-type="{{point2ChartType}}" series-2-color="{{point2Color}}"
-	options="{legend:{}}">
+	series-2-values="point2Values" series-2-point="point2" series-2-type="{{point2ChartType}}" series-2-color="{{point2Color}}" series-2-axis="right"
+	options="{legend:{}, chartCursor:{}, valueAxes:[{minimum:0, axisColor:point1Color, color:point1Color}, {axisColor:point2Color, color:point2Color}]}">
 </ma-serial-chart>
 
 </dual-pane-editor>

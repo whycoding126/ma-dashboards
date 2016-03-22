@@ -45,9 +45,15 @@ function serialChart() {
             
             var valueArray = !!attrs.values;
             
-            options = $.extend(options, $scope.options);
+            $.extend(true, options, $scope.options);
             
             var chart = AmCharts.makeChart($element[0], options);
+            
+            $scope.$watch('options', function(newValue, oldValue) {
+            	if (newValue === oldValue) return; // initial value already handled
+            	$.extend(true, chart, newValue);
+            	chart.validateData();
+            });
             
             var i;
             if (valueArray) {
@@ -165,7 +171,7 @@ function serialChart() {
                 graph.lineColor = $scope['series' + graphNum + 'Color'] ||
                 	(point && point.chartColour) ||
                 	null;
-                graph.valueAxis = $scope['series' + graphNum + 'Axis'] || 'value-axis-left';
+                graph.valueAxis = $scope['series' + graphNum + 'Axis'] || 'left';
                 var stackType = options.valueAxes[0].stackType;
                 if (stackType && stackType !== 'none') {
                 	graph.fillAlphas = 0.8;
@@ -254,11 +260,19 @@ function defaultOptions() {
         addClassNames: true,
         dataProvider: [],
         valueAxes: [{
-        	id: "value-axis-left",
+        	id: "left",
             position: "left"
         },{
-        	id: "value-axis-right",
+        	id: "right",
             position: "right"
+        },{
+        	id: "left-2",
+            position: "left",
+            offset: 50
+        },{
+        	id: "right-2",
+            position: "right",
+            offset: 50
         }],
         categoryAxis: {
             parseDates: true,
