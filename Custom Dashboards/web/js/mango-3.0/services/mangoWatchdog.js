@@ -7,7 +7,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function mangoWatchdog(mangoWatchdogTimeout, $timeout) {
+function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {
 	
 	function MangoWatchdog(options) {
 		this.failed = false;
@@ -35,6 +35,7 @@ function mangoWatchdog(mangoWatchdogTimeout, $timeout) {
 			$timeout.cancel(this.promise);
 		}
 		this.promise = $timeout(function() {
+			$rootScope.$broadcast('mangoWatchdogTimeout');
 			_this.failed = true;
 		}, this.timeout);
 	};
@@ -42,7 +43,7 @@ function mangoWatchdog(mangoWatchdogTimeout, $timeout) {
 	return new MangoWatchdog({timeout: mangoWatchdogTimeout});
 }
 
-mangoWatchdog.$inject = ['mangoWatchdogTimeout', '$timeout'];
+mangoWatchdog.$inject = ['mangoWatchdogTimeout', '$timeout', '$rootScope'];
 
 return mangoWatchdog;
 

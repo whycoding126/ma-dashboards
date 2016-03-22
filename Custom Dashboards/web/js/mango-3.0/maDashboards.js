@@ -72,8 +72,14 @@ maDashboards.directive('maFocusOn', focusOn);
 maDashboards.directive('maEnter', enter);
 maDashboards.filter('tr', trFilter);
 
-maDashboards.run(['$rootScope', function($rootScope) {
+maDashboards.config(['$httpProvider', function($httpProvider) {
+	$httpProvider.interceptors.push('mangoHttpInterceptor');
+}]);
 
+maDashboards.run(['$rootScope', 'mangoWatchdog', function($rootScope, mangoWatchdog) {
+	$rootScope.mangoWatchdog = mangoWatchdog;
+	mangoWatchdog.reset();
+	
 	$rootScope.range = function(start, end) {
 		var result = [];
 		for (var i = start; i <= end; i++)

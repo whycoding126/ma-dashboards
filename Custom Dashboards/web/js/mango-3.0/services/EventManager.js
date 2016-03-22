@@ -13,8 +13,15 @@
 define(['jquery'], function($) {
 'use strict';
 
-function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
+function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, mangoTimeout, mangoReconnectDelay) {
 
+	var READY_STATE_CONNECTING = 0;
+	var READY_STATE_OPEN = 1;
+	var READY_STATE_CLOSING = 2;
+	var READY_STATE_CLOSED = 3;
+	
+	function nop() {}
+	
 	function EventManager(options) {
 		 // keys are xid, value is object where key is event type and value is the number of subscriptions
 	    this.subscriptions = {};
@@ -22,9 +29,35 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
 	    this.activeSubscriptions = {};
 	    
 	    $.extend(this, options);
+	    
+	    var _this = this;
+	    
+	    $rootScope.$on('mangoWatchdogTimeout', function() {
+	    	_this.closeSocket();
+	    });
+	    
+	    this.openSocket();
 	}
 
-	EventManager.prototype.openSocket = function(path) {
+	EventManager.prototype.openSocket = function() {
+		var _this = this;
+		
+		if (this.socket) {
+			throw new Error('Socket already open');
+		}
+		
+		if (this.debounceTimer) {
+			this.openPending = true;
+			return;
+		}
+		this.debounceTimer = setTimeout(function() {
+			delete _this.debounceTimer;
+			if (_this.openPending) {
+				delete _this.openPending;
+				_this.openSocket();
+			}
+		}, mangoReconnectDelay);
+		
 	    if (!('WebSocket' in window)) {
 	        throw new Error('WebSocket not supported');
 	    }
@@ -46,34 +79,44 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
 	    
 	    protocol = protocol === 'https:' ? 'wss:' : 'ws:';
 	    
-	    return new WebSocket(protocol + '//' + host + path);
-	};
-
-	EventManager.prototype.getSocketPromise = function() {
-	    var self = this;
+	    var socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
 	    
-	    if (self.socketPromise)
-	        return self.socketPromise;
+	    this.connectTimer = setTimeout(function() {
+	    	_this.closeSocket();
+	    }, mangoTimeout);
 	    
-	    var deferred = $.Deferred();
-	    
-	    var socket = this.openSocket(this.url);
-	    
-	    socket.onopen = function() {
-	        deferred.resolve(socket);
-	    };
 	    socket.onclose = function() {
-	        deferred.reject();
-	        delete self.socketPromise;
+	        _this.closeSocket();
+	    };
+	    socket.onerror = function() {
+	    	_this.closeSocket();
+	    };
+	    socket.onopen = function() {
+	    	mangoWatchdog.reset();
+	    	clearTimeout(_this.connectTimer);
+	    	_this.updateSubscriptions();
 	    };
 	    socket.onmessage = function(event) {
 	        var message = JSON.parse(event.data);
-	        self.messageReceived(message);
+	        _this.messageReceived(message);
 	    };
 	    
-	    var promise = deferred.promise();
-	    self.socketPromise = promise;
-	    return promise;
+	    return socket;
+	};
+	
+	EventManager.prototype.closeSocket = function() {
+    	clearTimeout(this.connectTimer);
+		if (this.socket) {
+			this.socket.onclose = nop;
+			this.socket.onerror = nop;
+			this.socket.onopen = nop;
+			this.socket.onmessage = nop;
+			this.socket.close();
+			delete this.socket;
+		}
+		
+		this.activeSubscriptions = {};
+        this.openSocket();
 	};
 
 	EventManager.prototype.messageReceived = function(message) {
@@ -137,8 +180,17 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
 	    
 	    this.updateSubscriptions(xid);
 	};
-
+	
 	EventManager.prototype.updateSubscriptions = function(xid) {
+		if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
+		
+		if (!xid) {
+			for (var xidKey in this.subscriptions) {
+				this.updateSubscriptions(xidKey);
+			}
+			return;
+		}
+		
 	    var xidSubscriptions = this.subscriptions[xid];
 	    if (!xidSubscriptions)
 	        return;
@@ -172,9 +224,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
 	        message.xid = xid;
 	        message.eventTypes = eventTypes;
 	        
-	        this.getSocketPromise().done(function(socket) {
-	            socket.send(JSON.stringify(message));
-	        });
+	        this.socket.send(JSON.stringify(message));
 	    }
 	};
 
@@ -189,7 +239,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog) {
 	return EventManager;
 }
 
-JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', 'mangoWatchdog'];
+JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', 'mangoWatchdog', '$rootScope', 'mangoTimeout', 'mangoReconnectDelay'];
 return JsonStoreEventManagerFactory;
 
 }); // define

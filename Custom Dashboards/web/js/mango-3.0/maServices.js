@@ -36,15 +36,7 @@ maServices.factory('EventManager', EventManager);
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
 maServices.constant('mangoWatchdogTimeout', 60000);
-
-maServices.config(['$httpProvider', function($httpProvider) {
-	$httpProvider.interceptors.push('mangoHttpInterceptor');
-}]);
-
-maServices.run(['$rootScope', 'mangoWatchdog', function($rootScope, mangoWatchdog) {
-	$rootScope.mangoWatchdog = mangoWatchdog;
-	mangoWatchdog.reset();
-}]);
+maServices.constant('mangoReconnectDelay', 60000);
 
 return maServices;
 
