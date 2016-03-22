@@ -1196,6 +1196,10 @@ MangoAPI.prototype.setupGlobalize = function() {
     var locale = null;
     
     var promiseArray = [this.globalizePromise];
+    var loadMessages = function(Globalize, translations) {
+    	Globalize.loadMessages(translations.translations);
+    	return translations;
+    };
     
     // request each namespace (if we havent already fetched it) and call
     // Globalize.loadMessages()
@@ -1207,10 +1211,7 @@ MangoAPI.prototype.setupGlobalize = function() {
                 self.getTranslations(namespace);
             nsPromise = MangoAPI.when([this.globalizePromise, trRequest])
             .then(MangoAPI.firstArrayArg)
-            .then(function(Globalize, translations) {
-                Globalize.loadMessages(translations.translations);
-                return translations;
-            });
+            .then(loadMessages);
             this.loadedTranslationNamespaces[namespace] = nsPromise;
         }
         promiseArray.push(nsPromise);
