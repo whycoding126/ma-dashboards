@@ -68,7 +68,7 @@ function findMangoConnections() {
 				app.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
 			
 			if (mangoConnection.username) {
-				var injector = angular.injector([appName]);
+				var injector = angular.injector([appName], true);
 				var User = injector.get('User');
 				User.login({
 					username: mangoConnection.username,
@@ -81,7 +81,7 @@ function findMangoConnections() {
 		}
 		
 		function doBootstrap(element, appName) {
-			angular.bootstrap(element, [appName]);
+			angular.bootstrap(element, [appName], {strictDi: true});
 		}
 	}); // define
 }

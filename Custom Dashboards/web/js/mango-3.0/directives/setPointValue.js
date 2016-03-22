@@ -15,7 +15,7 @@ function setPointValue(Translate, $q) {
         },
         replace: true,
         templateUrl: require.toUrl('./setPointValue.html'),
-        controller: function($scope) {
+        link: function($scope) {
         	$scope.input = {};
         	
         	$scope.defaultBinaryOptions = [];

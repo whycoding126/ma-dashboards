@@ -15,7 +15,7 @@ function copyBlurred() {
         	maCopyBlurred: '=',
             ngModel: '='
         },
-        controller: function ($scope, $element) {
+        link: function ($scope, $element) {
             $scope.$watch('maCopyBlurred', function(value) {
             	if (!$element.is(":focus")) {
             		$scope.ngModel = value;

@@ -29,7 +29,7 @@ function bandStyle() {
         replace: true,
         transclude: true,
         template: '<span ng-transclude ng-style="style"></span>',
-        controller: function ($scope, $element) {
+        link: function ($scope, $element) {
             $scope.$watch('value', function() {
                 var val = $scope.value;
                 if (val === undefined || val === null)
