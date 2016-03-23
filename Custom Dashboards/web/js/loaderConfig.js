@@ -6,6 +6,7 @@ var vendor = module + '/vendor';
 
 require.config({
 	paths: {
+	  'dashboards': module,
 		'angular-route': vendor + '/angular-route/angular-route',
 		'angular-ui-router': vendor + '/angular-ui-router/angular-ui-router',
 		'json3': vendor + '/json3/json3',
@@ -14,14 +15,18 @@ require.config({
 		'angular-bootstrap': vendor + '/angular-bootstrap/ui-bootstrap-tpls',
 		'metisMenu': vendor + '/metisMenu/metisMenu',
 		'ace': vendor + '/ace/ace',
-		'angular-ui-ace': vendor + '/angular-ui-ace/ui-ace'
+		'angular-ui-ace': vendor + '/angular-ui-ace/ui-ace',
+    'angular-material': vendor + '/angular-material/angular-material',
+    'angular-animate': vendor + '/angular-animate/angular-animate',
+    'angular-messages': vendor + '/angular-messages/angular-messages',
+    'angular-aria': vendor + '/angular-aria/angular-aria'
 	},
 	shim: {
 		'angular-route': {
 	        deps: ['angular']
 	    },
 	    'angular-ui-router': {
-	        deps: ['angular', 'angular-route']
+	        deps: ['angular']
 	    },
 	    'oclazyload': {
 	        deps: ['angular-ui-router']
@@ -37,7 +42,19 @@ require.config({
 	    },
 	    'angular-ui-ace': {
 	        deps: ['angular', 'ace']
-	    }
+	    },
+      'angular-material': {
+        deps: ['angular', 'angular-animate', 'angular-aria', 'angular-messages']
+      },
+      'angular-animate': {
+        deps: ['angular']
+      },
+      'angular-messages': {
+        deps: ['angular']
+      },
+      'angular-aria': {
+        deps: ['angular']
+      }
 	}
 });
 

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+	    <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+	    <title ma-tr="header.dashboards.v3.dox.heading">Mango Dashboards v3 Documentation</title>
+	    <meta name="description" content="">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    
+		<link rel="icon" href="/modules/dashboards/web/img/dashboards.png" type="image/png">
+		
+		<link rel="stylesheet" href="/resources/angular-csp.css"></link>
+	    <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
+	    <link rel="stylesheet" href="../vendor/angular-loading-bar/loading-bar.css">
+	    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.css" type="text/css">
+	    <link rel="stylesheet" href="styles/main.css">
+
+    </head>
+   
+    <body layout="column">
+    	<div ng-if="appLoading" class="app-loading text-center">
+    		<i class="fa fa-cog fa-spin"></i>
+    	</div>
+
+	    <div ui-view ng-cloak layout="column" flex></div>
+
+		<script src="/resources/require.js"></script>
+		<script src="/resources/loaderConfig.js"></script>
+		<script src="../js/loaderConfig.js"></script>
+		<script src="app.js"></script>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" ma-tr="dashboards.v3.dox.angular"></h1>
+        
+        <p>The Mango v3 Dashboards module uses <a href="https://angularjs.org/">AngularJS</a> to make building dashboards easy
+        using simple HTML-like markup. The aim is that you should not have to write any JavaScript. This page will give you a basic
+        introduction to using AngularJS in your markup, please see <a href="http://www.w3schools.com/angular/angular_examples.asp">W3 Schools</a>
+        for more basic examples.</p>
+        
+        <p>Use <code ng-non-bindable>{{}}</code> double braces to surround AngularJS expressions that you want inserted onto your page.
+        This is called interpolation.</p>
+        
+        <p>Use the <code>ng-bind</code> attribute to bind the contents of a tag to a variable.
+        Use the <code>ng-model</code> attribute to two way bind a variable with an input.</p>
+    </div>
+</div>
+
+<dual-pane-editor>
+
+<div ng-init="myVar = 'Hello'">
+	<p>Using interpolation, your variable is {{myVar}}</p>
+	<p>Using ng-bind, your variable is <span ng-bind="myVar"></span></p>
+</div>
+
+<p>
+	<input type="number" ng-model="myNumber">
+</p>
+
+<p>
+	Your number plus 10 is {{myNumber + 10}}.
+</p>
+
+</dual-pane-editor>

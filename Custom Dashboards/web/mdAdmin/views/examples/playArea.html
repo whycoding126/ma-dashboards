@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" ma-tr="dashboards.v3.dox.playArea"></h1>
+        <p>You can use this area as a play area. Changes will be persisted after you press <strong>Save</strong>.</p>
+        <p><a ui-sref="dashboard.examples.playAreaBig">Play Area View Only</a></p>
+    </div>
+</div>
+
+<ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"></ma-json-store>
+
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-lg-12">
+        <button ng-click="playArea.$save()" class="btn btn-default"><i class="fa fa-save fa-fw"></i> <span ma-tr="common.save"></span></button>
+		<button ng-click="playArea.$get()" class="btn btn-default"><i class="fa fa-undo fa-fw"></i> <span ma-tr="dashboards.v3.dox.revert"></span></button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <span ma-tr="dashboards.v3.dox.markup"></span>
+            </div>
+            <div class="panel-body">
+				<div style="height:400px" live-editor="paVal.text"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading" ma-tr="dashboards.v3.dox.result"></div>
+            <div class="panel-body" live-preview="paVal.text"></div>
+        </div>
+    </div>
+</div>

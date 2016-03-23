@@ -1,0 +1,42 @@
+
+#loading-bar-spinner {
+	left: 50% !important;
+	transform: translate(-50%, 0);
+}
+
+.dropdown .dropdown-toggle {
+	cursor: pointer;
+}
+
+.ace_editor {
+	height: 200px;
+}
+
+[ng-click] {
+	cursor: pointer;
+}
+
+.sidebar .sidebar-date-controls {
+    padding: 15px;
+}
+
+.login-branding {
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+[live-editor] {
+	resize: vertical;
+	overflow: auto;
+	padding-bottom: 10px;
+	min-height: 400px;
+}
+
+[live-editor] [ui-ace] {
+	height: 100%;
+}
+
+.app-loading {
+	margin-top: 50px;
+	font-size: 50px;
+}
