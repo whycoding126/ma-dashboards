@@ -1,0 +1,12 @@
+{
+    "dependencies": {
+        "gulp": "*",
+        "gulp-load-plugins": "*",
+        "gulp-filter": "*",
+        "main-bower-files": "*",
+        "gulp-uglify": "*",
+        "gulp-clean": "*",
+        "path-exists": "*",
+        "gulp-rename": "*"
+    }
+}

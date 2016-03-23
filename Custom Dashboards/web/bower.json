@@ -1,9 +1,0 @@
-{
-  "name": "ngDashboards",
-  "dependencies": {
-    "angular": "1.5.x",
-    "angular-resource": "1.5.x",
-    "moment": "2.11.x",
-    "moment-timezone": "0.5.x"
-  }
-}
