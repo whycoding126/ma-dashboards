@@ -15,7 +15,8 @@ function clock() {
           options: '=?',
           text: '@',
           timezone: '@',
-          showSeconds: '@'
+          showSeconds: '@',
+          time: '='
         },
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {
@@ -26,20 +27,15 @@ function clock() {
             }
             
             var chart = AmCharts.makeChart($element[0], options);
-            var timer = setInterval(updateClock, 1000);
             
-            function updateClock() {
-                if ($scope.text) {
-                    chart.axes[0].setBottomText($scope.text);
-                }
-                
-                var date;
-                if ($scope.timezone) {
-                    date = moment.tz(new Date(), $scope.timezone);
-                } else {
-                    date = moment();
-                }
-                
+            $scope.$watch('text', function(newText) {
+            	chart.axes[0].setBottomText(newText || '');
+            });
+            
+            $scope.$watch('time', function(newTime) {
+            	if (newTime === undefined) return;
+            	var date = $scope.timezone ? moment.tz(newTime, $scope.timezone) : newTime;
+
                 var hours = date.hours();
                 var minutes = date.minutes();
                 var seconds = date.seconds();
@@ -49,10 +45,6 @@ function clock() {
                 if (chart.arrows.length > 2) {
                     chart.arrows[2].setValue(12 * seconds / 60);
                 }
-            }
-            
-            $scope.$on('$destroy', function() {
-                clearInterval(timer);
             });
         }
     };

@@ -33,12 +33,13 @@ define(['./maServices',
         './directives/jsonStore',
         './directives/focusOn',
         './directives/enter',
+        './directives/now', 
         './filters/trFilter',
         'angular'
 ], function(maServices, maFilters, pointList, pointValue, pointValues, pointStatistics,
         bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
         dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, trFilter, angular) {
+        jsonStore, focusOn, enter, now, trFilter, angular) {
 'use strict';
 
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngResource']);
@@ -70,6 +71,7 @@ maDashboards.directive('maGetPointValue', getPointValue);
 maDashboards.directive('maJsonStore', jsonStore);
 maDashboards.directive('maFocusOn', focusOn);
 maDashboards.directive('maEnter', enter);
+maDashboards.directive('maNow', now);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.config(['$httpProvider', function($httpProvider) {

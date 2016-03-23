@@ -18,8 +18,7 @@ function dateRangePicker($rootScope) {
             updateInterval: '@'
         },
         replace: true,
-        transclude: true,
-        template: '<select ng-transclude ng-options="t.type as t.label for t in presets" ng-model="preset"></select>',
+        template: '<select ng-options="t.type as t.label for t in presets" ng-model="preset"></select>',
         link: function ($scope, $element) {
         	var from, to;
         	$scope.presets = $rootScope.dateRangePresets;

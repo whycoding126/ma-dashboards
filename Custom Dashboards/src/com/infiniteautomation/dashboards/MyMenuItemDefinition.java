@@ -73,7 +73,7 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
      * @return the href value to use
      */
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, "/modules/dashboards/web/private/sb-admin/");
+    	return SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ICON_DESTINATION, DashboardsCommon.DEFAULT_DASHBOARDS_ICON_DESTINATION);
     }
 
 	@Override
