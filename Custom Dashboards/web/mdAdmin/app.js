@@ -25,7 +25,7 @@ function(angular, maDashboards, maAppComponents) {
     'ngMessages'
  ]);
 
-  mdAdminApp.run(['$rootScope', '$state', function($rootScope, $state) {
+  mdAdminApp.run(['$rootScope', '$state', '$timeout', '$mdSidenav', function($rootScope, $state, $timeout, $mdSidenav) {
     $rootScope.Math = Math;
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
@@ -36,13 +36,26 @@ function(angular, maDashboards, maAppComponents) {
       }
     });
     
+    $rootScope.closeMenu = function() {
+      $timeout(function() { $mdSidenav('left').close(); });
+    }
+
+    $rootScope.openMenu = function() {
+      $timeout(function() { $mdSidenav('left').open(); });
+    }
+    
   }]);
 
   mdAdminApp.config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
-                     '$mdIconProvider',
-      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdIconProvider) {
+                     '$mdIconProvider', '$mdThemingProvider',
+      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdIconProvider,
+          $mdThemingProvider, $timeout, $rootScope) {
     
-    $mdIconProvider.fontSet('fa', 'fa');
+    //$mdIconProvider.fontSet('fa', 'fa');
+    $mdThemingProvider.theme('default')
+      .primaryPalette("orange")
+      .accentPalette('indigo')
+      .warnPalette('red');
     $httpProvider.interceptors.push('errorInterceptor');
 
     $ocLazyLoadProvider.config({
