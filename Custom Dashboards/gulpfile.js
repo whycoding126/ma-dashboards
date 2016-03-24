@@ -18,8 +18,8 @@ gulp.task('default', function() {
 	
 	return gulp.src(mainFiles, {base: 'bower_components'})
 		.pipe(plugins.rename(function(path) {
-			path.dirname = path.dirname.replace(/^ace-builds\\src-min-noconflict/g, 'ace');
-			path.dirname = path.dirname.replace(/\\(dist|build|lib|release)$/g, '');
+			path.dirname = path.dirname.replace(/^ace-builds(\\|\/)src-min-noconflict/g, 'ace');
+			path.dirname = path.dirname.replace(/(\\|\/)(dist|build|lib|release)$/g, '');
 			path.basename = path.basename.replace(/\.min$/g, '');
 		}))
 		//.pipe(plugins.filter('**/*.js'))

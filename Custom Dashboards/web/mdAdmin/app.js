@@ -21,7 +21,8 @@ function(angular, maDashboards, maAppComponents) {
     'angular-loading-bar',
     'maDashboards',
     'maAppComponents',
-    'ngMaterial'
+    'ngMaterial',
+    'ngMessages'
  ]);
 
   mdAdminApp.run(['$rootScope', '$state', function($rootScope, $state) {
@@ -38,8 +39,10 @@ function(angular, maDashboards, maAppComponents) {
   }]);
 
   mdAdminApp.config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
-      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
-
+                     '$mdIconProvider',
+      function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdIconProvider) {
+    
+    $mdIconProvider.fontSet('fa', 'fa');
     $httpProvider.interceptors.push('errorInterceptor');
 
     $ocLazyLoadProvider.config({
@@ -73,7 +76,7 @@ function(angular, maDashboards, maAppComponents) {
       templateUrl: 'views/dashboard/home.html'
     })
     .state('login', {
-      templateUrl: 'views/pages/login.html',
+      templateUrl: 'views/login.html',
       url: '/login',
       resolve: {
         deps: ['$ocLazyLoad', function($ocLazyLoad) {

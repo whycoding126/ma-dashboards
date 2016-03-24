@@ -1,20 +1,35 @@
-<form name="loginForm">
-	<div class="form-group" ng-class="{'has-error': loginForm.username.$invalid && loginForm.username.$dirty }">
-		<label for="username" class="sr-only" ma-tr="login.userId"></label>
-		<input id="username" name="username" ng-model="username" class="form-control" ma-tr="login.userId" autofocus required>
-		<span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" class="help-block"
-			ma-tr="login.validation.noUsername"></span>
-	</div>
-	<div class="form-group" ng-class="{'has-error': loginForm.password.$invalid && loginForm.password.$dirty }">
-		<label for="password" class="sr-only" ma-tr="login.password"></label>
-		<input id="password" name="password" ng-model="password" class="form-control" ma-tr="login.password" type="password" required>
-		<span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block"
-			ma-tr="login.validation.noPassword"></span>
-	</div>
-	<div class="form-group" ng-class="{'has-error': invalidLogin || otherError}">
-		<button ng-click="doLogin()" class="btn btn-lg btn-primary btn-block"
-			ma-tr="login.loginButton"></button>
-		<span ng-show="invalidLogin" class="help-block" ma-tr="login.validation.invalidLogin"></span>
-		<span ng-show="otherError" class="help-block" ma-tr="login.error" ma-tr-args="[otherError]"></span>
-	</div>
-</form>
+<md-card>
+	<form name="loginForm">
+	<img ng-src="/images/logo.png" class="md-card-image">
+	<md-card-title>
+	  <md-card-title-text>
+	    <span class="md-headline" ma-tr="login.pleaseSignIn"></span>
+	  </md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+		<md-input-container class="md-icon-float md-block">
+	      <label for="username" ma-tr="login.userId"></label>
+          <md-icon md-font-set="fa" md-font-icon="fa-user"></md-icon>
+	      <input id="username" name="username" ng-model="username" type="text" autofocus required md-no-asterisk>
+	      <div ng-messages="loginForm.name.$error">
+	        <div ng-message="required" ma-tr="login.validation.noUsername"></div>
+	      </div>
+	    </md-input-container>
+	    <md-input-container class="md-icon-float md-block">
+	      <label for="password" ma-tr="login.password"></label>
+          <md-icon md-font-set="fa" md-font-icon="fa-key"></md-icon>
+	      <input id="password" name="password" ng-model="password" type="password" required md-no-asterisk>
+	      <div ng-messages="loginForm.password.$error">
+	        <div ng-message="required" ma-tr="login.validation.noPassword"></div>
+	      </div>
+	    </md-input-container>
+	  <div ng-messages="errors">
+         <div ng-message="invalidLogin" ma-tr="login.validation.invalidLogin"></div>
+		 <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[otherError]"></div>
+      </div>
+	</md-card-content>
+	<md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent"></md-button>
+    </md-card-actions>
+    </form>
+</md-card>

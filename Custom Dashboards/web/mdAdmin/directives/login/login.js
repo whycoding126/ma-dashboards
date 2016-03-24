@@ -5,14 +5,13 @@ angular.module('mdAdminApp').directive('login', ['$state', 'User', function($sta
 		templateUrl: 'directives/login/login.html',
 		scope: {},
 		link: function($scope, $element, attrs) {
+			$scope.errors = {};
+			
 			$scope.$watchGroup(['username', 'password'], function() {
-				delete $scope.invalidLogin;
+				delete $scope.errors.invalidLogin;
 			});
 			
 			$scope.doLogin = function() {
-				delete $scope.invalidLogin;
-				delete $scope.otherError;
-				
 				var user = User.login({
 					username: $scope.username,
 					password: $scope.password
@@ -26,10 +25,10 @@ angular.module('mdAdminApp').directive('login', ['$state', 'User', function($sta
 					$state.go(redirect);
 				}, function(error) {
 					if (error.status === 406) {
-						$scope.invalidLogin = true;
+						$scope.errors.invalidLogin = true;
 					}
 					else {
-						$scope.otherError = error.statusText || 'Connection refused';
+						$scope.errors.otherError = error.statusText || 'Connection refused';
 					}
 				});
 			}
