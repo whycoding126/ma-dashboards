@@ -52,9 +52,20 @@ function getPointValue(pointEventManager, Point, Util) {
             
             var SUBSCRIPTION_TYPES = ['REGISTERED', 'UPDATE', 'TERMINATE', 'INITIALIZE'];
             
-            $scope.$watch('pointXid', function() {
-                if (!$scope.pointXid || $scope.point) return;
-                $scope.point = Point.get({xid: $scope.pointXid});
+            var pointPromise;
+            $scope.$watch('pointXid', function(newXid) {
+                delete $scope.point;
+                if (pointPromise) {
+                    pointPromise.reject();
+                    pointPromise = null;
+                }
+                
+                if (!newXid) return;
+                pointPromise = Point.get({xid: newXid}).$promise;
+                pointPromise.then(function(point) {
+                    pointPromise = null;
+                    $scope.point = point;
+                });
             });
             
             $scope.$watch('point.xid', function(newXid, oldXid) {

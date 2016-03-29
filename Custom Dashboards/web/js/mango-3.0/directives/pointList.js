@@ -16,9 +16,18 @@ function pointList(Point, $filter) {
             ngModel: '=?',
             initPoint: '@'
         },
-        template: '<select ng-options="pointLabel(point) for point in points | orderBy: orderArray track by point.id"></select>',
+        template: function(element, attrs) {
+          var optionsExpr = 'pointLabel(point) for point in points | orderBy: orderArray';
+          if (attrs.xidAsModel === 'true') {
+            optionsExpr = 'point.xid as ' + optionsExpr;
+          } else {
+            optionsExpr += ' track by point.id';
+          }
+          
+          return '<select ng-options="' + optionsExpr + '"></select>';
+        },
         replace: true,
-        link: function ($scope, $element, attr) {
+        link: function ($scope, $element, attrs) {
             $scope.orderArray = ['deviceName', 'name'];
             $scope.initPoint = 'true';
             
@@ -37,7 +46,7 @@ function pointList(Point, $filter) {
                 	$scope.points = Point.query();
                 }
                 
-                if ($scope.initPoint.toLowerCase().trim() === 'true') {
+                if (attrs.xidAsModel !== 'true' && $scope.initPoint.toLowerCase().trim() === 'true') {
                     $scope.points.$promise.then(function(points) {
                     	if (points.length) {
                         	$scope.ngModel = $filter('orderBy')(points, $scope.orderArray)[0];
