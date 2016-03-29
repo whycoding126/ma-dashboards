@@ -243,7 +243,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 	var value;
                     if ($scope.rendered === 'true') {
                     	value = payload.renderedValue;
-                    } else if (payload.convertedValue !== undefined) {
+                    } else if (payload.convertedValue !== null && payload.convertedValue !== undefined) {
                     	value = payload.convertedValue;
                     } else {
                     	value = payload.value.value;
