@@ -54,6 +54,15 @@ body {
 	opacity: 0.8;
 }
 
+.dashboard-breadcrumb {
+	color: white;
+	font-size: 1.5em;
+}
+
+.dashboard-breadcrumb md-icon {
+	margin-top: -2px;
+}
+
 /* Dashboard menu */
 
 .dashboard-menu li {

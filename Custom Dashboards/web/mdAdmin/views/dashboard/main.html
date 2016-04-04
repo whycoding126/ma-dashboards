@@ -25,15 +25,14 @@
         <md-button class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
-          <h2 class="md-toolbar-item md-breadcrumb md-headline">
-            <span ng-if="menu.currentPage.name !== menu.currentSection.name">
-              <span hide-sm hide-md>{{menu.currentSection.name}}</span>
-              <span class="dashboard-menu-separator-icon" hide-sm hide-md style="transform: translate3d(0, 1px, 0)">
-                <span class="_md-visually-hidden">-</span>
-                <md-icon aria-hidden="true" style="margin-top: -2px">chevron_right</md-icon>
-              </span>
+          <h2 class="md-toolbar-item dashboard-breadcrumb">
+            <span ng-repeat="crumb in crumbs">
+                <span ma-tr="{{crumb}}"></span>
+                <span ng-if="!$last">
+                    <span class="_md-visually-hidden"> - </span>
+                    <md-icon aria-hidden="true" class="md-light">chevron_right</md-icon>
+                </span>
             </span>
-            <span class="md-breadcrumb-page">{{menu.currentPage }}</span>
           </h2>
   
           <span flex></span>

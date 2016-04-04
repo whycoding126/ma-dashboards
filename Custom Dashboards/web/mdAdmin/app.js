@@ -379,11 +379,19 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
     
     addStates(PAGES);
     
-    function addStates(pages) {
+    function addStates(pages, parent) {
         angular.forEach(pages, function(page, area) {
             if (page.state) {
                 var state = {
                     url: page.url
+                }
+                
+                if (page.menuTr) {
+                    state.menuTr = page.menuTr
+                }
+                
+                if (parent) {
+                    state.parentPage = parent;
                 }
                 
                 if (page.templateUrl) {
@@ -400,34 +408,10 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
                 $stateProvider.state(page.state, state);
             }
             
-            addStates(page.children);
+            addStates(page.children, page);
         });
     }
 }]);
-
-mdAdminApp.filter('nospace', function() {
-    return function(value) {
-        return (!value) ? '' : value.replace(/ /g, '');
-    };
-}).filter('humanizeDoc', function() {
-    return function(doc) {
-        if (!doc)
-            return;
-        if (doc.type === 'directive') {
-            return doc.name.replace(/([A-Z])/g, function($1) {
-                return '-' + $1.toLowerCase();
-            });
-        }
-        return doc.label || doc.name;
-    };
-}).filter('directiveBrackets', function() {
-    return function(str) {
-        if (str.indexOf('-') > -1) {
-            return '<' + str + '>';
-        }
-        return str;
-    };
-});
 
 mdAdminApp.run([
     'PAGES',
@@ -445,6 +429,17 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
             $state.loginRedirect = toState;
             $state.go('login');
         }
+    });
+
+    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+        var crumbs = [];
+        var state = toState;
+        do {
+            if (state.menuTr) {
+                crumbs.unshift(state.menuTr);
+            }
+        } while (state = state.parentPage);
+        $rootScope.crumbs = crumbs;
     });
 
     $rootScope.closeMenu = function() {
