@@ -136,6 +136,30 @@ body {
 	margin-right: 8px;
 }
 
+.dashboard-menu .menu-toggle-list {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition-property: height;
+  -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -moz-transition-property: height;
+  transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  transition-property: height;
+}
+
+.dashboard-menu .menu-toggle-list.ng-hide {
+	height: 0px !important;
+}
+
+.no-transition {
+  -webkit-transition: none !important;
+  -moz-transition:    none !important;
+  -ms-transition:     none !important;
+  -o-transition:      none !important;
+  transition:         none !important;
+}
+
 */
 /***************
  * TYPE DEFAULTS
@@ -148,6 +172,12 @@ a {
   -ms-transition: border-bottom 0.35s;
   -o-transition: border-bottom 0.35s;
   transition: border-bottom 0.35s;
+}
+a:hover, a:focus {
+  border-bottom: 1px solid #4054B2;
+}
+a.md-button {
+  border-bottom: none;
 }
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;

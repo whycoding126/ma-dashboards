@@ -13,7 +13,7 @@
       </div>
     </md-button>
     
-    <ul class="menu-toggle-list" ng-show="isOpen">
+    <ul class="menu-toggle-list ng-hide" ng-show="isOpen">
       <li ng-repeat="page in section.children">
         <menu-link page="page"></menu-link>
       </li>
