@@ -1,0 +1,21 @@
+<div ui-sref-active="menu-active" ng-class="{'menu-open': isOpen}" class="menu-toggle">
+    <a ui-sref="{{section.state}}" style="display:none"></a>
+    <md-button class="menu-toggle-button" ng-click="toggle()">
+      <div flex layout="row">
+        <span>
+            <i ng-if="section.menuIcon" class="menu-icon fa-fw {{section.menuIcon}}"></i>
+            <span class="menu-text" ma-tr="{{section.menuTr}}">{{section.menuText}}</span>
+        </span>
+        <span flex></span>
+        <span class="menu-toggle-icon">
+          <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+        </span>
+      </div>
+    </md-button>
+    
+    <ul class="menu-toggle-list" ng-show="isOpen">
+      <li ng-repeat="page in section.children">
+        <menu-link page="page"></menu-link>
+      </li>
+    </ul>
+</div>

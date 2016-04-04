@@ -1,24 +1,18 @@
-<div layout="row" flex>
+<div layout="row" flex controller="MainCtrl">
 
-  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print md-is-locked-open="$mdMedia('gt-sm')">
-    <header class="nav-header">
-      <a ng-href="/">
-        <img src="/images/logo.png" ma-tr="header.dashboards.v3.dox.heading">
-        <h1 class="md-heading" ma-tr="header.dashboards.v3.dox.heading"></h1>
-      </a>
-    </header>
+  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2 md-accent" md-component-id="left" hide-print md-is-locked-open="$mdMedia('gt-sm')">
+    <md-toolbar class="md-tall md-accent md-hue-3 dashboard-sidebar-header">
+        <span flex></span>
+        <img src="../img/logo-light.png" ma-tr="header.dashboards.v3.dox.heading">
+        <span>{{user.username}}</span>
+        <span class="email">{{user.email}}</span>
+    </md-toolbar>
 
     <md-content flex role="navigation">
-      <ul class="docs-menu">
-        <li ng-repeat="section in menu.sections" class="parent-list-item {{section.className || ''}}" ng-class="{'parentActive' : isSectionSelected(section)}">
-          <h2 class="menu-heading md-subhead" ng-if="section.type === 'heading'" id="heading_{{ section.name | nospace }}">{{section.name}}</h2> <menu-link
-            section="section" ng-if="section.type === 'link' && !section.hidden"></menu-link> <menu-toggle section="section"
-            ng-if="section.type === 'toggle' && !section.hidden"></menu-toggle>
-    
-          <ul ng-if="section.children" class="menu-nested-list">
-            <li ng-repeat="child in section.children" ng-class="{'childActive' : isSectionSelected(child)}"><menu-link section="child"
-                ng-if="child.type === 'link'"></menu-link> <menu-toggle section="child" ng-if="child.type === 'toggle'"></menu-toggle></li>
-          </ul>
+      <ul class="dashboard-menu">
+        <li ng-repeat="item in pages" ng-if="item.menuType">
+          <menu-link page="item" ng-if="item.menuType === 'link'"></menu-link>
+          <menu-toggle section="item" ng-if="item.menuType === 'toggle'"></menu-toggle>
         </li>
       </ul>
     </md-content>
@@ -27,14 +21,14 @@
   <div layout="column" tabIndex="-1" role="main" flex>
     <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
 
-      <div class="md-toolbar-tools docs-toolbar-tools" tabIndex="-1">
+      <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
         <md-button class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
           <h2 class="md-toolbar-item md-breadcrumb md-headline">
             <span ng-if="menu.currentPage.name !== menu.currentSection.name">
               <span hide-sm hide-md>{{menu.currentSection.name}}</span>
-              <span class="docs-menu-separator-icon" hide-sm hide-md style="transform: translate3d(0, 1px, 0)">
+              <span class="dashboard-menu-separator-icon" hide-sm hide-md style="transform: translate3d(0, 1px, 0)">
                 <span class="_md-visually-hidden">-</span>
                 <md-icon aria-hidden="true" style="margin-top: -2px">chevron_right</md-icon>
               </span>
@@ -45,7 +39,7 @@
           <span flex></span>
           <!-- use up the empty space -->
   
-          <div class="md-toolbar-item docs-tools" layout="row">
+          <div class="md-toolbar-item dashboard-tools" layout="row">
             <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
                 <md-icon class="md-light">alarm</md-icon>
@@ -64,9 +58,8 @@
     <div ui-view layout-padding flex="noshrink"></div>
 
     <div layout="row" flex="noshrink">
-      <div id="license-footer">
-        Powered by Google &copy;2014&#8211;{{thisYear}}. Code licensed under the <a href="./license">MIT License</a>. Documentation licensed under <a
-          href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.
+      <div class="dashboard-footer">
+        &copy;2016 <a href="http://infiniteautomation.com/">Infinite Automation Systems Inc</a>. <span ma-tr="footer.rightsReserved"></span>
       </div>
     </div>
     </md-content>

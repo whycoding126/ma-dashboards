@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="../vendor/angular-material/angular-material.css">
     <link rel="stylesheet" href="../vendor/angular-loading-bar/loading-bar.css">
     <link rel="stylesheet" href="../vendor/material-design-icons/iconfont/material-icons.css">
+    <link rel="stylesheet" href="../vendor/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body layout="column">
-    <div ng-if="appLoading" class="app-loading ">
-        <i class="material-icons">hourglass_empty</i>
-    </div>
+	<div ng-if="appLoading" class="app-loading text-center">
+		<i class="fa fa-cog fa-spin"></i>
+	</div>
 
     <div ui-view ng-cloak layout="column" flex></div>
 
