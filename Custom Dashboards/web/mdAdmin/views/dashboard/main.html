@@ -26,11 +26,10 @@
         </md-button>
         <div layout="row" flex class="fill-height">
           <h2 class="md-toolbar-item dashboard-breadcrumb">
-            <span ng-repeat="crumb in crumbs">
+            <span ng-repeat="crumb in crumbs" ng-class="{'hide-xs': !$last}">
                 <span ma-tr="{{crumb}}"></span>
                 <span ng-if="!$last">
-                    <span class="_md-visually-hidden"> - </span>
-                    <md-icon aria-hidden="true" class="md-light">chevron_right</md-icon>
+                    <md-icon class="md-light">chevron_right</md-icon>
                 </span>
             </span>
           </h2>
