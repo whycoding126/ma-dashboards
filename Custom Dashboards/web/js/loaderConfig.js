@@ -7,6 +7,7 @@ var vendor = module + '/vendor';
 require.config({
     paths : {
         'dashboards' : module,
+        'mdAdmin' : module + '/mdAdmin',
         'angular-route' : vendor + '/angular-route/angular-route',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
         'json3' : vendor + '/json3/json3',

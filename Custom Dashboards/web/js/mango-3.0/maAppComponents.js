@@ -5,13 +5,16 @@
  */
 
 define(['./services/errorInterceptor',
+        './services/rQ',
         'angular'
-], function(errorInterceptor, angular) {
+], function(errorInterceptor, rQ, angular) {
 'use strict';
 
 var maAppComponents = angular.module('maAppComponents', []);
 
 maAppComponents.factory('errorInterceptor', errorInterceptor);
+maAppComponents.factory('rQ', rQ);
+maAppComponents.constant('require', require);
 
 return maAppComponents;
 

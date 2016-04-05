@@ -5,15 +5,16 @@
  * @author Jared Wiltshire
  */
 
-require([
+define([
     'angular',
     'mango-3.0/maDashboards',
     'mango-3.0/maAppComponents',
+    'require',
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
     'angular-material'
-], function(angular, maDashboards, maAppComponents) {
+], function(angular, maDashboards, maAppComponents, require) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -26,6 +27,8 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'ngMessages'
 ]);
 
+mdAdminApp.constant('require', require);
+
 mdAdminApp.constant('PAGES', [
     {
         state: 'dashboard',
@@ -36,12 +39,14 @@ mdAdminApp.constant('PAGES', [
                 $rootScope.user = User.current();
                 return $rootScope.user.$promise;
             }],
-            loadMyDirectives: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load({
-                    name: 'mdAdminApp',
-                    files: ['directives/sidebar-date-controls/sidebar-date-controls.js',
-                            'directives/menu/menuLink.js',
-                            'directives/menu/menuToggle.js']
+            loadMyDirectives: ['rQ', function(rQ) {
+                return rQ(['./directives/sidebar-date-controls/sidebar-date-controls',
+                           './directives/menu/menuLink',
+                           './directives/menu/menuToggle'
+                ]).then(function(result) {
+                    angular.module('mdAdminApp').directive('sidebarDateControls', result[0]);
+                    angular.module('mdAdminApp').directive('menuLink', result[1]);
+                    angular.module('mdAdminApp').directive('menuToggle', result[2]);
                 });
             }]
         }
@@ -397,7 +402,7 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
                 if (page.templateUrl) {
                     state.templateUrl = page.templateUrl;
                 } else {
-                    state.template = '<ui-view/>';
+                    state.template = '<div ui-view></div>';
                     state['abstract'] = true;
                 }
                 
@@ -440,19 +445,21 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
             }
         } while (state = state.parentPage);
         $rootScope.crumbs = crumbs;
-        $rootScope.closeMenu();
+    });
+    
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        if ($state.includes('dashboard')) {
+            $rootScope.closeMenu();
+        }
     });
 
     $rootScope.closeMenu = function() {
-        $timeout(function() {
-            $mdSidenav('left').close();
-        });
+        $mdSidenav('left').close();
     }
 
     $rootScope.openMenu = function() {
-        $timeout(function() {
-            $mdSidenav('left').open();
-        });
+        angular.element('#menu-button').blur();
+        $mdSidenav('left').open();
     }
 
 }]);
@@ -461,4 +468,4 @@ angular.element(document).ready(function() {
     angular.bootstrap(document.documentElement, ['mdAdminApp']);
 });
 
-}); // require
+}); // define

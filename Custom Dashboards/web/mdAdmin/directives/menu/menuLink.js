@@ -1,10 +1,23 @@
+/**
+ * Copyright (C) 2016 Deltamation Software. All rights reserved.
+ * http://www.deltamation.com.au/
+ * @author Jared Wiltshire
+ */
+
+define(['require'], function(require) {
 'use strict';
 
-angular.module('mdAdminApp').directive('menuLink', function() {
+var menuLink = function() {
     return {
         scope: {
             page: '='
         },
-        templateUrl: 'directives/menu/menuLink.html'
+        templateUrl: require.toUrl('./menuLink.html')
     };
-});
+};
+
+menuLink.$inject = [];
+
+return menuLink;
+
+}); // define

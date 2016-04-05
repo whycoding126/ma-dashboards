@@ -1,11 +1,18 @@
+/**
+ * Copyright (C) 2016 Deltamation Software. All rights reserved.
+ * http://www.deltamation.com.au/
+ * @author Jared Wiltshire
+ */
+
+define(['require'], function(require) {
 'use strict';
 
-angular.module('mdAdminApp').directive('menuToggle', ['$state', '$timeout', '$rootScope', function($state, $timeout, $rootScope) {
+var menuToggle = function($state, $timeout, $rootScope) {
     return {
         scope: {
             section: '='
         },
-        templateUrl: 'directives/menu/menuToggle.html',
+        templateUrl: require.toUrl('./menuToggle.html'),
         link: function($scope, $element) {
             var $ul = $element.find('ul');
             
@@ -72,4 +79,10 @@ angular.module('mdAdminApp').directive('menuToggle', ['$state', '$timeout', '$ro
             };
         }
     };
-}]);
+};
+
+menuToggle.$inject = ['$state', '$timeout', '$rootScope'];
+
+return menuToggle;
+
+}); // define

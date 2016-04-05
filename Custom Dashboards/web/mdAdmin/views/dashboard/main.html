@@ -22,10 +22,10 @@
     <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
-        <md-button class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
+        <md-button id="menu-button" class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
-          <h2 class="md-toolbar-item dashboard-breadcrumb">
+          <h2 class="md-toolbar-item dashboard-breadcrumb" ng-class="{'gt-sm': $mdMedia('gt-sm')}">
             <span ng-repeat="crumb in crumbs" ng-class="{'hide-xs': !$last}">
                 <span ma-tr="{{crumb}}"></span>
                 <span ng-if="!$last">
@@ -38,14 +38,50 @@
           <!-- use up the empty space -->
   
           <div class="md-toolbar-item dashboard-tools" layout="row">
+
+            <md-menu md-position-mode="target-right target" ng-if="errors.length">
+              <md-button aria-label="API Errors" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <md-icon md-menu-origin class="md-light">warning</md-icon>
+              </md-button>
+              <md-menu-content width="5">
+                <md-menu-item>
+                  <md-button aria-label="Clear errors" ng-click="clearErrors()" layout="row" layout-align="start center">
+                      <p flex>Clear errors</p>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">clear</md-icon>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          
             <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
                 <md-icon class="md-light">alarm</md-icon>
             </md-button>
-            <md-button class="md-icon-button" aria-label="Mango user menu" ng-href="/events.shtm">
-                <md-tooltip md-autohide>Mango user menu</md-tooltip>
-                <md-icon class="md-light">person</md-icon>
-            </md-button>
+            <md-menu md-position-mode="target-right target">
+              <md-button aria-label="User menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <md-icon md-menu-origin class="md-light">person</md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button aria-label="User profile" ng-href="/users.shtm" layout="row" layout-align="start center">
+                      <p flex>{{user.username}}</p>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">person</md-icon>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="user.hasPermission('superadmin')">
+                  <md-button aria-label="User profile" ng-href="/system_settings.shtm" layout="row" layout-align="start center">
+                      <p flex ma-tr="header.systemSettings">System settings</p>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button aria-label="User profile" ng-href="/logout.htm" layout="row" layout-align="start center">
+                      <p flex ma-tr="header.logout">Logout</p>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">exit_to_app</md-icon>
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
           </div>
         </div>
       </div>

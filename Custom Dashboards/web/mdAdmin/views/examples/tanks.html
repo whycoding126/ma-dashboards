@@ -32,13 +32,10 @@
 <ma-get-point-value point="myPoint" display-type="none"></ma-get-point-value>
 <ma-get-point-value point="myPoint2" display-type="none"></ma-get-point-value>
 
-<div style="position:relative">
-	<ma-tank-level point="myPoint" color="{{choosenColor}}" max="{{max}}"
-		style="width:300px; height:200px;"></ma-tank-level>
-	<div class="pipe-left-right" ng-style="{'background-color':choosenColor}"
-		style="position:absolute; top:160px; left:195px; width: 220px;"></div>
-	<ma-tank-level point="myPoint2" color="{{choosenColor}}" max="{{max}}"
-		style="width:300px; height:200px; position:absolute; top:0; left:400px;"></ma-tank-level>
+<div style="position:relative; height: 200px">
+	<ma-tank-level point="myPoint" color="{{choosenColor}}" max="{{max}}" style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2"></ma-tank-level>
+	<div class="pipe-left-right" ng-style="{'background-color':choosenColor}" style="position:absolute; top:160px; left:180px; width: 250px; z-index: 1"></div>
+	<ma-tank-level point="myPoint2" color="{{choosenColor}}" max="{{max}}" style="width:300px; height:200px; position:absolute; top:0; left:400px; z-index:2"></ma-tank-level>
 </div>
 
 </dual-pane-editor>
