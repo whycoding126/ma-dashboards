@@ -30,50 +30,53 @@ function gaugeChart() {
         	$scope.classes = {};
         	
             var options = defaultOptions();
-            if ($scope.start) {
-                options.axes[0].startValue = parseFloat($scope.start);
-            }
-            if ($scope.end) {
-            	options.axes[0].endValue = parseFloat($scope.end);
-            }
-            if ($scope.band1End) {
-                var stop1 = parseFloat($scope.band1End);
-                options.axes[0].bands.push({
-                    id: 'band1',
-                    color: $scope.band1Color || "#84b761",
-                    startValue: options.axes[0].startValue,
-                    endValue: stop1
-                });
-                if (!$scope.end)
-                	options.axes[0].endValue = stop1;
-            }
-            if ($scope.band2End) {
-                var stop2 = parseFloat($scope.band2End);
-                options.axes[0].bands.push({
-                    id: 'band2',
-                    color: $scope.band2Color || "#fdd400",
-                    startValue: options.axes[0].bands[0].endValue,
-                    endValue: stop2
-                });
-                if (!$scope.end)
-                	options.axes[0].endValue = stop2;
-            }
-            if ($scope.band3End) {
-                var stop3 = parseFloat($scope.band3End);
-                options.axes[0].bands.push({
-                    id: 'band3',
-                    color: $scope.band3Color || "#cc4748",
-                    startValue: options.axes[0].bands[1].endValue,
-                    endValue: stop3
-                });
-                if (!$scope.end)
-                	options.axes[0].endValue = stop3;
-            }
-            if ($scope.interval) {
-                options.axes[0].valueInterval = parseFloat($scope.interval);
-            }
-
+            axisChanged();
             var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
+            
+            function axisChanged() {
+                var axis = options.axes[0];
+                axis.bands = [];
+                axis.startValue = parseFloat($scope.start) || 0;
+                axis.endValue = parseFloat($scope.end) || 100;
+                if ($scope.band1End) {
+                    var stop1 = parseFloat($scope.band1End);
+                    axis.bands.push({
+                        id: 'band1',
+                        color: $scope.band1Color || "#84b761",
+                        startValue: axis.startValue,
+                        endValue: stop1
+                    });
+                    if (!$scope.end)
+                        axis.endValue = stop1;
+                }
+                if ($scope.band1End && $scope.band2End) {
+                    var stop2 = parseFloat($scope.band2End);
+                    axis.bands.push({
+                        id: 'band2',
+                        color: $scope.band2Color || "#fdd400",
+                        startValue: axis.bands[0].endValue,
+                        endValue: stop2
+                    });
+                    if (!$scope.end)
+                        axis.endValue = stop2;
+                }
+                if ($scope.band1End && $scope.band2End && $scope.band3End) {
+                    var stop3 = parseFloat($scope.band3End);
+                    axis.bands.push({
+                        id: 'band3',
+                        color: $scope.band3Color || "#cc4748",
+                        startValue: axis.bands[1].endValue,
+                        endValue: stop3
+                    });
+                    if (!$scope.end)
+                        axis.endValue = stop3;
+                }
+                axis.valueInterval = parseFloat($scope.interval) || (axis.endValue - axis.startValue) / 5;
+                if (chart) chart.validateNow();
+            }
+            
+            $scope.$watchGroup(['start', 'end', 'band1End', 'band2End', 'band3End', 'end', 'interval',
+                                'band1Color', 'band2Color', 'band3Color'], axisChanged);
             
             $scope.$watch('value', function(newValue, oldValue) {
                 if (newValue === undefined) return;
