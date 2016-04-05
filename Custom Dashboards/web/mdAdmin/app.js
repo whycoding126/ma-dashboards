@@ -440,6 +440,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
             }
         } while (state = state.parentPage);
         $rootScope.crumbs = crumbs;
+        $rootScope.closeMenu();
     });
 
     $rootScope.closeMenu = function() {
