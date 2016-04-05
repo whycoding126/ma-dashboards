@@ -43,11 +43,11 @@ mdAdminApp.constant('PAGES', [
                 return rQ(['./directives/sidebar-date-controls/sidebar-date-controls',
                            './directives/menu/menuLink',
                            './directives/menu/menuToggle'
-                ]).then(function(result) {
+                ], function(sidebarDateControls, menuLink, menuToggle) {
                     angular.module('dashboard', [])
-                        .directive('sidebarDateControls', result[0])
-                        .directive('menuLink', result[1])
-                        .directive('menuToggle', result[2]);
+                        .directive('sidebarDateControls', sidebarDateControls)
+                        .directive('menuLink', menuLink)
+                        .directive('menuToggle', menuToggle);
                     $ocLazyLoad.inject('dashboard');
                 });
             }]
@@ -59,9 +59,9 @@ mdAdminApp.constant('PAGES', [
         templateUrl: 'views/login.html',
         resolve: {
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/login/login']).then(function(result) {
+                return rQ(['./directives/login/login'], function(login) {
                     angular.module('login', [])
-                        .directive('login', result[0]);
+                        .directive('login', login);
                     $ocLazyLoad.inject('login');
                 });
             }]
@@ -82,14 +82,15 @@ mdAdminApp.constant('PAGES', [
             loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/liveEditor/liveEditor',
                            './directives/liveEditor/livePreview',
-                           './directives/liveEditor/dualPaneEditor'
-                ]).then(function(result) {
+                           './directives/liveEditor/dualPaneEditor'],
+                function(liveEditor, livePreview, dualPaneEditor) {
                     angular.module('dashboard.examples', [])
-                        .directive('liveEditor', result[0])
-                        .directive('livePreview', result[1])
-                        .directive('dualPaneEditor', result[2]);
+                        .directive('liveEditor', liveEditor)
+                        .directive('livePreview', livePreview)
+                        .directive('dualPaneEditor', dualPaneEditor);
                     $ocLazyLoad.inject('ui.ace');
                     $ocLazyLoad.inject('dashboard.examples');
+                    
                     return $ocLazyLoad.load('styles/examples.css');
                 });
             }]
