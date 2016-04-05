@@ -39,14 +39,16 @@ mdAdminApp.constant('PAGES', [
                 $rootScope.user = User.current();
                 return $rootScope.user.$promise;
             }],
-            loadMyDirectives: ['rQ', function(rQ) {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/sidebar-date-controls/sidebar-date-controls',
                            './directives/menu/menuLink',
                            './directives/menu/menuToggle'
                 ]).then(function(result) {
-                    angular.module('mdAdminApp').directive('sidebarDateControls', result[0]);
-                    angular.module('mdAdminApp').directive('menuLink', result[1]);
-                    angular.module('mdAdminApp').directive('menuToggle', result[2]);
+                    angular.module('dashboard', [])
+                        .directive('sidebarDateControls', result[0])
+                        .directive('menuLink', result[1])
+                        .directive('menuToggle', result[2]);
+                    $ocLazyLoad.inject('dashboard');
                 });
             }]
         }
@@ -56,8 +58,12 @@ mdAdminApp.constant('PAGES', [
         url: '/login',
         templateUrl: 'views/login.html',
         resolve: {
-            deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load('directives/login/login.js');
+            deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/login/login']).then(function(result) {
+                    angular.module('login', [])
+                        .directive('login', result[0]);
+                    $ocLazyLoad.inject('login');
+                });
             }]
         }
     },
@@ -73,22 +79,18 @@ mdAdminApp.constant('PAGES', [
         url: '/examples',
         state: 'dashboard.examples',
         resolve: {
-            loadMyFile: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load({
-                    name: 'ace',
-                    files: ['../vendor/ace/ace.js']
-                }).then(function() {
-                    return $ocLazyLoad.load({
-                        name: 'ui-ace',
-                        files: ['../vendor/angular-ui-ace/ui-ace.js']
-                    });
-                }).then(function() {
-                    return $ocLazyLoad.load([
-                        'directives/liveEditor/liveEditor.js',
-                        'directives/liveEditor/livePreview.js',
-                        'directives/liveEditor/dualPaneEditor.js',
-                        'styles/examples.css'
-                    ]);
+            loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/liveEditor/liveEditor',
+                           './directives/liveEditor/livePreview',
+                           './directives/liveEditor/dualPaneEditor'
+                ]).then(function(result) {
+                    angular.module('dashboard.examples', [])
+                        .directive('liveEditor', result[0])
+                        .directive('livePreview', result[1])
+                        .directive('dualPaneEditor', result[2]);
+                    $ocLazyLoad.inject('ui.ace');
+                    $ocLazyLoad.inject('dashboard.examples');
+                    return $ocLazyLoad.load('styles/examples.css');
                 });
             }]
         }
