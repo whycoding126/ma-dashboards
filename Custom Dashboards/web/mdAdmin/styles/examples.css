@@ -148,3 +148,13 @@ img.point-disabled {
 .no-errors-spacer .md-errors-spacer {
 	display: none;
 }
+
+.ma-set-point-value md-input-container,
+.ma-set-point-value md-select {
+	margin: 6px;
+	min-width: 200px;
+}
+
+.ma-set-point-value button {
+	margin: 6px 6px 6px 0;
+}

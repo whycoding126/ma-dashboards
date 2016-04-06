@@ -37,6 +37,7 @@ function setPointValue(Translate, $q, $injector) {
         	
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
+        		delete $scope.input.value;
         		var locator = $scope.point.pointLocator;
         		var type = locator.dataType;
         		var textRenderer = $scope.point.textRenderer;
@@ -52,9 +53,10 @@ function setPointValue(Translate, $q, $injector) {
         				var label = renderer ? renderer.text : values[i];
         				var option = {
         					id: values[i],
-        					label: label
+        					label: label,
+        					style: {}
         				};
-        				if (renderer && renderer.color) option.color = renderer.colour;
+        				if (renderer && renderer.color) option.style.color = renderer.colour;
         				$scope.options.push(option);
         			}
         		} else if (type === 'BINARY') {
@@ -64,11 +66,15 @@ function setPointValue(Translate, $q, $injector) {
         				$scope.options = [{
         					id: false,
         					label: falseRenderer.text,
-        					color: falseRenderer.color
+        					style: {
+        					    color: falseRenderer.color
+        					}
         				}, {
         					id: true,
         					label: trueRenderer.text,
-        					color: trueRenderer.color
+        					style: {
+                                color: trueRenderer.color
+        					}
         				}];
         			} else {
         				$scope.options = $scope.defaultBinaryOptions;
