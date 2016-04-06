@@ -7,7 +7,7 @@
 define(['require'], function(require) {
 'use strict';
 
-function setPointValue(Translate, $q, $injector, $timeout) {
+function setPointValue(Translate, $q, $injector) {
     return {
         restrict: 'E',
         scope: {
@@ -83,33 +83,11 @@ function setPointValue(Translate, $q, $injector, $timeout) {
         			}
         		}
         	});
-        	
-        	var HOLD_TIMEOUT = 3000;
-        	
-        	$scope.setPointValue = function(value) {
-        	    var result = {
-        	        pending: true
-        	    };
-        	    $scope.point.setValue(value).then(function() {
-                    delete result.pending;
-        	        result.success = true;
-        	        $timeout(function() {
-        	            delete result.success;
-        	        }, HOLD_TIMEOUT);
-        	    }, function(data) {
-                    delete result.pending;
-        	        result.error = data;
-        	        $timeout(function() {
-                        delete result.error;
-                    }, HOLD_TIMEOUT);
-        	    });
-        	    return result;
-        	};
         }
     };
 }
 
-setPointValue.$inject = ['Translate', '$q', '$injector', '$timeout'];
+setPointValue.$inject = ['Translate', '$q', '$injector'];
 
 return setPointValue;
 

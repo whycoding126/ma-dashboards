@@ -13,7 +13,7 @@
 		ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable">
 	</select>
 	<span class="input-group-btn">
-      <button ng-disabled="!point.pointLocator.settable || result.pending" ng-click="result=setPointValue(input.value)" ma-tr="common.set"
+      <button ng-disabled="!point.pointLocator.settable || result.pending" ng-click="result=point.setValueResult(input.value)" ma-tr="common.set"
       	class="btn btn-default" ng-class="{'set-pending': result.pending, 'set-success': result.success, 'set-error': result.error}"></button>
     </span>
 </div>
