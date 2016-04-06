@@ -272,6 +272,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/state-chart',
                 menuTr: 'dashboards.v3.dox.stateChart',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.charts.liveUpdatingChart',
+                templateUrl: 'views/examples/liveUpdatingChart.html',
+                url: '/live-updating-chart',
+                menuTr: 'dashboards.v3.dox.liveUpdatingChart',
+                menuType: 'link'
             }
         ]
     },

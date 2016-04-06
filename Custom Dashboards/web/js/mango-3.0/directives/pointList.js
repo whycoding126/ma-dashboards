@@ -7,7 +7,7 @@
 define([], function() {
 'use strict';
 
-function pointList(Point, $filter) {
+function pointList(Point, $filter, $injector) {
     return {
         restrict: 'E',
         scope: {
@@ -22,6 +22,12 @@ function pointList(Point, $filter) {
             optionsExpr = 'point.xid as ' + optionsExpr;
           } else {
             optionsExpr += ' track by point.id';
+          }
+          
+          if ($injector.has('$mdUtil')) {
+              return '<md-select md-on-open="points.$promise" style="min-width: 200px;">' +
+              '<md-option ng-value="point" ng-repeat="point in points | orderBy: orderArray track by point.id">{{pointLabel(point)}}</md-option>' +
+              '</md-select>';
           }
           
           return '<select ng-options="' + optionsExpr + '"></select>';
@@ -62,7 +68,7 @@ function pointList(Point, $filter) {
     };
 }
 
-pointList.$inject = ['Point', '$filter'];
+pointList.$inject = ['Point', '$filter', '$injector'];
 return pointList;
 
 }); // define
