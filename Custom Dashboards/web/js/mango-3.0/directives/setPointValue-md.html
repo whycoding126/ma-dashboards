@@ -1,0 +1,20 @@
+<form>
+    <div layout="row" class="no-errors-spacer">
+        <md-input-container ng-if="point.pointLocator.dataType === 'NUMERIC'" style="margin:6px">
+            <input type="number" step="any" ng-model="input.value"
+                ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable">
+        </md-input-container>
+        <md-input-container ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" style="margin:6px">
+            <input type="text" ng-model="input.value"
+                ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable">
+        </md-input-container>
+        <md-select ng-if="point.pointLocator.dataType === 'BINARY' || point.pointLocator.dataType === 'MULTISTATE'"
+            ng-model="input.value" style="margin:6px"
+            ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable">
+            <md-option ng-value="option" ng-repeat="option in options">{{option.label}}</md-option>
+        </md-select>
+        <md-button type="submit" class="md-raised md-accent"
+            ng-disabled="!point.pointLocator.settable" ng-click="point.setValue(input.value)" ma-tr="common.set">
+        </md-button>
+    </div>
+</form>

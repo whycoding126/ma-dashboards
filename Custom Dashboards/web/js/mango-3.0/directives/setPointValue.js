@@ -7,14 +7,19 @@
 define(['require'], function(require) {
 'use strict';
 
-function setPointValue(Translate, $q) {
+function setPointValue(Translate, $q, $injector) {
     return {
         restrict: 'E',
         scope: {
             point: '='
         },
         replace: true,
-        templateUrl: require.toUrl('./setPointValue.html'),
+        templateUrl: function() {
+            if ($injector.has('$mdUtil')) {
+                return require.toUrl('./setPointValue-md.html');
+            }
+            return require.toUrl('./setPointValue.html');
+        },
         link: function($scope) {
         	$scope.input = {};
         	
@@ -74,7 +79,7 @@ function setPointValue(Translate, $q) {
     };
 }
 
-setPointValue.$inject = ['Translate', '$q'];
+setPointValue.$inject = ['Translate', '$q', '$injector'];
 
 return setPointValue;
 

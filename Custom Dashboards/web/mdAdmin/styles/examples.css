@@ -144,3 +144,7 @@ img.point-disabled {
     height: 100%;
     width: 15px;
 }
+
+.no-errors-spacer .md-errors-spacer {
+	display: none;
+}
