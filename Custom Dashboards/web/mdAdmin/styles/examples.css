@@ -155,6 +155,11 @@ img.point-disabled {
 	min-width: 200px;
 }
 
-.ma-set-point-value button {
+.ma-set-point-value button.md-button {
 	margin: 6px 6px 6px 0;
+}
+
+.ma-set-point-value button md-icon,
+.ma-set-point-value button md-progress-circular {
+	margin: 0 0 0 8px;
 }

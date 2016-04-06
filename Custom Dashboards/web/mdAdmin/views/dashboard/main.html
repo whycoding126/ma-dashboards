@@ -26,7 +26,7 @@
         </md-button>
         <div layout="row" flex class="fill-height">
           <h2 class="md-toolbar-item dashboard-breadcrumb" ng-class="{'gt-sm': $mdMedia('gt-sm')}">
-            <span ng-repeat="crumb in crumbs" ng-class="{'hide-xs': !$last}">
+            <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-xs': !$last}">
                 <span ma-tr="{{crumb}}"></span>
                 <span ng-if="!$last">
                     <md-icon class="md-light">chevron_right</md-icon>

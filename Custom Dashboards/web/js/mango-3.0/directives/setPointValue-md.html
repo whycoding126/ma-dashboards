@@ -14,7 +14,14 @@
             <md-option ng-value="option.id" ng-repeat="option in options track by option.id" ng-style="option.style">{{option.label}}</md-option>
         </md-select>
         <md-button type="submit" class="md-raised md-accent"
-            ng-disabled="!point.pointLocator.settable" ng-click="point.setValue(input.value)" ma-tr="common.set">
+                ng-disabled="!point.pointLocator.settable || result.pending" ng-click="result=setPointValue(input.value)"
+                ng-class="{'set-pending': result.pending, 'set-success': result.success, 'set-error': result.error, 'md-warn': result.error}">
+            <div layout="row" layout-align="center center">
+                <span ma-tr="common.set"></span>
+                <md-progress-circular md-diameter="18px" ng-if="result.pending"></md-progress-circular>
+                <md-icon ng-if="result.success" class="md-primary">check</md-icon>
+                <md-icon ng-if="result.error" class="md-primary">error</md-icon>
+            </div>
         </md-button>
     </div>
 </form>

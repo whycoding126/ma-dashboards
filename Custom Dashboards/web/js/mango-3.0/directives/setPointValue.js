@@ -7,7 +7,7 @@
 define(['require'], function(require) {
 'use strict';
 
-function setPointValue(Translate, $q, $injector) {
+function setPointValue(Translate, $q, $injector, $timeout) {
     return {
         restrict: 'E',
         scope: {
@@ -38,6 +38,8 @@ function setPointValue(Translate, $q, $injector) {
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
         		delete $scope.input.value;
+        		delete $scope.result;
+        		
         		var locator = $scope.point.pointLocator;
         		var type = locator.dataType;
         		var textRenderer = $scope.point.textRenderer;
@@ -81,11 +83,33 @@ function setPointValue(Translate, $q, $injector) {
         			}
         		}
         	});
+        	
+        	var HOLD_TIMEOUT = 3000;
+        	
+        	$scope.setPointValue = function(value) {
+        	    var result = {
+        	        pending: true
+        	    };
+        	    $scope.point.setValue(value).then(function() {
+                    delete result.pending;
+        	        result.success = true;
+        	        $timeout(function() {
+        	            delete result.success;
+        	        }, HOLD_TIMEOUT);
+        	    }, function(data) {
+                    delete result.pending;
+        	        result.error = data;
+        	        $timeout(function() {
+                        delete result.error;
+                    }, HOLD_TIMEOUT);
+        	    });
+        	    return result;
+        	};
         }
     };
 }
 
-setPointValue.$inject = ['Translate', '$q', '$injector'];
+setPointValue.$inject = ['Translate', '$q', '$injector', '$timeout'];
 
 return setPointValue;
 
