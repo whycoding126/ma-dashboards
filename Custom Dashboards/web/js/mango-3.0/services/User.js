@@ -80,10 +80,21 @@ function UserFactory($resource) {
         if (typeof desiredPerms === 'string') {
             desiredPerms = desiredPerms.split(',');
         }
-        var userPerms = this.permissions.split(',');
         
-        for (var i = 0; i < desiredPerms.length; i++) {
-            if ($.inArray(desiredPerms[i], userPerms) > -1)
+        var userPerms = this.permissions.split(',');
+        for (var i = userPerms.length - 1; i >= 0; i--) {
+            var userPerm = userPerms[i].trim();
+            if (userPerm) {
+                userPerms[i] = userPerm;
+            } else {
+                userPerms.splice(i, 1);
+            }
+        }
+        
+        for (i = 0; i < desiredPerms.length; i++) {
+            var desiredPerm = desiredPerms[i].trim();
+            if (!desiredPerm) continue;
+            if ($.inArray(desiredPerm, userPerms) > -1)
             	return true;
         }
         
