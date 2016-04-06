@@ -49,20 +49,26 @@ function tankLevel() {
             });
             
             $scope.$watch('value', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                tankLevel = newValue;
+                tankLevel = newValue || 0;
                 chart.dataProvider[0].tankLevel = tankLevel;
                 chart.dataProvider[0].remainder = max - tankLevel;
                 chart.validateData();
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
-                if (newValue === oldValue) return;
+                var rendered;
+                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
+                    rendered = $scope.point.renderedValue;
+                } else if (typeof newValue === 'number') {
+                    rendered = newValue.toFixed(2);
+                } else {
+                    rendered = '';
+                }
                 tankLevel = newValue || 0;
-                var renderered = $scope.point ? $scope.point.renderedValue : '';
+                
                 chart.dataProvider[0].tankLevel = tankLevel;
                 chart.dataProvider[0].remainder = max - tankLevel;
-                chart.dataProvider[0].renderedValue = renderered;
+                chart.dataProvider[0].renderedValue = rendered;
                 chart.validateData();
             });
 

@@ -79,16 +79,21 @@ function gaugeChart() {
                                 'band1Color', 'band2Color', 'band3Color'], axisChanged);
             
             $scope.$watch('value', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                chart.arrows[0].setValue(newValue);
-                chart.axes[0].setBottomText(newValue.toFixed(2));
+                chart.arrows[0].setValue(newValue || 0);
+                chart.axes[0].setBottomText(typeof newValue === 'number' ? newValue.toFixed(2) : '');
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
-            	if (newValue === oldValue) return;
-            	var renderered = $scope.point ? $scope.point.renderedValue : '';
                 chart.arrows[0].setValue(newValue || 0);
-                chart.axes[0].setBottomText(renderered);
+                var rendered;
+                if ($scope.point && typeof $scope.point.renderedValue === 'string') {
+                    rendered = $scope.point.renderedValue;
+                } else if (typeof newValue === 'number') {
+                    rendered = newValue.toFixed(2);
+                } else {
+                    rendered = '';
+                }
+                chart.axes[0].setBottomText(rendered);
             });
 
             $scope.$watch('point.enabled', function(newValue) {

@@ -84,11 +84,10 @@ mdAdminApp.constant('PAGES', [
                            './directives/liveEditor/livePreview',
                            './directives/liveEditor/dualPaneEditor'],
                 function(liveEditor, livePreview, dualPaneEditor) {
-                    angular.module('dashboard.examples', [])
+                    angular.module('dashboard.examples', ['ui.ace'])
                         .directive('liveEditor', liveEditor)
                         .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor);
-                    $ocLazyLoad.inject('ui.ace');
                     $ocLazyLoad.inject('dashboard.examples');
                     
                     return $ocLazyLoad.load('styles/examples.css');
