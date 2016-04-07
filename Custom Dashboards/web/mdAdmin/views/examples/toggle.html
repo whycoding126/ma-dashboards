@@ -3,21 +3,22 @@
 <dual-pane-editor>
 
 <div layout="column">
-  <md-input-container class="md-block">
-    <label>Choose a point</label>
-    <ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
-  </md-input-container>
-  <div>
-    <strong>Rendered point value:</strong>
-    <ma-point-value point="myPoint"></ma-point-value>
-  </div>
-  <div>
-    <strong>Image toggle:</strong>
-    <ma-switch-img point="myPoint" ng-click="myPoint.toggleValue()"
-        src-false="img/ligthbulb_off.png"
-        src-true="img/ligthbulb_on.png"
-        default-src="img/close.png">
-    </ma-switch-img>
+    <md-input-container class="md-block">
+        <label>Choose a point</label>
+        <ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
+    </md-input-container>
+    <div>
+        <strong>Rendered point value:</strong>
+        <ma-point-value point="myPoint"></ma-point-value>
+    </div>
+    <div>
+        <strong>Image toggle:</strong>
+        <ma-switch-img point="myPoint" ng-click="myPoint.toggleValue()"
+            src-false="img/ligthbulb_off.png"
+            src-true="img/ligthbulb_on.png"
+            default-src="img/close.png">
+        </ma-switch-img>
+    </div>
     <md-switch ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
         Point value: {{ myPoint.value }}
     </md-switch>

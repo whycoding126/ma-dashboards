@@ -362,6 +362,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/toggle',
                 menuTr: 'dashboards.v3.dox.toggle',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.settingPointValues.sliders',
+                templateUrl: 'views/examples/sliders.html',
+                url: '/sliders',
+                menuTr: 'dashboards.v3.dox.sliders',
+                menuType: 'link'
             }
         ]
     }

@@ -166,3 +166,7 @@ md-select {
 .ma-set-point-value button md-progress-circular {
 	margin: 0 0 0 8px;
 }
+
+._md-track-ticks {
+	display: none;
+}
