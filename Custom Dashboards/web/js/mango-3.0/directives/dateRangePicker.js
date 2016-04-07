@@ -7,7 +7,7 @@
 define(['moment-timezone'], function(moment) {
 'use strict';
 
-function dateRangePicker($rootScope) {
+function dateRangePicker($rootScope, $injector) {
     return {
         restrict: 'E',
         scope: {
@@ -18,7 +18,15 @@ function dateRangePicker($rootScope) {
             updateInterval: '@'
         },
         replace: true,
-        template: '<select ng-options="t.type as t.label for t in presets" ng-model="preset"></select>',
+        template: function(element, attrs) {
+            if ($injector.has('$mdUtil')) {
+                return '<md-select ng-model="preset">' +
+                '<md-option ng-value="p.type" ng-repeat="p in presets track by p.type">{{p.label}}</md-option>' +
+                '</md-select>';
+            }
+            
+            return '<select ng-options="t.type as " ng-model="preset"></select>';
+        },
         link: function ($scope, $element) {
         	var from, to;
         	$scope.presets = $rootScope.dateRangePresets;
@@ -124,7 +132,7 @@ function dateRangePicker($rootScope) {
     };
 }
 
-dateRangePicker.$inject = ['$rootScope'];
+dateRangePicker.$inject = ['$rootScope', '$injector'];
 
 return dateRangePicker;
 

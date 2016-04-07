@@ -13,17 +13,17 @@ and the <code>ng-model</code> attributes</p>.
 <dual-pane-editor>
 
 <div layout="row">
-  <md-input-container>
+  <md-input-container class="no-errors-spacer">
     <label>Preset</label>
-    <ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
+    <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
   </md-input-container>
-  <md-input-container>
+  <md-input-container class="no-errors-spacer">
     <label>From date</label>
-    <ma-date-picker class="form-control" ng-model="from"></ma-date-picker>
+    <ma-date-picker ng-model="from"></ma-date-picker>
   </md-input-container>
-  <md-input-container>
+  <md-input-container class="no-errors-spacer">
     <label>To date</label>
-    <input ma-date-picker class="form-control" ng-model="to"></input>
+    <ma-date-picker ng-model="to"></ma-date-picker>
   </md-input-container>
 </div>
 

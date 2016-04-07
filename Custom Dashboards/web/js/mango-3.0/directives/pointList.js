@@ -25,7 +25,7 @@ function pointList(Point, $filter, $injector) {
           }
           
           if ($injector.has('$mdUtil')) {
-              return '<md-select md-on-open="points.$promise" style="min-width: 200px;">' +
+              return '<md-select md-on-open="points.$promise">' +
               '<md-option ng-value="point" ng-repeat="point in points | orderBy: orderArray track by point.id">{{pointLabel(point)}}</md-option>' +
               '</md-select>';
           }
