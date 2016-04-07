@@ -279,6 +279,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/live-updating-chart',
                 menuTr: 'dashboards.v3.dox.liveUpdatingChart',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.charts.pieChart',
+                templateUrl: 'views/examples/pieChart.html',
+                url: '/pie-chart',
+                menuTr: 'dashboards.v3.dox.pieChart',
+                menuType: 'link'
             }
         ]
     },

@@ -30,14 +30,15 @@ function pieChart($http) {
                 var values = $.extend(true, [], newValue);
                 
                 for (var i = 0; i < values.length; i++) {
-                    var value = values[i];
-                    var label = labelFn(value.value);
+                    var item = values[i];
                     
-                    value.text = label.text;
-                    if (label.colour) {
-                        value.colour = label.colour;
+                    if (item.runtime) {
+                        item.id = item.value;
+                        item.value = item.runtime / 1000;
+                        delete item.runtime;
                     }
-                    value.runtime = values[i].runtime / 1000;
+                    
+                    labelFn(item);
                 }
                 
                 chart.dataProvider = values;
@@ -45,20 +46,11 @@ function pieChart($http) {
             });
             
             function createLabelFn(labels) {
-                return function(value) {
-                    var label = labels && labels[value] || {};
+                return function(item) {
+                    var label = labels && labels[item.id] || {};
                     
-                    if (typeof label === 'string') {
-                        label = {
-                            text: label
-                        };
-                    }
-                    
-                    if (!label.text) {
-                        label.text = value;
-                    }
-                    
-                    return label;
+                    item.text = typeof label === 'string' ? label : label.text || item.text || item.id;
+                    item.color = label.color || label.colour || item.color || item.colour;
                 };
             }
         }
@@ -70,9 +62,9 @@ function defaultOptions() {
         type: "pie",
         theme: "light",
         dataProvider: [],
-        valueField: "runtime",
+        valueField: "value",
         titleField: "text",
-        colorField: "colour",
+        colorField: "color",
         balloon:{
             fixedPosition:true
         },
