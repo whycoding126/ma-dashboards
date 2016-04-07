@@ -40,6 +40,10 @@ function maTr(Translate) {
 	            	} else if (tagName === 'INPUT') {
 	            		$elem.attr('placeholder', text);
 	            		return;
+	            	} else if (tagName === 'BUTTON') {
+	            	    $elem.attr('aria-label', text);
+	            	    // only set aria-label if button already has content
+	            	    if ($elem.contents().length) return;
 	            	}
 	            	
 	            	var firstChild = $elem.contents().length && $elem.contents().get(0);
