@@ -6,21 +6,23 @@
 
 <dual-pane-editor>
 
-<div class="form-group">
-	<label>Choose a point</label>
-	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
-</div>
-
-<p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
-
-<div class="form-group">
-	<label>Search by point name</label>
-	<input ng-model="nameFilter" ng-model-options="{debounce:500}" class="form-control">
-</div>
-
-<div class="form-group">
-	<label>Filtered point list</label>
-	<ma-point-list ng-model="myPoint2" class="form-control" query="name=like=*{{nameFilter}}*"></ma-point-list>
+<div layout="column">
+    <md-input-container class="md-block no-errors-spacer">
+        <label>Choose a point</label>
+        <ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
+    </md-input-container>
+    
+    <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
+    
+    <md-input-container class="md-block no-errors-spacer">
+        <label>Search by point name</label>
+        <input ng-model="nameFilter" ng-model-options="{debounce:500}" class="form-control">
+    </md-input-container>
+    
+    <md-input-container class="md-block no-errors-spacer">
+        <label>Filtered point list</label>
+        <ma-point-list ng-model="myPoint2" class="form-control" query="name=like=*{{nameFilter}}*"></ma-point-list>
+    </md-input-container>
 </div>
 
 </dual-pane-editor>

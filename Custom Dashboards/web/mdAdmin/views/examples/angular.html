@@ -13,17 +13,16 @@ Use the <code>ng-model</code> attribute to two way bind a variable with an input
 
 <dual-pane-editor>
 
-<div ng-init="myVar = 'Hello'">
-	<p>Using interpolation, your variable is {{myVar}}</p>
-	<p>Using ng-bind, your variable is <span ng-bind="myVar"></span></p>
+<div layout="column" ng-init="myVar = 'Hello'">
+  <div>Using interpolation, your variable is {{myVar}}</div>
+  <div>Using ng-bind, your variable is <span ng-bind="myVar"></span></div>
+  
+  <md-input-container class="md-block no-errors-spacer">
+    <label>Enter a number</label>
+    <input type="number" ng-model="myNumber">
+  </md-input-container>
+  
+  <div>Your number plus 10 is {{myNumber + 10}}.</div>
 </div>
-
-<p>
-	<input type="number" ng-model="myNumber">
-</p>
-
-<p>
-	Your number plus 10 is {{myNumber + 10}}.
-</p>
 
 </dual-pane-editor>
