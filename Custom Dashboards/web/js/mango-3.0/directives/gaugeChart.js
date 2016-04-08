@@ -30,10 +30,14 @@ function gaugeChart() {
         	$scope.classes = {};
         	
             var options = defaultOptions();
+            $.extend(options, $scope.options);
             axisChanged();
-            var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
+            var chart = AmCharts.makeChart($element[0], options);
             
             function axisChanged() {
+                if ($scope.options && $scope.options.axes.length) {
+                    return;
+                }
                 var axis = options.axes[0];
                 axis.bands = [];
                 axis.startValue = parseFloat($scope.start) || 0;
