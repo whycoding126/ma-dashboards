@@ -28,7 +28,7 @@ and the <code>ng-model</code> attributes</p>.
 </div>
 
 <p>
-    You have chosen a date range of {{ from }} to {{ to }}.
+    You have chosen a date range of {{ from | moment:'format':'ll LTS' }} to {{ to | moment:'format':'ll LTS' }}.
 </p>
 
 </dual-pane-editor>

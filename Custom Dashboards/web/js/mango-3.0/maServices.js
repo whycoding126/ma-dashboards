@@ -37,6 +37,7 @@ maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
 maServices.constant('mangoWatchdogTimeout', 60000);
 maServices.constant('mangoReconnectDelay', 60000);
+maServices.constant('mangoDefaultDateFormat', 'll LTS');
 
 return maServices;
 

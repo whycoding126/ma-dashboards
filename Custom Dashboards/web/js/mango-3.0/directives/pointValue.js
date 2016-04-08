@@ -7,7 +7,7 @@
 define(['require'], function(require) {
 'use strict';
 
-function pointValue($filter) {
+function pointValue($filter, mangoDefaultDateFormat) {
     return {
         restrict: 'E',
         scope: {
@@ -20,7 +20,7 @@ function pointValue($filter) {
         templateUrl: require.toUrl('./pointValue.html'),
         link: function ($scope, $element, attrs) {
         	var displayType = $scope.displayType || 'rendered';
-            var dateTimeFormat = $scope.dateTimeFormat || 'll LTS';
+            var dateTimeFormat = $scope.dateTimeFormat || mangoDefaultDateFormat;
 
             $scope.valueStyle = {};
             $scope.classes = {};
@@ -61,7 +61,7 @@ function pointValue($filter) {
     };
 }
 
-pointValue.$inject = ['$filter'];
+pointValue.$inject = ['$filter', 'mangoDefaultDateFormat'];
 return pointValue;
 
 }); // define

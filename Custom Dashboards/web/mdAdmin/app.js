@@ -390,7 +390,8 @@ mdAdminApp.config([
     '$ocLazyLoadProvider',
     '$httpProvider',
     '$mdThemingProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider) {
+    '$injector',
+function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector) {
 
     $mdThemingProvider
         .theme('default')
@@ -400,6 +401,14 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
     
     $httpProvider.interceptors.push('errorInterceptor');
 
+    if ($injector.has('$mdpTimePickerProvider')) {
+        var $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');
+        /*
+        $mdpTimePickerProvider.setOKButtonLabel();
+        $mdpTimePickerProvider.setCancelButtonLabel();
+        */
+    }
+    
     $ocLazyLoadProvider.config({
         debug: false,
         events: true,

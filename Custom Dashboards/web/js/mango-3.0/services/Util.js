@@ -7,7 +7,7 @@
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
-function UtilFactory(mangoBaseUrl) {
+function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 	function Util() {}
 	
 	/**
@@ -33,7 +33,7 @@ function UtilFactory(mangoBaseUrl) {
     Util.toMoment = function(input, now, format) {
         if (!input || input === 'now') return moment(now);
         if (typeof input === 'string') {
-        	return moment(input, format || 'll LTS');
+        	return moment(input, format || mangoDefaultDateFormat);
         }
         return moment(input);
     };
@@ -91,7 +91,7 @@ function UtilFactory(mangoBaseUrl) {
     return Util;
 }
 
-UtilFactory.$inject = ['mangoBaseUrl'];
+UtilFactory.$inject = ['mangoBaseUrl', 'mangoDefaultDateFormat'];
 return UtilFactory;
 
 }); // define
