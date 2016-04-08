@@ -46,8 +46,8 @@ body {
 }
 
 .dashboard-sidebar-header img {
-	width: 200px;
-	margin-bottom: 5px;
+	width: 150px;
+    margin-bottom: 8px;
 }
 
 .dashboard-sidebar-header .email {
