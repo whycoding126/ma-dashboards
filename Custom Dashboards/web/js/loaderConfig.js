@@ -8,6 +8,7 @@ require.config({
     paths : {
         'dashboards' : module,
         'mdAdmin' : module + '/mdAdmin',
+        'angular' : vendor + '/angular/angular',
         'angular-route' : vendor + '/angular-route/angular-route',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
         'json3' : vendor + '/json3/json3',
@@ -20,7 +21,11 @@ require.config({
         'angular-material' : vendor + '/angular-material/angular-material',
         'angular-animate' : vendor + '/angular-animate/angular-animate',
         'angular-messages' : vendor + '/angular-messages/angular-messages',
-        'angular-aria' : vendor + '/angular-aria/angular-aria'
+        'angular-aria' : vendor + '/angular-aria/angular-aria',
+        'moment': vendor + '/moment/moment-with-locales',
+        'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
+        'jquery': vendor + '/jquery/jquery',
+        'mdPickers': vendor + '/mdPickers/mdPickers'
     },
     shim : {
         'angular-route' : {
@@ -55,6 +60,12 @@ require.config({
         },
         'angular-aria' : {
             deps : ['angular']
+        },
+        'mdPickers': {
+            deps: ['moment', 'angular', 'angular-material'],
+            init: function(moment) {
+                window.moment = moment;
+            }
         }
     }
 });

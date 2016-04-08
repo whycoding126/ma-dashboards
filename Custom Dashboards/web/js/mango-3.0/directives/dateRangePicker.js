@@ -38,10 +38,17 @@ function dateRangePicker($rootScope, $injector) {
             });
         	
         	$scope.$watchGroup(['from', 'to'], function(newValues) {
-        		if (newValues[0] !== from || newValues[1] !== to) {
+        		if (!(isSame(from, newValues[0]) && isSame(to, newValues[1]))) {
         			$scope.preset = '';
         		}
         	});
+        	
+        	function isSame(m, check) {
+                if (typeof check === 'string') {
+                    check = moment(check, $scope.format);
+                }
+                return m.isSame(check);
+        	}
         	
         	function doUpdate() {
         		if (!$scope.preset) return;
@@ -85,13 +92,12 @@ function dateRangePicker($rootScope, $injector) {
         			break;
         		}
         		
-        		var format = $scope.format || 'll LTS';
-        		if (format === 'false') {
-        			$scope.from = from;
-            		$scope.to = to;
+        		if ($scope.format) {
+        		    $scope.from = from.format($scope.format);
+                    $scope.to = to.format($scope.format);
         		} else {
-        			$scope.from = from = from.format(format);
-            		$scope.to = to = to.format(format);
+                    $scope.from = from.toDate();
+                    $scope.to = to.toDate();
         		}
         	}
             

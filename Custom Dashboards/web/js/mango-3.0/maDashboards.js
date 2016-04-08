@@ -43,7 +43,7 @@ define(['./maServices',
         jsonStore, focusOn, enter, now, fn, trFilter, angular) {
 'use strict';
 
-var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngResource']);
+var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
 
 maDashboards.directive('maPointList', pointList);
 maDashboards.directive('maPointValue', pointValue);

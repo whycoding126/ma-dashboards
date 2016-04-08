@@ -13,7 +13,8 @@ define([
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
-    'angular-material'
+    'angular-material',
+    'mdPickers'
 ], function(angular, maDashboards, maAppComponents, require) {
 'use strict';
 
@@ -24,7 +25,8 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'maDashboards',
     'maAppComponents',
     'ngMaterial',
-    'ngMessages'
+    'ngMessages',
+    'mdPickers'
 ]);
 
 mdAdminApp.constant('require', require);

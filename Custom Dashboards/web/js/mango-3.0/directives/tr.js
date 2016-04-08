@@ -4,23 +4,32 @@
  * @author Jared Wiltshire
  */
 
-define(['jquery'], function($) {
+define(['jquery', 'angular'], function($, angular) {
 'use strict';
 
 function maTr(Translate) {
     return {
         restrict: 'A',
-        scope: {
-            maTr: '@',
-            maTrArgs: '=?'
-        },
+        scope: false,
         link: function ($scope, $elem, $attrs) {
-        	$scope.$watch(function() {
-        		return [$scope.maTr, $scope.maTrArgs];
-        	}, doTranslate, true);
+            var trKey, trArgs;
 
-            function doTranslate() {
-	            Translate.tr($scope.maTr, $scope.maTrArgs || []).then(function(translation) {
+            $attrs.$observe('maTr', function(newValue) {
+        	    doTranslate(newValue, trArgs);
+        	});
+            $scope.$watchCollection($attrs.maTrArgs, function(newValue, oldValue) {
+                doTranslate(trKey, newValue);
+            });
+
+            function doTranslate(newKey, newArgs) {
+                if (newKey === trKey && angular.equals(newArgs, trArgs)) {
+                    return;
+                }
+                trKey = newKey;
+                trArgs = newArgs;
+                if (!trKey) return;
+                
+	            Translate.tr(trKey, trArgs || []).then(function(translation) {
 	            	return {
 	            		failed: false,
 	            		text: translation
@@ -44,6 +53,9 @@ function maTr(Translate) {
 	            	    $elem.attr('aria-label', text);
 	            	    // only set aria-label if button already has content
 	            	    if ($elem.contents().length) return;
+	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER') {
+	            	    $elem.find('label').text(text);
+	            	    return;
 	            	}
 	            	
 	            	var firstChild = $elem.contents().length && $elem.contents().get(0);
