@@ -53,7 +53,7 @@ function maTr(Translate) {
 	            	    $elem.attr('aria-label', text);
 	            	    // only set aria-label if button already has content
 	            	    if ($elem.contents().length) return;
-	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER') {
+	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER' || tagName === 'MD-INPUT-CONTAINER') {
 	            	    $elem.find('label').text(text);
 	            	    return;
 	            	}
