@@ -123,10 +123,12 @@ function PointFactory($resource, $http, $timeout) {
     	} else if (textRenderer.type === 'textRendererBinary') {
     		this._rendererMap = {
     			'true': {
+    			    key: true,
     				color: textRenderer.oneColour,
     				text: textRenderer.oneLabel
     			},
     			'false': {
+    			    key: false,
     				color: textRenderer.zeroColour,
     				text: textRenderer.zeroLabel
     			}
@@ -138,7 +140,11 @@ function PointFactory($resource, $http, $timeout) {
     
     Point.prototype.valueRenderer = function(value) {
     	var rendererMap = this.rendererMap();
-    	if (rendererMap) return rendererMap[value];
+    	if (rendererMap) {
+    	    var obj = rendererMap[value]; 
+    	    if (obj) return obj;
+    	}
+    	return {text: value}
     };
     
     return Point;

@@ -394,6 +394,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/sliders',
                 menuTr: 'dashboards.v3.dox.sliders',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.settingPointValues.multistateRadio',
+                templateUrl: 'views/examples/multistateRadio.html',
+                url: '/multistate-radio-buttons',
+                menuTr: 'dashboards.v3.dox.multistateRadio',
+                menuType: 'link'
             }
         ]
     }

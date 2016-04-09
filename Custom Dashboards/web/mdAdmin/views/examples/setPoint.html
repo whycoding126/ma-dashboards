@@ -4,12 +4,15 @@
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
-<div layout="column">
-  <md-input-container class="md-block">
+<md-input-container class="md-block">
     <label>Choose a point</label>
     <ma-point-list ng-model="myPoint"></ma-point-list>
-  </md-input-container>
-  <ma-set-point-value point="myPoint"></ma-set-point-value>
-</div>
+</md-input-container>
+
+<h3>Using &lt;ma-set-point-value&gt;</h3>
+<ma-set-point-value point="myPoint"></ma-set-point-value>
+
+<h3>Via function</h3>
+<md-button ng-click="myPoint.setValue(5)" class="md-raised">Set to 5</md-button>
 
 </dual-pane-editor>
