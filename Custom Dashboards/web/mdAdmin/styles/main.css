@@ -63,6 +63,12 @@ body {
 	margin-top: -2px;
 }
 
+.md-whiteframe-glow-z1 {
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.14),
+              0px 0px 2px 2px rgba(0, 0, 0, 0.098),
+              0px 0px 5px 1px rgba(0, 0, 0, 0.084);
+}
+
 /* Dashboard menu */
 
 .dashboard-menu li {
@@ -221,9 +227,6 @@ p {
   letter-spacing: 0.010em;
   line-height: 1.6em;
   margin: 0.8em 0 1.6em;
-}
-strong {
-  font-weight: 500;
 }
 
 .md-api-table td,

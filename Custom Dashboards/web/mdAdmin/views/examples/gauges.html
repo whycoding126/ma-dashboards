@@ -3,23 +3,25 @@
 
 <dual-pane-editor>
 
-<div class="form-group">
-	<label>Choose a point</label>
-	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
+<div layout="row">
+    <md-input-container flex class="no-errors-spacer">
+        <label>Choose a point</label>
+        <ma-point-list ng-model="point1"></ma-point-list>
+    </md-input-container>
 </div>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
-<div class="row">
-	<div class="col-md-6 text-center">
+<div layout="row" layout-wrap>
+	<div flex="50">
 		<p>Basic (defaults to 0-100)</p>
 		<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>
 	</div>
-	<div class="col-md-6 text-center">
+	<div flex="50">
 		<p>Set axis interval and start and end value</p>
 		<ma-gauge-chart point="myPoint" interval="10" start="-20" end="120" style="width:100%; height:200px"></ma-gauge-chart>
 	</div>
-	<div class="col-md-6 text-center">
+	<div flex="50">
 		<p>Set color bands</p>
 		<ma-gauge-chart point="myPoint" start="-20" band-1-end="20" band-2-end="80" band-2-color="yellow" band-3-end="100"
 			style="width:100%; height:200px"></ma-gauge-chart>

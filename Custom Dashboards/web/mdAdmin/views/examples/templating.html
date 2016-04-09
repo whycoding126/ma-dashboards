@@ -4,13 +4,16 @@ and <code>dateControls.to</code>.</p>
 <p>You will need to import the example virtual data sources <a href="../demoMangoConfig.json">from this JSON file</a> for this example to work.</p>
 
 <dual-pane-editor>
-<div class="form-group">
-	<label>Choose a device</label>
-	<select class="form-control" ng-model="deviceName" ng-init="deviceName='Meter 1'">
-	    <option value="Meter 1">Meter 1</option>
-	    <option value="Meter 2">Meter 2</option>
-	    <option value="Meter 3">Meter 3</option>
-	</select>
+
+<div layout="row">
+    <md-input-container flex class="no-errors-spacer">
+        <label>Choose a device</label>
+        <md-select ng-model="deviceName" ng-init="deviceName='Meter 1'">
+    	    <md-option ng-value="'Meter 1'">Meter 1</md-option>
+    	    <md-option ng-value="'Meter 2'">Meter 2</md-option>
+    	    <md-option ng-value="'Meter 3'">Meter 3</md-option>
+    	</md-select>
+    </md-input-container>
 </div>
 
 <!-- Server side query for points with given device name, and server side sort -->
@@ -29,42 +32,44 @@ and <code>dateControls.to</code>.</p>
 
 <h2>Gauges</h2>
 
-<div class="form-group">
-	<label>Choose a Phase</label>
-	<select class="form-control" ng-model="phase" ng-init="phase='A'">
-	    <option value="A">Phase A</option>
-	    <option value="B">Phase B</option>
-	    <option value="C">Phase C</option>
-	</select>
+<div layout="row">
+    <md-input-container flex class="no-errors-spacer">
+        <label>Choose a phase</label>
+        <md-select ng-model="phase" ng-init="phase='A'">
+            <md-option ng-value="'A'">Phase A</md-option>
+            <md-option ng-value="'B'">Phase B</md-option>
+            <md-option ng-value="'C'">Phase C</md-option>
+        </md-select>
+    </md-input-container>
 </div>
 
-<div class="row">
-	<div class="col-lg-3 col-md-6 text-center">
-		<p><strong>Current</strong></p>
+<div layout="row" layout-wrap>
+	<div flex="50" layout="column" layout-align="center center">
+		<strong>Current</strong>
 		<ma-gauge-chart point="current" start="0"
 		band-1-end="100" band-1-color="green"
 		band-2-end="150" band-2-color="yellow"
 		band-3-end="300" band-3-color="red"
 		style="width:100%; height:200px"></ma-gauge-chart>
 	</div>
-	<div class="col-lg-3 col-md-6 text-center">
-		<p><strong>Voltage</strong></p>
+	<div flex="50" layout="column" layout-align="center center">
+		<strong>Voltage</strong>
 		<ma-gauge-chart point="voltage" start="0"
 		band-1-end="180" band-1-color="red"
 		band-2-end="250" band-2-color="yellow"
 		band-3-end="300" band-3-color="green"
 		style="width:100%; height:200px"></ma-gauge-chart>
 	</div>
-		<div class="col-lg-3 col-md-6 text-center">
-		<p><strong>Power</strong></p>
+	<div flex="50" layout="column" layout-align="center center">
+		<strong>Power</strong>
 		<ma-gauge-chart point="power" start="0"
 		band-1-end="100" band-1-color="green"
 		band-2-end="150" band-2-color="yellow"
 		band-3-end="200" band-3-color="red"
 		style="width:100%; height:200px"></ma-gauge-chart>
 	</div>
-		<div class="col-lg-3 col-md-6 text-center">
-		<p><strong>Power Factor</strong></p>
+	<div flex="50" layout="column" layout-align="center center">
+		<strong>Power Factor</strong>
 		<ma-gauge-chart point="powerFactor" start="0"
 		band-1-end="0.3" band-1-color="red"
 		band-2-end="0.8" band-2-color="yellow"

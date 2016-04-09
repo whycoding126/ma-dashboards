@@ -6,11 +6,11 @@
 
 <dual-pane-editor>
 
-<div ng-if="!mangoWatchdog.failed" class="alert alert-success" role="alert">
+<div ng-if="!mangoWatchdog.failed">
     <strong>Good</strong> Connection to Mango is OK.
 </div>
 
-<div ng-if="mangoWatchdog.failed" class="alert alert-danger" role="alert">
+<div ng-if="mangoWatchdog.failed">
     <strong>Failure</strong> Connection to Mango has failed.
 </div>
 

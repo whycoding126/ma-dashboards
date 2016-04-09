@@ -13,53 +13,76 @@ may cause the chart rendering to fail.</p>
 
 <dual-pane-editor>
 
-<div class="form-group col-md-6">
-	<label>Point 1</label>
-	<ma-point-list ng-model="point1" class="form-control"></ma-point-list>
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>Point 1</label>
+    	<ma-point-list ng-model="point1"></ma-point-list>
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer">
+        <label>Point 2</label>
+        <ma-point-list ng-model="point2"></ma-point-list>
+    </md-input-container>
 </div>
-<div class="form-group col-md-6">
-	<label>Point 2</label>
-	<ma-point-list ng-model="point2" class="form-control"></ma-point-list>
+
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer" ng-init="point1Color='#ffaa00'">
+    	<label>Point 1 Color</label>
+    	<input type="color" ng-model="point1Color">
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer" ng-init="point2Color='#0000aa'">
+    	<label>Point 2 Color</label>
+    	<input type="color" ng-model="point2Color">
+    </md-input-container>
 </div>
-<div class="form-group col-md-6" ng-init="point1Color='#ffaa00'">
-	<label>Point 1 Color</label>
-	<input class="form-control" type="color" ng-model="point1Color">
+
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer" ng-init="point1ChartType='line'">
+    	<label>Point 1 Chart Type</label>
+    	<md-select ng-model="point1ChartType">
+            <md-option ng-value="t.type" ng-repeat="t in chartTypes">{{t.label}}</md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer" ng-init="point2ChartType='column'">
+    	<label>Point 2 Chart Type</label>
+    	<md-select ng-model="point2ChartType">
+            <md-option ng-value="t.type" ng-repeat="t in chartTypes">{{t.label}}</md-option>
+        </md-select>
+    </md-input-container>
 </div>
-<div class="form-group col-md-6" ng-init="point2Color='#0000aa'">
-	<label>Point 2 Color</label>
-	<input class="form-control" type="color" ng-model="point2Color">
+
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>Update interval</label>
+    	<ma-interval-picker interval="updateInterval"></ma-interval-picker>
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>Date range preset</label>
+    	<ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}}"></ma-date-range-picker>
+    </md-input-container>
 </div>
-<div class="form-group col-md-6" ng-init="point1ChartType='line'">
-	<label>Point 1 Chart Type</label>
-	<select ng-model="point1ChartType" class="form-control" ng-options="t.type as t.label for t in chartTypes"></select>
+
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>From date</label>
+    	<input ma-date-picker ng-model="from">
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>To date</label>
+    	<input ma-date-picker ng-model="to">
+    </md-input-container>
 </div>
-<div class="form-group col-md-6" ng-init="point2ChartType='column'">
-	<label>Point 2 Chart Type</label>
-	<select ng-model="point2ChartType" class="form-control" ng-options="t.type as t.label for t in chartTypes"></select>
-</div>
-<div class="form-group col-md-6">
-	<label>Update interval</label>
-	<ma-interval-picker interval="updateInterval"></ma-interval-picker>
-</div>
-<div class="form-group col-md-6">
-	<label>Date range preset</label>
-	<ma-date-range-picker class="form-control" from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}}"></ma-date-range-picker>
-</div>
-<div class="form-group col-md-6">
-	<label>From date</label>
-	<input class="form-control" ma-date-picker ng-model="from">
-</div>
-<div class="form-group col-md-6">
-	<label>To date</label>
-	<input class="form-control" ma-date-picker ng-model="to">
-</div>
-<div class="form-group col-md-6">
-	<label>Rollup interval</label>
-	<ma-interval-picker interval="rollupInterval"></ma-interval-picker>
-</div>
-<div class="form-group col-md-6" ng-init="rollupType='AVERAGE'">
-	<label>Rollup type</label>
-	<select class="form-control" ng-model="rollupType" ng-options="t.type as t.label for t in rollupTypes"></select>
+
+<div layout="row">
+    <md-input-container flex="50" class="no-errors-spacer">
+    	<label>Rollup interval</label>
+    	<ma-interval-picker interval="rollupInterval"></ma-interval-picker>
+    </md-input-container>
+    <md-input-container flex="50" class="no-errors-spacer" ng-init="rollupType='AVERAGE'">
+    	<label>Rollup type</label>
+        <md-select ng-model="rollupType">
+            <md-option ng-value="t.type" ng-repeat="t in rollupTypes">{{t.label}}</md-option>
+        </md-select>
+    </md-input-container>
 </div>
 
 <ma-point-values point="point1" values="point1Values"

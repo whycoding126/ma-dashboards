@@ -2,25 +2,24 @@
 
 <dual-pane-editor>
 
-<div class="form-group">
-	<label>Choose a point</label>
-	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
+<div layout="row">
+    <md-input-container flex class="no-errors-spacer">
+        <label>Choose a point</label>
+        <ma-point-list ng-model="myPoint"></ma-point-list>
+    </md-input-container>
 </div>
 
-<div class="form-group">
-	<label>Point value</label>
-	<p class="form-control-static"><ma-point-value point="myPoint"></ma-point-value></p>
-</div>
+<p><label>Point value</label> <ma-point-value point="myPoint"></ma-point-value></p>
 
-<div class="row">
-	<div class="col-md-3 text-center">
+<div layout="row" layout-wrap>
+	<div flex="50">
 		<p>Map example</p>
 		<ma-switch-img point="myPoint" 
 			default-src="img/close.png"
 			src-map="{'false': 'img/ligthbulb_off.png', 'true': 'img/ligthbulb_on.png'}">
 		</ma-switch-img>
 	</div>
-	<div class="col-md-3 text-center">
+	<div flex="50">
 		<p>Binary example</p>
 		<ma-switch-img point="myPoint"
 			src-false="img/ligthbulb_off.png"
@@ -28,7 +27,7 @@
 			default-src="img/close.png">
 		</ma-switch-img>
 	</div>
-	<div class="col-md-3 text-center">
+	<div flex="50">
 		<p>Multi-state example</p>
 		<ma-switch-img point="myPoint"
 			src-1="img/arrow_up.png"
@@ -38,7 +37,7 @@
 			default-src="img/close.png">
 		</ma-switch-img>
 	</div>
-	<div class="col-md-3 text-center">
+	<div flex="50">
 		<p>String example</p>
 		<ma-switch-img point="myPoint"
 			src-test="img/ligthbulb_off.png"

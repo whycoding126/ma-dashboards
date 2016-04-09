@@ -27,6 +27,16 @@ and the <code>ng-model</code> attributes</p>.
   </md-input-container>
 </div>
 
+<p>Alternatively use the date and time pickers individually</p>
+<div layout="row">
+    <mdp-date-picker mdp-placeholder="From date" mdp-open-on-click mdp-format="ll" ng-model="from" class="no-errors-spacer"></mdp-date-picker>
+	<mdp-time-picker mdp-placeholder="From time" mdp-open-on-click mdp-auto-switch="true" ng-model="from" mdp-format="LTS" class="no-errors-spacer"></mdp-time-picker>
+</div>
+<div layout="row">
+    <mdp-date-picker mdp-placeholder="To date" mdp-open-on-click mdp-format="ll" ng-model="to" class="no-errors-spacer"></mdp-date-picker>
+	<mdp-time-picker mdp-placeholder="To time" mdp-open-on-click mdp-auto-switch="true" ng-model="to" mdp-format="LTS" class="no-errors-spacer"></mdp-time-picker>
+</div>
+
 <p>
     You have chosen a date range of {{ from | moment:'format':'ll LTS' }} to {{ to | moment:'format':'ll LTS' }}.
 </p>
