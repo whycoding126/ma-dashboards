@@ -10,8 +10,6 @@ define(['./maServices',
         './directives/pointValue',
         './directives/pointValues',
         './directives/pointStatistics',
-        './directives/bandStyle',
-        './directives/switchStyle',
         './directives/tankLevel',
         './directives/gaugeChart',
         './directives/serialChart',
@@ -39,7 +37,7 @@ define(['./maServices',
         './filters/trFilter',
         'angular'
 ], function(maServices, maFilters, pointList, pointValue, pointValues, pointStatistics,
-        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
+        tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, trFilter, angular) {
@@ -51,8 +49,6 @@ maDashboards.directive('maPointList', pointList);
 maDashboards.directive('maPointValue', pointValue);
 maDashboards.directive('maPointValues', pointValues);
 maDashboards.directive('maPointStatistics', pointStatistics);
-maDashboards.directive('maBandStyle', bandStyle);
-maDashboards.directive('maSwitchStyle', switchStyle);
 maDashboards.directive('maTankLevel', tankLevel);
 maDashboards.directive('maGaugeChart', gaugeChart);
 maDashboards.directive('maSerialChart', serialChart);

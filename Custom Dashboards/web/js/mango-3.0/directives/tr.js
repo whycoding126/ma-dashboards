@@ -37,7 +37,7 @@ function maTr(Translate) {
 	            }, function(error) {
 	            	var result = {
 	            		failed: true,
-	            		text: '!!' + $scope.maTr + '!!'
+	            		text: '!!' + $attrs.maTr + '!!'
 	            	};
 	            	return $.Deferred().resolve(result);
 	            }).then(function(result) {

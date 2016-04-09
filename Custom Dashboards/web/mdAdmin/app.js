@@ -139,6 +139,13 @@ mdAdminApp.constant('PAGES', [
                 menuType: 'link'
             },
             {
+                state: 'dashboard.examples.basics.getPointByXid',
+                templateUrl: 'views/examples/getPointByXid.html',
+                url: '/get-point-by-xid',
+                menuTr: 'dashboards.v3.dox.getPointByXid',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.basics.liveValues',
                 templateUrl: 'views/examples/liveValues.html',
                 url: '/live-values',
@@ -160,24 +167,17 @@ mdAdminApp.constant('PAGES', [
                 menuType: 'link'
             },
             {
+                state: 'dashboard.examples.basics.styleViaValue',
+                templateUrl: 'views/examples/styleViaValue.html',
+                url: '/style-via-value',
+                menuTr: 'dashboards.v3.dox.styleViaValue',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.basics.pointValues',
                 templateUrl: 'views/examples/pointValues.html',
                 url: '/point-values',
                 menuTr: 'dashboards.v3.dox.pointValues',
-                menuType: 'link'
-            },
-            {
-                state: 'dashboard.examples.basics.getPointByXid',
-                templateUrl: 'views/examples/getPointByXid.html',
-                url: '/get-point-by-xid',
-                menuTr: 'dashboards.v3.dox.getPointByXid',
-                menuType: 'link'
-            },
-            {
-                state: 'dashboard.examples.basics.translation',
-                templateUrl: 'views/examples/translation.html',
-                url: '/translation',
-                menuTr: 'dashboards.v3.dox.translation',
                 menuType: 'link'
             },
             {
@@ -186,16 +186,32 @@ mdAdminApp.constant('PAGES', [
                 url: '/latest-point-values',
                 menuTr: 'dashboards.v3.dox.latestPointValues',
                 menuType: 'link'
+            }
+        ]
+    },
+    {
+        state: 'dashboard.examples.utilities',
+        url: '/utilities',
+        menuTr: 'dashboards.v3.dox.utilities',
+        menuIcon: 'fa fa-wrench',
+        menuType: 'toggle',
+        children: [
+            {
+                state: 'dashboard.examples.utilities.translation',
+                templateUrl: 'views/examples/translation.html',
+                url: '/translation',
+                menuTr: 'dashboards.v3.dox.translation',
+                menuType: 'link'
             },
             {
-                state: 'dashboard.examples.basics.jsonStore',
+                state: 'dashboard.examples.utilities.jsonStore',
                 templateUrl: 'views/examples/jsonStore.html',
                 url: '/json-store',
                 menuTr: 'dashboards.v3.dox.jsonStore',
                 menuType: 'link'
             },
             {
-                state: 'dashboard.examples.basics.watchdog',
+                state: 'dashboard.examples.utilities.watchdog',
                 templateUrl: 'views/examples/watchdog.html',
                 url: '/watchdog',
                 menuTr: 'dashboards.v3.dox.watchdog',
