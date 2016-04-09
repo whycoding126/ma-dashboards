@@ -78,6 +78,12 @@ mdAdminApp.constant('PAGES', [
         menuType: 'link'
     },
     {
+        state: 'dashboard.apiErrors',
+        url: '/api-errors',
+        templateUrl: 'views/dashboard/errors.html',
+        menuTr: 'dashboards.v3.dox.apiErrors'
+    },
+    {
         url: '/examples',
         state: 'dashboard.examples',
         resolve: {
@@ -108,7 +114,8 @@ mdAdminApp.constant('PAGES', [
     {
         state: 'dashboard.examples.playAreaBig',
         templateUrl: 'views/examples/playAreaBig.html',
-        url: '/play-area-big'
+        url: '/play-area-big',
+        menuTr: 'dashboards.v3.dox.playArea'
     },
     {
         state: 'dashboard.examples.basics',

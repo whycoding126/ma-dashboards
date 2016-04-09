@@ -1,0 +1,19 @@
+<h1 ma-tr="dashboards.v3.dox.apiErrors"></h1>
+
+<span ng-if="!errors.length">No errors to list.</span>
+
+<div ng-if="errors.length">
+    <ul flex>
+        <li ng-repeat="error in errors" layout="row" flex>
+            <span flex="15">{{error.time | moment:'format':'lll'}}</span>
+            <span flex="15">{{error.status}} {{error.msg}}</span>
+            <span flex="45">{{error.config.method}} {{error.config.url}}</span>
+            <span flex="25">{{error.data.message}}</span>
+        </li>
+    </ul>
+    
+    <md-button aria-label="Clear errors" ng-click="clearErrors()" layout="row" layout-align="start center">
+      <span flex>Clear errors</span>
+      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">clear</md-icon>
+    </md-button>
+</div>

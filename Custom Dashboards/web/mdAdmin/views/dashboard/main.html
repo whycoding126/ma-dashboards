@@ -38,21 +38,10 @@
           <!-- use up the empty space -->
   
           <div class="md-toolbar-item dashboard-tools" layout="row">
-
-            <md-menu md-position-mode="target-right target" ng-if="errors.length">
-              <md-button aria-label="API Errors" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                <md-icon md-menu-origin class="md-light">warning</md-icon>
-              </md-button>
-              <md-menu-content width="5">
-                <md-menu-item>
-                  <md-button aria-label="Clear errors" ng-click="clearErrors()" layout="row" layout-align="start center">
-                      <p flex>Clear errors</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">clear</md-icon>
-                  </md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
-          
+            <md-button class="md-icon-button" ng-if="errors.length">
+                <md-tooltip md-autohide>REST API errors</md-tooltip>
+                <a ui-sref="dashboard.apiErrors"><md-icon class="md-light">warning</md-icon></a>
+            </md-button>
             <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
                 <md-icon class="md-light">alarm</md-icon>

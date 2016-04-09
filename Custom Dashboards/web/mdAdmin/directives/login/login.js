@@ -7,7 +7,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var login = function($state, User) {
+var login = function($state, User, $rootScope) {
     return {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
@@ -29,6 +29,7 @@ var login = function($state, User) {
                         redirect = $state.loginRedirect;
                         delete $state.loginRedirect;
                     }
+                    $rootScope.clearErrors();
                     $state.go(redirect);
                 }, function(error) {
                     if (error.status === 406) {
@@ -43,7 +44,7 @@ var login = function($state, User) {
     };
 };
 
-login.$inject = ['$state', 'User'];
+login.$inject = ['$state', 'User', '$rootScope'];
 
 return login;
 
