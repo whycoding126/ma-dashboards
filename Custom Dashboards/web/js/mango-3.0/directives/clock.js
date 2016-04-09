@@ -56,6 +56,8 @@ function defaultOptions() {
         theme: "light",
         addClassNames: true,
         startDuration: 0.3,
+        marginTop: 0,
+        marginBottom: 0,
         axes: [{
             axisAlpha: 0.3,
             endAngle: 360,

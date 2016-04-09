@@ -100,6 +100,10 @@ function UserFactory($resource) {
         
         return false;
     };
+    
+    User.prototype.getTimezone = function() {
+        return this.timezone || this.systemTimezone;
+    };
 
     return User;
 }

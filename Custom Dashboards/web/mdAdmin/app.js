@@ -193,6 +193,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/latest-point-values',
                 menuTr: 'dashboards.v3.dox.latestPointValues',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.basics.clocksAndTimezones',
+                templateUrl: 'views/examples/clocksAndTimezones.html',
+                url: '/clocks-and-timezones',
+                menuTr: 'dashboards.v3.dox.clocksAndTimezones',
+                menuType: 'link'
             }
         ]
     },
