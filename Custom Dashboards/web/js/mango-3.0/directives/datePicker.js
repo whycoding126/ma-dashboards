@@ -7,10 +7,11 @@
 define(['angular', 'moment'], function(angular, moment) {
 'use strict';
 
-function datePicker($injector, mangoDefaultDateFormat, $parse) {
+function datePicker($injector, mangoDefaultDateFormat) {
     return {
         scope: {
-            format: '@'
+            format: '@',
+            ngModel: '='
         },
         require: 'ngModel',
         replace: true,
@@ -40,7 +41,6 @@ function datePicker($injector, mangoDefaultDateFormat, $parse) {
             var $mdpDatePicker = $injector.get('$mdpDatePicker');
             var $mdpTimePicker = $injector.get('$mdpTimePicker');
             
-            var modelExpr = $parse(attrs.ngModel);
             $scope.format = $scope.format || mangoDefaultDateFormat;
             
             ngModel.$formatters.push(function(value) {
@@ -68,14 +68,14 @@ function datePicker($injector, mangoDefaultDateFormat, $parse) {
                         autoSwitch: false
                     });
                 }).then(function(date) {
-                    modelExpr.assign($scope.$parent, date);
+                    $scope.ngModel = date;
                 });
             };
         }
     }
 }
 
-datePicker.$inject = ['$injector', 'mangoDefaultDateFormat', '$parse'];
+datePicker.$inject = ['$injector', 'mangoDefaultDateFormat'];
 
 return datePicker;
 
