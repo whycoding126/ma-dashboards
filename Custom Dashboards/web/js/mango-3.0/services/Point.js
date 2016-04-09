@@ -34,7 +34,7 @@ function PointFactory($resource, $http, $timeout) {
                 if (code < 300) {
                     return angular.fromJson(data).items;
                 }
-                return [];
+                return angular.fromJson(data);
             },
             withCredentials: true,
             cache: true

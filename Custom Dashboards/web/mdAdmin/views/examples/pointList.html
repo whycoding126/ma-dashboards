@@ -14,6 +14,8 @@
     
     <p>You have chosen point "{{myPoint.name}}". It is {{myPoint.enabled ? 'enabled' : 'disabled'}} and belongs to device {{myPoint.deviceName}}</p>
     
+    <h3>Filter using second input</h3>
+    
     <md-input-container class="md-block no-errors-spacer">
         <label>Search by point name</label>
         <input ng-model="nameFilter" ng-model-options="{debounce:500}">
@@ -23,6 +25,10 @@
         <label>Filtered point list</label>
         <ma-point-list ng-model="myPoint2" query="name=like=*{{nameFilter}}*"></ma-point-list>
     </md-input-container>
+    
+    <h3>Self filtering input</h3>
+    
+    <ma-filtering-point-list ng-model="myPoint3" query="sort(deviceName,name)" ma-tr="dashboards.v3.app.searchBy" ma-tr-args="['points', 'name and device']"></ma-filtering-point-list>
 </div>
 
 </dual-pane-editor>

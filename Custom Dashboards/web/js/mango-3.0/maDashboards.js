@@ -7,6 +7,7 @@
 define(['./maServices',
         './maFilters',
         './directives/pointList',
+        './directives/filteringPointList',
         './directives/pointValue',
         './directives/pointValues',
         './directives/pointStatistics',
@@ -36,7 +37,7 @@ define(['./maServices',
         './directives/fn', 
         './filters/trFilter',
         'angular'
-], function(maServices, maFilters, pointList, pointValue, pointValues, pointStatistics,
+], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
@@ -45,6 +46,7 @@ define(['./maServices',
 
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
 
+maDashboards.directive('maFilteringPointList', filteringPointList);
 maDashboards.directive('maPointList', pointList);
 maDashboards.directive('maPointValue', pointValue);
 maDashboards.directive('maPointValues', pointValues);
