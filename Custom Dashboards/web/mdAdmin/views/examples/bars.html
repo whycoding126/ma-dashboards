@@ -18,6 +18,8 @@ for the CSS styles used in this example.</p>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
+<md-progress-linear md-mode="determinate" ng-value="myPoint.convertedValue / max * 100" style="height:10px;"></md-progress-linear>
+
 <div class="bar-display" ng-class="{'point-disabled': !myPoint.enabled}">
 	<div class="bar-display-fill" ng-style="{width: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
 	<div class="bar-display-text">{{myPoint.renderedValue}}</div>
