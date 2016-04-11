@@ -10,7 +10,7 @@ define(['angular'], function(angular) {
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource, $http) {
+function PointFactory($resource, $http, $timeout) {
     var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
@@ -34,7 +34,7 @@ function PointFactory($resource, $http) {
                 if (code < 300) {
                     return angular.fromJson(data).items;
                 }
-                return [];
+                return angular.fromJson(data);
             },
             withCredentials: true,
             cache: true
@@ -74,6 +74,27 @@ function PointFactory($resource, $http) {
     	});
     };
     
+    Point.prototype.setValueResult = function(value, holdTimeout) {
+        holdTimeout = holdTimeout || 3000;
+        var result = {
+            pending: true
+        };
+        this.setValue(value).then(function() {
+            delete result.pending;
+            result.success = true;
+            $timeout(function() {
+                delete result.success;
+            }, holdTimeout);
+        }, function(data) {
+            delete result.pending;
+            result.error = data;
+            $timeout(function() {
+                delete result.error;
+            }, holdTimeout);
+        });
+        return result;
+    };
+    
     Point.prototype.toggleValue = function toggleValue() {
     	var dataType = this.pointLocator.dataType;
     	if (dataType === 'BINARY' && this.value !== undefined) {
@@ -102,10 +123,12 @@ function PointFactory($resource, $http) {
     	} else if (textRenderer.type === 'textRendererBinary') {
     		this._rendererMap = {
     			'true': {
+    			    key: true,
     				color: textRenderer.oneColour,
     				text: textRenderer.oneLabel
     			},
     			'false': {
+    			    key: false,
     				color: textRenderer.zeroColour,
     				text: textRenderer.zeroLabel
     			}
@@ -117,13 +140,17 @@ function PointFactory($resource, $http) {
     
     Point.prototype.valueRenderer = function(value) {
     	var rendererMap = this.rendererMap();
-    	if (rendererMap) return rendererMap[value];
+    	if (rendererMap) {
+    	    var obj = rendererMap[value]; 
+    	    if (obj) return obj;
+    	}
+    	return {text: value}
     };
     
     return Point;
 }
 
-PointFactory.$inject = ['$resource', '$http'];
+PointFactory.$inject = ['$resource', '$http', '$timeout'];
 return PointFactory;
 
 }); // define

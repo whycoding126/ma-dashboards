@@ -7,43 +7,67 @@
 define([], function() {
 'use strict';
 
-function pointList(Point, $filter) {
+function pointList(Point, $filter, $injector) {
     return {
         restrict: 'E',
+        require: 'ngModel',
         scope: {
-            order: '@',
-            query: '@',
-            ngModel: '=?',
-            initPoint: '@'
+            order: '=?',
+            ngModel: '=',
+            initPoint: '=?',
+            query: '@'
         },
-        template: '<select ng-options="pointLabel(point) for point in points | orderBy: orderArray track by point.id"></select>',
+        template: function(element, attrs) {
+          var optionsExpr = 'pointLabel(point) for point in points';
+          if (attrs.xidAsModel === 'true') {
+            optionsExpr = 'point.xid as ' + optionsExpr;
+          } else {
+            optionsExpr += ' track by point.id';
+          }
+          
+          if ($injector.has('$mdUtil')) {
+              return '<md-select md-on-open="points.$promise">' +
+              '<md-option ng-value="point" ng-repeat="point in points track by point.id">{{pointLabel(point)}}</md-option>' +
+              '</md-select>';
+          }
+          
+          return '<select ng-options="' + optionsExpr + '"></select>';
+        },
         replace: true,
-        link: function ($scope, $element, attr) {
-            $scope.orderArray = ['deviceName', 'name'];
-            $scope.initPoint = 'true';
+        link: function ($scope, $element, attrs) {
+            $scope.order = $scope.order || ['deviceName', 'name'];
+            if (angular.isUndefined($scope.initPoint)) {
+                $scope.initPoint = true;
+            }
             
-            $scope.$watch('order', function() {
-                if ($scope.order) {
-                    $scope.orderArray = $scope.order.split(',');
+            $scope.$watchCollection('order', function(newValue) {
+                if (newValue) {
+                    $scope.points = $filter('orderBy')($scope.points, newValue);
                 }
             });
             
             $scope.$watch('query', function(value) {
+                $scope.points = [];
+                var promise;
                 if (value) {
-                	$scope.points = Point.rql({
-                    	query: value
-                    });
+                    promise = Point.rql({
+                        query: value
+                    }).$promise;
                 } else {
-                	$scope.points = Point.query();
+                    promise = Point.query().$promise;
                 }
                 
-                if ($scope.initPoint.toLowerCase().trim() === 'true') {
-                    $scope.points.$promise.then(function(points) {
-                    	if (points.length) {
-                        	$scope.ngModel = $filter('orderBy')(points, $scope.orderArray)[0];
-                    	}
-                    });
-                }
+                promise.then(function(points) {
+                    if ($scope.order) {
+                        $scope.points = $filter('orderBy')(points, $scope.order);
+                    } else {
+                        $scope.points = points;
+                    }
+                    
+                    if ($scope.initPoint && !$scope.ngModel && $scope.points.length) {
+                        $scope.ngModel = $scope.points[0];
+                    }
+                });
             });
             
             $scope.pointLabel = function(point) {
@@ -53,7 +77,7 @@ function pointList(Point, $filter) {
     };
 }
 
-pointList.$inject = ['Point', '$filter'];
+pointList.$inject = ['Point', '$filter', '$injector'];
 return pointList;
 
 }); // define

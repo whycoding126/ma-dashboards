@@ -1,0 +1,22 @@
+<h1 ma-tr="dashboards.v3.dox.multistateRadio"></h1>
+
+<dual-pane-editor>
+
+<md-input-container class="md-block">
+    <label>Choose a point</label>
+    <ma-point-list ng-model="myPoint"></ma-point-list>
+</md-input-container>
+
+<p><strong>Point value:</strong> <ma-point-value point="myPoint"></ma-point-value></p>
+
+<h3>Using multistate/binary text renderer to get options</h3>
+<md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
+    <md-radio-button ng-repeat="value in myPoint.rendererMap()" ng-value="value.key" ng-style="value">{{value.text}}</md-radio-button>
+</md-radio-group>
+
+<h3>Using fixed values</h3>
+<md-radio-group ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
+    <md-radio-button ng-repeat="i in range(1,5)" value="{{i}}" ng-style="myPoint.valueRenderer(i)">{{myPoint.valueRenderer(i).text}}</md-radio-button>
+</md-radio-group>
+
+</dual-pane-editor>

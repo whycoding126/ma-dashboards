@@ -149,13 +149,28 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	});
             }, true);
 
+            var pointPromise;
             $scope.$watch('pointXid', function(newXid) {
-                if (!newXid || $scope.point) return;
-                $scope.point = Point.get({xid: newXid});
+                delete $scope.point;
+                if (pointPromise) {
+                    pointPromise.reject();
+                    pointPromise = null;
+                }
+                
+                if (!newXid) return;
+                pointPromise = Point.get({xid: newXid}).$promise;
+                pointPromise.then(function(point) {
+                    pointPromise = null;
+                    $scope.point = point;
+                });
             });
 
             $scope.$watch('point.xid', function(newValue, oldValue) {
-            	$scope.points = [$scope.point];
+                if (newValue) {
+                    $scope.points = [$scope.point];
+                } else {
+                    $scope.points = [];
+                }
             });
             
             function combineValues() {
@@ -228,7 +243,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 	var value;
                     if ($scope.rendered === 'true') {
                     	value = payload.renderedValue;
-                    } else if (payload.convertedValue !== undefined) {
+                    } else if (payload.convertedValue !== null && payload.convertedValue !== undefined) {
                     	value = payload.convertedValue;
                     } else {
                     	value = payload.value.value;

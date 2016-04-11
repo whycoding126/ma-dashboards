@@ -1,16 +1,28 @@
 <div layout="row" layout-wrap>
-    <div flex-gt-sm="50" flex="100">
-        <div class="panel panel-default">
-            <div class="panel-heading" ma-tr="dashboards.v3.dox.markup"></div>
-            <div class="panel-body">
-				<div style="height:400px" live-editor="text" src="{{src}}"></div>
-            </div>
-        </div>
+    <div flex="100" flex-gt-md="50">
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline" ma-tr="dashboards.v3.dox.markup"></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content layout="column">
+                <div flex>
+                    <div style="height:400px" live-editor="text" src="{{src}}"></div>
+                </div>
+            </md-card-content>
+        </md-card>
     </div>
-    <div flex-gt-sm="50" flex="100">
-        <div class="panel panel-default">
-            <div class="panel-heading" ma-tr="dashboards.v3.dox.result"></div>
-            <div class="panel-body" live-preview="text"></div>
-        </div>
+    <div flex="100" flex-gt-md="50">
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline" ma-tr="dashboards.v3.dox.result"></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div live-preview="text"></div>
+            </md-card-content>
+        </md-card>
     </div>
 </div>

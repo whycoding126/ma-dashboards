@@ -8,16 +8,6 @@ define(['require'], function(require) {
 'use strict';
 
 function intervalPicker() {
-    var types = [
-	  {type: 'SECONDS', label: 'Seconds'},
-	  {type: 'MINUTES', label: 'Minutes'},
-	  {type: 'HOURS', label: 'Hours'},
-	  {type: 'DAYS', label: 'Days'},
-	  {type: 'WEEKS', label: 'Weeks'},
-	  {type: 'MONTHS', label: 'Months'},
-	  {type: 'YEARS', label: 'Years'}
-	];
-	
     return {
         restrict: 'E',
         scope: {
@@ -26,7 +16,6 @@ function intervalPicker() {
         replace: true,
         templateUrl: require.toUrl('./intervalPicker.html'),
         link: function ($scope, $element, attr) {
-        	$scope.types = types;
         	$scope.intervals = 1;
         	$scope.type = 'MINUTES';
         	

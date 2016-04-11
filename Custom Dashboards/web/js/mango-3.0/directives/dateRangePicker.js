@@ -7,7 +7,7 @@
 define(['moment-timezone'], function(moment) {
 'use strict';
 
-function dateRangePicker($rootScope) {
+function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
     return {
         restrict: 'E',
         scope: {
@@ -18,8 +18,18 @@ function dateRangePicker($rootScope) {
             updateInterval: '@'
         },
         replace: true,
-        template: '<select ng-options="t.type as t.label for t in presets" ng-model="preset"></select>',
+        template: function(element, attrs) {
+            if ($injector.has('$mdUtil')) {
+                return '<md-select ng-model="preset">' +
+                '<md-option ng-value="p.type" ng-repeat="p in presets track by p.type">{{p.label}}</md-option>' +
+                '</md-select>';
+            }
+            
+            return '<select ng-options="t.type as " ng-model="preset"></select>';
+        },
         link: function ($scope, $element) {
+            var mdPickers = $injector.has('$mdpDatePicker');
+            
         	var from, to;
         	$scope.presets = $rootScope.dateRangePresets;
 
@@ -30,10 +40,17 @@ function dateRangePicker($rootScope) {
             });
         	
         	$scope.$watchGroup(['from', 'to'], function(newValues) {
-        		if (newValues[0] !== from || newValues[1] !== to) {
+        		if (!(isSame(from, newValues[0]) && isSame(to, newValues[1]))) {
         			$scope.preset = '';
         		}
         	});
+        	
+        	function isSame(m, check) {
+                if (typeof check === 'string') {
+                    check = moment(check, $scope.format || mangoDefaultDateFormat);
+                }
+                return m.isSame(check);
+        	}
         	
         	function doUpdate() {
         		if (!$scope.preset) return;
@@ -77,13 +94,13 @@ function dateRangePicker($rootScope) {
         			break;
         		}
         		
-        		var format = $scope.format || 'll LTS';
-        		if (format === 'false') {
-        			$scope.from = from;
-            		$scope.to = to;
+        		if (mdPickers || $scope.format === 'false') {
+        		    $scope.from = from.toDate();
+                    $scope.to = to.toDate();
         		} else {
-        			$scope.from = from = from.format(format);
-            		$scope.to = to = to.format(format);
+        		    var format = $scope.format || mangoDefaultDateFormat;
+                    $scope.from = from.format(format);
+                    $scope.to = to.format(format);
         		}
         	}
             
@@ -124,7 +141,7 @@ function dateRangePicker($rootScope) {
     };
 }
 
-dateRangePicker.$inject = ['$rootScope'];
+dateRangePicker.$inject = ['$rootScope', '$injector', 'mangoDefaultDateFormat'];
 
 return dateRangePicker;
 

@@ -50,10 +50,10 @@ function serialChart() {
             var chart = AmCharts.makeChart($element[0], options);
             
             $scope.$watch('options', function(newValue, oldValue) {
-            	if (newValue === oldValue) return; // initial value already handled
+            	if (newValue === undefined) return;
             	$.extend(true, chart, newValue);
-            	chart.validateData();
-            });
+            	chart.validateNow();
+            }, true);
             
             var i;
             if (valueArray) {

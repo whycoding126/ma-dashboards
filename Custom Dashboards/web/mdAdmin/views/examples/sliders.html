@@ -1,0 +1,25 @@
+<h1 ma-tr="dashboards.v3.dox.sliders"></h1>
+
+<dual-pane-editor>
+
+<div layout="column">
+    <md-input-container class="md-block">
+        <label>Choose a point</label>
+        <ma-point-list ng-model="myPoint"></ma-point-list>
+    </md-input-container>
+
+    <ma-point-value point="myPoint"></ma-point-value>
+    
+    <md-slider ng-disabled="!myPoint.enabled" md-discrete step="1" min="0" max="100" ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}" >
+    </md-slider>
+</div>
+
+<md-slider-container ng-disabled="!myPoint.enabled">
+    <md-input-container>
+        <input flex step="1" min="0" max="100" type="number" ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}">
+    </md-input-container>
+    <md-slider step="1"  min="0" max="100" md-discrete ng-model="myPoint.valueFn" ng-model-options="{getterSetter:true}" md-vertical></md-slider>
+    <h5>Value</h5>
+</md-slider-container>
+
+</dual-pane-editor>

@@ -7,11 +7,10 @@
 define(['./maServices',
         './maFilters',
         './directives/pointList',
+        './directives/filteringPointList',
         './directives/pointValue',
         './directives/pointValues',
         './directives/pointStatistics',
-        './directives/bandStyle',
-        './directives/switchStyle',
         './directives/tankLevel',
         './directives/gaugeChart',
         './directives/serialChart',
@@ -28,28 +27,30 @@ define(['./maServices',
         './directives/switchImg',
         './directives/calc',
         './directives/intervalPicker',
+        './directives/intervalTypePicker',
         './directives/pointQuery',
         './directives/getPointValue',
         './directives/jsonStore',
         './directives/focusOn',
         './directives/enter',
         './directives/now', 
+        './directives/fn', 
         './filters/trFilter',
         'angular'
-], function(maServices, maFilters, pointList, pointValue, pointValues, pointStatistics,
-        bandStyle, switchStyle, tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, datePicker,
-        dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc, intervalPicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, trFilter, angular) {
+], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
+        tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
+        datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
+        intervalPicker, intervalTypePicker, pointQuery, getPointValue,
+        jsonStore, focusOn, enter, now, fn, trFilter, angular) {
 'use strict';
 
-var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngResource']);
+var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
 
+maDashboards.directive('maFilteringPointList', filteringPointList);
 maDashboards.directive('maPointList', pointList);
 maDashboards.directive('maPointValue', pointValue);
 maDashboards.directive('maPointValues', pointValues);
 maDashboards.directive('maPointStatistics', pointStatistics);
-maDashboards.directive('maBandStyle', bandStyle);
-maDashboards.directive('maSwitchStyle', switchStyle);
 maDashboards.directive('maTankLevel', tankLevel);
 maDashboards.directive('maGaugeChart', gaugeChart);
 maDashboards.directive('maSerialChart', serialChart);
@@ -66,12 +67,14 @@ maDashboards.directive('maSetPointValue', setPointValue);
 maDashboards.directive('maSwitchImg', switchImg);
 maDashboards.directive('maCalc', calc);
 maDashboards.directive('maIntervalPicker', intervalPicker);
+maDashboards.directive('maIntervalTypePicker', intervalTypePicker);
 maDashboards.directive('maPointQuery', pointQuery);
 maDashboards.directive('maGetPointValue', getPointValue);
 maDashboards.directive('maJsonStore', jsonStore);
 maDashboards.directive('maFocusOn', focusOn);
 maDashboards.directive('maEnter', enter);
 maDashboards.directive('maNow', now);
+maDashboards.directive('maFn', fn);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.config(['$httpProvider', function($httpProvider) {

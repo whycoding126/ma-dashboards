@@ -1,35 +1,40 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header" ma-tr="dashboards.v3.dox.jsonStore"></h1>
-        
-        <p>You can store arbitrary data in Mango's JSON store.</p>
-    </div>
-</div>
+<h1 ma-tr="dashboards.v3.dox.jsonStore"></h1>
+<p>You can store arbitrary data in Mango's JSON store.</p>
 
 <dual-pane-editor>
 
 <ma-json-store xid="test" item="myItem" value="myValue"></ma-json-store>
 
-<div class="form-group">
-	<label>Name</label>
-	<input ng-model="myValue.name" class="form-control">
-</div>
-<div class="form-group">
-	<label>Phone number</label>
-	<input ng-model="myValue.phone" class="form-control">
-</div>
-<div class="form-group">
-	<label>Address</label>
-	<textarea ng-model="myValue.address"  class="form-control" rows="3"></textarea>
+<div layout="column">
+  <md-input-container class="md-block">
+    <label>Name</label>
+    <input ng-model="myValue.name">
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Phone number</label>
+    <input ng-model="myValue.phone">
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Address</label>
+    <textarea ng-model="myValue.address" rows="4"></textarea>
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Edit permission</label>
+    <input ng-model="myItem.editPermission">
+  </md-input-container>
+  <md-input-container class="md-block">
+    <label>Read permission</label>
+    <input ng-model="myItem.readPermission">
+  </md-input-container>
 </div>
 
-<button class="btn btn-default" ng-click="myItem.$save()">Save</button>
-<button class="btn btn-default" ng-click="myItem.$delete()">Delete</button>
-<button class="btn btn-default" ng-click="myItem.$get()">Revert</button>
+<md-button class="md-raised md-accent" ng-click="myItem.$save()"><md-icon>save</md-icon> Save</md-button>
+<md-button class="md-raised md-warn" ng-click="myItem.$delete()"><md-icon>delete</md-icon> Delete</md-button>
+<md-button class="md-raised" ng-click="myItem.$get()"><md-icon>undo</md-icon> Revert</md-button>
 
 <div style="margin-top:10px">
-<label>Your stored object</label>
-<pre>{{myValue | json}}</pre>
+<span>Your stored object</span>
+<pre><code>{{myItem | json}}</code></pre>
 </div>
 
 </dual-pane-editor>

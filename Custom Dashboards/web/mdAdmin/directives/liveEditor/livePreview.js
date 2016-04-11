@@ -1,44 +1,57 @@
+/**
+ * Copyright (C) 2016 Deltamation Software. All rights reserved.
+ * http://www.deltamation.com.au/
+ * @author Jared Wiltshire
+ */
+
+define(['require'], function(require) {
 'use strict';
 
-angular.module('mdAdminApp').directive('livePreview', ['$compile', '$timeout', function($compile, $timeout) {
-	return {
-	    scope: false,
-	    link: function($scope, $element, $attrs) {
-	    	var childScope = $scope.$new();
-	    	var timeoutPromise;
-    		$element.data('scope', childScope);
-    		$element.addClass('ng-scope');
-    		
-    		var debounceTimeout = 1000;
-    		if ($attrs.debounce) {
-    			debounceTimeout = parseInt($attrs.debounce, 10);
-    		}
-    		
-	    	$scope.$watch($attrs.livePreview, function(newValue, oldValue) {
-	    		if (newValue === oldValue || !oldValue || debounceTimeout === 0) {
-	    			updatePreview(newValue);
-	    		} else {
-	    			if (timeoutPromise) {
-	    				$timeout.cancel(timeoutPromise);
-	    				timeoutPromise = null;
-	    			}
-	    			timeoutPromise = $timeout(updatePreview, debounceTimeout, true, newValue);
-	    		}
-	    	});
-	    	
-	    	function updatePreview(text) {
-	    		timeoutPromise = null;
-	    		
-	    		childScope.$destroy();
-	    		childScope = $scope.$new();
-	    		$element.data('scope', childScope);
-	    		
-	    		if (text) {
-	    			$element.html($compile(text)(childScope));
-	    		} else {
-	    			$element.empty();
-	    		}
-	    	}
-	    }
-	};
-}]);
+var livePreview = function($compile, $timeout) {
+    return {
+        scope: false,
+        link: function($scope, $element, $attrs) {
+            var childScope = $scope.$new();
+            var timeoutPromise;
+            $element.data('scope', childScope);
+            $element.addClass('ng-scope');
+            
+            var debounceTimeout = 1000;
+            if ($attrs.debounce) {
+                debounceTimeout = parseInt($attrs.debounce, 10);
+            }
+            
+            $scope.$watch($attrs.livePreview, function(newValue, oldValue) {
+                if (newValue === oldValue || !oldValue || debounceTimeout === 0) {
+                    updatePreview(newValue);
+                } else {
+                    if (timeoutPromise) {
+                        $timeout.cancel(timeoutPromise);
+                        timeoutPromise = null;
+                    }
+                    timeoutPromise = $timeout(updatePreview, debounceTimeout, true, newValue);
+                }
+            });
+            
+            function updatePreview(text) {
+                timeoutPromise = null;
+                
+                childScope.$destroy();
+                childScope = $scope.$new();
+                $element.data('scope', childScope);
+                
+                if (text) {
+                    $element.html($compile(text)(childScope));
+                } else {
+                    $element.empty();
+                }
+            }
+        }
+    };
+};
+
+livePreview.$inject = ['$compile', '$timeout'];
+
+return livePreview;
+
+}); // define

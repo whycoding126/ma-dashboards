@@ -16,12 +16,9 @@ function errorInterceptorFactory($q, $rootScope) {
 	
 	return {
 		responseError: function(rejection) {
-    		var errorObj = {
-				msg: rejection.status < 0 ? 'Connection Refused' : rejection.statusText,
-				time: new Date(),
-				url: rejection.config.url,
-				error: rejection
-    		};
+    		var errorObj = angular.merge({}, rejection);
+    		errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
+    		errorObj.time = new Date();
     		
     		if ($rootScope.errors.length >= 10)
     			$rootScope.errors.pop();

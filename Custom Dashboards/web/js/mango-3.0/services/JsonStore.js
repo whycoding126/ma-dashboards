@@ -11,7 +11,9 @@ function JsonStoreFactory($resource, Util) {
 
     var JsonStore = $resource('/rest/v1/json-data/:xid', {
     	xid: '@xid',
-        name: '@name'
+        name: '@name',
+        readPermission: '@readPermission',
+        editPermission: '@editPermission'
     }, {
     	save: {
             method: 'POST',

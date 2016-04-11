@@ -144,3 +144,29 @@ img.point-disabled {
     height: 100%;
     width: 15px;
 }
+
+.no-errors-spacer .md-errors-spacer {
+	display: none;
+}
+
+md-select {
+	min-width: 200px;
+}
+
+.ma-set-point-value md-input-container,
+.ma-set-point-value md-select {
+	margin: 6px;
+}
+
+.ma-set-point-value button.md-button {
+	margin: 6px 6px 6px 0;
+}
+
+.ma-set-point-value button md-icon,
+.ma-set-point-value button md-progress-circular {
+	margin: 0 0 0 8px;
+}
+
+._md-track-ticks {
+	display: none;
+}

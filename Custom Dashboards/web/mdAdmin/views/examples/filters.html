@@ -1,20 +1,17 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header" ma-tr="dashboards.v3.dox.filters"></h1>
-        <p>We can use AngularJS filters to format interpolated values into prettier strings. The standard AngularJS filters are available
-        such as <code>number</code> and <code>currency</code> as well as custom filters included with the Dashboards v3 module.</p>
-        <p>Custom filters include <code>moment</code> and <code>duration</code> for using
-        <a href="http://momentjs.com/">Moment.js</a> to manipulate dates and durations.</p>
-    </div>
-    <!-- /.col-lg-12 -->
-</div>
+<h1 ma-tr="dashboards.v3.dox.filters"></h1>
+
+<p>We can use AngularJS filters to format interpolated values into prettier strings. The standard AngularJS filters are available
+such as <code>number</code> and <code>currency</code> as well as custom filters included with the Dashboards v3 module.</p>
+
+<p>Custom filters include <code>moment</code> and <code>duration</code> for using
+<a href="http://momentjs.com/">Moment.js</a> to manipulate dates and durations.</p>
 
 <dual-pane-editor>
 
-<div class="form-group">
-	<label>Choose a point</label>
-	<ma-point-list ng-model="myPoint" class="form-control"></ma-point-list>
-</div>
+<md-input-container class="md-block no-errors-spacer">
+    <label>Choose a point</label>
+    <ma-point-list ng-model="myPoint"></ma-point-list>
+</md-input-container>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
