@@ -1,10 +1,9 @@
 /**
- * Copyright (C) 2015 Deltamation Software. All rights reserved.
- * http://www.deltamation.com.au/
+ * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
-(function(window) {
+define(['require'], function(require) {
 'use strict';
 
 contentLoaded(window, findMangoConnections);
@@ -46,7 +45,7 @@ function findMangoConnections() {
 		connectionElement.mangoConnection = mangoConnection;
 	}
 
-	define(['angular', './maDashboards'], function(angular, maDashboards) {
+	require(['angular', './maDashboards'], function(angular, maDashboards) {
 		if (!connectionElements.length) {
 			doBootstrap(document.documentElement, 'maDashboards');
 			return;
@@ -124,4 +123,4 @@ function contentLoaded(win, fn) {
 	}
 }
 
-})(this); // root closure
+}); // define

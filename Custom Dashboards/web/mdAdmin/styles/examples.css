@@ -170,3 +170,8 @@ md-select {
 ._md-track-ticks {
 	display: none;
 }
+
+md-progress-linear ._md-container,
+md-progress-linear ._md-container ._md-bar {
+	height: 100%;
+}

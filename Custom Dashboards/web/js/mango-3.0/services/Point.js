@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2015 Deltamation Software. All rights reserved.
- * http://www.deltamation.com.au/
+ * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -144,7 +143,7 @@ function PointFactory($resource, $http, $timeout) {
     	    var obj = rendererMap[value]; 
     	    if (obj) return obj;
     	}
-    	return {text: value}
+    	return {text: value};
     };
     
     return Point;

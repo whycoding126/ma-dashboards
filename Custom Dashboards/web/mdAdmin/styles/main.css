@@ -55,7 +55,6 @@ body {
 }
 
 .dashboard-breadcrumb {
-	color: white;
 	font-size: 1.5em;
 }
 
@@ -109,7 +108,6 @@ body {
   width: 100%;
   height: 100%;
   display: block;
-  color: rgba(0,0,0,0.87);
   text-decoration: none;
 }
 
@@ -129,22 +127,6 @@ body {
 
 .dashboard-menu .menu-toggle-list .menu-link {
 	padding-left: 24px;
-}
-
-.dashboard-menu .menu-toggle-list .menu-link a {
-	color: rgba(0,0,0,0.7);
-}
-
-.dashboard-menu .menu-link.menu-active {
-	background-color: rgb(255,152,0);
-}
-
-.dashboard-menu .menu-link.menu-active a {
-	color: white;
-}
-
-.dashboard-menu .menu-link.menu-active:hover {
-	background-color: rgba(255,152,0,0.80);
 }
 
 .dashboard-menu .menu-icon {
@@ -183,15 +165,15 @@ body {
 a {
   text-decoration: none;
   font-weight: 400;
-  border-bottom: 1px solid rgba(64, 84, 178, 0.25);
-  -webkit-transition: border-bottom 0.35s;
-  -moz-transition: border-bottom 0.35s;
-  -ms-transition: border-bottom 0.35s;
-  -o-transition: border-bottom 0.35s;
-  transition: border-bottom 0.35s;
+  border-bottom: 1px solid rgba(255,150,36, 0.25);
+  -webkit-transition: color 0.5s, border-bottom 0.5s;
+  -moz-transition: color 0.5s, border-bottom 0.5s;
+  -ms-transition: color 0.5s, border-bottom 0.5s;
+  -o-transition: color 0.5s, border-bottom 0.5s;
+  transition: color 0.5s, border-bottom 0.5s;
 }
 a:hover, a:focus {
-  border-bottom: 1px solid #4054B2;
+  border-bottom: 1px solid rgba(203,106,0, 1);
 }
 a.md-button {
   border-bottom: none;
@@ -226,7 +208,7 @@ p {
   font-weight: 400;
   letter-spacing: 0.010em;
   line-height: 1.6em;
-  margin: 0.8em 0 1.6em;
+  margin: 1rem 0 0 0;
 }
 
 .md-api-table td,
@@ -352,21 +334,6 @@ code:not(.highlight) {
 	height: 100%;
 }
 
-/* Rules for sizing the icon. */
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-
-/* Rules for using icons as black on a light background. */
-.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
-
-/* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
-.material-icons.md-warn { color: rgba(244,67,54, 1); }
-
 /* mdPickers font-size adjustments for base font size of 10px */
 
 .mdp-calendar-week-days {
@@ -407,4 +374,53 @@ code:not(.highlight) {
 .mdp-timepicker.portrait .mdp-timepicker-selected-time {
   font-size: 6.4rem;
   margin-right: 2.4rem;
+}
+
+/* Color palette */
+
+.color-primary-0 { color: #00ADEF }	/* Main Primary color */
+.color-primary-1 { color: #2DC2FB }
+.color-primary-2 { color: #08BBFF }
+.color-primary-3 { color: #0077A5 }
+.color-primary-4 { color: #005C7F }
+
+.color-light-grey { color: #f8fafb }
+.color-gark-grey { color: #2e4853 }
+
+.color-complement-0 { color: #FF8500 }	/* Main Complement color */
+.color-complement-1 { color: #FF9624 }
+.color-complement-2 { color: #CB6A00 }
+
+.bg-color-primary-0 { background-color: #00ADEF }	/* Main Primary color */
+.bg-color-primary-1 { background-color: #2DC2FB }
+.bg-color-primary-2 { background-color: #08BBFF }
+.bg-color-primary-3 { background-color: #0077A5 }
+.bg-color-primary-4 { background-color: #005C7F }
+
+.bg-color-light-grey { background-color: #f8fafb }
+.bg-color-gark-grey { background-color: #2e4853 }
+
+.bg-color-complement-0 { background-color: #FF8500 }	/* Main Complement color */
+.bg-color-complement-1 { background-color: #FF9624 }
+.bg-color-complement-2 { background-color: #CB6A00 }
+
+md-content.md-default-theme, md-content {
+	color: currentColor;
+}
+
+md-sidenav md-content {
+	background-color: #f8fafb;
+}
+
+.dashboard-menu .md-button.menu-link a {
+	color: currentColor;
+}
+
+.dashboard-menu .md-button.menu-link.menu-active {
+	background-color: #FF9624;
+	color: white;
+}
+
+.dashboard-menu .md-button.menu-link.menu-active:hover {
+	background-color: #FF8500;
 }
