@@ -99,4 +99,30 @@ public class ResourceServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
+    
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#getLastModified(javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    protected long getLastModified(HttpServletRequest request) {
+    	
+    	String contextPath = request.getRequestURI();
+    	
+		//Split path so we can locate our resources
+		String[] parts = contextPath.split(baseUrl);
+		
+		//Use overrides in case we have an option to do that
+		String baseFilePath = resourceBasePath + parts[1];
+		OverridingFileResource ofr = null;
+		try{
+			ofr = new OverridingFileResource(Resource.newResource(Common.MA_HOME + "/overrides" + baseFilePath),
+                Resource.newResource(Common.MA_HOME + baseFilePath));
+			return ofr.getFile().lastModified();
+		}catch(Exception e){
+			return -1L;
+		}finally{
+			if(ofr != null)
+				ofr.close();
+		}
+    }
 }
