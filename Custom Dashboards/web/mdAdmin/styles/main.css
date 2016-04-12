@@ -424,13 +424,3 @@ md-sidenav md-content {
 .dashboard-menu .md-button.menu-link.menu-active:hover {
 	background-color: #FF8500;
 }
-
-/*
-.dashboard-menu .menu-toggle-list .menu-link a {
-	color: rgba(0,0,0,0.7);
-}
-
-.dashboard-menu .md-button.menu-link.menu-active:hover {
-	background-color: rgba(255,152,0,0.80);
-}
-*/
