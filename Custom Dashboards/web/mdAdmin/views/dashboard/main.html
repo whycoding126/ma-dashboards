@@ -43,7 +43,7 @@
                 <md-tooltip md-autohide>REST API errors</md-tooltip>
                 <a ui-sref="dashboard.apiErrors"><md-icon>warning</md-icon></a>
             </md-button>
-            <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm">
+            <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm" target="_blank">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
                 <md-icon>alarm</md-icon>
             </md-button>
@@ -53,13 +53,13 @@
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button aria-label="User profile" ng-href="/users.shtm" layout="row" layout-align="start center">
+                  <md-button aria-label="User profile" ng-href="/users.shtm" target="_blank" layout="row" layout-align="start center">
                       <p flex>{{user.username}}</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">person</md-icon>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="user.hasPermission('superadmin')">
-                  <md-button aria-label="User profile" ng-href="/system_settings.shtm" layout="row" layout-align="start center">
+                  <md-button aria-label="User profile" ng-href="/system_settings.shtm" target="_blank" layout="row" layout-align="start center">
                       <p flex ma-tr="header.systemSettings">System settings</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
                   </md-button>
@@ -83,7 +83,7 @@
 
     <div layout="row" flex="noshrink">
       <div class="dashboard-footer">
-        &copy;2016 <a href="http://infiniteautomation.com/">Infinite Automation Systems Inc</a>. <span ma-tr="footer.rightsReserved"></span>
+        &copy;2016 <a href="http://infiniteautomation.com/" target="_blank">Infinite Automation Systems Inc</a>. <span ma-tr="footer.rightsReserved"></span>
       </div>
     </div>
     </md-content>
