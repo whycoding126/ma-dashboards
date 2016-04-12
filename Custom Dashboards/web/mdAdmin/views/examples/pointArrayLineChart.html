@@ -4,7 +4,7 @@
 
 <div layout="row">
     <md-input-container flex="33" class="no-errors-spacer">
-        <label>Data source name</label>
+        <label>Device name</label>
         <input ng-init="dsName='myDevice'" ng-model="dsName" ng-model-options="{debounce:1000}">
     </md-input-container>
     <md-input-container flex="33" class="no-errors-spacer">
@@ -17,7 +17,7 @@
     </md-input-container>
 </div>
 
-<ma-point-query query="dataSourceName=like=*{{dsName}}*&name=like=*{{ptName}}*" points="points"></ma-point-query>
+<ma-point-query query="deviceName=like=*{{dsName}}*&name=like=*{{ptName}}*" points="points"></ma-point-query>
 
 <ma-point-values points="points" values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>
