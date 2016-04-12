@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2016 Deltamation Software. All rights reserved.
- * http://www.deltamation.com.au/
+ * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
