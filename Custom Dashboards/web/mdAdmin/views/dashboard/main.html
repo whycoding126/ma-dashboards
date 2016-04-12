@@ -1,9 +1,9 @@
-<div layout="row" flex controller="MainCtrl">
+<div layout="row" flex controller="MainCtrl" class="color-gark-grey">
 
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2 md-accent" md-component-id="left" hide-print md-is-locked-open="$mdMedia('gt-sm')">
-    <md-toolbar class="md-tall md-accent md-hue-3 dashboard-sidebar-header">
+    <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header">
         <span flex></span>
-        <img src="../img/logo-light.svg" ma-tr="header.dashboards.v3.dox.heading">
+        <img src="../img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
         <span>{{user.username}}</span>
         <span class="email">{{user.email}}</span>
     </md-toolbar>
@@ -19,7 +19,7 @@
   </md-sidenav>
 
   <div layout="column" tabIndex="-1" role="main" flex>
-    <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
+    <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
         <md-button id="menu-button" class="md-icon-button" ng-click="openMenu()" hide-gt-sm aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
@@ -29,7 +29,7 @@
             <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-xs': !$last}">
                 <span ma-tr="{{crumb}}"></span>
                 <span ng-if="!$last">
-                    <md-icon class="md-light">chevron_right</md-icon>
+                    <md-icon>chevron_right</md-icon>
                 </span>
             </span>
           </h2>
@@ -40,15 +40,15 @@
           <div class="md-toolbar-item dashboard-tools" layout="row">
             <md-button class="md-icon-button" ng-if="errors.length">
                 <md-tooltip md-autohide>REST API errors</md-tooltip>
-                <a ui-sref="dashboard.apiErrors"><md-icon class="md-light">warning</md-icon></a>
+                <a ui-sref="dashboard.apiErrors"><md-icon>warning</md-icon></a>
             </md-button>
             <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
-                <md-icon class="md-light">alarm</md-icon>
+                <md-icon>alarm</md-icon>
             </md-button>
             <md-menu md-position-mode="target-right target">
               <md-button aria-label="User menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                <md-icon md-menu-origin class="md-light">person</md-icon>
+                <md-icon md-menu-origin>person</md-icon>
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>

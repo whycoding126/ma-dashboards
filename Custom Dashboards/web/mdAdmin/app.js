@@ -429,10 +429,51 @@ mdAdminApp.config([
     '$injector',
 function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector) {
 
+    var mangoBlue = $mdThemingProvider.extendPalette('light-blue', {
+        '50': '08BBFF',
+        '100': '08BBFF',
+        '200': '08BBFF',
+        '300': '08BBFF',
+        '400': '00ADEF',
+        '500': '00ADEF',
+        '600': '0077A5',
+        '700': '0077A5',
+        '800': '005C7F',
+        '900': '005C7F',
+        'A100': '2DC2FB',
+        'A200': '2DC2FB',
+        'A400': '2DC2FB',
+        'A700': '2DC2FB',
+        'contrastDefaultColor': 'light',
+        'contrastDarkColors': ['50', '100', '200', '300']
+    });
+
+    var mangoOrange = $mdThemingProvider.extendPalette('orange', {
+        '50': 'FF9624',
+        '100': 'FF9624',
+        '200': 'FF9624',
+        '300': 'FF9624',
+        '400': 'FF8500',
+        '500': 'FF8500',
+        '600': 'CB6A00',
+        '700': 'CB6A00',
+        '800': 'CB6A00',
+        '900': 'CB6A00',
+        'A100': 'FF9624',
+        'A200': 'FF9624',
+        'A400': 'FF9624',
+        'A700': 'FF9624',
+        'contrastDefaultColor': 'light',
+        'contrastDarkColors': ['50', '100', '200', '300']
+    });
+
+    $mdThemingProvider.definePalette('mango-blue', mangoBlue);
+    $mdThemingProvider.definePalette('mango-orange', mangoOrange);
+    
     $mdThemingProvider
         .theme('default')
-        .primaryPalette("orange")
-        .accentPalette('indigo')
+        .primaryPalette('mango-blue')
+        .accentPalette('mango-orange')
         .warnPalette('red');
     
     $httpProvider.interceptors.push('errorInterceptor');
