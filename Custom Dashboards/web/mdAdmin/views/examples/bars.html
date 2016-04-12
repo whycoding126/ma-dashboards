@@ -1,9 +1,11 @@
 <h1 ma-tr="dashboards.v3.dox.bars"></h1>
-<p>You can use <a href="https://angular-ui.github.io/bootstrap/#/progressbar" target="blank">Angular Bootstrap</a> components to build a bar display,
-or create your own using CSS and the <code>ng-style</code> directive. Please see <a href="styles/examples.css" target="_blank">the examples.css file</a>
-for the CSS styles used in this example.</p>
+
+<p>You can use an <a href="https://material.angularjs.org/latest/demo/progressLinear" target="blank">Angular Material
+progress linear</a> to build a bar display, or create your own using CSS and the <code>ng-style</code> directive.
+Please see <a href="styles/examples.css" target="_blank">the examples.css file</a> for the CSS styles used in this example.</p>
 
 <dual-pane-editor>
+
 <div layout="row">
     <md-input-container flex="75" class="no-errors-spacer">
         <label>Choose a point</label>
@@ -18,15 +20,16 @@ for the CSS styles used in this example.</p>
 
 <ma-get-point-value point="myPoint"></ma-get-point-value>
 
+<p>Angular Material progress linear bar</p>
 <md-progress-linear md-mode="determinate" ng-value="myPoint.convertedValue / max * 100" style="height:10px;"></md-progress-linear>
 
+<p>Custom horizontal bar</p>
 <div class="bar-display" ng-class="{'point-disabled': !myPoint.enabled}">
 	<div class="bar-display-fill" ng-style="{width: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
 	<div class="bar-display-text">{{myPoint.renderedValue}}</div>
 </div>
 
-<br>
-
+<p>Custom vertical bar</p>
 <div class="bar-display bar-display-vertical" ng-class="{'point-disabled': !myPoint.enabled}">
 	<div class="bar-display-fill" ng-style="{height: myPoint.convertedValue / max * 100 + '%'}" style=""></div>
 	<div class="bar-display-text">{{myPoint.renderedValue}}</div>

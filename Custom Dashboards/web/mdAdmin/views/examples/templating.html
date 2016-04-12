@@ -1,9 +1,23 @@
 <h1 ma-tr="dashboards.v3.dox.templating"></h1>
-<p>Note that this example uses the date pickers in the left menu. These are accessible as <code>dateControls.from</code>
-and <code>dateControls.to</code>.</p>
-<p>You will need to import the example virtual data sources <a href="../private/demoMangoConfig.json" target="_blank">from this JSON file</a> for this example to work.</p>
+
+<p>This example uses some hard-coded device and points names. You will need to import the example virtual data sources <a href="../private/demoMangoConfig.json" target="_blank">from this JSON file</a> for it to work.</p>
 
 <dual-pane-editor>
+
+<div layout="row">
+  <md-input-container class="no-errors-spacer">
+    <label>Preset</label>
+    <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
+  </md-input-container>
+  <md-input-container class="no-errors-spacer" flex>
+    <label>From date</label>
+    <ma-date-picker ng-model="from"></ma-date-picker>
+  </md-input-container>
+  <md-input-container class="no-errors-spacer" flex>
+    <label>To date</label>
+    <ma-date-picker ng-model="to"></ma-date-picker>
+  </md-input-container>
+</div>
 
 <div layout="row">
     <md-input-container flex class="no-errors-spacer">
@@ -78,7 +92,7 @@ and <code>dateControls.to</code>.</p>
 	</div>
 </div>
 
-<ma-point-values point="energy" values="energyValues" from="dateControls.from" to="dateControls.to"
+<ma-point-values point="energy" values="energyValues" from="from" to="to"
     rollup="DELTA" rollup-interval="15 minutes"
 ></ma-point-values>
 
