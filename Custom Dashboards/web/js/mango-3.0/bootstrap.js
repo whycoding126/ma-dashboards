@@ -4,7 +4,7 @@
  * @author Jared Wiltshire
  */
 
-(function(window) {
+define(['require'], function(require) {
 'use strict';
 
 contentLoaded(window, findMangoConnections);
@@ -46,7 +46,7 @@ function findMangoConnections() {
 		connectionElement.mangoConnection = mangoConnection;
 	}
 
-	define(['angular', './maDashboards'], function(angular, maDashboards) {
+	require(['angular', './maDashboards'], function(angular, maDashboards) {
 		if (!connectionElements.length) {
 			doBootstrap(document.documentElement, 'maDashboards');
 			return;
@@ -124,4 +124,4 @@ function contentLoaded(win, fn) {
 	}
 }
 
-})(this); // root closure
+}); // define

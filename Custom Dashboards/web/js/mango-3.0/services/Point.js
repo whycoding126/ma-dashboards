@@ -144,7 +144,7 @@ function PointFactory($resource, $http, $timeout) {
     	    var obj = rendererMap[value]; 
     	    if (obj) return obj;
     	}
-    	return {text: value}
+    	return {text: value};
     };
     
     return Point;
