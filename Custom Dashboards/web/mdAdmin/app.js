@@ -41,12 +41,10 @@ mdAdminApp.constant('PAGES', [
                 return $rootScope.user.$promise;
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/sidebar-date-controls/sidebar-date-controls',
-                           './directives/menu/menuLink',
+                return rQ(['./directives/menu/menuLink',
                            './directives/menu/menuToggle'
-                ], function(sidebarDateControls, menuLink, menuToggle) {
+                ], function(menuLink, menuToggle) {
                     angular.module('dashboard', [])
-                        .directive('sidebarDateControls', sidebarDateControls)
                         .directive('menuLink', menuLink)
                         .directive('menuToggle', menuToggle);
                     $ocLazyLoad.inject('dashboard');
@@ -429,53 +427,74 @@ mdAdminApp.config([
     '$injector',
 function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector) {
 
-    var mangoBlue = $mdThemingProvider.extendPalette('light-blue', {
-        '50': '08BBFF',
-        '100': '08BBFF',
-        '200': '08BBFF',
-        '300': '08BBFF',
-        '400': '00ADEF',
-        '500': '00ADEF',
-        '600': '0077A5',
-        '700': '0077A5',
-        '800': '005C7F',
-        '900': '005C7F',
-        'A100': '2DC2FB',
-        'A200': '2DC2FB',
-        'A400': '2DC2FB',
-        'A700': '2DC2FB',
+    $mdThemingProvider.definePalette('mango-orange', {
+        '50': '#ffffff',
+        '100': '#ffdfbd',
+        '200': '#ffc485',
+        '300': '#ffa23d',
+        '400': '#ff941f',
+        '500': '#ff8500',
+        '600': '#e07500',
+        '700': '#c26500',
+        '800': '#a35500',
+        '900': '#854500',
+        'A100': '#ffba6f',
+        'A200': '#ff921c',
+        'A400': '#ff8500',
+        'A700': '#da7200',
         'contrastDefaultColor': 'light',
-        'contrastDarkColors': ['50', '100', '200', '300']
+        'contrastDarkColors': '50 100 200 300 A100'
     });
 
-    var mangoOrange = $mdThemingProvider.extendPalette('orange', {
-        '50': 'FF9624',
-        '100': 'FF9624',
-        '200': 'FF9624',
-        '300': 'FF9624',
-        '400': 'FF8500',
-        '500': 'FF8500',
-        '600': 'CB6A00',
-        '700': 'CB6A00',
-        '800': 'CB6A00',
-        '900': 'CB6A00',
-        'A100': 'FF9624',
-        'A200': 'FF9624',
-        'A400': 'FF9624',
-        'A700': 'FF9624',
+    $mdThemingProvider.definePalette('mango-blue', {
+        '50': '#f9fdff',
+        '100': '#ade8ff',
+        '200': '#75d9ff',
+        '300': '#2dc5ff',
+        '400': '#0fbdff',
+        '500': '#00adef',
+        '600': '#0097d0',
+        '700': '#0081b2',
+        '800': '#006b93',
+        '900': '#005475',
+        'A100': '#6dcaed',
+        'A200': '#24bbf5',
+        'A400': '#00adef',
+        'A700': '#006389',
         'contrastDefaultColor': 'light',
-        'contrastDarkColors': ['50', '100', '200', '300']
+        'contrastDarkColors': '50 100 200 300 A100'
     });
 
-    $mdThemingProvider.definePalette('mango-blue', mangoBlue);
-    $mdThemingProvider.definePalette('mango-orange', mangoOrange);
-    
     $mdThemingProvider
         .theme('default')
-        .primaryPalette('mango-blue')
-        .accentPalette('mango-orange')
-        .warnPalette('red');
-    
+        .primaryPalette('mango-blue', {
+            'default': '500',
+            'hue-1': '300',
+            'hue-2': '800',
+            'hue-3': '100'
+        })
+        .accentPalette('mango-orange', {
+            'default': 'A400',
+            'hue-1': 'A100',
+            'hue-2': 'A200',
+            'hue-3': 'A700'
+        });
+
+    $mdThemingProvider
+        .theme('inverse')
+        .primaryPalette('mango-orange', {
+            'default': '500',
+            'hue-1': '300',
+            'hue-2': '800',
+            'hue-3': '100'
+        })
+        .accentPalette('mango-blue', {
+            'default': 'A400',
+            'hue-1': 'A100',
+            'hue-2': 'A200',
+            'hue-3': 'A700'
+        });
+
     $httpProvider.interceptors.push('errorInterceptor');
 
     if ($injector.has('$mdpTimePickerProvider')) {
