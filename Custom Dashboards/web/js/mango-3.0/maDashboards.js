@@ -81,7 +81,8 @@ maDashboards.config(['$httpProvider', function($httpProvider) {
 }]);
 
 maDashboards.run(['$rootScope', 'mangoWatchdog', function($rootScope, mangoWatchdog) {
-	$rootScope.mangoWatchdog = mangoWatchdog;
+	$rootScope.Math = Math;
+    $rootScope.mangoWatchdog = mangoWatchdog;
 	mangoWatchdog.reset();
 	
 	$rootScope.range = function(start, end) {
