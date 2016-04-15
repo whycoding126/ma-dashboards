@@ -32,15 +32,16 @@ define(['./maServices',
         './directives/jsonStore',
         './directives/focusOn',
         './directives/enter',
-        './directives/now', 
-        './directives/fn', 
+        './directives/now',
+        './directives/fn',
+        './directives/pointHierarchy',
         './filters/trFilter',
         'angular'
 ], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, trFilter, angular) {
+        jsonStore, focusOn, enter, now, fn, pointHierarchy, trFilter, angular) {
 'use strict';
 
 var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
@@ -74,6 +75,7 @@ maDashboards.directive('maFocusOn', focusOn);
 maDashboards.directive('maEnter', enter);
 maDashboards.directive('maNow', now);
 maDashboards.directive('maFn', fn);
+maDashboards.directive('maPointHierarchy', pointHierarchy);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.config(['$httpProvider', function($httpProvider) {
