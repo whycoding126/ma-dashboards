@@ -1,6 +1,5 @@
 /**
  * @copyright 2016 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * 
  * @author Jared Wiltshire
  */
 
@@ -129,10 +128,10 @@ mdAdminApp.constant('PAGES', [
                 menuType: 'link'
             },
             {
-                state: 'dashboard.examples.basics.pageTemplate',
-                templateUrl: 'views/examples/pageTemplate.html',
-                url: '/page-template',
-                menuTr: 'dashboards.v3.dox.pageTemplate',
+                state: 'dashboard.examples.basics.createDashboard',
+                templateUrl: 'views/examples/createDashboard.html',
+                url: '/create-dashboard',
+                menuTr: 'dashboards.v3.dox.createDashboard',
                 menuType: 'link'
             },
             {
@@ -196,6 +195,43 @@ mdAdminApp.constant('PAGES', [
                 templateUrl: 'views/examples/clocksAndTimezones.html',
                 url: '/clocks-and-timezones',
                 menuTr: 'dashboards.v3.dox.clocksAndTimezones',
+                menuType: 'link'
+            }
+        ]
+    },
+    {
+        state: 'dashboard.examples.templates',
+        url: '/templates',
+        menuTr: 'dashboards.v3.dox.templates',
+        menuIcon: 'fa fa-file-o',
+        menuType: 'toggle',
+        children: [
+            {
+                state: 'dashboard.examples.templates.angularMaterial',
+                templateUrl: 'views/examples/angularMaterial.html',
+                url: '/angular-material',
+                menuText: 'Angular Material',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.bootstrap',
+                templateUrl: 'views/examples/bootstrap.html',
+                url: '/bootstrap',
+                menuText: 'Bootstrap 3',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.autoLogin',
+                templateUrl: 'views/examples/autoLogin.html',
+                url: '/auto-login',
+                menuTr: 'dashboards.v3.dox.autoLogin',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.templates.extendApp',
+                templateUrl: 'views/examples/extendApp.html',
+                url: '/extend-app',
+                menuTr: 'dashboards.v3.dox.extendApp',
                 menuType: 'link'
             }
         ]
@@ -522,7 +558,10 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
                 }
                 
                 if (page.menuTr) {
-                    state.menuTr = page.menuTr
+                    state.menuTr = page.menuTr;
+                }
+                if (page.menuText) {
+                    state.menuText = page.menuText;
                 }
                 
                 if (parent) {
@@ -571,7 +610,9 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav) {
         var state = toState;
         do {
             if (state.menuTr) {
-                crumbs.unshift(state.menuTr);
+                crumbs.unshift({maTr: state.menuTr});
+            } else if (state.menuText) {
+                crumbs.unshift({text: state.menuText});
             }
         } while (state = state.parentPage);
         $rootScope.crumbs = crumbs;

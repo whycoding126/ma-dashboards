@@ -1,6 +1,6 @@
 {
-    "name": "Mango Dashboards v3",
-    "short_name": "Dashboards v3",
+    "name": "Demo Admin Template",
+    "short_name": "Admin Demo",
     "start_url": "./#/dashboard/home",
     "display": "standalone",
     "icons": [
