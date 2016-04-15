@@ -20,7 +20,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             rollup: '@',
             rollupInterval: '@',
             rendered: '@',
-            dateFormat: '@'
+            dateFormat: '@',
+            timeout: '='
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -351,7 +352,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
 
     			var cancelDefer = $q.defer();
     			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, mangoTimeout);
+    			setTimeout(cancelFn, $scope.timeout || mangoTimeout);
                 
                 var promise = $http.get(url, {
                 	timeout: cancelDefer.promise,
