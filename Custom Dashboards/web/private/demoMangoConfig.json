@@ -198,7 +198,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":{
             "type":"IMAGE",
@@ -299,7 +299,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"kW·h",
+         "unit":"",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -318,7 +318,7 @@
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"kW·h",
+            "unit":"",
             "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
@@ -444,7 +444,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -637,7 +637,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -830,7 +830,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -927,7 +927,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"kW·h",
+         "unit":"",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -946,7 +946,7 @@
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"kW·h",
+            "unit":"",
             "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
@@ -1072,7 +1072,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1265,7 +1265,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1458,7 +1458,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1555,7 +1555,7 @@
          "eventDetectors":[
          ],
          "plotType":"STEP",
-         "unit":"kW·h",
+         "unit":"",
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1574,7 +1574,7 @@
          "textRenderer":{
             "type":"ANALOG",
             "useUnitAsSuffix":false,
-            "unit":"kW·h",
+            "unit":"",
             "renderedUnit":"kW·h",
             "suffix":"kWh",
             "format":"0.0"
@@ -1700,7 +1700,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
@@ -1893,7 +1893,7 @@
          ],
          "plotType":"STEP",
          "unit":"kW",
-         "integralUnit":"kW·h",
+         
          "chartColour":"",
          "chartRenderer":null,
          "dataSourceXid":"vmeters",
