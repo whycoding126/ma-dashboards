@@ -14,9 +14,10 @@ function pointHierarchy(PointHierarchy) {
             points: '=?'
         },
         link: function ($scope, $element, attrs) {
-            $scope.$watch('path', function(value) {
+            $scope.$watchCollection('path', function(value) {
                 if (!value) {
-                    $scope.hierarchy = undefined;
+                    delete $scope.hierarchy;
+                    delete $scope.points;
                 }
                 
                 if (typeof value === 'string') {
@@ -24,6 +25,10 @@ function pointHierarchy(PointHierarchy) {
                 }
                 
             	$scope.hierarchy = value.length ? PointHierarchy.byPath({path: value}) : PointHierarchy.getRoot();
+            	$scope.hierarchy.$promise.then(null, function() {
+            	    delete $scope.hierarchy;
+                    delete $scope.points;
+            	});
             	
             	// only do the work if we are actually going to use it
             	if (attrs.points !== undefined) {

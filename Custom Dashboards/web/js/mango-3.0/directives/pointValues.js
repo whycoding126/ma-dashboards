@@ -111,9 +111,20 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-            		var query = doQuery(points[i]);
-            		promises.push(query.promise);
-            		cancels.push(query.cancel);
+            		
+            		if (!points[i].pointLocator) {
+            		    var queryPromise = Point.get({xid: points[i].xid}).$promise
+            		        .then(function(point) {
+                		        var query = doQuery(point);
+                                cancels.push(query.cancel);
+                                return query.promise;
+            		        });
+            		    promises.push(queryPromise);
+            		} else {
+            		    var query = doQuery(points[i]);
+                        promises.push(query.promise);
+                        cancels.push(query.cancel);
+            		}
             	}
             	
             	$q.all(promises).then(function(results) {
@@ -149,29 +160,31 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	});
             }, true);
 
-            var pointPromise;
-            $scope.$watch('pointXid', function(newXid) {
-                delete $scope.point;
-                if (pointPromise) {
-                    pointPromise.reject();
-                    pointPromise = null;
-                }
-                
-                if (!newXid) return;
-                pointPromise = Point.get({xid: newXid}).$promise;
-                pointPromise.then(function(point) {
-                    pointPromise = null;
-                    $scope.point = point;
+            if (singlePoint) {
+                var pointPromise;
+                $scope.$watch('pointXid', function(newXid) {
+                    delete $scope.point;
+                    if (pointPromise) {
+                        pointPromise.reject();
+                        pointPromise = null;
+                    }
+                    
+                    if (!newXid) return;
+                    pointPromise = Point.get({xid: newXid}).$promise;
+                    pointPromise.then(function(point) {
+                        pointPromise = null;
+                        $scope.point = point;
+                    });
                 });
-            });
-
-            $scope.$watch('point.xid', function(newValue, oldValue) {
-                if (newValue) {
-                    $scope.points = [$scope.point];
-                } else {
-                    $scope.points = [];
-                }
-            });
+    
+                $scope.$watch('point.xid', function(newValue, oldValue) {
+                    if (newValue) {
+                        $scope.points = [$scope.point];
+                    } else {
+                        $scope.points = [];
+                    }
+                });
+            }
             
             function combineValues() {
             	var combined = {};

@@ -411,6 +411,13 @@ mdAdminApp.constant('PAGES', [
                 url: '/templating',
                 menuTr: 'dashboards.v3.dox.templating',
                 menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.pointArrays.pointHierarchyLineChart',
+                templateUrl: 'views/examples/pointHierarchyLineChart.html',
+                url: '/point-hierarchy-line-chart',
+                menuTr: 'dashboards.v3.dox.pointHierarchyLineChart',
+                menuType: 'link'
             }
         ]
     },
