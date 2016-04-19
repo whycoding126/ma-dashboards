@@ -93,8 +93,6 @@ mdAdminApp.constant('PAGES', [
                         .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor);
                     $ocLazyLoad.inject('dashboard.examples');
-                    
-                    return $ocLazyLoad.load('styles/examples.css');
                 });
             }]
         }
