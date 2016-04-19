@@ -8,7 +8,8 @@
 * Add a templates section to the menu and add more template examples
 * Add page explaining how to create a dashboard in overrides
 * Add a bare bones angular material admin template
-* Add ma-point-hierarchy directive and example
+* Add ma-point-hierarchy directive and examples
+* Include md-data-table in maMaterialDashboards
 
 *Version 3.0.0*
 * Complete rebuild of the module to use AngularJS and Material Design Template
