@@ -612,7 +612,8 @@ mdAdminApp.run([
     '$mdSidenav',
     '$mdColors',
     '$MD_THEME_CSS',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS) {
+    'cssInjector',
+function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
     $rootScope.pages = PAGES;
     $rootScope.Math = Math;
     
@@ -625,9 +626,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
             'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
             'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
         
-        var style = document.createElement('style');
-        style.appendChild(document.createTextNode(styleContent));
-        document.head.appendChild(style);
+        cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
     }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
