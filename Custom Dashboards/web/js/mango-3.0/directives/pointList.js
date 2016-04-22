@@ -7,6 +7,8 @@ define([], function() {
 'use strict';
 
 function pointList(Point, $injector) {
+    var DEFAULT_SORT = ['deviceName', 'name'];
+    
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -49,6 +51,7 @@ function pointList(Point, $injector) {
                 };
             }, function(value) {
                 $scope.points = [];
+                value.sort = value.sort || DEFAULT_SORT;
                 var promise = Point.objQuery(value).$promise;
                 
                 promise.then(function(points) {

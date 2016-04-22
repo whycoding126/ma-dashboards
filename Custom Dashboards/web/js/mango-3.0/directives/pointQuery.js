@@ -7,6 +7,8 @@ define([], function() {
 'use strict';
 
 function pointQuery(Point) {
+    var DEFAULT_SORT = ['deviceName', 'name'];
+    
     return {
         scope: {
         	query: '=',
@@ -26,6 +28,7 @@ function pointQuery(Point) {
                     sort: $scope.sort
                 };
             }, function(value) {
+                value.sort = value.sort || DEFAULT_SORT;
                 var newPoints = Point.objQuery(value);
                 $scope.promise = newPoints.$promise;
                 
