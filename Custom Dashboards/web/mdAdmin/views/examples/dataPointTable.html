@@ -20,7 +20,7 @@ md-toolbar.md-table-toolbar em {
 
 <div ng-init="query={limit:10, page:1, order:'name', filter:''}; page.showSearch=false; page.selected=[]"></div>
 
-<ma-point-query query="or(name=like=*{{query.filter}}*,deviceName=like=*{{query.filter}}*)&amp;limit({{query.limit}},{{(query.page-1)*query.limit}})&amp;sort({{query.order}})" points="points" promise="promise"></ma-point-query>
+<ma-point-query query="{name:query.filter, deviceName:query.filter}" limit="query.limit" start="(query.page-1)*query.limit" sort="query.order" points="points" promise="promise"></ma-point-query>
 
 <md-toolbar class="md-table-toolbar md-default" ng-hide="page.showSearch">
   <div class="md-toolbar-tools">

@@ -16,7 +16,7 @@
     </md-input-container>
 </div>
 
-<ma-point-query query="deviceName=like=*{{dvName}}*&amp;name=like=*{{ptName}}*" points="points"></ma-point-query>
+<ma-point-query query="{$and: true, deviceName:dvName, name:ptName}" limit="5" points="points"></ma-point-query>
 
 <ma-point-values points="points" values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>
@@ -28,13 +28,13 @@
     <thead md-head md-order="tableOrder">
       <tr>
           <th md-column md-order-by="timestamp">Time</th>
-          <th md-column md-order-by="value_{{point.xid}}" ng-repeat="point in points | limitTo:5">{{point.name}}</th>
+          <th md-column md-order-by="value_{{point.xid}}" ng-repeat="point in points">{{point.name}}</th>
         </tr>
     </thead>
     <tbody md-body>
       <tr ng-repeat="value in combined | orderBy: tableOrder">
           <td>{{value.timestamp | moment:'format':'ll LTS'}}</td>
-          <td ng-repeat="point in points | limitTo:5">{{value['value_' + point.xid]}}</td>
+          <td ng-repeat="point in points">{{value['value_' + point.xid]}}</td>
       </tr>
     </tbody>
   </table>

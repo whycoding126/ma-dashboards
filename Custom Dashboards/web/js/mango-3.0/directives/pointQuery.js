@@ -9,14 +9,24 @@ define([], function() {
 function pointQuery(Point) {
     return {
         scope: {
-        	query: '@',
+        	query: '=',
+            start: '=',
+            limit: '=',
+            sort: '=',
             points: '=',
             promise: '=?',
             clearOnQuery: '='
         },
         link: function ($scope, $element, attr) {
-            $scope.$watch('query', function(value) {
-                var newPoints = value ? Point.rql({query: value}) : Point.query();
+            $scope.$watch(function() {
+                return {
+                    query: $scope.query,
+                    start: $scope.start,
+                    limit: $scope.limit,
+                    sort: $scope.sort
+                };
+            }, function(value) {
+                var newPoints = Point.objQuery(value);
                 $scope.promise = newPoints.$promise;
                 
                 if ($scope.clearOnQuery) {
@@ -26,7 +36,7 @@ function pointQuery(Point) {
                         $scope.points = newPoints;
                     });
                 }
-            });
+            }, true);
         }
     };
 }

@@ -31,7 +31,7 @@
 </div>
 
 <!-- Server side query for points with given device name, and server side sort -->
-<ma-point-query query="deviceName=like=*{{deviceName}}*&sort(name)" points="points"></ma-point-query>
+<ma-point-query query="{deviceName:deviceName}" sort="'name'" points="points"></ma-point-query>
 <ma-get-point-value points="points"></ma-get-point-value>
 
 <!-- Client side filter by name -->
