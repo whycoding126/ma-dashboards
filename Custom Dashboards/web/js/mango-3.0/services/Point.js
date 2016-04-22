@@ -9,18 +9,18 @@ define(['angular'], function(angular) {
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource, $http, $timeout) {
+function PointFactory($resource, $http, $timeout, Util) {
+    
+    
     var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
         query: {
             method: 'GET',
             isArray: true,
-            transformResponse: function(data, fn, code) {
-                if (code < 300) {
-                    return angular.fromJson(data).items;
-                }
-                return [];
+            transformResponse: Util.transformArrayResponse,
+            interceptor: {
+                response: Util.arrayResponseInterceptor
             },
             withCredentials: true,
             cache: true
@@ -29,11 +29,9 @@ function PointFactory($resource, $http, $timeout) {
         	url: '/rest/v1/data-points?:query',
             method: 'GET',
             isArray: true,
-            transformResponse: function(data, fn, code) {
-                if (code < 300) {
-                    return angular.fromJson(data).items;
-                }
-                return angular.fromJson(data);
+            transformResponse: Util.transformArrayResponse,
+            interceptor: {
+                response: Util.arrayResponseInterceptor
             },
             withCredentials: true,
             cache: true
@@ -149,7 +147,7 @@ function PointFactory($resource, $http, $timeout) {
     return Point;
 }
 
-PointFactory.$inject = ['$resource', '$http', '$timeout'];
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'Util'];
 return PointFactory;
 
 }); // define

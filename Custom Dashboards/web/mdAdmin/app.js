@@ -386,6 +386,13 @@ mdAdminApp.constant('PAGES', [
         menuType: 'toggle',
         children: [
             {
+                state: 'dashboard.examples.pointArrays.buildPointArray',
+                templateUrl: 'views/examples/buildPointArray.html',
+                url: '/build-point-array',
+                menuTr: 'dashboards.v3.dox.buildPointArray',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.pointArrays.pointArrayTable',
                 templateUrl: 'views/examples/pointArrayTable.html',
                 url: '/point-array-table',
@@ -404,6 +411,13 @@ mdAdminApp.constant('PAGES', [
                 templateUrl: 'views/examples/templating.html',
                 url: '/templating',
                 menuTr: 'dashboards.v3.dox.templating',
+                menuType: 'link'
+            },
+            {
+                state: 'dashboard.examples.pointArrays.dataPointTable',
+                templateUrl: 'views/examples/dataPointTable.html',
+                url: '/data-point-table',
+                menuTr: 'dashboards.v3.dox.dataPointTable',
                 menuType: 'link'
             }
         ]

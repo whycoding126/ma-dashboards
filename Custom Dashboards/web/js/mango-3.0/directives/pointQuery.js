@@ -10,11 +10,22 @@ function pointQuery(Point) {
     return {
         scope: {
         	query: '@',
-            points: '='
+            points: '=',
+            promise: '=?',
+            clearOnQuery: '='
         },
         link: function ($scope, $element, attr) {
             $scope.$watch('query', function(value) {
-            	$scope.points = value ? Point.rql({query: value}) : Point.query();
+                var newPoints = value ? Point.rql({query: value}) : Point.query();
+                $scope.promise = newPoints.$promise;
+                
+                if ($scope.clearOnQuery) {
+                    $scope.points = newPoints;
+                } else {
+                    newPoints.$promise['finally'](function(pts) {
+                        $scope.points = newPoints;
+                    });
+                }
             });
         }
     };
