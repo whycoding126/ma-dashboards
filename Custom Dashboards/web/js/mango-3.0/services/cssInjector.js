@@ -6,7 +6,7 @@
 define([], function() {
 'use strict';
 
-function cssInjectorFactory($rootElement) {
+function cssInjectorFactory() {
     function CssInjector() {
         this.injected = {};
     }
@@ -39,9 +39,6 @@ function cssInjectorFactory($rootElement) {
     };
     
     function insert(element, afterSelector) {
-        var start = $rootElement[0] === document.documentElement ?
-                document.head : $rootElement[0];
-        
         if (afterSelector) {
             var matches = start.querySelectorAll(afterSelector);
             if (matches.length) {
@@ -51,13 +48,13 @@ function cssInjectorFactory($rootElement) {
             }
         }
         
-        angular.element(start).prepend(element);
+        angular.element(document.head).prepend(element);
     }
 
 	return new CssInjector();
 }
 
-cssInjectorFactory.$inject = ['$rootElement'];
+cssInjectorFactory.$inject = [];
 
 return cssInjectorFactory;
 
