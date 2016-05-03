@@ -40,7 +40,7 @@ function cssInjectorFactory() {
     
     function insert(element, afterSelector) {
         if (afterSelector) {
-            var matches = start.querySelectorAll(afterSelector);
+            var matches = document.head.querySelectorAll(afterSelector);
             if (matches.length) {
                 var last = matches[matches.length - 1];
                 angular.element(last).after(element);
