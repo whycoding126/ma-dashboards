@@ -235,6 +235,13 @@ mdAdminApp.constant('PAGES', [
                 menuType: 'link'
             },
             {
+                state: 'dashboard.examples.templates.loginPage',
+                templateUrl: 'views/examples/loginPageTemplate.html',
+                url: '/login-page',
+                menuTr: 'dashboards.v3.dox.loginPageTemplate',
+                menuType: 'link'
+            },
+            {
                 state: 'dashboard.examples.templates.adminTemplate',
                 templateUrl: 'views/examples/adminTemplate.html',
                 url: '/admin-template',

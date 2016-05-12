@@ -213,7 +213,7 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
     }
 
-    // redirect to login page if we can retrieve the current user when changing state
+    // redirect to login page if we can't retrieve the current user when changing state
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error.status === 401 || error.status === 403)) {
             event.preventDefault();
