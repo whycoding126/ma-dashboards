@@ -7,12 +7,12 @@
 <ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"></ma-json-store>
 
 <div layout="row" style="margin-bottom:10px;">
-    <md-button class="md-raised md-accent" ng-click="playArea.$save()">
-        <md-icon class="fa fa-save fa-fw"></md-icon>
+    <md-button class="md-raised md-primary md-hue-3" ng-click="playArea.$save()">
+        <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button class="md-raised md-accent" ng-click="playArea.$get()">
-        <md-icon class="fa fa-undo fa-fw"></md-icon>
+    <md-button ng-click="playArea.$get()">
+        <md-icon>undo</md-icon>
         <span ma-tr="dashboards.v3.dox.revert"></span>
      </md-button>
 </div>

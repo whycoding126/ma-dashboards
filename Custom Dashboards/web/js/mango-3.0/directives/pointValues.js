@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
 function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
@@ -20,7 +20,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             rollup: '@',
             rollupInterval: '@',
             rendered: '@',
-            dateFormat: '@'
+            dateFormat: '@',
+            timeout: '='
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -56,8 +57,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	
             	return {
             		xids: xids,
-            		from: $scope.from,
-            		to: $scope.to,
+            		from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
+            		to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to,
             		latest: $scope.latest,
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,
@@ -110,10 +111,23 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-            		var query = doQuery(points[i]);
-            		promises.push(query.promise);
-            		cancels.push(query.cancel);
+            		
+            		if (!points[i].pointLocator) {
+            		    var queryPromise = Point.get({xid: points[i].xid}).$promise
+            		        .then(chainedQuery);
+            		    promises.push(queryPromise);
+            		} else {
+            		    var query = doQuery(points[i]);
+                        promises.push(query.promise);
+                        cancels.push(query.cancel);
+            		}
             	}
+            	
+            	function chainedQuery(point) {
+                    var query = doQuery(point);
+                    cancels.push(query.cancel);
+                    return query.promise;
+                }
             	
             	$q.all(promises).then(function(results) {
             		pendingRequest = null;
@@ -148,29 +162,31 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	});
             }, true);
 
-            var pointPromise;
-            $scope.$watch('pointXid', function(newXid) {
-                delete $scope.point;
-                if (pointPromise) {
-                    pointPromise.reject();
-                    pointPromise = null;
-                }
-                
-                if (!newXid) return;
-                pointPromise = Point.get({xid: newXid}).$promise;
-                pointPromise.then(function(point) {
-                    pointPromise = null;
-                    $scope.point = point;
+            if (singlePoint) {
+                var pointPromise;
+                $scope.$watch('pointXid', function(newXid) {
+                    delete $scope.point;
+                    if (pointPromise) {
+                        pointPromise.reject();
+                        pointPromise = null;
+                    }
+                    
+                    if (!newXid) return;
+                    pointPromise = Point.get({xid: newXid}).$promise;
+                    pointPromise.then(function(point) {
+                        pointPromise = null;
+                        $scope.point = point;
+                    });
                 });
-            });
-
-            $scope.$watch('point.xid', function(newValue, oldValue) {
-                if (newValue) {
-                    $scope.points = [$scope.point];
-                } else {
-                    $scope.points = [];
-                }
-            });
+    
+                $scope.$watch('point.xid', function(newValue, oldValue) {
+                    if (newValue) {
+                        $scope.points = [$scope.point];
+                    } else {
+                        $scope.points = [];
+                    }
+                });
+            }
             
             function combineValues() {
             	var combined = {};
@@ -351,7 +367,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
 
     			var cancelDefer = $q.defer();
     			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, mangoTimeout);
+    			setTimeout(cancelFn, $scope.timeout || mangoTimeout);
                 
                 var promise = $http.get(url, {
                 	timeout: cancelDefer.promise,

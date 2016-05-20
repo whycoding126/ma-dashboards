@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- Specify maDashboards so that the angular-material libraries aren't loaded -->
+<html lang="en" ma-app="maDashboards">
 <head>
 	<title>Bootstrap page template</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,14 +18,14 @@
 			<div class="col-md-12">
 				<h1>Bootstrap page template</h1>
 				
-				<!-- Your code here -->
+				<!-- Your content here -->
 				
 			</div>
 		</div>
 	</div>
 	
-	<script type="text/javascript" src="/resources/require.js"></script>
-	<script type="text/javascript" src="/resources/loaderConfig.js"></script>
-	<script type="text/javascript">require(['mango-3.0/bootstrap']);</script>
+	<script src="/resources/require.js"></script>
+	<script src="/resources/loaderConfig.js"></script>
+	<script>require(['mango-3.0/bootstrap']);</script>
 </body>
 </html>

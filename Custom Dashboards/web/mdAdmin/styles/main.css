@@ -9,9 +9,18 @@ body {
 
 /* Login page and page template */
 
+#loading-bar .bar {
+	background-color: rgba(255,255,255,0.87);
+}
+
 #loading-bar-spinner {
 	left: 50% !important;
 	transform: translate(-50%, 0);
+}
+
+#loading-bar-spinner .spinner-icon  {
+	border-top-color: rgba(255,255,255,0.87);
+    border-left-color: rgba(255,255,255,0.87);
 }
 
 .app-loading {
@@ -30,6 +39,10 @@ body {
 }
 
 /* Dashboard pages */
+
+.dashboard-main-view {
+	padding: 16px;
+}
 
 .dashboard-footer {
   align-self: flex-end;
@@ -165,19 +178,19 @@ body {
 a {
   text-decoration: none;
   font-weight: 400;
-  border-bottom: 1px solid rgba(255,150,36, 0.25);
+  border-bottom: 1px solid rgba(0,0,0,0);
   -webkit-transition: color 0.5s, border-bottom 0.5s;
   -moz-transition: color 0.5s, border-bottom 0.5s;
   -ms-transition: color 0.5s, border-bottom 0.5s;
   -o-transition: color 0.5s, border-bottom 0.5s;
   transition: color 0.5s, border-bottom 0.5s;
 }
-a:hover, a:focus {
-  border-bottom: 1px solid rgba(203,106,0, 1);
-}
-a.md-button {
+
+a.md-button, .md-button a {
   border-bottom: none;
+  transition: initial;
 }
+
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   margin-top: 1rem;
@@ -208,7 +221,7 @@ p {
   font-weight: 400;
   letter-spacing: 0.010em;
   line-height: 1.6em;
-  margin: 1rem 0 0 0;
+  margin: 1.6rem 0;
 }
 
 .md-api-table td,
@@ -376,51 +389,24 @@ code:not(.highlight) {
   margin-right: 2.4rem;
 }
 
-/* Color palette */
-
-.color-primary-0 { color: #00ADEF }	/* Main Primary color */
-.color-primary-1 { color: #2DC2FB }
-.color-primary-2 { color: #08BBFF }
-.color-primary-3 { color: #0077A5 }
-.color-primary-4 { color: #005C7F }
-
-.color-light-grey { color: #f8fafb }
-.color-gark-grey { color: #2e4853 }
-
-.color-complement-0 { color: #FF8500 }	/* Main Complement color */
-.color-complement-1 { color: #FF9624 }
-.color-complement-2 { color: #CB6A00 }
-
-.bg-color-primary-0 { background-color: #00ADEF }	/* Main Primary color */
-.bg-color-primary-1 { background-color: #2DC2FB }
-.bg-color-primary-2 { background-color: #08BBFF }
-.bg-color-primary-3 { background-color: #0077A5 }
-.bg-color-primary-4 { background-color: #005C7F }
-
-.bg-color-light-grey { background-color: #f8fafb }
-.bg-color-gark-grey { background-color: #2e4853 }
-
-.bg-color-complement-0 { background-color: #FF8500 }	/* Main Complement color */
-.bg-color-complement-1 { background-color: #FF9624 }
-.bg-color-complement-2 { background-color: #CB6A00 }
-
-md-content.md-default-theme, md-content {
-	color: currentColor;
-}
-
-md-sidenav md-content {
-	background-color: #f8fafb;
-}
-
 .dashboard-menu .md-button.menu-link a {
 	color: currentColor;
 }
 
 .dashboard-menu .md-button.menu-link.menu-active {
-	background-color: #FF9624;
-	color: white;
+	background-color: currentColor;
 }
 
 .dashboard-menu .md-button.menu-link.menu-active:hover {
-	background-color: #FF8500;
+	background-color: currentColor;
+	cursor: initial;
+}
+
+.dashboard-menu .md-button.menu-link.menu-active a {
+	color: rgba(255,255,255,0.87);
+}
+
+table.md-table td.md-cell,
+table.md-table th.md-column {
+	font-size: 1.6rem;
 }

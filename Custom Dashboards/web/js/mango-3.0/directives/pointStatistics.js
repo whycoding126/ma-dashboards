@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 
 function pointValues($http, Point, Util, $q, mangoTimeout) {
@@ -17,7 +17,8 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
             from: '=?',
             to: '=?',
             dateFormat: '@',
-            firstLast: '@'
+            firstLast: '@',
+            timeout: '='
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -44,8 +45,8 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
             	
             	return {
             		xids: xids,
-            		from: $scope.from,
-            		to: $scope.to
+                    from: moment.isMoment($scope.from) ? $scope.from.valueOf() : $scope.from,
+                    to: moment.isMoment($scope.to) ? $scope.to.valueOf() : $scope.to
             	};
             }, function(newValue, oldValue) {
             	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
@@ -149,7 +150,7 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
 
                 var cancelDefer = $q.defer();
     			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, mangoTimeout);
+    			setTimeout(cancelFn, $scope.timeout || mangoTimeout);
                 
                 var promise = $http.get(url, {
                 	timeout: cancelDefer.promise,

@@ -10,44 +10,63 @@ contentLoaded(window, findMangoConnections);
 
 function findMangoConnections() {
 
-	var requireBaseUrlSet = false;
 	var i, connectionElement, mangoConnection;
+	var defaultModule = 'maDashboards';
+	var dependencies = ['angular', './maDashboards'];
 
-	var connectionElements = document.querySelectorAll("[ma-connection], ma-connection");
+	var connectionElements = document.querySelectorAll("[ma-app], ma-app");
 	for (i = 0; i < connectionElements.length; i++) {
 		connectionElement = connectionElements[i];
 		mangoConnection = {};
 		
-		mangoConnection.baseUrl = connectionElement.getAttribute('server-url') ||
+		mangoConnection.baseUrl = connectionElement.getAttribute('ma-url') ||
 			connectionElement.getAttribute('ma-connection') || '';
 
-		if (!requireBaseUrlSet) {
-			requireBaseUrlSet = true;
-			var requireBaseUrl = require.toUrl('');
-			require.config({
-			    baseUrl: mangoConnection.baseUrl + requireBaseUrl
-			});
-		}
-		
-		mangoConnection.username = connectionElement.getAttribute('username');
-		mangoConnection.password = connectionElement.getAttribute('password');
-		var timeout = connectionElement.getAttribute('timeout');
+		mangoConnection.username = connectionElement.getAttribute('ma-username');
+		mangoConnection.password = connectionElement.getAttribute('ma-password');
+		var timeout = connectionElement.getAttribute('ma-timeout');
 		if (timeout) {
 			mangoConnection.timeout = parseInt(timeout, 10);
 		}
-		var watchdogTimeout = connectionElement.getAttribute('watchdog-timeout');
+		var watchdogTimeout = connectionElement.getAttribute('ma-watchdog-timeout');
 		if (watchdogTimeout) {
 			mangoConnection.watchdogTimeout = parseInt(watchdogTimeout, 10);
 		}
-		var logout = connectionElement.getAttribute('logout');
+		var logout = connectionElement.getAttribute('ma-logout');
 		mangoConnection.logout = logout === null ? false : true;
+		
+		var debug = connectionElement.getAttribute('ma-debug');
+		mangoConnection.debug = !debug || debug === 'true';
+		
+        var module = mangoConnection.module = connectionElement.getAttribute('ma-app') || 'maMaterialDashboards';
+        dependencies.push('./' + module);
 		
 		connectionElement.mangoConnection = mangoConnection;
 	}
+	
+	if (!connectionElements.length) {
+	    // no ma-app config, load maMaterialDashboards by default
+	    defaultModule = 'maMaterialDashboards';
+	    dependencies[1] = './maMaterialDashboards';
+	}
+	
+	var scriptSourceServer;
+	var match = /^(http|https):\/\/.*?(?=\/)/.exec(require.toUrl('./maDashboards'));
+    if (match) scriptSourceServer = match[0];
 
-	require(['angular', './maDashboards'], function(angular, maDashboards) {
+	require(dependencies, function(angular, maDashboards) {
+	    // white-list remote host so angular can fetch templates from it
+	    if (scriptSourceServer) {
+	        maDashboards.config(['$sceDelegateProvider', function($sceDelegateProvider) {
+	            $sceDelegateProvider.resourceUrlWhitelist([
+	                'self',
+	                scriptSourceServer + '/**'
+	            ]);
+	        }]);
+	    }
+	    
 		if (!connectionElements.length) {
-			doBootstrap(document.documentElement, 'maDashboards');
+			doBootstrap(document.documentElement, defaultModule);
 			return;
 		}
 		
@@ -57,7 +76,7 @@ function findMangoConnections() {
 			delete connectionElement.mangoConnection;
 			
 			var appName = 'maDashboardsSubModule' + i;
-			var app = angular.module(appName, ['maDashboards']);
+			var app = angular.module(appName, [mangoConnection.module]);
 			
 			if (mangoConnection.baseUrl)
 				app.constant('mangoBaseUrl', mangoConnection.baseUrl);
@@ -65,6 +84,10 @@ function findMangoConnections() {
 				app.constant('mangoTimeout', mangoConnection.timeout);
 			if (mangoConnection.watchdogTimeout)
 				app.constant('mangoWatchdogTimeout', mangoConnection.watchdogTimeout);
+			
+			if (!mangoConnection.debug) {
+			    app.config(['$compileProvider', disableDebug]);
+			}
 			
 			if (mangoConnection.username) {
 				var injector = angular.injector([appName], true);
@@ -77,6 +100,10 @@ function findMangoConnections() {
 			} else {
 				doBootstrap(connectionElement, appName);
 			}
+		}
+		
+		function disableDebug($compileProvider) {
+		    $compileProvider.debugInfoEnabled(false);
 		}
 		
 		function doBootstrap(element, appName) {
