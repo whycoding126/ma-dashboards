@@ -12,7 +12,8 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            ngChange: '@'
+            ngChange: '@',
+            limit: '=?'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: function ($scope, $element, attrs) {
@@ -24,9 +25,12 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
             };
             
             $scope.querySearch = function(queryStr) {
+                queryStr = queryStr || '';
                 var query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';
                 if (attrs.query) {
                     query += '&' + attrs.query;
+                } else {
+                    query += '&sort(deviceName,name)&limit(' + ($scope.limit || 200) +')';
                 }
                 return Point.rql({
                     query: query
