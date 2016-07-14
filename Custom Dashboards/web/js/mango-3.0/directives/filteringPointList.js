@@ -13,10 +13,17 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
         scope: {
             ngModel: '=',
             ngChange: '@',
-            limit: '=?'
+            limit: '=?',
+            autoInit: '=?'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: function ($scope, $element, attrs) {
+            if ($scope.autoInit) {
+                Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+                    $scope.ngModel = item[0];
+                });
+            }
+            
             var change = $parse(attrs.ngChange);
             $scope.changed = function() {
                 $timeout(function() {
