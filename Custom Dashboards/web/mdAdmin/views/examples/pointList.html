@@ -29,7 +29,7 @@ supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query stri
         <label>Filtered point list</label>
         <ma-point-list limit="200" ng-model="myPoint2" query="{name:nameFilter}"></ma-point-list>
     </md-input-container>
-    
+
     <md-input-container>
         <label>Filtered point list using RQL</label>
         <ma-point-list ng-model="myPoint3" query="'name=like=*'+nameFilter+'*&amp;limit(100)'"></ma-point-list>
@@ -37,7 +37,7 @@ supply a <a href="http://www.persvr.org/rql/" target="_blank">RQL</a> query stri
 
     <h3>Self filtering input</h3>
 
-    <ma-filtering-point-list ng-model="myPoint3"></ma-filtering-point-list>
+    <ma-filtering-point-list ng-model="myPoint4"></ma-filtering-point-list>
 </div>
 
 </dual-pane-editor>
