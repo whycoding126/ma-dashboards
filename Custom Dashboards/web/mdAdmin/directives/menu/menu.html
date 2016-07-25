@@ -1,0 +1,6 @@
+<ul class="dashboard-menu">
+  <li ng-repeat="item in pages" ng-if="!item.menuHidden && user.hasPermission(item.permission)">
+    <menu-link page="item" ng-if="!item.children"></menu-link>
+    <menu-toggle section="item" ng-if="item.children"></menu-toggle>
+  </li>
+</ul>

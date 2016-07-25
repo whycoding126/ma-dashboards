@@ -1,0 +1,52 @@
+<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event)">
+  <md-icon>add</md-icon>
+</md-button>
+
+<md-table-container>
+  <table md-table>
+    <thead md-head>
+      <tr>
+          <th md-column></th>
+          <th md-column>State</th>
+          <th md-column>URL</th>
+          <th md-column>Template URL</th>
+          <th md-column>Menu text</th>
+          <th md-column>Menu icon</th>
+          <th md-column></th>
+        </tr>
+    </thead>
+    <tbody md-body="">
+      <tr ng-repeat="page in storeObject.jsonData.pages">
+          <td>
+            <md-switch ng-model="page.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>
+          </td>
+          <td ng-bind="page.state"></td>
+          <td ng-bind="page.url"></td>
+          <td ng-bind="page.templateUrl"></td>
+          <td ng-bind="page.menuText || page.menuTr"></td>
+          <td ng-bind="page.menuIcon"></td>
+          <td>
+            <md-button class="md-icon-button" ng-click="editItem($event, page)">
+              <md-icon>edit</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1)" ng-disabled="page.builtIn">
+              <md-icon>delete</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1); storeObject.jsonData.pages.splice($index-1,0,page)"
+                ng-disabled="$first">
+              <md-icon>keyboard_arrow_up</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1); storeObject.jsonData.pages.splice($index+1,0,page)"
+                ng-disabled="$last">
+              <md-icon>keyboard_arrow_down</md-icon>
+            </md-button>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</md-table-container>
+
+<md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu()"><md-icon>save</md-icon> Save</md-button>
+<md-button class="md-raised md-warn" ng-click="storeObject.$delete()"><md-icon>delete</md-icon> Delete</md-button>
+<md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> Revert</md-button>
+<md-button class="md-raised" ng-click="restoreDefaultMenu()"><md-icon>undo</md-icon> Restore default menu</md-button>

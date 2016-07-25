@@ -1,0 +1,51 @@
+<md-dialog ng-cloak flex="66">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Edit menu item</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="column">
+      <md-input-container class="md-block no-errors-spacer">
+          <label>State name</label>
+          <input ng-model="editCtrl.item.state" ng-disabled="!editCtrl.item.isNew">
+      </md-input-container>
+      <md-input-container class="md-block no-errors-spacer">
+          <label>State URL</label>
+          <input ng-model="editCtrl.item.url" ng-disabled="!editCtrl.item.isNew">
+      </md-input-container>
+      <md-input-container class="md-block no-errors-spacer">
+          <label>Template URL</label>
+          <input ng-model="editCtrl.item.templateUrl" ng-disabled="!editCtrl.item.isNew">
+      </md-input-container>
+      <md-input-container class="md-block no-errors-spacer">
+          <label>Menu text translation key</label>
+          <input ng-model="editCtrl.item.menuTr">
+      </md-input-container>
+      <md-input-container class="md-block no-errors-spacer">
+          <label>Menu text</label>
+          <input ng-model="editCtrl.item.menuText">
+      </md-input-container>
+      <md-input-container class="md-block no-errors-spacer">
+          <label>Menu icon name</label>
+          <input ng-model="editCtrl.item.menuIcon">
+      </md-input-container>
+      <md-switch ng-model="editCtrl.item.menuHidden" ng-true-value="" ng-false-value="true">
+          Show on menu
+      </md-switch>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()">
+      Cancel
+    </md-button>
+    <md-button ng-click="save()">
+      Save
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
