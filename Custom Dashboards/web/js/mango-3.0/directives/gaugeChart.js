@@ -87,6 +87,9 @@ function gaugeChart() {
             });
             
             $scope.$watch('point.value', function(newValue, oldValue) {
+                // if gauge already has value set and newValue is undefined just ignore
+                if (newValue === undefined && chart.arrows[0].value) return;
+                
                 chart.arrows[0].setValue(newValue || 0);
                 var rendered;
                 if ($scope.point && typeof $scope.point.renderedValue === 'string') {
