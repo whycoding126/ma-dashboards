@@ -2,12 +2,13 @@
 <p>You can store arbitrary data in Mango's JSON store. You can use this functionality in combination with a config page to create your own setup variables
 for your dashboard or store text that the end user can easily update via your interface. Updates to the JSON store will sync realtime with your dashboard, no refresh needed.</p>
 <p>
-  You can set a unique xid to store multiple objects in the JSON store. Any data you want to store should be passed to the value object and can be retrieved
-  using <code ng-non-bindable>{{myItem.jsonData.attr}}</code>
+  You can set a unique <code>xid</code> and <code>item</code> to store multiple objects in the JSON store.
+  Any data you want to store should be passed to the value object and can be retrieved
+  using <code ng-non-bindable>{{myItem.jsonData.myProperty}}</code>
 </p>
 <p>
-  Note that by defualt if you do not set and edit/read permission of the item, only the Admin will have access to it. You can set these permissions to 'user' to allow guests to
-  use the data in the JSON store. The 'user' group is included by defualt.
+  Note that if you do not set <code>myItem.editPermission</code> / <code>myItem.readPermission</code> permission of the item, only the Admin will have access to it.
+  You can set these permissions to <code>'user'</code> to allow guests to use the data in the JSON store. The <code>'user'</code> group is included by default in a Mango system.
 </p>
 <dual-pane-editor>
 

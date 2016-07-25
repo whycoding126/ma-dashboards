@@ -5,7 +5,54 @@
 
 define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
 'use strict';
+/**
+ * @ngdoc directive
+ * @name maDashboards.maGuageChart
+ * @restrict E
+ * @description
+ * `<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>`
+ * - This directive will display a gauge that can be tied to a data point's live value.
+ * - You must use `<ma-get-point-value>` to provide a point value to `<ma-gauge-chart>`
+ * - Note, you will need to set a width and height on the element.
+ * - Options have been exposed via attributes, allowing you to set colors and ranges of multiple bands.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/gauges)
+ *
 
+ * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
+ * @param {number=} start Sets the starting value for the gauge.
+ * @param {number=} end Sets the ending value for the gauge.
+ * @param {number=} interval Sets the interval for each numbered tick on the gauge.
+ * @param {number=} band-1-end Sets the ending value for the first band.
+ * @param {string=} band-1-color Sets the color for the first band.
+ * @param {number=} band-2-end Sets the ending value for the second band.
+ * @param {string=} band-2-color Sets the color for the second band.
+ * @param {number=} band-3-end Sets the ending value for the third band.
+ * @param {string=} band-3-color Sets the color for the third band.
+ * @param {object=} options Extend [amCharts](https://www.amcharts.com/demos/angular-gauge/) configuration object for customizing design of the gauge.
+ * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
+ *
+ * @usage
+ * <md-input-container flex>
+    <label>Choose a point</label>
+    <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+</md-input-container>
+
+<ma-get-point-value point="myPoint"></ma-get-point-value>
+
+<p>Basic (defaults to 0-100)</p>
+<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>
+
+<p>Set axis interval and start and end value</p>
+<ma-gauge-chart point="myPoint" interval="10" start="-20" end="120"
+style="width:100%; height:200px"></ma-gauge-chart>
+
+<p>Set color bands</p>
+<ma-gauge-chart point="myPoint" start="-20" interval="20" band-1-end="20"
+band-2-end="80" band-2-color="yellow" band-3-end="100" style="width:100%; height:200px">
+</ma-gauge-chart>
+
+ *
+ */
 function gaugeChart() {
     return {
         restrict: 'E',
@@ -27,12 +74,12 @@ function gaugeChart() {
         template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
         	$scope.classes = {};
-        	
+
             var options = defaultOptions();
             $.extend(options, $scope.options);
             axisChanged();
             var chart = AmCharts.makeChart($element[0], options);
-            
+
             function axisChanged() {
                 if ($scope.options && $scope.options.axes.length) {
                     return;
@@ -77,15 +124,15 @@ function gaugeChart() {
                 axis.valueInterval = parseFloat($scope.interval) || (axis.endValue - axis.startValue) / 5;
                 if (chart) chart.validateNow();
             }
-            
+
             $scope.$watchGroup(['start', 'end', 'band1End', 'band2End', 'band3End', 'end', 'interval',
                                 'band1Color', 'band2Color', 'band3Color'], axisChanged);
-            
+
             $scope.$watch('value', function(newValue, oldValue) {
                 chart.arrows[0].setValue(newValue || 0);
                 chart.axes[0].setBottomText(typeof newValue === 'number' ? newValue.toFixed(2) : '');
             });
-            
+
             $scope.$watch('point.value', function(newValue, oldValue) {
                 chart.arrows[0].setValue(newValue || 0);
                 var rendered;

@@ -5,7 +5,27 @@
 
 define([], function() {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maDeviceNameQuery
+ * @restrict E
+ * @description
+ * `<ma-device-name-query device-names="deviceNames" contains="'meter'"></ma-device-name-query>`
+ * - Outputs an array of Mango device names.
+ * - In the example below the list is filtered to those containing a specified string and the resulting array is printed to the screen.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/data-source-and-device-list)
+ *
+ * @param {array} device-names Array Variable to hold the array of outputted device names.
+ * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.
+ * @param {string=} data-source-id If provided will filter device names to a specific data source by id.
+ * @param {string=} contains If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: `'Meta'`)
+ *
+ * @usage
+ * <h2>Device names containing 'meter'</h2>
+    <ma-device-name-query device-names="deviceNames" contains="'meter'"></ma-device-name-query>
+    <pre ng-bind="deviceNames | json"></pre>
+ *
+ */
 function deviceNameQuery(DeviceName) {
     return {
         scope: {
@@ -27,7 +47,7 @@ function deviceNameQuery(DeviceName) {
                 } else {
                     return;
                 }
-                
+
                 $scope.deviceNames = queryResult;
             });
         }

@@ -5,7 +5,68 @@
 
 define(['moment-timezone'], function(moment) {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maDateRangePicker
+ *
+ * @description
+ * `<ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>`
+ * - Use the `<ma-date-range-picker>` directive to insert a date range preset picker.
+ This enables you to choose from a list of commonly used date ranges, such as "Today so far" or "Previous week".
+ * - Set the update-interval attribute to have it update automatically.
+ * - You can tie the `<ma-date-range-picker>` and `<ma-date-picker>` together using the `from` and `to` attributes on the preset picker, and `ng-model` on the date pickers.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/date-presets)
+ * @param {string=} preset If provided the specified preset will be pre-selected in the dropdown.
+ Possible options are:
+<ul>
+    <li>LAST_5_MINUTES  </li>
+    <li>LAST_15_MINUTES</li>
+    <li>LAST_30_MINUTES</li>
+    <li>LAST_1_HOURS</li>
+    <li>LAST_3_HOURS</li>
+    <li>LAST_6_HOURS</li>
+    <li>LAST_12_HOURS</li>
+    <li>LAST_1_DAYS</li>
+    <li>LAST_1_WEEKS</li>
+    <li>LAST_2_WEEKS</li>
+    <li>LAST_1_MONTHS</li>
+    <li>LAST_3_MONTHS</li>
+    <li>LAST_6_MONTHS</li>
+    <li>LAST_1_YEARS</li>
+    <li>LAST_2_YEARS</li>
+    <li>DAY_SO_FAR</li>
+    <li>WEEK_SO_FAR</li>
+    <li>MONTH_SO_FAR</li>
+    <li>YEAR_SO_FAR</li>
+    <li>PREVIOUS_DAY</li>
+    <li>PREVIOUS_WEEK</li>
+    <li>PREVIOUS_MONTH</li>
+    <li>PREVIOUS_YEAR</li>
+</ul>
+ * @param {object} from Variable to hold the `from` timestamp.
+ * @param {object} to Variable to hold the `to` timestamp.
+ * @param {string=} update-interval If provided the time range will update to current time on the given interval.
+ Format the interval duration as a string starting with a number followed by one of these units:
+<ul>
+    <li>years</li>
+    <li>months</li>
+    <li>weeks</li>
+    <li>days</li>
+    <li>hours</li>
+    <li>minutes</li>
+    <li>seconds</li>
+    <li>milliseconds</li>
+</ul>
+Eg: `update-interval="10 minutes"`
+ * @param {string=} format Specifies the formatting of the outputted to the `from`/`to` when not using angular material (using [momentJs](http://momentjs.com/) formatting)
+ *
+ * @usage
+ * <md-input-container>
+       <label>Preset</label>
+       <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS"
+       update-interval="5 seconds"></ma-date-range-picker>
+  </md-input-container>
+ */
 function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
     return {
         restrict: 'E',
@@ -23,34 +84,34 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
                 '<md-option ng-value="p.type" ng-repeat="p in presets track by p.type">{{p.label}}</md-option>' +
                 '</md-select>';
             }
-            
+
             return '<select ng-options="p.type as p.label for p in presets" ng-model="preset"></select>';
         },
         link: function ($scope, $element) {
             var mdPickers = $injector.has('$mdpDatePicker');
-            
+
         	var from, to;
         	$scope.presets = $rootScope.dateRangePresets;
 
         	$scope.$watch('preset', doUpdate);
-        	
+
         	$scope.$watch('updateInterval', function() {
             	startUpdateTimer();
             });
-        	
+
         	$scope.$watchGroup(['from', 'to'], function(newValues) {
         		if (!(isSame(from, newValues[0]) && isSame(to, newValues[1]))) {
         			$scope.preset = '';
         		}
         	});
-        	
+
         	function isSame(m, check) {
                 if (typeof check === 'string') {
                     return m.format($scope.format || mangoDefaultDateFormat) === check;
                 }
                 return m.isSame(check);
         	}
-        	
+
         	function doUpdate() {
         		if (!$scope.preset) return;
         		from = moment();
@@ -92,7 +153,7 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
         			to = to.startOf('year');
         			break;
         		}
-        		
+
         		if (mdPickers || $scope.format === 'false') {
         		    $scope.from = from.toDate();
                     $scope.to = to.toDate();
@@ -102,34 +163,34 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
                     $scope.to = to.format(format);
         		}
         	}
-            
+
             var timerId;
             function startUpdateTimer() {
                 cancelUpdateTimer();
-                
+
                 if (isEmpty($scope.updateInterval)) return;
                 var parts = $scope.updateInterval.split(' ');
                 if (parts.length < 2) return;
                 if (isEmpty(parts[0]) || isEmpty(parts[1])) return;
-                
+
                 var duration = moment.duration(parseFloat(parts[0]), parts[1]);
                 var millis = duration.asMilliseconds();
-                
+
                 // dont allow continuous loops
                 if (millis === 0) return;
-                
+
                 timerId = setInterval(function() {
                     $scope.$apply(function() {
                         doUpdate();
                     });
                 }, millis);
             }
-            
+
             // test for null, undefined or whitespace
             function isEmpty(str) {
             	return !str || /^\s*$/.test(str);
             }
-            
+
             function cancelUpdateTimer() {
                 if (timerId) {
                     clearInterval(timerId);

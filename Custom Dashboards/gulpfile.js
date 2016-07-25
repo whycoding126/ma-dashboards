@@ -37,7 +37,7 @@ gulp.task('clean', function() {
 });
 
 
-gulp.task('ngdocs', [], function() {
+gulp.task('build-ngdocs', [], function() {
     var gulpDocs = require('gulp-ngdocs');
 
     console.log('Compiling Docs');
@@ -63,5 +63,5 @@ gulp.task('ngdocs', [], function() {
 
 gulp.task('watchDocs', function() {
     // Watch .js files
-    gulp.watch('web/js/mango-3.0/**/*.js', ['ngdocs']);
+    gulp.watch('web/js/mango-3.0/**/*.js', ['build-ngdocs']);
 });

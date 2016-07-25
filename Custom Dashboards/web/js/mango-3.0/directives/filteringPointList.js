@@ -5,7 +5,22 @@
 
 define(['require'], function(require) {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maFilteringPointList
+ * @restrict E
+ * @description
+ * `<ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>`
+ * - Creates a self-filtering point list that supports fuzzy search by device name or data point name.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/point-list)
+ *
+ * @param {object} ng-model Variable to hold the selected data point.
+ * @param {boolean=} auto-init Enables auto selecting of the first data point in the list. (Defaults to `false`)
+ * @param {number=} limit Limits the results in the list to a specified number of data points (no limit by defualt)
+ *
+ * @usage
+ * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
+ */
 function pointList(Point, $filter, $injector, $parse, $timeout) {
     return {
         restrict: 'E',
@@ -23,14 +38,14 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                     $scope.ngModel = item[0];
                 });
             }
-            
+
             var change = $parse(attrs.ngChange);
             $scope.changed = function() {
                 $timeout(function() {
                     change($scope.$parent);
                 }, 0);
             };
-            
+
             $scope.querySearch = function(queryStr) {
                 queryStr = queryStr || '';
                 var query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';

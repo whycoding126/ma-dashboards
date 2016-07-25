@@ -5,7 +5,25 @@
 
 define([], function() {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maFn**
+ *
+ * @description
+ * `<ma-fn expression="" fn="myFunction" ready="" arg-names="">`
+ * - This directive allows you to evaluate an Angular expression and store the result in a variable.
+ * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
+ *
+ *
+ * @param {expression} expression Expression to store as a function.
+ * @param {object} fn Variable to hold the evaluated function.
+ * @param {object=} ready doc
+ * @param {object=} arg-names doc
+ *
+ * @usage
+ * <ma-fn expression="" fn="myFunction" ready="" arg-names="">
+ *
+ */
 function enter($parse) {
     return {
         scope: {
@@ -15,12 +33,12 @@ function enter($parse) {
         },
     	compile: function($element, attrs) {
     		var parsed = $parse(attrs.expression);
-    		
+
     		return function($scope, $element, attrs) {
     			$scope.fn = argMatch.bind(null, parsed, $scope.$parent, $scope.argNames);
     			$scope.ready = true;
             };
-            
+
             function argMatch(parsedFn, context, argNames) {
                 var overrides = {};
                 for (var i = 3; i < arguments.length; i++) {

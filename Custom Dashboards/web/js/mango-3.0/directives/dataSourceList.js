@@ -11,20 +11,21 @@ define([], function() {
  * @restrict E
  * @description
  * `<ma-data-source-list ng-model="myDataSource"></ma-data-source-list>`
- * - Displays a list of Mango data sources. The selected data source will be outputed to the variable specified by the `ng-model` attribute.
- * [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/data-source-and-device-list)
+ * - Displays a list of Mango data sources in a drop down selector. The selected data source will be outputed to the variable specified by the `ng-model` attribute.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/data-source-and-device-list)
  *
- * @param {object} ngModel Variable to hold the selected data source
- * @param {object=} autoInit sort
- * @param {object} query sort
- * @param {object} start sort
- * @param {object} limit sort
- * @param {object} sort sort
+ * @param {object} ng-model Variable to hold the selected data source object.
+ * @param {boolean=} auto-init Enables auto selecting of the first data source in the list (Defaults to `true`)
+ * @param {object=} query Filters the results by a property of the data source object (eg: `{name: 'meta'}` returns data sources containing the string `'meta'` in the `name` property)
+ * @param {array=} sort Sorts the resulting list by a property of the data source object. Passed as array of strings. (eg: `['-xid']` sorts descending by xid of data sources. Defaults to `['name']`)
+ * @param {number=} start Sets the starting index for the resulting list. Must be used in conjunction with a `limit` value. (Defaults to `0`)
+ * @param {number=} limit Limits the results in the list to a specified number of data sources. Limit takes place after query and sorting (no limit by defualt)
+ *
  *
  * @usage
- * <md-input-container class="md-block no-errors-spacer">
- *        <label>Choose a data source</label>
- *        <ma-data-source-list ng-model="myDataSource"></ma-data-source-list>
+ * <md-input-container>
+ *     <label>Choose a data source</label>
+ *     <ma-data-source-list ng-model="myDataSource" auto-init="false" query="{name: 'meta'}" sort="['-name']" start="3" limit="6" ></ma-data-source-list>
  * </md-input-container>
  *
  * <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>

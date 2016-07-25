@@ -5,7 +5,34 @@
 
 define([], function() {
 'use strict';
+/**
+ * @ngdoc directive
+ * @name maDashboards.maDeviceNameList
+ * @restrict E
+ * @description
+ * `<ma-device-name-list ng-model="myDeviceName" data-source-xid="myDataSource.xid"></ma-device-name-list>`
+ * - Displays a list of Mango device names in a drop down selector. The selected device name will be outputed to the variable specified by the `ng-model` attribute.
+ * - In the example below a list a points is generated that have the specified device name.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/data-source-and-device-list)
+ *
+ * @param {object} ng-model Variable to hold the selected device name.
+ * @param {boolean=} auto-init Enables auto selecting of the first device name in the list. (Defaults to `true`)
+ * @param {string=} data-source-xid If provided will filter device names to a specific data source by xid.
+ * @param {string=} data-source-id If provided will filter device names to a specific data source by id.
+ * @param {string=} contains If provided will filter device names to those containing the specified string. Capitalization sensitive. (eg: `'Meta'`)
+ *
+ * @usage
+ * <md-input-container>
+        <label>Device names for selected data source</label>
+        <ma-device-name-list ng-model="myDeviceName" data-source-xid="myDataSource.xid"></ma-device-name-list>
+    </md-input-container>
 
+    <md-input-container>
+        <label>Points for selected device name</label>
+        <ma-point-list query="{deviceName: myDeviceName}" limit="100" ng-model="myPoint"></ma-point-list>
+    </md-input-container>
+ *
+ */
 function deviceNameList(DeviceName, $injector) {
     return {
         restrict: 'E',
@@ -20,11 +47,11 @@ function deviceNameList(DeviceName, $injector) {
         },
         template: function(element, attrs) {
           var optionsExpr = 'deviceName in deviceNames track by $index';
-          
+
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()"><md-option ng-value="deviceName" ng-repeat="' + optionsExpr + '" ng-bind="deviceName"></md-option></md-select>';
           }
-          
+
           return '<select ng-options="' + optionsExpr + '"></select>';
         },
         replace: true,
@@ -37,7 +64,7 @@ function deviceNameList(DeviceName, $injector) {
             $scope.onOpen = function onOpen() {
                 return promise;
             }
-            
+
             $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
                 var queryResult;
                 if (!($element.attr('data-source-id') || $element.attr('data-source-xid') )) {
@@ -49,7 +76,7 @@ function deviceNameList(DeviceName, $injector) {
                 } else {
                     return;
                 }
-                
+
                 $scope.deviceNames = [];
                 $scope.ngModel = null;
                 promise = queryResult.$promise.then(function(deviceNames) {
