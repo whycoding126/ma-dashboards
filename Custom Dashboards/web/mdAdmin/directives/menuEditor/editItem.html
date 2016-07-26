@@ -1,4 +1,4 @@
-<md-dialog ng-cloak flex="66">
+<md-dialog ng-cloak style="width:50%;">
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2>Edit menu item</h2>
@@ -10,29 +10,51 @@
   </md-toolbar>
   <md-dialog-content>
     <div class="md-dialog-content" layout="column">
-      <md-input-container class="md-block no-errors-spacer">
+      <md-input-container>
+          <label>Parent item</label>
+          <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()">
+            <md-option ng-value="">None (Top level)</md-option>
+            <md-option ng-value="page" ng-repeat="page in editCtrl.pages">
+              <span ng-if="page.menuText" ng-bind="page.menuText"></span>
+              <span ng-if="!page.menuText && page.menuTr" ma-tr="{{page.menuTr}}"></span>
+              ({{page.name}})
+            </md-option>
+          </md-select>
+      </md-input-container>
+      <md-input-container>
           <label>State name</label>
-          <input ng-model="editCtrl.item.state" ng-disabled="!editCtrl.item.isNew">
+          <input ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn || !editCtrl.item.isNew">
       </md-input-container>
-      <md-input-container class="md-block no-errors-spacer">
+      <md-input-container>
           <label>State URL</label>
-          <input ng-model="editCtrl.item.url" ng-disabled="!editCtrl.item.isNew">
+          <input ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
       </md-input-container>
-      <md-input-container class="md-block no-errors-spacer">
+      <md-input-container>
           <label>Template URL</label>
-          <input ng-model="editCtrl.item.templateUrl" ng-disabled="!editCtrl.item.isNew">
+          <input ng-model="editCtrl.item.templateUrl" ng-disabled="editCtrl.item.builtIn">
       </md-input-container>
-      <md-input-container class="md-block no-errors-spacer">
-          <label>Menu text translation key</label>
-          <input ng-model="editCtrl.item.menuTr">
-      </md-input-container>
-      <md-input-container class="md-block no-errors-spacer">
+      <md-input-container>
           <label>Menu text</label>
           <input ng-model="editCtrl.item.menuText">
       </md-input-container>
-      <md-input-container class="md-block no-errors-spacer">
+      <div layout="row" ng-hide="editCtrl.item.menuText">
+        <md-input-container flex="70">
+            <label>Menu text translation key</label>
+            <input ng-model="editCtrl.item.menuTr" ng-change="translation = (editCtrl.item.menuTr | tr)">
+        </md-input-container>
+        <md-input-container flex="30" ng-init="translation = (editCtrl.item.menuTr | tr)">
+            <label>Preview</label>
+            <input ng-model="translation" ng-disabled="true">
+        </md-input-container>
+      </div>
+      <md-input-container flex>
           <label>Menu icon name</label>
+          <md-icon class="fa-fw {{editCtrl.item.menuIcon}}"></md-icon>
           <input ng-model="editCtrl.item.menuIcon">
+      </md-input-container>
+      <md-input-container>
+          <label>Permission required</label>
+          <input ng-model="editCtrl.item.permission">
       </md-input-container>
       <md-switch ng-model="editCtrl.item.menuHidden" ng-true-value="" ng-false-value="true">
           Show on menu
@@ -41,10 +63,13 @@
   </md-dialog-content>
   <md-dialog-actions layout="row">
     <span flex></span>
+    <md-button class="md-warn" ng-click="delete()" ng-if="!editCtrl.item.isNew" ng-disabled="editCtrl.item.builtIn">
+      Delete
+    </md-button>
     <md-button ng-click="cancel()">
       Cancel
     </md-button>
-    <md-button ng-click="save()">
+    <md-button class="md-primary" ng-click="save()">
       Save
     </md-button>
   </md-dialog-actions>

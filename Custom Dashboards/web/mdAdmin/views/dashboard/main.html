@@ -53,7 +53,7 @@
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">person</md-icon>
                   </md-button>
                 </md-menu-item>
-                <md-menu-item ng-if="user.hasPermission('superadmin')">
+                <md-menu-item ng-if="user.hasPermission('edit-menus')">
                   <md-button aria-label="Edit menu" ui-sref="dashboard.editMenu" layout="row" layout-align="start center">
                       <p flex ma-tr="dashboards.v3.dox.editMenu">Edit menu</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">edit</md-icon>

@@ -408,3 +408,14 @@ table.md-table td.md-cell,
 table.md-table th.md-column {
 	font-size: 1.6rem;
 }
+
+/* Menu editor */
+
+menu-editor td .md-button.md-icon-button {
+  padding: 0;
+  margin: 0;
+}
+
+menu-editor .child-menu-item {
+  background-color: lightgrey;
+}

@@ -28,17 +28,24 @@ function MenuFactory(mangoState, PAGES, JsonStore, CUSTOM_USER_PAGES_XID) {
         storeObject.xid = CUSTOM_USER_PAGES_XID;
         storeObject.name = CUSTOM_USER_PAGES_XID;
         storeObject.jsonData = {};
-        storeObject.editPermission = '';
+        storeObject.editPermission = 'edit-menus';
         storeObject.readPermission = 'user';
         
         var pages = angular.copy(PAGES);
-        for (var i = 0; i < pages.length; i++) {
-            pages[i].builtIn = true;
-        }
+        eachPage(pages, null, function(page) {
+            page.builtIn = true;
+        });
         storeObject.jsonData.pages = pages;
         
         return storeObject;
     };
+    
+    function eachPage(pages, parent, fn) {
+        angular.forEach(pages, function(page, index) {
+            fn(page);
+            eachPage(page.children, page, fn);
+        });
+    }
 
     return new Menu();
 }

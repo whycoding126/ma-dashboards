@@ -1,6 +1,7 @@
 <md-button class="menu-link" ng-click="followLink()" ui-sref-active="menu-active md-accent" aria-label="{{page.menuText || (page.menuTr | tr)}}">
-  <a ui-sref="{{page.state}}">
+  <a ui-sref="{{page.name}}">
   <i ng-if="page.menuIcon" class="menu-icon fa-fw {{page.menuIcon}}"></i>
-  <span class="menu-text" ma-tr="{{page.menuTr}}">{{page.menuText}}</span>
+  <span ng-if="page.menuText" class="menu-text">{{page.menuText}}</span>
+  <span ng-if="!page.menuText" class="menu-text" ma-tr="{{page.menuTr}}"></span>
   </a>
 </md-button>

@@ -7,26 +7,32 @@
     <thead md-head>
       <tr>
           <th md-column></th>
-          <th md-column>State</th>
-          <th md-column>URL</th>
-          <th md-column>Template URL</th>
-          <th md-column>Menu text</th>
-          <th md-column>Menu icon</th>
-          <th md-column></th>
+          <th md-column ng-if="$mdMedia('gt-sm')"></th>
+          <th md-column ng-if="$mdMedia('gt-xs')">Menu text</th>
+          <th md-column>State name</th>
+          <th md-column ng-if="$mdMedia('gt-md')">URL</th>
+          <th md-column flex></th>
         </tr>
     </thead>
-    <tbody md-body="">
-      <tr ng-repeat="page in storeObject.jsonData.pages">
+    <tbody md-body>
+      <tr ng-repeat-start="page in storeObject.jsonData.pages">
           <td>
+            <md-button class="md-icon-button" ng-click="menuEditor.expanded = page.name" ng-show="page.children && menuEditor.expanded !== page.name">
+              <md-icon>expand_more</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="menuEditor.expanded = null" ng-show="page.children && menuEditor.expanded === page.name">
+              <md-icon>expand_less</md-icon>
+            </md-button>
+          </td>
+          <td ng-if="$mdMedia('gt-sm')">
             <md-switch ng-model="page.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>
           </td>
-          <td ng-bind="page.state"></td>
-          <td ng-bind="page.url"></td>
-          <td ng-bind="page.templateUrl"></td>
-          <td ng-bind="page.menuText || page.menuTr"></td>
-          <td ng-bind="page.menuIcon"></td>
+          <td ng-if="$mdMedia('gt-xs') && page.menuText" ng-bind="page.menuText"></td>
+          <td ng-if="$mdMedia('gt-xs') && !page.menuText" ma-tr="{{page.menuTr}}"></td>
+          <td ng-bind="page.name"></td>
+          <td ng-bind="page.url" ng-if="$mdMedia('gt-md')"></td>
           <td>
-            <md-button class="md-icon-button" ng-click="editItem($event, page)">
+            <md-button class="md-icon-button" ng-click="editItem($event, page, undefined, storeObject.jsonData.pages, $index)">
               <md-icon>edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1)" ng-disabled="page.builtIn">
@@ -34,11 +40,37 @@
             </md-button>
             <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1); storeObject.jsonData.pages.splice($index-1,0,page)"
                 ng-disabled="$first">
-              <md-icon>keyboard_arrow_up</md-icon>
+              <md-icon>arrow_upward</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="storeObject.jsonData.pages.splice($index,1); storeObject.jsonData.pages.splice($index+1,0,page)"
                 ng-disabled="$last">
-              <md-icon>keyboard_arrow_down</md-icon>
+              <md-icon>arrow_downward</md-icon>
+            </md-button>
+          </td>
+      </tr>
+      <tr ng-if="page.children && menuEditor.expanded === page.name" ng-repeat-end ng-repeat="child in page.children" class="child-menu-item">
+          <td></td>
+          <td ng-if="$mdMedia('gt-sm')">
+            <md-switch ng-model="child.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>
+          </td>
+          <td ng-if="$mdMedia('gt-xs') && child.menuText" ng-bind="child.menuText"></td>
+          <td ng-if="$mdMedia('gt-xs') && !child.menuText" ma-tr="{{child.menuTr}}"></td>
+          <td ng-bind="child.name"></td>
+          <td ng-bind="child.url" ng-if="$mdMedia('gt-md')"></td>
+          <td>
+            <md-button class="md-icon-button" ng-click="editItem($event, child, page, page.children, $index)">
+              <md-icon>edit</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="page.children.splice($index,1)" ng-disabled="child.builtIn">
+              <md-icon>delete</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="page.children.splice($index,1); page.children.splice($index-1,0,child)"
+                ng-disabled="$first">
+              <md-icon>arrow_upward</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="page.children.splice($index,1); page.children.splice($index+1,0,child)"
+                ng-disabled="$last">
+              <md-icon>arrow_downward</md-icon>
             </md-button>
           </td>
       </tr>

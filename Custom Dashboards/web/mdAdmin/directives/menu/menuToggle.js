@@ -33,7 +33,7 @@ var menuToggle = function($state, $timeout, $rootScope) {
                 }
             };
             
-            if ($state.includes($scope.section.state) && !$scope.isOpen) {
+            if ($state.includes($scope.section.name) && !$scope.isOpen) {
                 // use timeout to run open() after ul has been populated by ng-repeat
                 $timeout(function() {
                     $scope.open();
@@ -47,7 +47,7 @@ var menuToggle = function($state, $timeout, $rootScope) {
 
             // close/open menus when changing states
             $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-                if ($state.includes($scope.section.state)) {
+                if ($state.includes($scope.section.name)) {
                     if (!$scope.isOpen) {
                         $scope.open();
                     }

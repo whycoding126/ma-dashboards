@@ -14,7 +14,7 @@ var menuLink = function($state) {
         templateUrl: require.toUrl('./menuLink.html'),
         link: function($scope, $element) {
             $scope.followLink = function() {
-                $state.go(this.page.state);
+                $state.go(this.page.name);
             }
         }
     };
