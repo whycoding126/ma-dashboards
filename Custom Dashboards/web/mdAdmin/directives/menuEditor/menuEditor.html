@@ -46,7 +46,8 @@
   </table>
 </md-table-container>
 
-<md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu()"><md-icon>save</md-icon> Save</md-button>
-<md-button class="md-raised md-warn" ng-click="storeObject.$delete()"><md-icon>delete</md-icon> Delete</md-button>
-<md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> Revert</md-button>
-<md-button class="md-raised" ng-click="restoreDefaultMenu()"><md-icon>undo</md-icon> Restore default menu</md-button>
+<div class="menu-editor-buttons">
+  <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> Save</md-button>
+  <md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> Revert changes</md-button>
+  <md-button class="md-raised md-warn" ng-click="restoreDefaultMenu($event)"><md-icon>delete</md-icon> Restore default menu</md-button>
+</div>

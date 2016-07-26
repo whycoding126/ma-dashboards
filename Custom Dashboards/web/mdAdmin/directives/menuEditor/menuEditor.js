@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, PAGES, $mdDialog) {
+var menuEditor = function(Menu, PAGES, $mdDialog, Translate) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
@@ -18,8 +18,19 @@ var menuEditor = function(Menu, PAGES, $mdDialog) {
                 pages = storeObject.jsonData.pages;
             });
             
-            $scope.restoreDefaultMenu = function restoreDefaultMenu() {
-                $scope.storeObject = Menu.getDefaultMenu();
+            $scope.restoreDefaultMenu = function restoreDefaultMenu(event) {
+                var confirm = $mdDialog.confirm()
+                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .textContent(Translate.trSync('dashboards.v3.app.confirmRestoreDefaultMenu'))
+                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .targetEvent(event)
+                    .ok(Translate.trSync('common.ok'))
+                    .cancel(Translate.trSync('common.cancel'));
+                
+                $mdDialog.show(confirm).then(function() {
+                    $scope.storeObject = Menu.getDefaultMenu();
+                    $scope.storeObject.$save();
+                });
             }
             
             $scope.editItem = function editItem(event, origItem) {
@@ -68,7 +79,7 @@ var menuEditor = function(Menu, PAGES, $mdDialog) {
     };
 };
 
-menuEditor.$inject = ['Menu', 'PAGES', '$mdDialog'];
+menuEditor.$inject = ['Menu', 'PAGES', '$mdDialog', 'Translate'];
 
 return menuEditor;
 

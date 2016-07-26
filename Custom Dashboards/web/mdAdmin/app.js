@@ -107,7 +107,7 @@ mdAdminApp.constant('PAGES', [
                 });
             }],
             dashboardTranslations: ['Translate', function(Translate) {
-                return Translate.loadNamespaces('dashboards');
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }]
         }
     },
