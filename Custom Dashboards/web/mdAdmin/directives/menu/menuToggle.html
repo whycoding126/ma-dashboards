@@ -1,11 +1,11 @@
 <div ui-sref-active="menu-active" ng-class="{'menu-open': isOpen}" class="menu-toggle">
-    <a ui-sref="{{section.name}}" style="display:none"></a>
-    <md-button class="menu-toggle-button" ng-click="toggle()" aria-label="{{section.menuText || (section.menuTr | tr)}}">
+    <a ui-sref="{{item.name}}" style="display:none"></a>
+    <md-button class="menu-toggle-button" ng-click="toggle()" aria-label="{{item.menuText || (item.menuTr | tr)}}">
       <div flex layout="row">
         <span>
-            <i ng-if="section.menuIcon" class="menu-icon fa-fw {{section.menuIcon}}"></i>
-            <span ng-if="section.menuText" class="menu-text">{{section.menuText}}</span>
-            <span ng-if="!section.menuText" class="menu-text" ma-tr="{{section.menuTr}}"></span>
+            <i ng-if="item.menuIcon" class="menu-icon fa-fw {{item.menuIcon}}"></i>
+            <span ng-if="item.menuText" class="menu-text">{{item.menuText}}</span>
+            <span ng-if="!item.menuText" class="menu-text" ma-tr="{{item.menuTr}}"></span>
         </span>
         <span flex></span>
         <span class="menu-toggle-icon">
@@ -15,8 +15,8 @@
     </md-button>
     
     <ul class="menu-toggle-list ng-hide" ng-show="isOpen">
-      <li ng-repeat="page in section.children">
-        <menu-link page="page"></menu-link>
+      <li ng-repeat="child in item.children">
+        <menu-link menu-item="child"></menu-link>
       </li>
     </ul>
 </div>

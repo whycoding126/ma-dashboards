@@ -6,18 +6,18 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
+var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
         link: function($scope, $element) {
-            var pages;
+            var menuItems;
             
             $scope.menuEditor = {};
             
             Menu.getMenu().then(function(storeObject) {
                 $scope.storeObject = storeObject;
-                pages = storeObject.jsonData.pages;
+                menuItems = storeObject.jsonData.menuItems;
             });
             
             $scope.$mdMedia = $mdMedia;
@@ -34,16 +34,18 @@ var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
                 $mdDialog.show(confirm).then(function() {
                     Menu.getDefaultMenu().$save().then(function(storeObject) {
                         $scope.storeObject = storeObject;
-                        pages = storeObject.jsonData.pages;
+                        menuItems = storeObject.jsonData.menuItems;
                     });
                 });
             }
             
-            $scope.editItem = function editItem(event, origItem, parent, pageArray, pageIndex) {
+            $scope.editItem = function editItem(event, origItem, parent, menuItemArray, menuItemIndex) {
                 var item;
                 if (!origItem) {
                     item = {
-                        isNew: true
+                        isNew: true,
+                        name: 'dashboard.',
+                        url: '/'
                     };
                 } else {
                     item = angular.copy(origItem);
@@ -55,17 +57,19 @@ var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
                     controllerAs: 'editCtrl',
                     locals: {
                         item: item,
-                        pages: pages
+                        menuItems: menuItems
                     },
                     controller: function editItemController($scope, $mdDialog) {
                         $scope.cancel = function cancel() {
                             $mdDialog.cancel();
                         };
                         $scope.save = function save() {
-                            $mdDialog.hide();
+                            if ($scope.menuItemEditForm.$valid) {
+                                $mdDialog.hide();
+                            }
                         };
                         $scope['delete'] = function() {
-                            pageArray.splice(pageIndex, 1);
+                            menuItemArray.splice(menuItemIndex, 1);
                             if (parent && !parent.children.length) {
                                 delete parent.children;
                             }
@@ -90,7 +94,7 @@ var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
                     
                     // remove item from old parents children array
                     if (newParent !== parent) {
-                        pageArray.splice(pageIndex, 1);
+                        menuItemArray.splice(menuItemIndex, 1);
                     }
                     if (parent && !parent.children.length) {
                         delete parent.children;
@@ -102,13 +106,13 @@ var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
                         item = origItem;
                     }
                     
-                    // add item back into parents children or into the pages array
+                    // add item back into parents children or into the menuItems array
                     if (newParent) {
                         if (!newParent.children)
                             newParent.children = [];
                         newParent.children.push(item);
                     } else {
-                        pages.push(item);
+                        menuItems.push(item);
                     }
                 });
             }
@@ -120,7 +124,7 @@ var menuEditor = function(Menu, PAGES, $mdDialog, Translate, $mdMedia) {
     };
 };
 
-menuEditor.$inject = ['Menu', 'PAGES', '$mdDialog', 'Translate', '$mdMedia'];
+menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia'];
 
 return menuEditor;
 

@@ -24,25 +24,26 @@ var mdAdminApp = angular.module('mdAdminApp', [
 ]);
 
 mdAdminApp.constant('require', require);
+mdAdminApp.constant('CUSTOM_USER_MENU_XID', 'custom-user-menu');
 mdAdminApp.constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages');
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
-    this.addStates = function(pages, parent) {
-        angular.forEach(pages, function(page, area) {
-            if (page.name) {
-                if (!page.templateUrl && !page.template) {
-                    page.template = '<div ui-view></div>';
-                    page['abstract'] = true;
+    this.addStates = function(menuItems, parent) {
+        angular.forEach(menuItems, function(menuItem, area) {
+            if (menuItem.name) {
+                if (!menuItem.templateUrl && !menuItem.template) {
+                    menuItem.template = '<div ui-view></div>';
+                    menuItem['abstract'] = true;
                 }
 
                 try {
-                    $stateProvider.state(page);
+                    $stateProvider.state(menuItem);
                 } catch (error) {
                     // state already exists
                 }
             }
 
-            this.addStates(page.children, page);
+            this.addStates(menuItem.children, menuItem);
         }.bind(this));
     }
 
@@ -57,7 +58,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
     }];
 }]);
 
-mdAdminApp.constant('PAGES', [
+mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard',
         url: '/dashboard',
@@ -524,7 +525,7 @@ mdAdminApp.constant('PAGES', [
 ]);
 
 mdAdminApp.config([
-    'PAGES',
+    'MENU_ITEMS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -533,7 +534,7 @@ mdAdminApp.config([
     '$injector',
     '$compileProvider',
     'mangoStateProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
+function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -621,12 +622,12 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
     });
 
     $urlRouterProvider.otherwise('/dashboard/home');
-    mangoStateProvider.addStates(PAGES);
+    mangoStateProvider.addStates(MENU_ITEMS);
 
 }]);
 
 mdAdminApp.run([
-    'PAGES',
+    'MENU_ITEMS',
     '$rootScope',
     '$state',
     '$timeout',
@@ -634,8 +635,8 @@ mdAdminApp.run([
     '$mdColors',
     '$MD_THEME_CSS',
     'cssInjector',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
-    $rootScope.pages = PAGES;
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
+    $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
     // inserts a style tag to style <a> tags with accent color
