@@ -56,7 +56,7 @@ var liveEditor = function($templateRequest, $sce) {
             });
             
             $scope.$watch('text', function(newValue) {
-                if (newValue && newValue !== currentText) {
+                if (newValue !== undefined && newValue !== currentText) {
                     if (editor) {
                         setText(newValue);
                     } else {

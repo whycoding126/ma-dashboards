@@ -75,14 +75,18 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/menu/menu',
                            './directives/menu/menuLink',
                            './directives/menu/menuToggle',
-                           './directives/menuEditor/menuEditor'
-                ], function(Menu, menu, menuLink, menuToggle, menuEditor) {
+                           './directives/menuEditor/menuEditor',
+                           './services/Page',
+                           './directives/pageEditor/pageEditor'
+                ], function(Menu, menu, menuLink, menuToggle, menuEditor, Page, pageEditor) {
                     angular.module('dashboard', [])
                         .factory('Menu', Menu)
                         .directive('maMenu', menu)
                         .directive('menuLink', menuLink)
                         .directive('menuToggle', menuToggle)
-                        .directive('menuEditor', menuEditor);
+                        .directive('menuEditor', menuEditor)
+                        .factory('Page', Page)
+                        .directive('pageEditor', pageEditor);
                     $ocLazyLoad.inject('dashboard');
                 });
             }],
@@ -127,6 +131,36 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'fa fa-exclamation-triangle'
     },
     {
+        url: '/edit-menu',
+        name: 'dashboard.editMenu',
+        templateUrl: 'views/dashboard/editMenu.html',
+        menuTr: 'dashboards.v3.dox.editMenu',
+        menuIcon: 'fa fa-pencil',
+        permission: 'edit-menus'
+    },
+    {
+        url: '/edit-pages',
+        name: 'dashboard.editPages',
+        templateUrl: 'views/dashboard/editPages.html',
+        menuTr: 'dashboards.v3.dox.editPages',
+        menuIcon: 'fa fa-pencil',
+        permission: 'edit-pages',
+        resolve: {
+            loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/liveEditor/liveEditor',
+                           './directives/liveEditor/livePreview',
+                           './directives/liveEditor/dualPaneEditor'],
+                function(liveEditor, livePreview, dualPaneEditor) {
+                    angular.module('dashboard.examples', ['ui.ace'])
+                        .directive('liveEditor', liveEditor)
+                        .directive('livePreview', livePreview)
+                        .directive('dualPaneEditor', dualPaneEditor);
+                    $ocLazyLoad.inject('dashboard.examples');
+                });
+            }]
+        }
+    },
+    {
         url: '/examples',
         name: 'dashboard.examples',
         menuHidden: true,
@@ -144,14 +178,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 });
             }]
         }
-    },
-    {
-        url: '/edit-menu',
-        name: 'dashboard.editMenu',
-        templateUrl: 'views/dashboard/editMenu.html',
-        menuTr: 'dashboards.v3.dox.editMenu',
-        menuIcon: 'fa fa-pencil',
-        permission: 'edit-menus'
     },
     {
         url: '/play-area',
