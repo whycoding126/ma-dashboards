@@ -4,7 +4,9 @@
 <br><a ui-sref="dashboard.examples.playAreaBig">Play Area View Only</a>
 </p>
 
-<ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"></ma-json-store>
+<ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"
+  ng-init="playArea={readPermission: 'user', editPermission: 'user'}">
+</ma-json-store>
 
 <div layout="row" style="margin-bottom:10px;">
     <md-button class="md-raised md-primary md-hue-3" ng-click="playArea.$save()">
