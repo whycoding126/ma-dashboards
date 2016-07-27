@@ -6,7 +6,7 @@
 define([], function() {
 'use strict';
 /**
- * @ngdoc directive
+ * @ngdoc directive 
  * @name maDashboards.maPointList
  * @restrict E
  * @description

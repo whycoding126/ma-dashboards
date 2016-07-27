@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 /**
- * @ngdoc directive
+ * @ngdoc directive 
  * @name maDashboards.maPointValue
  *
  * @description

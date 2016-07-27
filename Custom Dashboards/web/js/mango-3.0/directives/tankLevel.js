@@ -5,10 +5,32 @@
 
 define(['amcharts/serial', 'jquery'], function(AmCharts, $) {
 'use strict';
+/**
+ * @ngdoc directive
+ * @name maDashboards.maTankLevel**
+ * @restrict E
+ * @description
+ * `<ma-tank-level point="myPoint" color="" max="" style="width:300px; height:200px;"></ma-tank-level>`
+ * - This directive will display a custom data visualization which represents a tank.
+ * - The volume of 'liquid' within the tank increases in height with increases in point value.
+ * - Not you must set a width and height on the element.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/tanks)
+ *
 
+ * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
+ * @param {number=} max Sets the max value for a 100% filled tank.
+ * @param {string=} color Sets the fill color for the tank visualization.
+ * @param {object=} options Extend [amCharts](https://www.amcharts.com/) configuration object for customizing the design of the tank.
+ * @param {number=} value Allows you to set the tank's fill height to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
+ *
+ * @usage
+ * <ma-tank-level point="myPoint" color="{{choosenColor}}" max="{{max}}" style="width:300px; height:200px; position:absolute; top:0; left:0px; z-index:2">
+</ma-tank-level>
+ *
+ */
 function tankLevel(maDashboardsInsertCss, cssInjector) {
     var cssContent = '.amcharts-graph-tank-remainder .amcharts-graph-column-bottom {display: none}';
-    
+
     return {
         restrict: 'E',
         replace: true,
@@ -24,36 +46,36 @@ function tankLevel(maDashboardsInsertCss, cssInjector) {
             if (maDashboardsInsertCss) {
                 cssInjector.injectStyle(cssContent, this.name);
             }
-            
+
             // post-link
             return function ($scope, $element, attributes) {
             	$scope.classes = {};
-            	
+
                 var options = defaultOptions();
                 var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
                 var max = 100;
                 var tankLevel = 0;
-                
+
                 $scope.$watch('max', function(newValue, oldValue) {
                 	if (newValue === undefined) return;
                 	max = parseFloat(newValue);
                     chart.dataProvider[0].remainder = max - tankLevel;
                     chart.validateData();
                 });
-                
+
                 $scope.$watch('color', function(newValue, oldValue) {
                 	if (newValue === undefined) return;
                 	options.graphs[0].fillColors = newValue;
                     chart.validateData();
                 });
-                
+
                 $scope.$watch('value', function(newValue, oldValue) {
                     tankLevel = newValue || 0;
                     chart.dataProvider[0].tankLevel = tankLevel;
                     chart.dataProvider[0].remainder = max - tankLevel;
                     chart.validateData();
                 });
-                
+
                 $scope.$watch('point.value', function(newValue, oldValue) {
                     var rendered;
                     if ($scope.point && typeof $scope.point.renderedValue === 'string') {
@@ -64,13 +86,13 @@ function tankLevel(maDashboardsInsertCss, cssInjector) {
                         rendered = '';
                     }
                     tankLevel = newValue || 0;
-                    
+
                     chart.dataProvider[0].tankLevel = tankLevel;
                     chart.dataProvider[0].remainder = max - tankLevel;
                     chart.dataProvider[0].renderedValue = rendered;
                     chart.validateData();
                 });
-    
+
                 $scope.$watch('point.enabled', function(newValue) {
                 	var disabled = newValue !== undefined && !newValue;
                 	$scope.classes['point-disabled'] = disabled;

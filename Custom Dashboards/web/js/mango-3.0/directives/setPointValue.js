@@ -5,7 +5,26 @@
 
 define(['require'], function(require) {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maSetPointValue
+ * @restrict E
+ * @description
+ * `<ma-set-point-value point="myPoint"></ma-set-point-value>`
+ * - `<ma-set-point-value>` will create an input element to set the value of a data point.
+ * - The data point must be settable.
+ * - It can handle `numeric`, `binary`, and `multistate` point types and will display an appropriate interface element for each.
+ * - Alternatively, you can set the value of a point by calling the `setValue` method on a point object.
+ This function can be called from within an `ng-click` expression for example. (using this method does not require `<ma-set-point-value>`)
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/setting-point-values/set-point)
+ *
+ * @param {object} point Input the point object of a settable data point.
+ *
+ * @usage
+ * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
+ <ma-set-point-value point="myPoint"></ma-set-point-value>
+ *
+ */
 function setPointValue(Translate, $q, $injector) {
     return {
         restrict: 'E',
@@ -21,7 +40,7 @@ function setPointValue(Translate, $q, $injector) {
         },
         link: function($scope) {
         	$scope.input = {};
-        	
+
         	$scope.defaultBinaryOptions = [];
         	var trPromise = $q.all([Translate.tr('common.false'), Translate.tr('common.true')]).then(function(trs) {
         		$scope.defaultBinaryOptions.push({
@@ -33,21 +52,21 @@ function setPointValue(Translate, $q, $injector) {
 					label: trs[1]
 				});
 			});
-        	
+
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
         		delete $scope.input.value;
         		delete $scope.result;
-        		
+
         		var locator = $scope.point.pointLocator;
         		var type = locator.dataType;
         		var textRenderer = $scope.point.textRenderer;
         		$scope.options = null;
-        		
+
         		if (type === 'MULTISTATE') {
         			var values = locator.values;
         			var i;
-        			
+
         			$scope.options = [];
         			for (i = 0; i < values.length; i++) {
         				var renderer = $scope.point.valueRenderer(values[i]);

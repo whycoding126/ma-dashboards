@@ -5,6 +5,31 @@
 
 define([], function() {
 'use strict';
+/**
+ * @ngdoc directive
+ * @name maDashboards.maPointHierarchy
+ * @restrict E
+ * @description
+ * `<ma-point-hierarchy path="[]" hierarchy="folder"></ma-point-hierarchy>`
+ * - Use `<ma-point-hierarchy>` to query the point hierarchy.
+ * - `<ma-point-hierarchy>` accepts an array of strings into its `path` attribute.
+ * - You can pass plain strings into this array or, use * as a wildcard for all subfolders,
+ or separate multiple folders by a | character.
+ * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/point-hierarchy/display-tree)
+ *
+ * @param {array} path Inputs an array targeting the folder(s) in the point hierarchy to access.
+ * @param {object} hierarchy Outputs a nested object outlining the portion of the point hierarchy
+ specified by the path.
+ * @param {array=} points Outputs an array of point objects specified under the given path.
+ This point array can be used with a chart ([View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/point-hierarchy/line-chart))
+* @param {boolean=} subfolders If set to `false`, `points` will only return points that are contained directly as children in the target folders.
+By default this is set to `true` and all descendant points are given, even those within subfolders. 
+ *
+ * @usage
+ * <ma-point-hierarchy path="['Top Level Folder','Subfolder 1 | Subfolder 2']" hierarchy="hierarchy" points="points">
+ </ma-point-hierarchy>
+ *
+ */
 
 function pointHierarchy(PointHierarchy) {
     return {
@@ -22,13 +47,13 @@ function pointHierarchy(PointHierarchy) {
                     delete $scope.points;
                     return;
                 }
-                
+
                 if (typeof value === 'string') {
                     path = path.split(',');
                 }
-                
+
                 var subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
-                
+
             	$scope.hierarchy = path.length ?
             	        PointHierarchy.byPath({path: path, subfolders: subfolders}) :
             	        PointHierarchy.getRoot({subfolders: subfolders});
@@ -36,7 +61,7 @@ function pointHierarchy(PointHierarchy) {
             	    delete $scope.hierarchy;
                     delete $scope.points;
             	});
-            	
+
             	// only do the work if we are actually going to use it
             	if (attrs.points !== undefined) {
             	    $scope.hierarchy.$promise.then(function(folder) {
@@ -46,7 +71,7 @@ function pointHierarchy(PointHierarchy) {
             }, true);
         }
     };
-    
+
     function getPoints(folder) {
         var points = [];
         Array.prototype.push.apply(points, folder.points);

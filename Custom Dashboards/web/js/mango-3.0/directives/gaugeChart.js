@@ -7,7 +7,7 @@ define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maGuageChart
+ * @name maDashboards.maGuageChart**
  * @restrict E
  * @description
  * `<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>`
@@ -136,7 +136,7 @@ function gaugeChart() {
             $scope.$watch('point.value', function(newValue, oldValue) {
                 // if gauge already has value set and newValue is undefined just ignore
                 if (newValue === undefined && chart.arrows[0].value) return;
-                
+
                 chart.arrows[0].setValue(newValue || 0);
                 var rendered;
                 if ($scope.point && typeof $scope.point.renderedValue === 'string') {

@@ -5,7 +5,18 @@
 
 define(['jquery', 'angular'], function($, angular) {
 'use strict';
-
+/**
+ * @ngdoc directive
+ * @name maDashboards.maTr**
+ * @restrict A
+ * @description
+ * `<span ma-tr="cdashboards.v3.dox.input"></span>`
+ * - Sets the text within an element to the translation set for the current language
+ * - Translations are written in `web/modules/dashboards/classes/i18n.properties` file
+ *
+ * @usage
+ * <span ma-tr="cdashboards.v3.dox.input"></span>
+ */
 function maTr(Translate) {
     return {
         restrict: 'A',
@@ -27,7 +38,7 @@ function maTr(Translate) {
                 trKey = newKey;
                 trArgs = newArgs;
                 if (!trKey) return;
-                
+
 	            Translate.tr(trKey, trArgs || []).then(function(translation) {
 	            	return {
 	            		failed: false,
@@ -57,7 +68,7 @@ function maTr(Translate) {
 	            	    $elem.find('label').text(text);
 	            	    return;
 	            	}
-	            	
+
 	            	var firstChild = $elem.contents().length && $elem.contents().get(0);
 	            	// if first child is a text node set the text value
 	                if (firstChild && firstChild.nodeType === 3) {
