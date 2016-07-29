@@ -34,7 +34,11 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
-                } else if (!menuItem.templateUrl && !menuItem.template) {
+                }
+                if (menuItem.templateUrl) {
+                    delete menuItem.template;
+                }
+                if (!menuItem.templateUrl && !menuItem.template) {
                     menuItem.template = '<div ui-view></div>';
                     menuItem['abstract'] = true;
                 }

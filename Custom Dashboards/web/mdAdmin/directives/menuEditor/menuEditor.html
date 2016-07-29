@@ -1,4 +1,4 @@
-<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event, null, undefined, storeObject)">
+<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event, null, null, storeObject)">
   <md-icon>add</md-icon>
 </md-button>
 
@@ -32,7 +32,7 @@
           <td ng-bind="menuItem.name"></td>
           <td ng-bind="menuItem.url" ng-if="$mdMedia('gt-md')"></td>
           <td>
-            <md-button class="md-icon-button" ng-click="editItem($event, menuItem, undefined, storeObject)">
+            <md-button class="md-icon-button" ng-click="editItem($event, menuItem, null, storeObject)">
               <md-icon>edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="storeObject.jsonData.menuItems.splice($index,1)" ng-disabled="menuItem.builtIn">

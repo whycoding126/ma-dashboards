@@ -14,8 +14,8 @@
       <p style="margin-top:0"><small>Note: Changes to the State URL, the linked custom page and the template URL will not take effect until the page is reloaded.</small></p>
       <md-input-container>
           <label>Parent item</label>
-          <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()">
-            <md-option ng-value="">None (Top level)</md-option>
+          <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.name'}">
+            <md-option ng-value="null">None (Top level)</md-option>
             <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems">
               <span ng-if="menuItem.menuText" ng-bind="menuItem.menuText"></span>
               <span ng-if="!menuItem.menuText && menuItem.menuTr" ma-tr="{{menuItem.menuTr}}"></span>
@@ -47,13 +47,13 @@
           </div>
       </md-input-container>
 
-      <md-checkbox ng-model="editCtrl.item.linkToPage" ng-true-value="true" ng-false-value="">
+      <md-checkbox ng-model="editCtrl.item.linkToPage">
         Link to custom page
       </md-checkbox>
       
       <md-input-container ng-if="editCtrl.item.linkToPage">
           <label>Choose a custom page</label>
-          <md-select name="pageXid" required ng-model="editCtrl.item.pageXid">
+          <md-select name="pageXid" required ng-model="editCtrl.item.pageXid" ng-model-options="{trackBy: '$value.xid'}">
             <md-option ng-repeat="page in pages" ng-value="page.xid" ng-bind="page.name"></md-option>
           </md-select>
           <div ng-messages="menuItemEditForm.pageXid.$error">
