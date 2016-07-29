@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody md-body>
-      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems track by menuItem.name">
+      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems track by $index">
           <td>
             <md-button class="md-icon-button" ng-click="menuEditor.expanded = menuItem.name" ng-show="menuItem.children && menuEditor.expanded !== menuItem.name">
               <md-icon>expand_more</md-icon>
@@ -48,7 +48,7 @@
             </md-button>
           </td>
       </tr>
-      <tr ng-if="menuItem.children && menuEditor.expanded === menuItem.name" ng-repeat-end ng-repeat="child in menuItem.children" class="child-menu-item">
+      <tr ng-if="menuItem.children && menuEditor.expanded === menuItem.name" ng-repeat-end ng-repeat="child in menuItem.children track by $index" class="child-menu-item">
           <td></td>
           <td ng-if="$mdMedia('gt-sm')">
             <md-switch ng-model="child.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>

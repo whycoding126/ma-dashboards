@@ -46,7 +46,7 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util) {
         };
         storeObject.editPermission = 'edit-pages';
         storeObject.readPermission = 'user';
-        
+        storeObject.isNew = true;
         return storeObject;
     };
 

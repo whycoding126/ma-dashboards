@@ -25,6 +25,8 @@
     <input name="editPermission" ng-model="editPageContent.editPermission">
 </md-input-container>
 
+<md-button ng-click="editMenuItem($event, editPageContent.xid, null, null, true, 'pageXid')" ng-disabled="editPageContent.isNew">Edit</md-button>
+
 <span ng-bind="editPageContent.xid"></span>
 
 <div layout="row" style="margin-bottom:10px;">
@@ -36,11 +38,11 @@
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button ng-click="loadPage()">
+    <md-button ng-click="loadPage()" ng-disabled="editPageContent.isNew">
         <md-icon>undo</md-icon>
         <span ma-tr="dashboards.v3.dox.revert"></span>
      </md-button>
-     <md-button class="md-raised md-warn" ng-click="deletePage()">
+     <md-button class="md-raised md-warn" ng-click="deletePage()" ng-disabled="editPageContent.isNew">
         <md-icon>delete</md-icon>
         <span ma-tr="common.delete"></span>
      </md-button>
@@ -74,5 +76,8 @@
         </md-card>
     </div>
 </div>
+
+<pre ng-bind="editPageContent | json"></pre>
+<pre ng-bind="pageEditForm | json"></pre>
 
 </form>

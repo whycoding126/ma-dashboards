@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
@@ -48,22 +48,26 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             };
             
             $scope.savePage = function savePage() {
-                return $scope.editPageContent.$save().then(function() {
-                    var summary = contentToPageSummary($scope.editPageContent);
-                    for (var i = 0; i < $scope.pages.length; i++) {
-                        var found = false;
-                        if ($scope.pages[i].xid === $scope.editPageContent.xid) {
-                            $scope.pages.splice(i, 1, summary);
-                            found = true;
-                            break;
+                if ($scope.pageEditForm.$valid) {
+                    return $scope.editPageContent.$save().then(function() {
+                        var summary = contentToPageSummary($scope.editPageContent);
+                        for (var i = 0; i < $scope.pages.length; i++) {
+                            var found = false;
+                            if ($scope.pages[i].xid === $scope.editPageContent.xid) {
+                                $scope.pages.splice(i, 1, summary);
+                                found = true;
+                                break;
+                            }
                         }
-                    }
-                    if (!found) {
-                        $scope.pages.push(summary)
-                    }
-                    return pagesStore.$save().$promise;
-                });
+                        if (!found) {
+                            $scope.pages.push(summary)
+                        }
+                        return pagesStore.$save().$promise;
+                    });
+                }
             };
+            
+            $scope.editMenuItem = MenuEditor.editMenuItem;
             
             var updateHandler = function updateHandler(event, payload) {
                 $scope.$apply(function() {
@@ -90,7 +94,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor'];
 
 return pageEditor;
 

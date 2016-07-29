@@ -19,7 +19,7 @@ var liveEditor = function($templateRequest, $sce) {
             src: '@',
             text: '=liveEditor',
             mode: '@',
-            theme: '@
+            theme: '@'
         },
         controller: function($scope, $element) {
             

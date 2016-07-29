@@ -160,7 +160,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.editPages',
         templateUrl: 'views/dashboard/editPages.html',
         menuTr: 'dashboards.v3.dox.editPages',
-        menuIcon: 'fa fa-pencil',
+        menuIcon: 'fa fa-magic',
         permission: 'edit-pages'
     },
     {
@@ -179,7 +179,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.examples.playAreaBig',
         templateUrl: 'views/examples/playAreaBig.html',
         url: '/play-area-big',
-        menuTr: 'dashboards.v3.dox.playArea',
+        menuTr: 'dashboards.v3.dox.playAreaBig',
         menuHidden: true,
         menuIcon: 'fa fa-magic'
     },

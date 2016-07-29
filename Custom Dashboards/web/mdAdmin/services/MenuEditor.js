@@ -11,14 +11,14 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
     function MenuEditor() {
     }
     
-    MenuEditor.prototype.editMenuItem = function editMenuItem(event, origItem, parent, store, save) {
+    MenuEditor.prototype.editMenuItem = function editMenuItem(event, origItem, parent, store, save, searchBy) {
         var storePromise = store ? $q.when(store) : Menu.getMenu();
         return storePromise.then(function(menuStore) {
             var menuItems = menuStore.jsonData.menuItems;
             
-            if (typeof origItem === 'string') {
+            if (searchBy) {
                 Menu.eachMenuItem(menuItems, null, function(m, p) {
-                    if (m.xid === origItem) {
+                    if (m[searchBy] === origItem) {
                         origItem = m;
                         parent = p;
                         return true;
@@ -26,10 +26,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 });
             }
 
-            var item = origItem ? angular.copy(origItem) : {
+            var item = (origItem && typeof origItem === 'object') ? angular.copy(origItem) : {
                 isNew: true,
                 name: 'dashboard.',
                 url: '/',
+                pageXid: null,
                 linkToPage: true
             };
             item.parent = parent;
@@ -110,7 +111,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
             }).then(function() {
                 if (save)
                     return menuStore.$save().then(function(store) {
-                        mangoState.addState(item);
+                        if (!item.deleted)
+                            mangoState.addStates([item]);
                         return store;
                     });
                 else
