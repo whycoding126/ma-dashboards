@@ -156,12 +156,24 @@ mdAdminApp.constant('MENU_ITEMS', [
         permission: 'edit-menus'
     },
     {
-        url: '/edit-pages',
+        url: '/edit-pages/{pageXid}',
         name: 'dashboard.editPages',
         templateUrl: 'views/dashboard/editPages.html',
         menuTr: 'dashboards.v3.dox.editPages',
         menuIcon: 'fa fa-magic',
-        permission: 'edit-pages'
+        permission: 'edit-pages',
+        params: {
+            markup: null
+        }
+    },
+    {
+        url: '/view-page/{pageXid}',
+        name: 'dashboard.viewPage',
+        template: '<page-view xid="{{pageXid}}"></page-view>',
+        menuHidden: true,
+        controller: function ($scope, $stateParams) {
+            $scope.pageXid = $stateParams.pageXid;
+        }
     },
     {
         url: '/examples',
@@ -636,6 +648,8 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $h
         events: true,
     });
 
+    //$stateProvider.reloadOnSearch = false;
+    
     $urlRouterProvider.otherwise('/dashboard/home');
     mangoStateProvider.addStates(MENU_ITEMS);
 

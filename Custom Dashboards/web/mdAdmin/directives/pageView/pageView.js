@@ -6,17 +6,20 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageView = function(Page, jsonStoreEventManager) {
+var pageView = function(Page, jsonStoreEventManager, User) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
         scope: {
             xid: '@'
         },
-        template: '<div live-preview="markup"></div>',
+        templateUrl: require.toUrl('./pageView.html'),
         link: function($scope, $element) {
-            Page.loadPage($scope.xid).then(function(store) {
-                $scope.markup = store.jsonData.markup;
+            $scope.user = User.current();
+            
+            Page.loadPage($scope.xid).then(function(page) {
+                $scope.page = page;
+                $scope.markup = page.jsonData.markup;
             });
 
             jsonStoreEventManager.smartSubscribe($scope, $scope.xid, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
@@ -26,7 +29,7 @@ var pageView = function(Page, jsonStoreEventManager) {
     };
 };
 
-pageView.$inject = ['Page', 'jsonStoreEventManager'];
+pageView.$inject = ['Page', 'jsonStoreEventManager', 'User'];
 
 return pageView;
 

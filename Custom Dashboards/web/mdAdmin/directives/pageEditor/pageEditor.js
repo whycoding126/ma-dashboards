@@ -6,22 +6,24 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
         scope: {},
         templateUrl: require.toUrl('./pageEditor.html'),
         link: function($scope, $element) {
+            
             $scope.user = User.current();
             
             var pagesStore;
             
-            $scope.createNewPage = function createNewPage() {
+            $scope.createNewPage = function createNewPage(markup) {
                 this.editPageContent = Page.newPageContent();
+                this.editPageContent.jsonData.markup = markup || '';
                 this.editPage = contentToPageSummary(this.editPageContent);
+                $state.go('.', {pageXid: null}, {location: 'replace', notify: false});
             }
-            $scope.createNewPage();
             
             function setPages(store) {
                 pagesStore = store;
@@ -30,11 +32,23 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             
             Page.getPages().then(setPages);
             
-            $scope.loadPage = function loadPage() {
-                Page.loadPage($scope.editPage.xid).then(function(store) {
+            $scope.loadPage = function loadPage(xid) {
+                return Page.loadPage(xid || $scope.editPage.xid).then(function(store) {
+                    $state.go('.', {pageXid: store.xid}, {location: 'replace', notify: false});
                     $scope.editPageContent = store;
+                    return store;
+                }, function() {
+                    $scope.createNewPage();
                 });
             };
+            
+            if ($stateParams.pageXid) {
+                $scope.loadPage($stateParams.pageXid).then(function(editPageContent) {
+                    $scope.editPage = contentToPageSummary(editPageContent);
+                });
+            } else {
+                $scope.createNewPage($stateParams.markup);
+            }
             
             $scope.deletePage = function deletePage() {
                 return $scope.editPageContent.$delete().then(function() {
@@ -46,7 +60,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                     }
                     $scope.createNewPage();
                     
-                    return pagesStore.$save().$promise.then(setPages);
+                    return pagesStore.$save().then(setPages);
                 });
             };
             
@@ -67,7 +81,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                             pages.push(summary)
                         }
                         
-                        return pagesStore.$save().$promise.then(setPages);
+                        return pagesStore.$save().then(setPages);
                     });
                 }
             };
@@ -92,7 +106,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state'];
 
 return pageEditor;
 

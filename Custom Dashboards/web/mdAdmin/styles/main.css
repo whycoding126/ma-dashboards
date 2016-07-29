@@ -419,3 +419,14 @@ menu-editor td .md-button.md-icon-button {
 menu-editor .child-menu-item {
   background-color: lightgrey;
 }
+
+page-view {
+  position: relative;
+  display: block;
+}
+
+.edit-page-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
