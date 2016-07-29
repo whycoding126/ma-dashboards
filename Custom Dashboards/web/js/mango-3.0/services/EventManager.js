@@ -180,6 +180,24 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	    this.updateSubscriptions(xid);
 	};
 	
+	/**
+	 * Subscribes to the event type for the XID but also unsubscribes automatically when the given $scope
+	 * is destroyed and does scope apply for the eventHandler function
+	 */
+	EventManager.prototype.smartSubscribe = function($scope, xid, eventTypes, eventHandler) {
+	    var appliedHandler = scopeApply.bind(null, $scope, eventHandler);
+	    this.subscribe(xid, eventTypes, appliedHandler);
+        $scope.$on('$destroy', function() {
+            this.unsubscribe(xid, eventTypes, appliedHandler);
+        }.bind(this));
+        
+        function scopeApply($scope, fn) {
+            var args = Array.prototype.slice.call(arguments, 2);
+            var boundFn = fn.bind.apply(fn, [null].concat(args));
+            $scope.$apply(boundFn);
+        }
+	};
+	
 	EventManager.prototype.updateSubscriptions = function(xid) {
 		if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
 		

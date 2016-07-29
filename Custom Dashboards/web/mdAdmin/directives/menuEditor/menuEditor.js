@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia) {
+var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState, MenuEditor) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
@@ -37,94 +37,20 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia) {
                         menuItems = storeObject.jsonData.menuItems;
                     });
                 });
-            }
+            };
             
-            $scope.editItem = function editItem(event, origItem, parent, menuItemArray, menuItemIndex) {
-                var item;
-                if (!origItem) {
-                    item = {
-                        isNew: true,
-                        name: 'dashboard.',
-                        url: '/'
-                    };
-                } else {
-                    item = angular.copy(origItem);
-                }
-                item.parent = parent;
-                
-                $mdDialog.show({
-                    bindToController: true,
-                    controllerAs: 'editCtrl',
-                    locals: {
-                        item: item,
-                        menuItems: menuItems
-                    },
-                    controller: function editItemController($scope, $mdDialog) {
-                        $scope.cancel = function cancel() {
-                            $mdDialog.cancel();
-                        };
-                        $scope.save = function save() {
-                            if ($scope.menuItemEditForm.$valid) {
-                                $mdDialog.hide();
-                            }
-                        };
-                        $scope['delete'] = function() {
-                            menuItemArray.splice(menuItemIndex, 1);
-                            if (parent && !parent.children.length) {
-                                delete parent.children;
-                            }
-                            $mdDialog.cancel();
-                        };
-                        $scope.parentChanged = function() {
-                            if (this.item.isNew) {
-                                this.item.name = this.item.parent.name + '.'
-                            }
-                        }.bind(this);
-                    },
-                    templateUrl: require.toUrl('./editItem.html'),
-                    parent: angular.element(document.body),
-                    targetEvent: event,
-                    clickOutsideToClose: true,
-                    fullscreen: true
-                }).then(function() {
-                    var newParent = item.parent;
-                    var isNew = item.isNew;
-                    delete item.parent;
-                    delete item.isNew;
-                    
-                    // remove item from old parents children array
-                    if (newParent !== parent) {
-                        menuItemArray.splice(menuItemIndex, 1);
-                    }
-                    if (parent && !parent.children.length) {
-                        delete parent.children;
-                    }
-                    
-                    // copy item properties back onto original item
-                    if (!isNew) {
-                        angular.copy(item, origItem);
-                        item = origItem;
-                    }
-                    
-                    // add item back into parents children or into the menuItems array
-                    if (newParent) {
-                        if (!newParent.children)
-                            newParent.children = [];
-                        newParent.children.push(item);
-                    } else {
-                        menuItems.push(item);
-                    }
-                });
-            }
+            $scope.editItem = MenuEditor.editMenuItem;
             
             $scope.saveMenu = function saveMenu() {
-                $scope.storeObject.$save();
+                $scope.storeObject.$save().then(function(store) {
+                    mangoState.addStates(store.jsonData.menuItems);
+                });
             }
         }
     };
 };
 
-menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia'];
+menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'mangoState', 'MenuEditor'];
 
 return menuEditor;
 

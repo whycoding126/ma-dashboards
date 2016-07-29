@@ -1,4 +1,4 @@
-<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event)">
+<md-button class="md-fab md-fab-bottom-right" style="position:fixed !important;" ng-click="editItem($event, null, undefined, storeObject)">
   <md-icon>add</md-icon>
 </md-button>
 
@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody md-body>
-      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems">
+      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems track by menuItem.name">
           <td>
             <md-button class="md-icon-button" ng-click="menuEditor.expanded = menuItem.name" ng-show="menuItem.children && menuEditor.expanded !== menuItem.name">
               <md-icon>expand_more</md-icon>
@@ -32,7 +32,7 @@
           <td ng-bind="menuItem.name"></td>
           <td ng-bind="menuItem.url" ng-if="$mdMedia('gt-md')"></td>
           <td>
-            <md-button class="md-icon-button" ng-click="editItem($event, menuItem, undefined, storeObject.jsonData.menuItems, $index)">
+            <md-button class="md-icon-button" ng-click="editItem($event, menuItem, undefined, storeObject)">
               <md-icon>edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="storeObject.jsonData.menuItems.splice($index,1)" ng-disabled="menuItem.builtIn">
@@ -58,7 +58,7 @@
           <td ng-bind="child.name"></td>
           <td ng-bind="child.url" ng-if="$mdMedia('gt-md')"></td>
           <td>
-            <md-button class="md-icon-button" ng-click="editItem($event, child, menuItem, menuItem.children, $index)">
+            <md-button class="md-icon-button" ng-click="editItem($event, child, menuItem, storeObject)">
               <md-icon>edit</md-icon>
             </md-button>
             <md-button class="md-icon-button" ng-click="menuItem.children.splice($index,1)" ng-disabled="child.builtIn">

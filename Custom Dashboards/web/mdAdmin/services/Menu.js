@@ -31,7 +31,7 @@ function MenuFactory(mangoState, MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_XID) {
         storeObject.readPermission = 'user';
         
         var menuItems = angular.copy(MENU_ITEMS);
-        eachMenuItem(menuItems, null, function(menuItem) {
+        this.eachMenuItem(menuItems, null, function(menuItem) {
             menuItem.builtIn = true;
         });
         storeObject.jsonData.menuItems = menuItems;
@@ -39,11 +39,14 @@ function MenuFactory(mangoState, MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_XID) {
         return storeObject;
     };
     
-    function eachMenuItem(menuItems, parent, fn) {
-        angular.forEach(menuItems, function(menuItem, index) {
-            fn(menuItem);
-            eachMenuItem(menuItem.children, menuItem, fn);
-        });
+    Menu.prototype.eachMenuItem = function eachMenuItem(menuItems, parent, fn) {
+        if (!menuItems) return;
+        for (var i = 0; i < menuItems.length; i++) {
+            var menuItem = menuItems[i];
+            var result = fn(menuItem, parent, menuItems, i);
+            if (result) return result;
+            this.eachMenuItem(menuItem.children, menuItem, fn);
+        }
     }
 
     return new Menu();

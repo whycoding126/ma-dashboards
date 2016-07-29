@@ -31,7 +31,10 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
     this.addStates = function(menuItems, parent) {
         angular.forEach(menuItems, function(menuItem, area) {
             if (menuItem.name) {
-                if (!menuItem.templateUrl && !menuItem.template) {
+                if (menuItem.linkToPage) {
+                    delete menuItem.templateUrl;
+                    menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
+                } else if (!menuItem.templateUrl && !menuItem.template) {
                     menuItem.template = '<div ui-view></div>';
                     menuItem['abstract'] = true;
                 }
@@ -55,7 +58,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
             },
             addStates: this.addStates
         }
-    }];
+    }.bind(this)];
 }]);
 
 mdAdminApp.constant('MENU_ITEMS', [
@@ -72,21 +75,31 @@ mdAdminApp.constant('MENU_ITEMS', [
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
+                           './services/Page',
+                           './services/MenuEditor',
                            './directives/menu/menu',
                            './directives/menu/menuLink',
                            './directives/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
-                           './services/Page',
-                           './directives/pageEditor/pageEditor'
-                ], function(Menu, menu, menuLink, menuToggle, menuEditor, Page, pageEditor) {
-                    angular.module('dashboard', [])
+                           './directives/pageEditor/pageEditor',
+                           './directives/liveEditor/liveEditor',
+                           './directives/liveEditor/livePreview',
+                           './directives/liveEditor/dualPaneEditor',
+                           './directives/pageView/pageView'
+                ], function(Menu, Page, MenuEditor, menu, menuLink, menuToggle, menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView) {
+                    angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
+                        .factory('Page', Page)
+                        .factory('MenuEditor', MenuEditor)
                         .directive('maMenu', menu)
                         .directive('menuLink', menuLink)
                         .directive('menuToggle', menuToggle)
                         .directive('menuEditor', menuEditor)
-                        .factory('Page', Page)
-                        .directive('pageEditor', pageEditor);
+                        .directive('pageEditor', pageEditor)
+                        .directive('liveEditor', liveEditor)
+                        .directive('livePreview', livePreview)
+                        .directive('dualPaneEditor', dualPaneEditor)
+                        .directive('pageView', pageView);
                     $ocLazyLoad.inject('dashboard');
                 });
             }],
@@ -144,40 +157,12 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/editPages.html',
         menuTr: 'dashboards.v3.dox.editPages',
         menuIcon: 'fa fa-pencil',
-        permission: 'edit-pages',
-        resolve: {
-            loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/liveEditor/liveEditor',
-                           './directives/liveEditor/livePreview',
-                           './directives/liveEditor/dualPaneEditor'],
-                function(liveEditor, livePreview, dualPaneEditor) {
-                    angular.module('dashboard.examples', ['ui.ace'])
-                        .directive('liveEditor', liveEditor)
-                        .directive('livePreview', livePreview)
-                        .directive('dualPaneEditor', dualPaneEditor);
-                    $ocLazyLoad.inject('dashboard.examples');
-                });
-            }]
-        }
+        permission: 'edit-pages'
     },
     {
         url: '/examples',
         name: 'dashboard.examples',
-        menuHidden: true,
-        resolve: {
-            loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/liveEditor/liveEditor',
-                           './directives/liveEditor/livePreview',
-                           './directives/liveEditor/dualPaneEditor'],
-                function(liveEditor, livePreview, dualPaneEditor) {
-                    angular.module('dashboard.examples', ['ui.ace'])
-                        .directive('liveEditor', liveEditor)
-                        .directive('livePreview', livePreview)
-                        .directive('dualPaneEditor', dualPaneEditor);
-                    $ocLazyLoad.inject('dashboard.examples');
-                });
-            }]
-        }
+        menuHidden: true
     },
     {
         url: '/play-area',

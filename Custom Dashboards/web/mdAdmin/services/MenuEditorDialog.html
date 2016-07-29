@@ -11,6 +11,7 @@
   </md-toolbar>
   <md-dialog-content>
     <div class="md-dialog-content" layout="column">
+      <p style="margin-top:0"><small>Note: Changes to the State URL, the linked custom page and the template URL will not take effect until the page is reloaded.</small></p>
       <md-input-container>
           <label>Parent item</label>
           <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()">
@@ -22,6 +23,11 @@
             </md-option>
           </md-select>
       </md-input-container>
+      
+      <md-switch ng-model="editCtrl.item.menuHidden" ng-true-value="" ng-false-value="true">
+          Show menu item
+      </md-switch>
+        
       <md-input-container>
           <label>State name</label>
           <input name="stateName" required pattern="^(\w+\.)*\w+$"
@@ -40,17 +46,31 @@
             <div ng-message="pattern" ma-tr="dashboards.v3.app.urlPattern"></div>
           </div>
       </md-input-container>
-      <md-input-container>
-          <label>Template URL</label>
-          <input name="templateUrl" required ng-model="editCtrl.item.templateUrl" ng-disabled="editCtrl.item.builtIn">
-          <div ng-messages="menuItemEditForm.templateUrl.$error">
+
+      <md-checkbox ng-model="editCtrl.item.linkToPage" ng-true-value="true" ng-false-value="">
+        Link to custom page
+      </md-checkbox>
+      
+      <md-input-container ng-if="editCtrl.item.linkToPage">
+          <label>Choose a custom page</label>
+          <md-select name="pageXid" required ng-model="editCtrl.item.pageXid">
+            <md-option ng-repeat="page in pages" ng-value="page.xid" ng-bind="page.name"></md-option>
+          </md-select>
+          <div ng-messages="menuItemEditForm.pageXid.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
           </div>
       </md-input-container>
+      
+      <md-input-container ng-if="!editCtrl.item.linkToPage">
+          <label>Template URL</label>
+          <input name="templateUrl" ng-model="editCtrl.item.templateUrl" ng-disabled="editCtrl.item.builtIn">
+      </md-input-container>
+      
       <md-input-container>
           <label>Menu text</label>
           <input name="menuText" ng-model="editCtrl.item.menuText">
       </md-input-container>
+      
       <div layout="row" ng-hide="editCtrl.item.menuText">
         <md-input-container flex="70">
             <label>Menu text translation key</label>
@@ -61,6 +81,7 @@
             <input ng-model="translation" ng-disabled="true">
         </md-input-container>
       </div>
+      
       <md-input-container flex>
           <label>Menu icon name</label>
           <md-icon class="fa-fw {{editCtrl.item.menuIcon}}"></md-icon>
@@ -70,9 +91,6 @@
           <label>Permission required</label>
           <input name="permission" ng-model="editCtrl.item.permission">
       </md-input-container>
-      <md-switch ng-model="editCtrl.item.menuHidden" ng-true-value="" ng-false-value="true">
-          Show on menu
-      </md-switch>
     </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
