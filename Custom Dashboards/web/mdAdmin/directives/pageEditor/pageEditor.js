@@ -23,10 +23,12 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             }
             $scope.createNewPage();
             
-            Page.getPages().then(function(store) {
+            function setPages(store) {
                 pagesStore = store;
                 $scope.pages = store.jsonData.pages;
-            });
+            }
+            
+            Page.getPages().then(setPages);
             
             $scope.loadPage = function loadPage() {
                 Page.loadPage($scope.editPage.xid).then(function(store) {
@@ -43,7 +45,8 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                         }
                     }
                     $scope.createNewPage();
-                    return pagesStore.$save().$promise;
+                    
+                    return pagesStore.$save().$promise.then(setPages);
                 });
             };
             
@@ -51,34 +54,29 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 if ($scope.pageEditForm.$valid) {
                     return $scope.editPageContent.$save().then(function() {
                         var summary = contentToPageSummary($scope.editPageContent);
-                        for (var i = 0; i < $scope.pages.length; i++) {
+                        var pages = pagesStore.jsonData.pages;
+                        for (var i = 0; i < pages.length; i++) {
                             var found = false;
-                            if ($scope.pages[i].xid === $scope.editPageContent.xid) {
-                                $scope.pages.splice(i, 1, summary);
+                            if (pages[i].xid === $scope.editPageContent.xid) {
+                                pages.splice(i, 1, summary);
                                 found = true;
                                 break;
                             }
                         }
                         if (!found) {
-                            $scope.pages.push(summary)
+                            pages.push(summary)
                         }
-                        return pagesStore.$save().$promise;
+                        
+                        return pagesStore.$save().$promise.then(setPages);
                     });
                 }
             };
             
             $scope.editMenuItem = MenuEditor.editMenuItem;
-            
-            var updateHandler = function updateHandler(event, payload) {
-                $scope.$apply(function() {
-                    pagesStore.jsonData = payload.object.jsonData;
-                    $scope.pages = payload.object.jsonData.pages;
-                });
-            }
-            
-            jsonStoreEventManager.subscribe(CUSTOM_USER_PAGES_XID, SUBSCRIPTION_TYPES, updateHandler);
-            $scope.$on('$destroy', function() {
-                jsonStoreEventManager.unsubscribe(CUSTOM_USER_PAGES_XID, SUBSCRIPTION_TYPES, updateHandler);
+
+            jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_PAGES_XID, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
+                pagesStore.jsonData = payload.object.jsonData;
+                $scope.pages = payload.object.jsonData.pages;
             });
             
             function contentToPageSummary(input) {

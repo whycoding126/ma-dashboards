@@ -16,6 +16,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
         return storePromise.then(function(menuStore) {
             var menuItems = menuStore.jsonData.menuItems;
             
+            // search for the item
             if (searchBy) {
                 Menu.eachMenuItem(menuItems, null, function(m, p) {
                     if (m[searchBy] === origItem) {
@@ -26,13 +27,26 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 });
             }
 
-            var item = (origItem && typeof origItem === 'object') ? angular.copy(origItem) : {
-                isNew: true,
-                name: 'dashboard.',
-                url: '/',
-                pageXid: null,
-                linkToPage: true
-            };
+            var item;
+            if (origItem && typeof origItem === 'object') {
+                // editing an item that was provided or searched for and found
+                item = angular.copy(origItem);
+            } else {
+                // editing a new item
+                item = {
+                    isNew: true,
+                    name: 'dashboard.',
+                    url: '/',
+                    pageXid: null,
+                    linkToPage: true
+                };
+                // item we were searching for was not found
+                // set the property we were looking for on the new item
+                if (searchBy) {
+                    item[searchBy] = origItem;
+                    origItem = null;
+                }
+            }
             item.parent = parent;
             
             return $mdDialog.show({

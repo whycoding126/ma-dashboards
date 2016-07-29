@@ -53,7 +53,8 @@
       
       <md-input-container ng-if="editCtrl.item.linkToPage">
           <label>Choose a custom page</label>
-          <md-select name="pageXid" required ng-model="editCtrl.item.pageXid" ng-model-options="{trackBy: '$value.xid'}">
+          <md-select name="pageXid" required ng-model="editCtrl.item.pageXid">
+            <md-option></md-option>
             <md-option ng-repeat="page in pages" ng-value="page.xid" ng-bind="page.name"></md-option>
           </md-select>
           <div ng-messages="menuItemEditForm.pageXid.$error">
@@ -68,13 +69,19 @@
       
       <md-input-container>
           <label>Menu text</label>
-          <input name="menuText" ng-model="editCtrl.item.menuText">
+          <input name="menuText" ng-model="editCtrl.item.menuText" ng-required="!editCtrl.item.menuHidden && !editCtrl.item.menuTr">
+          <div ng-messages="menuItemEditForm.menuText.$error">
+            <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+          </div>
       </md-input-container>
       
       <div layout="row" ng-hide="editCtrl.item.menuText">
         <md-input-container flex="70">
             <label>Menu text translation key</label>
-            <input name="menuTr" ng-model="editCtrl.item.menuTr" ng-change="translation = (editCtrl.item.menuTr | tr)">
+            <input name="menuTr" ng-model="editCtrl.item.menuTr" ng-change="translation = (editCtrl.item.menuTr | tr)"  ng-required="!editCtrl.item.menuHidden && !editCtrl.item.menuText">
+            <div ng-messages="menuItemEditForm.menuTr.$error">
+              <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+            </div>
         </md-input-container>
         <md-input-container flex="30" ng-init="translation = (editCtrl.item.menuTr | tr)">
             <label>Preview</label>
