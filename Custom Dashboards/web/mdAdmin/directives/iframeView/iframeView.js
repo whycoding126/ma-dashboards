@@ -28,6 +28,7 @@ var iframeView = function() {
                 var iframeHeight = iframeDocument.body.offsetHeight;
                 iFrame.style.height = iframeHeight + 'px';
                 
+                // J.W. no other way of doing this I believe
                 timer = setInterval(function() {
                     var iframeHeight = iframeDocument.body.offsetHeight;
                     iFrame.style.height = iframeHeight + 'px';

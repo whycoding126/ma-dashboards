@@ -185,6 +185,34 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'fa fa-cog'
     },
     {
+        url: '/data-sources',
+        name: 'dashboard.dataSources',
+        template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
+        menuTr: 'header.dataSources',
+        menuIcon: 'fa fa-plug'
+    },
+    {
+        url: '/users',
+        name: 'dashboard.users',
+        template: '<iframe-view src="/users.shtm"></iframe-view>',
+        menuTr: 'header.users',
+        menuIcon: 'fa fa-user'
+    },
+    {
+        url: '/events',
+        name: 'dashboard.events',
+        template: '<iframe-view src="/events.shtm"></iframe-view>',
+        menuTr: 'header.alarms',
+        menuIcon: 'fa fa-bell'
+    },
+    {
+        url: '/import-export',
+        name: 'dashboard.importExport',
+        template: '<iframe-view src="/emport.shtm"></iframe-view>',
+        menuTr: 'header.emport',
+        menuIcon: 'fa fa-expand'
+    },
+    {
         url: '/examples',
         name: 'dashboard.examples',
         menuHidden: true
