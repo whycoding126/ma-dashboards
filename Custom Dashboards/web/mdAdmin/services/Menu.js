@@ -17,12 +17,12 @@ function MenuFactory(MENU_ITEMS, CUSTOM_MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_
         // custom menu items are retrieved on bootstrap, don't get them twice on app startup
         // after first run use the standard JsonStore http request
         if (firstRun) {
+            firstRun = false;
             var menuStore = this.getDefaultMenu();
             if (CUSTOM_MENU_ITEMS) {
                 menuStore.jsonData.menuItems = CUSTOM_MENU_ITEMS;
             }
             return $q.when(menuStore);
-            firstRun = false;
         }
         return JsonStore.get({xid: CUSTOM_USER_MENU_XID}).$promise.then(null, function() {
             // no menu exists in JsonStore, create one
