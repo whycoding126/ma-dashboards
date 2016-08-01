@@ -59,7 +59,7 @@ function maTr(Translate) {
 	            	} else if (tagName === 'INPUT') {
 	            		$elem.attr('placeholder', text);
 	            		return;
-	            	} else if (tagName === 'BUTTON') {
+	            	} else if (tagName === 'BUTTON' || $elem.hasClass('md-button')) {
 	            	    $elem.attr('aria-label', text);
 	            	    // only set aria-label if button already has content
 	            	    if ($elem.contents().length) return;

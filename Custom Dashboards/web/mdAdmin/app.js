@@ -553,6 +553,7 @@ mdAdminApp.constant('MENU_ITEMS', [
 
 mdAdminApp.config([
     'MENU_ITEMS',
+    'CUSTOM_MENU_ITEMS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -561,7 +562,8 @@ mdAdminApp.config([
     '$injector',
     '$compileProvider',
     'mangoStateProvider',
-function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
+function(MENU_ITEMS, CUSTOM_MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider,
+        $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -651,7 +653,11 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $h
     //$stateProvider.reloadOnSearch = false;
     
     $urlRouterProvider.otherwise('/dashboard/home');
+    
+    // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
+    if (CUSTOM_MENU_ITEMS)
+        mangoStateProvider.addStates(CUSTOM_MENU_ITEMS);
 
 }]);
 
@@ -718,8 +724,22 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_TH
 
 }]);
 
-angular.element(document).ready(function() {
-    angular.bootstrap(document.documentElement, ['mdAdminApp']);
+// Get an injector for the maServices app and use the JsonStore service to retrieve the
+// custom user menu items from the REST api prior to bootstrapping the main application.
+// This is so the states can be added to the stateProvider in the config block for the
+// main application. If the states are added after the main app runs then the user may
+// not navigate directly to one of their custom states on startup
+var servicesInjector = angular.injector(['maServices'], true);
+var JsonStore = servicesInjector.get('JsonStore');
+JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
+    return store.jsonData.menuItems;
+}, function() {
+    return null;
+}).then(function(customMenuItems) {
+    mdAdminApp.constant('CUSTOM_MENU_ITEMS', customMenuItems);
+    angular.element(document).ready(function() {
+        angular.bootstrap(document.documentElement, ['mdAdminApp']);
+    });
 });
 
 }); // define

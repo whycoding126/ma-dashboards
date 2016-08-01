@@ -6,20 +6,28 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function MenuFactory(mangoState, MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_XID) {
+function MenuFactory(MENU_ITEMS, CUSTOM_MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_XID, $q) {
 
+    var firstRun = true;
+    
     function Menu() {
     }
     
     Menu.prototype.getMenu = function getMenu() {
+        // custom menu items are retrieved on bootstrap, don't get them twice on app startup
+        // after first run use the standard JsonStore http request
+        if (firstRun) {
+            var menuStore = this.getDefaultMenu();
+            if (CUSTOM_MENU_ITEMS) {
+                menuStore.jsonData.menuItems = CUSTOM_MENU_ITEMS;
+            }
+            return $q.when(menuStore);
+            firstRun = false;
+        }
         return JsonStore.get({xid: CUSTOM_USER_MENU_XID}).$promise.then(null, function() {
             // no menu exists in JsonStore, create one
             return this.getDefaultMenu();
-        }.bind(this)).then(function(storeObject) {
-            var userMenus = storeObject.jsonData.menuItems;
-            mangoState.addStates(userMenus);
-            return storeObject;
-        });
+        }.bind(this));
     };
     
     Menu.prototype.getDefaultMenu = function getDefaultMenu() {
@@ -52,7 +60,7 @@ function MenuFactory(mangoState, MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_XID) {
     return new Menu();
 }
 
-MenuFactory.$inject = ['mangoState', 'MENU_ITEMS', 'JsonStore', 'CUSTOM_USER_MENU_XID'];
+MenuFactory.$inject = ['MENU_ITEMS', 'CUSTOM_MENU_ITEMS', 'JsonStore', 'CUSTOM_USER_MENU_XID', '$q'];
 return MenuFactory;
 
 }); // define
