@@ -24,36 +24,101 @@ var mdAdminApp = angular.module('mdAdminApp', [
 ]);
 
 mdAdminApp.constant('require', require);
+mdAdminApp.constant('CUSTOM_USER_MENU_XID', 'custom-user-menu');
+mdAdminApp.constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages');
 
-mdAdminApp.constant('PAGES', [
+mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
+    this.addStates = function(menuItems, parent) {
+        angular.forEach(menuItems, function(menuItem, area) {
+            if (menuItem.name) {
+                if (menuItem.linkToPage) {
+                    delete menuItem.templateUrl;
+                    menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
+                }
+                if (menuItem.templateUrl) {
+                    delete menuItem.template;
+                }
+                if (!menuItem.templateUrl && !menuItem.template) {
+                    menuItem.template = '<div ui-view></div>';
+                    menuItem['abstract'] = true;
+                }
+
+                try {
+                    $stateProvider.state(menuItem);
+                } catch (error) {
+                    // state already exists
+                }
+            }
+
+            this.addStates(menuItem.children, menuItem);
+        }.bind(this));
+    }
+
+    // runtime dependencies for the service can be injected here, at the provider.$get() function.
+    this.$get = [function() {
+        return {
+            addState: function(name, state) {
+                $stateProvider.state(name, state);
+            },
+            addStates: this.addStates
+        }
+    }.bind(this)];
+}]);
+
+mdAdminApp.constant('MENU_ITEMS', [
     {
-        state: 'dashboard',
+        name: 'dashboard',
         url: '/dashboard',
         templateUrl: 'views/dashboard/main.html',
+        abstract: true,
+        menuHidden: true,
         resolve: {
             auth: ['$rootScope', 'User', function($rootScope, User) {
                 $rootScope.user = User.current();
                 return $rootScope.user.$promise;
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/menu/menuLink',
-                           './directives/menu/menuToggle'
-                ], function(menuLink, menuToggle) {
-                    angular.module('dashboard', [])
+                return rQ(['./services/Menu',
+                           './services/Page',
+                           './services/MenuEditor',
+                           './directives/menu/menu',
+                           './directives/menu/menuLink',
+                           './directives/menu/menuToggle',
+                           './directives/menuEditor/menuEditor',
+                           './directives/pageEditor/pageEditor',
+                           './directives/liveEditor/liveEditor',
+                           './directives/liveEditor/livePreview',
+                           './directives/liveEditor/dualPaneEditor',
+                           './directives/pageView/pageView'
+                ], function(Menu, Page, MenuEditor, menu, menuLink, menuToggle, menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView) {
+                    angular.module('dashboard', ['ui.ace'])
+                        .factory('Menu', Menu)
+                        .factory('Page', Page)
+                        .factory('MenuEditor', MenuEditor)
+                        .directive('maMenu', menu)
                         .directive('menuLink', menuLink)
-                        .directive('menuToggle', menuToggle);
+                        .directive('menuToggle', menuToggle)
+                        .directive('menuEditor', menuEditor)
+                        .directive('pageEditor', pageEditor)
+                        .directive('liveEditor', liveEditor)
+                        .directive('livePreview', livePreview)
+                        .directive('dualPaneEditor', dualPaneEditor)
+                        .directive('pageView', pageView);
                     $ocLazyLoad.inject('dashboard');
                 });
             }],
             dashboardTranslations: ['Translate', function(Translate) {
-                return Translate.loadNamespaces('dashboards');
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }]
         }
     },
     {
-        state: 'login',
+        name: 'login',
         url: '/login',
         templateUrl: 'views/login.html',
+        menuHidden: true,
+        menuIcon: 'fa fa-sign-in',
+        menuTr: 'header.login',
         resolve: {
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/login/login'], function(login) {
@@ -68,465 +133,426 @@ mdAdminApp.constant('PAGES', [
         }
     },
     {
-        state: 'dashboard.home',
+        name: 'dashboard.home',
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'fa fa-home',
-        menuType: 'link'
+        menuIcon: 'fa fa-home'
     },
     {
-        state: 'dashboard.apiErrors',
+        name: 'dashboard.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
-        menuTr: 'dashboards.v3.dox.apiErrors'
+        menuTr: 'dashboards.v3.dox.apiErrors',
+        menuHidden: true,
+        menuIcon: 'fa fa-exclamation-triangle'
     },
     {
-        url: '/examples',
-        state: 'dashboard.examples',
-        resolve: {
-            loadMyFile: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
-                return rQ(['./directives/liveEditor/liveEditor',
-                           './directives/liveEditor/livePreview',
-                           './directives/liveEditor/dualPaneEditor'],
-                function(liveEditor, livePreview, dualPaneEditor) {
-                    angular.module('dashboard.examples', ['ui.ace'])
-                        .directive('liveEditor', liveEditor)
-                        .directive('livePreview', livePreview)
-                        .directive('dualPaneEditor', dualPaneEditor);
-                    $ocLazyLoad.inject('dashboard.examples');
-                });
-            }]
+        url: '/edit-menu',
+        name: 'dashboard.editMenu',
+        templateUrl: 'views/dashboard/editMenu.html',
+        menuTr: 'dashboards.v3.dox.editMenu',
+        menuIcon: 'fa fa-pencil',
+        permission: 'edit-menus'
+    },
+    {
+        url: '/edit-pages/{pageXid}',
+        name: 'dashboard.editPages',
+        templateUrl: 'views/dashboard/editPages.html',
+        menuTr: 'dashboards.v3.dox.editPages',
+        menuIcon: 'fa fa-magic',
+        permission: 'edit-pages',
+        params: {
+            markup: null
         }
     },
     {
+        url: '/view-page/{pageXid}',
+        name: 'dashboard.viewPage',
+        template: '<page-view xid="{{pageXid}}"></page-view>',
+        menuHidden: true,
+        controller: function ($scope, $stateParams) {
+            $scope.pageXid = $stateParams.pageXid;
+        }
+    },
+    {
+        url: '/examples',
+        name: 'dashboard.examples',
+        menuHidden: true
+    },
+    {
         url: '/play-area',
-        state: 'dashboard.examples.playArea',
+        name: 'dashboard.examples.playArea',
         templateUrl: 'views/examples/playArea.html',
         menuTr: 'dashboards.v3.dox.playArea',
-        menuIcon: 'fa fa-magic',
-        menuType: 'link'
+        menuIcon: 'fa fa-magic'
     },
     {
-        state: 'dashboard.examples.playAreaBig',
+        name: 'dashboard.examples.playAreaBig',
         templateUrl: 'views/examples/playAreaBig.html',
         url: '/play-area-big',
-        menuTr: 'dashboards.v3.dox.playArea'
+        menuTr: 'dashboards.v3.dox.playAreaBig',
+        menuHidden: true,
+        menuIcon: 'fa fa-magic'
     },
     {
-        state: 'dashboard.examples.basics',
+        name: 'dashboard.examples.basics',
         url: '/basics',
         menuTr: 'dashboards.v3.dox.basics',
         menuIcon: 'fa fa-info-circle',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.basics.createDashboard',
+                name: 'dashboard.examples.basics.createDashboard',
                 templateUrl: 'views/examples/createDashboard.html',
                 url: '/create-dashboard',
-                menuTr: 'dashboards.v3.dox.createDashboard',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.createDashboard'
             },
             {
-                state: 'dashboard.examples.basics.angular',
+                name: 'dashboard.examples.basics.angular',
                 templateUrl: 'views/examples/angular.html',
                 url: '/angular',
-                menuTr: 'dashboards.v3.dox.angular',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.angular'
             },
             {
-                state: 'dashboard.examples.basics.pointList',
+                name: 'dashboard.examples.basics.pointList',
                 templateUrl: 'views/examples/pointList.html',
                 url: '/point-list',
-                menuTr: 'dashboards.v3.dox.pointList',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pointList'
             },
             {
-                state: 'dashboard.examples.basics.getPointByXid',
+                name: 'dashboard.examples.basics.getPointByXid',
                 templateUrl: 'views/examples/getPointByXid.html',
                 url: '/get-point-by-xid',
-                menuTr: 'dashboards.v3.dox.getPointByXid',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.getPointByXid'
             },
             {
-                state: 'dashboard.examples.basics.dataSourceAndDeviceList',
+                name: 'dashboard.examples.basics.dataSourceAndDeviceList',
                 templateUrl: 'views/examples/dataSourceAndDeviceList.html',
                 url: '/data-source-and-device-list',
-                menuTr: 'dashboards.v3.dox.dataSourceAndDeviceList',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.dataSourceAndDeviceList'
             },
             {
-                state: 'dashboard.examples.basics.liveValues',
+                name: 'dashboard.examples.basics.liveValues',
                 templateUrl: 'views/examples/liveValues.html',
                 url: '/live-values',
-                menuTr: 'dashboards.v3.dox.liveValues',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.liveValues'
             },
             {
-                state: 'dashboard.examples.basics.filters',
+                name: 'dashboard.examples.basics.filters',
                 templateUrl: 'views/examples/filters.html',
                 url: '/filters',
-                menuTr: 'dashboards.v3.dox.filters',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.filters'
             },
             {
-                state: 'dashboard.examples.basics.datePresets',
+                name: 'dashboard.examples.basics.datePresets',
                 templateUrl: 'views/examples/datePresets.html',
                 url: '/date-presets',
-                menuTr: 'dashboards.v3.dox.datePresets',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.datePresets'
             },
             {
-                state: 'dashboard.examples.basics.styleViaValue',
+                name: 'dashboard.examples.basics.styleViaValue',
                 templateUrl: 'views/examples/styleViaValue.html',
                 url: '/style-via-value',
-                menuTr: 'dashboards.v3.dox.styleViaValue',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.styleViaValue'
             },
             {
-                state: 'dashboard.examples.basics.pointValues',
+                name: 'dashboard.examples.basics.pointValues',
                 templateUrl: 'views/examples/pointValues.html',
                 url: '/point-values',
-                menuTr: 'dashboards.v3.dox.pointValues',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pointValues'
             },
             {
-                state: 'dashboard.examples.basics.latestPointValues',
+                name: 'dashboard.examples.basics.latestPointValues',
                 templateUrl: 'views/examples/latestPointValues.html',
                 url: '/latest-point-values',
-                menuTr: 'dashboards.v3.dox.latestPointValues',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.latestPointValues'
             },
             {
-                state: 'dashboard.examples.basics.clocksAndTimezones',
+                name: 'dashboard.examples.basics.clocksAndTimezones',
                 templateUrl: 'views/examples/clocksAndTimezones.html',
                 url: '/clocks-and-timezones',
-                menuTr: 'dashboards.v3.dox.clocksAndTimezones',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.clocksAndTimezones'
             }
         ]
     },
     {
-        state: 'dashboard.examples.templates',
+        name: 'dashboard.examples.templates',
         url: '/templates',
         menuTr: 'dashboards.v3.dox.templates',
         menuIcon: 'fa fa-file-o',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.templates.angularMaterial',
+                name: 'dashboard.examples.templates.angularMaterial',
                 templateUrl: 'views/examples/angularMaterial.html',
                 url: '/angular-material',
-                menuText: 'Angular Material',
-                menuType: 'link'
+                menuText: 'Angular Material'
             },
             {
-                state: 'dashboard.examples.templates.bootstrap',
+                name: 'dashboard.examples.templates.bootstrap',
                 templateUrl: 'views/examples/bootstrap.html',
                 url: '/bootstrap',
-                menuText: 'Bootstrap 3',
-                menuType: 'link'
+                menuText: 'Bootstrap 3'
             },
             {
-                state: 'dashboard.examples.templates.autoLogin',
+                name: 'dashboard.examples.templates.autoLogin',
                 templateUrl: 'views/examples/autoLogin.html',
                 url: '/auto-login',
-                menuTr: 'dashboards.v3.dox.autoLogin',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.autoLogin'
             },
             {
-                state: 'dashboard.examples.templates.extendApp',
+                name: 'dashboard.examples.templates.extendApp',
                 templateUrl: 'views/examples/extendApp.html',
                 url: '/extend-app',
-                menuTr: 'dashboards.v3.dox.extendApp',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.extendApp'
             },
             {
-                state: 'dashboard.examples.templates.loginPage',
+                name: 'dashboard.examples.templates.loginPage',
                 templateUrl: 'views/examples/loginPageTemplate.html',
                 url: '/login-page',
-                menuTr: 'dashboards.v3.dox.loginPageTemplate',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.loginPageTemplate'
             },
             {
-                state: 'dashboard.examples.templates.adminTemplate',
+                name: 'dashboard.examples.templates.adminTemplate',
                 templateUrl: 'views/examples/adminTemplate.html',
                 url: '/admin-template',
-                menuTr: 'dashboards.v3.dox.adminTemplate',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.adminTemplate'
             },
             {
-                state: 'dashboard.examples.templates.adaptiveLayouts',
+                name: 'dashboard.examples.templates.adaptiveLayouts',
                 templateUrl: 'views/examples/adaptiveLayouts.html',
                 url: '/adaptive-layouts',
-                menuText: 'Adaptive Layouts',
-                menuType: 'link'
+                menuText: 'Adaptive Layouts'
             }
         ]
     },
     {
-        state: 'dashboard.examples.utilities',
+        name: 'dashboard.examples.utilities',
         url: '/utilities',
         menuTr: 'dashboards.v3.dox.utilities',
         menuIcon: 'fa fa-wrench',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.utilities.translation',
+                name: 'dashboard.examples.utilities.translation',
                 templateUrl: 'views/examples/translation.html',
                 url: '/translation',
-                menuTr: 'dashboards.v3.dox.translation',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.translation'
             },
             {
-                state: 'dashboard.examples.utilities.jsonStore',
+                name: 'dashboard.examples.utilities.jsonStore',
                 templateUrl: 'views/examples/jsonStore.html',
                 url: '/json-store',
-                menuTr: 'dashboards.v3.dox.jsonStore',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.jsonStore'
             },
             {
-                state: 'dashboard.examples.utilities.watchdog',
+                name: 'dashboard.examples.utilities.watchdog',
                 templateUrl: 'views/examples/watchdog.html',
                 url: '/watchdog',
-                menuTr: 'dashboards.v3.dox.watchdog',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.watchdog'
             }
         ]
     },
     {
-        state: 'dashboard.examples.singleValueDisplays',
+        name: 'dashboard.examples.singleValueDisplays',
         url: '/single-value-displays',
         menuTr: 'dashboards.v3.dox.singleValueDisplays',
         menuIcon: 'fa fa-tachometer',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.singleValueDisplays.gauges',
+                name: 'dashboard.examples.singleValueDisplays.gauges',
                 templateUrl: 'views/examples/gauges.html',
                 url: '/gauges',
-                menuTr: 'dashboards.v3.dox.gauges',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.gauges'
             },
             {
-                state: 'dashboard.examples.singleValueDisplays.switchImage',
+                name: 'dashboard.examples.singleValueDisplays.switchImage',
                 templateUrl: 'views/examples/switchImage.html',
                 url: '/switch-image',
-                menuTr: 'dashboards.v3.dox.switchImage',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.switchImage'
             },
             {
-                state: 'dashboard.examples.singleValueDisplays.bars',
+                name: 'dashboard.examples.singleValueDisplays.bars',
                 templateUrl: 'views/examples/bars.html',
                 url: '/bars',
-                menuTr: 'dashboards.v3.dox.bars',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.bars'
             },
             {
-                state: 'dashboard.examples.singleValueDisplays.tanks',
+                name: 'dashboard.examples.singleValueDisplays.tanks',
                 templateUrl: 'views/examples/tanks.html',
                 url: '/tanks',
-                menuTr: 'dashboards.v3.dox.tanks',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.tanks'
             }
         ]
     },
     {
-        state: 'dashboard.examples.charts',
+        name: 'dashboard.examples.charts',
         url: '/charts',
         menuTr: 'dashboards.v3.dox.charts',
         menuIcon: 'fa fa-area-chart',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.charts.lineChart',
+                name: 'dashboard.examples.charts.lineChart',
                 templateUrl: 'views/examples/lineChart.html',
                 url: '/line-chart',
-                menuTr: 'dashboards.v3.dox.lineChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.lineChart'
             },
             {
-                state: 'dashboard.examples.charts.barChart',
+                name: 'dashboard.examples.charts.barChart',
                 templateUrl: 'views/examples/barChart.html',
                 url: '/bar-chart',
-                menuTr: 'dashboards.v3.dox.barChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.barChart'
             },
             {
-                state: 'dashboard.examples.charts.advancedChart',
+                name: 'dashboard.examples.charts.advancedChart',
                 templateUrl: 'views/examples/advancedChart.html',
                 url: '/advanced-chart',
-                menuTr: 'dashboards.v3.dox.advancedChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.advancedChart'
             },
             {
-                state: 'dashboard.examples.charts.stateChart',
+                name: 'dashboard.examples.charts.stateChart',
                 templateUrl: 'views/examples/stateChart.html',
                 url: '/state-chart',
-                menuTr: 'dashboards.v3.dox.stateChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.stateChart'
             },
             {
-                state: 'dashboard.examples.charts.liveUpdatingChart',
+                name: 'dashboard.examples.charts.liveUpdatingChart',
                 templateUrl: 'views/examples/liveUpdatingChart.html',
                 url: '/live-updating-chart',
-                menuTr: 'dashboards.v3.dox.liveUpdatingChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.liveUpdatingChart'
             },
             {
-                state: 'dashboard.examples.charts.pieChart',
+                name: 'dashboard.examples.charts.pieChart',
                 templateUrl: 'views/examples/pieChart.html',
                 url: '/pie-chart',
-                menuTr: 'dashboards.v3.dox.pieChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pieChart'
             },
             {
-                state: 'dashboard.examples.charts.dailyComparison',
+                name: 'dashboard.examples.charts.dailyComparison',
                 templateUrl: 'views/examples/dailyComparisonChart.html',
                 url: '/daily-comparison',
-                menuTr: 'dashboards.v3.dox.dailyComparisonChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.dailyComparisonChart'
             }
         ]
     },
     {
-        state: 'dashboard.examples.statistics',
+        name: 'dashboard.examples.statistics',
         url: '/statistics',
         menuTr: 'dashboards.v3.dox.statistics',
         menuIcon: 'fa fa-table',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.statistics.getStatistics',
+                name: 'dashboard.examples.statistics.getStatistics',
                 templateUrl: 'views/examples/getStatistics.html',
                 url: '/get-statistics',
-                menuTr: 'dashboards.v3.dox.getStatistics',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.getStatistics'
             },
             {
-                state: 'dashboard.examples.statistics.statisticsTable',
+                name: 'dashboard.examples.statistics.statisticsTable',
                 templateUrl: 'views/examples/statisticsTable.html',
                 url: '/statistics-table',
-                menuTr: 'dashboards.v3.dox.statisticsTable',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.statisticsTable'
             },
             {
-                state: 'dashboard.examples.statistics.statePieChart',
+                name: 'dashboard.examples.statistics.statePieChart',
                 templateUrl: 'views/examples/statePieChart.html',
                 url: '/state-pie-chart',
-                menuTr: 'dashboards.v3.dox.statePieChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.statePieChart'
             }
         ]
     },
     {
-        state: 'dashboard.examples.pointArrays',
+        name: 'dashboard.examples.pointArrays',
         url: '/point-arrays',
         menuTr: 'dashboards.v3.dox.pointArrayTemplating',
         menuIcon: 'fa fa-list',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.pointArrays.buildPointArray',
+                name: 'dashboard.examples.pointArrays.buildPointArray',
                 templateUrl: 'views/examples/buildPointArray.html',
                 url: '/build-point-array',
-                menuTr: 'dashboards.v3.dox.buildPointArray',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.buildPointArray'
             },
             {
-                state: 'dashboard.examples.pointArrays.pointArrayTable',
+                name: 'dashboard.examples.pointArrays.pointArrayTable',
                 templateUrl: 'views/examples/pointArrayTable.html',
                 url: '/point-array-table',
-                menuTr: 'dashboards.v3.dox.pointArrayTable',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pointArrayTable'
             },
             {
-                state: 'dashboard.examples.pointArrays.pointArrayLineChart',
+                name: 'dashboard.examples.pointArrays.pointArrayLineChart',
                 templateUrl: 'views/examples/pointArrayLineChart.html',
                 url: '/point-array-line-chart',
-                menuTr: 'dashboards.v3.dox.pointArrayLineChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pointArrayLineChart'
             },
             {
-                state: 'dashboard.examples.pointArrays.templating',
+                name: 'dashboard.examples.pointArrays.templating',
                 templateUrl: 'views/examples/templating.html',
                 url: '/templating',
-                menuTr: 'dashboards.v3.dox.templating',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.templating'
             },
             {
-                state: 'dashboard.examples.pointArrays.dataPointTable',
+                name: 'dashboard.examples.pointArrays.dataPointTable',
                 templateUrl: 'views/examples/dataPointTable.html',
                 url: '/data-point-table',
-                menuTr: 'dashboards.v3.dox.dataPointTable',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.dataPointTable'
             }
         ]
     },
     {
-        state: 'dashboard.examples.pointHierarchy',
+        name: 'dashboard.examples.pointHierarchy',
         url: '/point-hierarchy',
         menuTr: 'dashboards.v3.dox.pointHierarchy',
         menuIcon: 'fa fa-sitemap',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.pointHierarchy.displayTree',
+                name: 'dashboard.examples.pointHierarchy.displayTree',
                 templateUrl: 'views/examples/displayTree.html',
                 url: '/display-tree',
-                menuTr: 'dashboards.v3.dox.displayTree',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.displayTree'
             },
             {
-                state: 'dashboard.examples.pointHierarchy.pointHierarchyLineChart',
+                name: 'dashboard.examples.pointHierarchy.pointHierarchyLineChart',
                 templateUrl: 'views/examples/pointHierarchyLineChart.html',
                 url: '/line-chart',
-                menuTr: 'dashboards.v3.dox.pointHierarchyLineChart',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.pointHierarchyLineChart'
             }
         ]
     },
     {
-        state: 'dashboard.examples.settingPointValues',
+        name: 'dashboard.examples.settingPointValues',
         url: '/setting-point-values',
         menuTr: 'dashboards.v3.dox.settingPoint',
         menuIcon: 'fa fa-pencil-square-o',
-        menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.examples.settingPointValues.setPoint',
+                name: 'dashboard.examples.settingPointValues.setPoint',
                 templateUrl: 'views/examples/setPoint.html',
                 url: '/set-point',
-                menuTr: 'dashboards.v3.dox.settingPoint',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.settingPoint'
             },
             {
-                state: 'dashboard.examples.settingPointValues.toggle',
+                name: 'dashboard.examples.settingPointValues.toggle',
                 templateUrl: 'views/examples/toggle.html',
                 url: '/toggle',
-                menuTr: 'dashboards.v3.dox.toggle',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.toggle'
             },
             {
-                state: 'dashboard.examples.settingPointValues.sliders',
+                name: 'dashboard.examples.settingPointValues.sliders',
                 templateUrl: 'views/examples/sliders.html',
                 url: '/sliders',
-                menuTr: 'dashboards.v3.dox.sliders',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.sliders'
             },
             {
-                state: 'dashboard.examples.settingPointValues.multistateRadio',
+                name: 'dashboard.examples.settingPointValues.multistateRadio',
                 templateUrl: 'views/examples/multistateRadio.html',
                 url: '/multistate-radio-buttons',
-                menuTr: 'dashboards.v3.dox.multistateRadio',
-                menuType: 'link'
+                menuTr: 'dashboards.v3.dox.multistateRadio'
             }
         ]
     }
 ]);
 
 mdAdminApp.config([
-    'PAGES',
+    'MENU_ITEMS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -534,7 +560,8 @@ mdAdminApp.config([
     '$mdThemingProvider',
     '$injector',
     '$compileProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider) {
+    'mangoStateProvider',
+function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -621,49 +648,15 @@ function(PAGES, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
         events: true,
     });
 
+    //$stateProvider.reloadOnSearch = false;
+    
     $urlRouterProvider.otherwise('/dashboard/home');
+    mangoStateProvider.addStates(MENU_ITEMS);
 
-    addStates(PAGES);
-
-    function addStates(pages, parent) {
-        angular.forEach(pages, function(page, area) {
-            if (page.state) {
-                var state = {
-                    url: page.url
-                }
-
-                if (page.menuTr) {
-                    state.menuTr = page.menuTr;
-                }
-                if (page.menuText) {
-                    state.menuText = page.menuText;
-                }
-
-                if (parent) {
-                    state.parentPage = parent;
-                }
-
-                if (page.templateUrl) {
-                    state.templateUrl = page.templateUrl;
-                } else {
-                    state.template = '<div ui-view></div>';
-                    state['abstract'] = true;
-                }
-
-                if (page.resolve) {
-                    state.resolve = page.resolve;
-                }
-
-                $stateProvider.state(page.state, state);
-            }
-
-            addStates(page.children, page);
-        });
-    }
 }]);
 
 mdAdminApp.run([
-    'PAGES',
+    'MENU_ITEMS',
     '$rootScope',
     '$state',
     '$timeout',
@@ -671,8 +664,8 @@ mdAdminApp.run([
     '$mdColors',
     '$MD_THEME_CSS',
     'cssInjector',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
-    $rootScope.pages = PAGES;
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
+    $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
     // inserts a style tag to style <a> tags with accent color
@@ -697,14 +690,14 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
 
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
-        var state = toState;
+        var state = $state.$current;
         do {
             if (state.menuTr) {
                 crumbs.unshift({maTr: state.menuTr});
             } else if (state.menuText) {
                 crumbs.unshift({text: state.menuText});
             }
-        } while (state = state.parentPage);
+        } while (state = state.parent);
         $rootScope.crumbs = crumbs;
     });
 

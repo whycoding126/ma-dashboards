@@ -1,0 +1,5 @@
+<a class="edit-page-link"
+  ng-if="page && user.hasPermission(page.editPermission)"
+  ui-sref="dashboard.editPages({pageXid: page.xid})"
+  ma-tr="dashboards.v3.app.editPage"></a>
+<div live-preview="markup"></div>

@@ -74,7 +74,7 @@ function UserFactory($resource) {
     });
     
     User.prototype.hasPermission = function(desiredPerms) {
-        if (this.admin) return true;
+        if (this.admin || !desiredPerms) return true;
         
         if (typeof desiredPerms === 'string') {
             desiredPerms = desiredPerms.split(',');

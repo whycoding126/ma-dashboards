@@ -18,7 +18,8 @@ var liveEditor = function($templateRequest, $sce) {
         scope: {
             src: '@',
             text: '=liveEditor',
-            mode: '@'
+            mode: '@',
+            theme: '@'
         },
         controller: function($scope, $element) {
             
@@ -34,7 +35,7 @@ var liveEditor = function($templateRequest, $sce) {
             $scope.aceConfig = {
                     useWrapMode : true,
                     showGutter: false,
-                    theme:'chrome',
+                    theme: $scope.theme || 'chrome',
                     mode: $scope.mode || 'html',
                     onLoad: function(editor_) {
                         editor = editor_;
@@ -56,7 +57,7 @@ var liveEditor = function($templateRequest, $sce) {
             });
             
             $scope.$watch('text', function(newValue) {
-                if (newValue && newValue !== currentText) {
+                if (newValue !== undefined && newValue !== currentText) {
                     if (editor) {
                         setText(newValue);
                     } else {

@@ -8,23 +8,41 @@ define(['angular'], function(angular) {
 
 function JsonStoreFactory($resource, Util) {
 
-    var JsonStore = $resource('/rest/v1/json-data/:xid', {
+    function setDataPathInterceptor(data) {
+        var urlParts = data.config.url.split('/');
+        data.resource.dataPath = urlParts.length >= 6 ? urlParts[5] : null;
+        return data.resource;
+    }
+    
+    var JsonStore = $resource('/rest/v1/json-data/:xid/:dataPath', {
     	xid: '@xid',
+    	dataPath: '@dataPath',
         name: '@name',
         readPermission: '@readPermission',
         editPermission: '@editPermission'
     }, {
-    	save: {
+    	get: {
+    	    interceptor: {
+                response: setDataPathInterceptor
+            },
+    	},
+        save: {
             method: 'POST',
+            interceptor: {
+                response: setDataPathInterceptor
+            },
             transformRequest: function(data, headersGetter) {
             	return angular.toJson(data.jsonData);
             }
         },
         'delete': {
         	method: 'DELETE',
+            interceptor: {
+                response: setDataPathInterceptor
+            },
         	transformResponse: function(data, headersGetter) {
             	var item = angular.fromJson(data);
-            	item.jsonData = {};
+            	item.jsonData = null;
             	return item;
             }
         }
