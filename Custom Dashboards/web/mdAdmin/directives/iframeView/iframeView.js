@@ -43,7 +43,7 @@ var iframeView = function() {
                 }
             });
             
-            $scope.$destroy(function() {
+            $scope.$on('$destroy', function() {
                 if (timer)
                     clearInterval(timer);
             });
