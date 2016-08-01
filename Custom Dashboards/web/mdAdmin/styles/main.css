@@ -430,3 +430,10 @@ page-view {
   right: 0;
   top: 0;
 }
+
+iframe-view iframe {
+  width: 100%;
+  min-height: 500px;
+  border: 0;
+  overflow: hidden;
+}

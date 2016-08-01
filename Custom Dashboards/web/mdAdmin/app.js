@@ -89,8 +89,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/liveEditor/liveEditor',
                            './directives/liveEditor/livePreview',
                            './directives/liveEditor/dualPaneEditor',
-                           './directives/pageView/pageView'
-                ], function(Menu, Page, MenuEditor, menu, menuLink, menuToggle, menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView) {
+                           './directives/pageView/pageView',
+                           './directives/iframeView/iframeView'
+                ], function(Menu, Page, MenuEditor, menu, menuLink, menuToggle, menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('Page', Page)
@@ -103,7 +104,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .directive('liveEditor', liveEditor)
                         .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor)
-                        .directive('pageView', pageView);
+                        .directive('pageView', pageView)
+                        .directive('iframeView', iframeView);
                     $ocLazyLoad.inject('dashboard');
                 });
             }],
@@ -174,6 +176,13 @@ mdAdminApp.constant('MENU_ITEMS', [
         controller: function ($scope, $stateParams) {
             $scope.pageXid = $stateParams.pageXid;
         }
+    },
+    {
+        url: '/system-settings',
+        name: 'dashboard.systemSettings',
+        template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
+        menuTr: 'header.systemSettings',
+        menuIcon: 'fa fa-cog'
     },
     {
         url: '/examples',
