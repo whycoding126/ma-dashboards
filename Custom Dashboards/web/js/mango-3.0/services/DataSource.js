@@ -6,9 +6,147 @@
 define(['angular'], function(angular) {
 'use strict';
 
-/*
- * Provides service for getting list of data sources and create, update, delete
- */
+
+/**
+* @ngdoc service
+* @name maServices.DataSource
+*
+* @description
+* Provides service for getting list of data sources from the Mango system.
+* Used by `<ma-data-source-list>` and `<ma-data-source-query>` directives.
+* All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - `$save`
+* - `$remove`
+* - `$delete`
+* - `$get`
+*
+* ### Example
+*
+* <pre>
+*  var DS = DataSource.getById(xid)
+*  DS.name = 'New Name';
+*  DS.$save();
+* </pre>
+*
+* You can also access the raw `$http` promise via the `$promise` property on the object returned:
+* <pre>
+* promise = DataSource.objQuery(value).$promise;
+* promise.then(function(dataSources) {
+*    $scope.dataSources = dataSources;
+*
+*    console.log('Data Sources retunrned from server:', dataSources);
+* }
+* </pre>
+*
+* Or just assign the return value from a DataSource method to a scope variable:
+* <pre>
+* $scope.dataSources = DataSource.objQuery(value);
+* </pre>
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#get
+*
+* @description
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/data-sources/:xid`
+* @param {object} query Object containing a `xid` property which will be used in the query.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#save
+*
+* @description
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/data-sources/:xid`
+* @param {object} query Object containing a `xid` property which will be used in the query.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#remove
+*
+* @description
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
+* @param {object} query Object containing a `xid` property which will be used in the query.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#delete
+*
+* @description
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
+* @param {object} query Object containing a `xid` property which will be used in the query.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#query
+*
+* @description
+* Passed an object in the format `{query: 'query', start: 0, limit: 50, sort: ['-xid']}` and returns an Array of datasource objects matching the query.
+* @param {object} query xid name for the query. Format: `{query: 'query', start: 0, limit: 50, sort: ['-xid']}`
+* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#rql
+*
+* @description
+* Passed a string containing RQL for the query and returns an array of data source objects.
+* @param {string} RQL RQL string for the query
+* @returns {array} An array of data source objects. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#getById
+*
+* @description
+* Query the REST endpoint `/rest/v1/data-sources/by-id/:id` with the `GET` method.
+* @param {object} query Object containing a `id` property which will be used in the query.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.DataSource
+* @name DataSource#objQuery
+*
+* @description
+* Passed an object in the format `{query: 'query', start: 0, limit: 50, sort: ['-xid']}` and returns an Array of datasource objects matching the query.
+* @param {object} query Format: `{query: 'query', start: 0, limit: 50, sort: ['-xid']}`
+* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+
+
 function DataSourceFactory($resource, Util) {
     var DataSource = $resource('/rest/v1/data-sources/:xid', {
     		xid: '@xid'

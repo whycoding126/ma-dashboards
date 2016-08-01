@@ -43,7 +43,7 @@ gulp.task('build-ngdocs', [], function() {
     console.log('Compiling Docs');
 
     var options = {
-        title: "Mango - Custom Dashboard 3.0 API Docs",
+        title: "Custom Dashboard 3.x Documentation",
         startPage: "/",
         html5Mode: false,
         loadDefaults: {
