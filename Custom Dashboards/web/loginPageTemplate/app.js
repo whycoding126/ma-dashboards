@@ -28,16 +28,19 @@ mySinglePageApp.config([
     '$stateProvider',
     '$urlRouterProvider',
     '$compileProvider',
-function($stateProvider, $urlRouterProvider, $compileProvider) {
+    '$locationProvider',
+function($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider) {
 
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
-    
+
+    // enable html5 mode URLs (i.e. no /#/... urls)
+    $locationProvider.html5Mode(true);
+
     // set the default state
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/home');
     
     $stateProvider.state('dashboard', {
-        url: '/dashboard',
         templateUrl: 'views/dashboard/main.html',
         resolve: {
             auth: ['$rootScope', 'User', function($rootScope, User) {
