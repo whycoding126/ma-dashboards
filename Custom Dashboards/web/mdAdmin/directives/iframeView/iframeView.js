@@ -13,7 +13,8 @@ function addParams(url) {
 var iframeView = function() {
     return {
         scope: {
-            src: '@'
+            src: '@',
+            pollInterval: '=?'
         },
         template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms" scrolling="no"></iframe>',
         link: function($scope, $element) {
@@ -32,7 +33,7 @@ var iframeView = function() {
                 timer = setInterval(function() {
                     var iframeHeight = iframeDocument.body.offsetHeight;
                     iFrame.style.height = iframeHeight + 'px';
-                }, 100);
+                }, $scope.pollInterval || 50);
                 
                 var links = iframeDocument.querySelectorAll('a');
                 for (var i = 0; i < links.length; i++) {
