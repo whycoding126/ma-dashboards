@@ -152,7 +152,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/edit-menu',
         name: 'dashboard.editMenu',
         templateUrl: 'views/dashboard/editMenu.html',
-        menuTr: 'dashboards.v3.dox.editMenu',
+        menuTr: 'dashboards.v3.app.editMenu',
         menuIcon: 'fa fa-pencil',
         permission: 'edit-menus'
     },
@@ -160,7 +160,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/edit-pages/{pageXid}',
         name: 'dashboard.editPages',
         templateUrl: 'views/dashboard/editPages.html',
-        menuTr: 'dashboards.v3.dox.editPages',
+        menuTr: 'dashboards.v3.app.editPages',
         menuIcon: 'fa fa-magic',
         permission: 'edit-pages',
         params: {
@@ -171,6 +171,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/view-page/{pageXid}',
         name: 'dashboard.viewPage',
         template: '<page-view xid="{{pageXid}}"></page-view>',
+        menuTr: 'dashboards.v3.app.viewPage',
         menuHidden: true,
         controller: function ($scope, $stateParams) {
             $scope.pageXid = $stateParams.pageXid;

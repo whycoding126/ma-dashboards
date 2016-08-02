@@ -1,50 +1,69 @@
-<md-input-container>
-  <label>Choose a page to edit</label>
-  <md-select ng-model="editPage" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
-    <md-option ng-repeat="page in pages" ng-value="page" ng-bind="page.name"></md-option>
-  </md-select>
-</md-input-container>
+
 
 <form name="pageEditForm" novalidate ng-submit="savePage()">
 
-<md-input-container>
-    <label>Page name</label>
-    <input name="pageName" required ng-model="editPageContent.name">
-    <div ng-messages="pageEditForm.pageName.$error">
-      <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-    </div>
-</md-input-container>
+<div layout="row" layout-align="start center">
+  <md-input-container flex="100" flex-gt-md="50">
+      <label ma-tr="dashboards.v3.app.choosePageToEdit"></label>
+      <md-select ng-model="editPage" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
+        <md-option ng-repeat="page in pages" ng-value="page" ng-bind="page.name"></md-option>
+      </md-select>
+  </md-input-container>
+  <md-button class="md-raised md-primary md-hue-3" ng-click="createNewPage()">
+    <md-icon>add</md-icon>
+    <span ma-tr="dashboards.v3.app.newPage"></span>
+  </md-button>
+</div>
 
-<md-input-container>
-    <label>Read permission</label>
-    <input name="readPermission" ng-model="editPageContent.readPermission">
-</md-input-container>
-
-<md-input-container>
-    <label>Edit permission</label>
-    <input name="editPermission" ng-model="editPageContent.editPermission">
-</md-input-container>
-
-<md-button ng-click="editMenuItem($event, editPageContent.xid, null, null, true, 'pageXid')" ng-disabled="editPageContent.isNew">Edit</md-button>
-
-<span ng-bind="editPageContent.xid"></span>
+<div layout="row">
+  <md-input-container flex>
+      <label ma-tr="dashboards.v3.app.pageName"></label>
+      <input name="pageName" required ng-model="editPageContent.name">
+      <div ng-messages="pageEditForm.pageName.$error">
+        <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+      </div>
+  </md-input-container>
+  
+  <md-input-container flex>
+      <label ma-tr="common.xid"></label>
+      <input name="xid" required ng-model="editPageContent.xid" disabled>
+      <div ng-messages="pageEditForm.xid.$error">
+        <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+      </div>
+  </md-input-container>
+  
+  <md-input-container flex>
+      <label ma-tr="dashboards.v3.app.readPermission"></label>
+      <input name="readPermission" ng-model="editPageContent.readPermission">
+  </md-input-container>
+  
+  <md-input-container flex>
+      <label ma-tr="dashboards.v3.app.editPermission"></label>
+      <input name="editPermission" ng-model="editPageContent.editPermission">
+  </md-input-container>
+</div>
 
 <div layout="row" style="margin-bottom:10px;">
-    <md-button class="md-raised md-primary md-hue-3" ng-click="createNewPage()">
-        <md-icon>add</md-icon>
-        <span ma-tr="common.add"></span>
-    </md-button>
-    <md-button class="md-raised md-primary md-hue-3" type="submit">
+    <md-button class="md-raised md-primary" type="submit">
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button ng-click="loadPage()" ng-disabled="editPageContent.isNew">
+    <md-button ng-click="loadPage()" ng-disabled="editPageContent.isNew" class="md-raised">
         <md-icon>undo</md-icon>
         <span ma-tr="dashboards.v3.dox.revert"></span>
      </md-button>
-     <md-button class="md-raised md-warn" ng-click="deletePage()" ng-disabled="editPageContent.isNew">
+     <md-button class="md-raised md-warn" ng-click="confirmDeletePage($event)" ng-disabled="editPageContent.isNew">
         <md-icon>delete</md-icon>
         <span ma-tr="common.delete"></span>
+     </md-button>
+     <md-button ng-click="editMenuItem($event, editPageContent.xid, null, null, true, 'pageXid')" class="md-raised"
+        ng-disabled="editPageContent.isNew">
+        <md-icon>edit</md-icon>
+        <span ma-tr="dashboards.v3.app.addEditMenuItem"></span>
+     </md-button>
+     <md-button ui-sref="dashboard.viewPage({pageXid: editPageContent.xid})" target="_blank" class="md-raised" ng-disabled="editPageContent.isNew">
+        <md-icon>remove_red_eye</md-icon>
+        <span ma-tr="dashboards.v3.app.viewPage"></span>
      </md-button>
 </div>
 

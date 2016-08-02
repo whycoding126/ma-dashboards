@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
@@ -17,7 +17,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             $scope.user = User.current();
             
             var pagesStore;
-            
+
             $scope.createNewPage = function createNewPage(markup) {
                 this.editPageContent = Page.newPageContent();
                 this.editPageContent.jsonData.markup = markup || '';
@@ -50,6 +50,20 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 $scope.createNewPage($stateParams.markup);
             }
             
+            $scope.confirmDeletePage = function confirmDeletePage() {
+                var confirm = $mdDialog.confirm()
+                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .textContent(Translate.trSync('dashboards.v3.app.confirmDeletePage'))
+                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .targetEvent(event)
+                    .ok(Translate.trSync('common.ok'))
+                    .cancel(Translate.trSync('common.cancel'));
+        
+                return $mdDialog.show(confirm).then(function() {
+                    return $scope.deletePage();
+                });
+            };
+            
             $scope.deletePage = function deletePage() {
                 return $scope.editPageContent.$delete().then(function() {
                     for (var i = 0; i < $scope.pages.length; i++) {
@@ -62,7 +76,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                     
                     return pagesStore.$save().then(setPages);
                 });
-            };
+            }
             
             $scope.savePage = function savePage() {
                 if ($scope.pageEditForm.$valid) {
@@ -106,7 +120,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate'];
 
 return pageEditor;
 
