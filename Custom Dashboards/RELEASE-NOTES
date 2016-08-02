@@ -1,8 +1,13 @@
-*Version 3.1.2*
+*Version 3.2.0*
 * Set a point limit for ma-point-list in examples
 * Add auto-init option to ma-filtering-point-list
 * Add daily comparison chart example
 * Add data source list and device name list directives
+* Ability to create and save your own pages
+* Customizable menus
+* URLs no longer contain /dashboard and enabled HTML5 mode for cleaner URLs
+* New url for mdAdmin dashboard at /dashboards
+* New url for users own dashboards at /user-dashboards
 
 *Version 3.1.1*
 * Fix admin template menu in Firefox

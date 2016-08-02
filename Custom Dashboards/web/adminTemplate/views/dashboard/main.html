@@ -11,9 +11,9 @@
 
     <md-content flex role="navigation" md-colors="{background: 'background-A100'}">
       <ul class="dashboard-menu">
-        <li ng-repeat="item in pages" ng-if="item.menuType">
-          <menu-link page="item" ng-if="item.menuType === 'link'"></menu-link>
-          <menu-toggle section="item" ng-if="item.menuType === 'toggle'"></menu-toggle>
+        <li ng-repeat="item in menuItems" ng-if="!item.menuHidden && user.hasPermission(item.permission)">
+          <menu-link menu-item="item" ng-if="!item.children"></menu-link>
+          <menu-toggle menu-item="item" ng-if="item.children"></menu-toggle>
         </li>
       </ul>
     </md-content>
@@ -53,21 +53,27 @@
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button aria-label="User profile" ng-href="/users.shtm" target="_blank" layout="row" layout-align="start center">
+                  <md-button aria-label="User profile" ng-href="/users.shtm" target="_blank">
+                    <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex>{{user.username}}</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">person</md-icon>
+                    </div>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="user.hasPermission('superadmin')">
-                  <md-button aria-label="User profile" ng-href="/system_settings.shtm" target="_blank" layout="row" layout-align="start center">
+                  <md-button aria-label="User profile" ng-href="/system_settings.shtm" target="_blank">
+                    <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="header.systemSettings">System settings</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
+                    </div>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button aria-label="User profile" ng-href="/logout.htm" layout="row" layout-align="start center">
+                  <md-button aria-label="User profile" ng-href="/logout.htm">
+                    <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="header.logout">Logout</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">exit_to_app</md-icon>
+                    </div>
                   </md-button>
                 </md-menu-item>
               </md-menu-content>

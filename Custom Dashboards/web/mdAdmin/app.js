@@ -68,7 +68,6 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
 mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard',
-        url: '/dashboard',
         templateUrl: 'views/dashboard/main.html',
         abstract: true,
         menuHidden: true,
@@ -599,8 +598,9 @@ mdAdminApp.config([
     '$injector',
     '$compileProvider',
     'mangoStateProvider',
+    '$locationProvider',
 function(MENU_ITEMS, CUSTOM_MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider,
-        $mdThemingProvider, $injector, $compileProvider, mangoStateProvider) {
+        $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -688,8 +688,9 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocL
     });
 
     //$stateProvider.reloadOnSearch = false;
+    $locationProvider.html5Mode(true);
     
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/home');
     
     // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);

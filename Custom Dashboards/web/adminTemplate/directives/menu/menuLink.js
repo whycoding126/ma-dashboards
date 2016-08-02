@@ -9,12 +9,12 @@ define(['require'], function(require) {
 var menuLink = function($state) {
     return {
         scope: {
-            page: '='
+            item: '=menuItem'
         },
         templateUrl: require.toUrl('./menuLink.html'),
         link: function($scope, $element) {
             $scope.followLink = function() {
-                $state.go(this.page.state);
+                $state.go(this.item.name);
             }
         }
     };

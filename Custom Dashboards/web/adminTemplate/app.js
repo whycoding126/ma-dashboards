@@ -33,8 +33,8 @@ myAdminApp
 // define our pages, these are added to the $stateProvider in the config block below
 myAdminApp.constant('PAGES', [
     {
-        state: 'dashboard',
-        url: '/dashboard',
+        name: 'dashboard',
+        menuHidden: true,
         templateUrl: 'views/dashboard/main.html',
         resolve: {
             auth: ['$rootScope', 'User', function($rootScope, User) {
@@ -51,7 +51,8 @@ myAdminApp.constant('PAGES', [
         }
     },
     {
-        state: 'login',
+        name: 'login',
+        menuHidden: true,
         url: '/login',
         templateUrl: 'views/login.html',
         resolve: {
@@ -61,7 +62,7 @@ myAdminApp.constant('PAGES', [
         }
     },
     {
-        state: 'dashboard.home',
+        name: 'dashboard.home',
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
@@ -69,27 +70,28 @@ myAdminApp.constant('PAGES', [
         menuType: 'link'
     },
     {
-        state: 'dashboard.apiErrors',
+        name: 'dashboard.apiErrors',
+        menuHidden: true,
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
         menuTr: 'dashboards.v3.dox.apiErrors'
     },
     {
-        state: 'dashboard.section1', // define some nested pages
+        name: 'dashboard.section1', // define some nested pages
         url: '/section-1',
         menuText: 'Section 1',
         menuIcon: 'fa fa-building',
         menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.section1.page1',
+                name: 'dashboard.section1.page1',
                 templateUrl: 'views/section1/page1.html', // html file to display
                 url: '/page-1',
                 menuText: 'Page 1',
                 menuType: 'link'
             },
             {
-                state: 'dashboard.section1.page2',
+                name: 'dashboard.section1.page2',
                 templateUrl: 'views/section1/page2.html',
                 url: '/page-2',
                 menuText: 'Page 2',
@@ -98,21 +100,21 @@ myAdminApp.constant('PAGES', [
         ]
     },
     {
-        state: 'dashboard.section2',
+        name: 'dashboard.section2',
         url: '/section-2',
         menuText: 'Section 2',
         menuIcon: 'fa fa-bolt',
         menuType: 'toggle',
         children: [
             {
-                state: 'dashboard.section2.page1',
+                name: 'dashboard.section2.page1',
                 templateUrl: 'views/section2/page1.html',
                 url: '/page-1',
                 menuText: 'Page 1',
                 menuType: 'link'
             },
             {
-                state: 'dashboard.section2.page2',
+                name: 'dashboard.section2.page2',
                 templateUrl: 'views/section2/page2.html',
                 url: '/page-2',
                 menuText: 'Page 2',
@@ -129,7 +131,8 @@ myAdminApp.config([
     '$httpProvider',
     '$mdThemingProvider',
     '$compileProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider) {
+    '$locationProvider',
+function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider) {
 
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
@@ -144,41 +147,27 @@ function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingPro
     $httpProvider.interceptors.push('errorInterceptor');
 
     // set the default state
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/home');
+    
+    // enable html5 mode URLs (i.e. no /#/... urls)
+    $locationProvider.html5Mode(true);
 
     // add the pages to $stateProvider
     addStates(PAGES);
 
     function addStates(pages, parent) {
         angular.forEach(pages, function(page, area) {
-            if (page.state) {
-                var state = {
-                    url: page.url
-                }
-                
-                if (page.menuTr) {
-                    state.menuTr = page.menuTr;
-                }
-                if (page.menuText) {
-                    state.menuText = page.menuText;
-                }
-                
+            if (page.name) {
                 if (parent) {
-                    state.parentPage = parent;
+                    page.parentPage = parent;
                 }
                 
-                if (page.templateUrl) {
-                    state.templateUrl = page.templateUrl;
-                } else {
-                    state.template = '<div ui-view></div>';
-                    state['abstract'] = true;
+                if (!page.templateUrl) {
+                    page.template = '<div ui-view></div>';
+                    page['abstract'] = true;
                 }
                 
-                if (page.resolve) {
-                    state.resolve = page.resolve;
-                }
-                
-                $stateProvider.state(page.state, state);
+                $stateProvider.state(page);
             }
             
             addStates(page.children, page);
@@ -197,7 +186,7 @@ myAdminApp.run([
     'cssInjector',
 function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
     // add pages to the root scope so we can use them in the template
-    $rootScope.pages = PAGES;
+    $rootScope.menuItems = PAGES;
     // enables use of Javascript Math functions in the templates
     $rootScope.Math = Math;
     

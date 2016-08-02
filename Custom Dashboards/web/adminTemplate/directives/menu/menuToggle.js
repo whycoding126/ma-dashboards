@@ -9,7 +9,7 @@ define(['require'], function(require) {
 var menuToggle = function($state, $timeout, $rootScope) {
     return {
         scope: {
-            section: '='
+            item: '=menuItem'
         },
         templateUrl: require.toUrl('./menuToggle.html'),
         link: function($scope, $element) {
@@ -18,7 +18,7 @@ var menuToggle = function($state, $timeout, $rootScope) {
             $scope.open = function() {
                 $scope.isOpen = true;
                 setHeight();
-                $rootScope.$broadcast('menuOpened', $scope.section);
+                $rootScope.$broadcast('menuOpened', $scope.item);
             }
             
             $scope.close = function() {
@@ -33,21 +33,21 @@ var menuToggle = function($state, $timeout, $rootScope) {
                 }
             };
             
-            if ($state.includes($scope.section.state) && !$scope.isOpen) {
+            if ($state.includes($scope.item.name) && !$scope.isOpen) {
                 // use timeout to run open() after ul has been populated by ng-repeat
                 $timeout(function() {
                     $scope.open();
                 }, 0);
             }
             
-            $scope.$on('menuOpened', function(event, section) {
-                if (!$scope.isOpen || section === $scope.section) return;
+            $scope.$on('menuOpened', function(event, item) {
+                if (!$scope.isOpen || item === $scope.item) return;
                 $scope.close();
             });
 
             // close/open menus when changing states
             $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-                if ($state.includes($scope.section.state)) {
+                if ($state.includes($scope.item.name)) {
                     if (!$scope.isOpen) {
                         $scope.open();
                     }
