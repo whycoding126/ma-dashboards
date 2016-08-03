@@ -1,12 +1,10 @@
-
-
 <form name="pageEditForm" novalidate ng-submit="savePage()">
 
 <div layout="row" layout-align="start center">
   <md-input-container flex="100" flex-gt-md="50">
       <label ma-tr="dashboards.v3.app.choosePageToEdit"></label>
-      <md-select ng-model="editPage" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
-        <md-option ng-repeat="page in pages" ng-value="page" ng-bind="page.name"></md-option>
+      <md-select ng-model="selectedPageSummary" ng-model-options="{trackBy: '$value.xid'}" ng-change="loadPage()">
+        <md-option ng-repeat="page in pageSummaries track by page.xid" ng-value="page" ng-bind="page.name"></md-option>
       </md-select>
   </md-input-container>
   <md-button class="md-raised md-primary md-hue-3" ng-click="createNewPage()">
@@ -18,7 +16,7 @@
 <div layout="row">
   <md-input-container flex>
       <label ma-tr="dashboards.v3.app.pageName"></label>
-      <input name="pageName" required ng-model="editPageContent.name">
+      <input name="pageName" required ng-model="selectedPage.name">
       <div ng-messages="pageEditForm.pageName.$error">
         <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
       </div>
@@ -26,7 +24,7 @@
   
   <md-input-container flex>
       <label ma-tr="common.xid"></label>
-      <input name="xid" required ng-model="editPageContent.xid" disabled>
+      <input name="xid" required ng-model="selectedPage.xid" disabled>
       <div ng-messages="pageEditForm.xid.$error">
         <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
       </div>
@@ -34,12 +32,12 @@
   
   <md-input-container flex>
       <label ma-tr="dashboards.v3.app.readPermission"></label>
-      <input name="readPermission" ng-model="editPageContent.readPermission">
+      <input name="readPermission" ng-model="selectedPage.readPermission">
   </md-input-container>
   
   <md-input-container flex>
       <label ma-tr="dashboards.v3.app.editPermission"></label>
-      <input name="editPermission" ng-model="editPageContent.editPermission">
+      <input name="editPermission" ng-model="selectedPage.editPermission">
   </md-input-container>
 </div>
 
@@ -48,20 +46,20 @@
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button ng-click="loadPage()" ng-disabled="editPageContent.isNew" class="md-raised">
+    <md-button ng-click="loadPage()" ng-disabled="selectedPage.isNew" class="md-raised">
         <md-icon>undo</md-icon>
         <span ma-tr="dashboards.v3.dox.revert"></span>
      </md-button>
-     <md-button class="md-raised md-warn" ng-click="confirmDeletePage($event)" ng-disabled="editPageContent.isNew">
+     <md-button class="md-raised md-warn" ng-click="confirmDeletePage($event)" ng-disabled="selectedPage.isNew">
         <md-icon>delete</md-icon>
         <span ma-tr="common.delete"></span>
      </md-button>
-     <md-button ng-click="editMenuItem($event, editPageContent.xid, null, null, true, 'pageXid')" class="md-raised"
-        ng-disabled="editPageContent.isNew">
+     <md-button ng-click="editMenuItem($event, selectedPage.xid, null, null, true, 'pageXid')" class="md-raised"
+        ng-disabled="selectedPage.isNew">
         <md-icon>edit</md-icon>
         <span ma-tr="dashboards.v3.app.addEditMenuItem"></span>
      </md-button>
-     <md-button ui-sref="dashboard.viewPage({pageXid: editPageContent.xid})" target="_blank" class="md-raised" ng-disabled="editPageContent.isNew">
+     <md-button ui-sref="dashboard.viewPage({pageXid: selectedPage.xid})" target="_blank" class="md-raised" ng-disabled="selectedPage.isNew">
         <md-icon>remove_red_eye</md-icon>
         <span ma-tr="dashboards.v3.app.viewPage"></span>
      </md-button>
@@ -77,7 +75,7 @@
             </md-card-title>
             <md-card-content layout="column">
                 <div flex>
-                    <div style="height:400px" live-editor="editPageContent.jsonData.markup"></div>
+                    <div style="height:400px" live-editor="selectedPage.jsonData.markup"></div>
                 </div>
             </md-card-content>
         </md-card>
@@ -90,7 +88,7 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <div live-preview="editPageContent.jsonData.markup"></div>
+                <div live-preview="selectedPage.jsonData.markup"></div>
             </md-card-content>
         </md-card>
     </div>

@@ -16,26 +16,26 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             
             $scope.user = User.current();
             
-            var pagesStore;
+            var pageSummaryStore;
 
             $scope.createNewPage = function createNewPage(markup) {
-                this.editPageContent = Page.newPageContent();
-                this.editPageContent.jsonData.markup = markup || '';
-                this.editPage = contentToPageSummary(this.editPageContent);
-                $state.go('.', {pageXid: null}, {location: 'replace', notify: false});
+                this.selectedPage = Page.newPageContent();
+                this.selectedPage.jsonData.markup = markup || '';
+                this.selectedPageSummary = pageToSummary(this.selectedPage);
+                setPageXidStateParam(null);
             }
             
             function setPages(store) {
-                pagesStore = store;
-                $scope.pages = store.jsonData.pages;
+                pageSummaryStore = store;
+                $scope.pageSummaries = store.jsonData.pages;
             }
             
             Page.getPages().then(setPages);
             
             $scope.loadPage = function loadPage(xid) {
-                return Page.loadPage(xid || $scope.editPage.xid).then(function(store) {
-                    $state.go('.', {pageXid: store.xid}, {location: 'replace', notify: false});
-                    $scope.editPageContent = store;
+                return Page.loadPage(xid || $scope.selectedPageSummary.xid).then(function(store) {
+                    setPageXidStateParam(store.xid);
+                    $scope.selectedPage = store;
                     return store;
                 }, function() {
                     $scope.createNewPage();
@@ -43,8 +43,8 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             };
             
             if ($stateParams.pageXid) {
-                $scope.loadPage($stateParams.pageXid).then(function(editPageContent) {
-                    $scope.editPage = contentToPageSummary(editPageContent);
+                $scope.loadPage($stateParams.pageXid).then(function(selectedPage) {
+                    $scope.selectedPageSummary = pageToSummary(selectedPage);
                 });
             } else {
                 $scope.createNewPage($stateParams.markup);
@@ -65,37 +65,40 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             };
             
             $scope.deletePage = function deletePage() {
-                return $scope.editPageContent.$delete().then(function() {
-                    for (var i = 0; i < $scope.pages.length; i++) {
-                        if ($scope.pages[i].xid === $scope.editPageContent.xid) {
-                            $scope.pages.splice(i, 1);
+                return $scope.selectedPage.$delete().then(function() {
+                    for (var i = 0; i < $scope.pageSummaries.length; i++) {
+                        if ($scope.pageSummaries[i].xid === $scope.selectedPage.xid) {
+                            $scope.pageSummaries.splice(i, 1);
                             break;
                         }
                     }
                     $scope.createNewPage();
                     
-                    return pagesStore.$save().then(setPages);
+                    return pageSummaryStore.$save().then(setPages);
                 });
             }
             
             $scope.savePage = function savePage() {
                 if ($scope.pageEditForm.$valid) {
-                    return $scope.editPageContent.$save().then(function() {
-                        var summary = contentToPageSummary($scope.editPageContent);
-                        var pages = pagesStore.jsonData.pages;
-                        for (var i = 0; i < pages.length; i++) {
-                            var found = false;
-                            if (pages[i].xid === $scope.editPageContent.xid) {
-                                pages.splice(i, 1, summary);
-                                found = true;
-                                break;
+                    var newPage = $scope.selectedPage.isNew;
+                    
+                    return $scope.selectedPage.$save().then(function() {
+                        var summary = pageToSummary($scope.selectedPage);
+                        var pageSummaries = pageSummaryStore.jsonData.pages;
+                        
+                        if (newPage) {
+                            pageSummaries.push(summary);
+                            setPageXidStateParam($scope.selectedPage.xid);
+                        } else {
+                            for (var i = 0; i < pageSummaries.length; i++) {
+                                if (pageSummaries[i].xid === summary.xid) {
+                                    angular.copy(summary, pageSummaries[i]);
+                                    break;
+                                }
                             }
                         }
-                        if (!found) {
-                            pages.push(summary)
-                        }
                         
-                        return pagesStore.$save().then(setPages);
+                        return pageSummaryStore.$save().then(setPages);
                     });
                 }
             };
@@ -103,11 +106,15 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             $scope.editMenuItem = MenuEditor.editMenuItem;
 
             jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_PAGES_XID, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
-                pagesStore.jsonData = payload.object.jsonData;
-                $scope.pages = payload.object.jsonData.pages;
+                pageSummaryStore.jsonData = payload.object.jsonData;
+                $scope.pageSummaries = payload.object.jsonData.pages;
             });
             
-            function contentToPageSummary(input) {
+            function setPageXidStateParam(xid) {
+                $state.go('.', {pageXid: xid}, {location: 'replace', notify: false});
+            }
+            
+            function pageToSummary(input) {
                 var result = {};
                 result.xid = input.xid;
                 result.name = input.name;
