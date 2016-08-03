@@ -157,7 +157,7 @@ function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingPro
 
     function addStates(pages, parent) {
         angular.forEach(pages, function(page, area) {
-            if (page.name) {
+            if (page.name || page.state) {
                 if (parent) {
                     page.parentPage = parent;
                 }
@@ -165,6 +165,10 @@ function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingPro
                 if (!page.templateUrl) {
                     page.template = '<div ui-view></div>';
                     page['abstract'] = true;
+                }
+                
+                if (!page.name) {
+                    page.name = page.state;
                 }
                 
                 $stateProvider.state(page);

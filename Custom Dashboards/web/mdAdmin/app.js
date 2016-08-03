@@ -30,7 +30,7 @@ mdAdminApp.constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages');
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     this.addStates = function(menuItems, parent) {
         angular.forEach(menuItems, function(menuItem, area) {
-            if (menuItem.name) {
+            if (menuItem.name || menuItem.state) {
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
@@ -41,6 +41,9 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 if (!menuItem.templateUrl && !menuItem.template) {
                     menuItem.template = '<div ui-view></div>';
                     menuItem['abstract'] = true;
+                }
+                if (!menuItem.name) {
+                    menuItem.name = menuItem.state;
                 }
 
                 try {
