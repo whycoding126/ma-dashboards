@@ -236,6 +236,13 @@ mdAdminApp.constant('MENU_ITEMS', [
         }
     },
     {
+        name: 'dashboard.dataPoint',
+        url: '/data-point',
+        templateUrl: 'views/dashboard/dataPoint.html',
+        menuText: 'Data Point Details',
+        menuIcon: 'fa fa-asterisk'
+    },
+    {
         name: 'dashboard.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
