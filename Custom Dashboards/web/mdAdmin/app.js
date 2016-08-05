@@ -33,6 +33,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
     this.addStates = function(menuItems, parent) {
         angular.forEach(menuItems, function(menuItem, area) {
             if (menuItem.name || menuItem.state) {
+                menuItem.parent = parent;
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
@@ -85,7 +86,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                 return rQ(['./services/Menu',
                            './services/Page',
                            './services/MenuEditor',
-                           './directives/menu/menu',
+                           './directives/menu/jsonStoreMenu',
+                           './directives/menu/dashboardMenu',
                            './directives/menu/menuLink',
                            './directives/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
@@ -95,14 +97,16 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/liveEditor/dualPaneEditor',
                            './directives/pageView/pageView',
                            './directives/iframeView/iframeView'
-                ], function(Menu, Page, MenuEditor, menu, menuLink, menuToggle, menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView) {
+                ], function(Menu, Page, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
+                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('Page', Page)
                         .factory('MenuEditor', MenuEditor)
-                        .directive('maMenu', menu)
-                        .directive('menuLink', menuLink)
-                        .directive('menuToggle', menuToggle)
+                        .component('jsonStoreMenu', jsonStoreMenu)
+                        .component('dashboardMenu', dashboardMenu)
+                        .component('menuLink', menuLink)
+                        .component('menuToggle', menuToggle)
                         .directive('menuEditor', menuEditor)
                         .directive('pageEditor', pageEditor)
                         .directive('liveEditor', liveEditor)
@@ -212,35 +216,40 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.systemSettings',
         template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
         menuTr: 'header.systemSettings',
-        menuIcon: 'fa fa-cog'
+        menuIcon: 'fa fa-cog',
+        menuHidden: true
     },
     {
         url: '/data-sources',
         name: 'dashboard.dataSources',
         template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
         menuTr: 'header.dataSources',
-        menuIcon: 'fa fa-plug'
+        menuIcon: 'fa fa-plug',
+        menuHidden: true
     },
     {
         url: '/users',
         name: 'dashboard.users',
         template: '<iframe-view src="/users.shtm"></iframe-view>',
         menuTr: 'header.users',
-        menuIcon: 'fa fa-user'
+        menuIcon: 'fa fa-user',
+        menuHidden: true
     },
     {
         url: '/events',
         name: 'dashboard.events',
         template: '<iframe-view src="/events.shtm"></iframe-view>',
         menuTr: 'header.alarms',
-        menuIcon: 'fa fa-bell'
+        menuIcon: 'fa fa-bell',
+        menuHidden: true
     },
     {
         url: '/import-export',
         name: 'dashboard.importExport',
         template: '<iframe-view src="/emport.shtm"></iframe-view>',
         menuTr: 'header.emport',
-        menuIcon: 'fa fa-expand'
+        menuIcon: 'fa fa-expand',
+        menuHidden: true
     },
     {
         url: '/examples',
@@ -261,6 +270,40 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.dox.playAreaBig',
         menuHidden: true,
         menuIcon: 'fa fa-magic'
+    },
+    {
+        name: 'dashboard.subtest',
+        url: '/sub-test',
+        menuText: 'Submenu test',
+        menuIcon: 'fa fa-magic',
+        children: [
+            {
+                name: 'dashboard.subtest.page',
+                url: '/page',
+                template: '<h1>page</h1>',
+                menuText: 'Submenu test page'
+            },
+            {
+                name: 'dashboard.subtest.section',
+                url: '/section',
+                menuText: 'Submenu test section',
+                menuIcon: 'fa fa-magic',
+                children: [
+                    {
+                        name: 'dashboard.subtest.section.page1',
+                        url: '/page1',
+                        template: '<h1>section page1</h1>',
+                        menuText: 'Page 1'
+                    },
+                    {
+                        name: 'dashboard.subtest.section.page2',
+                        url: '/page2',
+                        template: '<h1>section page2</h1>',
+                        menuText: 'Page 2'
+                    }
+                ]
+            }
+        ]
     },
     {
         name: 'dashboard.examples.basics',

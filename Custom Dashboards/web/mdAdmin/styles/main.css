@@ -131,7 +131,7 @@ body {
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
 
-.menu-open .menu-toggle-icon {
+.menu-open > .menu-toggle-button .menu-toggle-icon {
   transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
 }

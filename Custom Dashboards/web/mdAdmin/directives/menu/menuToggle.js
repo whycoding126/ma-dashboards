@@ -6,82 +6,128 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuToggle = function($state, $timeout, $rootScope) {
-    return {
-        scope: {
-            item: '=menuItem'
-        },
-        templateUrl: require.toUrl('./menuToggle.html'),
-        link: function($scope, $element) {
-            var $ul = $element.find('ul');
-            
-            $scope.open = function() {
-                $scope.isOpen = true;
-                setHeight();
-                $rootScope.$broadcast('menuOpened', $scope.item);
+var menuToggleController = function menuToggleController($state, $timeout, $element, $scope) {
+    this.$onInit = function() {
+        // close/open menus when changing states
+        $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+            if ($state.includes(this.item.name)) {
+                this.open();
+            } else {
+                this.close();
             }
-            
-            $scope.close = function() {
-                $scope.isOpen = false;
-            }
-            
-            $scope.toggle = function() {
-                if ($scope.isOpen) {
-                    $scope.close();
-                } else {
-                    $scope.open();
-                }
-            };
-            
-            if ($state.includes($scope.item.name) && !$scope.isOpen) {
-                // use timeout to run open() after ul has been populated by ng-repeat
-                $timeout(function() {
-                    $scope.open();
-                }, 0);
-            }
-            
-            $scope.$on('menuOpened', function(event, item) {
-                if (!$scope.isOpen || item === $scope.item) return;
-                $scope.close();
-            });
-
-            // close/open menus when changing states
-            $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-                if ($state.includes($scope.item.name)) {
-                    if (!$scope.isOpen) {
-                        $scope.open();
-                    }
-                } else if ($scope.isOpen) {
-                    $scope.close();
-                }
-            });
-            
-            // calculates the height of ul and sets its height style so transition works correctly.
-            // absolute positioning means it is taken out of usual flow so doesn't affect surrounding
-            // elements while calculating height, however briefly
-            function setHeight() {
-                $ul.addClass('no-transition');
-                $ul.css({
-                    height: '',
-                    visibility: 'hidden',
-                    position: 'absolute'
-                });
-                $ul.removeClass('ng-hide');
-                var height = $ul.prop('clientHeight');
-                $ul.addClass('ng-hide');
-                $ul.css({
-                    height: height + 'px',
-                    visibility: '',
-                    position: ''
-                });
-                $ul.removeClass('no-transition');
-            };
+        }.bind(this));
+    };
+    
+    this.$onChanges = function(changes) {
+        if (changes.openMenu && this.openMenu) {
+            if (!this.isOpen || this.openMenu.name.indexOf(this.item.name) === 0)
+                return;
+            this.close();
         }
     };
+    
+    this.$postLink = function() {
+        this.$ul = $element.find('ul');
+        
+        // use timeout to calc our height after ul has been populated by ng-repeat
+        $timeout(function() {
+            this.calcHeight();
+            
+            if ($state.includes(this.item.name) && !this.isOpen) {
+                this.open();
+            }
+        }.bind(this), 0);
+    };
+    
+    this.open = function() {
+        if (this.isOpen) return;
+        
+        this.isOpen = true;
+        if (this.parentToggle) {
+            this.parentToggle.addHeight(this.height);
+        }
+        
+        this.menu.menuOpened(this.item);
+    }
+    
+    this.close = function() {
+        if (!this.isOpen) return;
+        
+        this.isOpen = false;
+        if (this.parentToggle) {
+            this.parentToggle.addHeight(-this.height);
+        }
+    }
+    
+    this.toggle = function() {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
+    };
+
+    // calculates the height of ul and sets its height style so transition works correctly.
+    // absolute positioning means it is taken out of usual flow so doesn't affect surrounding
+    // elements while calculating height, however briefly
+    this.calcHeight = function calcHeight() {
+        this.preMeasureHeight();
+        this.height = this.$ul.prop('clientHeight');
+        this.postMeasureHeight();
+    };
+    
+    this.preMeasureHeight = function() {
+        if (this.parentToggle) {
+            this.parentToggle.preMeasureHeight();
+        }
+        this.$ul.addClass('no-transition');
+        this.$ul.css({
+            height: '',
+            visibility: 'hidden',
+            position: 'absolute'
+        });
+        this.$ul.removeClass('ng-hide');
+    }
+    
+    this.postMeasureHeight = function() {
+        this.$ul.addClass('ng-hide');
+        this.$ul.css({
+            height: this.height + 'px',
+            visibility: '',
+            position: ''
+        });
+        this.$ul.removeClass('no-transition');
+
+        if (this.parentToggle) {
+            this.parentToggle.postMeasureHeight();
+        }
+    }
+    
+    // calculates the ul's current height and adds x pixels to the css height
+    this.addHeight = function addHeight(add) {
+        if (!this.totalHeight) {
+            this.totalHeight = this.height;
+        }
+        this.totalHeight += add;
+        this.$ul.css({
+            height: this.totalHeight + 'px',
+        });
+    }
 };
 
-menuToggle.$inject = ['$state', '$timeout', '$rootScope'];
+menuToggleController.$inject = ['$state', '$timeout', '$element', '$scope'];
 
-return menuToggle;
+return {
+    controller: menuToggleController,
+    require: {
+        menu: '^^dashboardMenu',
+        parentToggle: '?^^menuToggle'
+    },
+    templateUrl: require.toUrl('./menuToggle.html'),
+    bindings: {
+        item: '<menuItem',
+        openMenu: '<'
+    }
+};
 
 }); // define
