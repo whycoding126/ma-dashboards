@@ -21,10 +21,11 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
     };
     
     this.$onChanges = function(changes) {
-        if (changes.openMenu && this.openMenu) {
-            if (!this.isOpen || this.openMenu.name.indexOf(this.item.name) === 0)
-                return;
-            this.close();
+        if (changes.openMenu) {
+            if (!this.isOpen) return;
+            if (!this.openMenu || this.openMenu.name.indexOf(this.item.name) !== 0) {
+                this.close();
+            }
         }
     };
     
@@ -49,7 +50,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             this.parentToggle.addHeight(this.height);
         }
         
-        this.menu.menuOpened(this.item);
+        this.menu.menuOpened(this);
     }
     
     this.close = function() {
@@ -59,6 +60,8 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         if (this.parentToggle) {
             this.parentToggle.addHeight(-this.height);
         }
+        
+        this.menu.menuClosed(this);
     }
     
     this.toggle = function() {

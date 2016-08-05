@@ -11,8 +11,15 @@ var dashboardMenuController = function dashboardMenuController(User) {
         this.user = User.current();
     };
     
-    this.menuOpened = function menuOpened(menuItem) {
-        this.openMenu = menuItem;
+    this.menuOpened = function menuOpened(toggleCtrl) {
+        this.openMenu = toggleCtrl.item;
+    };
+    
+    this.menuClosed = function menuOpened(toggleCtrl) {
+        if (this.openMenu && this.openMenu.name.indexOf(toggleCtrl.item.name) === 0) {
+            this.openMenu = toggleCtrl.parent ? toggleCtrl.parent.item : null;
+            this.openMenuLevel = toggleCtrl.menuLevel;
+        }
     };
 };
 
