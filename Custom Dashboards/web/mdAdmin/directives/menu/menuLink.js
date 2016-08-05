@@ -7,6 +7,10 @@ define(['require'], function(require) {
 'use strict';
 
 var menuLinkController = function menuLinkController($state) {
+    this.$onInit = function() {
+        this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
+    }
+    
     this.followLink = function() {
         $state.go(this.item.name);
     }
@@ -19,6 +23,9 @@ return {
     templateUrl: require.toUrl('./menuLink.html'),
     bindings: {
         item: '<menuItem'
+    },
+    require: {
+        parentToggle: '?^^menuToggle'
     }
 };
 

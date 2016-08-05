@@ -8,6 +8,8 @@ define(['require'], function(require) {
 
 var menuToggleController = function menuToggleController($state, $timeout, $element, $scope) {
     this.$onInit = function() {
+        this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
+        
         // close/open menus when changing states
         $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
             if ($state.includes(this.item.name)) {
