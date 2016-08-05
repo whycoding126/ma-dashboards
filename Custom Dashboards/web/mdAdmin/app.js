@@ -33,7 +33,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
     this.addStates = function(menuItems, parent) {
         angular.forEach(menuItems, function(menuItem, area) {
             if (menuItem.name || menuItem.state) {
-                menuItem.parent = parent;
+                //menuItem.parent = parent;
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';

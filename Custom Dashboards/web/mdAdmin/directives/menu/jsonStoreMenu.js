@@ -25,7 +25,7 @@ var jsonStoreMenuController = function jsonStoreMenuController($scope, Menu, jso
         $scope.$apply(function() {
             this.menuItems = payload.object.jsonData.menuItems;
         }.bind(this));
-    };
+    }.bind(this);
 };
 
 jsonStoreMenuController.$inject = ['$scope', 'Menu', 'jsonStoreEventManager', 'CUSTOM_USER_MENU_XID'];
