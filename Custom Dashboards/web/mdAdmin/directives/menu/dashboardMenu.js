@@ -17,7 +17,7 @@ var dashboardMenuController = function dashboardMenuController(User) {
     
     this.menuClosed = function menuOpened(toggleCtrl) {
         if (this.openMenu && this.openMenu.name.indexOf(toggleCtrl.item.name) === 0) {
-            this.openMenu = toggleCtrl.parent ? toggleCtrl.parent.item : null;
+            this.openMenu = toggleCtrl.parentToggle ? toggleCtrl.parentToggle.item : null;
             this.openMenuLevel = toggleCtrl.menuLevel;
         }
     };
