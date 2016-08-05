@@ -10,7 +10,8 @@ define([
     'require',
     'angular-ui-router',
     'oclazyload',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    './views/docs-setup'
 ], function(angular, maMaterialDashboards, maAppComponents, require) {
 'use strict';
 
@@ -26,6 +27,7 @@ var mdAdminApp = angular.module('mdAdminApp', [
 mdAdminApp.constant('require', require);
 mdAdminApp.constant('CUSTOM_USER_MENU_XID', 'custom-user-menu');
 mdAdminApp.constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages');
+mdAdminApp.constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     this.addStates = function(menuItems, parent) {
@@ -619,6 +621,7 @@ mdAdminApp.constant('MENU_ITEMS', [
 mdAdminApp.config([
     'MENU_ITEMS',
     'CUSTOM_MENU_ITEMS',
+    'DASHBOARDS_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
     '$ocLazyLoadProvider',
@@ -628,8 +631,8 @@ mdAdminApp.config([
     '$compileProvider',
     'mangoStateProvider',
     '$locationProvider',
-function(MENU_ITEMS, CUSTOM_MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider,
-        $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
+function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -721,11 +724,32 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, $stateProvider, $urlRouterProvider, $ocL
     
     $urlRouterProvider.otherwise('/home');
     
+    // little hackish here, going to append the DASHBOARDS_NG_DOCS to the MENU_ITEMS "constant"
+    var docsParent = {
+        name: 'dashboard.docs',
+        url: '/docs',
+        menuText: 'Angular Docs',
+        children: []
+    };
+    MENU_ITEMS.push(docsParent);
+    
+    for (var i = 0; i < DASHBOARDS_NG_DOCS.pages.length; i++) {
+        var item = DASHBOARDS_NG_DOCS.pages[i];
+        
+        var menuItem = {
+            name: 'dashboard.docs' + item.id,
+            templateUrl: require.toUrl('./views/docs/' + item.id + '.html'),
+            //url: ??
+            menuText: item.shortName
+        };
+        
+        docsParent.children.push(menuItem);
+    }
+    
     // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
     if (CUSTOM_MENU_ITEMS)
         mangoStateProvider.addStates(CUSTOM_MENU_ITEMS);
-
 }]);
 
 mdAdminApp.run([
