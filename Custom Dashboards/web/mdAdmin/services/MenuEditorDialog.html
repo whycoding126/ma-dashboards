@@ -93,7 +93,9 @@
           <label>Menu icon name</label>
           <md-icon class="fa-fw {{editCtrl.item.menuIcon}}"></md-icon>
           <input name="menuIcon" ng-model="editCtrl.item.menuIcon">
+          <div class="hint">Icon names should be a <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> icon name, e.g. fa-at</div>
       </md-input-container>
+      
       <md-input-container>
           <label>Permission required</label>
           <input name="permission" ng-model="editCtrl.item.permission">
