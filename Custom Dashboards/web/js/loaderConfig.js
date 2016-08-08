@@ -29,6 +29,8 @@ require.config({
     paths : {
         'dashboards' : module,
         'mango-3.0' : module + '/js/mango-3.0',
+        'mango-3.1' : module + '/js/mango-3.1',
+        'mango-3.2' : module + '/js/mango-3.2',
         'mdAdmin' : module + '/mdAdmin',
         'angular' : vendor + '/angular/angular',
         'angular-route' : vendor + '/angular-route/angular-route',

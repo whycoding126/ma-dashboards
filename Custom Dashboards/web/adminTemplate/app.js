@@ -8,8 +8,8 @@ define([
     './directives/menu/menuLink', // load directives from the directives folder
     './directives/menu/menuToggle',
     './directives/login/login',
-    'mango-3.0/maMaterialDashboards', // load mango-3.0 angular modules
-    'mango-3.0/maAppComponents',
+    'mango-3.2/maMaterialDashboards', // load mango-3.2 angular modules
+    'mango-3.2/maAppComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
 ], function(angular, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {

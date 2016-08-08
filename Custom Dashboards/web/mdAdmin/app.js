@@ -5,8 +5,8 @@
 
 define([
     'angular',
-    'mango-3.0/maMaterialDashboards',
-    'mango-3.0/maAppComponents',
+    'mango-3.2/maMaterialDashboards',
+    'mango-3.2/maAppComponents',
     'require',
     'angular-ui-router',
     'oclazyload',

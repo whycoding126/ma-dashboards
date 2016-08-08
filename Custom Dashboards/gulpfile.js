@@ -58,7 +58,7 @@ gulp.task('build-ngdocs', [], function() {
     }
 
     
-    return gulp.src('web/js/mango-3.0/**/*.js')
+    return gulp.src('web/js/mango-3.2/**/*.js')
         .pipe(gulpDocs.process(options))
         .pipe(gulp.dest('docs/mango-3.2'));
 });
@@ -73,5 +73,5 @@ gulp.task('copy-docs', ['build-ngdocs'], function() {
 
 gulp.task('watchDocs', function() {
     // Watch .js files
-    gulp.watch('web/js/mango-3.0/**/*.js', ['copy-docs']);
+    gulp.watch('web/js/mango-3.2/**/*.js', ['copy-docs']);
 });
