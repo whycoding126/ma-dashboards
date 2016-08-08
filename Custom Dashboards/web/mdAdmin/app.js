@@ -252,40 +252,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuHidden: true
     },
     {
-        name: 'dashboard.subtest',
-        url: '/sub-test',
-        menuText: 'Submenu test',
-        menuIcon: 'fa fa-magic',
-        children: [
-            {
-                name: 'dashboard.subtest.page',
-                url: '/page',
-                template: '<h1>page</h1>',
-                menuText: 'Submenu test page'
-            },
-            {
-                name: 'dashboard.subtest.section',
-                url: '/section',
-                menuText: 'Submenu test section',
-                menuIcon: 'fa fa-magic',
-                children: [
-                    {
-                        name: 'dashboard.subtest.section.page1',
-                        url: '/page1',
-                        template: '<h1>section page1</h1>',
-                        menuText: 'Page 1'
-                    },
-                    {
-                        name: 'dashboard.subtest.section.page2',
-                        url: '/page2',
-                        template: '<h1>section page2</h1>',
-                        menuText: 'Page 2'
-                    }
-                ]
-            }
-        ]
-    },
-    {
         name: 'dashboard.examples',
         url: '/examples',
         menuTr: 'dashboards.v3.dox.examples',
@@ -873,9 +839,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         var state = $state.$current;
         do {
             if (state.menuTr) {
-                crumbs.unshift({maTr: state.menuTr});
+                crumbs.unshift({stateName: state.name, maTr: state.menuTr});
             } else if (state.menuText) {
-                crumbs.unshift({text: state.menuText});
+                crumbs.unshift({stateName: state.name, text: state.menuText});
             }
         } while (state = state.parent);
         $rootScope.crumbs = crumbs;
