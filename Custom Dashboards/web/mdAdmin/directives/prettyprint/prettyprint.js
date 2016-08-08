@@ -9,11 +9,13 @@ define(['require', 'ace'], function(require) {
 var prettyprint = function() {
     return {
         restrict: 'C',
-        scope: {},
+        scope: {
+            prettyprintMode: '@'
+        },
         link: function($scope, $element) {
             $scope.editor = ace.edit($element[0]);
             $scope.editor.setTheme("ace/theme/chrome");
-            $scope.editor.getSession().setMode("ace/mode/html");
+            $scope.editor.getSession().setMode("ace/mode/" + (prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
             $scope.editor.setReadOnly(true);
             $scope.editor.setHighlightActiveLine(false);
