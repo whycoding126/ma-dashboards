@@ -97,7 +97,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
     this.postMeasureHeight = function() {
         this.$ul.addClass('ng-hide');
         this.$ul.css({
-            height: this.height + 'px',
+            height: this.totalHeight || this.height + 'px',
             visibility: '',
             position: ''
         });
@@ -114,8 +114,9 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             this.totalHeight = this.height;
         }
         this.totalHeight += add;
+        
         this.$ul.css({
-            height: this.totalHeight + 'px',
+            height: this.totalHeight + 'px'
         });
     }
 };

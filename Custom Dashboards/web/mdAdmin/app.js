@@ -812,29 +812,20 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     .filter(function(item, index, array) {
         return item.indexOf('.') !== -1;
     });
-    console.log(components);
     
     // Add each component item
     components.forEach(function(item, index, array) {
         var splitAtDot = item.split('.');
-        console.log(splitAtDot);
-        
         var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
-        console.log(dashCaseUrl);
-            
         var menuItem = {
             name: 'dashboard.docs.' + item,
             templateUrl: require.toUrl('./views/docs/' + item + '.html'),
             url: '/' + dashCaseUrl,
             menuText: splitAtDot[1]
         };
-        
-        console.log(menuItem);
-        
         moduleItem[splitAtDot[0]].children.push(menuItem);
     });
     
-    console.log(docsParent);
     // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
     if (CUSTOM_MENU_ITEMS)
