@@ -20,12 +20,12 @@ define(['angular'], function(angular) {
 *
 * ### Example
 *
-* <pre>
+* <pre prettyprint-mode="javascript">
 * var queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
 * </pre>
 *
 * You can also access the raw `$http` promise via the `$promise` property on the object returned:
-* <pre>
+* <pre prettyprint-mode="javascript">
 * promise = queryResult.$promise.then(function(deviceNames) {
     $scope.deviceNames = deviceNames;
     if ($scope.autoInit && deviceNames.length) {

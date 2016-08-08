@@ -14,11 +14,11 @@ All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$r
 <li><code>$get</code></li>
 </ul>
 <h5 id="example" id="description_example">Example</h5>
-<pre class="prettyprint linenums">
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
 var queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});
 </pre>
 <p>You can also access the raw <code>$http</code> promise via the <code>$promise</code> property on the object returned:
-<pre class="prettyprint linenums">
+<pre prettyprint-mode="javascript" class="prettyprint linenums">
 promise = queryResult.$promise.then(function(deviceNames) {
     $scope.deviceNames = deviceNames;
     if ($scope.autoInit && deviceNames.length) {

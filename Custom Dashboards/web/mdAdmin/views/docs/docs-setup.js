@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for injecting CSS into the head of the document. ",
-      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive document duplicate element example external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected link maservices md-button method null path place provided returns service set string style stylecontent tag tags tracking trackingname true var"
+      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive document duplicate element example external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected javascript link maservices md-button method null path place prettyprint-mode provided returns service set string style stylecontent tag tags tracking trackingname true var"
     },
     {
       "section": "api",
@@ -361,7 +361,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides service for getting list of data sources from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console data datasource datasources default delete directives ds endpoint example format getbyid http limit list log mango maservices matching method methods object objects objquery org passed post promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system var variable xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console data datasource datasources default delete directives ds endpoint example format getbyid http javascript limit list log mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system var variable xid"
     },
     {
       "section": "api",
@@ -370,7 +370,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides service for getting list of device names from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class data datasource datasourcexid default delete device devicename devicenames directives endpoint example http length list mango maservices matching method methods names ngmodel object objects org passed post promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system var xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class data datasource datasourcexid default delete device devicename devicenames directives endpoint example http javascript length list mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system var xid"
     },
     {
       "section": "api",
@@ -379,7 +379,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides the error interceptor to show REST errors on the error page.",
-      "keywords": "$httpprovider $rootscope adds api app array clearerrors clears config data display error errorinterceptor errors example flex format html intercepted interceptor interceptors js lll maservices message method moment msg object objects properties push pushed rest rootscope service setting status time url view"
+      "keywords": "$httpprovider $rootscope adds api app array clearerrors clears config data display error errorinterceptor errors example flex format html intercepted interceptor interceptors javascript js lll maservices message method moment msg object objects prettyprint-mode properties push pushed rest rootscope service setting status time url view"
     }
   ],
   "apis": {

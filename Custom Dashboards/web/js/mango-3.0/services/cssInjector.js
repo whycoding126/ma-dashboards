@@ -15,7 +15,7 @@ The CSS will only be injected if the directive using this service is used on a p
 *
 * ### Example
 *
-* <pre>
+* <pre prettyprint-mode="javascript">
 *  // inserts a style tag to style <a> tags with accent color
 *  if ($MD_THEME_CSS) {
     var acc = $mdColors.getThemeColor('accent-500-1.0');

@@ -15,7 +15,7 @@ var prettyprint = function() {
         link: function($scope, $element) {
             $scope.editor = ace.edit($element[0]);
             $scope.editor.setTheme("ace/theme/chrome");
-            $scope.editor.getSession().setMode("ace/mode/" + (prettyprintMode || 'html'));
+            $scope.editor.getSession().setMode("ace/mode/" + ($scope.prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
             $scope.editor.setReadOnly(true);
             $scope.editor.setHighlightActiveLine(false);
@@ -24,7 +24,8 @@ var prettyprint = function() {
             $scope.editor.setOptions({
                 maxLines: Infinity
             });
-            $element[0].style.fontSize = '1.2em';
+            $element[0].style.fontSize = '.8em';
+            $element[0].style.lineHeight = 1.5;
         }
     };
 };

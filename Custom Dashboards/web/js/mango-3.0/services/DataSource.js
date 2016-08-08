@@ -22,14 +22,14 @@ define(['angular'], function(angular) {
 *
 * ### Example
 *
-* <pre>
+* <pre prettyprint-mode="javascript">
 *  var DS = DataSource.getById(xid)
 *  DS.name = 'New Name';
 *  DS.$save();
 * </pre>
 *
 * You can also access the raw `$http` promise via the `$promise` property on the object returned:
-* <pre>
+* <pre prettyprint-mode="javascript">
 * promise = DataSource.objQuery(value).$promise;
 * promise.then(function(dataSources) {
 *    $scope.dataSources = dataSources;
@@ -39,7 +39,7 @@ define(['angular'], function(angular) {
 * </pre>
 *
 * Or just assign the return value from a DataSource method to a scope variable:
-* <pre>
+* <pre prettyprint-mode="javascript">
 * $scope.dataSources = DataSource.objQuery(value);
 * </pre>
 */

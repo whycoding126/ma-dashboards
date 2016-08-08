@@ -17,7 +17,7 @@ define([], function() {
 *
 * ### Example
 *
-* <pre>
+* <pre prettyprint-mode="javascript">
     $httpProvider.interceptors.push('errorInterceptor');
 * </pre>
 */
