@@ -745,7 +745,16 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         menuText: 'API Docs',
         menuIcon: 'fa fa-book',
         submenu: true,
-        children: []
+        children: [],
+        resolve: {
+            prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./directives/prettyprint/prettyprint'], function(prettyprint) {
+                    angular.module('prettyprint', [])
+                        .directive('prettyprint', prettyprint);
+                    $ocLazyLoad.inject('prettyprint');
+                });
+            }]
+        }
     };
     MENU_ITEMS.push(docsParent);
     
