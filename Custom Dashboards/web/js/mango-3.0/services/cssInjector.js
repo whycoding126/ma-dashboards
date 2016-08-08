@@ -13,7 +13,7 @@ define([], function() {
 * Provides a service for injecting CSS into the head of the document. 
 The CSS will only be injected if the directive using this service is used on a page.
 *
-* ### Example
+* # Usage
 *
 * <pre prettyprint-mode="javascript">
 *  // inserts a style tag to style <a> tags with accent color

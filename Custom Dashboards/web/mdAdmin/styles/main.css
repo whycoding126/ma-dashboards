@@ -445,8 +445,13 @@ iframe-view iframe {
 
 /* API DOCS */
 
-h2#description, span.hint, #usage_parameters {
+h2#description, span.hint, #usage_parameters, ul.methods h5 {
 	display: none;
+}
+
+ul.methods h5[id*="returns"] {
+	display: block;
+	font-size: 1.5rem;
 }
 
 h1 > code {
@@ -455,6 +460,15 @@ h1 > code {
 
 h2#usage {
 	margin: 2rem 0 2rem 0;
+}
+
+h2#methods {
+	margin-top: 3rem;
+}
+
+ul.methods li {
+	list-style: none;
+	margin-top: 30px;
 }
 
 table.variables-matrix {
@@ -475,6 +489,12 @@ table.variables-matrix {
 .variables-matrix td {
   vertical-align: top;
 }
+
+.variables-matrix td div>em{
+  font-weight: bold;
+  padding-left: 10px;
+}
+
 
 .variables-matrix td p {
   margin: 0 0 1rem 0;

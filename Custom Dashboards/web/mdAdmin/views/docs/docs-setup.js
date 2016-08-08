@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for injecting CSS into the head of the document. ",
-      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive document duplicate element example external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected javascript link maservices md-button method null path place prettyprint-mode provided returns service set string style stylecontent tag tags tracking trackingname true var"
+      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive document duplicate element external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected javascript link maservices md-button method null path place prettyprint-mode provided returns service set string style stylecontent tag tags tracking trackingname true usage var"
     },
     {
       "section": "api",
