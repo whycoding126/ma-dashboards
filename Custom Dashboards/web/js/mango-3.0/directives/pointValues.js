@@ -13,10 +13,10 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * `<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
 </ma-point-values>`
  * - The `<ma-point-values>` directive returns an array of historical values on a data point to its `values` attribute.
- * -  `<ma-point-values>` is passed a `to` & `from` value a date picker.
+ * -  `<ma-point-values>` is passed a `to` & `from` values from a date picker.
  * - Additionally, `rollup` & `rollup-interval` can be used to average the data
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
- * - [View `to/from` Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/point-values) / [View `latest` Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/latest-point-values)
+ * - <a ui-sref="dashboard.examples.basics.pointValues">View <strong>to/from</strong> Demo</a> / <a ui-sref="dashboard.examples.basics.latestPointValues">View <strong>latest values</strong> Demo</a>
  * @param {object} point Inputs a `point` object from `<ma-point-list>`
  * @param {object=} points Alternatively you can input an array of points from `<ma-point-query>`
  * @param {string=} point-xid Alternatively you can pass in the `xid` of a point to use.

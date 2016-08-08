@@ -13,9 +13,8 @@ define(['amcharts/serial', 'jquery'], function(AmCharts, $) {
  * `<ma-tank-level point="myPoint" color="" max="" style="width:300px; height:200px;"></ma-tank-level>`
  * - This directive will display a custom data visualization which represents a tank.
  * - The volume of 'liquid' within the tank increases in height with increases in point value.
- * - Not you must set a width and height on the element.
- * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/tanks)
- *
+ * - Note: you must set a width and height on the element.
+ * - <a ui-sref="dashboard.examples.singleValueDisplays.tanks">View Demo</a>
 
  * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
  * @param {number=} max Sets the max value for a 100% filled tank.

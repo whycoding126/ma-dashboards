@@ -12,7 +12,7 @@ define(['require'], function(require) {
  * @description
  * `<ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>`
  * - Creates a self-filtering point list that supports fuzzy search by device name or data point name.
- * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/point-list)
+ * - <a ui-sref="dashboard.examples.basics.pointList">View Demo</a>
  *
  * @param {object} ng-model Variable to hold the selected data point.
  * @param {boolean=} auto-init Enables auto selecting of the first data point in the list. (Defaults to `false`)

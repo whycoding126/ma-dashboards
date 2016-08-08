@@ -13,7 +13,7 @@ define(['require'], function(require) {
  * `<ma-statistics-table statistics="statsObj"></ma-statistics-table>`
  * - The data point must be settable.
  * - `<ma-statistics-table>` will display a formatted data table with the values and timestamps from a `statistics` object.
- * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/statistics/statistics-table)
+ * - <a ui-sref="dashboard.examples.statistics.statisticsTable">View Demo</a> 
  *
  * @param {object} statistics Input the statistics object from `<ma-point-statistics>`
  * @param {boolean=} hide-starts-and-runtimes If set to `false`, `starts` and `runtimes` statistics will not display for a binary/multistate point

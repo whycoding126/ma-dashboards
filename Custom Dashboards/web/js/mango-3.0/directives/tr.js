@@ -15,7 +15,7 @@ define(['jquery', 'angular'], function($, angular) {
  * - Translations are written in `web/modules/dashboards/classes/i18n.properties` file
  *
  * @usage
- * <span ma-tr="cdashboards.v3.dox.input"></span>
+ * <span ma-tr="dashboards.v3.dox.input"></span>
  */
 function maTr(Translate) {
     return {

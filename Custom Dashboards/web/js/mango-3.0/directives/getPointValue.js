@@ -13,9 +13,9 @@ define([], function() {
  * `<ma-get-point-value point="myPoint"></ma-get-point-value>`
  * - This directive pulls the live value of a data point and outputs it onto the `point` object.
  * - You can use the `point-xid` property or pass in a point from `<ma-point-list>`.
- * - Live values can be displayed as text within your HTML by using `{{myPoint.value}}` or `{{myPoint.renderedValue}}` expressions.
+ * - Live values can be displayed as text within your HTML by using <code ng-non-bindable="">{{myPoint.value}}</code> or <code ng-non-bindable="">{{myPoint.renderedValue}}</code> expressions.
  * - Additionally, you can use the outputted value to make custom meters. [View Example](/modules/dashboards/web/mdAdmin/#/dashboard/examples/single-value-displays/bars).
- * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/live-values) / [View point-xid Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/get-point-by-xid).
+ * - <a ui-sref="dashboard.examples.basics.liveValues">View Demo</a> / <a ui-sref="dashboard.examples.basics.getPointByXid">View point-xid Demo</a>
  *
  * @param {object} point The point object that the live value will be outputted to.
  If `point-xid` is used this will be a new variable for the point object.

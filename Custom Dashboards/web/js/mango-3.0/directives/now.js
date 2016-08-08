@@ -12,7 +12,7 @@ define(['moment-timezone'], function(moment) {
  * @description
  * `<ma-now update-interval="1 SECONDS" output="time"></ma-now>`
  * - This directive will output the current browser time as a timestamp.
- * - [View Demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/basics/clocks-and-timezones)
+ * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>
  *
  * @param {object} output Variable to hold the outputted timestamp.
  * @param {string} update-interval The timestamp will update on this given interval.
