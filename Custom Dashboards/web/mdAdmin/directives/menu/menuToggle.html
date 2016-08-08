@@ -1,4 +1,4 @@
-<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen}" class="menu-toggle">
+<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
     <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
     <md-button class="menu-toggle-button" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
       <div flex layout="row">
@@ -8,8 +8,12 @@
             <span ng-if="!$ctrl.item.menuText" class="menu-text" ma-tr="{{$ctrl.item.menuTr}}"></span>
         </span>
         <span flex></span>
-        <span class="menu-toggle-icon">
+        <span class="menu-toggle-icon" ng-if="!$ctrl.item.submenu">
           <md-icon>keyboard_arrow_up</md-icon>
+        </span>
+        <span class="menu-subdir-icon" ng-if="$ctrl.item.submenu">
+          <md-icon ng-if="!$ctrl.isOpen">subdirectory_arrow_right</md-icon>
+          <md-icon ng-if="$ctrl.isOpen">subdirectory_arrow_left</md-icon>
         </span>
       </div>
     </md-button>
