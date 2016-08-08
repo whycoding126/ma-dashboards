@@ -1,4 +1,4 @@
-<md-button class="menu-link" ng-click="followLink()" ui-sref-active="menu-active md-accent" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
+<md-button class="menu-link" ng-click="$ctrl.followLink()" ui-sref-active="menu-active md-accent" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
   <a ui-sref="{{$ctrl.item.name}}">
   <i ng-if="$ctrl.item.menuIcon" class="menu-icon fa-fw {{$ctrl.item.menuIcon}}"></i>
   <span ng-if="$ctrl.item.menuText" class="menu-text">{{$ctrl.item.menuText}}</span>
