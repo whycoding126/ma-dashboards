@@ -27,6 +27,17 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
                 this.close();
             }
         }
+        if (changes.item) {
+            if (changes.item.currentValue.children.length !== changes.item.previousValue.children.length) {
+                // do on next cycle as elements have not been added/removed yet
+                $timeout(function() {
+                    var heightDiff = this.totalHeight ? this.totalHeight - this.height : 0;
+                    delete this.totalHeight;
+                    this.calcHeight();
+                    this.addHeight(heightDiff);
+                }.bind(this), 0);
+            }
+        }
     };
     
     this.$postLink = function() {
@@ -91,11 +102,15 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             visibility: 'hidden',
             position: 'absolute'
         });
-        this.$ul.removeClass('ng-hide');
+        if (this.wasHidden = this.$ul.hasClass('ng-hide'))
+            this.$ul.removeClass('ng-hide');
     }
     
-    this.postMeasureHeight = function() {
-        this.$ul.addClass('ng-hide');
+    this.postMeasureHeight = function(wasHidden) {
+        if (this.wasHidden)
+            this.$ul.addClass('ng-hide');
+        delete this.wasHidden;
+        
         this.$ul.css({
             height: this.totalHeight || this.height + 'px',
             visibility: '',
