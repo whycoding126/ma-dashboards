@@ -28,7 +28,7 @@ var dashboardMenuController = function dashboardMenuController(User) {
     };
     
     this.menuClosed = function menuOpened(toggleCtrl) {
-        if (toggleCtrl.item === this.openSubmenu) {
+        if (toggleCtrl.item.name === this.openSubmenu.name) {
             delete this.openSubmenu;
         }
         if (this.openMenu && this.openMenu.name.indexOf(toggleCtrl.item.name) === 0) {

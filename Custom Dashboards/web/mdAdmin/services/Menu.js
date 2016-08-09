@@ -54,7 +54,8 @@ function MenuFactory(MENU_ITEMS, CUSTOM_MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_
             var result = fn(menuItem, parent, menuItems, i);
             if (result === 'continue') continue;
             else if (result) return result;
-            return this.eachMenuItem(menuItem.children, menuItem, fn);
+            result = this.eachMenuItem(menuItem.children, menuItem, fn);
+            if (result) return result;
         }
     }
 
