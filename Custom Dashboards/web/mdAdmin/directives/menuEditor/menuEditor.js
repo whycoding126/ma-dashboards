@@ -12,12 +12,43 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
         templateUrl: require.toUrl('./menuEditor.html'),
         link: function($scope, $element) {
             $scope.menuEditor = {};
+            $scope.$mdMedia = $mdMedia;
             
             Menu.getMenu().then(function(storeObject) {
                 $scope.storeObject = storeObject;
+                $scope.editItems = $scope.storeObject.jsonData.menuItems;
+                $scope.path = [{menuText: 'Root'}];
             });
             
-            $scope.$mdMedia = $mdMedia;
+            function scrollToTopOfMdContent() {
+                var elem = $element[0];
+                while (elem = elem.parentElement) {
+                    if (elem.tagName === 'MD-CONTENT') {
+                        elem.scrollTop = 0;
+                        break;
+                    }
+                }
+            }
+            
+            $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
+                $scope.editItems = menuItem.children;
+                $scope.path.push(menuItem);
+                scrollToTopOfMdContent();
+            };
+            
+            $scope.goUp = function goUp(event) {
+                $scope.path.pop();
+                var currentItem = $scope.path[$scope.path.length-1];
+                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                scrollToTopOfMdContent();
+            };
+            
+            $scope.goToIndex = function goUp(event, index) {
+                $scope.path.splice(index+1, $scope.path.length - 1 - index);
+                var currentItem = $scope.path[$scope.path.length-1];
+                $scope.editItems = currentItem.children || $scope.storeObject.jsonData.menuItems;
+                scrollToTopOfMdContent();
+            };
             
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
                 var confirm = $mdDialog.confirm()
@@ -33,7 +64,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                         $scope.storeObject = Menu.getDefaultMenu();
                     });
                 });
-            }
+            };
             
             $scope.resetDefaultItems = function resetDefaultItems(event) {
                 var confirm = $mdDialog.confirm()

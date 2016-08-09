@@ -16,6 +16,14 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
         return storePromise.then(function(menuStore) {
             var menuItems = menuStore.jsonData.menuItems;
             
+            // build flat menu item array so we can choose any item in dropdown
+            var flatMenuItems = [];
+            var flatMenuMap = [];
+            Menu.eachMenuItem(menuItems, null, function(menuItem) {
+                flatMenuItems.push(menuItem);
+                flatMenuMap[menuItem.name] = true;
+            });
+            
             // search for the item
             if (searchBy) {
                 Menu.eachMenuItem(menuItems, null, function(m, p) {
@@ -35,7 +43,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 // editing a new item
                 item = {
                     isNew: true,
-                    name: 'dashboard.',
+                    name: parent ? parent.name + '.' : 'dashboard.',
                     url: '/',
                     pageXid: null,
                     linkToPage: true
@@ -59,12 +67,16 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 controllerAs: 'editCtrl',
                 locals: {
                     item: item,
-                    menuItems: menuItems
+                    menuItems: flatMenuItems
                 },
                 controller: function editItemController($scope, $mdDialog) {
                     Page.getPages().then(function(store) {
                         $scope.pages = store.jsonData.pages;
                     });
+                    
+                    $scope.checkStateExists = function(name) {
+                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !flatMenuMap[name]);
+                    }
                     
                     $scope.cancel = function cancel() {
                         $mdDialog.cancel();

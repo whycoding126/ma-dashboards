@@ -16,7 +16,7 @@
           <label>Parent item</label>
           <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.name'}">
             <md-option ng-value="null">None (Top level)</md-option>
-            <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems">
+            <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems" ng-if="menuItem.name !== editCtrl.item.name">
               <span ng-if="menuItem.menuText" ng-bind="menuItem.menuText"></span>
               <span ng-if="!menuItem.menuText && menuItem.menuTr" ma-tr="{{menuItem.menuTr}}"></span>
               ({{menuItem.name}})
@@ -31,15 +31,16 @@
       <md-input-container>
           <label>State name</label>
           <input name="stateName" required pattern="^(\w+\.)*\w+$"
-              ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn || !editCtrl.item.isNew">
+              ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn || !editCtrl.item.isNew" ng-change="checkStateExists(editCtrl.item.name)">
           <div ng-messages="menuItemEditForm.stateName.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
             <div ng-message="pattern" ma-tr="dashboards.v3.app.statePattern"></div>
+            <div ng-message="stateExists" ma-tr="dashboards.v3.app.stateExists"></div>
           </div>
       </md-input-container>
       <md-input-container>
           <label>State URL</label>
-          <input name="url" required pattern="^/([\w-]+/)*[\w-]+$"
+          <input name="url" pattern="^/([\w-]+/)*[\w-]+$"
               ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
           <div ng-messages="menuItemEditForm.url.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>

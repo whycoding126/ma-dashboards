@@ -421,8 +421,9 @@ menu-editor td .md-button.md-icon-button {
   margin: 0;
 }
 
-menu-editor .child-menu-item {
-  background-color: lightgrey;
+.menu-editor-path {
+  margin: 15px 0;
+  font-size: 1.2em;
 }
 
 page-view {
