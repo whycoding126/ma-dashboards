@@ -61,7 +61,7 @@ function maTr(Translate) {
 	            		return;
 	            	} else if (tagName === 'BUTTON' || $elem.hasClass('md-button')) {
 	            	    $elem.attr('aria-label', text);
-	            	    // only set aria-label if button already has content
+	            	    // if button already has text contents, then only set the aria-label
 	            	    if ($elem.contents().length) return;
 	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER' ||
 	            	        tagName === 'MD-INPUT-CONTAINER' || tagName === 'MA-FILTERING-POINT-LIST') {

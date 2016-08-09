@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var SUBSCRIPTION_TYPES = ['add', 'update'];
+var SUBSCRIPTION_TYPES = ['add', 'update', 'delete'];
 
 var jsonStoreMenuController = function jsonStoreMenuController($scope, Menu, jsonStoreEventManager, CUSTOM_USER_MENU_XID) {
     this.$onInit = function() {
@@ -14,17 +14,11 @@ var jsonStoreMenuController = function jsonStoreMenuController($scope, Menu, jso
             this.menuItems = storeObject.jsonData.menuItems;
         }.bind(this));
         
-        jsonStoreEventManager.subscribe(CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
+        jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
     };
-    
-    this.$onDestroy = function() {
-        jsonStoreEventManager.unsubscribe(CUSTOM_USER_MENU_XID, SUBSCRIPTION_TYPES, this.updateHandler);
-    };
-    
+
     this.updateHandler = function updateHandler(event, payload) {
-        $scope.$apply(function() {
-            this.menuItems = payload.object.jsonData.menuItems;
-        }.bind(this));
+        this.menuItems = payload.action === 'delete' ? Menu.getDefaultMenu().jsonData.menuItems : payload.object.jsonData.menuItems;
     }.bind(this);
 };
 

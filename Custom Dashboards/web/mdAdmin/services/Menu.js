@@ -52,8 +52,9 @@ function MenuFactory(MENU_ITEMS, CUSTOM_MENU_ITEMS, JsonStore, CUSTOM_USER_MENU_
         for (var i = 0; i < menuItems.length; i++) {
             var menuItem = menuItems[i];
             var result = fn(menuItem, parent, menuItems, i);
-            if (result) return result;
-            this.eachMenuItem(menuItem.children, menuItem, fn);
+            if (result === 'continue') continue;
+            else if (result) return result;
+            return this.eachMenuItem(menuItem.children, menuItem, fn);
         }
     }
 
