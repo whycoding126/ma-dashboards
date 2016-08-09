@@ -12,15 +12,15 @@ define(['angular'], function(angular) {
 * @name maServices.DataSource
 *
 * @description
-* Provides service for getting list of data sources from the Mango system.
-* Used by `<ma-data-source-list>` and `<ma-data-source-query>` directives.
-* All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - Provides service for getting list of data sources from the Mango system.
+* - Used by <a ui-sref="dashboard.docs.maDashboards.maDataSourceList">`<ma-data-source-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maDataSourceQuery">`<ma-data-source-query>`</a> directives.
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
 * - `$save`
 * - `$remove`
 * - `$delete`
 * - `$get`
 *
-* ### Example
+* # Usage
 *
 * <pre prettyprint-mode="javascript">
 *  var DS = DataSource.getById(xid)
@@ -180,7 +180,7 @@ function DataSourceFactory($resource, Util) {
             cache: true
         }
     });
-    
+
     DataSource.objQuery = function(options) {
         if (!options) return this.query();
         if (typeof options.query === 'string') {
@@ -193,7 +193,7 @@ function DataSourceFactory($resource, Util) {
             var exact = !!options.query.$exact;
             delete options.query.$exact;
             delete options.query.$and;
-            
+
             var parts = [];
             for (var key in options.query) {
                 var val = options.query[key] || '';
@@ -205,7 +205,7 @@ function DataSourceFactory($resource, Util) {
                 }
                 parts.push(key + comparison + val + (autoLike ? '*': ''));
             }
-            
+
             var queryPart;
             if (and || parts.length === 1) {
                 queryPart = parts.join('&');
@@ -214,7 +214,7 @@ function DataSourceFactory($resource, Util) {
             }
             params.push(queryPart);
         }
-        
+
         if (options.sort) {
             var sort = options.sort;
             if (angular.isArray(sort)) {
@@ -222,15 +222,15 @@ function DataSourceFactory($resource, Util) {
             }
             params.push('sort(' + sort + ')');
         }
-        
+
         if (options.limit) {
             var start = options.start || 0;
             params.push('limit(' + options.limit + ',' + start + ')');
         }
-        
+
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     };
-    
+
     return DataSource;
 }
 

@@ -177,7 +177,7 @@ body {
 /***************
  * TYPE DEFAULTS
  ***************/
- 
+
 a {
   text-decoration: none;
   font-weight: 400;
@@ -464,6 +464,10 @@ h2#usage {
 
 h2#methods {
 	margin-top: 3rem;
+}
+
+pre div.ace_content {
+	padding: 20px;
 }
 
 ul.methods li {

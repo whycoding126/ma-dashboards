@@ -15,7 +15,7 @@ define([], function() {
 - Adds errors `array` and `clearErrors()` method to the rootScope of the app.
 - See `/web/mdAdmin/views/dashboard/errors.html` to see how these are used in a view to display errors.
 *
-* ### Example
+* # Usage
 *
 * <pre prettyprint-mode="javascript">
     $httpProvider.interceptors.push('errorInterceptor');
@@ -50,22 +50,22 @@ define([], function() {
 */
 
 function errorInterceptorFactory($q, $rootScope) {
-	
+
 	$rootScope.errors = [];
 	$rootScope.clearErrors = function() {
 		$rootScope.errors = [];
 	};
-	
+
 	return {
 		responseError: function(rejection) {
     		var errorObj = angular.merge({}, rejection);
     		errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
     		errorObj.time = new Date();
-    		
+
     		if ($rootScope.errors.length >= 10)
     			$rootScope.errors.pop();
     		$rootScope.errors.unshift(errorObj);
-    		
+
     		return $q.reject(rejection);
     	}
     };

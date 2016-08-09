@@ -11,14 +11,14 @@ define(['angular'], function(angular) {
 *
 * @description
 * Provides service for getting list of device names from the Mango system.
-* Used by `<ma-device-name-list>` and `<ma-device-name-query>` directives.
-* All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - Used by <a ui-sref="dashboard.docs.maDashboards.maDeviceNameList">`<ma-device-name-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maDeviceNameQuery">`<ma-device-name-query>`</a> directives.
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
 * - `$save`
 * - `$remove`
 * - `$delete`
 * - `$get`
 *
-* ### Example
+* # Usage
 *
 * <pre prettyprint-mode="javascript">
 * var queryResult = DeviceName.byDataSourceXid({xid: $scope.dataSourceXid, contains: $scope.contains});

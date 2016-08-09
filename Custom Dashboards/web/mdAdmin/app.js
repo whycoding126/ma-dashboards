@@ -771,10 +771,15 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     modules.forEach(function(item, index, array) {
         var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
         
+        var menuText = item;
+        if (item==='maDashboards') { menuText = 'Directives' }
+        else if (item==='maFilters') { menuText = 'Filters' }
+        else if (item==='maServices') { menuText = 'Services' }
+        
         var menuItem = {
             name: 'dashboard.docs.' + item,
             url: '/' + dashCaseUrl,
-            menuText: item,
+            menuText: menuText,
             children: []
         };
         

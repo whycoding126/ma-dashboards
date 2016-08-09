@@ -244,7 +244,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-serial-chart style=&quot;height: 300px; width: 100%&quot; series-1-values=&quot;point1Values&quot; series-1-point=&quot;point1&quot; default-type=&quot;column&quot;&gt;",
-      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column configuration create created customizing dashboard data default default-axis default-balloon-text default-color default-type defaults demo design directive displaying element example examples extend format generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects options overides pass point point1 point1values points provide provided range regular replace rollup series series-1-point series-1-values series-x-axis series-x-balloon-text series-x-color series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps type ui-sref values variations width"
+      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column configuration create created customizing dashboard data default default-axis default-balloon-text default-color default-type defaults demo design directive displaying element example examples extend format generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects option options overides pass point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x-axis series-x-balloon-text series-x-color series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps timezone type ui-sref values variations width"
     },
     {
       "section": "api",
@@ -360,8 +360,8 @@ NG_DOCS={
       "shortName": "maServices.DataSource",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "Provides service for getting list of data sources from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console data datasource datasources default delete directives ds endpoint example format getbyid http javascript limit list log mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system var variable xid"
+      "shortDescription": "",
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console dashboard data datasource datasources default delete directives docs ds endpoint format getbyid http javascript limit list log madashboards madatasourcelist madatasourcequery mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system ui-sref usage var variable xid"
     },
     {
       "section": "api",
@@ -370,7 +370,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides service for getting list of device names from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class data datasource datasourcexid default delete device devicename devicenames directives endpoint example http javascript length list mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system var xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class dashboard data datasource datasourcexid default delete device devicename devicenames directives docs endpoint http javascript length list madashboards madevicenamelist madevicenamequery mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system ui-sref usage var xid"
     },
     {
       "section": "api",
@@ -379,7 +379,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides the error interceptor to show REST errors on the error page.",
-      "keywords": "$httpprovider $rootscope adds api app array clearerrors clears config data display error errorinterceptor errors example flex format html intercepted interceptor interceptors javascript js lll maservices message method moment msg object objects prettyprint-mode properties push pushed rest rootscope service setting status time url view"
+      "keywords": "$httpprovider $rootscope adds api app array clearerrors clears config data display error errorinterceptor errors flex format html intercepted interceptor interceptors javascript js lll maservices message method moment msg object objects prettyprint-mode properties push pushed rest rootscope service setting status time url usage view"
     }
   ],
   "apis": {
