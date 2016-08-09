@@ -5,7 +5,29 @@
 
 define(['angular'], function(angular) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.JsonStore
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.JsonStore
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function JsonStoreFactory($resource, Util) {
 
     function setDataPathInterceptor(data) {
@@ -13,7 +35,7 @@ function JsonStoreFactory($resource, Util) {
         data.resource.dataPath = urlParts.length >= 6 ? urlParts[5] : null;
         return data.resource;
     }
-    
+
     var JsonStore = $resource('/rest/v1/json-data/:xid/:dataPath', {
     	xid: '@xid',
     	dataPath: '@dataPath',

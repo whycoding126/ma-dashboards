@@ -5,20 +5,42 @@
 
 define(['angular', 'globalize', 'globalize/message', 'cldr/unresolved'], function(angular, Globalize) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.Translate
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.Translate
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function translateFactory($http, $q) {
 	var Translate = function() {};
-	
+
 	var likelySubtagsUrl = '/resources/cldr-data/supplemental/likelySubtags.json';
 	Translate.likelySubtags = $http.get(likelySubtagsUrl).then(function(likelySubtags) {
 		Globalize.load(likelySubtags.data);
 	});
-	
+
 	Translate.tr = function(key, args) {
 		if (!angular.isArray(args)) {
             args = Array.prototype.slice.call(arguments, 1);
         }
-        
+
         var namespace = key.split('.')[0];
         return Translate.loadNamespaces(namespace).then(function() {
         	try {
@@ -28,7 +50,7 @@ function translateFactory($http, $q) {
         	}
         });
 	};
-	
+
 	Translate.trSync = function(key, args) {
 		if (!angular.isArray(args)) {
             args = Array.prototype.slice.call(arguments, 1);
@@ -37,13 +59,13 @@ function translateFactory($http, $q) {
 	};
 
 	Translate.loadedNamespaces = {};
-	
+
 	// TODO allow setting language, for now we just use whatever the server returns
 	Translate.loadNamespaces = function(namespaces) {
 		if (!angular.isArray(namespaces)) {
 			namespaces = Array.prototype.slice.call(arguments);
         }
-		
+
 		return Translate.likelySubtags.then(function() {
 			var namespaceRequests = [];
 			for (var i = 0; i < namespaces.length; i++) {
@@ -54,7 +76,7 @@ function translateFactory($http, $q) {
 					if (namespace === 'public' || namespace === 'login' || namespace === 'header') {
 						translationsUrl += 'public/';
 					}
-					
+
 					request = $http.get(translationsUrl + encodeURIComponent(namespace), {
 						params: {
 							//language: 'XXX'
@@ -80,11 +102,11 @@ function translateFactory($http, $q) {
 			}
 		});
 	};
-	
+
 	function removeFromLoaded(namespace) {
 		delete Translate.loadedNamespaces[namespace];
 	}
-	
+
 	return Translate;
 }
 

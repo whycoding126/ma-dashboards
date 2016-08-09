@@ -5,7 +5,29 @@
 
 define(['angular'], function(angular) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.PointHierarchy
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.PointHierarchy
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 /*
  * Provides service for getting point hierarchy
  */
@@ -35,7 +57,7 @@ function PointHierarchyFactory($resource) {
             cache: true
         }
     });
-    
+
     return PointHierarchy;
 }
 

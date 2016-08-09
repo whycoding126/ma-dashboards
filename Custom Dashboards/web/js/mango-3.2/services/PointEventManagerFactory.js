@@ -5,7 +5,29 @@
 
 define([], function() {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.PointEventManager
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.PointEventManager
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function PointEventManagerFactory(EventManager) {
     return new EventManager({
     	url: '/rest/v1/websocket/point-value'

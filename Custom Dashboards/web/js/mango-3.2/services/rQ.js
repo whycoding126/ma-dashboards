@@ -5,7 +5,29 @@
 
 define([], function() {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.rQ
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.rQ
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function rqFactory($q, require) {
     function rQ(deps, success, fail) {
         var defer = $q.defer();
@@ -18,7 +40,7 @@ function rqFactory($q, require) {
         });
         return defer.promise;
     }
-    
+
 	return rQ;
 }
 

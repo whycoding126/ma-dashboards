@@ -5,7 +5,29 @@
 
 define(['angular'], function(angular) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.Point
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.Point
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 /*
  * Provides service for getting list of points and create, update, delete
  */
@@ -42,7 +64,7 @@ function PointFactory($resource, $http, $timeout, Util) {
             cache: true
         }
     });
-    
+
     Point.objQuery = function(options) {
         if (!options) return this.query();
         if (typeof options.query === 'string') {
@@ -55,7 +77,7 @@ function PointFactory($resource, $http, $timeout, Util) {
             var exact = !!options.query.$exact;
             delete options.query.$exact;
             delete options.query.$and;
-            
+
             var parts = [];
             for (var key in options.query) {
                 var val = options.query[key] || '';
@@ -67,7 +89,7 @@ function PointFactory($resource, $http, $timeout, Util) {
                 }
                 parts.push(key + comparison + val + (autoLike ? '*': ''));
             }
-            
+
             var queryPart;
             if (and || parts.length === 1) {
                 queryPart = parts.join('&');
@@ -76,7 +98,7 @@ function PointFactory($resource, $http, $timeout, Util) {
             }
             params.push(queryPart);
         }
-        
+
         if (options.sort) {
             var sort = options.sort;
             if (angular.isArray(sort)) {
@@ -84,18 +106,18 @@ function PointFactory($resource, $http, $timeout, Util) {
             }
             params.push('sort(' + sort + ')');
         }
-        
+
         if (options.limit) {
             var start = options.start || 0;
             params.push('limit(' + options.limit + ',' + start + ')');
         }
-        
+
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     };
 
     Point.prototype.setValue = function setValue(value, options) {
     	options = options || {};
-    	
+
     	var dataType = this.pointLocator.dataType;
     	if (!value.value) {
     		if (dataType === 'NUMERIC') {
@@ -110,7 +132,7 @@ function PointFactory($resource, $http, $timeout, Util) {
     		    dataType: dataType
     		};
     	}
-    	
+
     	var url = '/rest/v1/point-values/' + encodeURIComponent(this.xid);
     	return $http.put(url, value, {
     		params: {
@@ -118,7 +140,7 @@ function PointFactory($resource, $http, $timeout, Util) {
     		}
     	});
     };
-    
+
     Point.prototype.setValueResult = function(value, holdTimeout) {
         holdTimeout = holdTimeout || 3000;
         var result = {
@@ -139,24 +161,24 @@ function PointFactory($resource, $http, $timeout, Util) {
         });
         return result;
     };
-    
+
     Point.prototype.toggleValue = function toggleValue() {
     	var dataType = this.pointLocator.dataType;
     	if (dataType === 'BINARY' && this.value !== undefined) {
     		this.setValue(!this.value);
 		}
     };
-    
+
     Point.prototype.valueFn = function(setValue) {
     	if (setValue === undefined) return this.value;
     	this.setValue(setValue);
     };
-    
+
     Point.prototype.rendererMap = function() {
     	if (this._rendererMap) return this._rendererMap;
     	var textRenderer = this.textRenderer;
     	if (!textRenderer) return;
-    	
+
     	if (textRenderer.multistateValues) {
     		this._rendererMap = {};
     		var multistateValues = textRenderer.multistateValues;
@@ -179,19 +201,19 @@ function PointFactory($resource, $http, $timeout, Util) {
     			}
     		};
     	}
-    	
+
     	return this._rendererMap;
     };
-    
+
     Point.prototype.valueRenderer = function(value) {
     	var rendererMap = this.rendererMap();
     	if (rendererMap) {
-    	    var obj = rendererMap[value]; 
+    	    var obj = rendererMap[value];
     	    if (obj) return obj;
     	}
     	return {text: value};
     };
-    
+
     return Point;
 }
 

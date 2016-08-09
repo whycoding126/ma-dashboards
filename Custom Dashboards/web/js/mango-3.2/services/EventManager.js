@@ -11,6 +11,29 @@
 
 define(['jquery'], function($) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.EventManager
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 
 function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, mangoTimeout, mangoReconnectDelay) {
 
@@ -18,33 +41,33 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	var READY_STATE_OPEN = 1;
 	var READY_STATE_CLOSING = 2;
 	var READY_STATE_CLOSED = 3;
-	
+
 	function nop() {}
-	
+
 	function EventManager(options) {
 		 // keys are xid, value is object where key is event type and value is the number of subscriptions
 	    this.subscriptions = {};
 	    // keys are xid, value is array of event types
 	    this.activeSubscriptions = {};
-	    
+
 	    $.extend(this, options);
-	    
+
 	    var _this = this;
-	    
+
 	    $rootScope.$on('mangoWatchdogTimeout', function() {
 	    	_this.closeSocket();
 	    });
-	    
+
 	    this.openSocket();
 	}
 
 	EventManager.prototype.openSocket = function() {
 		var _this = this;
-		
+
 		if (this.socket) {
 			throw new Error('Socket already open');
 		}
-		
+
 		if (this.debounceTimer) {
 			this.openPending = true;
 			return;
@@ -56,14 +79,14 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 				_this.openSocket();
 			}
 		}, mangoReconnectDelay);
-		
+
 	    if (!('WebSocket' in window)) {
 	        throw new Error('WebSocket not supported');
 	    }
-	    
+
 	    var host = document.location.host;
 	    var protocol = document.location.protocol;
-	    
+
 	    var baseUrl = mangoBaseUrl;
 	    if (baseUrl) {
 	        var i = baseUrl.indexOf('//');
@@ -75,15 +98,15 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	            host = baseUrl;
 	        }
 	    }
-	    
+
 	    protocol = protocol === 'https:' ? 'wss:' : 'ws:';
-	    
+
 	    var socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
-	    
+
 	    this.connectTimer = setTimeout(function() {
 	    	_this.closeSocket();
 	    }, mangoTimeout);
-	    
+
 	    socket.onclose = function() {
 	        _this.closeSocket();
 	    };
@@ -99,10 +122,10 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	        var message = JSON.parse(event.data);
 	        _this.messageReceived(message);
 	    };
-	    
+
 	    return socket;
 	};
-	
+
 	EventManager.prototype.closeSocket = function() {
     	clearTimeout(this.connectTimer);
 		if (this.socket) {
@@ -113,7 +136,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 			this.socket.close();
 			delete this.socket;
 		}
-		
+
 		this.activeSubscriptions = {};
         this.openSocket();
 	};
@@ -121,11 +144,11 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	EventManager.prototype.messageReceived = function(message) {
 	    if (message.status === 'OK') {
 	    	mangoWatchdog.reset();
-			
+
 	        var payload = message.payload;
 	        var eventType = payload.event || payload.action;
 	        var xid = payload.xid || payload.object.xid;
-	        
+
 	        var xidSubscriptions = this.subscriptions[xid];
 	        if (!xidSubscriptions)
 	            return;
@@ -138,15 +161,15 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	    if (!this.subscriptions[xid])
 	        this.subscriptions[xid] = {eventEmitter: {}};
 	    var xidSubscriptions = this.subscriptions[xid];
-	    
+
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
-	    
+
 	    for (var i = 0; i < eventTypes.length; i++) {
 	    	var eventType = eventTypes[i];
 	        if (typeof eventHandler === 'function') {
 	            $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
 	        }
-	        
+
 	        if (!xidSubscriptions[eventType]) {
 	            xidSubscriptions[eventType] = 1;
 	        }
@@ -154,32 +177,32 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	            xidSubscriptions[eventType] = xidSubscriptions[eventType] + 1;
 	        }
 	    }
-	    
+
 	    this.updateSubscriptions(xid);
 	};
-	    
+
 	EventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
 	    var xidSubscriptions = this.subscriptions[xid];
 	    if (!xidSubscriptions)
 	        return;
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
-	    
+
 	    for (var i = 0; i < eventTypes.length; i++) {
 	    	var eventType = eventTypes[i];
 	    	if (typeof eventHandler === 'function') {
 	            $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
 	    	}
-	    	
+
 	        var count = xidSubscriptions[eventType];
 	        if (count >= 1) {
 	            xidSubscriptions[eventType] = count - 1;
 	        }
 	    }
-	    
+
 	    this.updateSubscriptions(xid);
 	};
-	
+
 	/**
 	 * Subscribes to the event type for the XID but also unsubscribes automatically when the given $scope
 	 * is destroyed and does scope apply for the eventHandler function
@@ -190,33 +213,33 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
         $scope.$on('$destroy', function() {
             this.unsubscribe(xid, eventTypes, appliedHandler);
         }.bind(this));
-        
+
         function scopeApply($scope, fn) {
             var args = Array.prototype.slice.call(arguments, 2);
             var boundFn = fn.bind.apply(fn, [null].concat(args));
             $scope.$apply(boundFn);
         }
 	};
-	
+
 	EventManager.prototype.updateSubscriptions = function(xid) {
 		if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
-		
+
 		if (!xid) {
 			for (var xidKey in this.subscriptions) {
 				this.updateSubscriptions(xidKey);
 			}
 			return;
 		}
-		
+
 	    var xidSubscriptions = this.subscriptions[xid];
 	    if (!xidSubscriptions)
 	        return;
-	    
+
 	    var eventTypes = [];
 	    for (var key in xidSubscriptions) {
 	        if (key === 'eventEmitter')
 	            continue;
-	        
+
 	        if (xidSubscriptions[key] === 0) {
 	        	delete xidSubscriptions[key];
 	        } else {
@@ -226,7 +249,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	    eventTypes.sort();
 
 	    var activeSubs = this.activeSubscriptions[xid];
-	    
+
 	    // there are no subscriptions for any event types for this xid
 	    if (eventTypes.length === 0) {
 	        delete this.subscriptions[xid];
@@ -236,11 +259,11 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	    if (!activeSubs || !arraysEqual(activeSubs, eventTypes)) {
 	    	if (eventTypes.length)
 	    		this.activeSubscriptions[xid] = eventTypes;
-	    	
+
 	        var message = {};
 	        message.xid = xid;
 	        message.eventTypes = eventTypes;
-	        
+
 	        this.socket.send(JSON.stringify(message));
 	    }
 	};

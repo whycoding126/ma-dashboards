@@ -5,9 +5,31 @@
 
 define(['angular'], function(angular) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.mangoWatchdog
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.mangoWatchdog
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {
-	
+
 	function MangoWatchdog(options) {
 		this.failed = false;
 		this.enabled = true;
@@ -19,17 +41,17 @@ function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {
 	MangoWatchdog.prototype.enable = function() {
 		this.enabled = true;
 	};
-	
+
 	MangoWatchdog.prototype.disable = function() {
 		this.enabled = false;
 	};
-	
+
 	MangoWatchdog.prototype.reset = function() {
 		var _this = this;
 		this.failed = false;
-		
+
 		if (!this.timeout || !this.enabled) return;
-		
+
 		if (this.promise) {
 			$timeout.cancel(this.promise);
 		}
@@ -38,7 +60,7 @@ function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {
 			_this.failed = true;
 		}, this.timeout);
 	};
-	
+
 	return new MangoWatchdog({timeout: mangoWatchdogTimeout});
 }
 

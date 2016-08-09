@@ -629,7 +629,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             }
         ]
     },
-    
+
 ]);
 
 mdAdminApp.config([
@@ -735,9 +735,9 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     //$stateProvider.reloadOnSearch = false;
     $locationProvider.html5Mode(true);
-    
+
     $urlRouterProvider.otherwise('/home');
-    
+
     // little hackish here, going to append the DASHBOARDS_NG_DOCS to the MENU_ITEMS "constant"
     var docsParent = {
         name: 'dashboard.docs',
@@ -757,50 +757,51 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         }
     };
     MENU_ITEMS.push(docsParent);
-    
+
     var DOCS_PAGES = DASHBOARDS_NG_DOCS.pages;
     var moduleItem = {};
-    
+
     // Loop through and create array of children based on moduleName
     var modules = DOCS_PAGES.map(function(page) {return page.moduleName})
     .filter(function(item, index, array) {
         return index == array.indexOf(item);
     });
-    
+
     // Create module menu items & states
     modules.forEach(function(item, index, array) {
         var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
-        
+
         var menuText = item;
         if (item==='maDashboards') { menuText = 'Directives' }
         else if (item==='maFilters') { menuText = 'Filters' }
         else if (item==='maServices') { menuText = 'Services' }
-        
+
         var menuItem = {
             name: 'dashboard.docs.' + item,
             url: '/' + dashCaseUrl,
             menuText: menuText,
             children: []
         };
-        
-        moduleItem[item] = menuItem; 
-        
+
+        moduleItem[item] = menuItem;
+
         docsParent.children.push(menuItem);
     });
-    
+
     // Create 3rd level directives/services/filters docs pages
     // First remove module items
     var components = DOCS_PAGES.map(function(page) {return page.id})
     .filter(function(item, index, array) {
         return item.indexOf('.') !== -1;
     });
-    
+
     // Add each component item
     components.forEach(function(item, index, array) {
         var splitAtDot = item.split('.');
         var dashCaseUrl = splitAtDot[1].replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
+		if(dashCaseUrl.charAt(0) === '-') { dashCaseUrl = dashCaseUrl.slice(1)}
         var menuText = splitAtDot[1];
-        if (splitAtDot[0]==='maDashboards') { menuText = dashCaseUrl}
+        if (splitAtDot[0] === 'maDashboards') { menuText = dashCaseUrl}
         var menuItem = {
             name: 'dashboard.docs.' + item,
             templateUrl: require.toUrl('./views/docs/' + item + '.html'),
@@ -809,7 +810,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         };
         moduleItem[splitAtDot[0]].children.push(menuItem);
     });
-    
+
     // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
     if (CUSTOM_MENU_ITEMS)
@@ -868,7 +869,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             $rootScope.closeMenu();
         }
     });
-    
+
     $rootScope.lockLeft = true;
     $rootScope.toggleMenu = function() {
         if ($mdMedia('gt-sm')) {
@@ -877,10 +878,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         else {
             $mdSidenav('left').toggle();
         }
-        
+
         angular.element('#menu-button').blur();
     }
-    
+
     $rootScope.closeMenu = function() {
         $mdSidenav('left').close();
     }

@@ -5,7 +5,29 @@
 
 define(['angular', 'jquery'], function(angular, $) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.User
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.User
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 /*
  * Provides service for getting list of users and create, update, delete
  */
@@ -72,14 +94,14 @@ function UserFactory($resource) {
             cache: false
         }
     });
-    
+
     User.prototype.hasPermission = function(desiredPerms) {
         if (this.admin || !desiredPerms) return true;
-        
+
         if (typeof desiredPerms === 'string') {
             desiredPerms = desiredPerms.split(',');
         }
-        
+
         var userPerms = this.permissions.split(',');
         for (var i = userPerms.length - 1; i >= 0; i--) {
             var userPerm = userPerms[i].trim();
@@ -89,17 +111,17 @@ function UserFactory($resource) {
                 userPerms.splice(i, 1);
             }
         }
-        
+
         for (i = 0; i < desiredPerms.length; i++) {
             var desiredPerm = desiredPerms[i].trim();
             if (!desiredPerm) continue;
             if ($.inArray(desiredPerm, userPerms) > -1)
             	return true;
         }
-        
+
         return false;
     };
-    
+
     User.prototype.getTimezone = function() {
         return this.timezone || this.systemTimezone;
     };

@@ -5,7 +5,29 @@
 
 define([], function() {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.mangoHttpInterceptor
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.mangoHttpInterceptor
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function isApiCall(config) {
 	if (config.url.indexOf('/') === 0) {
 		return true;

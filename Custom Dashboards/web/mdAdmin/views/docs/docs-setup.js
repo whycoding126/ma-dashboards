@@ -380,6 +380,114 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides the error interceptor to show REST errors on the error page.",
       "keywords": "$httpprovider $rootscope adds api app array clearerrors clears config data display error errorinterceptor errors flex format html intercepted interceptor interceptors javascript js lll maservices message method moment msg object objects prettyprint-mode properties push pushed rest rootscope service setting status time url usage view"
+    },
+    {
+      "section": "api",
+      "id": "maServices.EventManager",
+      "shortName": "maServices.EventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api eventmanager javascript maservices method prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.JsonStore",
+      "shortName": "maServices.JsonStore",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript jsonstore maservices method prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.JsonStoreEventManager",
+      "shortName": "maServices.JsonStoreEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript jsonstoreeventmanager maservices method prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.mangoHttpInterceptor",
+      "shortName": "maServices.mangoHttpInterceptor",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript mangohttpinterceptor maservices method prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.mangoWatchdog",
+      "shortName": "maServices.mangoWatchdog",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript mangowatchdog maservices method prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.Point",
+      "shortName": "maServices.Point",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method point prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.PointEventManager",
+      "shortName": "maServices.PointEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method pointeventmanager prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.PointHierarchy",
+      "shortName": "maServices.PointHierarchy",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method pointhierarchy prettyprint-mode replace service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.rQ",
+      "shortName": "maServices.rQ",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method prettyprint-mode replace rq service usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.Translate",
+      "shortName": "maServices.Translate",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method prettyprint-mode replace service translate usage"
+    },
+    {
+      "section": "api",
+      "id": "maServices.User",
+      "shortName": "maServices.User",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method prettyprint-mode replace service usage user"
+    },
+    {
+      "section": "api",
+      "id": "maServices.Util",
+      "shortName": "maServices.Util",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "REPLACE",
+      "keywords": "api javascript maservices method prettyprint-mode replace service usage util"
     }
   ],
   "apis": {

@@ -5,17 +5,39 @@
 
 define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
+/**
+* @ngdoc service
+* @name maServices.Util
+*
+* @description
+* REPLACE
+*
+* # Usage
+*
+* <pre prettyprint-mode="javascript">
+    REPLACE
+* </pre>
+*/
 
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name REPLACE
+*
+* @description
+* REPLACE
+*
+*/
 function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 	function Util() {}
-	
+
 	/**
 	 * @return difference object
 	 */
 	Util.prototype.arrayDiff = function (newArray, oldArray) {
     	if (newArray === undefined) newArray = [];
     	if (oldArray === undefined) oldArray = [];
-    	
+
     	var added = angular.element(newArray).not(oldArray);
     	var removed = angular.element(oldArray).not(newArray);
 
@@ -25,7 +47,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
     		changed: !!(added.length || removed.length)
     	};
     };
-    
+
     /**
      * Converts input to a moment
      */
@@ -39,7 +61,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 
     /**
      * test for null, undefined or whitespace
-     */ 
+     */
     Util.prototype.isEmpty = function(str) {
     	return !str || /^\s*$/.test(str);
     };
@@ -54,23 +76,23 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
     	}
     	return count;
     };
-    
-    
+
+
     Util.prototype.cancelAll = function(cancelFns) {
     	// remove all elements from cancelFns array so cancel fns are never called again
     	cancelFns = cancelFns.splice(0, cancelFns.length);
     	for (var i = 0; i < cancelFns.length; i++)
     		cancelFns[i]();
     };
-    
+
     Util.prototype.openSocket = function(path) {
         if (!('WebSocket' in window)) {
             throw new Error('WebSocket not supported');
         }
-        
+
         var host = document.location.host;
         var protocol = document.location.protocol;
-        
+
         if (mangoBaseUrl) {
             var i = mangoBaseUrl.indexOf('//');
             if (i >= 0) {
@@ -81,12 +103,12 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
                 host = mangoBaseUrl;
             }
         }
-        
+
         protocol = protocol === 'https:' ? 'wss:' : 'ws:';
-        
+
         return new WebSocket(protocol + '//' + host + path);
     };
-    
+
     /**
      * Parses an array response from a Mango endpoint which contains a total
      * and assigns it as the property $total on the array
@@ -99,7 +121,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
         }
         return parsed;
     };
-    
+
     /**
      *  Copies the total from the transformed array onto the actual destination
      *  array and computes page number
@@ -116,16 +138,16 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
                 start = parseInt(matches[2], 10);
             }
         }
-        
+
         data.resource.$start = start;
         data.resource.$limit = limit;
         data.resource.$total = total;
         data.resource.$pages = Math.ceil(total / limit);
         data.resource.$page = Math.floor(start / limit) + 1;
-        
+
         return data.resource;
     };
-    
+
     /**
      * Extremely simple memoize function that works on === equality
      * Used to prevent infinite digest loops in filters etc
@@ -136,17 +158,17 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
         do {
             cache.push(undefined);
         } while (--cacheSize > 0);
-        
+
         return function() {
             var args = Array.prototype.slice.call(arguments, 0);
 
             searchCache: for (var i = 0; i < cache.length; i++) {
                 var cacheItem = cache[i];
                 if (!cacheItem) break;
-                
+
                 var cachedArgs = cacheItem.input;
                 if (cachedArgs.length !== args.length) continue;
-                
+
                 for (var j = 0; j < cachedArgs.length; j++) {
                     if (cachedArgs[j] !== args[j]) continue searchCache;
                 }
@@ -158,11 +180,11 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 
             cache.unshift({input: args, output: result});
             cache.pop();
-            
+
             return result;
         };
     };
-    
+
     Util.prototype.uuid = function uuid() {
         var uuid = "", i, random;
         for (i = 0; i < 32; i++) {
@@ -175,7 +197,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
         }
         return uuid;
     }
-    
+
     return new Util();
 }
 
