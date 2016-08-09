@@ -16,8 +16,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             
             Menu.getMenu().then(function(storeObject) {
                 $scope.storeObject = storeObject;
-                $scope.editItems = $scope.storeObject.jsonData.menuItems;
-                $scope.path = [{menuText: 'Root'}];
+                resetToRoot();
             });
             
             function scrollToTopOfMdContent() {
@@ -28,6 +27,11 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                         break;
                     }
                 }
+            }
+            
+            function resetToRoot() {
+                $scope.editItems = $scope.storeObject.jsonData.menuItems;
+                $scope.path = [{menuText: 'Root'}];
             }
             
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
@@ -62,6 +66,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                 $mdDialog.show(confirm).then(function() {
                     $scope.storeObject.$delete().then(function() {
                         $scope.storeObject = Menu.getDefaultMenu();
+                        resetToRoot();
                     });
                 });
             };
@@ -94,7 +99,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                             }
                         });
                         
-                        return $scope.storeObject.$save();
+                        return $scope.storeObject.$save().then(resetToRoot);
                     });
                 });
             };
@@ -104,6 +109,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             $scope.saveMenu = function saveMenu() {
                 $scope.storeObject.$save().then(function(store) {
                     mangoState.addStates(store.jsonData.menuItems);
+                    resetToRoot();
                 });
             }
         }
