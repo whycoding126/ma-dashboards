@@ -10,24 +10,17 @@ define([], function() {
 * @name maServices.JsonStoreEventManager
 *
 * @description
-* REPLACE
+* Provides an <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> factory pointing to the json-data websocket endpoint at `'/rest/v1/websocket/json-data'`
+* - All methods availble to <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> are availble.
+* - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
 *
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+    jsonStoreEventManager.unsubscribe($scope.item.xid, SUBSCRIPTION_TYPES, websocketHandler);
 * </pre>
 */
 
-/**
-* @ngdoc method
-* @methodOf maServices.JsonStoreEventManager
-* @name REPLACE
-*
-* @description
-* REPLACE
-*
-*/
 function JsonStoreEventManagerFactory(EventManager) {
     return new EventManager({
     	url: '/rest/v1/websocket/json-data'

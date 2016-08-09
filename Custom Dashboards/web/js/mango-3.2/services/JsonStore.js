@@ -5,27 +5,101 @@
 
 define(['angular'], function(angular) {
 'use strict';
+
 /**
 * @ngdoc service
 * @name maServices.JsonStore
 *
 * @description
-* REPLACE
+* - Provides service for reading and writing to the JsonStore within the Mango Database.
+* - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - `$save`
+* - `$remove`
+* - `$delete`
+* - `$get`
 *
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+*  JsonStore.get({xid: newXid}).$promise.then(function(item) {
+*		return item;
+*  }, function() {
+*		var item = new JsonStore();
+*		item.xid = newXid;
+*		item.name = newXid;
+*		item.jsonData = $scope.value || {};
+*		angular.extend(item, $scope.item);
+*		return $q.when(item);
+*  }).then(function(item) {
+*		$scope.item = item;
+*  });
 * </pre>
+*
+*/
+
+
+/**
+* @ngdoc method
+* @methodOf maServices.JsonStore
+* @name JsonStore#get
+*
+* @description
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/json-data/:xid/:dataPath`
+* @param {string} xid Used to set the id of the node in the json store.
+* @param {string} dataPath dataPath of the object in the json store.
+* @param {string} name name of the object in the json store.
+* @param {string} readPermission readPermission of the object in the json store.
+* @param {string} editPermission editPermission of the object in the json store.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+*
 */
 
 /**
 * @ngdoc method
 * @methodOf maServices.JsonStore
-* @name REPLACE
+* @name JsonStore#save
 *
 * @description
-* REPLACE
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/json-data/:xid/:dataPath`
+* @param {string} xid Used to set the id of the node in the json store.
+* @param {string} dataPath dataPath of the object in the json store.
+* @param {string} name name of the object in the json store.
+* @param {string} readPermission readPermission of the object in the json store.
+* @param {string} editPermission editPermission of the object in the json store.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.JsonStore
+* @name JsonStore#remove
+*
+* @description
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/json-data/:xid/:dataPath`
+* @param {string} xid Used to set the id of the node in the json store.
+* @param {string} dataPath dataPath of the object in the json store.
+* @param {string} name name of the object in the json store.
+* @param {string} readPermission readPermission of the object in the json store.
+* @param {string} editPermission editPermission of the object in the json store.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.JsonStore
+* @name JsonStore#delete
+*
+* @description
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/json-data/:xid/:dataPath`
+* @param {string} xid Used to set the id of the node in the json store.
+* @param {string} dataPath dataPath of the object in the json store.
+* @param {string} name name of the object in the json store.
+* @param {string} readPermission readPermission of the object in the json store.
+* @param {string} editPermission editPermission of the object in the json store.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
 *
 */
 function JsonStoreFactory($resource, Util) {

@@ -10,22 +10,42 @@ define(['angular'], function(angular) {
 * @name maServices.mangoWatchdog
 *
 * @description
-* REPLACE
+* Service provides enabling, disabling and reseting of the MangoWatchdog timeout which will log out a user after a given length of time.
 *
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+    mangoWatchdog.reset();
 * </pre>
 */
 
 /**
 * @ngdoc method
 * @methodOf maServices.mangoWatchdog
-* @name REPLACE
+* @name enable
 *
 * @description
-* REPLACE
+* Enables the watchdog timeout.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.mangoWatchdog
+* @name disable
+*
+* @description
+* Disables the watchdog timeout.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.mangoWatchdog
+* @name reset
+*
+* @description
+* Resets the timeout, usually the timeout is reset when data from the websocket is recieved.
 *
 */
 function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {

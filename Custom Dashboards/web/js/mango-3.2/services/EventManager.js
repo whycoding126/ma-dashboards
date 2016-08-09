@@ -28,7 +28,67 @@ define(['jquery'], function($) {
 /**
 * @ngdoc method
 * @methodOf maServices.EventManager
-* @name REPLACE
+* @name openSocket
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name closeSocket
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name messageReceived
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name subscribe
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name unsubscribe
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name smartSubscribe
+*
+* @description
+* REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.EventManager
+* @name updateSubscriptions
 *
 * @description
 * REPLACE

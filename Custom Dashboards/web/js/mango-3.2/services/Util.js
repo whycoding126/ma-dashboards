@@ -10,24 +10,141 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * @name maServices.Util
 *
 * @description
-* REPLACE
+* Provides  various utility functions that can be used in other directives and services.
 *
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+    var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
 * </pre>
 */
 
 /**
 * @ngdoc method
 * @methodOf maServices.Util
-* @name REPLACE
+* @name arrayDiff
+*
+* @description
+* Utility for providing information about the difference between two arrays
+* @param {array} newArray New array to compare against old array.
+* @param {array} oldArray Old array that new array will compare against.
+* @returns {object}  Returns an object with the following properties:
+
+<ul><li>`added` - ARRAY of items that were added in newArray that were not in oldArray.</li>
+<li>`removed` - ARRAY of items that were in oldArray that were not in newArray.</li>
+<li>`changed` - BOOLEAN true/false depending on if there is a diff between the arrays.
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name toMoment
+*
+* @description
+* Converts an input to a momentjs object
+* @param {string} input If input = 'now', moment(now) will be returned
+* @param {string} now standard date timestamp for converting to moment
+* @param {string} format If input equals a formatted date/time string, specify what format it is in to return moment(input, format || mangoDefaultDateFormat);
+* @returns {object}  Returns a moment js object.
+
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name isEmpty
+*
+* @description
+* Test a string for null, undefined or whitespace
+* @param {string} str String to be tested for emptiness
+* @returns {boolean}  Returns true if `str` is null, undefined, or whitespace
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name numKeys
+*
+* @description
+* Number of keys in object starting with specified string
+* @param {object} obj Object containing a certain number of items.
+* @param {string} start String used for testing keys
+* @returns {number}  Returns the number of keys in `obj` starting with the text given by `start` string
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name cancelAll
+*
+* @description
+* remove all elements from cancelFns array so cancel fns are never called again
+* @param {array} cancelFns Array of functions to be cancelled
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name openSocket
+*
+* @description
+* If websocket is supported by the browser this utility will open a new websocket at the specified path.
+* @param {string} path Path of the API endpoint to open a websocket connection with
+* @returns {object}  Returns a WebSocket object at the specifed path
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name transformArrayResponse
+*
+* @description
+* Parses an array response from a Mango endpoint which contains a total
+* and assigns it as the property $total on the array
+* @param {json} data array response from Mango endpoint
+* @param {string} fn REPLACE
+* @param {number} code String used for testing keys
+* @returns {array}  Array with $ total appended
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name arrayResponseInterceptor
+*
+* @description
+* Copies the total from the transformed array onto the actual destination
+* array and computes page number
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name memoize
+*
+* @description
+* Extremely simple memoize function that works on === equality.
+* Used to prevent infinite digest loops in filters etc.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name uuid
 *
 * @description
 * REPLACE
 *
 */
+
 function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 	function Util() {}
 

@@ -388,7 +388,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "REPLACE",
-      "keywords": "api eventmanager javascript maservices method prettyprint-mode replace service usage"
+      "keywords": "api closesocket eventmanager javascript maservices messagereceived method opensocket prettyprint-mode replace service smartsubscribe subscribe unsubscribe updatesubscriptions usage"
     },
     {
       "section": "api",
@@ -396,8 +396,8 @@ NG_DOCS={
       "shortName": "maServices.JsonStore",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript jsonstore maservices method prettyprint-mode replace service usage"
+      "shortDescription": "",
+      "keywords": "$delete $get $promise $q $remove $resource $save $scope action actions angular angularjs api availble call class dashboard database datapath default delete directive docs editpermission endpoint extend function http item javascript json jsondata jsonstore madashboards majsonstore mango maservices method methods newxid node object objects org post prettyprint-mode provided reading readpermission remove resource rest return returns save service set store ui-sref usage var writing xid"
     },
     {
       "section": "api",
@@ -405,8 +405,8 @@ NG_DOCS={
       "shortName": "maServices.JsonStoreEventManager",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript jsonstoreeventmanager maservices method prettyprint-mode replace service usage"
+      "shortDescription": "Provides an EventManager factory pointing to the json-data websocket endpoint at &#39;/rest/v1/websocket/json-data&#39;",
+      "keywords": "api availble dashboard directive docs endpoint eventmanager factory item javascript json-data jsonstoreeventmanager madashboards majsonstore maservices methods pointing prettyprint-mode service subscription_types ui-sref unsubscribe usage websocket websockethandler xid"
     },
     {
       "section": "api",
@@ -414,8 +414,8 @@ NG_DOCS={
       "shortName": "maServices.mangoHttpInterceptor",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript mangohttpinterceptor maservices method prettyprint-mode replace service usage"
+      "shortDescription": "Factory provides intercepting of HTTP messages.",
+      "keywords": "api factory http intercepting mangohttpinterceptor maservices messages service"
     },
     {
       "section": "api",
@@ -423,8 +423,8 @@ NG_DOCS={
       "shortName": "maServices.mangoWatchdog",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript mangowatchdog maservices method prettyprint-mode replace service usage"
+      "shortDescription": "Service provides enabling, disabling and reseting of the MangoWatchdog timeout which will log out a user after a given length of time.",
+      "keywords": "api data disable disables disabling enable enables enabling javascript length log mangowatchdog maservices method prettyprint-mode recieved reset reseting resets service time timeout usage user watchdog websocket"
     },
     {
       "section": "api",
@@ -441,8 +441,8 @@ NG_DOCS={
       "shortName": "maServices.PointEventManager",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method pointeventmanager prettyprint-mode replace service usage"
+      "shortDescription": "Provides an EventManager factory pointing to the point-value websocket endpoint at &#39;/rest/v1/websocket/point-value&#39;",
+      "keywords": "api availble dashboard directive docs endpoint eventmanager factory javascript madashboards magetpointvalue maservices methods point-value pointeventmanager pointing prettyprint-mode service subscribe subscription_types ui-sref usage websocket websockethandler"
     },
     {
       "section": "api",
@@ -486,8 +486,8 @@ NG_DOCS={
       "shortName": "maServices.Util",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method prettyprint-mode replace service usage util"
+      "shortDescription": "Provides  various utility functions that can be used in other directives and services.",
+      "keywords": "$total actual api appended array arraydiff arrayresponseinterceptor arrays assigns boolean browser called cancel cancelall cancelfns cancelled changed changedxids code compare computes connection converting converts copies data depending destination diff difference digest directives elements emptiness endpoint equality equals extremely filters fn fns format formatted function functions infinite input isempty items javascript js loops mango mangodefaultdateformat maservices memoize method moment momentjs newarray null number numkeys obj object oldarray oldvalue open opensocket parses path prettyprint-mode prevent properties property providing remove removed replace response return returned returns service services simple specifed standard start starting str string supported test tested testing text timestamp tomoment total transformarrayresponse transformed true undefined usage util utility uuid var websocket whitespace works xids"
     }
   ],
   "apis": {
