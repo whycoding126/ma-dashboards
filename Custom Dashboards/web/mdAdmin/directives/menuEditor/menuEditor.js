@@ -11,18 +11,15 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
         link: function($scope, $element) {
-            var menuItems;
-            
             $scope.menuEditor = {};
             
             Menu.getMenu().then(function(storeObject) {
                 $scope.storeObject = storeObject;
-                menuItems = storeObject.jsonData.menuItems;
             });
             
             $scope.$mdMedia = $mdMedia;
             
-            $scope.restoreDefaultMenu = function restoreDefaultMenu(event) {
+            $scope.deleteCustomMenu = function deleteCustomMenu(event) {
                 var confirm = $mdDialog.confirm()
                     .title(Translate.trSync('dashboards.v3.app.areYouSure'))
                     .textContent(Translate.trSync('dashboards.v3.app.confirmRestoreDefaultMenu'))
@@ -32,9 +29,41 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                     .cancel(Translate.trSync('common.cancel'));
                 
                 $mdDialog.show(confirm).then(function() {
-                    Menu.getDefaultMenu().$save().then(function(storeObject) {
-                        $scope.storeObject = storeObject;
-                        menuItems = storeObject.jsonData.menuItems;
+                    $scope.storeObject.$delete().then(function() {
+                        $scope.storeObject = Menu.getDefaultMenu();
+                    });
+                });
+            }
+            
+            $scope.resetDefaultItems = function resetDefaultItems(event) {
+                var confirm = $mdDialog.confirm()
+                    .title(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .textContent(Translate.trSync('dashboards.v3.app.confirmResetDefaultItems'))
+                    .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+                    .targetEvent(event)
+                    .ok(Translate.trSync('common.ok'))
+                    .cancel(Translate.trSync('common.cancel'));
+                
+                $mdDialog.show(confirm).then(function() {
+                    $scope.storeObject.$get().then(function(storeObject) {
+                        $scope.storeObject = Menu.getDefaultMenu();
+                        var menuItems = $scope.storeObject.jsonData.menuItems;
+                        
+                        // create a flat map of all default menu items
+                        var allMenuItemsMap = {};
+                        Menu.eachMenuItem(menuItems, null, function(menuItem) {
+                            allMenuItemsMap[menuItem.name] = menuItem;
+                        });
+                        
+                        // loop over users custom menu items and re-add custom items to the menuItems array
+                        Menu.eachMenuItem(storeObject.jsonData.menuItems, null, function(menuItem) {
+                            if (!allMenuItemsMap[menuItem.name]) {
+                                menuItems.push(menuItem);
+                                return 'continue';
+                            }
+                        });
+                        
+                        return $scope.storeObject.$save();
                     });
                 });
             };

@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody md-body>
-      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems track by $index">
+      <tr ng-repeat-start="menuItem in storeObject.jsonData.menuItems track by menuItem.name">
           <td>
             <md-button class="md-icon-button" ng-click="menuEditor.expanded = menuItem.name" ng-show="menuItem.children && menuEditor.expanded !== menuItem.name">
               <md-icon>expand_more</md-icon>
@@ -25,7 +25,7 @@
             </md-button>
           </td>
           <td ng-if="$mdMedia('gt-sm')">
-            <md-switch ng-model="menuItem.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>
+            <md-switch ng-model="menuItem.menuHidden" ng-true-value="" ng-false-value="true" aria-label="{{'dashboards.v3.app.showMenuItem'|tr}}"></md-switch>
           </td>
           <td ng-if="$mdMedia('gt-xs') && menuItem.menuText" ng-bind="menuItem.menuText"></td>
           <td ng-if="$mdMedia('gt-xs') && !menuItem.menuText" ma-tr="{{menuItem.menuTr}}"></td>
@@ -48,10 +48,10 @@
             </md-button>
           </td>
       </tr>
-      <tr ng-if="menuItem.children && menuEditor.expanded === menuItem.name" ng-repeat-end ng-repeat="child in menuItem.children track by $index" class="child-menu-item">
+      <tr ng-if="menuItem.children && menuEditor.expanded === menuItem.name" ng-repeat-end ng-repeat="child in menuItem.children track by child.name" class="child-menu-item">
           <td></td>
           <td ng-if="$mdMedia('gt-sm')">
-            <md-switch ng-model="child.menuHidden" ng-true-value="" ng-false-value="true"></md-switch>
+            <md-switch ng-model="child.menuHidden" ng-true-value="" ng-false-value="true" aria-label="{{'dashboards.v3.app.showMenuItem'|tr}}"></md-switch>
           </td>
           <td ng-if="$mdMedia('gt-xs') && child.menuText" ng-bind="child.menuText"></td>
           <td ng-if="$mdMedia('gt-xs') && !child.menuText" ma-tr="{{child.menuTr}}"></td>
@@ -79,7 +79,8 @@
 </md-table-container>
 
 <div class="menu-editor-buttons">
-  <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> Save</md-button>
-  <md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> Revert changes</md-button>
-  <md-button class="md-raised md-warn" ng-click="restoreDefaultMenu($event)"><md-icon>delete</md-icon> Restore default menu</md-button>
+  <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+  <md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.undoChanges"></span></md-button>
+  <md-button class="md-raised md-warn" ng-click="resetDefaultItems($event)"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.resetDefaultMenuItems"></span></md-button>
+  <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="dashboards.v3.app.deleteCustomMenu"></span></md-button>
 </div>
