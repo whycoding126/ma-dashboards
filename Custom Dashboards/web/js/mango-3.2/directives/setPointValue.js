@@ -19,8 +19,8 @@ define(['require', 'angular'], function(require, angular) {
  * - <a ui-sref="dashboard.examples.settingPointValues.setPoint">View Demo</a> 
  *
  * @param {object} point Input the point object of a settable data point.
- * @param {boolean} show-button Specifies if the button is shown (default true).
- * @param {boolean} set-on-change Specifies if the point value is set when an option is selected from the dropdown (default false, always true if show-button is false)
+ * @param {boolean} [show-button=true] Specifies if the button is shown.
+ * @param {boolean} [set-on-change=false] Specifies if the point value is set when an option is selected from the dropdown (always true if show-button is false)
  *
  * @usage
  * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>

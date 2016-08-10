@@ -96,9 +96,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/liveEditor/livePreview',
                            './directives/liveEditor/dualPaneEditor',
                            './directives/pageView/pageView',
-                           './directives/iframeView/iframeView'
+                           './directives/iframeView/iframeView',
+                           './directives/stateParams/stateParams'
                 ], function(Menu, Page, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView) {
+                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView, stateParams) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('Page', Page)
@@ -113,7 +114,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor)
                         .directive('pageView', pageView)
-                        .directive('iframeView', iframeView);
+                        .directive('iframeView', iframeView)
+                        .directive('stateParams', stateParams);
                     $ocLazyLoad.inject('dashboard');
                 });
             }],
@@ -263,7 +265,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.playArea',
                 templateUrl: 'views/examples/playArea.html',
                 menuTr: 'dashboards.v3.dox.playArea',
-                menuIcon: 'fa-magic'
+                menuIcon: 'fa-magic',
+                params: {
+                    markup: null
+                }
             },
             {
                 name: 'dashboard.examples.playAreaBig',

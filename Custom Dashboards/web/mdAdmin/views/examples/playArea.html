@@ -4,8 +4,10 @@
 <br><a ui-sref="dashboard.examples.playAreaBig">Play Area View Only</a>
 </p>
 
+<state-params state-params="stateParams"></state-params>
+
 <ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"
-  ng-init="playArea={readPermission: 'user', editPermission: 'user'}">
+  ng-init="playArea={readPermission: 'user', editPermission: 'user'}" item-loaded="$item.jsonData.text=stateParams.markup||$item.jsonData.text">
 </ma-json-store>
 
 <div layout="row" style="margin-bottom:10px;">
@@ -13,7 +15,7 @@
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
     </md-button>
-    <md-button ng-click="playArea.$get()">
+    <md-button ng-click="stateParams.markup = ''; playArea.$get()">
         <md-icon>undo</md-icon>
         <span ma-tr="dashboards.v3.dox.revert"></span>
      </md-button>

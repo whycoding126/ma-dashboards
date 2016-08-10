@@ -28,6 +28,7 @@ The 'user' group is included by default in a Mango system.
     <li>`myItem.$get()` - Reverts the data from myItem that has been modified in the local model to the the values from the JSON store.</li>
 </ul>
  * @param {object} value Name of the object used in the model to hold the data to be stored.
+ * @param {expression} [item-loaded] Expression called when item is loaded, $item variable is available for use inside the expression
  *
  * @usage
 <ma-json-store xid="phoneData" item="myItem" value="myValue"></ma-json-store>
@@ -45,7 +46,8 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
         scope: {
         	xid: '@',
             item: '=?',
-            value: '=?'
+            value: '=?',
+            itemLoaded: '&'
         },
         link: function ($scope, $element, attr) {
             $scope.$watch('xid', function(newXid, oldXid) {
@@ -61,7 +63,8 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             		angular.extend(item, $scope.item);
             		return $q.when(item);
             	}).then(function(item) {
-            		$scope.item = item;
+            	    $scope.itemLoaded({'$item': item});
+            		return $scope.item = item;
             	});
 
                 jsonStoreEventManager.subscribe(newXid, SUBSCRIPTION_TYPES, websocketHandler);
