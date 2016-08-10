@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'angular'], function(require, angular) {
 'use strict';
 /**
  * @ngdoc directive
@@ -19,6 +19,8 @@ define(['require'], function(require) {
  * - <a ui-sref="dashboard.examples.settingPointValues.setPoint">View Demo</a> 
  *
  * @param {object} point Input the point object of a settable data point.
+ * @param {boolean} show-button Specifies if the button is shown (default true).
+ * @param {boolean} set-on-change Specifies if the point value is set when an option is selected from the dropdown (default false, always true if show-button is false)
  *
  * @usage
  * <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
@@ -29,7 +31,9 @@ function setPointValue(Translate, $q, $injector) {
     return {
         restrict: 'E',
         scope: {
-            point: '='
+            point: '=',
+            showButton: '=?',
+            setOnChange: '='
         },
         replace: true,
         templateUrl: function() {
@@ -39,6 +43,9 @@ function setPointValue(Translate, $q, $injector) {
             return require.toUrl('./setPointValue.html');
         },
         link: function($scope) {
+            if (angular.isUndefined($scope.showButton)) {
+                $scope.showButton = true;
+            }
         	$scope.input = {};
 
         	$scope.defaultBinaryOptions = [];
@@ -52,6 +59,11 @@ function setPointValue(Translate, $q, $injector) {
 					label: trs[1]
 				});
 			});
+        	
+        	$scope.selectChanged = function() {
+        	    if ($scope.setOnChange || !$scope.showButton)
+        	        $scope.result = $scope.point.setValueResult($scope.input.value);
+        	};
 
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
