@@ -127,7 +127,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/login',
         templateUrl: 'views/login.html',
         menuHidden: true,
-        menuIcon: 'fa fa-sign-in',
+        menuIcon: 'fa-sign-in',
         menuTr: 'header.login',
         resolve: {
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -147,14 +147,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'fa fa-home'
+        menuIcon: 'fa-home'
     },
     {
         name: 'dashboard.watchlist',
         url: '/watchlist',
         templateUrl: 'views/dashboard/watchlist.html',
         menuText: 'Watch List',
-        menuIcon: 'fa fa-eye',
+        menuIcon: 'fa-eye',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/watchList/watchListTable',
@@ -180,14 +180,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/errors.html',
         menuTr: 'dashboards.v3.dox.apiErrors',
         menuHidden: true,
-        menuIcon: 'fa fa-exclamation-triangle'
+        menuIcon: 'fa-exclamation-triangle'
     },
     {
         url: '/edit-menu',
         name: 'dashboard.editMenu',
         templateUrl: 'views/dashboard/editMenu.html',
         menuTr: 'dashboards.v3.app.editMenu',
-        menuIcon: 'fa fa-pencil',
+        menuIcon: 'fa-pencil',
         permission: 'edit-menus'
     },
     {
@@ -195,7 +195,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.editPages',
         templateUrl: 'views/dashboard/editPages.html',
         menuTr: 'dashboards.v3.app.editPages',
-        menuIcon: 'fa fa-magic',
+        menuIcon: 'fa-magic',
         permission: 'edit-pages',
         params: {
             markup: null
@@ -216,7 +216,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.systemSettings',
         template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
         menuTr: 'header.systemSettings',
-        menuIcon: 'fa fa-cog',
+        menuIcon: 'fa-cog',
         menuHidden: true
     },
     {
@@ -224,7 +224,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.dataSources',
         template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
         menuTr: 'header.dataSources',
-        menuIcon: 'fa fa-plug',
+        menuIcon: 'fa-plug',
         menuHidden: true
     },
     {
@@ -232,7 +232,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.users',
         template: '<iframe-view src="/users.shtm"></iframe-view>',
         menuTr: 'header.users',
-        menuIcon: 'fa fa-user',
+        menuIcon: 'fa-user',
         menuHidden: true
     },
     {
@@ -240,7 +240,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.events',
         template: '<iframe-view src="/events.shtm"></iframe-view>',
         menuTr: 'header.alarms',
-        menuIcon: 'fa fa-bell',
+        menuIcon: 'fa-bell',
         menuHidden: true
     },
     {
@@ -248,14 +248,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.importExport',
         template: '<iframe-view src="/emport.shtm"></iframe-view>',
         menuTr: 'header.emport',
-        menuIcon: 'fa fa-expand',
+        menuIcon: 'fa-expand',
         menuHidden: true
     },
     {
         name: 'dashboard.examples',
         url: '/examples',
         menuTr: 'dashboards.v3.dox.examples',
-        menuIcon: 'fa fa-info',
+        menuIcon: 'fa-info',
         submenu: true,
         children: [
             {
@@ -263,7 +263,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.playArea',
                 templateUrl: 'views/examples/playArea.html',
                 menuTr: 'dashboards.v3.dox.playArea',
-                menuIcon: 'fa fa-magic'
+                menuIcon: 'fa-magic'
             },
             {
                 name: 'dashboard.examples.playAreaBig',
@@ -271,13 +271,13 @@ mdAdminApp.constant('MENU_ITEMS', [
                 url: '/play-area-big',
                 menuTr: 'dashboards.v3.dox.playAreaBig',
                 menuHidden: true,
-                menuIcon: 'fa fa-magic'
+                menuIcon: 'fa-magic'
             },
             {
                 name: 'dashboard.examples.basics',
                 url: '/basics',
                 menuTr: 'dashboards.v3.dox.basics',
-                menuIcon: 'fa fa-info-circle',
+                menuIcon: 'fa-info-circle',
                 children: [
                     {
                         name: 'dashboard.examples.basics.createDashboard',
@@ -357,7 +357,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.templates',
                 url: '/templates',
                 menuTr: 'dashboards.v3.dox.templates',
-                menuIcon: 'fa fa-file-o',
+                menuIcon: 'fa-file-o',
                 children: [
                     {
                         name: 'dashboard.examples.templates.angularMaterial',
@@ -407,7 +407,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.utilities',
                 url: '/utilities',
                 menuTr: 'dashboards.v3.dox.utilities',
-                menuIcon: 'fa fa-wrench',
+                menuIcon: 'fa-wrench',
                 children: [
                     {
                         name: 'dashboard.examples.utilities.translation',
@@ -433,7 +433,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.singleValueDisplays',
                 url: '/single-value-displays',
                 menuTr: 'dashboards.v3.dox.singleValueDisplays',
-                menuIcon: 'fa fa-tachometer',
+                menuIcon: 'fa-tachometer',
                 children: [
                     {
                         name: 'dashboard.examples.singleValueDisplays.gauges',
@@ -465,7 +465,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.charts',
                 url: '/charts',
                 menuTr: 'dashboards.v3.dox.charts',
-                menuIcon: 'fa fa-area-chart',
+                menuIcon: 'fa-area-chart',
                 children: [
                     {
                         name: 'dashboard.examples.charts.lineChart',
@@ -515,7 +515,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.statistics',
                 url: '/statistics',
                 menuTr: 'dashboards.v3.dox.statistics',
-                menuIcon: 'fa fa-table',
+                menuIcon: 'fa-table',
                 children: [
                     {
                         name: 'dashboard.examples.statistics.getStatistics',
@@ -541,7 +541,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.pointArrays',
                 url: '/point-arrays',
                 menuTr: 'dashboards.v3.dox.pointArrayTemplating',
-                menuIcon: 'fa fa-list',
+                menuIcon: 'fa-list',
                 children: [
                     {
                         name: 'dashboard.examples.pointArrays.buildPointArray',
@@ -579,7 +579,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.pointHierarchy',
                 url: '/point-hierarchy',
                 menuTr: 'dashboards.v3.dox.pointHierarchy',
-                menuIcon: 'fa fa-sitemap',
+                menuIcon: 'fa-sitemap',
                 children: [
                     {
                         name: 'dashboard.examples.pointHierarchy.displayTree',
@@ -599,7 +599,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.examples.settingPointValues',
                 url: '/setting-point-values',
                 menuTr: 'dashboards.v3.dox.settingPoint',
-                menuIcon: 'fa fa-pencil-square-o',
+                menuIcon: 'fa-pencil-square-o',
                 children: [
                     {
                         name: 'dashboard.examples.settingPointValues.setPoint',
@@ -743,7 +743,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         name: 'dashboard.docs',
         url: '/docs',
         menuText: 'API Docs',
-        menuIcon: 'fa fa-book',
+        menuIcon: 'fa-book',
         submenu: true,
         children: [],
         resolve: {

@@ -83,6 +83,12 @@ body {
 
 /* Dashboard menu */
 
+.menu-link md-icon,
+.menu-toggle md-icon {
+  min-height: 0;
+  height: auto;
+}
+
 .dashboard-menu li {
 	margin: 0;
 }
