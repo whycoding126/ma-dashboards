@@ -536,3 +536,9 @@ md-input-container .hint {
   line-height: 14px;
   color: grey;
 }
+
+.md-top.md-center,
+.md-bottom.md-center {
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+}

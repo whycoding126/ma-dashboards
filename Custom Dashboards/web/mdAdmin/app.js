@@ -832,7 +832,15 @@ mdAdminApp.run([
     '$mdColors',
     '$MD_THEME_CSS',
     'cssInjector',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector) {
+    '$mdToast',
+    'Translate',
+    'mangoReconnectDelay',
+    'User',
+    '$interval',
+    '$http',
+    'mangoWatchdogTimeout',
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
+        $mdToast, Translate, mangoReconnectDelay, User, $interval, $http, mangoWatchdogTimeout) {
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
@@ -895,6 +903,78 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         angular.element('#menu-button').blur();
         $mdSidenav('left').open();
     }
+    
+    /**
+     * Watchdog timer alert and re-connect/re-login code
+     */
+    
+    // test the API is up by doing options request on public login endpoint
+    apiPing();
+    $interval(apiPing, mangoWatchdogTimeout / 2);
+    
+    function apiPing() {
+        $http({
+            method: 'OPTIONS',
+            url: '/rest/v1/login/apiPing'
+        });
+    }
+
+    var toast = $mdToast.simple()
+        .textContent('Mango watchdog timer timed out, connectivity lost or server down')
+        .position('bottom center')
+        .highlightClass('md-warn')
+        .hideDelay(false);
+    
+    var activeToast;
+    var activeInterval;
+    
+    $rootScope.$on('mangoWatchdogTimeout', function() {
+        if (activeToast) return;
+        activeToast = $mdToast.show(toast);
+        
+        User.invalidateCache();
+        $rootScope.user = null;
+        
+        relogin();
+        activeInterval = $interval(relogin, mangoReconnectDelay);
+    });
+    
+    function relogin() {
+        // try and get current user first, might just be connection issue
+        // and session could still be valid
+        User.current().$promise.then(null, function(data) {
+            if (data.status && data.status === 403) {
+                // session invalid
+                
+                if (!User.username || !User.password) {
+                    return 'no creds';
+                }
+                // getting current user failed, log in again
+                return User.cachedLogin().$promise;
+            }
+            return 'no connection';
+        }).then(function(user) {
+            if (user === 'no creds') {
+                // no cached credentials, redirect to login page and rely on browser to reconnect
+                window.location = $state.href('login');
+            } else if (user === 'no connection') {
+                // no op
+            } else {
+                $rootScope.user = user;
+            }
+        });
+    }
+    
+    $rootScope.$on('mangoWatchdogReset', function() {
+        if (activeToast) {
+            $mdToast.hide(activeToast);
+            activeToast = null;
+        }
+        if (activeInterval) {
+            $interval.cancel(activeInterval);
+            activeInterval = null;
+        }
+    });
 
 }]);
 

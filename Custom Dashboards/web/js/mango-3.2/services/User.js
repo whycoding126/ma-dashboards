@@ -31,7 +31,7 @@ define(['angular', 'jquery'], function(angular, $) {
 /*
  * Provides service for getting list of users and create, update, delete
  */
-function UserFactory($resource) {
+function UserFactory($resource, $cacheFactory) {
     var User = $resource('/rest/v1/users/:xid', {
     		xid: '@xid'
     	}, {
@@ -94,9 +94,35 @@ function UserFactory($resource) {
             cache: false
         }
     });
+    
+    // replace the login function with one which caches the login credentials
+    var origLogin = User.login;
+    User.login = function login(params) {
+        this.username = params.username;
+        this.password = params.password;
+        return origLogin.apply(this, arguments);
+    };
+    
+    User.cachedLogin = function cachedLogin() {
+        var params = {
+            username: this.username,
+            password: this.password
+        };
+        return this.login.call(this, params);
+    };
+    
+    User.clearCredentialCache = function clearCredentialCache() {
+        delete this.username;
+        delete this.password;
+    };
+
+    User.invalidateCache = function() {
+        $cacheFactory.get('$http').remove('/rest/v1/users/current');
+    };
 
     User.prototype.hasPermission = function(desiredPerms) {
         if (this.admin || !desiredPerms) return true;
+        if (!this.permissions) return false;
 
         if (typeof desiredPerms === 'string') {
             desiredPerms = desiredPerms.split(',');
@@ -129,7 +155,7 @@ function UserFactory($resource) {
     return User;
 }
 
-UserFactory.$inject = ['$resource'];
+UserFactory.$inject = ['$resource', '$cacheFactory'];
 return UserFactory;
 
 }); // define

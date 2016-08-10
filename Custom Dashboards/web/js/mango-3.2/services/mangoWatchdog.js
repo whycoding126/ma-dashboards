@@ -68,6 +68,9 @@ function mangoWatchdog(mangoWatchdogTimeout, $timeout, $rootScope) {
 
 	MangoWatchdog.prototype.reset = function() {
 		var _this = this;
+
+		if (this.failed)
+		    $rootScope.$broadcast('mangoWatchdogReset');
 		this.failed = false;
 
 		if (!this.timeout || !this.enabled) return;
