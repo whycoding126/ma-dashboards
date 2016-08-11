@@ -926,37 +926,56 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
      * Watchdog timer alert and re-connect/re-login code
      */
     
-    var activeToast;
     var lastStatus;
 
     function showToast(status) {
         var message;
+        var hideDelay = 0;
         
-        if (activeToast) {
-            if (activeToast.status === status) {
-                return;
-            }
-            $mdToast.hide(activeToast);
-            activeToast = null;
+        if (lastStatus === status) {
+            return;
         }
         
         switch (status) {
-        case 'API_DOWN': message = 'Connectivity to Mango API has been lost.'; break;
-        case 'STARTING_UP': message = 'Mango is starting up.'; break;
-        case 'API_ERROR': message = 'The Mango API is returning errors.'; break;
+        case 'API_DOWN':
+            message = 'Connectivity to Mango API has been lost.';
+            lastStatus = status;
+            break;
+        case 'STARTING_UP':
+            message = 'Mango is starting up.';
+            lastStatus = status;
+            break;
+        case 'API_ERROR':
+            message = 'The Mango API is returning errors.';
+            lastStatus = status;
+            break;
+        case 'API_UP':
+            if (!lastStatus)
+                return;
+            message = 'Connectivity to Mango API has been restored.';
+            hideDelay = 5000;
+            lastStatus = null;
+            break;
+        case 'LOGGED_IN':
+            if (!lastStatus)
+                return;
+            message = 'The user was automatically logged back in.';
+            hideDelay = 5000;
+            lastStatus = null;
+            break;
         }
         
         var toast = $mdToast.simple()
             .textContent(message)
             .position('bottom center')
             .highlightClass('md-warn')
-            .hideDelay(0);
+            .hideDelay(hideDelay);
         
-        activeToast = $mdToast.show(toast);
-        activeToast.status = status;
+        $mdToast.show(toast);
     }
 
     $rootScope.$on('mangoWatchdog', function(event, status) {
+        console.log(status);
         switch(status) {
         case 'API_DOWN':
             showToast(status);
@@ -970,11 +989,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         case 'API_UP':
             User.removeCachedUser();
             $rootScope.user = null;
-            
-            if (activeToast) {
-                $mdToast.hide(activeToast);
-                activeToast = null;
-            }
+            showToast(status);
 
             var doLogin = !$state.includes('login');
             if (doLogin) {
@@ -990,10 +1005,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 
             break;
         case 'LOGGED_IN':
-            if (activeToast) {
-                $mdToast.hide(activeToast);
-                activeToast = null;
-            }
+            //showToast(status);
             break;
         }
     });
