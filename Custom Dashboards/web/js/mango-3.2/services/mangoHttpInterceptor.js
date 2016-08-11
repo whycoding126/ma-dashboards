@@ -19,7 +19,7 @@ function isApiCall(config) {
 	}
 }
 
-function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, mangoWatchdog, $q) {
+function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, $q) {
     return {
     	request: function(config) {
     		if (isApiCall(config)) {
@@ -29,17 +29,11 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, mangoTimeout, mangoWatchdog, 
     			config.timeout = mangoTimeout;
     		}
     		return config;
-    	},
-    	response: function(response) {
-    		if (isApiCall(response.config)) {
-    			mangoWatchdog.reset();
-    		}
-    		return response;
     	}
     };
 }
 
-mangoHttpInterceptorFactory.$inject = ['mangoBaseUrl', 'mangoTimeout', 'mangoWatchdog', '$q'];
+mangoHttpInterceptorFactory.$inject = ['mangoBaseUrl', 'mangoTimeout', '$q'];
 
 return mangoHttpInterceptorFactory;
 

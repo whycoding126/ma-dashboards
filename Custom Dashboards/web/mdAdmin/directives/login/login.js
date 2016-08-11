@@ -18,9 +18,13 @@ var login = function($state, User, $rootScope) {
             });
             
             $scope.doLogin = function() {
+                if (!$scope.storeCredentials) {
+                    User.clearCredentialCache();
+                }
                 var user = User.login({
                     username: $scope.username,
-                    password: $scope.password
+                    password: $scope.password,
+                    storeCredentials: $scope.storeCredentials
                 });
                 user.$promise.then(function() {
                     var redirect = 'dashboard.home';
@@ -31,6 +35,8 @@ var login = function($state, User, $rootScope) {
                     $rootScope.clearErrors();
                     $state.go(redirect);
                 }, function(error) {
+                    User.clearCredentialCache();
+                    
                     if (error.status === 406) {
                         $scope.errors.invalidLogin = true;
                     }

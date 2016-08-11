@@ -11,6 +11,7 @@ define([
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
+    'angular-local-storage',
     './views/docs/docs-setup'
 ], function(angular, maMaterialDashboards, maAppComponents, require) {
 'use strict';
@@ -21,7 +22,8 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'angular-loading-bar',
     'maMaterialDashboards',
     'maAppComponents',
-    'ngMessages'
+    'ngMessages',
+    'LocalStorageModule'
 ]);
 
 mdAdminApp.constant('require', require);
@@ -143,6 +145,19 @@ mdAdminApp.constant('MENU_ITEMS', [
                 return Translate.loadNamespaces('login');
             }]
         }
+    },
+    {
+        name: 'logout',
+        url: '/logout',
+        menuHidden: true,
+        menuIcon: 'fa-sign-out',
+        menuTr: 'header.logout',
+        template: '<div></div>',
+        controller: ['User', '$state', function(User, $state) {
+            User.clearCredentialCache();
+            User.logout();
+            $state.go('login');
+        }]
     },
     {
         name: 'dashboard.home',
@@ -650,8 +665,9 @@ mdAdminApp.config([
     '$compileProvider',
     'mangoStateProvider',
     '$locationProvider',
+    'localStorageServiceProvider',
 function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, localStorageServiceProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -820,6 +836,11 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     mangoStateProvider.addStates(MENU_ITEMS);
     if (CUSTOM_MENU_ITEMS)
         mangoStateProvider.addStates(CUSTOM_MENU_ITEMS);
+    
+    localStorageServiceProvider
+        .setPrefix('mdAdmin')
+        .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
+        .setNotify(false, false);
 }]);
 
 mdAdminApp.run([
@@ -834,13 +855,10 @@ mdAdminApp.run([
     'cssInjector',
     '$mdToast',
     'Translate',
-    'mangoReconnectDelay',
     'User',
-    '$interval',
-    '$http',
-    'mangoWatchdogTimeout',
+    'localStorageService',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, Translate, mangoReconnectDelay, User, $interval, $http, mangoWatchdogTimeout) {
+        $mdToast, Translate, User, localStorageService) {
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
@@ -908,71 +926,75 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
      * Watchdog timer alert and re-connect/re-login code
      */
     
-    // test the API is up by doing options request on public login endpoint
-    apiPing();
-    $interval(apiPing, mangoWatchdogTimeout / 2);
-    
-    function apiPing() {
-        $http({
-            method: 'OPTIONS',
-            url: '/rest/v1/login/apiPing'
-        });
-    }
-
-    var toast = $mdToast.simple()
-        .textContent('Mango watchdog timer timed out, connectivity lost or server down')
-        .position('bottom center')
-        .highlightClass('md-warn')
-        .hideDelay(false);
-    
     var activeToast;
-    var activeInterval;
-    
-    $rootScope.$on('mangoWatchdogTimeout', function() {
-        if (activeToast) return;
-        activeToast = $mdToast.show(toast);
+    var lastStatus;
+
+    function showToast(status) {
+        var message;
         
-        User.invalidateCache();
-        $rootScope.user = null;
-        
-        relogin();
-        activeInterval = $interval(relogin, mangoReconnectDelay);
-    });
-    
-    function relogin() {
-        // try and get current user first, might just be connection issue
-        // and session could still be valid
-        User.current().$promise.then(null, function(data) {
-            if (data.status && data.status === 403) {
-                // session invalid
-                
-                if (!User.username || !User.password) {
-                    return 'no creds';
-                }
-                // getting current user failed, log in again
-                return User.cachedLogin().$promise;
-            }
-            return 'no connection';
-        }).then(function(user) {
-            if (user === 'no creds') {
-                // no cached credentials, redirect to login page and rely on browser to reconnect
-                window.location = $state.href('login');
-            } else if (user === 'no connection') {
-                // no op
-            } else {
-                $rootScope.user = user;
-            }
-        });
-    }
-    
-    $rootScope.$on('mangoWatchdogReset', function() {
         if (activeToast) {
+            if (activeToast.status === status) {
+                return;
+            }
             $mdToast.hide(activeToast);
             activeToast = null;
         }
-        if (activeInterval) {
-            $interval.cancel(activeInterval);
-            activeInterval = null;
+        
+        switch (status) {
+        case 'API_DOWN': message = 'Connectivity to Mango API has been lost.'; break;
+        case 'STARTING_UP': message = 'Mango is starting up.'; break;
+        case 'API_ERROR': message = 'The Mango API is returning errors.'; break;
+        }
+        
+        var toast = $mdToast.simple()
+            .textContent(message)
+            .position('bottom center')
+            .highlightClass('md-warn')
+            .hideDelay(0);
+        
+        activeToast = $mdToast.show(toast);
+        activeToast.status = status;
+    }
+
+    $rootScope.$on('mangoWatchdog', function(event, status) {
+        switch(status) {
+        case 'API_DOWN':
+            showToast(status);
+            break;
+        case 'STARTING_UP':
+        case 'API_ERROR':
+            User.removeCachedUser();
+            $rootScope.user = null;
+            showToast(status);
+            break;
+        case 'API_UP':
+            User.removeCachedUser();
+            $rootScope.user = null;
+            
+            if (activeToast) {
+                $mdToast.hide(activeToast);
+                activeToast = null;
+            }
+
+            var doLogin = !$state.includes('login');
+            if (doLogin) {
+                var credentials = localStorageService.get('storedCredentials');
+                if (credentials) {
+                    User.login(credentials).$promise.then(function(user) {
+                        $rootScope.user = user;
+                    });
+                } else {
+                    window.location = $state.href('login');
+                }
+            }
+
+            break;
+        case 'LOGGED_IN':
+            if (activeToast) {
+                $mdToast.hide(activeToast);
+                activeToast = null;
+            }
+            break;
         }
     });
 

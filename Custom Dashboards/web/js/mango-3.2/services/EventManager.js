@@ -95,7 +95,7 @@ define(['jquery'], function($) {
 *
 */
 
-function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, mangoTimeout, mangoReconnectDelay) {
+function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, mangoReconnectDelay) {
 
 	var READY_STATE_CONNECTING = 0;
 	var READY_STATE_OPEN = 1;
@@ -114,8 +114,14 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 
 	    var _this = this;
 
-	    $rootScope.$on('mangoWatchdogTimeout', function() {
-	    	_this.closeSocket();
+	    $rootScope.$on('mangoWatchdog', function(event, status) {
+	        switch(status) {
+	        case 'API_DOWN':
+	        case 'STARTING_UP':
+	        case 'API_ERROR':
+	        case 'API_UP':
+	            _this.closeSocket();
+	        }
 	    });
 
 	    this.openSocket();
@@ -174,7 +180,6 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	    	_this.closeSocket();
 	    };
 	    socket.onopen = function() {
-	    	mangoWatchdog.reset();
 	    	clearTimeout(_this.connectTimer);
 	    	_this.updateSubscriptions();
 	    };
@@ -203,8 +208,6 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 
 	EventManager.prototype.messageReceived = function(message) {
 	    if (message.status === 'OK') {
-	    	mangoWatchdog.reset();
-
 	        var payload = message.payload;
 	        var eventType = payload.event || payload.action;
 	        var xid = payload.xid || payload.object.xid;
@@ -339,7 +342,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, mangoWatchdog, $rootScope, m
 	return EventManager;
 }
 
-JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', 'mangoWatchdog', '$rootScope', 'mangoTimeout', 'mangoReconnectDelay'];
+JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout', 'mangoReconnectDelay'];
 return JsonStoreEventManagerFactory;
 
 }); // define

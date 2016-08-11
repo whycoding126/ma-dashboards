@@ -109,7 +109,6 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
                   function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
-	mangoWatchdog.reset();
 
 	if (maDashboardsInsertCss) {
 	    cssInjector.injectLink(require.toUrl('./maDashboards.css'));

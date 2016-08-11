@@ -50,7 +50,8 @@ require.config({
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
         'mdPickers': vendor + '/mdPickers/mdPickers',
-        'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table'
+        'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
+        'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage'
     },
     shim : {
         'angular-route' : {
@@ -84,6 +85,9 @@ require.config({
             deps : ['angular']
         },
         'angular-aria' : {
+            deps : ['angular']
+        },
+        'angular-local-storage' : {
             deps : ['angular']
         },
         'mdPickers': {

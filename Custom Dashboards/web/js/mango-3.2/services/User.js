@@ -31,7 +31,7 @@ define(['angular', 'jquery'], function(angular, $) {
 /*
  * Provides service for getting list of users and create, update, delete
  */
-function UserFactory($resource, $cacheFactory) {
+function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog) {
     var User = $resource('/rest/v1/users/:xid', {
     		xid: '@xid'
     	}, {
@@ -72,7 +72,10 @@ function UserFactory($resource, $cacheFactory) {
             method: 'GET',
             isArray: false,
             withCredentials: true,
-            cache: true
+            cache: true,
+            interceptor: {
+                response: setWatchdogToLoggedIn
+            }
         },
         login: {
             url: '/rest/v1/login/:username',
@@ -91,32 +94,49 @@ function UserFactory($resource, $cacheFactory) {
             },
             isArray: false,
             withCredentials: true,
-            cache: false
+            cache: false,
+            interceptor: {
+                response: setWatchdogToLoggedIn
+            }
+        },
+        logout: {
+            url: '/rest/v1/logout',
+            method: 'GET',
+            isArray: false,
+            withCredentials: true,
+            cache: false,
         }
     });
     
+    function setWatchdogToLoggedIn(data) {
+        mangoWatchdog.setStatus('LOGGED_IN');
+        return data.resource;
+    }
+
     // replace the login function with one which caches the login credentials
     var origLogin = User.login;
     User.login = function login(params) {
-        this.username = params.username;
-        this.password = params.password;
+        //&& !user.hasPermission('superadmin')
+        if (params.storeCredentials) {
+            delete params.storeCredentials;
+            localStorageService.set('storedCredentials', {
+                username: params.username,
+                password: params.password
+            });
+        }
         return origLogin.apply(this, arguments);
     };
     
     User.cachedLogin = function cachedLogin() {
-        var params = {
-            username: this.username,
-            password: this.password
-        };
-        return this.login.call(this, params);
+        var credentials = localStorageService.get('storedCredentials');
+        return this.login.call(this, credentials);
     };
     
     User.clearCredentialCache = function clearCredentialCache() {
-        delete this.username;
-        delete this.password;
+        localStorageService.remove('storedCredentials');
     };
 
-    User.invalidateCache = function() {
+    User.removeCachedUser = function() {
         $cacheFactory.get('$http').remove('/rest/v1/users/current');
     };
 
@@ -155,7 +175,7 @@ function UserFactory($resource, $cacheFactory) {
     return User;
 }
 
-UserFactory.$inject = ['$resource', '$cacheFactory'];
+UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog'];
 return UserFactory;
 
 }); // define

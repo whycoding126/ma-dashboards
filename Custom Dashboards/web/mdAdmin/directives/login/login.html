@@ -22,6 +22,12 @@
 	        <div ng-message="required" ma-tr="login.validation.noPassword"></div>
 	      </div>
 	    </md-input-container>
+        <md-checkbox name="storeCredentials" ng-model="storeCredentials" aria-label="{{'login.dashboards.v3.storeCredentials'|tr}}">
+          <span ma-tr="login.dashboards.v3.storeCredentials"></span>
+        </md-checkbox>
+        <div>
+          <small ma-tr="login.dashboards.v3.storeCredentialsNote"></small>
+        </div>
 	  <div ng-messages="errors">
          <div ng-message="invalidLogin" ma-tr="login.validation.invalidLogin"></div>
 		 <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[otherError]"></div>
