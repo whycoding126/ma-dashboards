@@ -31,9 +31,9 @@ define(['angular', 'jquery'], function(angular, $) {
 /*
  * Provides service for getting list of users and create, update, delete
  */
-function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog) {
-    var User = $resource('/rest/v1/users/:xid', {
-    		xid: '@xid'
+function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q) {
+    var User = $resource('/rest/v1/users/:username', {
+            username: '@username'
     	}, {
         query: {
             method: 'GET',
@@ -113,26 +113,25 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
         return data.resource;
     }
 
-    // replace the login function with one which caches the login credentials
-    var origLogin = User.login;
-    User.login = function login(params) {
-        //&& !user.hasPermission('superadmin')
-        if (params.storeCredentials) {
-            delete params.storeCredentials;
-            localStorageService.set('storedCredentials', {
-                username: params.username,
-                password: params.password
-            });
-        }
-        return origLogin.apply(this, arguments);
-    };
+    User.storeCredentials = function storeCredentials(username, password) {
+        localStorageService.set('storedCredentials', {
+            username: username,
+            password: password
+        });
+    }
     
-    User.cachedLogin = function cachedLogin() {
+    User.storedUsername = function autoLogin() {
         var credentials = localStorageService.get('storedCredentials');
-        return this.login.call(this, credentials);
+        return credentials ? credentials.username : null;
     };
     
-    User.clearCredentialCache = function clearCredentialCache() {
+    User.autoLogin = function autoLogin() {
+        var credentials = localStorageService.get('storedCredentials');
+        if (!credentials) return $q.reject('No stored credentials');
+        return this.login.call(this, credentials).$promise;
+    };
+    
+    User.clearStoredCredentials = function clearStoredCredentials() {
         localStorageService.remove('storedCredentials');
     };
 
@@ -175,7 +174,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
     return User;
 }
 
-UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog'];
+UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q'];
 return UserFactory;
 
 }); // define

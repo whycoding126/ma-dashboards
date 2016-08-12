@@ -80,9 +80,18 @@ mdAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['$rootScope', 'User', function($rootScope, User) {
-                $rootScope.user = User.current();
-                return $rootScope.user.$promise;
+            auth: ['$rootScope', 'User', 'Translate', function($rootScope, User, Translate) {
+                return User.current().$promise.then(null, function(currentUserError) {
+                    return User.autoLogin().then(null, function(autoLoginError) {
+                        if (autoLoginError === 'No stored credentials') {
+                            return currentUserError;
+                        }
+                        return autoLoginError;
+                    });
+                }).then(function(user) {
+                    $rootScope.user = user;
+                    return Translate.loadNamespaces(['dashboards', 'common']);
+                });
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
@@ -99,9 +108,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/liveEditor/dualPaneEditor',
                            './directives/pageView/pageView',
                            './directives/iframeView/iframeView',
-                           './directives/stateParams/stateParams'
+                           './directives/stateParams/stateParams',
+                           './directives/autoLoginSettings/autoLoginSettings'
                 ], function(Menu, Page, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView, stateParams) {
+                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView, stateParams, autoLoginSettings) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('Page', Page)
@@ -117,12 +127,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .directive('dualPaneEditor', dualPaneEditor)
                         .directive('pageView', pageView)
                         .directive('iframeView', iframeView)
-                        .directive('stateParams', stateParams);
+                        .directive('stateParams', stateParams)
+                        .component('autoLoginSettings', autoLoginSettings);
                     $ocLazyLoad.inject('dashboard');
                 });
-            }],
-            dashboardTranslations: ['Translate', function(Translate) {
-                return Translate.loadNamespaces(['dashboards', 'common']);
             }]
         }
     },
@@ -154,7 +162,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'header.logout',
         template: '<div></div>',
         controller: ['User', '$state', function(User, $state) {
-            User.clearCredentialCache();
             User.logout();
             $state.go('login');
         }]
@@ -198,6 +205,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.dox.apiErrors',
         menuHidden: true,
         menuIcon: 'fa-exclamation-triangle'
+    },
+    {
+        url: '/auto-login-settings',
+        name: 'dashboard.autoLoginSettings',
+        templateUrl: 'views/dashboard/autoLoginSettings.html',
+        menuTr: 'dashboards.v3.app.autoLoginSettings',
+        menuIcon: 'save',
+        permission: 'superadmin'
     },
     {
         url: '/edit-menu',
