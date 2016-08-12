@@ -171,14 +171,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'fa-home'
+        menuIcon: 'home'
     },
     {
         name: 'dashboard.watchlist',
         url: '/watchlist',
         templateUrl: 'views/dashboard/watchlist.html',
         menuText: 'Watch List',
-        menuIcon: 'fa-eye',
+        menuIcon: 'remove_red_eye',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./directives/watchList/watchListTable',
@@ -207,33 +207,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'fa-exclamation-triangle'
     },
     {
-        url: '/auto-login-settings',
-        name: 'dashboard.autoLoginSettings',
-        templateUrl: 'views/dashboard/autoLoginSettings.html',
-        menuTr: 'dashboards.v3.app.autoLoginSettings',
-        menuIcon: 'save',
-        permission: 'superadmin'
-    },
-    {
-        url: '/edit-menu',
-        name: 'dashboard.editMenu',
-        templateUrl: 'views/dashboard/editMenu.html',
-        menuTr: 'dashboards.v3.app.editMenu',
-        menuIcon: 'fa-pencil',
-        permission: 'edit-menus'
-    },
-    {
-        url: '/edit-pages/{pageXid}',
-        name: 'dashboard.editPages',
-        templateUrl: 'views/dashboard/editPages.html',
-        menuTr: 'dashboards.v3.app.editPages',
-        menuIcon: 'fa-magic',
-        permission: 'edit-pages',
-        params: {
-            markup: null
-        }
-    },
-    {
         url: '/view-page/{pageXid}',
         name: 'dashboard.viewPage',
         template: '<page-view xid="{{pageXid}}"></page-view>',
@@ -244,50 +217,90 @@ mdAdminApp.constant('MENU_ITEMS', [
         }
     },
     {
-        url: '/system-settings',
-        name: 'dashboard.systemSettings',
-        template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
-        menuTr: 'header.systemSettings',
-        menuIcon: 'fa-cog',
-        menuHidden: true
-    },
-    {
-        url: '/data-sources',
-        name: 'dashboard.dataSources',
-        template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
-        menuTr: 'header.dataSources',
-        menuIcon: 'fa-plug',
-        menuHidden: true
-    },
-    {
-        url: '/users',
-        name: 'dashboard.users',
-        template: '<iframe-view src="/users.shtm"></iframe-view>',
-        menuTr: 'header.users',
-        menuIcon: 'fa-user',
-        menuHidden: true
-    },
-    {
-        url: '/events',
-        name: 'dashboard.events',
-        template: '<iframe-view src="/events.shtm"></iframe-view>',
-        menuTr: 'header.alarms',
-        menuIcon: 'fa-bell',
-        menuHidden: true
-    },
-    {
-        url: '/import-export',
-        name: 'dashboard.importExport',
-        template: '<iframe-view src="/emport.shtm"></iframe-view>',
-        menuTr: 'header.emport',
-        menuIcon: 'fa-expand',
-        menuHidden: true
+        url: '/admin',
+        name: 'dashboard.admin',
+        menuIcon: 'settings',
+        menuTr: 'dashboards.v3.app.adminTools',
+        permission: 'superadmin',
+        children: [
+            {
+                url: '/edit-pages/{pageXid}',
+                name: 'dashboard.admin.editPages',
+                templateUrl: 'views/dashboard/editPages.html',
+                menuTr: 'dashboards.v3.app.editPages',
+                menuIcon: 'fa-magic',
+                permission: 'edit-pages',
+                params: {
+                    markup: null
+                }
+            },
+            {
+                url: '/edit-menu',
+                name: 'dashboard.admin.editMenu',
+                templateUrl: 'views/dashboard/editMenu.html',
+                menuTr: 'dashboards.v3.app.editMenu',
+                menuIcon: 'fa-pencil',
+                permission: 'edit-menus'
+            },
+            {
+                url: '/auto-login-settings',
+                name: 'dashboard.admin.autoLoginSettings',
+                templateUrl: 'views/dashboard/autoLoginSettings.html',
+                menuTr: 'dashboards.v3.app.autoLoginSettings',
+                menuIcon: 'save',
+                permission: 'superadmin'
+            },
+            {
+                url: '/system-settings',
+                name: 'dashboard.admin.systemSettings',
+                template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
+                menuTr: 'header.systemSettings',
+                menuIcon: 'build',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/data-sources',
+                name: 'dashboard.admin.dataSources',
+                template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
+                menuTr: 'header.dataSources',
+                menuIcon: 'fa-plug',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/users',
+                name: 'dashboard.admin.users',
+                template: '<iframe-view src="/users.shtm"></iframe-view>',
+                menuTr: 'header.users',
+                menuIcon: 'fa-user',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/events',
+                name: 'dashboard.admin.events',
+                template: '<iframe-view src="/events.shtm"></iframe-view>',
+                menuTr: 'header.alarms',
+                menuIcon: 'fa-bell',
+                menuHidden: true
+            },
+            {
+                url: '/import-export',
+                name: 'dashboard.admin.importExport',
+                template: '<iframe-view src="/emport.shtm"></iframe-view>',
+                menuTr: 'header.emport',
+                menuIcon: 'fa-expand',
+                menuHidden: true,
+                permission: 'superadmin'
+            }
+        ]
     },
     {
         name: 'dashboard.examples',
         url: '/examples',
         menuTr: 'dashboards.v3.dox.examples',
-        menuIcon: 'fa-info',
+        menuIcon: 'info',
         submenu: true,
         children: [
             {
@@ -779,7 +792,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         name: 'dashboard.docs',
         url: '/docs',
         menuText: 'API Docs',
-        menuIcon: 'fa-book',
+        menuIcon: 'library_books',
         submenu: true,
         children: [],
         resolve: {

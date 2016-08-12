@@ -56,7 +56,7 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="user.hasPermission('edit-menus')">
-                  <md-button aria-label="Edit menu" ui-sref="dashboard.editMenu" ma-tr="dashboards.v3.app.editMenu">
+                  <md-button aria-label="Edit menu" ui-sref="dashboard.admin.editMenu" ma-tr="dashboards.v3.app.editMenu">
                     <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="dashboards.v3.app.editMenu">Edit menu</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">edit</md-icon>
@@ -64,7 +64,7 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="user.hasPermission('superadmin')">
-                  <md-button ui-sref="dashboard.systemSettings" ma-tr="header.systemSettings">
+                  <md-button ui-sref="dashboard.admin.systemSettings" ma-tr="header.systemSettings">
                     <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="header.systemSettings">System settings</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
