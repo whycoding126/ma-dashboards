@@ -95,7 +95,7 @@ define(['jquery'], function($) {
 *
 */
 
-function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, mangoReconnectDelay) {
+function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	var READY_STATE_CONNECTING = 0;
 	var READY_STATE_OPEN = 1;
@@ -112,39 +112,21 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, ma
 
 	    $.extend(this, options);
 
-	    var _this = this;
-
-	    $rootScope.$on('mangoWatchdog', function(event, status) {
-	        switch(status) {
-	        case 'API_DOWN':
-	        case 'STARTING_UP':
-	        case 'API_ERROR':
-	        case 'API_UP':
-	            _this.closeSocket();
+	    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
+	        if (current.loggedIn) {
+                this.openSocket();
+	        } else {
+                this.closeSocket();
 	        }
-	    });
+	    }.bind(this));
 
 	    this.openSocket();
 	}
 
 	EventManager.prototype.openSocket = function() {
-		var _this = this;
-
 		if (this.socket) {
-			throw new Error('Socket already open');
-		}
-
-		if (this.debounceTimer) {
-			this.openPending = true;
 			return;
 		}
-		this.debounceTimer = setTimeout(function() {
-			delete _this.debounceTimer;
-			if (_this.openPending) {
-				delete _this.openPending;
-				_this.openSocket();
-			}
-		}, mangoReconnectDelay);
 
 	    if (!('WebSocket' in window)) {
 	        throw new Error('WebSocket not supported');
@@ -170,29 +152,36 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, ma
 	    var socket = this.socket = new WebSocket(protocol + '//' + host + this.url);
 
 	    this.connectTimer = setTimeout(function() {
-	    	_this.closeSocket();
-	    }, mangoTimeout);
+	    	this.closeSocket();
+	    }.bind(this), mangoTimeout);
 
 	    socket.onclose = function() {
-	        _this.closeSocket();
-	    };
+	        this.closeSocket();
+	    }.bind(this);
+	    
 	    socket.onerror = function() {
-	    	_this.closeSocket();
-	    };
+	    	this.closeSocket();
+	    }.bind(this);
+	    
 	    socket.onopen = function() {
-	    	clearTimeout(_this.connectTimer);
-	    	_this.updateSubscriptions();
-	    };
+	    	clearTimeout(this.connectTimer);
+	    	delete this.connectTimer;
+	    	this.updateSubscriptions();
+	    }.bind(this);
+	    
 	    socket.onmessage = function(event) {
 	        var message = JSON.parse(event.data);
-	        _this.messageReceived(message);
-	    };
+	        this.messageReceived(message);
+	    }.bind(this);
 
 	    return socket;
 	};
 
 	EventManager.prototype.closeSocket = function() {
-    	clearTimeout(this.connectTimer);
+	    if (this.connectTimer) {
+	        clearTimeout(this.connectTimer);
+            delete this.connectTimer;
+	    }
 		if (this.socket) {
 			this.socket.onclose = nop;
 			this.socket.onerror = nop;
@@ -203,7 +192,6 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, ma
 		}
 
 		this.activeSubscriptions = {};
-        this.openSocket();
 	};
 
 	EventManager.prototype.messageReceived = function(message) {
@@ -342,7 +330,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout, ma
 	return EventManager;
 }
 
-JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout', 'mangoReconnectDelay'];
+JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout'];
 return JsonStoreEventManagerFactory;
 
 }); // define

@@ -59,6 +59,11 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
 	function MangoWatchdog(options) {
 		this.enabled = true;
 		angular.extend(this, options);
+		
+		// assume good state until proved otherwise
+		this.loggedIn = true;
+		this.apiUp = true;
+		
 		if (this.timeout <= 0)
 			this.enabled = false;
 		
@@ -89,26 +94,44 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
     };
     
     MangoWatchdog.prototype.setStatus = function(status) {
+        var previous = {
+            status: this.status,
+            apiUp: this.apiUp,
+            loggedIn: this.loggedIn
+        };
         switch(status) {
-        case API_DOWN:
         case STARTING_UP:
         case API_ERROR:
+        case API_DOWN:
+            // we may still be logged in (aka session valid) but cannot prove it
+            this.loggedIn = false;
+            this.apiUp = false;
             // setup a faster check while API is down
             if (this.interval !== this.reconnectDelay) {
                 this.setInterval(this.reconnectDelay);
             }
             break;
         case LOGGED_IN:
+            this.loggedIn = true;
+            // fall through
         case API_UP:
+            this.apiUp = true;
             // consider API up but not logged in as a failure but stop the faster retry
             if (this.interval !== this.timeout) {
                 this.setInterval(this.timeout);
             }
             break;
         }
-        
+
         this.status = status;
-        $rootScope.$broadcast('mangoWatchdog', status);
+        
+        var current = {
+            status: this.status,
+            apiUp: this.apiUp,
+            loggedIn: this.loggedIn
+        };
+        
+        $rootScope.$broadcast('mangoWatchdog', current, previous);
     };
     
     MangoWatchdog.prototype.setInterval = function(interval) {

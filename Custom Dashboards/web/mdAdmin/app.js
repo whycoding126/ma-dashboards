@@ -1002,20 +1002,18 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         $mdToast.show(toast);
     }
 
-    $rootScope.$on('mangoWatchdog', function(event, status) {
-        console.log(status);
+    $rootScope.$on('mangoWatchdog', function(event, current) {
+        var status = current.status;
         switch(status) {
         case 'API_DOWN':
             showToast(status);
             break;
         case 'STARTING_UP':
         case 'API_ERROR':
-            User.removeCachedUser();
             $rootScope.user = null;
             showToast(status);
             break;
         case 'API_UP':
-            User.removeCachedUser();
             $rootScope.user = null;
             showToast(status);
 
