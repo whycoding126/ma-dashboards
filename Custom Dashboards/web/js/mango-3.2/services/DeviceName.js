@@ -10,13 +10,13 @@ define(['angular'], function(angular) {
 * @name maServices.DeviceName
 *
 * @description
-* Provides service for getting list of device names from the Mango system.
+* Provides a service for getting list of device names from the Mango system.
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maDeviceNameList">`<ma-device-name-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maDeviceNameQuery">`<ma-device-name-query>`</a> directives.
 * - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
-* - `$save`
-* - `$remove`
-* - `$delete`
-* - `$get`
+*   - `$save`
+*   - `$remove`
+*   - `$delete`
+*   - `$get`
 *
 * # Usage
 *

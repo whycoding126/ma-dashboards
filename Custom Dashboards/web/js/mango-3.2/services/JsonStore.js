@@ -11,13 +11,13 @@ define(['angular'], function(angular) {
 * @name maServices.JsonStore
 *
 * @description
-* - Provides service for reading and writing to the JsonStore within the Mango Database.
+* Provides a service for reading and writing to the JsonStore within the Mango Database.
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
 * - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
-* - `$save`
-* - `$remove`
-* - `$delete`
-* - `$get`
+*   - `$save`
+*   - `$remove`
+*   - `$delete`
+*   - `$get`
 *
 * # Usage
 *

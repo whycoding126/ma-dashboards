@@ -163,7 +163,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-json-store xid=&quot;phoneData&quot; item=&quot;myItem&quot; value=&quot;myValue&quot;&gt;&lt;/ma-json-store&gt;",
-      "keywords": "$delete $get $save access accessing admin allow api arbitrary call class dashboard data default deletes demo directive editpermission examples group guests hold included item json jsondata jsonstore local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model note object objects permission permissions phone phonedata readpermission realtime refresh retrieved reverts save saves set sets store stored sync system ui-sref unique updates user utilities values websockets xid"
+      "keywords": "$delete $get $item $save access accessing admin allow api arbitrary call called class dashboard data default deletes demo directive editpermission examples expression group guests hold included inside item json jsondata jsonstore loaded local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model note object objects permission permissions phone phonedata readpermission realtime refresh retrieved reverts save saves set sets store stored sync system ui-sref unique updates user utilities values variable websockets xid"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-set-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-set-point-value&gt;",
-      "keywords": "alternatively api appropriate binary called calling create dashboard data demo directive display element example examples expression function handle input interface limit madashboards masetpointvalue method multistate mypoint ng-click ng-model numeric object point require set setpoint settable settingpointvalues setvalue types ui-sref"
+      "keywords": "alternatively api appropriate binary button called calling create dashboard data demo directive display dropdown element example examples expression false function handle input interface limit madashboards masetpointvalue method multistate mypoint ng-click ng-model numeric object option point require selected set setpoint settable settingpointvalues setvalue show-button specifies true types ui-sref"
     },
     {
       "section": "api",
@@ -263,6 +263,15 @@ NG_DOCS={
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-set-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-set-point-value&gt;",
       "keywords": "api binary class colspan common data directive displays input internally ma-tr madashboards mastartsandruntimestable md-cell md-row multistate mypoint ng-if object point runtimes starts starts-and-runtimes startsandruntimes statistics statistics-summary stats summary table withing"
+    },
+    {
+      "section": "api",
+      "id": "maDashboards.maStateChart",
+      "shortName": "maDashboards.maStateChart",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-state-chart&gt;",
+      "keywords": "amcharts api array chart charts configuration customizing dashboard data demo design directive display end-date examples extend generated height inputs labels legend madashboards mastatechart multi-state multistate number object options point point1 point1values point2 point2values property proportion range renderermap series series-1-labels series-1-title series-1-values series-2-labels series-2-title series-2-values series-x-labels series-x-title series-x-values set sets showing starting statechart style text time ui-sref values width"
     },
     {
       "section": "api",
@@ -352,7 +361,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for injecting CSS into the head of the document. ",
-      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive document duplicate element external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected javascript link maservices md-button method null path place prettyprint-mode provided returns service set string style stylecontent tag tags tracking trackingname true usage var"
+      "keywords": "$mdcolors acc accd accent accent-500-0 accent-500-1 accent-700-1 acct afterselector api based boolean border-bottom-color color content css cssinjector determine directive directives document duplicate element example external false file getthemecolor head href identifier injected injecting injection injectlink injects injectstyle inserts isinjected javascript link maservices md-button method null path place prettyprint-mode provided returns service set string style stylecontent tag tags tracking trackingname true usage utilize var"
     },
     {
       "section": "api",
@@ -360,7 +369,7 @@ NG_DOCS={
       "shortName": "maServices.DataSource",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "",
+      "shortDescription": "Provides a service for getting list of data sources from the Mango system.",
       "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console dashboard data datasource datasources default delete directives docs ds endpoint format getbyid http javascript limit list log madashboards madatasourcelist madatasourcequery mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system ui-sref usage var variable xid"
     },
     {
@@ -369,7 +378,7 @@ NG_DOCS={
       "shortName": "maServices.DeviceName",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "Provides service for getting list of device names from the Mango system.",
+      "shortDescription": "Provides a service for getting list of device names from the Mango system.",
       "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class dashboard data datasource datasourcexid default delete device devicename devicenames directives docs endpoint http javascript length list madashboards madevicenamelist madevicenamequery mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system ui-sref usage var xid"
     },
     {
@@ -396,7 +405,7 @@ NG_DOCS={
       "shortName": "maServices.JsonStore",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "",
+      "shortDescription": "Provides a service for reading and writing to the JsonStore within the Mango Database.",
       "keywords": "$delete $get $promise $q $remove $resource $save $scope action actions angular angularjs api availble call class dashboard database datapath default delete directive docs editpermission endpoint extend function http item javascript json jsondata jsonstore madashboards majsonstore mango maservices method methods newxid node object objects org post prettyprint-mode provided reading readpermission remove resource rest return returns save service set store ui-sref usage var writing xid"
     },
     {
@@ -432,8 +441,8 @@ NG_DOCS={
       "shortName": "maServices.Point",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method point prettyprint-mode replace service usage"
+      "shortDescription": "Provides service for getting and and updating a list of points.",
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope action actions angularjs api array availble binary call called calls class converted dashboard data default defaults delete directive directives docs endpoint error example examples flip format getbyid handling holdtimeout http internally item javascript key limit list madashboards mafilteringpointlist map mapointlist mapping maservices matching method methods multistate ngmodel null object objects objquery optional options org parameter passed pending point points post prettyprint-mode promise properties property provided queries query remove renderermap resource rest result return returned returns rql save service set settable setting settingpointvalues setvalue setvalueresult sort start stored string success textrendered textrenderer timeout toggle togglevalue ui-sref updating usage valuefn valuerenderer values xid"
     },
     {
       "section": "api",

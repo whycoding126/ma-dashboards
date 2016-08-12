@@ -24,8 +24,8 @@ var prettyprint = function() {
             $scope.editor.setOptions({
                 maxLines: Infinity
             });
-            $element[0].style.fontSize = '.8em';
-            $element[0].style.lineHeight = 1.5;
+            $element[0].style.fontSize = '.9em';
+            $element[0].style.lineHeight = 1.7;
         }
     };
 };

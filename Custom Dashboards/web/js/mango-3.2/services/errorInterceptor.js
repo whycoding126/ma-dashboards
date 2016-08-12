@@ -12,7 +12,7 @@ define([], function() {
 * @description
 * Provides the error interceptor to show REST errors on the error page.
 - Used in `app.js` and pushed to `$httpProvider.interceptors` array.
-- Adds errors `array` and `clearErrors()` method to the rootScope of the app.
+- Adds `errors` array and `clearErrors()` method to the rootScope of the app.
 - See `/web/mdAdmin/views/dashboard/errors.html` to see how these are used in a view to display errors.
 *
 * # Usage
@@ -35,7 +35,7 @@ define([], function() {
 /**
 * @ngdoc object
 * @propertyOf maServices.errorInterceptor
-* @name errors
+* @name $rootScope.errors
 *
 * @description
 * An array of error objects intercepted by this service.

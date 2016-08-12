@@ -53,6 +53,7 @@ The CSS will only be injected if the directive using this service is used on a p
 * A method that injects a link to an external CSS file from a link into the document head.
 * @param {string} href File path of the external CSS document.
 * @param {string} trackingName Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
+* For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place one.
 * @param {boolean=} afterSelector If provided the CSS will be injected within the head, after the given element.
 *
 */
@@ -65,7 +66,7 @@ The CSS will only be injected if the directive using this service is used on a p
 * @description
 * A method that injects a `<style>` element with CSS into the document head.
 * @param {string} content String of CSS that will be injected.
-* @param {string} trackingName Identifier used to determine if CSS has already been injected by another directive.
+* @param {string} trackingName Identifier used to determine if CSS has already been injected by another directive. 
 * @param {boolean=} afterSelector If provided the CSS will be injected within the head, after the given element.
 *
 */
