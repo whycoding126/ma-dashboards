@@ -136,10 +136,12 @@ function JsonStoreFactory($resource, Util) {
             interceptor: {
                 response: setDataPathInterceptor
             },
-        	transformResponse: function(data, headersGetter) {
-            	var item = angular.fromJson(data);
-            	item.jsonData = null;
-            	return item;
+        	transformResponse: function(data, headersGetter, status) {
+        	    if (data && status < 400) {
+        	        var item = angular.fromJson(data);
+                    item.jsonData = null;
+                    return item;
+        	    }
             }
         }
     });
