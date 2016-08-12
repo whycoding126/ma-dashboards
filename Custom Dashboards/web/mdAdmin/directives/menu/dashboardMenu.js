@@ -6,9 +6,9 @@
 define(['require'], function(require) {
 'use strict';
 
-var dashboardMenuController = function dashboardMenuController(User) {
+var dashboardMenuController = function dashboardMenuController(User, $rootScope) {
     this.$onInit = function() {
-        this.user = User.current();
+        this.user = $rootScope.user;
     };
     
     this.menuOpened = function menuOpened(toggleCtrl) {
@@ -38,7 +38,7 @@ var dashboardMenuController = function dashboardMenuController(User) {
     };
 };
 
-dashboardMenuController.$inject = ['User'];
+dashboardMenuController.$inject = ['User', '$rootScope'];
 
 return {
     controller: dashboardMenuController,

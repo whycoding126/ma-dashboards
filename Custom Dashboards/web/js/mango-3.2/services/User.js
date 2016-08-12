@@ -72,7 +72,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             method: 'GET',
             isArray: false,
             withCredentials: true,
-            cache: true,
+            cache: false,
             interceptor: {
                 response: setWatchdogToLoggedIn
             }
@@ -104,7 +104,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             method: 'GET',
             isArray: false,
             withCredentials: true,
-            cache: false,
+            cache: false
         }
     });
     
@@ -133,10 +133,6 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
     
     User.clearStoredCredentials = function clearStoredCredentials() {
         localStorageService.remove('storedCredentials');
-    };
-
-    User.removeCachedUser = function() {
-        $cacheFactory.get('$http').remove('/rest/v1/users/current');
     };
 
     User.prototype.hasPermission = function(desiredPerms) {

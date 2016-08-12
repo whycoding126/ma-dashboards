@@ -11,6 +11,7 @@ var login = function($state, User, $rootScope) {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
+            $scope.currentUser = User.current();
             $scope.errors = {};
             
             $scope.$watchGroup(['username', 'password'], function() {
