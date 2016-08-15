@@ -459,8 +459,8 @@ NG_DOCS={
       "shortName": "maServices.PointHierarchy",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method pointhierarchy prettyprint-mode replace service usage"
+      "shortDescription": "Provides service for getting point hierarchy",
+      "keywords": "$delete $get $remove $resource $save _blank action actions additionally angularjs api availble boolean byname bypath call children class contained dashboard default delete descendant directive directly docs endpoint false folder folders full getroot hierarchy href http https javascript madashboards mapointhierarchy maservices method methods narrow object objects org passed path point pointhierarchy points post prettyprint-mode property provided query remove resource rest retrieve return returns save service set specifed subfolders target true ui-sref usage"
     },
     {
       "section": "api",
