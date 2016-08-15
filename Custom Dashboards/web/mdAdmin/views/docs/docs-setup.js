@@ -320,30 +320,30 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "maFilters.durationFilter",
-      "shortName": "maFilters.durationFilter",
+      "id": "maFilters.duration",
+      "shortName": "maFilters.duration",
       "type": "filter",
       "moduleName": "maFilters",
       "shortDescription": "",
-      "keywords": "api durationfilter filter mafilters"
+      "keywords": "api duration filter mafilters"
     },
     {
       "section": "api",
-      "id": "maFilters.momentFilter",
-      "shortName": "maFilters.momentFilter",
+      "id": "maFilters.moment",
+      "shortName": "maFilters.moment",
       "type": "filter",
       "moduleName": "maFilters",
       "shortDescription": "",
-      "keywords": "api filter mafilters momentfilter"
+      "keywords": "api filter mafilters moment"
     },
     {
       "section": "api",
-      "id": "maFilters.trFilter",
-      "shortName": "maFilters.trFilter",
+      "id": "maFilters.tr",
+      "shortName": "maFilters.tr",
       "type": "filter",
       "moduleName": "maFilters",
       "shortDescription": "",
-      "keywords": "api filter mafilters trfilter"
+      "keywords": "api filter mafilters tr"
     },
     {
       "section": "api",

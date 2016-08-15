@@ -7,7 +7,7 @@ define(['moment-timezone'], function(moment) {
 'use strict';
 /**
  * @ngdoc filter
- * @name maFilters.durationFilter
+ * @name maFilters.duration
  *
  * @description
  *
