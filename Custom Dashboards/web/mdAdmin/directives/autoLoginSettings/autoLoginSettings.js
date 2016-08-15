@@ -18,6 +18,7 @@ var autoLoginSettings = function autoLoginSettings(User, $scope) {
             $scope.autoLoginSettings.username.$setValidity('adminUser', !user.hasPermission('superadmin'));
         }, function() {
             $scope.autoLoginSettings.username.$setValidity('notFound', false);
+            $scope.autoLoginSettings.username.$setValidity('adminUser', true);
         });
     };
     

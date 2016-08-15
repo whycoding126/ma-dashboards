@@ -221,7 +221,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.admin',
         menuIcon: 'settings',
         menuTr: 'dashboards.v3.app.adminTools',
-        permission: 'superadmin',
         children: [
             {
                 url: '/edit-pages/{pageXid}',

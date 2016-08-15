@@ -22,13 +22,12 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
     
     this.$onChanges = function(changes) {
         if (changes.openMenu) {
-            if (!this.isOpen) return;
-            if (!this.openMenu || this.openMenu.name.indexOf(this.item.name) !== 0) {
+            if (this.isOpen && (!this.openMenu || this.openMenu.name.indexOf(this.item.name) !== 0)) {
                 this.close();
             }
         }
         if (changes.item) {
-            if (changes.item.currentValue.children.length !== changes.item.previousValue.children.length) {
+            if (!changes.item.isFirstChange() && changes.item.currentValue.visibleChildren !== changes.item.previousValue.visibleChildren) {
                 // do on next cycle as elements have not been added/removed yet
                 $timeout(function() {
                     var heightDiff = this.totalHeight ? this.totalHeight - this.height : 0;
@@ -39,7 +38,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             }
         }
     };
-    
+
     this.$postLink = function() {
         this.$ul = $element.find('ul');
         
