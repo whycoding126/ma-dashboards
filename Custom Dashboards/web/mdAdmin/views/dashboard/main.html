@@ -38,15 +38,18 @@
                 <md-tooltip md-autohide>REST API errors</md-tooltip>
                 <a ui-sref="dashboard.apiErrors"><md-icon>warning</md-icon></a>
             </md-button>
+            <!--
             <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm" target="_blank">
                 <md-tooltip md-autohide>Mango events</md-tooltip>
                 <md-icon>alarm</md-icon>
             </md-button>
+            -->
             <md-menu md-position-mode="target-right target">
               <md-button aria-label="User menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                <md-icon md-menu-origin>person</md-icon>
+                <md-icon md-menu-origin>more_vert</md-icon>
               </md-button>
               <md-menu-content width="4">
+                <!--
                 <md-menu-item>
                   <md-button aria-label="User profile" ng-href="/users.shtm" target="_blank">
                     <div layout="row" flex layout-align="start center" layout-fill>
@@ -55,19 +58,28 @@
                     </div>
                   </md-button>
                 </md-menu-item>
+                -->
                 <md-menu-item ng-if="user.hasPermission('edit-menus')">
-                  <md-button aria-label="Edit menu" ui-sref="dashboard.admin.editMenu" ma-tr="dashboards.v3.app.editMenu">
+                  <md-button aria-label="{{'dashboards.v3.app.editMenu'|tr}}" ui-sref="dashboard.admin.editMenu">
                     <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="dashboards.v3.app.editMenu">Edit menu</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">edit</md-icon>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">toc</md-icon>
                     </div>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="user.hasPermission('superadmin')">
-                  <md-button ui-sref="dashboard.admin.systemSettings" ma-tr="header.systemSettings">
+                  <md-button aria-label="{{'header.systemSettings'|tr}}" ui-sref="dashboard.admin.systemSettings">
                     <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="header.systemSettings">System settings</p>
                       <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
+                    </div>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button aria-label="{{'dashboards.v3.app.legacyUi'|tr}}" ng-href="/" target="_blank">
+                    <div layout="row" flex layout-align="start center" layout-fill>
+                      <p flex ma-tr="dashboards.v3.app.legacyUi">Legacy UI</p>
+                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">launch</md-icon>
                     </div>
                   </md-button>
                 </md-menu-item>

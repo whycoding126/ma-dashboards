@@ -227,7 +227,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.editPages',
                 templateUrl: 'views/dashboard/editPages.html',
                 menuTr: 'dashboards.v3.app.editPages',
-                menuIcon: 'fa-magic',
+                menuIcon: 'dashboard',
                 permission: 'edit-pages',
                 params: {
                     markup: null
@@ -238,7 +238,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.editMenu',
                 templateUrl: 'views/dashboard/editMenu.html',
                 menuTr: 'dashboards.v3.app.editMenu',
-                menuIcon: 'fa-pencil',
+                menuIcon: 'toc',
                 permission: 'edit-menus'
             },
             {
@@ -246,7 +246,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.autoLoginSettings',
                 templateUrl: 'views/dashboard/autoLoginSettings.html',
                 menuTr: 'dashboards.v3.app.autoLoginSettings',
-                menuIcon: 'save',
+                menuIcon: 'face',
                 permission: 'superadmin'
             },
             {
@@ -791,7 +791,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         name: 'dashboard.docs',
         url: '/docs',
         menuText: 'API Docs',
-        menuIcon: 'library_books',
+        menuIcon: 'book',
         submenu: true,
         children: [],
         resolve: {
