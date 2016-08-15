@@ -10,24 +10,34 @@ define([], function() {
 * @name maServices.rQ
 *
 * @description
-* REPLACE
+* The `rQ` service provides asynchronous loading of components via requireJS.
 *
-* # Usage
+* # Example Usage in Login State Definition
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+
+    name: 'login',
+    url: '/login',
+    templateUrl: 'views/login.html',
+    menuHidden: true,
+    menuIcon: 'fa-sign-in',
+    menuTr: 'header.login',
+    resolve: {
+        deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+            return rQ(['./directives/login/login'], function(login) {
+                angular.module('login', [])
+                    .directive('login', login);
+                $ocLazyLoad.inject('login');
+            });
+        }],
+        loginTranslations: ['Translate', function(Translate) {
+            return Translate.loadNamespaces('login');
+        }]
+    }
+}
 * </pre>
 */
 
-/**
-* @ngdoc method
-* @methodOf maServices.rQ
-* @name REPLACE
-*
-* @description
-* REPLACE
-*
-*/
 function rqFactory($q, require) {
     function rQ(deps, success, fail) {
         var defer = $q.defer();

@@ -468,8 +468,8 @@ NG_DOCS={
       "shortName": "maServices.rQ",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method prettyprint-mode replace rq service usage"
+      "shortDescription": "The rQ service provides asynchronous loading of components via requireJS.",
+      "keywords": "$oclazyload angular api asynchronous components definition deps directive example fa-sign-in function header html inject javascript loading loadnamespaces login logintranslations maservices menuhidden menuicon menutr module prettyprint-mode requirejs resolve return rq service templateurl translate true url usage views"
     },
     {
       "section": "api",
@@ -477,8 +477,8 @@ NG_DOCS={
       "shortName": "maServices.Translate",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method prettyprint-mode replace service translate usage"
+      "shortDescription": "Translate service provides internationalization support.",
+      "keywords": "api args internationalization javascript key loadnamespaces maservices method namespaces prettyprint-mode replace service support text tr translate trsync usage"
     },
     {
       "section": "api",
@@ -486,8 +486,8 @@ NG_DOCS={
       "shortName": "maServices.User",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "REPLACE",
-      "keywords": "api javascript maservices method prettyprint-mode replace service usage user"
+      "shortDescription": "Provides a service for getting list of users from the Mango system, as well as logging users in and out.",
+      "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts availble call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
     },
     {
       "section": "api",

@@ -10,22 +10,47 @@ define(['angular', 'globalize', 'globalize/message', 'cldr/unresolved'], functio
 * @name maServices.Translate
 *
 * @description
-* REPLACE
+* `Translate` service provides internationalization support.
 *
 * # Usage
 *
 * <pre prettyprint-mode="javascript">
-    REPLACE
+    text = Translate.trSync(key, args);
 * </pre>
+*/ 
+
+/**
+* @ngdoc method
+* @methodOf maServices.Translate
+* @name tr
+*
+* @description
+* REPLACE
+* @param {object} key REPLACE
+* @param {object} args REPLACE
+*
 */
 
 /**
 * @ngdoc method
 * @methodOf maServices.Translate
-* @name REPLACE
+* @name trSync
 *
 * @description
 * REPLACE
+* @param {object} key REPLACE
+* @param {object} args REPLACE
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Translate
+* @name loadNamespaces
+*
+* @description
+* REPLACE
+* @param {object} namespaces REPLACE
 *
 */
 function translateFactory($http, $q) {
