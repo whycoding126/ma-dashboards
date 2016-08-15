@@ -139,7 +139,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/login',
         templateUrl: 'views/login.html',
         menuHidden: true,
-        menuIcon: 'fa-sign-in',
+        menuIcon: 'exit_to_app',
         menuTr: 'header.login',
         resolve: {
             deps: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
@@ -158,13 +158,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'logout',
         url: '/logout',
         menuHidden: true,
-        menuIcon: 'fa-sign-out',
+        menuIcon: 'power_settings_new',
         menuTr: 'header.logout',
-        template: '<div></div>',
-        controller: ['User', '$state', function(User, $state) {
-            User.logout();
-            $state.go('login');
-        }]
+        template: '<div></div>'
     },
     {
         name: 'dashboard.home',
@@ -204,7 +200,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/errors.html',
         menuTr: 'dashboards.v3.dox.apiErrors',
         menuHidden: true,
-        menuIcon: 'fa-exclamation-triangle'
+        menuIcon: 'warning'
     },
     {
         url: '/view-page/{pageXid}',
@@ -219,7 +215,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         url: '/admin',
         name: 'dashboard.admin',
-        menuIcon: 'settings',
+        menuIcon: 'build',
         menuTr: 'dashboards.v3.app.adminTools',
         children: [
             {
@@ -254,7 +250,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.systemSettings',
                 template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
                 menuTr: 'header.systemSettings',
-                menuIcon: 'build',
+                menuIcon: 'settings',
                 menuHidden: true,
                 permission: 'superadmin'
             },
@@ -263,7 +259,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.dataSources',
                 template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
                 menuTr: 'header.dataSources',
-                menuIcon: 'fa-plug',
+                menuIcon: 'device_hub',
                 menuHidden: true,
                 permission: 'superadmin'
             },
@@ -272,7 +268,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.users',
                 template: '<iframe-view src="/users.shtm"></iframe-view>',
                 menuTr: 'header.users',
-                menuIcon: 'fa-user',
+                menuIcon: 'people',
                 menuHidden: true,
                 permission: 'superadmin'
             },
@@ -281,7 +277,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.events',
                 template: '<iframe-view src="/events.shtm"></iframe-view>',
                 menuTr: 'header.alarms',
-                menuIcon: 'fa-bell',
+                menuIcon: 'alarm',
                 menuHidden: true
             },
             {
@@ -289,7 +285,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.admin.importExport',
                 template: '<iframe-view src="/emport.shtm"></iframe-view>',
                 menuTr: 'header.emport',
-                menuIcon: 'fa-expand',
+                menuIcon: 'import_export',
                 menuHidden: true,
                 permission: 'superadmin'
             }
@@ -906,6 +902,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             event.preventDefault();
             $state.loginRedirect = toState;
             $state.go('login');
+        } else {
+            $state.go('home');
         }
     });
 
@@ -925,6 +923,14 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
         if ($state.includes('dashboard')) {
             $rootScope.closeMenu();
+        }
+        if (toState.name === 'logout') {
+            event.preventDefault();
+            User.logout().$promise.then(null, function() {
+                return {};
+            }).then(function() {
+                $state.go('login');
+            });
         }
     });
 
