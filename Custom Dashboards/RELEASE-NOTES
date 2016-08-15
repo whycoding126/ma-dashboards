@@ -4,10 +4,14 @@
 * Add daily comparison chart example
 * Add data source list and device name list directives
 * Ability to create and save your own pages
-* Customizable menus
+* User customizable menus in mdAdmin, menus can be deeper than 2 levels now 
 * URLs no longer contain /dashboard and enabled HTML5 mode for cleaner URLs
 * New url for mdAdmin dashboard at /dashboards
 * New url for users own dashboards at /user-dashboards
+* Watchdog timer now periodically checks an API endpoint itself and checks if a user is logged in
+* Auto-login functionality, credentials are stored in local storage
+* mdAdmin interface notifies user about connectivity to Mango API via watchdog functionality
+* Documentation of Mango Dashboards AngularJS directives, services and filters
 
 *Version 3.1.1*
 * Fix admin template menu in Firefox
