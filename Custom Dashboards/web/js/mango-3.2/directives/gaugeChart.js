@@ -7,7 +7,7 @@ define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
 'use strict';
 /**
  * @ngdoc directive
- * @name maDashboards.maGuageChart
+ * @name maDashboards.maGaugeChart
  * @restrict E
  * @description
  * `<ma-gauge-chart point="myPoint" style="width:100%; height:200px"></ma-gauge-chart>`

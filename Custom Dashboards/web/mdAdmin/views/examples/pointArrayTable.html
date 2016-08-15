@@ -9,6 +9,14 @@ limit the number of points returned.
   The <code>points</code> attribute returns an array that you can loop over with <code>ng-repeat</code>
   as in this example.
 </p>
+<p>
+  The list of <code>points</code> outputted from <code>&lt;ma-point-query&gt;</code> is inputted into <code>&lt;ma-point-values&gt;</code> <code>points</code> property
+  (plural points property takes an array of points). The combined values are then looped over in the table.
+</p>
+
+<p>
+See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPointQuery"><code>&lt;ma-point-query&gt;</code></a> and <a ui-sref="dashboard.docs.maDashboards.maPointValues"><code>&lt;ma-point-values&gt;</code></a>.
+</p>
 <dual-pane-editor>
 <div layout="row">
     <md-input-container flex="33">

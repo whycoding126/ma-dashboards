@@ -131,21 +131,21 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maDashboards.maGaugeChart",
+      "shortName": "maDashboards.maGaugeChart",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-gauge-chart point=&quot;myPoint&quot; style=&quot;width:100%; height:200px&quot;&gt;&lt;/ma-gauge-chart&gt;",
+      "keywords": "allowing allows amcharts api attribute attributes axis band band-1-color band-1-end band-2-color band-2-end band-3-color band-3-end bands color colors configuration customizing dashboard data demo design directive display element examples exposed extend flex gauge gauges height interval limit live madashboards magaugechart multiple mypoint ng-model note numbered object options point provide provided ranges second set sets singlevaluedisplays start starting style third tick tied ui-sref width yellow"
+    },
+    {
+      "section": "api",
       "id": "maDashboards.maGetPointValue",
       "shortName": "maDashboards.maGetPointValue",
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-get-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-get-point-value&gt;",
       "keywords": "additionally api array attribute basics class code custom dashboard data demo directive displayed dp_698831 example examples expressions extended getpointbyxid hard html live livevalues madashboards magetpointvalue md-block meters mypoint mypoint1 mypoint2 ng-model ng-non-bindable object objects outputs outputted pass passed passing point point-xid points property pulls renderedvalue single text ui-sref updating values variable xid"
-    },
-    {
-      "section": "api",
-      "id": "maDashboards.maGuageChart",
-      "shortName": "maDashboards.maGuageChart",
-      "type": "directive",
-      "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-gauge-chart point=&quot;myPoint&quot; style=&quot;width:100%; height:200px&quot;&gt;&lt;/ma-gauge-chart&gt;",
-      "keywords": "allowing allows amcharts api attribute attributes axis band band-1-color band-1-end band-2-color band-2-end band-3-color band-3-end bands color colors configuration customizing dashboard data demo design directive display element examples exposed extend flex gauge gauges height interval limit live madashboards maguagechart multiple mypoint ng-model note numbered object options point provide provided ranges second set sets singlevaluedisplays start starting style third tick tied ui-sref width yellow"
     },
     {
       "section": "api",
@@ -432,8 +432,8 @@ NG_DOCS={
       "shortName": "maServices.mangoWatchdog",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "Service provides enabling, disabling and reseting of the MangoWatchdog timeout which will log out a user after a given length of time.",
-      "keywords": "api data disable disables disabling enable enables enabling javascript length log mangowatchdog maservices method prettyprint-mode recieved reset reseting resets service time timeout usage user watchdog websocket"
+      "shortDescription": "The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by",
+      "keywords": "api broadcasts check checks connectivity constant current dashboard defining demo disable disables enable enables endpoint event examples interval logged mango mangoreconnectdelay mangowatchdog mangowatchdogtimeout maservices method milliseconds named periodically pinging reconnect root scope service set status ui-sref user utilities watchdog"
     },
     {
       "section": "api",
