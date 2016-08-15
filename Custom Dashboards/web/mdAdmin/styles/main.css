@@ -456,7 +456,8 @@ h2#description, span.hint, #usage_parameters, ul.methods h5 {
 	display: none;
 }
 
-ul.methods h5[id*="returns"] {
+ul.methods h5[id*="returns"],
+ul.events h5[id*="events"] {
 	display: block;
 	font-size: 1.5rem;
 }
@@ -477,7 +478,8 @@ pre div.ace_content {
 	/*padding: 20px;*/
 }
 
-ul.methods li {
+ul.methods li,
+ul.events li {
 	list-style: none;
 	margin-top: 30px;
 }

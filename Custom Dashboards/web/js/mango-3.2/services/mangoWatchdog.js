@@ -10,13 +10,28 @@ define(['angular'], function(angular) {
 * @name maServices.mangoWatchdog
 *
 * @description
-* Service provides enabling, disabling and reseting of the MangoWatchdog timeout which will log out a user after a given length of time.
+* The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by
+* periodically pinging an API endpoint.
+* 
+* The watchdog service broadcasts an event named 'mangoWatchdog' on the root scope which provides information about
+* the current status of Mango.
+* 
+* The watchdog service check interval is set by defining the 'mangoWatchdogTimeout' constant and when Mango is down
+* the service will try and reconnect every 'mangoReconnectDelay' milliseconds.
+*/
+
+/**
+* @ngdoc event
+* @name mangoWatchdog#mangoWatchdog
+* @eventType broadcast on root scope
+* @eventOf maServices.mangoWatchdog
 *
-* # Usage
-*
-* <pre prettyprint-mode="javascript">
-    mangoWatchdog.reset();
-* </pre>
+* @description
+* Broadcast periodically, indicates the current status of Mango.
+* 
+* @param {object} angularEvent Synthetic event object
+* @param {object} current mango status
+* @param {object} previous mango status
 */
 
 /**
@@ -39,15 +54,6 @@ define(['angular'], function(angular) {
 *
 */
 
-/**
-* @ngdoc method
-* @methodOf maServices.mangoWatchdog
-* @name reset
-*
-* @description
-* Resets the timeout, usually the timeout is reset when data from the websocket is recieved.
-*
-*/
 function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $http, $interval) {
 
     var API_DOWN = 'API_DOWN';
