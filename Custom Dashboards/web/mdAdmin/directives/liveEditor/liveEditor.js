@@ -21,7 +21,7 @@ var liveEditor = function($templateRequest, $sce) {
             mode: '@',
             theme: '@'
         },
-        controller: function($scope, $element) {
+        controller: ['$scope', '$element', function($scope, $element) {
             
             var initialText = $element.data('htmlContent');
             $element.removeData('htmlContent');
@@ -74,7 +74,7 @@ var liveEditor = function($templateRequest, $sce) {
                 programaticChange = true;
                 editor.setValue(text, -1);
             };
-        }
+        }]
     };
 };
 

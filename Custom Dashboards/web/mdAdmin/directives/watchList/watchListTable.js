@@ -81,6 +81,8 @@ define(['require'], function(require) {
                         };
                     }
                     
+                    setDialogController.$inject = ['$scope', '$mdDialog', 'point'];
+                    
                     function setStatsController(scope, $mdDialog, point, from, to) {
                         scope.point = point;
                         scope.from = from;
@@ -95,6 +97,8 @@ define(['require'], function(require) {
                             $mdDialog.hide(answer);
                         };
                     }
+                    
+                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to'];
 
                     scope.$watch('page.points', function(newValue, oldValue) {
                         if (newValue === undefined || newValue === oldValue) return;

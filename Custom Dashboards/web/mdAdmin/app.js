@@ -208,9 +208,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         template: '<page-view xid="{{pageXid}}"></page-view>',
         menuTr: 'dashboards.v3.app.viewPage',
         menuHidden: true,
-        controller: function ($scope, $stateParams) {
+        controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
             $scope.pageXid = $stateParams.pageXid;
-        }
+        }]
     },
     {
         url: '/admin',
@@ -1057,7 +1057,7 @@ JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
 }).then(function(customMenuItems) {
     mdAdminApp.constant('CUSTOM_MENU_ITEMS', customMenuItems);
     angular.element(document).ready(function() {
-        angular.bootstrap(document.documentElement, ['mdAdminApp']);
+        angular.bootstrap(document.documentElement, ['mdAdminApp'], {strictDi: true});
     });
 });
 

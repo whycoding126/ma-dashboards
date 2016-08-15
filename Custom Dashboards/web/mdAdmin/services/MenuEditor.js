@@ -69,7 +69,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                     item: item,
                     menuItems: flatMenuItems
                 },
-                controller: function editItemController($scope, $mdDialog) {
+                controller: ['$scope', '$mdDialog', function editItemController($scope, $mdDialog) {
                     Page.getPages().then(function(store) {
                         $scope.pages = store.jsonData.pages;
                     });
@@ -95,7 +95,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                             this.item.name = this.item.parent.name + '.'
                         }
                     }.bind(this);
-                }
+                }]
             }).then(function() {
                 var newParent = item.parent;
                 var isNew = item.isNew;
