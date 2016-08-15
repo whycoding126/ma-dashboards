@@ -324,8 +324,8 @@ NG_DOCS={
       "shortName": "maFilters.duration",
       "type": "filter",
       "moduleName": "maFilters",
-      "shortDescription": "",
-      "keywords": "api duration filter mafilters"
+      "shortDescription": "Converts an input in milliseconds to a moment duration object that defines a length of time.",
+      "keywords": "_blank api basics call called converts dashboard defines demo duration examples filter filters functions href http humanize input length mafilters methods milliseconds moment ng-non-bindable object syntax target time ui-sref"
     },
     {
       "section": "api",
@@ -333,8 +333,8 @@ NG_DOCS={
       "shortName": "maFilters.moment",
       "type": "filter",
       "moduleName": "maFilters",
-      "shortDescription": "",
-      "keywords": "api filter mafilters moment"
+      "shortDescription": "Converts a timetamp to a momentJS object that can be",
+      "keywords": "_blank add api basics call called converts dashboard days demo examples filter filters format formatted functions href http ll lll lts mafilters manipulated methods moment ng-non-bindable object syntax target time timetamp ui-sref"
     },
     {
       "section": "api",
@@ -342,8 +342,8 @@ NG_DOCS={
       "shortName": "maFilters.tr",
       "type": "filter",
       "moduleName": "maFilters",
-      "shortDescription": "",
-      "keywords": "api filter mafilters tr"
+      "shortDescription": "Outputs the translation text for the set language.",
+      "keywords": "api common example file filter inputs key language mafilters ng-non-bindable outputs properties set string text tr translation translations web written"
     },
     {
       "section": "api",
