@@ -22,7 +22,7 @@ var dashboardMenuController = function dashboardMenuController(User, $rootScope)
             
             if (menuItem.children) {
                 menuItem.visibleChildren = this.childVisible(menuItem.children);
-                menuItem.visible = !menuItem.menuHidden && menuItem.visibleChildren;
+                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren;
             } else {
                 menuItem.visible = !menuItem.menuHidden && this.user.hasPermission(menuItem.permission);
             }
