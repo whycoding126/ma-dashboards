@@ -733,7 +733,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     });
 
     $mdThemingProvider
-        .theme('default')
+        .theme('mangoDefault')
         .primaryPalette('mango-blue', {
             'default': '500',
             'hue-1': '300',
@@ -748,7 +748,7 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         });
 
     $mdThemingProvider
-        .theme('inverse')
+        .theme('mangoInverse')
         .primaryPalette('mango-orange', {
             'default': '500',
             'hue-1': '300',
@@ -761,6 +761,8 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             'hue-2': 'A200',
             'hue-3': 'A700'
         });
+
+    $mdThemingProvider.setDefaultTheme('mangoDefault');
 
     $httpProvider.interceptors.push('errorInterceptor');
 
@@ -882,6 +884,8 @@ mdAdminApp.run([
     'localStorageService',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
         $mdToast, Translate, User, localStorageService) {
+
+    $rootScope.mdAdmin = {};
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
