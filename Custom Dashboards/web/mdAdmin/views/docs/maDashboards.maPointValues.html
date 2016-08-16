@@ -51,5 +51,7 @@
 </ul></div></td></tr><tr><td>rendered <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="madashboards-mapointvalues-page"><p>If set to <code>true</code> the values will be outputted in the points text rendered value format.</p>
 </div></td></tr><tr><td>date-format <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="madashboards-mapointvalues-page"><p>If you are passing in <code>to/from</code> as strings, then you must specify the moment.js format for parsing the values.</p>
 </div></td></tr><tr><td>timeout <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-mapointvalues-page"><p>If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.</p>
+</div></td></tr><tr><td>auto-rollup-interval <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="madashboards-mapointvalues-page"><p>If set to <code>true</code> the rollup interval will automatically be set based on the to-from duration and rollup type.
+<code>DELTA</code> rollup type will have a more chunked rollup interval. If turned on the manually set <code>rollup-interval</code> value will be ignored (defaults to <code>false</code>).</p>
 </div></td></tr></tbody></table></div>
 </div>

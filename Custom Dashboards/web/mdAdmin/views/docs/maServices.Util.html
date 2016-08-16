@@ -55,9 +55,13 @@ Used to prevent infinite digest loops in filters etc.</p>
 </div></td></tr></tbody></table><h5 id="methods_opensocket_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="opensocket-page"><p>Returns a WebSocket object at the specifed path</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_rollupintervalcalculator">rollupIntervalCalculator()</h3>
-<div class="rollupintervalcalculator"><div class="rollupintervalcalculator-page"><p>Calculates automotic rollups based on time duration and rollup type</p>
-</div></div>
+<li><h3 id="methods_rollupintervalcalculator">rollupIntervalCalculator(from, to, rollupType)</h3>
+<div class="rollupintervalcalculator"><div class="rollupintervalcalculator-page"><p>Calculates rollup intervals based on time duration and rollup type</p>
+</div><h5 id="methods_rollupintervalcalculator_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>from</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rollupintervalcalculator-page"><p>From Time</p>
+</div></td></tr><tr><td>to</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rollupintervalcalculator-page"><p>To Time</p>
+</div></td></tr><tr><td>rollupType</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rollupintervalcalculator-page"><p>Rollup Type (DELTA, AVERAGE etc.)</p>
+</div></td></tr></tbody></table><h5 id="methods_rollupintervalcalculator_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rollupintervalcalculator-page"><p>Returns a string holding the Rollup Interval (eg. <code>1 MINUTES</code>)</p>
+</div></td></tr></table></div>
 </li>
 <li><h3 id="methods_tomoment">toMoment(input, now, format)</h3>
 <div class="tomoment"><div class="tomoment-page"><p>Converts an input to a momentjs object</p>

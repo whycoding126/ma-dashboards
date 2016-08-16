@@ -151,7 +151,11 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * @name rollupIntervalCalculator
 *
 * @description
-* Calculates automotic rollups based on time duration and rollup type
+* Calculates rollup intervals based on time duration and rollup type
+* @param {string} from From Time
+* @param {string} to To Time
+* @param {string} rollupType Rollup Type (DELTA, AVERAGE etc.)
+* @returns {string} Returns a string holding the Rollup Interval (eg. `1 MINUTES`)
 *
 */
 
@@ -361,6 +365,24 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 			}
 			else {
 				rollupInterval = '5 MINUTES';
+			}
+		}
+		else if (duration > 86400001 && duration <= 2678400001) {
+			// 1 day - 1 month
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 DAYS';
+			}
+			else {
+				rollupInterval = '1 HOURS';
+			}
+		}
+		else if (duration > 604800001) {
+			// > 1 month
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 MONTHS';
+			}
+			else {
+				rollupInterval = '6 HOURS';
 			}
 		}
 		

@@ -53,6 +53,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  * @param {boolean=} rendered If set to `true` the values will be outputted in the points text rendered value format.
  * @param {string=} date-format If you are passing in `to/from` as strings, then you must specify the moment.js format for parsing the values.
  * @param {number=} timeout If provided you can set the timeout (in milliseconds) on the querying of point values. If not supplied the Mango system default timeout will be used.
+ * @param {boolean=} auto-rollup-interval If set to `true` the rollup interval will automatically be set based on the to-from duration and rollup type. 
+ `DELTA` rollup type will have a more chunked rollup interval. If turned on the manually set `rollup-interval` value will be ignored (defaults to `false`).
  * @usage
  *
 <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
@@ -74,7 +76,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             rollupInterval: '@',
             rendered: '@',
             dateFormat: '@',
-            timeout: '='
+            timeout: '=',
+            autoRollupInterval: '=?'
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -118,6 +121,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             		rendered: $scope.rendered
             	};
             }, function(newValue, oldValue) {
+                
+                
+                
             	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
             	var i;
 
@@ -161,6 +167,14 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	// cancel existing requests if there are any
             	if (pendingRequest) pendingRequest();
             	pendingRequest = Util.cancelAll.bind(null, cancels);
+                
+                // Calculate rollups automatically based on to/from/type (if turned on)
+                if ($scope.autoRollupInterval) {
+                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+                    console.log(rollupInterval);
+                    $scope.rollupInterval = rollupInterval;
+                }
+                
 
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
@@ -451,30 +465,30 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 	cancel: cancelFn
                 };
             }
-            
-            $scope.$watch('to', function(newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-                    console.log(rollupInterval);
-                    $scope.rollupInterval = rollupInterval;
-                }
-            });
-            
-            $scope.$watch('from', function(newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-                    console.log(rollupInterval);
-                    $scope.rollupInterval = rollupInterval;
-                }
-            });
-            
-            $scope.$watch('rollup', function(newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-                    console.log(rollupInterval);
-                    $scope.rollupInterval = rollupInterval;
-                }
-            });
+            // 
+            // $scope.$watch('to', function(newValue, oldValue) {
+            //     if (newValue !== oldValue) {
+            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+            //         console.log(rollupInterval);
+            //         $scope.rollupInterval = rollupInterval;
+            //     }
+            // });
+            // 
+            // $scope.$watch('from', function(newValue, oldValue) {
+            //     if (newValue !== oldValue) {
+            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+            //         console.log(rollupInterval);
+            //         $scope.rollupInterval = rollupInterval;
+            //     }
+            // });
+            // 
+            // $scope.$watch('rollup', function(newValue, oldValue) {
+            //     if (newValue !== oldValue) {
+            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+            //         console.log(rollupInterval);
+            //         $scope.rollupInterval = rollupInterval;
+            //     }
+            // });
         } // End link funciton
     };
 }
