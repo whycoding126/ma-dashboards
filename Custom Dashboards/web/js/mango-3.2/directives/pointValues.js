@@ -451,7 +451,31 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 	cancel: cancelFn
                 };
             }
-        }
+            
+            $scope.$watch('to', function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+                    console.log(rollupInterval);
+                    $scope.rollupInterval = rollupInterval;
+                }
+            });
+            
+            $scope.$watch('from', function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+                    console.log(rollupInterval);
+                    $scope.rollupInterval = rollupInterval;
+                }
+            });
+            
+            $scope.$watch('rollup', function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
+                    console.log(rollupInterval);
+                    $scope.rollupInterval = rollupInterval;
+                }
+            });
+        } // End link funciton
     };
 }
 

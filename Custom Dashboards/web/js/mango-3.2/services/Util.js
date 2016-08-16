@@ -145,6 +145,16 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
+/**
+* @ngdoc method
+* @methodOf maServices.Util
+* @name rollupIntervalCalculator
+*
+* @description
+* Calculates automotic rollups based on time duration and rollup type
+*
+*/
+
 function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 	function Util() {}
 
@@ -313,6 +323,48 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
             uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
         }
         return uuid;
+    }
+	
+
+    Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType) {
+		
+		var rollupInterval = '1 MINUTES';
+		var duration = moment(to).diff(moment(from));
+		
+		console.log(duration,moment.duration(duration).humanize(),rollupType);
+		
+		if (duration <= 1800001) {
+			// <= 30 min
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 MINUTES';
+			}
+		}
+		else if (duration > 1800001 && duration <= 10800001) {
+			// 30 min - 3 hours
+			if (rollupType == 'DELTA') {
+				rollupInterval = '10 MINUTES';
+			}
+		}
+		else if (duration > 10800001 && duration <= 21600001) {
+			// 3 hours - 6 hours
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 HOURS';
+			}
+			else {
+				rollupInterval = '1 MINUTES';
+			}
+		}
+		else if (duration > 21600001 && duration <= 86400001) {
+			// 6 hours - 24 hours
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 HOURS';
+			}
+			else {
+				rollupInterval = '5 MINUTES';
+			}
+		}
+		
+		return rollupInterval;
     }
 
     return new Util();
