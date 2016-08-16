@@ -6,22 +6,27 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuLink = function($state) {
-    return {
-        scope: {
-            item: '=menuItem'
-        },
-        templateUrl: require.toUrl('./menuLink.html'),
-        link: function($scope, $element) {
-            $scope.followLink = function() {
-                $state.go(this.item.name);
-            }
-        }
-    };
+var menuLinkController = function menuLinkController($state) {
+    this.$onInit = function() {
+        this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
+    }
+    
+    this.followLink = function() {
+        $state.go(this.item.name);
+    }
 };
 
-menuLink.$inject = ['$state'];
+menuLinkController.$inject = ['$state'];
 
-return menuLink;
+return {
+    controller: menuLinkController,
+    templateUrl: require.toUrl('./menuLink.html'),
+    bindings: {
+        item: '<menuItem'
+    },
+    require: {
+        parentToggle: '?^^menuToggle'
+    }
+};
 
 }); // define
