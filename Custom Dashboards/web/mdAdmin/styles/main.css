@@ -474,8 +474,8 @@ h2#methods {
 	margin-top: 3rem;
 }
 
-pre div.ace_content {
-	/*padding: 20px;*/
+pre div.ace_scroller, pre.prettyprint {
+	padding: 10px;
 }
 
 ul.methods li,
