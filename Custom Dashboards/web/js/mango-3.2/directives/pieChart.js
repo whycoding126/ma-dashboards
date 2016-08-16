@@ -97,7 +97,7 @@ function defaultOptions() {
     };
 }
 
-pieChart.inject = ['$http'];
+pieChart.$inject = ['$http'];
 return pieChart;
 
 }); // define

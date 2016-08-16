@@ -58,7 +58,7 @@ function errorInterceptorFactory($q, $rootScope) {
 
 	return {
 		responseError: function(rejection) {
-    		var errorObj = angular.merge({}, rejection);
+    		var errorObj = angular.copy(rejection);
     		errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
     		errorObj.time = new Date();
 

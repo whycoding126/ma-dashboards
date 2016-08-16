@@ -1,22 +1,28 @@
-<div ui-sref-active="menu-active" ng-class="{'menu-open': isOpen}" class="menu-toggle">
-    <a ui-sref="{{item.name}}" style="display:none"></a>
-    <md-button class="menu-toggle-button" ng-click="toggle()" aria-label="{{item.menuText || (item.menuTr | tr)}}">
+<div ui-sref-active="menu-active" ng-class="{'menu-open': $ctrl.isOpen, 'menu-submenu': $ctrl.item.submenu}" class="menu-toggle">
+    <a ui-sref="{{$ctrl.item.name}}" style="display:none"></a>
+    <md-button class="menu-toggle-button" ng-click="$ctrl.toggle()" aria-label="{{$ctrl.item.menuText || ($ctrl.item.menuTr | tr)}}">
       <div flex layout="row">
         <span>
-            <i ng-if="item.menuIcon" class="menu-icon fa-fw {{item.menuIcon}}"></i>
-            <span ng-if="item.menuText" class="menu-text">{{item.menuText}}</span>
-            <span ng-if="!item.menuText" class="menu-text" ma-tr="{{item.menuTr}}"></span>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') === 0" class="menu-icon fa fa-fw {{$ctrl.item.menuIcon}}"></md-icon>
+            <md-icon ng-if="$ctrl.item.menuIcon && $ctrl.item.menuIcon.indexOf('fa-') !== 0" class="menu-icon">{{$ctrl.item.menuIcon}}</md-icon>
+            <span ng-if="$ctrl.item.menuText" class="menu-text">{{$ctrl.item.menuText}}</span>
+            <span ng-if="!$ctrl.item.menuText" class="menu-text" ma-tr="{{$ctrl.item.menuTr}}"></span>
         </span>
         <span flex></span>
-        <span class="menu-toggle-icon">
-          <md-icon>keyboard_arrow_down</md-icon>
+        <span class="menu-toggle-icon" ng-if="!$ctrl.item.submenu">
+          <md-icon>keyboard_arrow_up</md-icon>
+        </span>
+        <span class="menu-subdir-icon" ng-if="$ctrl.item.submenu">
+          <md-icon ng-if="!$ctrl.isOpen">subdirectory_arrow_right</md-icon>
+          <md-icon ng-if="$ctrl.isOpen">subdirectory_arrow_left</md-icon>
         </span>
       </div>
     </md-button>
     
-    <ul class="menu-toggle-list ng-hide" ng-show="isOpen">
-      <li ng-repeat="child in item.children">
-        <menu-link menu-item="child"></menu-link>
+    <ul class="menu-toggle-list ng-hide" ng-show="$ctrl.isOpen" ng-class="'menu-level-' + ($ctrl.menuLevel + 1)">
+      <li ng-repeat="child in $ctrl.item.children track by child.name" ng-if="child.visible">
+        <menu-link menu-item="child" ng-if="!child.children"></menu-link>
+        <menu-toggle menu-item="child" open-menu="$ctrl.openMenu" ng-if="child.children"></menu-toggle>
       </li>
     </ul>
 </div>

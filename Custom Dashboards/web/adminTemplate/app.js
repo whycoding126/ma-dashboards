@@ -5,14 +5,15 @@
 
 define([
     'angular',
-    './directives/menu/menuLink', // load directives from the directives folder
+    './directives/menu/dashboardMenu', // load directives from the directives folder
+    './directives/menu/menuLink',
     './directives/menu/menuToggle',
     './directives/login/login',
     'mango-3.2/maMaterialDashboards', // load mango-3.2 angular modules
     'mango-3.2/maAppComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
-], function(angular, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {
+], function(angular, dashboardMenu, menuLink, menuToggle, login, maMaterialDashboards, maAppComponents) {
 'use strict';
 
 // create an angular app with our desired dependencies
@@ -26,8 +27,9 @@ var myAdminApp = angular.module('myAdminApp', [
 
 // add our directives to the app
 myAdminApp
-    .directive('menuLink', menuLink)
-    .directive('menuToggle', menuToggle)
+    .component('dashboardMenu', dashboardMenu)
+    .component('menuLink', menuLink)
+    .component('menuToggle', menuToggle)
     .directive('login', login);
 
 // define our pages, these are added to the $stateProvider in the config block below
@@ -238,18 +240,36 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
 
     $rootScope.closeMenu = function() {
         $mdSidenav('left').close();
-    }
+    };
 
     $rootScope.openMenu = function() {
         angular.element('#menu-button').blur();
         $mdSidenav('left').open();
-    }
+    };
 
 }]);
 
-// bootstrap the angular application
-angular.element(document).ready(function() {
-    angular.bootstrap(document.documentElement, ['myAdminApp']);
+// get an injector to retrieve the User service
+var servicesInjector = angular.injector(['maServices'], true);
+var User = servicesInjector.get('User');
+
+var adminSettings = {};
+
+// get the current user or do auto login
+User.current().$promise.then(null, function() {
+    return User.autoLogin();
+}).then(function(user) {
+    adminSettings.user = user;
+}).then(null, function() {
+    // consume error
+}).then(function() {
+    servicesInjector.get('$rootScope').$destroy();
+    myAdminApp.constant('ADMIN_SETTINGS', adminSettings);
+    
+    // bootstrap the angular application
+    angular.element(document).ready(function() {
+        angular.bootstrap(document.documentElement, ['myAdminApp']);
+    });
 });
 
 }); // define

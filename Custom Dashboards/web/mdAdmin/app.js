@@ -11,7 +11,6 @@ define([
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
-    'angular-local-storage',
     './views/docs/docs-setup'
 ], function(angular, maMaterialDashboards, maAppComponents, require) {
 'use strict';
@@ -22,8 +21,7 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'angular-loading-bar',
     'maMaterialDashboards',
     'maAppComponents',
-    'ngMessages',
-    'LocalStorageModule'
+    'ngMessages'
 ]);
 
 mdAdminApp.constant('require', require);
@@ -80,18 +78,11 @@ mdAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['$rootScope', 'User', 'Translate', function($rootScope, User, Translate) {
-                return User.current().$promise.then(null, function(currentUserError) {
-                    return User.autoLogin().then(null, function(autoLoginError) {
-                        if (autoLoginError === 'No stored credentials') {
-                            return currentUserError;
-                        }
-                        return autoLoginError;
-                    });
-                }).then(function(user) {
-                    $rootScope.user = user;
-                    return Translate.loadNamespaces(['dashboards', 'common']);
-                });
+            auth: ['$rootScope', 'User', 'Translate', 'MD_ADMIN_SETTINGS', function($rootScope, User, Translate, MD_ADMIN_SETTINGS) {
+                if (!MD_ADMIN_SETTINGS.user) {
+                    throw 'No user';
+                }
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
@@ -133,6 +124,13 @@ mdAdminApp.constant('MENU_ITEMS', [
                 });
             }]
         }
+    },
+    {
+        name: 'notFound',
+        url: '/not-found?url',
+        template: '<div></div>',
+        menuHidden: true,
+        menuTr: 'dashboards.v3.app.pageNotFound'
     },
     {
         name: 'login',
@@ -278,7 +276,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/events.shtm"></iframe-view>',
                 menuTr: 'header.alarms',
                 menuIcon: 'alarm',
-                menuHidden: true
+                menuHidden: true,
+                permission: 'superadmin'
             },
             {
                 url: '/import-export',
@@ -677,7 +676,7 @@ mdAdminApp.constant('MENU_ITEMS', [
 
 mdAdminApp.config([
     'MENU_ITEMS',
-    'CUSTOM_MENU_ITEMS',
+    'MD_ADMIN_SETTINGS',
     'DASHBOARDS_NG_DOCS',
     '$stateProvider',
     '$urlRouterProvider',
@@ -688,9 +687,8 @@ mdAdminApp.config([
     '$compileProvider',
     'mangoStateProvider',
     '$locationProvider',
-    'localStorageServiceProvider',
-function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, localStorageServiceProvider) {
+function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
 
     $compileProvider.debugInfoEnabled(false);
 
@@ -782,9 +780,10 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     //$stateProvider.reloadOnSearch = false;
     $locationProvider.html5Mode(true);
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise(function($injector, $location) {
+        return '/not-found?url=' + encodeURIComponent('.' + $location.url());
+    });
 
-    // little hackish here, going to append the DASHBOARDS_NG_DOCS to the MENU_ITEMS "constant"
     var docsParent = {
         name: 'dashboard.docs',
         url: '/docs',
@@ -857,15 +856,9 @@ function(MENU_ITEMS, CUSTOM_MENU_ITEMS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         moduleItem[splitAtDot[0]].children.push(menuItem);
     });
 
-    // CUSTOM_MENU_ITEMS will nearly always contain all of the MENU_ITEMS
     mangoStateProvider.addStates(MENU_ITEMS);
-    if (CUSTOM_MENU_ITEMS)
-        mangoStateProvider.addStates(CUSTOM_MENU_ITEMS);
-    
-    localStorageServiceProvider
-        .setPrefix('mdAdmin')
-        .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
-        .setNotify(false, false);
+    if (MD_ADMIN_SETTINGS.customMenuItems)
+        mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems);
 }]);
 
 mdAdminApp.run([
@@ -881,11 +874,12 @@ mdAdminApp.run([
     '$mdToast',
     'Translate',
     'User',
-    'localStorageService',
+    'MD_ADMIN_SETTINGS',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, Translate, User, localStorageService) {
+        $mdToast, Translate, User, MD_ADMIN_SETTINGS) {
 
-    $rootScope.mdAdmin = {};
+    $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
+    $rootScope.user = MD_ADMIN_SETTINGS.user;
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
 
@@ -902,12 +896,12 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-        if (error && (error.status === 401 || error.status === 403)) {
+        if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             event.preventDefault();
-            $state.loginRedirect = toState;
+            $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
         } else {
-            $state.go('home');
+            $state.go('dashboard.home');
         }
     });
 
@@ -931,10 +925,21 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         if (toState.name === 'logout') {
             event.preventDefault();
             User.logout().$promise.then(null, function() {
-                return {};
+                // consume error
             }).then(function() {
+                $rootScope.user = null;
+                MD_ADMIN_SETTINGS.user = null;
                 $state.go('login');
             });
+        } else if (toState.name === 'notFound') {
+            event.preventDefault();
+            if (!MD_ADMIN_SETTINGS.user) {
+                $state.loginRedirectUrl = toParams.url;
+                $state.go('login');
+            } else {
+                // could also add a template for notFound state and proceed
+                $state.go('dashboard.home');
+            }
         }
     });
 
@@ -1020,22 +1025,22 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         case 'STARTING_UP':
         case 'API_ERROR':
             $rootScope.user = null;
+            MD_ADMIN_SETTINGS.user = null;
             showToast(status);
             break;
         case 'API_UP':
             $rootScope.user = null;
+            MD_ADMIN_SETTINGS.user = null;
             showToast(status);
 
             var doLogin = !$state.includes('login');
             if (doLogin) {
-                var credentials = localStorageService.get('storedCredentials');
-                if (credentials) {
-                    User.login(credentials).$promise.then(function(user) {
-                        $rootScope.user = user;
-                    });
-                } else {
+                User.autoLogin().then(function(user) {
+                    $rootScope.user = user;
+                    MD_ADMIN_SETTINGS.user = user;
+                }, function() {
                     window.location = $state.href('login');
-                }
+                });
             }
 
             break;
@@ -1053,13 +1058,23 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 // main application. If the states are added after the main app runs then the user may
 // not navigate directly to one of their custom states on startup
 var servicesInjector = angular.injector(['maServices'], true);
+var User = servicesInjector.get('User');
 var JsonStore = servicesInjector.get('JsonStore');
-JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
-    return store.jsonData.menuItems;
-}, function() {
-    return null;
-}).then(function(customMenuItems) {
-    mdAdminApp.constant('CUSTOM_MENU_ITEMS', customMenuItems);
+
+var mdAdminSettings = {};
+
+User.current().$promise.then(null, function() {
+    return User.autoLogin();
+}).then(function(user) {
+    mdAdminSettings.user = user;
+    return JsonStore.get({xid: 'custom-user-menu'}).$promise;
+}).then(function(store) {
+    mdAdminSettings.customMenuItems = store.jsonData.menuItems;
+}).then(null, function() {
+    // consume error
+}).then(function() {
+    servicesInjector.get('$rootScope').$destroy();
+    mdAdminApp.constant('MD_ADMIN_SETTINGS', mdAdminSettings);
     angular.element(document).ready(function() {
         angular.bootstrap(document.documentElement, ['mdAdminApp'], {strictDi: true});
     });

@@ -6,12 +6,12 @@
 define(['require'], function(require) {
 'use strict';
 
-var login = function($state, User, $rootScope) {
+var login = function($state, User, $rootScope, $window, MD_ADMIN_SETTINGS) {
     return {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
-            $scope.currentUser = User.current();
+            $scope.currentUser = MD_ADMIN_SETTINGS.user;
             $scope.errors = {};
             
             $scope.$watchGroup(['username', 'password'], function() {
@@ -24,13 +24,11 @@ var login = function($state, User, $rootScope) {
                     password: $scope.password
                 });
                 user.$promise.then(function() {
-                    var redirect = 'dashboard.home';
-                    if ($state.loginRedirect) {
-                        redirect = $state.loginRedirect;
-                        delete $state.loginRedirect;
+                    var redirectUrl = $state.href('dashboard.home');
+                    if ($state.loginRedirectUrl) {
+                        redirectUrl = $state.loginRedirectUrl;
                     }
-                    $rootScope.clearErrors();
-                    $state.go(redirect);
+                    $window.location = redirectUrl;
                 }, function(error) {
                     if (error.status === 406) {
                         $scope.errors.invalidLogin = true;
@@ -44,7 +42,7 @@ var login = function($state, User, $rootScope) {
     };
 };
 
-login.$inject = ['$state', 'User', '$rootScope'];
+login.$inject = ['$state', 'User', '$rootScope', '$window', 'MD_ADMIN_SETTINGS'];
 
 return login;
 
