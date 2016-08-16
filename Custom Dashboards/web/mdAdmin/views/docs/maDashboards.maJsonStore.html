@@ -9,7 +9,7 @@
 <li>You can use this directive to store arbitrary data in Mango&#39;s JSON store.</li>
 <li>Updates to the JSON store will sync realtime over websockets with your dashboard, no refresh needed.</li>
 <li>You can set a unique <code>xid</code> and <code>item</code> to store multiple objects in the JSON store.</li>
-<li>Any data you want to store should be added to the <code>value</code> object and can be retrieved using <code>{{myItem.jsonData.myProperty}}</code>.</li>
+<li>Any data you want to store should be added to the <code>value</code> object and can be retrieved using <code ng-non-bindable>{{myItem.jsonData.myProperty}}</code>.</li>
 <li>Note that if you do not set <code>myItem.editPermission</code> / <code>myItem.readPermission</code> permission of the item, only the Admin will have access to it.
 You can set these permissions to <code>&#39;user&#39;</code> to allow guests to use the data in the JSON store.
 The &#39;user&#39; group is included by default in a Mango system.</li>
@@ -30,6 +30,6 @@ The &#39;user&#39; group is included by default in a Mango system.</li>
     <li><code>myItem.$delete()</code> - Deletes the jsonData stored at the given <code>xid</code></li>
     <li><code>myItem.$get()</code> - Reverts the data from myItem that has been modified in the local model to the the values from the JSON store.</li>
 </ul></div></td></tr><tr><td>value</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="madashboards-majsonstore-page"><p>Name of the object used in the model to hold the data to be stored.</p>
-</div></td></tr><tr><td>[item-loaded]</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="madashboards-majsonstore-page"><p>Expression called when item is loaded, $item variable is available for use inside the expression</p>
+</div></td></tr><tr><td>item-loaded</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="madashboards-majsonstore-page"><p>Expression called when item is loaded, $item variable is available for use inside the expression</p>
 </div></td></tr></tbody></table></div>
 </div>

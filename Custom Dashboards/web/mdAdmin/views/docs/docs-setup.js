@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;",
-      "keywords": "allows angular api array defines directive evaluate evaluated example expression filter hold input macalc madashboards model objects output passed phase points power property real result store variable"
+      "keywords": "allows angular api array declare directive evaluate evaluated example expression filter hold input macalc madashboards model objects output passed phase points power property real result store variable"
     },
     {
       "section": "api",
@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-data-source-list ng-model=&quot;myDataSource&quot;&gt;&lt;/ma-data-source-list&gt;",
-      "keywords": "api array attribute auto auto-init basics chosen conjunction dashboard data datasourceanddevicelist defaults defualt demo descending directive disabled displays drop enabled enables examples false filters hold limit limits list madashboards madatasourcelist mango meta mydatasource ng-model number object outputed passed place property query returns selected selecting selector sets sort sorting sorts source sources start starting string strings takes true ui-sref variable xid"
+      "keywords": "api array attribute auto auto-init basics chosen conjunction dashboard data datasourceanddevicelist declare defaults defualt demo descending directive disabled displays drop enabled enables examples false filters hold limit limits list madashboards madatasourcelist mango meta mydatasource ng-model number object outputed passed place property query returns selected selecting selector sets sort sorting sorts source sources start starting string strings takes true ui-sref variable xid"
     },
     {
       "section": "api",
@@ -109,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-filtering-point-list ng-model=&quot;myPoint&quot;&gt;&lt;/ma-filtering-point-list&gt;",
-      "keywords": "api auto auto-init basics creates dashboard data defualt demo device directive enables examples false fuzzy hold limit limits list madashboards mafilteringpointlist mypoint ng-model number point pointlist points search selected selecting self-filtering supports ui-sref variable"
+      "keywords": "api auto auto-init basics creates dashboard data defualt demo device directive enables examples false fuzzy hold limit limits list madashboards mafilteringpointlist mypoint ng-model number point pointlist points searching selected selecting self-filtering supports ui-sref variable"
     },
     {
       "section": "api",
@@ -163,7 +163,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-json-store xid=&quot;phoneData&quot; item=&quot;myItem&quot; value=&quot;myValue&quot;&gt;&lt;/ma-json-store&gt;",
-      "keywords": "$delete $get $item $save access accessing admin allow api arbitrary call called class dashboard data default deletes demo directive editpermission examples expression group guests hold included inside item json jsondata jsonstore loaded local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model note object objects permission permissions phone phonedata readpermission realtime refresh retrieved reverts save saves set sets store stored sync system ui-sref unique updates user utilities values variable websockets xid"
+      "keywords": "$delete $get $item $save access accessing admin allow api arbitrary call called class dashboard data default deletes demo directive editpermission examples expression group guests hold included inside item item-loaded json jsondata jsonstore loaded local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model ng-non-bindable note object objects permission permissions phone phonedata readpermission realtime refresh retrieved reverts save saves set sets store stored sync system ui-sref unique updates user utilities values variable websockets xid"
     },
     {
       "section": "api",

@@ -14,7 +14,7 @@ define(['angular'], function(angular) {
  * - You can use this directive to store arbitrary data in Mango's JSON store.
  * - Updates to the JSON store will sync realtime over websockets with your dashboard, no refresh needed.
  * - You can set a unique `xid` and `item` to store multiple objects in the JSON store.
- * - Any data you want to store should be added to the `value` object and can be retrieved using `{{myItem.jsonData.myProperty}}`.
+ * - Any data you want to store should be added to the `value` object and can be retrieved using <code ng-non-bindable>{{myItem.jsonData.myProperty}}</code>.
 * - Note that if you do not set `myItem.editPermission` / `myItem.readPermission` permission of the item, only the Admin will have access to it.
 You can set these permissions to `'user'` to allow guests to use the data in the JSON store.
 The 'user' group is included by default in a Mango system.
@@ -28,7 +28,7 @@ The 'user' group is included by default in a Mango system.
     <li>`myItem.$get()` - Reverts the data from myItem that has been modified in the local model to the the values from the JSON store.</li>
 </ul>
  * @param {object} value Name of the object used in the model to hold the data to be stored.
- * @param {expression} [item-loaded] Expression called when item is loaded, $item variable is available for use inside the expression
+ * @param {expression} item-loaded Expression called when item is loaded, $item variable is available for use inside the expression
  *
  * @usage
 <ma-json-store xid="phoneData" item="myItem" value="myValue"></ma-json-store>
