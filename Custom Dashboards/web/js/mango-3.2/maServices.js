@@ -18,7 +18,8 @@ define(['./services/Point',
         './services/DataSource',
         './services/DeviceName',
         'angular',
-        'angular-resource'
+        'angular-resource',
+        'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, angular) {
 'use strict';
@@ -32,7 +33,7 @@ define(['./services/Point',
  *
  *
 **/
-var maServices = angular.module('maServices', ['ngResource']);
+var maServices = angular.module('maServices', ['ngResource', 'LocalStorageModule']);
 
 maServices.factory('Point', Point);
 maServices.factory('PointHierarchy', PointHierarchy);
@@ -54,6 +55,13 @@ maServices.constant('mangoTimeout', 30000);
 maServices.constant('mangoWatchdogTimeout', 30000);
 maServices.constant('mangoReconnectDelay', 15000);
 maServices.constant('mangoDefaultDateFormat', 'll LTS');
+
+maServices.config(['localStorageServiceProvider', function(localStorageServiceProvider) {
+    localStorageServiceProvider
+        .setPrefix('maServices')
+        .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
+        .setNotify(false, false);
+}]);
 
 return maServices;
 

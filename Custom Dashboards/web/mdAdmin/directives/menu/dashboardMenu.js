@@ -6,15 +6,7 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-var dashboardMenuController = function dashboardMenuController(User, $rootScope) {
-    this.$onInit = function() {
-        this.user = $rootScope.user;
-        
-        if (this.origMenuItems) {
-            this.copyMenu();
-        }
-    };
-
+var dashboardMenuController = function dashboardMenuController() {
     this.childVisible = function childVisible(menuItems) {
         var visibleCount = 0;
         for (var i = 0; i < menuItems.length; i++) {
@@ -31,19 +23,17 @@ var dashboardMenuController = function dashboardMenuController(User, $rootScope)
             }
         }
         return visibleCount;
-    }
+    };
     
     this.copyMenu = function() {
+        if (!this.user || !this.origMenuItems) return;
         var items = angular.copy(this.origMenuItems);
         this.childVisible(items);
         this.menuItems = items;
-    }
+    };
     
     this.$onChanges = function(changes) {
-        // user not available on first change
-        if (changes.origMenuItems && !changes.origMenuItems.isFirstChange()) {
-            this.copyMenu();
-        }
+        this.copyMenu();
     };
     
     this.menuOpened = function menuOpened(toggleCtrl) {
@@ -73,13 +63,14 @@ var dashboardMenuController = function dashboardMenuController(User, $rootScope)
     };
 };
 
-dashboardMenuController.$inject = ['User', '$rootScope'];
+dashboardMenuController.$inject = [];
 
 return {
     controller: dashboardMenuController,
     templateUrl: require.toUrl('./dashboardMenu.html'),
     bindings: {
-        origMenuItems: '<menuItems'
+        origMenuItems: '<menuItems',
+        user: '<user'
     }
 };
 
