@@ -48,7 +48,9 @@ function tankLevel(maDashboardsInsertCss, cssInjector) {
 
             // post-link
             return function ($scope, $element, attributes) {
-            	$scope.classes = {};
+                $scope.classes = {
+                    'live-value': true
+                };
 
                 var options = defaultOptions();
                 var chart = AmCharts.makeChart($element[0], $.extend(options, $scope.options));
