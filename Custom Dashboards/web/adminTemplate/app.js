@@ -331,8 +331,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         if (message) {
             var toast = $mdToast.simple()
                 .textContent(message)
+                .action('OK')
+                .highlightAction(true)
                 .position('bottom center')
-                .highlightClass('md-warn')
                 .hideDelay(hideDelay);
             $mdToast.show(toast);
         }
