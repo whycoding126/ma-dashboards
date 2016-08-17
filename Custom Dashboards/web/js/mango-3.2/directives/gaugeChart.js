@@ -73,7 +73,9 @@ function gaugeChart() {
         },
         template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
-        	$scope.classes = {};
+        	$scope.classes = {
+    	        'live-value': true
+        	};
 
             var options = defaultOptions();
             $.extend(options, $scope.options);

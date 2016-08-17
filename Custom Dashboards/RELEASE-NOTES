@@ -12,6 +12,7 @@
 * Auto-login functionality, credentials are stored in local storage
 * mdAdmin interface notifies user about connectivity to Mango API via watchdog functionality
 * Documentation of Mango Dashboards AngularJS directives, services and filters
+* Live value displays have a red cross hatch applied when the API goes down
 
 *Version 3.1.1*
 * Fix admin template menu in Firefox

@@ -9,6 +9,7 @@ define([
     'mango-3.2/maAppComponents',
     'require',
     'angular-ui-router',
+    
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
@@ -31,7 +32,7 @@ mdAdminApp.constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     this.addStates = function(menuItems, parent) {
-        angular.forEach(menuItems, function(menuItem, area) {
+        angular.forEach(menuItems, function(menuItem, parent) {
             if (menuItem.name || menuItem.state) {
                 //menuItem.parent = parent;
                 if (menuItem.linkToPage) {
@@ -58,7 +59,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
 
             this.addStates(menuItem.children, menuItem);
         }.bind(this));
-    }
+    };
 
     // runtime dependencies for the service can be injected here, at the provider.$get() function.
     this.$get = [function() {
@@ -78,7 +79,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['$rootScope', 'User', 'Translate', 'MD_ADMIN_SETTINGS', function($rootScope, User, Translate, MD_ADMIN_SETTINGS) {
+            auth: ['Translate', 'MD_ADMIN_SETTINGS', function(Translate, MD_ADMIN_SETTINGS) {
                 if (!MD_ADMIN_SETTINGS.user) {
                     throw 'No user';
                 }
@@ -198,8 +199,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
         menuTr: 'dashboards.v3.dox.apiErrors',
-        menuHidden: true,
-        menuIcon: 'warning'
+        menuIcon: 'warning',
+        menuHidden: true
     },
     {
         url: '/view-page/{pageXid}',
@@ -873,11 +874,10 @@ mdAdminApp.run([
     '$MD_THEME_CSS',
     'cssInjector',
     '$mdToast',
-    'Translate',
     'User',
     'MD_ADMIN_SETTINGS',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, Translate, User, MD_ADMIN_SETTINGS) {
+        $mdToast, User, MD_ADMIN_SETTINGS) {
 
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
@@ -968,86 +968,67 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     /**
      * Watchdog timer alert and re-connect/re-login code
      */
-    
-    var lastStatus;
 
-    function showToast(status) {
+    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
         var message;
-        var hideDelay = 0;
-        
-        if (lastStatus === status) {
+        var hideDelay = 0; // dont auto hide message
+
+        if (current.status === previous.status)
             return;
-        }
         
-        switch (status) {
+        switch(current.status) {
         case 'API_DOWN':
             message = 'Connectivity to Mango API has been lost.';
-            lastStatus = status;
+            MD_ADMIN_SETTINGS.user = null;
             break;
         case 'STARTING_UP':
             message = 'Mango is starting up.';
-            lastStatus = status;
+            MD_ADMIN_SETTINGS.user = null;
             break;
         case 'API_ERROR':
             message = 'The Mango API is returning errors.';
-            lastStatus = status;
+            MD_ADMIN_SETTINGS.user = null;
             break;
         case 'API_UP':
-            if (!lastStatus)
-                return;
-            message = 'Connectivity to Mango API has been restored.';
+            if (previous.status && previous.status !== 'LOGGED_IN')
+                message = 'Connectivity to Mango API has been restored.';
             hideDelay = 5000;
-            lastStatus = null;
-            break;
-        case 'LOGGED_IN':
-            if (!lastStatus)
-                return;
-            message = 'The user was automatically logged back in.';
-            hideDelay = 5000;
-            lastStatus = null;
-            break;
-        }
-        
-        var toast = $mdToast.simple()
-            .textContent(message)
-            .position('bottom center')
-            .highlightClass('md-warn')
-            .hideDelay(hideDelay);
-        
-        $mdToast.show(toast);
-    }
-
-    $rootScope.$on('mangoWatchdog', function(event, current) {
-        var status = current.status;
-        switch(status) {
-        case 'API_DOWN':
-            showToast(status);
-            break;
-        case 'STARTING_UP':
-        case 'API_ERROR':
-            $rootScope.user = null;
             MD_ADMIN_SETTINGS.user = null;
-            showToast(status);
-            break;
-        case 'API_UP':
-            $rootScope.user = null;
-            MD_ADMIN_SETTINGS.user = null;
-            showToast(status);
 
-            var doLogin = !$state.includes('login');
-            if (doLogin) {
+            // do automatic re-login if we are not on the login page
+            if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    $rootScope.user = user;
                     MD_ADMIN_SETTINGS.user = user;
+                    $rootScope.user = user;
                 }, function() {
+                    // redirect to the login page if auto-login fails
                     window.location = $state.href('login');
                 });
             }
-
             break;
         case 'LOGGED_IN':
-            //showToast(status);
+            // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
+            if (previous.status && previous.status !== 'API_UP')
+                message = 'Connectivity to Mango API has been restored.';
+            if (!MD_ADMIN_SETTINGS.user) {
+                // user logged in elsewhere
+                User.current().$promise.then(function(user) {
+                    MD_ADMIN_SETTINGS.user = user;
+                    $rootScope.user = user;
+                });
+            }
             break;
+        }
+        $rootScope.user = MD_ADMIN_SETTINGS.user;
+
+        if (message) {
+            var toast = $mdToast.simple()
+                .textContent(message)
+                .action('OK')
+                .highlightAction(true)
+                .position('bottom center')
+                .hideDelay(hideDelay);
+            $mdToast.show(toast);
         }
     });
 

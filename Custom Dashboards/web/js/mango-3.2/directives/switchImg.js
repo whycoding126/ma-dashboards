@@ -59,7 +59,9 @@ function switchImg() {
         },
         template: '<img ng-src="{{src}}" ng-class="classes">',
         link: function ($scope, $element, attributes) {
-        	$scope.classes = {};
+            $scope.classes = {
+                'live-value': true
+            };
 
             $scope.$watch('point.value', function(newValue, oldValue) {
                 if (newValue === undefined) {

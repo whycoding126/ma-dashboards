@@ -245,6 +245,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
      * and assigns it as the property $total on the array
      */
     Util.prototype.transformArrayResponse = function(data, fn, code) {
+        if (!data) return data;
         var parsed = angular.fromJson(data);
         if (code < 300) {
             parsed.items.$total = parsed.total || parsed.items.length;

@@ -14,9 +14,9 @@
       <p style="margin-top:0"><small>Note: Changes to the State URL, the linked custom page and the template URL will not take effect until the page is reloaded.</small></p>
       <md-input-container>
           <label>Parent item</label>
-          <md-select ng-model="editCtrl.item.parent" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.name'}">
+          <md-select name="parent" ng-model="editCtrl.item.parent" ng-disabled="editCtrl.item.builtIn" ng-change="parentChanged()" ng-model-options="{trackBy: '$value.id'}">
             <md-option ng-value="null">None (Top level)</md-option>
-            <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems" ng-if="menuItem.name !== editCtrl.item.name && (menuItem.abstract || !(menuItem.template || menuItem.templateUrl))">
+            <md-option ng-value="menuItem" ng-repeat="menuItem in editCtrl.menuItems track by menuItem.id" ng-if="menuItem.name !== editCtrl.item.name && (menuItem.abstract || !(menuItem.template || menuItem.templateUrl))">
               <span ng-if="menuItem.menuText" ng-bind="menuItem.menuText"></span>
               <span ng-if="!menuItem.menuText && menuItem.menuTr" ma-tr="{{menuItem.menuTr}}"></span>
               ({{menuItem.name}})
@@ -31,26 +31,27 @@
       <md-input-container>
           <label>State name</label>
           <input name="stateName" required pattern="^(\w+\.)*\w+$"
-              ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn || !editCtrl.item.isNew" ng-change="checkStateExists(editCtrl.item.name)">
-          <div class="hint" ng-hide="menuItemEditForm.stateName.$invalid && menuItemEditForm.stateName.$touched">Unique state name for this menu item, should start with the parent menu item's state name.</div>
+              ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn" ng-change="stateNameChanged()">
+          <div class="hint" ng-hide="menuItemEditForm.stateName.$invalid && (menuItemEditForm.stateName.$touched || menuItemEditForm.$submitted)">Unique state name for this menu item, should start with the parent menu item's state name.</div>
           <div ng-messages="menuItemEditForm.stateName.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
             <div ng-message="pattern" ma-tr="dashboards.v3.app.statePattern"></div>
             <div ng-message="stateExists" ma-tr="dashboards.v3.app.stateExists"></div>
+            <div ng-message="stateNameMustBeginWithParent" ma-tr="dashboards.v3.app.stateNameMustBeginWithParent"></div>
           </div>
       </md-input-container>
       <md-input-container>
           <label>State URL</label>
           <input name="url" pattern="^/([\w-]+/)*[\w-]+$"
               ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
-          <div class="hint" ng-hide="menuItemEditForm.url.$invalid && menuItemEditForm.url.$touched">Choose a URL for this menu item. Will be prefixed with parents URL.</div>
+          <div class="hint" ng-hide="menuItemEditForm.url.$invalid && (menuItemEditForm.url.$touched || menuItemEditForm.$submitted)">Choose a URL for this menu item. Will be prefixed with parents URL.</div>
           <div ng-messages="menuItemEditForm.url.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
             <div ng-message="pattern" ma-tr="dashboards.v3.app.urlPattern"></div>
           </div>
       </md-input-container>
 
-      <md-checkbox ng-model="editCtrl.item.linkToPage">
+      <md-checkbox ng-model="editCtrl.item.linkToPage" ng-disabled="editCtrl.item.builtIn">
         Link to custom page
       </md-checkbox>
       
@@ -74,7 +75,7 @@
       <md-input-container>
           <label>Menu text</label>
           <input name="menuText" ng-model="editCtrl.item.menuText" ng-required="!editCtrl.item.menuHidden && !editCtrl.item.menuTr">
-          <div class="hint" ng-hide="menuItemEditForm.menuText.$invalid && menuItemEditForm.menuText.$touched">Menu text takes precedence over the menu translation key.</div>
+          <div class="hint" ng-hide="menuItemEditForm.menuText.$invalid && (menuItemEditForm.menuText.$touched || menuItemEditForm.$submitted)">Menu text takes precedence over the menu translation key.</div>
           <div ng-messages="menuItemEditForm.menuText.$error">
             <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
           </div>

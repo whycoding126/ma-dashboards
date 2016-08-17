@@ -58,7 +58,9 @@ function pointValue($filter, mangoDefaultDateFormat) {
             var dateTimeFormat = $scope.dateTimeFormat || mangoDefaultDateFormat;
 
             $scope.valueStyle = {};
-            $scope.classes = {};
+            $scope.classes = {
+                'live-value': true
+            };
 
             $scope.$watch('point.value', function(newValue, oldValue) {
             	var point = $scope.point;
@@ -89,7 +91,7 @@ function pointValue($filter, mangoDefaultDateFormat) {
                 if (oldXid && oldXid !== newXid) {
                     delete $scope.displayValue;
                     $scope.valueStyle = {};
-                    $scope.classes = {};
+                    delete $scope.classes['point-disabled'];
                 }
             });
         }
