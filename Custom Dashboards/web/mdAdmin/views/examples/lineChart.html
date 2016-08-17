@@ -37,10 +37,10 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maSerialChart"
     </md-input-container>
 </div>
 
-<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
+<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" auto-rollup-interval="true">
 </ma-point-values>
 
-<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1">
+<ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" legend="true" balloon="true" export="true">
 </ma-serial-chart>
 
 </dual-pane-editor>

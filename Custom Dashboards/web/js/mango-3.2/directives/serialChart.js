@@ -35,8 +35,11 @@ define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
  * @param {string=} series-X-axis The defaults axis used for the given series (replace `X` with series number starting with 1). Can be `"right"` or `"left"`.
  * @param {string=} series-X-balloon-text Overides the balloon text with a specified string for the given series (replace `X` with series number starting with 1).
  * @param {string=} series-X-title Sets the text in the legend for the given series (replace `X` with series number starting with 1).
+ * @param {boolean=} export If set to true, chart export functionality will be turned on. Defaults to off.
+ * @param {boolean=} balloon If set to true, chart's cursor and balloon will be turned on. Defaults to off.
+ * @param {boolean=} legend If set to true, chart's legend will be turned on. Defaults to off.
  * @param {object=} options extend AmCharts configuration object for customizing design of the chart (see [amCharts](https://docs.amcharts.com/3/javascriptcharts/AmSerialChart))
- *
+ * 
  * @usage
  * <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" default-type="column">
 </ma-serial-chart>`
@@ -55,7 +58,10 @@ function serialChart() {
 	    defaultType: '@',
 	    defaultColor: '@',
         defaultAxis: '@',
-        defaultBalloonText: '@'
+        defaultBalloonText: '@',
+        export: '=?',
+        balloon: '=?',
+        legend: '=?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
@@ -82,6 +88,18 @@ function serialChart() {
 
             if ($scope.stackType) {
                 options.valueAxes[0].stackType = $scope.stackType;
+            }
+            
+            if ($scope.legend) {
+                options.legend = {};
+            }
+            
+            if ($scope.export) {
+                options.export = {enabled: true};
+            }
+            
+            if ($scope.balloon) {
+                options.chartCursor = {categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true};
             }
 
             var valueArray = !!attrs.values;
