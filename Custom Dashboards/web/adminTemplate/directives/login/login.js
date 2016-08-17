@@ -32,8 +32,10 @@ var login = function($state, User, $rootScope, $window, ADMIN_SETTINGS) {
                 }, function(error) {
                     if (error.status === 406) {
                         $scope.errors.invalidLogin = true;
+                        $scope.errors.otherError = false;
                     }
                     else {
+                        $scope.errors.invalidLogin = false;
                         $scope.errors.otherError = error.statusText || 'Connection refused';
                     }
                 });
