@@ -45,7 +45,7 @@ define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
 </ma-serial-chart>`
  *
  */
-function serialChart() {
+function serialChart(maDashboardsInsertCss, cssInjector) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -59,7 +59,7 @@ function serialChart() {
 	    defaultColor: '@',
         defaultAxis: '@',
         defaultBalloonText: '@',
-        export: '=?',
+        'export': '=?',
         balloon: '=?',
         legend: '=?'
 	};
@@ -79,7 +79,15 @@ function serialChart() {
         replace: true,
         scope: scope,
         template: '<div class="amchart"></div>',
-        link: function ($scope, $element, attrs) {
+        compile: function() {
+            if (maDashboardsInsertCss) {
+                cssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
+            }
+            return postLink;
+        }
+    };
+    
+    function postLink($scope, $element, attrs) {
             var options = defaultOptions();
 
             if ($scope.timeFormat) {
@@ -323,8 +331,9 @@ function serialChart() {
             	return true;
             }
         }
-    };
 }
+
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector'];
 
 function defaultLineGraph() {
     return {
