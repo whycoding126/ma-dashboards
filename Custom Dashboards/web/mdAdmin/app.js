@@ -9,7 +9,6 @@ define([
     'mango-3.2/maAppComponents',
     'require',
     'angular-ui-router',
-    
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
@@ -167,6 +166,30 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
         menuIcon: 'home'
+    },
+    {
+        name: 'dashboard.demoPage1',
+        url: '/demo-page-1',
+        linkToPage: true,
+        pageXid: 'demo-page-1',
+        menuText: 'Demo Page 1',
+        menuIcon: 'favorite'
+    },
+    {
+        name: 'dashboard.demoFolder',
+        url: '/demo-folder',
+        menuText: 'Demo Folder',
+        menuIcon: 'folder',
+        children: [
+            {
+                name: 'dashboard.demoFolder.demoPage2',
+                url: '/demo-page-2',
+                linkToPage: true,
+                pageXid: 'demo-page-2',
+                menuText: 'Demo Page 2',
+                menuIcon: 'cake'
+            }
+        ]
     },
     {
         name: 'dashboard.watchlist',
@@ -674,6 +697,23 @@ mdAdminApp.constant('MENU_ITEMS', [
         ]
     },
 
+]);
+
+mdAdminApp.constant('DEFAULT_PAGES', [
+    {
+        xid: 'demo-page-1',
+        name: 'Demo Page 1',
+        editPermission: 'edit-pages',
+        readPermission: 'user',
+        markup: '<div>Demo page 1</div>'
+    },
+    {
+        xid: 'demo-page-2',
+        name: 'Demo Page 2',
+        editPermission: 'edit-pages',
+        readPermission: 'user',
+        markup: '<div>Demo page 2</div>'
+    }
 ]);
 
 mdAdminApp.config([

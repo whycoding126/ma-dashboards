@@ -9,11 +9,26 @@ define(['require'], function(require) {
 var menuLinkController = function menuLinkController($state) {
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
+        this.classes = [];
     }
     
-    this.followLink = function() {
-        $state.go(this.item.name);
-    }
+    this.$onChanges = function(changes) {
+        if (changes.item) {
+            this.href = $state.href(this.item.name);
+        }
+    };
+    
+    this.$doCheck = function() {
+        this.menuActive = $state.includes(this.item.name);
+    };
+    
+    this.followLink = function($event) {
+        // ignore if it was a middle click, i.e. new tab
+        if ($event.which !== 2) {
+            $event.preventDefault();
+            $state.go(this.item.name);
+        }
+    };
 };
 
 menuLinkController.$inject = ['$state'];

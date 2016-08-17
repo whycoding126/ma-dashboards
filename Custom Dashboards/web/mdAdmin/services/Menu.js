@@ -41,7 +41,8 @@ function MenuFactory(MENU_ITEMS, MD_ADMIN_SETTINGS, JsonStore, CUSTOM_USER_MENU_
         var menuItems = angular.copy(MENU_ITEMS);
         var i = 1;
         this.eachMenuItem(menuItems, null, function(menuItem) {
-            menuItem.builtIn = true;
+            if (!menuItem.linkToPage)
+                menuItem.builtIn = true;
             menuItem.id = i++;
         });
         storeObject.jsonData.menuItems = menuItems;

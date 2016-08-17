@@ -6,9 +6,29 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util) {
+function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, DEFAULT_PAGES, $q) {
 
     function Page() {
+        this.defaultPages = [];
+        this.xidToPageMap = {};
+        
+        for (var i = 0; i < DEFAULT_PAGES.length; i++) {
+            var pageSummary = DEFAULT_PAGES[i];
+            
+            var page = new JsonStore();
+            page.xid = pageSummary.xid;
+            page.name = pageSummary.name;
+            page.jsonData = {
+                markup: pageSummary.markup
+            };
+            page.editPermission = pageSummary.editPermission;
+            page.readPermission = pageSummary.readPermission;
+            
+            this.xidToPageMap[page.xid] = page;
+            
+            delete pageSummary.markup;
+            this.defaultPages.push(pageSummary);
+        }
     }
     
     Page.prototype.getPages = function getPages() {
@@ -24,7 +44,7 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util) {
         storeObject.xid = CUSTOM_USER_PAGES_XID;
         storeObject.name = CUSTOM_USER_PAGES_XID;
         storeObject.jsonData = {
-            pages: []
+            pages: this.defaultPages
         };
         storeObject.editPermission = 'edit-pages';
         storeObject.readPermission = 'user';
@@ -35,8 +55,11 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util) {
     Page.prototype.loadPage = function loadPage(xid) {
         return JsonStore.get({
             xid: xid
-        }).$promise;
-    }
+        }).$promise.then(null, function(error) {
+            var page = this.xidToPageMap[xid];
+            return page ? page : $q.reject(error);
+        }.bind(this));
+    };
     
     Page.prototype.newPageContent = function newPageContent() {
         var storeObject = new JsonStore();
@@ -53,7 +76,7 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util) {
     return new Page();
 }
 
-PageFactory.$inject = ['JsonStore', 'CUSTOM_USER_PAGES_XID', 'Util'];
+PageFactory.$inject = ['JsonStore', 'CUSTOM_USER_PAGES_XID', 'Util', 'DEFAULT_PAGES', '$q'];
 return PageFactory;
 
 }); // define

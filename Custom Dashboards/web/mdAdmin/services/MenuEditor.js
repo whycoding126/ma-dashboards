@@ -148,14 +148,13 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                     }
                 }
             }).then(function() {
-                if (save)
+                if (save) {
+                    if (!item.deleted)
+                        mangoState.addStates([item]);
                     return menuStore.$save().then(function(store) {
-                        if (!item.deleted)
-                            mangoState.addStates([item]);
                         return store;
                     });
-                else
-                    return menuStore;
+                } else return menuStore;
             });
         }.bind(this));
     };

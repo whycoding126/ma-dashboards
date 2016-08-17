@@ -21,8 +21,9 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             $scope.createNewPage = function createNewPage(markup) {
                 this.selectedPage = Page.newPageContent();
                 this.selectedPage.jsonData.markup = markup || '';
-                this.selectedPageSummary = pageToSummary(this.selectedPage);
+                var pageSummary = this.selectedPageSummary = pageToSummary(this.selectedPage);
                 setPageXidStateParam(null);
+                return pageSummary;
             }
             
             function setPages(store) {
@@ -37,8 +38,8 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                     setPageXidStateParam(store.xid);
                     $scope.selectedPage = store;
                     return store;
-                }, function() {
-                    $scope.createNewPage();
+                }, function(error) {
+                    return $scope.createNewPage();
                 });
             };
             
@@ -65,7 +66,9 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             };
             
             $scope.deletePage = function deletePage() {
-                return $scope.selectedPage.$delete().then(function() {
+                return $scope.selectedPage.$delete().then(null, function(error) {
+                    // consume error, typically when a pre-defined default page is deleted
+                }).then(function() {
                     for (var i = 0; i < $scope.pageSummaries.length; i++) {
                         if ($scope.pageSummaries[i].xid === $scope.selectedPage.xid) {
                             $scope.pageSummaries.splice(i, 1);
