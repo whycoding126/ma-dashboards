@@ -118,7 +118,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             		latest: $scope.latest,
             		rollup: $scope.rollup,
             		rollupInterval: $scope.rollupInterval,
-            		rendered: $scope.rendered
+            		rendered: $scope.rendered,
+                    autoRollupInterval: $scope.autoRollupInterval
             	};
             }, function(newValue, oldValue) {
                 
@@ -170,10 +171,12 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 
                 // Calculate rollups automatically based on to/from/type (if turned on)
                 if ($scope.autoRollupInterval) {
-                    var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-                    console.log(rollupInterval);
-                    $scope.rollupInterval = rollupInterval;
+                    $scope.actualRollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
                 }
+                else {
+                    $scope.actualRollupInterval = $scope.rollupInterval;
+                }
+                
                 
 
             	for (i = 0; i < points.length; i++) {
@@ -407,8 +410,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                         var timePeriodType = 'DAYS';
                         var timePeriods = 1;
 
-                        if (!Util.isEmpty($scope.rollupInterval)) {
-                        	var parts = $scope.rollupInterval.split(' ');
+                        if (!Util.isEmpty($scope.actualRollupInterval)) {
+                        	var parts = $scope.actualRollupInterval.split(' ');
                         	if (parts.length == 2 && !Util.isEmpty(parts[0]) && !Util.isEmpty(parts[1])) {
                         		var intVal = parseInt(parts[0], 10);
                         		timePeriods = intVal > 0 ? intVal : 1;
@@ -465,30 +468,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                 	cancel: cancelFn
                 };
             }
-            // 
-            // $scope.$watch('to', function(newValue, oldValue) {
-            //     if (newValue !== oldValue) {
-            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-            //         console.log(rollupInterval);
-            //         $scope.rollupInterval = rollupInterval;
-            //     }
-            // });
-            // 
-            // $scope.$watch('from', function(newValue, oldValue) {
-            //     if (newValue !== oldValue) {
-            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-            //         console.log(rollupInterval);
-            //         $scope.rollupInterval = rollupInterval;
-            //     }
-            // });
-            // 
-            // $scope.$watch('rollup', function(newValue, oldValue) {
-            //     if (newValue !== oldValue) {
-            //         var rollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-            //         console.log(rollupInterval);
-            //         $scope.rollupInterval = rollupInterval;
-            //     }
-            // });
         } // End link funciton
     };
 }

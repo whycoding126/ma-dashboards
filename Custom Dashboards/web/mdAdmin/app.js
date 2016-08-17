@@ -174,10 +174,10 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./directives/watchList/watchListTable',
                            './directives/watchList/watchListChart'
-                ], function(watchListTable, watchListChart, maxFilter) {
+                ], function(watchListTable, watchListChart) {
                     angular.module('watchlist', [])
                         .directive('watchListTable', watchListTable)
                         .directive('watchListChart', watchListChart)
@@ -188,6 +188,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                                 }
                           });
                     $ocLazyLoad.inject('watchlist');
+                    cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles');
                 });
             }]
         }

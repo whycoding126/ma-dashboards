@@ -1,7 +1,7 @@
 <md-toolbar class="md-whiteframe-glow-z1">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
         <h2 flex>
-              <span>Chart / Statistics</span>
+              <span>Drill Down</span>
         </h2>
         <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[];">Clear</md-button>
     </div>
@@ -38,9 +38,9 @@
 <md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
     <md-tab label="Chart">
         <md-content class="md-padding">
-            <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}">
-            </ma-point-values>
             
+            <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}" auto-rollup-interval="autoRollup">
+            </ma-point-values>
 
             <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-if="points.length">
                 <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
@@ -49,59 +49,6 @@
                 </ma-serial-chart>
                 <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
                 </ma-serial-chart>
-            </div>
-
-            <div layout="row" layout-align="end" flex>
-                <md-input-container>
-                    <label>Rollup Type</label>
-                    <md-select ng-model="rollupType" ng-init="rollupType='AVERAGE'">
-                        <md-option value="MINIMUM">
-                            Minimum
-                        </md-option>
-                        <md-option value="MAXIMUM">
-                            Maximum
-                        </md-option>
-                        <md-option value="AVERAGE">
-                            Average
-                        </md-option>
-                        <md-option value="DELTA">
-                            Delta
-                        </md-option>
-                        <md-option value="NONE">
-                            None
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container>
-                    <label>Rollup Time</label>
-                    <input ng-model="rollupIntervalNumber" type="number" step="1" ng-init="rollupIntervalNumber=5" ng-disabled="rollupType=='NONE'">
-                </md-input-container>
-                <md-input-container>
-                    <label>Rollup Unit</label>
-                    <md-select ng-model="rollupIntervalPeriod" ng-init="rollupIntervalPeriod='MINUTES'" ng-disabled="rollupType=='NONE'">
-                        <md-option value="SECONDS">
-                            Seconds
-                        </md-option>
-                        <md-option value="MINUTES">
-                            Minutes
-                        </md-option>
-                        <md-option value="HOURS">
-                            Hours
-                        </md-option>
-                        <md-option value="DAYS">
-                            Days
-                        </md-option>
-                        <md-option value="WEEKS">
-                            Weeks
-                        </md-option>
-                        <md-option value="MONTHS">
-                            Months
-                        </md-option>
-                        <md-option value="YEARS">
-                            Years
-                        </md-option>
-                    </md-select>
-                </md-input-container>
             </div>
         </md-content>
     </md-tab>

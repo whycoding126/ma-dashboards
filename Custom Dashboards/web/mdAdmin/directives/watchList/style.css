@@ -1,0 +1,74 @@
+/* Date Pickers */
+
+.date-picker-to-from input {
+    margin: 0 !important;
+    min-width: 200px !important;
+    width: 200px !important;
+}
+.date-picker-to-from.mobile input {
+    min-width: 165px !important;
+    width: 165px !important;
+    font-size: 13px;
+}
+.date-picker md-select {
+    margin: 0 !important;
+    min-width: 180px !important;
+    width: 180px !important;
+}
+.date-picker.mobile md-select {
+    margin: 0 !important;
+    min-width: 80px !important;
+    width: 80px !important;
+}
+
+/* Rollup Pickers */
+md-select, .md-input {
+    margin: 0 !important;
+    min-width: 110px !important;
+    width: 110px !important;
+}
+
+
+/* Table Component */
+
+/*md-table-container {
+    height: 300px;
+}
+md-table-container.lg-screen {
+    height: 350px;
+}*/
+.md-toolbar-tools.mobile h2 span {
+    font-size: 16px;
+}
+.md-toolbar-tools.mobile h2 {
+    line-height: 18px;
+}
+md-toolbar.md-table-toolbar form > input:focus {
+    outline: none;
+}
+md-toolbar.md-table-toolbar form > input {
+    width: 100%;
+    margin-left: 16px;
+    border: none;
+}
+th.md-checkbox-column > md-checkbox {
+    display: none;
+}
+
+/* Chart Component */
+.chart-content {
+    height: 300px;
+}
+.chart-content.lg-screen {
+    height: 400px;
+}
+path.amcharts-graph-stroke {
+    stroke-width: 2.5px;
+    stroke-opacity: .7;
+}
+path.amcharts-graph-fill {
+    fill-opacity: 0.5;
+}
+md-tabs.noTabPanel md-tabs-wrapper {
+    display: none;
+}
