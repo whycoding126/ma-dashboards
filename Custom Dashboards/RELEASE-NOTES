@@ -13,6 +13,7 @@
 * mdAdmin interface notifies user about connectivity to Mango API via watchdog functionality
 * Documentation of Mango Dashboards AngularJS directives, services and filters
 * Live value displays have a red cross hatch applied when the API goes down
+* Added option on <ma-point-values> for auto rollup intervals
 
 *Version 3.1.1*
 * Fix admin template menu in Firefox
