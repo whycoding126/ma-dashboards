@@ -6,12 +6,12 @@
 define(['require'], function(require) {
 'use strict';
 
-var login = function($state, User, $rootScope, $window, MD_ADMIN_SETTINGS) {
+var login = function($state, User, $rootScope, $window, ADMIN_SETTINGS) {
     return {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
-            $scope.currentUser = MD_ADMIN_SETTINGS.user;
+            $scope.currentUser = ADMIN_SETTINGS.user;
             $scope.errors = {};
             
             $scope.$watchGroup(['username', 'password'], function() {
@@ -42,7 +42,7 @@ var login = function($state, User, $rootScope, $window, MD_ADMIN_SETTINGS) {
     };
 };
 
-login.$inject = ['$state', 'User', '$rootScope', '$window', 'MD_ADMIN_SETTINGS'];
+login.$inject = ['$state', 'User', '$rootScope', '$window', 'ADMIN_SETTINGS'];
 
 return login;
 

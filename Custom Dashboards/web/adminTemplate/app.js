@@ -32,31 +32,32 @@ myAdminApp
     .component('menuToggle', menuToggle)
     .directive('login', login);
 
-// define our pages, these are added to the $stateProvider in the config block below
-myAdminApp.constant('PAGES', [
+// define our menu items, these are added to the $stateProvider in the config block below
+myAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard',
-        menuHidden: true,
         templateUrl: 'views/dashboard/main.html',
+        abstract: true,
+        menuHidden: true,
         resolve: {
-            auth: ['$rootScope', 'User', function($rootScope, User) {
-                // retrieves the current user when we navigate to a dashboard page
-                // if an error occurs the $stateChangeError listener redirects to the login page
-                $rootScope.user = User.current();
-                return $rootScope.user.$promise;
-            }],
-            dashboardTranslations: ['Translate', function(Translate) {
+            auth: ['Translate', 'ADMIN_SETTINGS', function(Translate, ADMIN_SETTINGS) {
+                // thow an error if no user so the $stateChangeError listener redirects to the login page
+                if (!ADMIN_SETTINGS.user) {
+                    throw 'No user';
+                }
                 // load any translation namespaces you want to use in your app up-front
                 // so they can be used by the 'tr' filter
-                return Translate.loadNamespaces(['dashboards']);
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }]
         }
     },
     {
         name: 'login',
-        menuHidden: true,
         url: '/login',
         templateUrl: 'views/login.html',
+        menuHidden: true,
+        menuIcon: 'exit_to_app',
+        menuTr: 'header.login',
         resolve: {
             loginTranslations: ['Translate', function(Translate) {
                 return Translate.loadNamespaces('login');
@@ -64,40 +65,45 @@ myAdminApp.constant('PAGES', [
         }
     },
     {
+        name: 'logout',
+        url: '/logout',
+        menuHidden: true,
+        menuIcon: 'power_settings_new', // material icon name
+        menuTr: 'header.logout',
+        template: '<div></div>'
+    },
+    {
         name: 'dashboard.home',
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'fa fa-home', // font awesome css classes for icon
-        menuType: 'link'
+        menuIcon: 'home'
     },
     {
         name: 'dashboard.apiErrors',
-        menuHidden: true,
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
-        menuTr: 'dashboards.v3.dox.apiErrors'
+        menuTr: 'dashboards.v3.dox.apiErrors',
+        menuIcon: 'warning',
+        menuHidden: true
     },
     {
         name: 'dashboard.section1', // define some nested pages
         url: '/section-1',
         menuText: 'Section 1',
-        menuIcon: 'fa fa-building',
-        menuType: 'toggle',
+        menuIcon: 'fa-building',
         children: [
             {
                 name: 'dashboard.section1.page1',
                 templateUrl: 'views/section1/page1.html', // html file to display
                 url: '/page-1',
-                menuText: 'Page 1',
-                menuType: 'link'
+                menuText: 'Page 1'
             },
             {
                 name: 'dashboard.section1.page2',
                 templateUrl: 'views/section1/page2.html',
                 url: '/page-2',
-                menuText: 'Page 2',
-                menuType: 'link'
+                menuText: 'Page 2'
             }
         ]
     },
@@ -105,36 +111,33 @@ myAdminApp.constant('PAGES', [
         name: 'dashboard.section2',
         url: '/section-2',
         menuText: 'Section 2',
-        menuIcon: 'fa fa-bolt',
-        menuType: 'toggle',
+        menuIcon: 'fa-bolt',
         children: [
             {
                 name: 'dashboard.section2.page1',
                 templateUrl: 'views/section2/page1.html',
                 url: '/page-1',
-                menuText: 'Page 1',
-                menuType: 'link'
+                menuText: 'Page 1'
             },
             {
                 name: 'dashboard.section2.page2',
                 templateUrl: 'views/section2/page2.html',
                 url: '/page-2',
-                menuText: 'Page 2',
-                menuType: 'link'
+                menuText: 'Page 2'
             }
         ]
     }
 ]);
 
 myAdminApp.config([
-    'PAGES',
+    'MENU_ITEMS',
     '$stateProvider',
     '$urlRouterProvider',
     '$httpProvider',
     '$mdThemingProvider',
     '$compileProvider',
     '$locationProvider',
-function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider) {
+function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider) {
 
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
@@ -154,45 +157,52 @@ function(PAGES, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingPro
     // enable html5 mode URLs (i.e. no /#/... urls)
     $locationProvider.html5Mode(true);
 
-    // add the pages to $stateProvider
-    addStates(PAGES);
+    // add the menu items to $stateProvider
+    addStates(MENU_ITEMS);
 
-    function addStates(pages, parent) {
-        angular.forEach(pages, function(page, area) {
-            if (page.name || page.state) {
-                if (parent) {
-                    page.parentPage = parent;
+    function addStates(menuItems, parent) {
+        angular.forEach(menuItems, function(menuItem, parent) {
+            if (menuItem.name || menuItem.state) {
+                if (menuItem.templateUrl) {
+                    delete menuItem.template;
+                }
+                if (!menuItem.templateUrl && !menuItem.template) {
+                    menuItem.template = '<div ui-view></div>';
+                    menuItem['abstract'] = true;
                 }
                 
-                if (!page.templateUrl) {
-                    page.template = '<div ui-view></div>';
-                    page['abstract'] = true;
+                if (!menuItem.name) {
+                    menuItem.name = menuItem.state;
                 }
                 
-                if (!page.name) {
-                    page.name = page.state;
-                }
-                
-                $stateProvider.state(page);
+                $stateProvider.state(menuItem);
             }
             
-            addStates(page.children, page);
+            addStates(menuItem.children, menuItem);
         });
     }
 }]);
 
 myAdminApp.run([
-    'PAGES',
+    'MENU_ITEMS',
     '$rootScope',
     '$state',
     '$timeout',
     '$mdSidenav',
+    '$mdMedia',
     '$mdColors',
     '$MD_THEME_CSS',
     'cssInjector',
-function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_CSS, cssInjector) {
-    // add pages to the root scope so we can use them in the template
-    $rootScope.menuItems = PAGES;
+    '$mdToast',
+    'User',
+    'ADMIN_SETTINGS',
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
+        $mdToast, User, ADMIN_SETTINGS) {
+
+    // add the current user to the root scope
+    $rootScope.user = ADMIN_SETTINGS.user;
+    // add menu items to the root scope so we can use them in the template
+    $rootScope.menuItems = MENU_ITEMS;
     // enables use of Javascript Math functions in the templates
     $rootScope.Math = Math;
     
@@ -210,24 +220,26 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
 
     // redirect to login page if we can't retrieve the current user when changing state
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-        if (error && (error.status === 401 || error.status === 403)) {
+        if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
             event.preventDefault();
-            $state.loginRedirect = toState;
+            $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
+        } else {
+            $state.go('dashboard.home');
         }
     });
 
     // change the bread-crumbs on the toolbar when we change state
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
-        var state = toState;
+        var state = $state.$current;
         do {
             if (state.menuTr) {
-                crumbs.unshift({maTr: state.menuTr});
+                crumbs.unshift({stateName: state.name, maTr: state.menuTr});
             } else if (state.menuText) {
-                crumbs.unshift({text: state.menuText});
+                crumbs.unshift({stateName: state.name, text: state.menuText});
             }
-        } while (state = state.parentPage);
+        } while (state = state.parent);
         $rootScope.crumbs = crumbs;
     });
     
@@ -236,7 +248,29 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         if ($state.includes('dashboard')) {
             $rootScope.closeMenu();
         }
+        if (toState.name === 'logout') {
+            event.preventDefault();
+            User.logout().$promise.then(null, function() {
+                // consume error
+            }).then(function() {
+                $rootScope.user = null;
+                ADMIN_SETTINGS.user = null;
+                $state.go('login');
+            });
+        }
     });
+    
+    $rootScope.lockLeft = true;
+    $rootScope.toggleMenu = function() {
+        if ($mdMedia('gt-sm')) {
+            $rootScope.lockLeft = !$rootScope.lockLeft;
+        }
+        else {
+            $mdSidenav('left').toggle();
+        }
+
+        angular.element('#menu-button').blur();
+    }
 
     $rootScope.closeMenu = function() {
         $mdSidenav('left').close();
@@ -246,6 +280,64 @@ function(PAGES, $rootScope, $state, $timeout, $mdSidenav, $mdColors, $MD_THEME_C
         angular.element('#menu-button').blur();
         $mdSidenav('left').open();
     };
+
+    /**
+     * Watchdog timer alert and re-connect/re-login code
+     */
+
+    $rootScope.$on('mangoWatchdog', function(event, current, previous) {
+        var message;
+        var hideDelay = 0; // dont auto hide message
+
+        if (current.status === previous.status)
+            return;
+        
+        switch(current.status) {
+        case 'API_DOWN':
+            message = 'Connectivity to Mango API has been lost.';
+            ADMIN_SETTINGS.user = null;
+            break;
+        case 'STARTING_UP':
+            message = 'Mango is starting up.';
+            ADMIN_SETTINGS.user = null;
+            break;
+        case 'API_ERROR':
+            message = 'The Mango API is returning errors.';
+            ADMIN_SETTINGS.user = null;
+            break;
+        case 'API_UP':
+            if (previous.status && previous.status !== 'LOGGED_IN')
+                message = 'Connectivity to Mango API has been restored.';
+            hideDelay = 5000;
+            ADMIN_SETTINGS.user = null;
+
+            // do automatic re-login if we are not on the login page
+            if (!$state.includes('login')) {
+                User.autoLogin().then(function(user) {
+                    ADMIN_SETTINGS.user = user;
+                    $rootScope.user = user;
+                }, function() {
+                    // redirect to the login page if auto-login fails
+                    window.location = $state.href('login');
+                });
+            }
+            break;
+        case 'LOGGED_IN':
+            // no message, occurs almost simultaneously with API_UP message
+            break;
+        }
+        $rootScope.user = ADMIN_SETTINGS.user;
+
+        if (message) {
+            var toast = $mdToast.simple()
+                .textContent(message)
+                .position('bottom center')
+                .highlightClass('md-warn')
+                .hideDelay(hideDelay);
+            $mdToast.show(toast);
+        }
+    });
+
 
 }]);
 
