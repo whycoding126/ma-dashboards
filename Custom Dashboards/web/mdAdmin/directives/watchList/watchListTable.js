@@ -13,7 +13,11 @@ define(['require'], function(require) {
                 data: '@',
                 to: '=',
                 from: '=',
-                selected: '='
+                selected: '=',
+                rollupType: '=',
+                rollupIntervalNumber: '=',
+                rollupIntervalPeriod: '=',
+                autoRollup: '='
             },
             templateUrl: 'directives/watchList/watchListTable.html',
             link: function link(scope, element, attrs) {
@@ -33,7 +37,7 @@ define(['require'], function(require) {
                                 templateUrl: require.toUrl('./setPointDialog.html'),
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
-                                fullscreen: true,
+                                fullscreen: false,
                                 clickOutsideToClose: true,
                                 locals : {
                                     point : point
@@ -46,18 +50,22 @@ define(['require'], function(require) {
                             });
                     }
                     
-                    scope.showStats = function(ev, point, from, to) {
+                    scope.showStats = function(ev, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
                         $mdDialog.show({
                                 controller: setStatsController,
                                 templateUrl: require.toUrl('./statsDialog.html'),
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
-                                fullscreen: true,
+                                fullscreen: false,
                                 clickOutsideToClose: true,
                                 locals : {
                                     point : point,
                                     from: from,
-                                    to: to
+                                    to: to,
+                                    rollupType: rollupType,
+                                    rollupIntervalNumber: rollupIntervalNumber,
+                                    rollupIntervalPeriod: rollupIntervalPeriod,
+                                    autoRollup: autoRollup
                                 }
                             })
                             .then(function(answer) {
@@ -83,10 +91,14 @@ define(['require'], function(require) {
                     
                     setDialogController.$inject = ['$scope', '$mdDialog', 'point'];
                     
-                    function setStatsController(scope, $mdDialog, point, from, to) {
+                    function setStatsController(scope, $mdDialog, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
                         scope.point = point;
                         scope.from = from;
                         scope.to = to;
+                        scope.rollupType = rollupType;
+                        scope.rollupIntervalNumber = rollupIntervalNumber;
+                        scope.rollupIntervalPeriod = rollupIntervalPeriod;
+                        scope.autoRollup = autoRollup;
                         scope.hide = function() {
                             $mdDialog.hide();
                         };
@@ -98,7 +110,7 @@ define(['require'], function(require) {
                         };
                     }
                     
-                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to'];
+                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to',  'rollupType', 'rollupIntervalNumber', 'rollupIntervalPeriod', 'autoRollup'];
 
                     scope.$watch('page.points', function(newValue, oldValue) {
                         if (newValue === undefined || newValue === oldValue) return;

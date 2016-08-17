@@ -55,16 +55,19 @@
             <tbody md-body>
                 <tr md-row md-select="point" md-select-id="id" ng-repeat="point in rows | orderBy: page.tableOrder">
                     <td md-cell>
-                        <i class="fa fa-table fa-lg" ng-click="showStats($event, point.point, from, to)" style="padding: 5px 5px 0 0;"></i> 
-                        <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
-                            <i class="fa fa-pencil fa-lg"></i>
-                        </a> 
-                        <i ng-if="point.settable" class="fa fa-wrench fa-lg" ng-click="showSetPoint($event, point.point)"></i>
+                        <i class="fa fa-info-circle fa-lg" ng-click="showStats($event, point.point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup)" style="padding: 5px 5px 0 0;"></i> 
+                        
+                        <i ng-if="point.settable" class="fa fa-cogs fa-lg" style="padding-top:5px;" ng-click="showSetPoint($event, point.point)"></i>
                     </td>
                     <td md-cell>{{point.deviceName}}</td>
                     <td md-cell>{{point.name}}</td>
                     <td md-cell>{{point.render }} </td>
                     <td md-cell>{{point.valTime}}</td>
+                    <td md-cell>
+                        <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </a> 
+                    </td>
                 </tr>
             </tbody>
         </table>

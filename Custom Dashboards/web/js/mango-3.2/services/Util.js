@@ -335,7 +335,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 		var rollupInterval = '1 MINUTES';
 		var duration = moment(to).diff(moment(from));
 		
-		console.log(duration,moment.duration(duration).humanize(),rollupType);
+		//console.log(duration,moment.duration(duration).humanize(),rollupType);
 		
 		if (duration <= 1800001) {
 			// <= 30 min
