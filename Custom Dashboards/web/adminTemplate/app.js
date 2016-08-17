@@ -323,7 +323,16 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             }
             break;
         case 'LOGGED_IN':
-            // no message, occurs almost simultaneously with API_UP message
+            // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
+            if (previous.status && previous.status !== 'API_UP')
+                message = 'Connectivity to Mango API has been restored.';
+            if (!ADMIN_SETTINGS.user) {
+                // user logged in elsewhere
+                User.current().$promise.then(function(user) {
+                    ADMIN_SETTINGS.user = user;
+                    $rootScope.user = user;
+                });
+            }
             break;
         }
         $rootScope.user = ADMIN_SETTINGS.user;
