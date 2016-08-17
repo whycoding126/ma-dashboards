@@ -19,9 +19,12 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
             // build flat menu item array so we can choose any item in dropdown
             var flatMenuItems = [];
             var flatMenuMap = [];
+            var highestMenuItemId = 4999; // built in menu items start at 1, custom pages start at 5000
             Menu.eachMenuItem(menuItems, null, function(menuItem) {
                 flatMenuItems.push(menuItem);
                 flatMenuMap[menuItem.name] = true;
+                if (menuItem.id > highestMenuItemId)
+                    highestMenuItemId = menuItem.id;
             });
             
             // search for the item
@@ -46,7 +49,8 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                     name: parent ? parent.name + '.' : 'dashboard.',
                     url: '/',
                     pageXid: null,
-                    linkToPage: true
+                    linkToPage: true,
+                    id: (highestMenuItemId + 1)
                 };
                 // item we were searching for was not found
                 // set the property we were looking for on the new item
@@ -74,9 +78,10 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                         $scope.pages = store.jsonData.pages;
                     });
                     
-                    $scope.checkStateExists = function(name) {
-                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !flatMenuMap[name]);
-                    }
+                    $scope.stateNameChanged = function() {
+                        $scope.menuItemEditForm.stateName.$setValidity('stateExists', !flatMenuMap[this.item.name]);
+                        this.checkParentState();
+                    }.bind(this);
                     
                     $scope.cancel = function cancel() {
                         $mdDialog.cancel();
@@ -91,10 +96,18 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                         $mdDialog.hide();
                     };
                     $scope.parentChanged = function() {
-                        if (this.item.isNew) {
+                        if ($scope.menuItemEditForm.stateName.$pristine && this.item.isNew && this.item.parent) {
                             this.item.name = this.item.parent.name + '.'
                         }
+                        this.checkParentState();
                     }.bind(this);
+                    
+                    this.checkParentState = function checkParent() {
+                        if (!this.item.parent || angular.isUndefined(this.item.name))
+                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', true);
+                        else
+                            $scope.menuItemEditForm.stateName.$setValidity('stateNameMustBeginWithParent', this.item.name.indexOf(this.item.parent.name) === 0);
+                    }
                 }]
             }).then(function() {
                 var newParent = item.parent;
@@ -105,7 +118,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 if (!isNew && (item.deleted || parent !== newParent)) {
                     var array = parent ? parent.children : menuItems;
                     for (var i = 0; i < array.length; i++) {
-                        if (array[i].name === item.name) {
+                        if (array[i].id === item.id) {
                             array.splice(i, 1);
                             break;
                         }
@@ -144,7 +157,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 else
                     return menuStore;
             });
-        });
+        }.bind(this));
     };
 
     return new MenuEditor();

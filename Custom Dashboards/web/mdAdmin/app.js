@@ -9,6 +9,7 @@ define([
     'mango-3.2/maAppComponents',
     'require',
     'angular-ui-router',
+    
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
@@ -58,7 +59,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
 
             this.addStates(menuItem.children, menuItem);
         }.bind(this));
-    }
+    };
 
     // runtime dependencies for the service can be injected here, at the provider.$get() function.
     this.$get = [function() {

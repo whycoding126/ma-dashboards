@@ -35,7 +35,7 @@
         </tr>
     </thead>
     <tbody md-body>
-      <tr ng-repeat="menuItem in editItems track by menuItem.name">
+      <tr ng-repeat="menuItem in editItems track by menuItem.id">
         <td>
           <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
             <md-icon>subdirectory_arrow_right</md-icon>

@@ -158,10 +158,12 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
     $locationProvider.html5Mode(true);
 
     // add the menu items to $stateProvider
+    var nextId = 1;
     addStates(MENU_ITEMS);
 
     function addStates(menuItems, parent) {
         angular.forEach(menuItems, function(menuItem, parent) {
+            menuItem.id = nextId++;
             if (menuItem.name || menuItem.state) {
                 if (menuItem.templateUrl) {
                     delete menuItem.template;
