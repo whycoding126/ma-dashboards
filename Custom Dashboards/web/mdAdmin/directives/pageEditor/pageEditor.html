@@ -54,12 +54,12 @@
         <md-icon>delete</md-icon>
         <span ma-tr="common.delete"></span>
      </md-button>
-     <md-button ng-click="editMenuItem($event, selectedPage.xid, null, null, true, 'pageXid')" class="md-raised"
+     <md-button ng-click="editMenuItem($event)" class="md-raised"
         ng-disabled="selectedPage.isNew">
         <md-icon>edit</md-icon>
         <span ma-tr="dashboards.v3.app.addEditMenuItem"></span>
      </md-button>
-     <md-button ui-sref="dashboard.viewPage({pageXid: selectedPage.xid})" target="_blank" class="md-raised" ng-disabled="selectedPage.isNew">
+     <md-button ng-href="{{viewPageLink}}" target="_blank" class="md-raised" ng-disabled="selectedPage.isNew">
         <md-icon>remove_red_eye</md-icon>
         <span ma-tr="dashboards.v3.app.viewPage"></span>
      </md-button>

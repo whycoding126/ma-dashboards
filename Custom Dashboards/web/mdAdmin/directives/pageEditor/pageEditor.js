@@ -6,15 +6,18 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, $rootScope) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, MD_ADMIN_SETTINGS, Menu) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
         scope: {},
         templateUrl: require.toUrl('./pageEditor.html'),
         link: function($scope, $element) {
+            $scope.user = MD_ADMIN_SETTINGS.user;
             
-            $scope.user = $rootScope.user;
+            var menuPromise = Menu.getMenu().then(function(menuStore) {
+                $scope.menuStore = menuStore;
+            });
             
             var pageSummaryStore;
 
@@ -22,6 +25,8 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 this.selectedPage = Page.newPageContent();
                 this.selectedPage.jsonData.markup = markup || '';
                 var pageSummary = this.selectedPageSummary = pageToSummary(this.selectedPage);
+                this.menuItem = null;
+                this.menuItemParent = null;
                 setPageXidStateParam(null);
                 return pageSummary;
             }
@@ -34,13 +39,53 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             Page.getPages().then(setPages);
             
             $scope.loadPage = function loadPage(xid) {
-                return Page.loadPage(xid || $scope.selectedPageSummary.xid).then(function(store) {
-                    setPageXidStateParam(store.xid);
-                    $scope.selectedPage = store;
-                    return store;
+                return menuPromise.then(function() {
+                    return Page.loadPage(xid || $scope.selectedPageSummary.xid);
+                }).then(function(pageStore) {
+                    setPageXidStateParam(pageStore.xid);
+                    $scope.selectedPage = pageStore;
+                    
+                    $scope.menuItem = null;
+                    $scope.menuItemParent = null;
+                    // locate the first menu item which points to this page
+                    Menu.eachMenuItem($scope.menuStore.jsonData.menuItems, null, function(menuItem, parent) {
+                        if (menuItem.pageXid === pageStore.xid) {
+                            $scope.menuItem = menuItem;
+                            $scope.menuItemParent = parent;
+                            return true;
+                        }
+                    });
+                    
+                    return pageStore;
                 }, function(error) {
                     return $scope.createNewPage();
                 });
+            };
+            
+            $scope.editMenuItem = function($event) {
+                return menuPromise.then(function() {
+                    return MenuEditor.editMenuItem($event, $scope.menuItem || $scope.selectedPage.xid, $scope.menuItemParent, $scope.menuStore, true, 'pageXid');
+                }).then(function(result) {
+                    $scope.menuItem = result.item;
+                    $scope.menuItemParent = result.parent;
+                    $scope.menuStore = result.store;
+                });
+            };
+            
+            $scope.$watchGroup(['menuItem', 'selectedPage'], function() {
+                if ($scope.menuItem) {
+                    $scope.viewPageLink = $state.href($scope.menuItem.name);
+                } else {
+                    $scope.viewPageLink = $scope.selectedPage ? $state.href('dashboard.viewPage', {pageXid: $scope.selectedPage.xid}) : '';
+                }
+            });
+            
+            $scope.viewPage = function($event) {
+                if (this.menuItem) {
+                    $state.go(this.menuItem.name);
+                } else {
+                    $state.go('dashboard.viewPage', {pageXid: $scope.selectedPage.xid});
+                }
             };
             
             if ($stateParams.pageXid) {
@@ -106,8 +151,6 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                 }
             };
             
-            $scope.editMenuItem = MenuEditor.editMenuItem;
-
             jsonStoreEventManager.smartSubscribe($scope, CUSTOM_USER_PAGES_XID, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
                 pageSummaryStore.jsonData = payload.object.jsonData;
                 $scope.pageSummaries = payload.object.jsonData.pages;
@@ -130,7 +173,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', '$rootScope'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', 'MD_ADMIN_SETTINGS', 'Menu'];
 
 return pageEditor;
 
