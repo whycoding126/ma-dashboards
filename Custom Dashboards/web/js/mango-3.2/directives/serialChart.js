@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'jquery', 'moment'], function(AmCharts, $, moment) {
+define(['amcharts/serial', 'jquery', 'moment', 'amcharts/plugins/export/export'], function(AmCharts, $, moment) {
 'use strict';
 /**
  * @ngdoc directive
@@ -102,8 +102,8 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 options.legend = {};
             }
             
-            if ($scope.export) {
-                options.export = {enabled: true};
+            if ($scope['export']) {
+                options['export'] = {enabled: true};
             }
             
             if ($scope.balloon) {
