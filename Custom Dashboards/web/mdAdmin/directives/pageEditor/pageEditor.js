@@ -17,6 +17,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             
             var menuPromise = Menu.getMenu().then(function(menuStore) {
                 $scope.menuStore = menuStore;
+                return menuStore;
             });
             
             var pageSummaryStore;
@@ -111,8 +112,18 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
             };
             
             $scope.deletePage = function deletePage() {
+                var pageXid = $scope.selectedPage.xid;
                 return $scope.selectedPage.$delete().then(null, function(error) {
                     // consume error, typically when a pre-defined default page is deleted
+                }).then(function() {
+                    return menuPromise;
+                }).then(function(menuStore) {
+                    Menu.eachMenuItem(menuStore.jsonData.menuItems, null, function(menuItem, parent, menuItems, i) {
+                        if (menuItem.pageXid === pageXid) {
+                            menuItems.splice(i, 1);
+                        }
+                    });
+                    return menuStore.$save();
                 }).then(function() {
                     for (var i = 0; i < $scope.pageSummaries.length; i++) {
                         if ($scope.pageSummaries[i].xid === $scope.selectedPage.xid) {
@@ -121,10 +132,9 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                         }
                     }
                     $scope.createNewPage();
-                    
                     return pageSummaryStore.$save().then(setPages);
                 });
-            }
+            };
             
             $scope.savePage = function savePage() {
                 if ($scope.pageEditForm.$valid) {
