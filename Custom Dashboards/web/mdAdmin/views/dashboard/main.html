@@ -1,7 +1,7 @@
 <div layout="row" flex>
 
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
-        md-is-locked-open="lockLeft && $mdMedia('gt-sm')" md-swipe-left="closeMenu()">
+        md-is-locked-open="lockLeft && $mdMedia('gt-sm')" md-swipe-left="closeMenu()" class="navigation-menu">
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
         <span flex></span>
         <img src="/modules/dashboards/web/img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
@@ -14,7 +14,7 @@
     </md-content>
   </md-sidenav>
 
-  <div layout="column" tabIndex="-1" flex>
+  <div layout="column" tabIndex="-1" flex class="main-page-area">
     <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar" role="toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
@@ -99,7 +99,7 @@
 
     </md-toolbar>
 
-    <md-content md-scroll-y layout="column" flex>
+    <md-content md-scroll-y layout="column" flex class="main-content">
       <div ui-view flex="noshrink" class="dashboard-main-view" role="main"></div>
   
       <div layout="row" flex="noshrink">
