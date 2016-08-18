@@ -4,18 +4,19 @@
     </md-card>
     
     <md-card flex>
-        <md-card-content layout="row" layout-xs="column" layout-align="space-around center">
-                  <md-input-container class="date-picker" ng-class="{'mobile': $mdMedia('xs')}">
+        <md-card-content layout="row" layout-align="space-around center" layout-wrap>
+                  <md-input-container class="date-picker">
                         <label>Date Range</label>
-                        <ma-date-range-picker ng-class="{'mobile': $mdMedia('xs')}" from="from" to="to" preset="LAST_1_DAYS" update-interval="10 seconds" aria-label="Date Preset"></ma-date-range-picker>
+                        <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="10 seconds" aria-label="Date Preset">
+                        </ma-date-range-picker>
                   </md-input-container>
-                    <md-input-container class="date-picker-to-from" ng-class="{'mobile': $mdMedia('xs')}">
+                    <md-input-container class="date-picker-to-from">
                           <label>From Date</label>
-                          <ma-date-picker ng-model="from"></ma-date-picker>
+                          <ma-date-picker ng-model="from" format="MMM Do, h:mma"></ma-date-picker>
                     </md-input-container>
-                    <md-input-container class="date-picker-to-from" ng-class="{'mobile': $mdMedia('xs')}">
+                    <md-input-container class="date-picker-to-from">
                           <label>To Date</label>
-                          <ma-date-picker ng-model="to"></ma-date-picker>
+                          <ma-date-picker ng-model="to" format="MMM Do, h:mma"></ma-date-picker>
                     </md-input-container>
                     <md-input-container>
                         <label>Rollup Type</label>
@@ -67,7 +68,7 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto Interval</md-checkbox>
+                    <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto-Interval</md-checkbox>
         </md-card-content>
     </md-card>
 

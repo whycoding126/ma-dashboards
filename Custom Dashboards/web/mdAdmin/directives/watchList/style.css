@@ -2,30 +2,19 @@
 
 .date-picker-to-from input {
     margin: 0 !important;
-    min-width: 200px !important;
-    width: 200px !important;
-}
-.date-picker-to-from.mobile input {
-    min-width: 165px !important;
-    width: 165px !important;
-    font-size: 13px;
+    min-width: 150px !important;
+    width: 150px !important;
 }
 .date-picker md-select {
     margin: 0 !important;
-    min-width: 180px !important;
-    width: 180px !important;
+    min-width: 160px !important;
+    width: 160px !important;
 }
-.date-picker.mobile md-select {
-    margin: 0 !important;
-    min-width: 80px !important;
-    width: 80px !important;
-}
-
 /* Rollup Pickers */
 md-select, .md-input {
     margin: 0 !important;
-    min-width: 110px !important;
-    width: 110px !important;
+    min-width: 100px !important;
+    width: 100px !important;
 }
 
 
