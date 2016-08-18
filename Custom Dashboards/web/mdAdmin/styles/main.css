@@ -119,11 +119,11 @@ body {
   font-size: 1.6rem;
 }
 
-.dashboard-menu .md-button.menu-link {
+.dashboard-menu .menu-link {
 	padding: 0;
 }
 
-.dashboard-menu .md-button.menu-link a {
+.dashboard-menu .menu-link a {
   padding: 0px 16px;
   display: block;
   text-decoration: none;
@@ -143,12 +143,20 @@ body {
   -webkit-transform: rotate(0deg);
 }
 
-.dashboard-menu .menu-toggle-list .menu-link a {
-	padding-left: 48px;
+.dashboard-menu ul.menu-level-2 .menu-indent {
+  padding-left: 32px;
 }
 
-.dashboard-menu .menu-submenu .menu-toggle-list .menu-link a {
-    padding-left: 16px;
+.dashboard-menu .menu-submenu ul.menu-level-2 .menu-indent {
+  padding-left: 16px;
+}
+
+.dashboard-menu ul.menu-level-3 .menu-indent {
+  padding-left: 48px;
+}
+
+.dashboard-menu .menu-submenu ul.menu-level-3 .menu-indent {
+  padding-left: 32px;
 }
 
 .dashboard-menu .menu-icon {
