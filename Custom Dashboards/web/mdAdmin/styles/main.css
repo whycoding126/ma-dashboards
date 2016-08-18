@@ -93,7 +93,8 @@ body {
 	margin: 0;
 }
 
-.dashboard-menu > li {
+.dashboard-menu > li,
+.menu-toggle.menu-submenu > ul > li {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -144,6 +145,10 @@ body {
 
 .dashboard-menu .menu-toggle-list .menu-link a {
 	padding-left: 48px;
+}
+
+.dashboard-menu .menu-submenu .menu-toggle-list .menu-link a {
+    padding-left: 16px;
 }
 
 .dashboard-menu .menu-icon {
