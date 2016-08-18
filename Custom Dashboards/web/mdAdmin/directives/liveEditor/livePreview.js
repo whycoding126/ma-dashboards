@@ -37,7 +37,9 @@ var livePreview = function($compile, $timeout) {
                 childScope = $scope.$new();
                 
                 if (text) {
-                    $element.html($compile(text)(childScope));
+                    var compileText = '<div>' + text + '</div>';
+                    var $div = $compile(compileText)(childScope);
+                    $element.html($div.contents());
                 } else {
                     $element.empty();
                 }
