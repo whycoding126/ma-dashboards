@@ -347,6 +347,12 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuIcon: 'fa-info-circle',
                 children: [
                     {
+                        name: 'dashboard.examples.basics.pagesAndMenu',
+                        templateUrl: 'views/examples/pagesAndMenu.html',
+                        url: '/pages-and-menu',
+                        menuTr: 'dashboards.v3.dox.pagesAndMenu'
+                    },
+                    {
                         name: 'dashboard.examples.basics.createDashboard',
                         templateUrl: 'views/examples/createDashboard.html',
                         url: '/create-dashboard',
@@ -1004,7 +1010,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         angular.element('#menu-button').blur();
         $mdSidenav('left').open();
     }
-    
+
     /**
      * Watchdog timer alert and re-connect/re-login code
      */
@@ -1015,7 +1021,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 
         if (current.status === previous.status)
             return;
-        
+
         switch(current.status) {
         case 'API_DOWN':
             message = 'Connectivity to Mango API has been lost.';
