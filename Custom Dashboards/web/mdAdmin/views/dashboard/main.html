@@ -14,8 +14,8 @@
     </md-content>
   </md-sidenav>
 
-  <div layout="column" tabIndex="-1" role="main" flex>
-    <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar">
+  <div layout="column" tabIndex="-1" flex>
+    <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar" role="toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
         <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
@@ -100,7 +100,7 @@
     </md-toolbar>
 
     <md-content md-scroll-y layout="column" flex>
-      <div ui-view flex="noshrink" class="dashboard-main-view"></div>
+      <div ui-view flex="noshrink" class="dashboard-main-view" role="main"></div>
   
       <div layout="row" flex="noshrink">
         <div class="dashboard-footer">
