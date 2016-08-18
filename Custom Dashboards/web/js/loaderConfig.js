@@ -98,6 +98,9 @@ require.config({
         },
         'angular-material-data-table': {
             deps: ['angular', 'angular-material']
+        },
+        'amcharts/plugins/export/export': {
+            deps: ['amcharts/amcharts']
         }
     }
 });
