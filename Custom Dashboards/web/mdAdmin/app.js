@@ -427,82 +427,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 ]
             },
             {
-                name: 'dashboard.examples.templates',
-                url: '/templates',
-                menuTr: 'dashboards.v3.dox.templates',
-                menuIcon: 'fa-file-o',
-                children: [
-                    {
-                        name: 'dashboard.examples.templates.angularMaterial',
-                        templateUrl: 'views/examples/angularMaterial.html',
-                        url: '/angular-material',
-                        menuText: 'Angular Material'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.bootstrap',
-                        templateUrl: 'views/examples/bootstrap.html',
-                        url: '/bootstrap',
-                        menuText: 'Bootstrap 3'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.autoLogin',
-                        templateUrl: 'views/examples/autoLogin.html',
-                        url: '/auto-login',
-                        menuTr: 'dashboards.v3.dox.autoLogin'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.extendApp',
-                        templateUrl: 'views/examples/extendApp.html',
-                        url: '/extend-app',
-                        menuTr: 'dashboards.v3.dox.extendApp'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.loginPage',
-                        templateUrl: 'views/examples/loginPageTemplate.html',
-                        url: '/login-page',
-                        menuTr: 'dashboards.v3.dox.loginPageTemplate'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.adminTemplate',
-                        templateUrl: 'views/examples/adminTemplate.html',
-                        url: '/admin-template',
-                        menuTr: 'dashboards.v3.dox.adminTemplate'
-                    },
-                    {
-                        name: 'dashboard.examples.templates.adaptiveLayouts',
-                        templateUrl: 'views/examples/adaptiveLayouts.html',
-                        url: '/adaptive-layouts',
-                        menuText: 'Adaptive Layouts'
-                    }
-                ]
-            },
-            {
-                name: 'dashboard.examples.utilities',
-                url: '/utilities',
-                menuTr: 'dashboards.v3.dox.utilities',
-                menuIcon: 'fa-wrench',
-                children: [
-                    {
-                        name: 'dashboard.examples.utilities.translation',
-                        templateUrl: 'views/examples/translation.html',
-                        url: '/translation',
-                        menuTr: 'dashboards.v3.dox.translation'
-                    },
-                    {
-                        name: 'dashboard.examples.utilities.jsonStore',
-                        templateUrl: 'views/examples/jsonStore.html',
-                        url: '/json-store',
-                        menuTr: 'dashboards.v3.dox.jsonStore'
-                    },
-                    {
-                        name: 'dashboard.examples.utilities.watchdog',
-                        templateUrl: 'views/examples/watchdog.html',
-                        url: '/watchdog',
-                        menuTr: 'dashboards.v3.dox.watchdog'
-                    }
-                ]
-            },
-            {
                 name: 'dashboard.examples.singleValueDisplays',
                 url: '/single-value-displays',
                 menuTr: 'dashboards.v3.dox.singleValueDisplays',
@@ -581,6 +505,38 @@ mdAdminApp.constant('MENU_ITEMS', [
                         templateUrl: 'views/examples/dailyComparisonChart.html',
                         url: '/daily-comparison',
                         menuTr: 'dashboards.v3.dox.dailyComparisonChart'
+                    }
+                ]
+            },
+            {
+                name: 'dashboard.examples.settingPointValues',
+                url: '/setting-point-values',
+                menuTr: 'dashboards.v3.dox.settingPoint',
+                menuIcon: 'fa-pencil-square-o',
+                children: [
+                    {
+                        name: 'dashboard.examples.settingPointValues.setPoint',
+                        templateUrl: 'views/examples/setPoint.html',
+                        url: '/set-point',
+                        menuTr: 'dashboards.v3.dox.settingPoint'
+                    },
+                    {
+                        name: 'dashboard.examples.settingPointValues.toggle',
+                        templateUrl: 'views/examples/toggle.html',
+                        url: '/toggle',
+                        menuTr: 'dashboards.v3.dox.toggle'
+                    },
+                    {
+                        name: 'dashboard.examples.settingPointValues.sliders',
+                        templateUrl: 'views/examples/sliders.html',
+                        url: '/sliders',
+                        menuTr: 'dashboards.v3.dox.sliders'
+                    },
+                    {
+                        name: 'dashboard.examples.settingPointValues.multistateRadio',
+                        templateUrl: 'views/examples/multistateRadio.html',
+                        url: '/multistate-radio-buttons',
+                        menuTr: 'dashboards.v3.dox.multistateRadio'
                     }
                 ]
             },
@@ -669,34 +625,78 @@ mdAdminApp.constant('MENU_ITEMS', [
                 ]
             },
             {
-                name: 'dashboard.examples.settingPointValues',
-                url: '/setting-point-values',
-                menuTr: 'dashboards.v3.dox.settingPoint',
-                menuIcon: 'fa-pencil-square-o',
+                name: 'dashboard.examples.templates',
+                url: '/templates',
+                menuTr: 'dashboards.v3.dox.templates',
+                menuIcon: 'fa-file-o',
                 children: [
                     {
-                        name: 'dashboard.examples.settingPointValues.setPoint',
-                        templateUrl: 'views/examples/setPoint.html',
-                        url: '/set-point',
-                        menuTr: 'dashboards.v3.dox.settingPoint'
+                        name: 'dashboard.examples.templates.angularMaterial',
+                        templateUrl: 'views/examples/angularMaterial.html',
+                        url: '/angular-material',
+                        menuText: 'Angular Material'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.toggle',
-                        templateUrl: 'views/examples/toggle.html',
-                        url: '/toggle',
-                        menuTr: 'dashboards.v3.dox.toggle'
+                        name: 'dashboard.examples.templates.bootstrap',
+                        templateUrl: 'views/examples/bootstrap.html',
+                        url: '/bootstrap',
+                        menuText: 'Bootstrap 3'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.sliders',
-                        templateUrl: 'views/examples/sliders.html',
-                        url: '/sliders',
-                        menuTr: 'dashboards.v3.dox.sliders'
+                        name: 'dashboard.examples.templates.autoLogin',
+                        templateUrl: 'views/examples/autoLogin.html',
+                        url: '/auto-login',
+                        menuTr: 'dashboards.v3.dox.autoLogin'
                     },
                     {
-                        name: 'dashboard.examples.settingPointValues.multistateRadio',
-                        templateUrl: 'views/examples/multistateRadio.html',
-                        url: '/multistate-radio-buttons',
-                        menuTr: 'dashboards.v3.dox.multistateRadio'
+                        name: 'dashboard.examples.templates.extendApp',
+                        templateUrl: 'views/examples/extendApp.html',
+                        url: '/extend-app',
+                        menuTr: 'dashboards.v3.dox.extendApp'
+                    },
+                    {
+                        name: 'dashboard.examples.templates.loginPage',
+                        templateUrl: 'views/examples/loginPageTemplate.html',
+                        url: '/login-page',
+                        menuTr: 'dashboards.v3.dox.loginPageTemplate'
+                    },
+                    {
+                        name: 'dashboard.examples.templates.adminTemplate',
+                        templateUrl: 'views/examples/adminTemplate.html',
+                        url: '/admin-template',
+                        menuTr: 'dashboards.v3.dox.adminTemplate'
+                    },
+                    {
+                        name: 'dashboard.examples.templates.adaptiveLayouts',
+                        templateUrl: 'views/examples/adaptiveLayouts.html',
+                        url: '/adaptive-layouts',
+                        menuText: 'Adaptive Layouts'
+                    }
+                ]
+            },
+            {
+                name: 'dashboard.examples.utilities',
+                url: '/utilities',
+                menuTr: 'dashboards.v3.dox.utilities',
+                menuIcon: 'fa-wrench',
+                children: [
+                    {
+                        name: 'dashboard.examples.utilities.translation',
+                        templateUrl: 'views/examples/translation.html',
+                        url: '/translation',
+                        menuTr: 'dashboards.v3.dox.translation'
+                    },
+                    {
+                        name: 'dashboard.examples.utilities.jsonStore',
+                        templateUrl: 'views/examples/jsonStore.html',
+                        url: '/json-store',
+                        menuTr: 'dashboards.v3.dox.jsonStore'
+                    },
+                    {
+                        name: 'dashboard.examples.utilities.watchdog',
+                        templateUrl: 'views/examples/watchdog.html',
+                        url: '/watchdog',
+                        menuTr: 'dashboards.v3.dox.watchdog'
                     }
                 ]
             }
