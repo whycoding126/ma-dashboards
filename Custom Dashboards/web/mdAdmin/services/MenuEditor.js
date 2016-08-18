@@ -29,13 +29,11 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
             
             // search for the item
             if (searchBy) {
-                Menu.eachMenuItem(menuItems, null, function(m, p) {
-                    if (m[searchBy] === origItem) {
-                        origItem = m;
-                        parent = p;
-                        return true;
-                    }
-                });
+                var searchResult = findMenuItem(menuItems, searchBy, origItem);
+                if (searchResult) {
+                    origItem = searchResult.item;
+                    parent = searchResult.parent;
+                }
             }
 
             var item;
@@ -152,12 +150,31 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                     if (!item.deleted)
                         mangoState.addStates([item]);
                     return menuStore.$save().then(function(store) {
-                        return store;
+                        var result = findMenuItem(store.jsonData.menuItems, 'id', item.id);
+                        return result || {store: store};
                     });
-                } else return menuStore;
+                } else return {
+                    item: item,
+                    parent: parent,
+                    store: menuStore
+                };
             });
         }.bind(this));
     };
+    
+    function findMenuItem(menuItems, searchKey, searchValue) {
+        var result;
+        Menu.eachMenuItem(menuItems, null, function(menuItem, parent) {
+            if (menuItem[searchKey] === searchValue) {
+                result = {
+                    item: menuItem,
+                    parent: parent
+                };
+                return true;
+            }
+        });
+        return result;
+    }
 
     return new MenuEditor();
 };
