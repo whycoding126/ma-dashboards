@@ -13,7 +13,6 @@ define(['require'], function(require) {
                 to: '=',
                 from: '=',
                 addChecked: '=',
-                datePreset: '=',
                 rollupType: '=',
                 rollupIntervalNumber: '=',
                 rollupIntervalPeriod: '=',

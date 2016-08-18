@@ -1,5 +1,8 @@
 /* Date Pickers */
 
+md-card#controls > md-card-content {
+    padding-bottom: 0;
+}
 .date-picker-to-from input {
     margin: 0 !important;
     min-width: 150px !important;
@@ -16,6 +19,7 @@ md-select, .md-input {
     min-width: 100px !important;
     width: 100px !important;
 }
+
 
 
 /* Table Component */
@@ -47,7 +51,18 @@ th.md-checkbox-column > md-checkbox {
 table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
     height: 30px;
 }
-
+table.md-table:not(.desktop) td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table:not(.desktop) th.md-column:nth-child(n+3):nth-last-child(n+2) {
+    padding: 0 10px 0 0;
+}
+table.md-table td.md-cell, table.md-table th.md-column {
+    font-size: 1.4rem;
+}
+table.md-table td.md-cell i, table.md-table th.md-column i {
+    color: rgb(45,197,255);
+}
+table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
+    color: rgb(255,133,0);;
+}
 
 /* Chart Component */
 .chart-content {

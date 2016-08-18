@@ -71,7 +71,7 @@
                     {{ $parent.stats[$index].last = parseFloat(stats.last.value) }}
                     {{ $parent.stats[$index].count = stats.count }}
                 </div>
-                <table md-table>
+                <table md-table ng-class="{'desktop': $mdMedia('gt-sm')}">
                     <thead md-head md-order="tableOrder">
                         <tr>
                             <th md-column md-order-by="name">Name</th>
