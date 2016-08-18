@@ -212,7 +212,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                                 }
                           });
                     $ocLazyLoad.inject('watchlist');
-                    cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles');
+                    cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles','link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]');
                 });
             }]
         }

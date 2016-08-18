@@ -31,15 +31,15 @@
         <div ng-repeat="point in page.points" style="display: none;">
             <ma-get-point-value point-xid="{{point.xid}}" point="pointValue">
             </ma-get-point-value>
-            <div ng-if="pointValue.pointLocator.settable">{{ $parent.rows[$index].settable = true; 
+            <div ng-if="pointValue.pointLocator.settable">{{ $parent.rows[$index].settable = true;
             $parent.rows[$index].point = pointValue  }} </div>
-            {{ $parent.rows[$index].name = pointValue.name }} 
+            {{ $parent.rows[$index].name = pointValue.name }}
             {{ $parent.rows[$index].xid = pointValue.xid }}
             {{ $parent.rows[$index].id = pointValue.id }}
             {{ $parent.rows[$index].deviceName = pointValue.deviceName }}
-            {{ $parent.rows[$index].suffix = pointValue.textRenderer.suffix }} 
+            {{ $parent.rows[$index].suffix = pointValue.textRenderer.suffix }}
             {{ $parent.rows[$index].val = (pointValue.value) }}
-            {{ $parent.rows[$index].render = (pointValue.renderedValue) }} 
+            {{ $parent.rows[$index].render = (pointValue.renderedValue) }}
             {{ $parent.rows[$index].valTime = (pointValue.time | moment:'format':'LTS') }}
         </div>
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise">
@@ -50,13 +50,14 @@
                     <th md-column md-order-by="name">Name</th>
                     <th md-column md-numeric md-order-by="val">Value</th>
                     <th md-column md-numeric md-order-by="valTime">Time</th>
+                    <th md-column></th>
                 </tr>
             </thead>
             <tbody md-body>
                 <tr md-row md-select="point" md-select-id="id" ng-repeat="point in rows | orderBy: page.tableOrder">
                     <td md-cell>
-                        <i class="fa fa-info-circle fa-lg" ng-click="showStats($event, point.point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup)" style="padding: 5px 5px 0 0;"></i> 
-                        
+                        <i class="fa fa-info-circle fa-lg" ng-click="showStats($event, point.point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup)" style="padding: 5px 5px 0 0;"></i>
+
                         <i ng-if="point.settable" class="fa fa-cogs fa-lg" style="padding-top:5px;" ng-click="showSetPoint($event, point.point)"></i>
                     </td>
                     <td md-cell>{{point.deviceName}}</td>
@@ -66,7 +67,7 @@
                     <td md-cell>
                         <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank" style="color: black !important;">
                             <i class="fa fa-pencil fa-lg"></i>
-                        </a> 
+                        </a>
                     </td>
                 </tr>
             </tbody>

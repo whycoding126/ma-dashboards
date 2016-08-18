@@ -26,6 +26,7 @@ md-select, .md-input {
 md-table-container.lg-screen {
     height: 350px;
 }*/
+
 .md-toolbar-tools.mobile h2 span {
     font-size: 16px;
 }
@@ -43,6 +44,10 @@ md-toolbar.md-table-toolbar form > input {
 th.md-checkbox-column > md-checkbox {
     display: none;
 }
+table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
+    height: 30px;
+}
+
 
 /* Chart Component */
 .chart-content {

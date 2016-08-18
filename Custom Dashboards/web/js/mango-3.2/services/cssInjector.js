@@ -10,7 +10,7 @@ define([], function() {
 * @name maServices.cssInjector
 *
 * @description
-* Provides a service for injecting CSS into the head of the document. 
+* Provides a service for injecting CSS into the head of the document.
 The CSS will only be injected if the directive using this service is used on a page.
 *
 * # Usage
@@ -27,6 +27,10 @@ The CSS will only be injected if the directive using this service is used on a p
 
     cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
 }
+
+// inserts a link tag to an external css file after the md-data-table css link
+cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles',
+'link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]');
 * </pre>
 */
 
@@ -53,8 +57,10 @@ The CSS will only be injected if the directive using this service is used on a p
 * A method that injects a link to an external CSS file from a link into the document head.
 * @param {string} href File path of the external CSS document.
 * @param {string} trackingName Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
-* For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place one.
-* @param {boolean=} afterSelector If provided the CSS will be injected within the head, after the given element.
+* For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.
+* @param {string=} afterSelector If provided the CSS will be injected within the head, after the the given CSS link.
+* Pass a string of the attribute selector ie. `'link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]'`
+* to insert new CSS link after the specified CSS link. The CSS definitions that come after take precedence.
 *
 */
 
@@ -66,8 +72,11 @@ The CSS will only be injected if the directive using this service is used on a p
 * @description
 * A method that injects a `<style>` element with CSS into the document head.
 * @param {string} content String of CSS that will be injected.
-* @param {string} trackingName Identifier used to determine if CSS has already been injected by another directive. 
-* @param {boolean=} afterSelector If provided the CSS will be injected within the head, after the given element.
+* @param {string} trackingName Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
+* For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.
+* @param {string=} afterSelectorIf provided the CSS will be injected within the head, after the the given CSS style.
+* Pass a string of the attribute selector ie. `'link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]'`
+* to insert new CSS <style> element after the specified CSS link. The CSS definitions that come after take precedence.
 *
 */
 
@@ -76,7 +85,7 @@ function cssInjectorFactory() {
     function CssInjector() {
         this.injected = {};
     }
-    
+
     CssInjector.prototype.isInjected = function(trackingName, set) {
         if (trackingName) {
             if (this.injected[trackingName]) {
@@ -86,24 +95,24 @@ function cssInjectorFactory() {
         }
         return false;
     };
-    
+
     CssInjector.prototype.injectLink = function(href, trackingName, afterSelector) {
         if (this.isInjected(trackingName, true)) return;
-        
+
         var linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'stylesheet');
         linkElement.setAttribute('href', href);
         insert(linkElement, afterSelector);
     };
-    
+
     CssInjector.prototype.injectStyle = function(content, trackingName, afterSelector) {
         if (this.isInjected(trackingName, true)) return;
-        
+
         var styleElement = document.createElement('style');
         styleElement.appendChild(document.createTextNode(content));
         insert(styleElement, afterSelector);
     };
-    
+
     function insert(element, afterSelector) {
         if (afterSelector) {
             var matches = document.head.querySelectorAll(afterSelector);
@@ -113,7 +122,7 @@ function cssInjectorFactory() {
                 return;
             }
         }
-        
+
         angular.element(document.head).prepend(element);
     }
 
