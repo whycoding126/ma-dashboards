@@ -2,7 +2,8 @@
   <form name="menuItemEditForm" novalidate ng-submit="save()">
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2>Edit menu item</h2>
+      <h2 ng-if="!editCtrl.item.isNew">Edit menu item</h2>
+      <h2 ng-if="editCtrl.item.isNew">Create menu item</h2>
       <span flex></span>
       <md-button class="md-icon-button" ng-click="cancel()">
         <md-icon>close</md-icon>
