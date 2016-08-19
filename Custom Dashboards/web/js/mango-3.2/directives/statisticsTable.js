@@ -11,7 +11,6 @@ define(['require'], function(require) {
  * @restrict E
  * @description
  * `<ma-statistics-table statistics="statsObj"></ma-statistics-table>`
- * - The data point must be settable.
  * - `<ma-statistics-table>` will display a formatted data table with the values and timestamps from a `statistics` object.
  * - <a ui-sref="dashboard.examples.statistics.statisticsTable">View Demo</a> 
  *

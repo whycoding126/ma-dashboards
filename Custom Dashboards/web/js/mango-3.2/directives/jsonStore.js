@@ -16,8 +16,8 @@ define(['angular'], function(angular) {
  * - You can set a unique `xid` and `item` to store multiple objects in the JSON store.
  * - Any data you want to store should be added to the `value` object and can be retrieved using <code ng-non-bindable>{{myItem.jsonData.myProperty}}</code>.
 * - Note that if you do not set `myItem.editPermission` / `myItem.readPermission` permission of the item, only the Admin will have access to it.
-You can set these permissions to `'user'` to allow guests to use the data in the JSON store.
-The 'user' group is included by default in a Mango system.
+You can set these permissions to 'user' to allow other users to read or edit data in the JSON store. 
+The 'user' permissions group is added to created Mango users by default.
  * - <a ui-sref="dashboard.examples.utilities.jsonStore">View Demo</a>
  *
  * @param {string} xid Sets the `xid` used for each unique object in the JSON store.

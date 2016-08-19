@@ -23,13 +23,13 @@ define([], function() {
  *
  *
  * @usage
- * <md-input-container>
- *     <label>Choose a data source</label>
- *     <ma-data-source-list ng-model="myDataSource" auto-init="false" query="{name: 'meta'}" sort="['-name']" start="3" limit="6" ></ma-data-source-list>
- * </md-input-container>
- *
- * <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
- *
+ <md-input-container>
+      <label>Choose a data source</label>
+      <ma-data-source-list ng-model="myDataSource" auto-init="false" query="{name: 'meta'}" sort="['-name']" start="3" limit="6" ></ma-data-source-list>
+ </md-input-container>
+ 
+ <p>You have chosen data source "{{myDataSource.name}}". It is {{myDataSource.enabled ? 'enabled' : 'disabled'}} and has an XID of {{myDataSource.xid}}.</p>
+ 
  */
 function dataSourceList(DataSource, $injector) {
     var DEFAULT_SORT = ['name'];

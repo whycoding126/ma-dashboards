@@ -542,6 +542,16 @@ table.variables-matrix {
   color: white;
 }
 
+a.type-hint {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  border: none;
+  background: rgba(0, 0, 0, 0.065);
+  color: #106CC8;
+  padding: 0.125em 0.35em;
+}
+
 /* Input hints */
 
 md-input-container .hint {

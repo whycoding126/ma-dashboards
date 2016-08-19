@@ -32,7 +32,8 @@ define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
  * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
  *
  * @usage
- * <md-input-container flex>
+ * 
+<md-input-container flex>
     <label>Choose a point</label>
     <ma-point-list limit="200" ng-model="myPoint"></ma-point-list>
 </md-input-container>

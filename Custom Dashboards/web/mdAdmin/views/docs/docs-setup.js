@@ -18,7 +18,7 @@ NG_DOCS={
       "shortName": "maDashboards.maCalc",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;",
+      "shortDescription": "&lt;ma-calc input=&quot;&quot; output=&quot;&quot;&gt;&lt;/ma-calc&gt;",
       "keywords": "allows angular api array declare directive evaluate evaluated example expression filter hold input macalc madashboards model objects output passed phase points power property real result store variable"
     },
     {
@@ -27,7 +27,7 @@ NG_DOCS={
       "shortName": "maDashboards.maClock",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;",
+      "shortDescription": "&lt;ma-clock time=&quot;&quot; timezone=&quot;&quot; text=&quot;&quot;&gt;&lt;/ma-clock&gt;",
       "keywords": "amcharts analog api australia basics browser clock clocksandtimezones configuration current currently customizing dashboard demo design directive display displaying element evaluating examples expression extend filtered format formatted gettimezone hand height label live ll logged lts maclock madashboards mango note object options org output provided return seconds set sets show-seconds string style switch sydney takes text time timestamp timezone true turns ui-sref update-interval user width wikipedia"
     },
     {
@@ -109,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-filtering-point-list ng-model=&quot;myPoint&quot;&gt;&lt;/ma-filtering-point-list&gt;",
-      "keywords": "api auto auto-init basics creates dashboard data defualt demo device directive enables examples false fuzzy hold limit limits list madashboards mafilteringpointlist mypoint ng-model number point pointlist points searching selected selecting self-filtering supports ui-sref variable"
+      "keywords": "allows api auto auto-init basics creates dashboard data defualt demo device directive enables examples false filtering hold limit limits list madashboards mafilteringpointlist mypoint names ng-model number point pointlist points search select selected selecting self-filtering text type ui-sref update variable"
     },
     {
       "section": "api",
@@ -117,7 +117,7 @@ NG_DOCS={
       "shortName": "maDashboards.maFn",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-fn expression=&quot;&quot; fn=&quot;myFunction&quot; ready=&quot;&quot; arg-names=&quot;&quot;&gt;",
+      "shortDescription": "&lt;ma-fn expression=&quot;&quot; fn=&quot;myFunction&quot; ready=&quot;&quot; arg-names=&quot;&quot;&gt;&lt;/ma-fn&gt;",
       "keywords": "allows angular api arg-names array directive doc evaluate evaluated example expression filter fn function hold madashboards mafn model myfunction objects passed property ready result store variable"
     },
     {
@@ -163,7 +163,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-json-store xid=&quot;phoneData&quot; item=&quot;myItem&quot; value=&quot;myValue&quot;&gt;&lt;/ma-json-store&gt;",
-      "keywords": "$delete $get $item $save access accessing admin allow api arbitrary call called class dashboard data default deletes demo directive editpermission examples expression group guests hold included inside item item-loaded json jsondata jsonstore loaded local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model ng-non-bindable note object objects permission permissions phone phonedata readpermission realtime refresh retrieved reverts save saves set sets store stored sync system ui-sref unique updates user utilities values variable websockets xid"
+      "keywords": "$delete $get $item $save access accessing admin allow api arbitrary call called class created dashboard data default deletes demo directive edit editpermission examples expression group hold inside item item-loaded json jsondata jsonstore loaded local madashboards majsonstore mango md-hue-3 md-primary md-raised methods model modified multiple myitem myproperty myvalue needed ng-click ng-model ng-non-bindable note object objects permission permissions phone phonedata read readpermission realtime refresh retrieved reverts save saves set sets store stored sync ui-sref unique updates user users utilities values variable websockets xid"
     },
     {
       "section": "api",
@@ -244,7 +244,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-serial-chart style=&quot;height: 300px; width: 100%&quot; series-1-values=&quot;point1Values&quot; series-1-point=&quot;point1&quot; default-type=&quot;column&quot;&gt;",
-      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column configuration create created cursor customizing dashboard data default default-axis default-balloon-text default-color default-type defaults demo design directive displaying element example examples export extend format functionality generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects option options overides pass point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x-axis series-x-balloon-text series-x-color series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps timezone true turned type ui-sref values variations width"
+      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column configuration create created cursor customizing dashboard data default default-axis default-balloon-text default-color default-type defaults demo design directive displaying element example examples export extend format functionality generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects option options overides pass point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x- series-x-axis series-x-balloon-text series-x-color series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps timezone true turned type ui-sref values variations width"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-set-point-value point=&quot;myPoint&quot;&gt;&lt;/ma-set-point-value&gt;",
-      "keywords": "alternatively api appropriate binary button called calling create dashboard data demo directive display dropdown element example examples expression false function handle input interface limit madashboards masetpointvalue method multistate mypoint ng-click ng-model numeric object option point require selected set setpoint settable settingpointvalues setvalue show-button specifies true types ui-sref"
+      "keywords": "alphanumeric alternatively api appropriate binary button called calling create dashboard data demo directive display dropdown element example examples expression false function handle input interface limit madashboards masetpointvalue method multistate mypoint ng-click ng-model numeric object option point require selected set setpoint settable settingpointvalues setvalue show-button specifies true types ui-sref"
     },
     {
       "section": "api",
@@ -280,7 +280,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-statistics-table statistics=&quot;statsObj&quot;&gt;&lt;/ma-statistics-table&gt;",
-      "keywords": "api binary dashboard data demo directive display examples false formatted hide-starts-and-runtimes input madashboards mastatisticstable mypoint object point runtimes set settable starts statistics statisticstable statsobj table timestamps true ui-sref values"
+      "keywords": "api binary dashboard data demo directive display examples false formatted hide-starts-and-runtimes input madashboards mastatisticstable mypoint object point runtimes set starts statistics statisticstable statsobj table timestamps true ui-sref values"
     },
     {
       "section": "api",
@@ -288,7 +288,7 @@ NG_DOCS={
       "shortName": "maDashboards.maSwitchImg",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;ma-switch-img&gt;",
+      "shortDescription": "&lt;ma-switch-img&gt;&lt;/ma-switch-img&gt;",
       "keywords": "api attribute based compare dashboard dashes data default default-src demo determining directive disabled display displayed displays example examples false flex image img input limit madashboards map maswitchimg match mypoint ng-model object path png point replace set singlevaluedisplays source spaces src- src-1 src-2 src-3 src-4 src-false src-map src-test src-test-my-string src-true strings switched switchimage true ui-sref value1 value2"
     },
     {
@@ -324,8 +324,8 @@ NG_DOCS={
       "shortName": "maFilters.duration",
       "type": "filter",
       "moduleName": "maFilters",
-      "shortDescription": "Converts an input in milliseconds to a moment duration object that defines a length of time.",
-      "keywords": "_blank api basics call called converts dashboard defines demo duration examples filter filters functions href http humanize input length mafilters methods milliseconds moment ng-non-bindable object syntax target time ui-sref"
+      "shortDescription": "Converts an input in milliseconds to a momentJS duration object that defines a length of time.",
+      "keywords": "_blank api basics call called converts dashboard defines demo duration examples filter filters functions href http humanize input length mafilters methods milliseconds momentjs ng-non-bindable object syntax target time ui-sref"
     },
     {
       "section": "api",

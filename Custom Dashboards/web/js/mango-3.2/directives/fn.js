@@ -10,7 +10,7 @@ define([], function() {
  * @name maDashboards.maFn
  *
  * @description
- * `<ma-fn expression="" fn="myFunction" ready="" arg-names="">`
+ * `<ma-fn expression="" fn="myFunction" ready="" arg-names=""></ma-fn>`
  * - This directive allows you to evaluate an Angular expression and store the result in a variable.
  * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
  *
@@ -22,7 +22,7 @@ define([], function() {
  *
  * @usage
  * <ma-fn expression="" fn="myFunction" ready="" arg-names="">
- *
+ * </ma-fn>
  */
 function enter($parse) {
     return {

@@ -10,7 +10,7 @@ define([], function() {
  * @name maDashboards.maSwitchImg
  * @restrict E
  * @description
- * `<ma-switch-img>`
+ * `<ma-switch-img></ma-switch-img>`
  * - `<ma-switch-img>` displays an image who's image source will be switched based on a point's value.
  * - Use default-src to set the default image that will display if no match is found or the point is disabled.
  * - <a ui-sref="dashboard.examples.singleValueDisplays.switchImage">View Demo</a> 

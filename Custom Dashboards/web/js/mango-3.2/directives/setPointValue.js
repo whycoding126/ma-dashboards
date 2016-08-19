@@ -13,7 +13,7 @@ define(['require', 'angular'], function(require, angular) {
  * `<ma-set-point-value point="myPoint"></ma-set-point-value>`
  * - `<ma-set-point-value>` will create an input element to set the value of a data point.
  * - The data point must be settable.
- * - It can handle `numeric`, `binary`, and `multistate` point types and will display an appropriate interface element for each.
+ * - It can handle `numeric`, `alphanumeric`, `binary`, and `multistate` point types and will display an appropriate interface element for each.
  * - Alternatively, you can set the value of a point by calling the `setValue` method on a point object.
  This function can be called from within an `ng-click` expression for example. (using this method does not require `<ma-set-point-value>`)
  * - <a ui-sref="dashboard.examples.settingPointValues.setPoint">View Demo</a> 

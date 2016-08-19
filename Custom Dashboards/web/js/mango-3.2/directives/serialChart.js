@@ -14,8 +14,8 @@ define(['amcharts/serial', 'jquery', 'moment', 'amcharts/plugins/export/export']
 </ma-serial-chart>`
  * - The `<ma-serial-chart>` directive allows you to create line and bar charts.
  * - Many different variations on a chart can be created by customizing the attributes.
- * - Values are provided via `<ma-point-values>`. You can provide your time range and rollup settings to `<ma-point-values>`, then pass the values data to `<ma-serial-chart>`.
- * - In the attributes starting with `series...` you will replace `X` with the number of that series starting with 1.
+ * - Values are provided via `<ma-point-values>`. You can provide your time range and rollup settings to `<ma-point-values>`, then pass the data to `<ma-serial-chart>`.
+ * - In the attributes starting with `series-X-` you will replace `X` with the number of that series starting with 1.
  * - Note, you will need to set a width and height on the element.
  * - <a ui-sref="dashboard.examples.charts.lineChart">View Demo</a> / <a ui-sref="dashboard.examples.charts.advancedChart">View Advanced Demo</a>
  *

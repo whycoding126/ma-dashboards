@@ -10,7 +10,7 @@ define(['amcharts/gauge', 'jquery', 'moment-timezone'], function(AmCharts, $, mo
   * @name maDashboards.maClock
   * @restrict E
   * @description
-  * `<ma-clock time="" timezone="" text="">`
+  * `<ma-clock time="" timezone="" text=""></ma-clock>`
   * - This directive will display an analog style clock.
   * - Note, you will need to set a width and height on the element.
   * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>

@@ -12,7 +12,7 @@ define([], function() {
  * @name maDashboards.maCalc
  *
  * @description
- * `<ma-calc input="" output="">`
+ * `<ma-calc input="" output=""></ma-calc>`
  * - This directive allows you to evaluate an Angular expression and store the result in a variable.
  * - In the example below an array from the model is passed through a filter on the name property of objects in the array.
  *
