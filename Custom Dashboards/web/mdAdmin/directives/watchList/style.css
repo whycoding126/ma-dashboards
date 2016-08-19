@@ -3,18 +3,18 @@
 md-card#controls > md-card-content {
     padding-bottom: 0;
 }
-.date-picker-to-from input {
+md-card#controls .date-picker-to-from input {
     margin: 0 !important;
     min-width: 150px !important;
     width: 150px !important;
 }
-.date-picker md-select {
+md-card#controls .date-picker md-select {
     margin: 0 !important;
     min-width: 160px !important;
     width: 160px !important;
 }
 /* Rollup Pickers */
-md-select, .md-input {
+md-card#controls md-select, md-card#controls .md-input {
     margin: 0 !important;
     min-width: 100px !important;
     width: 100px !important;
