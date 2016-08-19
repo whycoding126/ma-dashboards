@@ -965,6 +965,13 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             }
         } while (state = state.parent);
         $rootScope.crumbs = crumbs;
+        
+        if (toState !== fromState) {
+            var contentDiv = document.querySelector('.main-content');
+            if (contentDiv) {
+                contentDiv.scrollTop = 0;
+            }
+        }
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
