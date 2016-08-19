@@ -59,6 +59,10 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
             }
             item.parent = parent;
             
+            if (!item.menuHidden) {
+                item.showOnMenu = true;
+            }
+            
             return $mdDialog.show({
                 templateUrl: require.toUrl('./MenuEditorDialog.html'),
                 parent: angular.element(document.body),
@@ -112,6 +116,13 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 var isNew = item.isNew;
                 delete item.parent;
                 delete item.isNew;
+                
+                if (item.showOnMenu) {
+                    delete item.menuHidden
+                } else {
+                    item.menuHidden = true;
+                }
+                delete item.showOnMenu;
                 
                 if (!isNew && (item.deleted || parent !== newParent)) {
                     var array = parent ? parent.children : menuItems;

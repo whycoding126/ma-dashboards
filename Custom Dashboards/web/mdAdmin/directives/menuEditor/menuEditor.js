@@ -29,6 +29,12 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
                 }
             }
             
+            $scope.undo = function undo() {
+                this.storeObject.$get().then(function() {
+                    resetToRoot();
+                });
+            };
+            
             function resetToRoot() {
                 $scope.editItems = $scope.storeObject.jsonData.menuItems;
                 $scope.path = [{menuText: 'Root'}];

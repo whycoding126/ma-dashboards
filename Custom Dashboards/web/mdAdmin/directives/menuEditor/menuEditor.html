@@ -4,7 +4,7 @@
 
 <div class="menu-editor-buttons">
   <md-button class="md-raised md-primary md-hue-3" ng-click="saveMenu($event)"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button class="md-raised" ng-click="storeObject.$get()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.undoChanges"></span></md-button>
+  <md-button class="md-raised" ng-click="undo()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.undoChanges"></span></md-button>
   <md-button class="md-raised md-warn" ng-click="resetDefaultItems($event)"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.resetDefaultMenuItems"></span></md-button>
   <md-button class="md-raised md-warn" ng-click="deleteCustomMenu($event)"><md-icon>delete</md-icon> <span ma-tr="dashboards.v3.app.deleteCustomMenu"></span></md-button>
 </div>
