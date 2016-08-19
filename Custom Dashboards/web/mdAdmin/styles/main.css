@@ -192,6 +192,11 @@ body {
   transition:         none !important;
 }
 
+/* dont use display: none so we can calculate the height of toggle menus */
+md-sidenav.site-sidenav.md-closed {
+  display: block;
+  visibility: hidden;
+}
 
 /***************
  * TYPE DEFAULTS

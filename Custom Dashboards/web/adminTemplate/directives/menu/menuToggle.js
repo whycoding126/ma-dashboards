@@ -7,8 +7,11 @@ define(['require'], function(require) {
 'use strict';
 
 var menuToggleController = function menuToggleController($state, $timeout, $element, $scope) {
+
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
+        this.height = 0;
+        this.addedHeight = 0;
         
         // close/open menus when changing states
         $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
@@ -19,7 +22,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             }
         }.bind(this));
     };
-    
+
     this.$onChanges = function(changes) {
         if (changes.openMenu) {
             if (this.isOpen && (!this.openMenu || this.openMenu.name.indexOf(this.item.name) !== 0)) {
@@ -30,10 +33,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             if (!changes.item.isFirstChange() && changes.item.currentValue.visibleChildren !== changes.item.previousValue.visibleChildren) {
                 // do on next cycle as elements have not been added/removed yet
                 $timeout(function() {
-                    var heightDiff = this.totalHeight ? this.totalHeight - this.height : 0;
-                    delete this.totalHeight;
                     this.calcHeight();
-                    this.addHeight(heightDiff);
                 }.bind(this), 0);
             }
         }
@@ -55,13 +55,19 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
     this.open = function() {
         if (this.isOpen) return;
         
+        //if (this.height === 0) {
+        //    this.calcHeight();
+        //}
+        
         this.isOpen = true;
         if (this.parentToggle) {
+            // ensures the transition property is recalculated, use if doing calcHeight() above
+            //$window.getComputedStyle(this.parentToggle.$ul[0]).transition;
             this.parentToggle.addHeight(this.height);
         }
         
         this.menu.menuOpened(this);
-    }
+    };
     
     this.close = function() {
         if (!this.isOpen) return;
@@ -72,7 +78,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         }
         
         this.menu.menuClosed(this);
-    }
+    };
     
     this.toggle = function() {
         if (this.isOpen) {
@@ -95,15 +101,15 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         if (this.parentToggle) {
             this.parentToggle.preMeasureHeight();
         }
-        this.$ul.addClass('no-transition');
         this.$ul.css({
             height: '',
             visibility: 'hidden',
-            position: 'absolute'
+            position: 'absolute',
+            transition: 'none !important'
         });
         if (this.wasHidden = this.$ul.hasClass('ng-hide'))
             this.$ul.removeClass('ng-hide');
-    }
+    };
     
     this.postMeasureHeight = function(wasHidden) {
         if (this.wasHidden)
@@ -111,28 +117,25 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
         delete this.wasHidden;
         
         this.$ul.css({
-            height: this.totalHeight || this.height + 'px',
+            height: (this.height + this.addedHeight) + 'px',
             visibility: '',
-            position: ''
+            position: '',
+            transition: ''
         });
-        this.$ul.removeClass('no-transition');
 
         if (this.parentToggle) {
             this.parentToggle.postMeasureHeight();
         }
-    }
+    };
     
     // calculates the ul's current height and adds x pixels to the css height
     this.addHeight = function addHeight(add) {
-        if (!this.totalHeight) {
-            this.totalHeight = this.height;
-        }
-        this.totalHeight += add;
-        
+        this.addedHeight += add;
+
         this.$ul.css({
-            height: this.totalHeight + 'px'
+            height: (this.height + this.addedHeight) + 'px'
         });
-    }
+    };
 };
 
 menuToggleController.$inject = ['$state', '$timeout', '$element', '$scope'];

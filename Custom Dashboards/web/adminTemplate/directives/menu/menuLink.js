@@ -10,7 +10,7 @@ var menuLinkController = function menuLinkController($state) {
     this.$onInit = function() {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
         this.classes = [];
-    }
+    };
     
     this.$onChanges = function(changes) {
         if (changes.item) {

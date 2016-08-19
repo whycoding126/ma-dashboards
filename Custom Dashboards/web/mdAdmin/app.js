@@ -711,14 +711,14 @@ mdAdminApp.constant('DEFAULT_PAGES', [
         name: 'Demo Page 1',
         editPermission: 'edit-pages',
         readPermission: 'user',
-        markup: '<div>Demo page 1</div>'
+        markup: '<h1>Demo page 1</h1>\n<p>You can edit this page by clicking the pencil at the top right of the page.</p>'
     },
     {
         xid: 'demo-page-2',
         name: 'Demo Page 2',
         editPermission: 'edit-pages',
         readPermission: 'user',
-        markup: '<div>Demo page 2</div>'
+        markup: '<h1>Demo page 2</h1>\n<p>You can edit this page by clicking the pencil at the top right of the page.</p>'
     }
 ]);
 
@@ -735,10 +735,12 @@ mdAdminApp.config([
     '$compileProvider',
     'mangoStateProvider',
     '$locationProvider',
+    '$mdAriaProvider',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider) {
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider) {
 
     $compileProvider.debugInfoEnabled(false);
+    $mdAriaProvider.disableWarnings();
 
     $mdThemingProvider.definePalette('mango-orange', {
         '50': '#ffffff',
@@ -966,7 +968,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-        if ($state.includes('dashboard')) {
+        if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
         if (toState.name === 'logout') {
@@ -989,27 +991,54 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             }
         }
     });
+    
+    // wait for the dashboard view to be loaded then set it to open if the
+    // screen is a large one. By default the internal state of the sidenav thinks
+    // it is closed even if it is locked open
+    $rootScope.$on('$viewContentLoaded', function(event, view) {
+        if (view === '@dashboard') {
+            if ($mdMedia('gt-sm')) {
+                $rootScope.openMenu();
+            }
+        }
+    });
 
-    $rootScope.lockLeft = true;
+    // automatically open or close the menu when the screen size is changed
+    $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), function(gtSm, prev) {
+        if (gtSm === prev) return; // ignore first "change"
+        
+        var sideNav = $mdSidenav('left');
+        if (gtSm && !sideNav.isOpen()) {
+            sideNav.open();
+        }
+        if (!gtSm && sideNav.isOpen()) {
+            sideNav.close();
+        }
+        $rootScope.navLockedOpen = gtSm;
+    });
+    
     $rootScope.toggleMenu = function() {
-        if ($mdMedia('gt-sm')) {
-            $rootScope.lockLeft = !$rootScope.lockLeft;
+        var sideNav = $mdSidenav('left');
+        if (sideNav.isOpen()) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
         }
-        else {
-            $mdSidenav('left').toggle();
-        }
-
-        angular.element('#menu-button').blur();
-    }
+    };
 
     $rootScope.closeMenu = function() {
+        angular.element('#menu-button').blur();
+        $rootScope.navLockedOpen = false;
         $mdSidenav('left').close();
-    }
+    };
 
     $rootScope.openMenu = function() {
         angular.element('#menu-button').blur();
+        if ($mdMedia('gt-sm')) {
+            $rootScope.navLockedOpen = true;
+        }
         $mdSidenav('left').open();
-    }
+    };
 
     /**
      * Watchdog timer alert and re-connect/re-login code

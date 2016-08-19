@@ -137,10 +137,13 @@ myAdminApp.config([
     '$mdThemingProvider',
     '$compileProvider',
     '$locationProvider',
-function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider) {
+    '$mdAriaProvider',
+function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, $compileProvider, $locationProvider, $mdAriaProvider) {
 
     // disable angular debug info to speed up app
     $compileProvider.debugInfoEnabled(false);
+    // disable aria warnings
+    $mdAriaProvider.disableWarnings();
     
     // configure the angular material colors
     $mdThemingProvider
@@ -247,7 +250,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     
     // close the menu when we change state
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-        if ($state.includes('dashboard')) {
+        if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
         if (toState.name === 'logout') {
@@ -261,25 +264,52 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             });
         }
     });
-    
-    $rootScope.lockLeft = true;
-    $rootScope.toggleMenu = function() {
-        if ($mdMedia('gt-sm')) {
-            $rootScope.lockLeft = !$rootScope.lockLeft;
-        }
-        else {
-            $mdSidenav('left').toggle();
-        }
 
-        angular.element('#menu-button').blur();
-    }
+    // wait for the dashboard view to be loaded then set it to open if the
+    // screen is a large one. By default the internal state of the sidenav thinks
+    // it is closed even if it is locked open
+    $rootScope.$on('$viewContentLoaded', function(event, view) {
+        if (view === '@dashboard') {
+            if ($mdMedia('gt-sm')) {
+                $rootScope.openMenu();
+            }
+        }
+    });
+
+    // automatically open or close the menu when the screen size is changed
+    $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), function(gtSm, prev) {
+        if (gtSm === prev) return; // ignore first "change"
+        
+        var sideNav = $mdSidenav('left');
+        if (gtSm && !sideNav.isOpen()) {
+            sideNav.open();
+        }
+        if (!gtSm && sideNav.isOpen()) {
+            sideNav.close();
+        }
+        $rootScope.navLockedOpen = gtSm;
+    });
+    
+    $rootScope.toggleMenu = function() {
+        var sideNav = $mdSidenav('left');
+        if (sideNav.isOpen()) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
+        }
+    };
 
     $rootScope.closeMenu = function() {
+        angular.element('#menu-button').blur();
+        $rootScope.navLockedOpen = false;
         $mdSidenav('left').close();
     };
 
     $rootScope.openMenu = function() {
         angular.element('#menu-button').blur();
+        if ($mdMedia('gt-sm')) {
+            $rootScope.navLockedOpen = true;
+        }
         $mdSidenav('left').open();
     };
 
