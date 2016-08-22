@@ -13,3 +13,9 @@
 	You will then want to give the menu item a parent item, state URL, menu text, and menu icon. The entire menu is completely customizatble from the Admin tools > <a ui-sref="dashboard.admin.editMenu">Edit Menu</a> page. You can hide/show menu items, edit
 	menu item text and icons, reorder menu items, add new menu items and delete custom menu items.
 </p>
+
+<h2>Permissions</h2>
+<p>By default, all pages that are created can be viewed by all users and require the user to have the <strong>edit-pages</strong> permission to edit them. If you want to restrict the pages to be viewable only by
+admin users, change the read permission to <strong>superadmin</strong>.</p>
+<p>Users with the <strong>edit-menus</strong> permission can edit the menus. When editing the menu items you can set a permission for each menu item, if the user does not have this permission then the
+menu item will not be shown.</p>
