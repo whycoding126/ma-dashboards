@@ -152,7 +152,7 @@ img.point-disabled {
 }
 
 md-select {
-	min-width: 200px;
+	/*min-width: 200px;*/
 }
 
 .ma-set-point-value md-input-container,

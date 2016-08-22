@@ -15,16 +15,16 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maDatePicker">
 </p>
 <dual-pane-editor>
 
-<div layout="row">
-  <md-input-container>
+<div layout="row" layout-xs="column" class="no-errors-spacer">
+  <md-input-container flex>
     <label>Preset</label>
     <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="5 seconds"></ma-date-range-picker>
   </md-input-container>
-  <md-input-container>
+  <md-input-container flex>
     <label>From date</label>
     <ma-date-picker ng-model="from"></ma-date-picker>
   </md-input-container>
-  <md-input-container>
+  <md-input-container flex>
     <label>To date</label>
     <ma-date-picker ng-model="to"></ma-date-picker>
   </md-input-container>
