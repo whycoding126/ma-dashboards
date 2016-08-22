@@ -678,9 +678,14 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
                           '/rest/v1/json-data/custom-user-pages',
                           '/rest/v1/json-data/demo-page-1',
                           '/rest/v1/json-data/demo-page-2'];
+
+        var url = rejection.config.url;
+        
+        if (url.indexOf('/rest/v1/users/current') >= 0) {
+            return true;
+        }
         
         if (rejection.status === 404 && rejection.config.method === 'GET') {
-            var url = rejection.config.url;
             for (var i = 0; i < ignoreUrls.length; i++) {
                 if (url.indexOf(ignoreUrls[i]) >= 0)
                     return true;
