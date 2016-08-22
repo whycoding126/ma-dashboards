@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, MD_ADMIN_SETTINGS, Menu) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, MD_ADMIN_SETTINGS, Menu, $templateRequest) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
@@ -94,7 +94,13 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
                     $scope.selectedPageSummary = pageToSummary(selectedPage);
                 });
             } else {
-                $scope.createNewPage($stateParams.markup);
+                if ($stateParams.templateUrl) {
+                    $templateRequest($stateParams.templateUrl).then(function(data) {
+                        $scope.createNewPage(data);
+                    });
+                } else {
+                    $scope.createNewPage($stateParams.markup);
+                }
             }
             
             $scope.confirmDeletePage = function confirmDeletePage() {
@@ -183,7 +189,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', 'MD_ADMIN_SETTINGS', 'Menu'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', 'MD_ADMIN_SETTINGS', 'Menu', '$templateRequest'];
 
 return pageEditor;
 
