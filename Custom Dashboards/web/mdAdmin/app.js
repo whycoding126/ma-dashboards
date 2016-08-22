@@ -210,14 +210,14 @@ mdAdminApp.constant('MENU_ITEMS', [
         }]
     },
     {
-        url: '/admin',
-        name: 'dashboard.admin',
+        url: '/settings',
+        name: 'dashboard.settings',
         menuIcon: 'build',
         menuTr: 'dashboards.v3.app.adminTools',
         children: [
             {
                 url: '/edit-pages/{pageXid}',
-                name: 'dashboard.admin.editPages',
+                name: 'dashboard.settings.editPages',
                 templateUrl: 'views/dashboard/editPages.html',
                 menuTr: 'dashboards.v3.app.editPages',
                 menuIcon: 'dashboard',
@@ -228,7 +228,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/edit-menu',
-                name: 'dashboard.admin.editMenu',
+                name: 'dashboard.settings.editMenu',
                 templateUrl: 'views/dashboard/editMenu.html',
                 menuTr: 'dashboards.v3.app.editMenu',
                 menuIcon: 'toc',
@@ -236,7 +236,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/auto-login-settings',
-                name: 'dashboard.admin.autoLoginSettings',
+                name: 'dashboard.settings.autoLoginSettings',
                 templateUrl: 'views/dashboard/autoLoginSettings.html',
                 menuTr: 'dashboards.v3.app.autoLoginSettings',
                 menuIcon: 'face',
@@ -853,8 +853,9 @@ mdAdminApp.run([
     '$mdToast',
     'User',
     'MD_ADMIN_SETTINGS',
+    'Translate',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS) {
+        $mdToast, User, MD_ADMIN_SETTINGS, Translate) {
 
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
@@ -989,20 +990,20 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 
         switch(current.status) {
         case 'API_DOWN':
-            message = 'Connectivity to Mango API has been lost.';
+            message = Translate.trSync('dashboards.v3.app.apiDown');
             MD_ADMIN_SETTINGS.user = null;
             break;
         case 'STARTING_UP':
-            message = 'Mango is starting up.';
+            message = Translate.trSync('dashboards.v3.app.startingUp');
             MD_ADMIN_SETTINGS.user = null;
             break;
         case 'API_ERROR':
-            message = 'The Mango API is returning errors.';
+            message = Translate.trSync('dashboards.v3.app.returningErrors');
             MD_ADMIN_SETTINGS.user = null;
             break;
         case 'API_UP':
             if (previous.status && previous.status !== 'LOGGED_IN')
-                message = 'Connectivity to Mango API has been restored.';
+                message = Translate.trSync('dashboards.v3.app.connectivityRestored');
             hideDelay = 5000;
             MD_ADMIN_SETTINGS.user = null;
 
@@ -1020,7 +1021,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         case 'LOGGED_IN':
             // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
             if (previous.status && previous.status !== 'API_UP')
-                message = 'Connectivity to Mango API has been restored.';
+                message = Translate.trSync('dashboards.v3.app.connectivityRestored');
             if (!MD_ADMIN_SETTINGS.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
