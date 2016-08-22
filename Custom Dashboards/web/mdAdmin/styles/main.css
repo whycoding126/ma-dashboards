@@ -447,8 +447,12 @@ menu-editor td .md-button.md-icon-button {
 }
 
 .menu-editor-path {
-  margin: 15px 0;
-  font-size: 1.2em;
+  min-height: 48px;
+  margin-bottom: 10px;
+}
+
+.menu-editor-path .md-toolbar-tools {
+  height: 48px;
 }
 
 page-view {

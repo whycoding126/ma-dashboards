@@ -24,7 +24,7 @@ var login = function($state, User, $rootScope, $window, MD_ADMIN_SETTINGS) {
                     password: $scope.password
                 });
                 user.$promise.then(function() {
-                    var redirectUrl = $state.href('dashboard.home');
+                    var redirectUrl = '/dashboards/';
                     if ($state.loginRedirectUrl) {
                         redirectUrl = $state.loginRedirectUrl;
                     }

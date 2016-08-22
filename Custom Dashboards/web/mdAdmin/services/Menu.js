@@ -46,6 +46,7 @@ function MenuFactory(MENU_ITEMS, MD_ADMIN_SETTINGS, JsonStore, CUSTOM_USER_MENU_
             menuItem.id = i++;
         });
         storeObject.jsonData.menuItems = menuItems;
+        storeObject.jsonData.defaultUrl = '/home';
         
         return storeObject;
     };

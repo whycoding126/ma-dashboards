@@ -6,7 +6,7 @@
 define(['require'], function(require) {
 'use strict';
 
-var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState, MenuEditor) {
+var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState, MenuEditor, MD_ADMIN_SETTINGS) {
     return {
         scope: {},
         templateUrl: require.toUrl('./menuEditor.html'),
@@ -115,6 +115,8 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
             $scope.saveMenu = function saveMenu() {
                 $scope.storeObject.$save().then(function(store) {
                     mangoState.addStates(store.jsonData.menuItems);
+                    MD_ADMIN_SETTINGS.customMenuItems = store.jsonData.menuItems;
+                    MD_ADMIN_SETTINGS.defaultUrl = store.jsonData.defaultUrl;
                     resetToRoot();
                 });
             }
@@ -122,7 +124,7 @@ var menuEditor = function(Menu, $mdDialog, Translate, $mdMedia, Page, mangoState
     };
 };
 
-menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'mangoState', 'MenuEditor'];
+menuEditor.$inject = ['Menu', '$mdDialog', 'Translate', '$mdMedia', 'Page', 'mangoState', 'MenuEditor', 'MD_ADMIN_SETTINGS'];
 
 return menuEditor;
 

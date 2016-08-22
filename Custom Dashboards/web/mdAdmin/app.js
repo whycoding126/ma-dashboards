@@ -126,9 +126,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         }
     },
     {
-        name: 'notFound',
-        url: '/not-found?url',
-        template: '<div></div>',
+        name: 'dashboard.notFound',
+        url: '/not-found?path',
+        templateUrl: 'views/dashboard/notFound.html',
         menuHidden: true,
         menuTr: 'dashboards.v3.app.pageNotFound'
     },
@@ -761,7 +761,32 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
-        return '/not-found?url=' + encodeURIComponent('.' + $location.url());
+        var MD_ADMIN_SETTING = $injector.get('MD_ADMIN_SETTINGS');
+        var $state = $injector.get('$state');
+        var user = MD_ADMIN_SETTINGS.user;
+        
+        var path = '/dashboards/';
+        if ($location.path()) {
+            path += $location.path().substring(1);
+        }
+        
+        if (!user) {
+            $state.loginRedirectUrl = path;
+            return '/login';
+        }
+        
+        if (path === '/dashboards/') {
+            var homeUrl = user.homeUrl;
+            if (homeUrl.indexOf('/dashboards') === 0) {
+                return homeUrl.substring(11); // strip dashboards from start of url
+            }
+            if (MD_ADMIN_SETTINGS.defaultUrl) {
+                return MD_ADMIN_SETTINGS.defaultUrl;
+            }
+            return '/home';
+        }
+
+        return '/not-found?path=' + encodeURIComponent(path);
     });
 
     var docsParent = {
@@ -918,15 +943,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                 MD_ADMIN_SETTINGS.user = null;
                 $state.go('login');
             });
-        } else if (toState.name === 'notFound') {
-            event.preventDefault();
-            if (!MD_ADMIN_SETTINGS.user) {
-                $state.loginRedirectUrl = toParams.url;
-                $state.go('login');
-            } else {
-                // could also add a template for notFound state and proceed
-                $state.go('dashboard.home');
-            }
         }
     });
     
@@ -1065,6 +1081,7 @@ User.current().$promise.then(null, function() {
     return JsonStore.get({xid: 'custom-user-menu'}).$promise;
 }).then(function(store) {
     mdAdminSettings.customMenuItems = store.jsonData.menuItems;
+    mdAdminSettings.defaultUrl = store.jsonData.defaultUrl;
 }).then(null, function() {
     // consume error
 }).then(function() {
