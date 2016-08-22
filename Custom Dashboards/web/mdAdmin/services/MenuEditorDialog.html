@@ -99,7 +99,7 @@
       <md-input-container flex>
           <label>Menu icon name</label>
           <md-icon ng-class="editCtrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + editCtrl.item.menuIcon : ''" class="menu-icon"
-              style="point-events: none">{{editCtrl.item.menuIcon.indexOf('fa-') !== 0 ? editCtrl.item.menuIcon : ''}}</md-icon>
+              style="pointer-events: none">{{editCtrl.item.menuIcon.indexOf('fa-') !== 0 ? editCtrl.item.menuIcon : ''}}</md-icon>
           <input name="menuIcon" ng-model="editCtrl.item.menuIcon">
           <div class="hint">Icon names should be a <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> icon name, e.g. fa-at, or
           a <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> name (with spaces changed to underscores).</div>
