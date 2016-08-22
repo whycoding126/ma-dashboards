@@ -1,8 +1,9 @@
 {
     "name": "Mango Dashboards v3",
     "short_name": "Dashboards v3",
-    "start_url": "./#/dashboard/home",
+    "start_url": "/dashboards/",
     "display": "standalone",
+    "theme_color": "#00adef",
     "icons": [
         {
             "src": "/modules/dashboards/web/img/icon36.png",
