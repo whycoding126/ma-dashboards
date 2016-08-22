@@ -677,7 +677,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var ignoreUrls = ['/rest/v1/json-data/custom-user-menu',
                           '/rest/v1/json-data/custom-user-pages',
                           '/rest/v1/json-data/demo-page-1',
-                          '/rest/v1/json-data/demo-page-2'];
+                          '/rest/v1/json-data/demo-page-2',
+                          '/rest/v1/json-data/play-area-'];
 
         var url = rejection.config.url;
         
