@@ -14,7 +14,7 @@ var dashboardMenuController = function dashboardMenuController() {
             
             if (menuItem.children) {
                 menuItem.visibleChildren = this.childVisible(menuItem.children);
-                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren;
+                menuItem.visible = !menuItem.menuHidden && !!menuItem.visibleChildren && this.user.hasPermission(menuItem.permission);
             } else {
                 menuItem.visible = !menuItem.menuHidden && this.user.hasPermission(menuItem.permission);
             }
