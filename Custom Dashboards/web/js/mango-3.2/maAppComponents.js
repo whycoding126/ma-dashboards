@@ -11,7 +11,7 @@ define(['./services/errorInterceptor',
 
 var maAppComponents = angular.module('maAppComponents', []);
 
-maAppComponents.factory('errorInterceptor', errorInterceptor);
+maAppComponents.provider('errorInterceptor', errorInterceptor);
 maAppComponents.factory('rQ', rQ);
 maAppComponents.constant('require', require);
 

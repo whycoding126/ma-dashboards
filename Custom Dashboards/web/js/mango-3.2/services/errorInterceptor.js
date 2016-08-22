@@ -49,30 +49,38 @@ define([], function() {
 * @returns {array} Array of error objects
 */
 
-function errorInterceptorFactory($q, $rootScope) {
-
-	$rootScope.errors = [];
-	$rootScope.clearErrors = function() {
-		$rootScope.errors = [];
-	};
-
-	return {
-		responseError: function(rejection) {
-    		var errorObj = angular.copy(rejection);
-    		errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
-    		errorObj.time = new Date();
-
-    		if ($rootScope.errors.length >= 10)
-    			$rootScope.errors.pop();
-    		$rootScope.errors.unshift(errorObj);
-
-    		return $q.reject(rejection);
-    	}
+function errorInterceptorProvider($q, $rootScope) {
+    this.ignore = function() {
+        return false;
     };
+    
+    this.$get = ['$q', '$rootScope', function($q, $rootScope) {
+        $rootScope.errors = [];
+        $rootScope.clearErrors = function() {
+            $rootScope.errors = [];
+        };
+        
+        return {
+            responseError: function(rejection) {
+                var result = $q.reject(rejection);
+                if (this.ignore(rejection)) return result;
+                
+                var errorObj = angular.copy(rejection);
+                errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
+                errorObj.time = new Date();
+
+                if ($rootScope.errors.length >= 10)
+                    $rootScope.errors.pop();
+                $rootScope.errors.unshift(errorObj);
+
+                return result;
+            }.bind(this)
+        };
+    }.bind(this)];
 }
 
-errorInterceptorFactory.$inject = ['$q', '$rootScope'];
+errorInterceptorProvider.$inject = [];
 
-return errorInterceptorFactory;
+return errorInterceptorProvider;
 
 }); // define

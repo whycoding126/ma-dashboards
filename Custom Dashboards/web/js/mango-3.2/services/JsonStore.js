@@ -120,7 +120,7 @@ function JsonStoreFactory($resource, Util) {
     	get: {
     	    interceptor: {
                 response: setDataPathInterceptor
-            },
+            }
     	},
         save: {
             method: 'POST',

@@ -46,6 +46,7 @@ require.config({
         'angular-animate' : vendor + '/angular-animate/angular-animate',
         'angular-messages' : vendor + '/angular-messages/angular-messages',
         'angular-aria' : vendor + '/angular-aria/angular-aria',
+        'angular-resource' : vendor + '/angular-resource/angular-resource',
         'moment': vendor + '/moment/moment-with-locales',
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
@@ -85,6 +86,9 @@ require.config({
             deps : ['angular']
         },
         'angular-aria' : {
+            deps : ['angular']
+        },
+        'angular-resource' : {
             deps : ['angular']
         },
         'angular-local-storage' : {

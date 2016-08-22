@@ -666,11 +666,28 @@ mdAdminApp.config([
     'mangoStateProvider',
     '$locationProvider',
     '$mdAriaProvider',
+    'errorInterceptorProvider',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider) {
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider, errorInterceptorProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
+    
+    errorInterceptorProvider.ignore = function(rejection) {
+        var ignoreUrls = ['/rest/v1/json-data/custom-user-menu',
+                          '/rest/v1/json-data/custom-user-pages',
+                          '/rest/v1/json-data/demo-page-1',
+                          '/rest/v1/json-data/demo-page-2'];
+        
+        if (rejection.status === 404 && rejection.config.method === 'GET') {
+            var url = rejection.config.url;
+            for (var i = 0; i < ignoreUrls.length; i++) {
+                if (url.indexOf(ignoreUrls[i]) >= 0)
+                    return true;
+            }
+        }
+        return false;
+    };
 
     $mdThemingProvider.definePalette('mango-orange', {
         '50': '#ffffff',
