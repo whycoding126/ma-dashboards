@@ -21,7 +21,8 @@ var login = function($state, User, $rootScope, $window, ADMIN_SETTINGS) {
             $scope.doLogin = function() {
                 var user = User.login({
                     username: $scope.username,
-                    password: $scope.password
+                    password: $scope.password,
+                    logout: true
                 });
                 user.$promise.then(function() {
                     var redirectUrl = $state.href('dashboard.home');
