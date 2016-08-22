@@ -24,7 +24,7 @@ public class DashboardsCommon{
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION = "/web/public/";
 	public static final String DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX = "/private-dashboards/";
 	public static final String DEFAULT_DASHBOARDS_PRIVATE_FILES_LOCATION = "/web/private/";
-	public static final String DEFAULT_DASHBOARDS_ICON_DESTINATION = "/dashboards/home";
+	public static final String DEFAULT_DASHBOARDS_ICON_DESTINATION = "/dashboards/";
 	public static final String DEFAULT_DASHBOARDS_ICON_LOCATION = "web/img/dashboards.png";
 	public static final String DEFAULT_DASHBOARDS_LOGIN_PAGE = "";
 
