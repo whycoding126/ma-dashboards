@@ -216,14 +216,15 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.adminTools',
         children: [
             {
-                url: '/edit-pages/{pageXid}?templateUrl',
+                url: '/edit-pages/{pageXid}',
                 name: 'dashboard.settings.editPages',
                 templateUrl: 'views/dashboard/editPages.html',
                 menuTr: 'dashboards.v3.app.editPages',
                 menuIcon: 'dashboard',
                 permission: 'edit-pages',
                 params: {
-                    markup: null
+                    markup: null,
+                    templateUrl: null
                 }
             },
             {
