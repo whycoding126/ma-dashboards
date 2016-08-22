@@ -333,30 +333,39 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 
     Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType) {
 		
-		var rollupInterval = '1 MINUTES';
+		var rollupInterval = '1 SECONDS';
 		var duration = moment(to).diff(moment(from));
 		
-		//console.log(duration,moment.duration(duration).humanize(),rollupType);
+		// console.log(duration,moment.duration(duration).humanize(),rollupType);
 		
-		if (duration <= 1800001) {
-			// <= 30 min
-			if (rollupType == 'DELTA') {
-				rollupInterval = '1 MINUTES';
-			}
+		if (duration > 60001 && duration <= 300001) {
+			// 1 min - 5 mins
+			rollupInterval = '5 SECONDS';
+		}
+		else if (duration > 300001 && duration <= 900001) {
+			// 5 min - 15 mins
+			rollupInterval = '10 SECONDS';
+		}
+		else if (duration > 900001 && duration <= 1800001) {
+			// 15 min - 30 mins
+			rollupInterval = '30 SECONDS';
 		}
 		else if (duration > 1800001 && duration <= 10800001) {
-			// 30 min - 3 hours
+			// 30 mins - 3 hours
 			if (rollupType == 'DELTA') {
-				rollupInterval = '10 MINUTES';
+				rollupInterval = '5 MINUTES';
+			}
+			else {
+				rollupInterval = '1 MINUTES';
 			}
 		}
 		else if (duration > 10800001 && duration <= 21600001) {
 			// 3 hours - 6 hours
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 HOURS';
+				rollupInterval = '30 MINUTES';
 			}
 			else {
-				rollupInterval = '1 MINUTES';
+				rollupInterval = '2 MINUTES';
 			}
 		}
 		else if (duration > 21600001 && duration <= 86400001) {
@@ -365,27 +374,73 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
 				rollupInterval = '1 HOURS';
 			}
 			else {
-				rollupInterval = '5 MINUTES';
+				rollupInterval = '10 MINUTES';
 			}
 		}
-		else if (duration > 86400001 && duration <= 2678400001) {
-			// 1 day - 1 month
+		else if (duration > 86400001 && duration <= 259200001) {
+			// 1 day - 3 days
+			if (rollupType == 'DELTA') {
+				rollupInterval = '6 HOURS';
+			}
+			else {
+				rollupInterval = '30 MINUTES';
+			}
+		}
+		else if (duration > 259200001 && duration <= 604800001) {
+			// 3 days - 1 week
+			if (rollupType == 'DELTA') {
+				rollupInterval = '12 HOURS';
+			}
+			else {
+				rollupInterval = '2 HOURS';
+			}
+		}
+		else if (duration > 604800001 && duration <= 1209600001) {
+			// 1 week - 2 weeks
 			if (rollupType == 'DELTA') {
 				rollupInterval = '1 DAYS';
 			}
 			else {
-				rollupInterval = '1 HOURS';
+				rollupInterval = '3 HOURS';
 			}
 		}
-		else if (duration > 604800001) {
-			// > 1 month
+		else if (duration > 1209600001 && duration <= 2678400001) {
+			// 2 weeks - 1 month
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 DAYS';
+			}
+			else {
+				rollupInterval = '4 HOURS';
+			}
+		}
+		else if (duration > 2678400001 && duration <= 15721200001) {
+			// 1 month - 6 months
+			if (rollupType == 'DELTA') {
+				rollupInterval = '1 WEEKS';
+			}
+			else {
+				rollupInterval = '24 HOURS';
+			}
+		}
+		else if (duration > 15721200001 && duration <= 31622400001) {
+			// 6 months - 1 YR
+			if (rollupType == 'DELTA') {
+				rollupInterval = '2 WEEKS';
+			}
+			else {
+				rollupInterval = '48 HOURS';
+			}
+		}
+		else if (duration > 31622400001) {
+			// > 1 YR
 			if (rollupType == 'DELTA') {
 				rollupInterval = '1 MONTHS';
 			}
 			else {
-				rollupInterval = '6 HOURS';
+				rollupInterval = '96 HOURS';
 			}
 		}
+		// console.log(rollupInterval);
 		
 		return rollupInterval;
     }
