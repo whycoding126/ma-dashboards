@@ -683,7 +683,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var url = rejection.config.url;
         
         if (url.indexOf('/rest/v1/users/current') >= 0) {
-            return true;
+            if (rejection.config.method === 'OPTIONS')
+                return true;
         }
         
         if (rejection.status === 404 && rejection.config.method === 'GET') {
