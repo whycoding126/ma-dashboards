@@ -11,7 +11,7 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maSerialChart"
 
 <dual-pane-editor>
 
-<div ng-init="page={rollup:'5 minutes', rollupType:'AVERAGE', week:0, values:{}}"></div>
+<div ng-init="page={rollup:'15 minutes', rollupType:'AVERAGE', week:0, values:{}}"></div>
 
 <div layout="row">
     <md-input-container flex="">
@@ -83,8 +83,8 @@ series-4-values="page.values.wednesday" series-4-title="Wednesday"
 series-5-values="page.values.thursday" series-5-title="Thursday"
 series-6-values="page.values.friday" series-6-title="Friday"
 series-7-values="page.values.saturday" series-7-title="Saturday"
-time-format="LTS"
- options="{legend:{}, chartCursor:{categoryBalloonDateFormat:'HH:NN'}, categoryAxis:{labelRotation:45}}">
+time-format="LTS" legend="true" balloon="true"
+ options="{categoryAxis:{labelRotation:45}}">
 </ma-serial-chart>
 
 </dual-pane-editor>

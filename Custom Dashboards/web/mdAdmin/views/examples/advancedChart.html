@@ -1,6 +1,8 @@
 <h1 ma-tr="dashboards.v3.dox.advancedChart"></h1>
 
-<p>It is possible to override chart options, titles, colors, types and axes.</p>
+<p>It is possible to override chart options, titles, colors, types and axes using attributes exposed to <code>&lt;ma-serial-chart&gt;</code>.</p>
+
+<p>Use <code>legend="true"</code> to turn on the legend. Use <code>balloon="true"</code> to turn on timestamp and value tooltips on mouse hover.</p>
 
 <p>Use <code>series-X-title</code>, <code>series-X-type</code> &amp; <code>series-X-color</code> to change the title, type and color of a series.</p>
 
@@ -85,15 +87,15 @@
     </div>
 
     <div layout="row">
-        <md-input-container flex="">
-            <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto Rollup Interval</md-checkbox>
+        <md-input-container flex="25">
+            <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto-Rollup</md-checkbox>
         </md-input-container>
 
-        <md-input-container flex="">
+        <md-input-container flex="15">
             <label>Rollup interval</label>
             <input type="number" step="1" min="1" ng-model="rollupInterval" ng-init="rollupInterval=1" ng-disabled="rollupType=='NONE' || autoRollup">
         </md-input-container>
-        <md-input-container>
+        <md-input-container flex>
             <label>Interval type</label>
             <ma-interval-type-picker ng-model="rollupIntervalType" ng-init="rollupIntervalType='MINUTES'" ng-disabled="rollupType=='NONE' || autoRollup"></ma-interval-type-picker>
         </md-input-container>
@@ -114,7 +116,7 @@
     </ma-point-values>
 
     <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" series-1-type="{{point1ChartType}}" series-1-color="{{point1Color}}" series-2-values="point2Values" series-2-point="point2" series-2-type="{{point2ChartType}}"
-        series-2-color="{{point2Color}}" series-2-axis="right" options="{legend:{}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN'}, valueAxes:[{minimum:0, axisColor:point1Color, color:point1Color}, {axisColor:point2Color, color:point2Color}]}">
+        series-2-color="{{point2Color}}" series-2-axis="right" legend="true" balloon="true" options="{valueAxes:[{minimum:0, axisColor:point1Color, color:point1Color}, {axisColor:point2Color, color:point2Color}]}">
     </ma-serial-chart>
 
 </dual-pane-editor>
