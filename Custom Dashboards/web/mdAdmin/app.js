@@ -975,8 +975,9 @@ mdAdminApp.run([
     'User',
     'MD_ADMIN_SETTINGS',
     'Translate',
+    '$location',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS, Translate) {
+        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location) {
 
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
@@ -1126,7 +1127,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                     $rootScope.user = user;
                 }, function() {
                     // redirect to the login page if auto-login fails
-                    window.location = $state.href('login');
+                    $state.loginRedirectUrl = '/dashboards' + $location.url();
+                    $state.go('login');
+                    //window.location = $state.href('login');
                 });
             }
             break;
