@@ -63,7 +63,9 @@ md-table-container.lg-screen {
 .watchlist-main table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
     color: rgb(255,133,0);;
 }
-
+.watchlist-main table.md-table td.md-cell.flash {
+    color: rgb(255,133,0);;
+}
 /* Chart Component */
 .watchlist-main .chart-content {
     height: 300px;

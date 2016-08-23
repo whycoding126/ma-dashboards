@@ -6,17 +6,25 @@
 define(['require'], function(require) {
     'use strict';
 
-    var watchListTableRow = function($mdMedia, $mdDialog) {
+    var watchListTableRow = function($mdMedia, $mdDialog, $timeout) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
 
                     scope.$mdMedia = $mdMedia;
-                    
-                    scope.$watch('pointValue.value', function(newValue, old) {
+
+                    scope.Updated = false;
+
+                    scope.$watch('point.value', function(newValue, old) {
                         if (newValue === undefined || newValue === old) return;
-                        
-                        console.log('New Point Values:',scope.pointValue.name,scope.pointValue.value);
+
+                        // console.log('New Point Values:', scope.point.name, scope.point.value);
+
+                        scope.Updated = true;
+
+                        $timeout(function() {
+                            scope.Updated = false;
+                        }, 200);
                     });
 
                     scope.showSetPoint = function(ev, point) {
@@ -27,8 +35,8 @@ define(['require'], function(require) {
                                 targetEvent: ev,
                                 fullscreen: false,
                                 clickOutsideToClose: true,
-                                locals : {
-                                    point : point
+                                locals: {
+                                    point: point
                                 }
                             })
                             .then(function(answer) {
@@ -37,7 +45,7 @@ define(['require'], function(require) {
                                 //$scope.status = 'You cancelled the dialog.';
                             });
                     }
-                    
+
                     scope.showStats = function(ev, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
                         $mdDialog.show({
                                 controller: setStatsController,
@@ -46,8 +54,8 @@ define(['require'], function(require) {
                                 targetEvent: ev,
                                 fullscreen: false,
                                 clickOutsideToClose: true,
-                                locals : {
-                                    point : point,
+                                locals: {
+                                    point: point,
                                     from: from,
                                     to: to,
                                     rollupType: rollupType,
@@ -65,7 +73,7 @@ define(['require'], function(require) {
 
                     function setDialogController(scope, $mdDialog, point) {
                         scope.point = point;
-                        
+
                         scope.hide = function() {
                             $mdDialog.hide();
                         };
@@ -76,9 +84,9 @@ define(['require'], function(require) {
                             $mdDialog.hide(answer);
                         };
                     }
-                    
+
                     setDialogController.$inject = ['$scope', '$mdDialog', 'point'];
-                    
+
                     function setStatsController(scope, $mdDialog, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
                         scope.point = point;
                         scope.from = from;
@@ -97,14 +105,14 @@ define(['require'], function(require) {
                             $mdDialog.hide(answer);
                         };
                     }
-                    
-                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to',  'rollupType', 'rollupIntervalNumber', 'rollupIntervalPeriod', 'autoRollup'];
+
+                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to', 'rollupType', 'rollupIntervalNumber', 'rollupIntervalPeriod', 'autoRollup'];
 
                 } // End Link
         }; // End return
     }; // End DDO
 
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog'];
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout'];
 
     return watchListTableRow;
 

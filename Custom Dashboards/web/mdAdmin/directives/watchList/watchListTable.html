@@ -13,6 +13,7 @@
 
     <!-- <ma-point-query query="{name:searchQuery}" limit="query.limit" start="(query.page-1)*query.limit" points="points" promise="promise"></ma-point-query> -->
     <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
+    <ma-get-point-value points="page.points"></ma-get-point-value>
 
     <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch">
         <div class="md-toolbar-tools">
@@ -33,9 +34,9 @@
                     <th md-column>Tools</th>
                     <th md-column md-order-by="deviceName">Device</th>
                     <th md-column md-order-by="name">Name</th>
-                    <th md-column md-numeric md-order-by="val">Value</th>
-                    <th md-column md-numeric md-order-by="valTime">Time</th>
-                    <th md-column  md-numeric>Edit</th>
+                    <th md-column md-numeric md-order-by="value">Value</th>
+                    <th md-column md-numeric md-order-by="time">Time</th>
+                    <th md-column md-numeric>Edit</th>
                 </tr>
             </thead>
             <tbody md-body>
