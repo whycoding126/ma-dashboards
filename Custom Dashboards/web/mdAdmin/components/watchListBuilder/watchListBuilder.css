@@ -1,0 +1,17 @@
+watch-list-builder md-toolbar.md-table-toolbar form > input:focus {
+    outline: none;
+}
+
+watch-list-builder md-toolbar.md-table-toolbar form > input {
+    width: 100%;
+    margin-left: 16px;
+    border: none;
+}
+
+watch-list-builder md-toolbar.ng-animate {
+     transition: none;
+}
+
+watch-list-builder md-toolbar.md-table-toolbar em {
+    font-size:1.6rem;
+}

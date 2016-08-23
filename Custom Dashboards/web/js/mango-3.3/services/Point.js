@@ -235,12 +235,11 @@ function PointFactory($resource, $http, $timeout, Util) {
 
     Point.objQuery = function(options) {
         if (!options) return this.query();
-        if (typeof options.query === 'string') {
-            return this.rql({query: options.query});
-        }
 
         var params = [];
-        if (options.query) {
+        if (typeof options.query === 'string') {
+            params.push(options.query);
+        } else if (options.query) {
             var and = !!options.query.$and;
             var exact = !!options.query.$exact;
             delete options.query.$exact;

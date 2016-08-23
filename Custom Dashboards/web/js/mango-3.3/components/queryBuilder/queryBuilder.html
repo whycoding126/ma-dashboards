@@ -1,0 +1,6 @@
+<div layout="row" layout-align="start center">
+  <ma-query-predicate ng-repeat-start="part in $ctrl.queryParts" properties="$ctrl.properties" ng-model="part" ng-change="$ctrl.updateModel()">
+  </ma-query-predicate>
+  <div ng-repeat-end ng-if="!$last">&nbsp;AND&nbsp;</div>
+  <md-button ng-click="$ctrl.queryParts.push('name=')" class="md-raised md-accent">Add</md-button>
+</div>

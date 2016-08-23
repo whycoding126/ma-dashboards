@@ -192,8 +192,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         ]
     },
     {
-        name: 'dashboard.watchlist',
-        url: '/watchlist',
+        name: 'dashboard.watchList',
+        url: '/watch-list',
         templateUrl: 'views/dashboard/watchlist.html',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
@@ -215,6 +215,22 @@ mdAdminApp.constant('MENU_ITEMS', [
                           });
                     $ocLazyLoad.inject('watchlist');
                     cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles','link[href="styles/main.css"]');
+                });
+            }]
+        }
+    },
+    {
+        name: 'dashboard.watchListBuilder',
+        url: '/watch-list-builder',
+        template: '<h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
+        menuTr: 'dashboards.v3.app.watchListBuilder',
+        menuIcon: 'build',
+        resolve: {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {
+                    angular.module('watchListBuilder', [])
+                        .component('watchListBuilder', watchListBuilder);
+                    $ocLazyLoad.inject('watchListBuilder');
                 });
             }]
         }
