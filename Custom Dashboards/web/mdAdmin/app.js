@@ -88,10 +88,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                 return rQ(['./services/Menu',
                            './services/Page',
                            './services/MenuEditor',
-                           './directives/menu/jsonStoreMenu',
-                           './directives/menu/dashboardMenu',
-                           './directives/menu/menuLink',
-                           './directives/menu/menuToggle',
+                           './components/menu/jsonStoreMenu',
+                           './components/menu/dashboardMenu',
+                           './components/menu/menuLink',
+                           './components/menu/menuToggle',
                            './directives/menuEditor/menuEditor',
                            './directives/pageEditor/pageEditor',
                            './directives/liveEditor/liveEditor',
@@ -100,17 +100,13 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/pageView/pageView',
                            './directives/iframeView/iframeView',
                            './directives/stateParams/stateParams',
-                           './directives/autoLoginSettings/autoLoginSettings'
+                           './components/autoLoginSettings/autoLoginSettings'
                 ], function(Menu, Page, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
                         menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView, stateParams, autoLoginSettings) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('Page', Page)
                         .factory('MenuEditor', MenuEditor)
-                        .component('jsonStoreMenu', jsonStoreMenu)
-                        .component('dashboardMenu', dashboardMenu)
-                        .component('menuLink', menuLink)
-                        .component('menuToggle', menuToggle)
                         .directive('menuEditor', menuEditor)
                         .directive('pageEditor', pageEditor)
                         .directive('liveEditor', liveEditor)
@@ -119,6 +115,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .directive('pageView', pageView)
                         .directive('iframeView', iframeView)
                         .directive('stateParams', stateParams)
+                        .component('jsonStoreMenu', jsonStoreMenu)
+                        .component('dashboardMenu', dashboardMenu)
+                        .component('menuLink', menuLink)
+                        .component('menuToggle', menuToggle)
                         .component('autoLoginSettings', autoLoginSettings);
                     $ocLazyLoad.inject('dashboard');
                 });
