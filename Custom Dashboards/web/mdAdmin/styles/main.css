@@ -297,6 +297,13 @@ ul li {
 ul li:first-child {
   margin-top: 0;
 }
+/* reset amcharts export menu list style */
+.amcharts-export-menu li {
+  margin: 0;
+}
+.amcharts-export-menu li:hover > a {
+  border-bottom-color: #f2f2f2;
+}
 
 /*******************
  * CODE HIGHLIGHTING
