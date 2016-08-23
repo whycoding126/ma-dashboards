@@ -1,20 +1,20 @@
 /* Date Pickers */
 
-md-card#controls > md-card-content {
+.watchlist-controls > md-card-content {
     padding-bottom: 0;
 }
-md-card#controls .date-picker-to-from input {
+.watchlist-controls .date-picker-to-from input {
     margin: 0 !important;
     min-width: 150px !important;
     width: 150px !important;
 }
-md-card#controls .date-picker md-select {
+.watchlist-controls .date-picker md-select {
     margin: 0 !important;
     min-width: 160px !important;
     width: 160px !important;
 }
 /* Rollup Pickers */
-md-card#controls md-select, md-card#controls .md-input {
+.watchlist-controls md-select, .watchlist-controls .md-input {
     margin: 0 !important;
     min-width: 100px !important;
     width: 100px !important;
@@ -31,53 +31,53 @@ md-table-container.lg-screen {
     height: 350px;
 }*/
 
-.md-toolbar-tools.mobile h2 span {
+.watchlist-main .md-toolbar-tools.mobile h2 span {
     font-size: 16px;
 }
-.md-toolbar-tools.mobile h2 {
+.watchlist-main .md-toolbar-tools.mobile h2 {
     line-height: 18px;
 }
-md-toolbar.md-table-toolbar form > input:focus {
+.watchlist-main md-toolbar.md-table-toolbar form > input:focus {
     outline: none;
 }
-md-toolbar.md-table-toolbar form > input {
+.watchlist-main md-toolbar.md-table-toolbar form > input {
     width: 100%;
     margin-left: 16px;
     border: none;
 }
-th.md-checkbox-column > md-checkbox {
+.watchlist-main th.md-checkbox-column > md-checkbox {
     display: none;
 }
-table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
+.watchlist-main table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
     height: 30px;
 }
-table.md-table:not(.desktop) td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table:not(.desktop) th.md-column:nth-child(n+3):nth-last-child(n+2) {
+.watchlist-main table.md-table:not(.desktop) td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table:not(.desktop) th.md-column:nth-child(n+3):nth-last-child(n+2) {
     padding: 0 10px 0 0;
 }
-table.md-table td.md-cell, table.md-table th.md-column {
+.watchlist-main table.md-table td.md-cell, table.md-table th.md-column {
     font-size: 1.4rem;
 }
-table.md-table td.md-cell i, table.md-table th.md-column i {
+.watchlist-main table.md-table td.md-cell i, table.md-table th.md-column i {
     color: rgb(45,197,255);
 }
-table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
+.watchlist-main table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
     color: rgb(255,133,0);;
 }
 
 /* Chart Component */
-.chart-content {
+.watchlist-main .chart-content {
     height: 300px;
 }
-.chart-content.lg-screen {
+.watchlist-main .chart-content.lg-screen {
     height: 400px;
 }
-path.amcharts-graph-stroke {
+.watchlist-main path.amcharts-graph-stroke {
     stroke-width: 2.5px;
     stroke-opacity: .7;
 }
-path.amcharts-graph-fill {
+.watchlist-main path.amcharts-graph-fill {
     fill-opacity: 0.5;
 }
-md-tabs.noTabPanel md-tabs-wrapper {
+.watchlist-main md-tabs.noTabPanel md-tabs-wrapper {
     display: none;
 }
