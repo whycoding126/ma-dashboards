@@ -192,6 +192,32 @@ mdAdminApp.constant('MENU_ITEMS', [
         ]
     },
     {
+        name: 'dashboard.watchlist',
+        url: '/watchlist',
+        templateUrl: 'views/dashboard/watchlist.html',
+        menuText: 'Watch List',
+        menuIcon: 'remove_red_eye',
+        resolve: {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                return rQ(['./directives/watchList/watchListTable',
+                           './directives/watchList/watchListChart'
+                ], function(watchListTable, watchListChart) {
+                    angular.module('watchlist', [])
+                        .directive('watchListTable', watchListTable)
+                        .directive('watchListChart', watchListChart)
+                        .filter('noNaN', function () {
+                                return function (input, suffix) {
+                                      if (isNaN(input)) { return '...'; }
+                                      else { return input.toFixed(1) + suffix; }
+                                }
+                          });
+                    $ocLazyLoad.inject('watchlist');
+                    cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles','link[href="styles/main.css"]');
+                });
+            }]
+        }
+    },
+    {
         name: 'dashboard.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
@@ -241,6 +267,51 @@ mdAdminApp.constant('MENU_ITEMS', [
                 templateUrl: 'views/dashboard/autoLoginSettings.html',
                 menuTr: 'dashboards.v3.app.autoLoginSettings',
                 menuIcon: 'face',
+                permission: 'superadmin'
+            },
+            {
+                url: '/system-settings',
+                name: 'dashboard.admin.systemSettings',
+                template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
+                menuTr: 'header.systemSettings',
+                menuIcon: 'settings',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/data-sources',
+                name: 'dashboard.admin.dataSources',
+                template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
+                menuTr: 'header.dataSources',
+                menuIcon: 'device_hub',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/users',
+                name: 'dashboard.admin.users',
+                template: '<iframe-view src="/users.shtm"></iframe-view>',
+                menuTr: 'header.users',
+                menuIcon: 'people',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/events',
+                name: 'dashboard.admin.events',
+                template: '<iframe-view src="/events.shtm"></iframe-view>',
+                menuTr: 'header.alarms',
+                menuIcon: 'alarm',
+                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/import-export',
+                name: 'dashboard.admin.importExport',
+                template: '<iframe-view src="/emport.shtm"></iframe-view>',
+                menuTr: 'header.emport',
+                menuIcon: 'import_export',
+                menuHidden: true,
                 permission: 'superadmin'
             }
         ]

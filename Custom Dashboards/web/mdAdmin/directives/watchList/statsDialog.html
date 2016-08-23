@@ -1,0 +1,56 @@
+<md-dialog aria-label="{{point.name}} Statistics">
+      <form>
+            <md-toolbar>
+                  <div class="md-toolbar-tools">
+                        <h2>{{point.deviceName}} - {{point.name}}</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="cancel()">
+                              <md-icon>close</md-icon>
+                        </md-button>
+                  </div>
+            </md-toolbar>
+            <md-dialog-content>
+                  <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="Stats">
+                              <md-content class="md-padding">
+                                    <ma-point-statistics point="point" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+
+                                    <ma-statistics-table statistics="statsObj"></ma-statistics-table>
+                              </md-content>
+                        </md-tab>
+                        <md-tab label="Chart">
+                              <md-content class="md-padding">
+                                    <ma-point-values point-xid="{{point.xid}}" values="pointValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}" auto-rollup-interval="autoRollup">
+                                    </ma-point-values>
+
+                                    <ma-serial-chart style="height: 300px; width: 100%" series-1-values="pointValues" series-1-point="point" stack-type="none" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                                    </ma-serial-chart>
+                              </md-content>
+                        </md-tab>
+                        <md-tab label="History">
+                              <md-table-container>
+                                    <md-content class="md-padding">
+                                          <ma-point-values point-xid="{{point.xid}}" values="pointValuesLatest" latest="10" realtime>
+                                          </ma-point-values>
+                                          
+                                          <table md-table>
+                                                <thead md-head>
+                                                      <tr>
+                                                            <th md-column>TimeStamp</th>
+                                                            <th md-column>Point Value</th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody md-body>
+                                                      <tr ng-repeat="value in pointValuesLatest">
+                                                            <td md-cell>{{value.timestamp | moment:'format':'ll LTS'}}</td>
+                                                            <td md-cell>{{value.value}}</td>
+                                                      </tr>
+                                                </tbody>
+                                          </table>
+                                    </md-content>
+                              </md-table-container>
+                        </md-tab>
+                  </md-tabs>
+            </md-dialog-content>
+      </form>
+</md-dialog>
