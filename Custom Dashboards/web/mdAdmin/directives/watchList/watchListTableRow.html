@@ -1,0 +1,17 @@
+<td md-cell>
+      <ma-get-point-value point-xid="{{point.xid}}" point="pointValue">
+      </ma-get-point-value>
+
+      <i class="fa fa-info-circle fa-lg md-primary" ng-click="showStats($event, pointValue, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup)" style="padding: 5px 5px 0 0;"></i>
+
+      <i ng-if="pointValue.pointLocator.settable" class="fa fa-cogs fa-lg md-primary" style="padding-top:5px;" ng-click="showSetPoint($event, pointValue)"></i>
+</td>
+<td md-cell>{{point.deviceName}}</td>
+<td md-cell>{{point.name}}</td>
+<td md-cell>{{pointValue.renderedValue }} </td>
+<td md-cell>{{pointValue.time | moment:'format':'LTS'}}</td>
+<td md-cell>
+      <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank">
+            <i class="fa fa-pencil fa-lg alternate"></i>
+      </a>
+</td>
