@@ -4,116 +4,68 @@
  */
 
 define(['require'], function(require) {
-    'use strict';
+      'use strict';
 
-    var watchListTableRow = function($mdMedia, $mdDialog, $timeout) {
-        return {
-            templateUrl: 'directives/watchList/watchListTableRow.html',
-            link: function link(scope, element, attrs) {
+      var watchListTableRow = function($mdMedia, $mdDialog, $timeout) {
+            return {
+                  templateUrl: 'directives/watchList/watchListTableRow.html',
+                  link: function link(scope, element, attrs) {
 
-                    scope.$mdMedia = $mdMedia;
+                              scope.$mdMedia = $mdMedia;
+                              scope.Updated = false;
 
-                    scope.Updated = false;
+                              scope.$watch('point.value', function(newValue, old) {
+                                    if (newValue === undefined || newValue === old) return;
+                                    // console.log('New Point Values:', scope.point.name, scope.point.value);
+                                    
+                                    scope.Updated = true;
+                                    $timeout(function() {
+                                          scope.Updated = false;
+                                    }, 200);
+                              });
 
-                    scope.$watch('point.value', function(newValue, old) {
-                        if (newValue === undefined || newValue === old) return;
+                              scope.showSetPoint = function(ev) {
+                                    $mdDialog.show({
+                                                controller: function () { this.parent = scope; },
+                                                templateUrl: require.toUrl('./setPointDialog.html'),
+                                                parent: angular.element(document.body),
+                                                targetEvent: ev,
+                                                fullscreen: false,
+                                                clickOutsideToClose: true,
+                                                controllerAs: 'ctrl'
+                                          })
+                                          .then(function(answer) {
+                                                //$scope.status = 'You said the information was "' + answer + '".';
+                                          }, function() {
+                                                //$scope.status = 'You cancelled the dialog.';
+                                          });
+                              }
 
-                        // console.log('New Point Values:', scope.point.name, scope.point.value);
 
-                        scope.Updated = true;
+                              scope.showStats = function(ev) {
+                                    $mdDialog.show({
+                                                controller: function () { this.parent = scope; },
+                                                templateUrl: require.toUrl('./statsDialog.html'),
+                                                parent: angular.element(document.body),
+                                                targetEvent: ev,
+                                                fullscreen: false,
+                                                clickOutsideToClose: true,
+                                                controllerAs: 'ctrl'
+                                          })
+                                          .then(function(answer) {
+                                                //$scope.status = 'You said the information was "' + answer + '".';
+                                          }, function() {
+                                                //$scope.status = 'You cancelled the dialog.';
+                                          });
+                              }
 
-                        $timeout(function() {
-                            scope.Updated = false;
-                        }, 200);
-                    });
 
-                    scope.showSetPoint = function(ev, point) {
-                        $mdDialog.show({
-                                controller: setDialogController,
-                                templateUrl: require.toUrl('./setPointDialog.html'),
-                                parent: angular.element(document.body),
-                                targetEvent: ev,
-                                fullscreen: false,
-                                clickOutsideToClose: true,
-                                locals: {
-                                    point: point
-                                }
-                            })
-                            .then(function(answer) {
-                                //$scope.status = 'You said the information was "' + answer + '".';
-                            }, function() {
-                                //$scope.status = 'You cancelled the dialog.';
-                            });
-                    }
+                        } // End Link
+            }; // End return
+      }; // End DDO
 
-                    scope.showStats = function(ev, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
-                        $mdDialog.show({
-                                controller: setStatsController,
-                                templateUrl: require.toUrl('./statsDialog.html'),
-                                parent: angular.element(document.body),
-                                targetEvent: ev,
-                                fullscreen: false,
-                                clickOutsideToClose: true,
-                                locals: {
-                                    point: point,
-                                    from: from,
-                                    to: to,
-                                    rollupType: rollupType,
-                                    rollupIntervalNumber: rollupIntervalNumber,
-                                    rollupIntervalPeriod: rollupIntervalPeriod,
-                                    autoRollup: autoRollup
-                                }
-                            })
-                            .then(function(answer) {
-                                //$scope.status = 'You said the information was "' + answer + '".';
-                            }, function() {
-                                //$scope.status = 'You cancelled the dialog.';
-                            });
-                    }
+      watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout'];
 
-                    function setDialogController(scope, $mdDialog, point) {
-                        scope.point = point;
-
-                        scope.hide = function() {
-                            $mdDialog.hide();
-                        };
-                        scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-                        scope.answer = function(answer) {
-                            $mdDialog.hide(answer);
-                        };
-                    }
-
-                    setDialogController.$inject = ['$scope', '$mdDialog', 'point'];
-
-                    function setStatsController(scope, $mdDialog, point, from, to, rollupType, rollupIntervalNumber, rollupIntervalPeriod, autoRollup) {
-                        scope.point = point;
-                        scope.from = from;
-                        scope.to = to;
-                        scope.rollupType = rollupType;
-                        scope.rollupIntervalNumber = rollupIntervalNumber;
-                        scope.rollupIntervalPeriod = rollupIntervalPeriod;
-                        scope.autoRollup = autoRollup;
-                        scope.hide = function() {
-                            $mdDialog.hide();
-                        };
-                        scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-                        scope.answer = function(answer) {
-                            $mdDialog.hide(answer);
-                        };
-                    }
-
-                    setStatsController.$inject = ['$scope', '$mdDialog', 'point', 'from', 'to', 'rollupType', 'rollupIntervalNumber', 'rollupIntervalPeriod', 'autoRollup'];
-
-                } // End Link
-        }; // End return
-    }; // End DDO
-
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout'];
-
-    return watchListTableRow;
+      return watchListTableRow;
 
 }); // define
