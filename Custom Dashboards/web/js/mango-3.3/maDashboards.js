@@ -18,6 +18,7 @@ define(['./maServices',
         './directives/stateChart',
         './directives/copyBlurred',
         './directives/tr',
+        './directives/trAriaLabel',
         './directives/datePicker',
         './directives/dateRangePicker',
         './directives/statisticsTable',
@@ -44,7 +45,7 @@ define(['./maServices',
         'angular',
         'require'
 ], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
-        tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
+        tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, trAriaLabel,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
@@ -75,6 +76,7 @@ maDashboards.directive('maClock', clock);
 maDashboards.directive('maStateChart', stateChart);
 maDashboards.directive('maCopyBlurred', copyBlurred);
 maDashboards.directive('maTr', tr);
+maDashboards.directive('maTrAriaLabel', trAriaLabel);
 maDashboards.directive('maDatePicker', datePicker);
 maDashboards.directive('maDateRangePicker', dateRangePicker);
 maDashboards.directive('maStatisticsTable', statisticsTable);

@@ -613,3 +613,8 @@ md-input-container .hint {
 .logged-out img.live-value {
 	background-color: rgba(255, 0, 0, 0.2);
 }
+
+/* Page editor */
+.page-editor-inputs md-input-container {
+  margin-bottom: 5px;
+}

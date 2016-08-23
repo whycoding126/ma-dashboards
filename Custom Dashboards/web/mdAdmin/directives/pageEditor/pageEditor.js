@@ -14,7 +14,9 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
         templateUrl: require.toUrl('./pageEditor.html'),
         link: function($scope, $element) {
             $scope.user = MD_ADMIN_SETTINGS.user;
-            
+            $scope.showEditor = true;
+            $scope.showPreview = true;
+
             var menuPromise = Menu.getMenu().then(function(menuStore) {
                 $scope.menuStore = menuStore;
                 return menuStore;
