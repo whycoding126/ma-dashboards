@@ -1,3 +1,8 @@
+*Version 3.3.0*
+* Internal build only!
+* Add IFRAME views for various legacy Mango pages
+* Add watchlist view
+
 *Version 3.2.0*
 * Set a point limit for ma-point-list in examples
 * Add auto-init option to ma-filtering-point-list

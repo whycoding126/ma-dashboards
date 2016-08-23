@@ -271,7 +271,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/system-settings',
-                name: 'dashboard.admin.systemSettings',
+                name: 'dashboard.settings.systemSettings',
                 template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
                 menuTr: 'header.systemSettings',
                 menuIcon: 'settings',
@@ -280,7 +280,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/data-sources',
-                name: 'dashboard.admin.dataSources',
+                name: 'dashboard.settings.dataSources',
                 template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
                 menuTr: 'header.dataSources',
                 menuIcon: 'device_hub',
@@ -289,7 +289,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/users',
-                name: 'dashboard.admin.users',
+                name: 'dashboard.settings.users',
                 template: '<iframe-view src="/users.shtm"></iframe-view>',
                 menuTr: 'header.users',
                 menuIcon: 'people',
@@ -298,7 +298,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/events',
-                name: 'dashboard.admin.events',
+                name: 'dashboard.settings.events',
                 template: '<iframe-view src="/events.shtm"></iframe-view>',
                 menuTr: 'header.alarms',
                 menuIcon: 'alarm',
@@ -307,7 +307,7 @@ mdAdminApp.constant('MENU_ITEMS', [
             },
             {
                 url: '/import-export',
-                name: 'dashboard.admin.importExport',
+                name: 'dashboard.settings.importExport',
                 template: '<iframe-view src="/emport.shtm"></iframe-view>',
                 menuTr: 'header.emport',
                 menuIcon: 'import_export',
