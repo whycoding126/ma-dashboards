@@ -13,7 +13,7 @@
         <md-tab id="tab2">STATS</md-tab>
     </md-tabs>
 
-    <md-select ng-model="chartType" ng-init="chartType='smoothedLine';" flex="10" aria-label="Chart Type">
+    <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" flex="10" aria-label="Chart Type">
         <md-option value="smoothedLine">
             Smooth
         </md-option>
@@ -43,11 +43,11 @@
             </ma-point-values>
 
             <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-if="points.length">
-                <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true">
                 </ma-serial-chart>
-                <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true">
                 </ma-serial-chart>
-                <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" options="{legend:{spacing:0, fontSize:10, valueWidth:45}, chartCursor:{categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true}, export: {enabled: true}}">
+                <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true">
                 </ma-serial-chart>
             </div>
         </md-content>
@@ -74,6 +74,7 @@
                 <table md-table ng-class="{'desktop': $mdMedia('gt-sm')}">
                     <thead md-head md-order="tableOrder">
                         <tr>
+                            <th md-column md-order-by="device">Device</th>
                             <th md-column md-order-by="name">Name</th>
                             <th md-column md-numeric md-order-by="avg">Avg</th>
                             <th md-column md-numeric md-order-by="max">Max</th>
@@ -84,8 +85,9 @@
                             <th md-column md-numeric md-order-by="count">Count</th>
                         </tr>
                     </thead>
-                    <tbody md-body ng-init="tableOrder='name'">
+                    <tbody md-body ng-init="tableOrder='device'">
                         <tr md-row ng-repeat="point in stats | orderBy: tableOrder">
+                            <td md-cell>{{point.device}}</td>
                             <td md-cell>{{point.name}}</td>
                             <td md-cell>{{point.avg | noNaN:point.suffix }}</td>
                             <td md-cell>{{point.max | noNaN:point.suffix }}</td>

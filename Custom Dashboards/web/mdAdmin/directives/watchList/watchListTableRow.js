@@ -23,7 +23,7 @@ define(['require'], function(require) {
                                     scope.Updated = true;
                                     $timeout(function() {
                                           scope.Updated = false;
-                                    }, 200);
+                                    }, 300);
                               });
 
                               scope.showSetPoint = function(ev) {

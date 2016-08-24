@@ -1,9 +1,12 @@
 <md-dialog aria-label="{{ctrl.parent.point.name}} Statistics" class="stats-dialog">
       <form>
             <md-toolbar>
-                  <div class="md-toolbar-tools">
-                        <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s Details (Over {{ctrl.timeRange}})</h2>
-                        <span flex></span>
+                  <div class="md-toolbar-tools" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}">
+                        <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s Details 
+                              <span class="nowrap">(Over {{ctrl.timeRange}} - 
+                                    {{ctrl.parent.rollupIntervalNumber}} {{ctrl.parent.rollupIntervalPeriod}} Rollup)
+                              </span>
+                        </h2>
                   </div>
             </md-toolbar>
             <md-dialog-content>

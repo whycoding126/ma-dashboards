@@ -1,3 +1,4 @@
+
 /* Date Pickers */
 
 .watchlist-controls > md-card-content {
@@ -31,11 +32,9 @@ md-table-container.lg-screen {
     height: 350px;
 }*/
 
-.watchlist-main .md-toolbar-tools.mobile h2 span {
-    font-size: 16px;
-}
 .watchlist-main .md-toolbar-tools.mobile h2 {
     line-height: 18px;
+    font-size: 16px;
 }
 .watchlist-main md-toolbar.md-table-toolbar form > input:focus {
     outline: none;
@@ -51,20 +50,20 @@ md-table-container.lg-screen {
 .watchlist-main table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
     height: 30px;
 }
-.watchlist-main table.md-table:not(.desktop) td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table:not(.desktop) th.md-column:nth-child(n+3):nth-last-child(n+2) {
-    padding: 0 10px 0 0;
+.watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
+    padding: 0 0 0 5px !important;
 }
-.watchlist-main table.md-table td.md-cell, table.md-table th.md-column {
-    font-size: 1.4rem;
+.watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
+    font-size: 1.2rem;
 }
 .watchlist-main table.md-table td.md-cell i, table.md-table th.md-column i {
     color: rgb(45,197,255);
 }
 .watchlist-main table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
-    color: rgb(255,133,0);;
+    color: rgb(255,133,0);
 }
 .watchlist-main table.md-table td.md-cell.flash {
-    color: rgb(255,133,0);;
+    color: rgb(255,133,0);
 }
 
 /* Chart Component */
@@ -89,5 +88,14 @@ md-table-container.lg-screen {
 /* Chart Component */
 
 .stats-dialog {
-    width: 500px;
+    width: 380px;
+}
+.stats-dialog .md-toolbar-tools.mobile h2 {
+    line-height: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.stats-dialog .md-toolbar-tools.mobile h2 span.nowrap {
+    white-space: nowrap;
 }

@@ -9,12 +9,11 @@
     </div>
 </md-toolbar>
 
-<md-card-content layout="column" ng-init="page={searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
 
     <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
     <ma-get-point-value points="page.points"></ma-get-point-value>
 
-    <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch">
+    <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch" ng-init="page={searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
         <div class="md-toolbar-tools">
             <md-icon>search</md-icon>
             <form flex="" name="filter.form">
@@ -26,7 +25,7 @@
         </div>
     </md-toolbar>
 
-    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myLimit=10; myPage=1; myOrder='deviceName'">
+    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myLimit=15; myPage=1; myOrder='deviceName'">
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
             <thead md-head md-order="myOrder">
                 <tr md-row>
@@ -45,5 +44,5 @@
         </table>
     </md-table-container>
 
-    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15]" md-page="myPage" md-total="{{page.points.length}}"></md-table-pagination>
-</md-card-content>
+    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 25, 50, 100]" md-page="myPage" md-total="{{page.points.length}}"></md-table-pagination>
+

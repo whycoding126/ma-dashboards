@@ -1,4 +1,4 @@
-<td md-cell>
+<td md-cell nowrap>
       <i class="fa fa-info-circle fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px 5px 0 0;"></i>
       <i ng-if="point.pointLocator.settable" class="fa fa-cogs fa-lg md-primary" style="padding-top:5px;" ng-click="showSetPoint($event)"></i>
 </td>
@@ -7,7 +7,7 @@
 <td md-cell ng-class="{flash: Updated}">
       {{point.renderedValue}} 
 </td>
-<td md-cell>{{point.time | moment:'format':'LTS'}}</td>
+<td md-cell>{{point.time | moment:'format':'h:mm:ss'}}</td>
 <td md-cell>
       <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank">
             <i class="fa fa-pencil fa-lg alternate"></i>
