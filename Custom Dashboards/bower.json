@@ -28,7 +28,8 @@
     "moment-timezone": "~0.5.3",
     "jquery": "~2.2.3",
     "angular-material-data-table": "~0.10.5",
-    "angular-local-storage": "~0.3.0"
+    "angular-local-storage": "~0.3.0",
+    "rql": "~0.3.3"
   },
   "overrides": {
     "ace-builds": {
@@ -48,6 +49,14 @@
     },
     "moment": {
         "main": "min/moment-with-locales.min.js"
+    },
+    "rql": {
+    	"main": [
+    		"js-array.js",
+    		"parser.js",
+    		"query.js",
+    		"util/*.js"
+    	]
     }
   },
   "resolutions": {

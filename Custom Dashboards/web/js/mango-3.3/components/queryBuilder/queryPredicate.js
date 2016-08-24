@@ -6,94 +6,37 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var queryPredicate = function queryPredicate(cssInjector) {
+var queryPredicate = function queryPredicate() {
     this.operations = [
-        {
-            label: '=',
-            value: 'eq'
-        },
-        {
-            label: '~=',
-            value: 'like'
-        },
-        {
-            label: '>',
-            value: 'gt'
-        },
-        {
-            label: '>=',
-            value: 'gte'
-        },
-        {
-            label: '<',
-            value: 'lt'
-        },
-        {
-            label: '<=',
-            value: 'lte'
-        }
+        { label: '==', value: 'eq' },
+        { label: '~=', value: 'like' },
+        { label: '>',  value: 'gt' },
+        { label: '>=', value: 'ge' },
+        { label: '<',  value: 'lt' },
+        { label: '<=', value: 'le' },
+        { label: '!=', value: 'ne' }
     ];
-    this.predicate = {};
-    
+
     this.$onInit = function() {
-        this.ngModelCtrl.$parsers.unshift(this.parser);
-        this.ngModelCtrl.$formatters.push(this.formatter);
-        this.ngModelCtrl.$render = this.render;
     };
     
-    this.parser = function parser(value) {
-        // turn object into RQL
-        console.log('parse ' + value);
-        if (value.operation === 'eq') {
-            return value.property + '=' + value.value;
-        }
-        return value.property + '=' + value.operation + '=' + value.value;
-    }.bind(this);
-    
-    this.formatter = function formatter(value) {
-        // parse RQL and turn into object
-        console.log('format ' + value);
-        
-        var predicate = {
-            property: 'name',
-            operation: 'eq',
-            value: ''
-        };
-        
-        var parts = value.split('=');
-        if (parts.length < 1) {
-            return predicate;
-        }
-        predicate.property = parts[0];
-        if (parts.length > 2) {
-            predicate.operation = parts[1];
-            predicate.value = parts[2];
-        } else {
-            predicate.value = parts[1];
-        }
-        
-        return predicate;
-    }.bind(this);
-    
-    this.render = function render() {
-        this.predicate = angular.copy(this.ngModelCtrl.$viewValue);
-    }.bind(this);
-    
-    this.updateModel = function() {
-        this.ngModelCtrl.$setViewValue(angular.copy(this.predicate));
+    this.deleteSelf = function deleteSelf($event) {
+        this.onDelete({node: this.node});
     };
 };
 
-queryPredicate.$inject = ['cssInjector'];
+queryPredicate.$inject = [];
 
 return {
     controller: queryPredicate,
     templateUrl: require.toUrl('./queryPredicate.html'),
     require: {
-        'ngModelCtrl': 'ngModel'
+        'builderCtrl': '^^maQueryBuilder'
     },
     bindings: {
-        properties: '<'
+        node: '<',
+        properties: '<',
+        onDelete: '&'
     }
 };
 

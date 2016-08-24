@@ -1,0 +1,18 @@
+<md-card class="query-group" ng-class="['query-group-depth-' + $ctrl.depth, 'query-group-alt-' + $ctrl.depth % 2]">
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+      <md-button ng-click="$ctrl.deleteSelf($event)" class="md-icon-button"><md-icon>clear</md-icon></md-button>
+      <div ng-bind="$ctrl.node.name" ng-click="$ctrl.toggleName($event)" class="query-group-name"></div>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <div ng-repeat="arg in $ctrl.node.args" layout="column" flex>
+      <ma-query-predicate flex node="arg" properties="$ctrl.properties" ng-if="arg.name !== 'and' && arg.name !== 'or'" on-delete="$ctrl.deleteChild($index, node)"></ma-query-predicate>
+      <ma-query-group flex node="arg" properties="$ctrl.properties" depth="$ctrl.depth + 1" ng-if="arg.name === 'and' || arg.name === 'or'" on-delete="$ctrl.deleteChild($index, node)"></ma-query-group>
+    </div>
+    <div layout="row" class="query-group-add-buttons">
+      <md-button ng-click="$ctrl.addPredicate($event)"><span ma-tr="dashboards.v3.app.addExpression"></span></md-button>
+      <md-button ng-click="$ctrl.addGroup($event)"><span ma-tr="dashboards.v3.app.addGroup"></span></md-button>
+    </div>
+  </md-card-content>
+</md-card>

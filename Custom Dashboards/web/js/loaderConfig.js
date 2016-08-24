@@ -56,7 +56,8 @@ require.config({
         'jquery': vendor + '/jquery/jquery',
         'mdPickers': vendor + '/mdPickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
-        'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage'
+        'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
+        'rql': vendor + '/rql'
     },
     shim : {
         'angular-route' : {

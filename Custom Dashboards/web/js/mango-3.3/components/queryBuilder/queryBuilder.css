@@ -1,0 +1,28 @@
+ma-query-group .query-group-name {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+ma-query-group md-card.query-group md-card-content {
+  padding: 8px;
+}
+
+ma-query-group md-card.query-group md-toolbar {
+  min-height: 36px;
+}
+
+ma-query-group md-toolbar .md-toolbar-tools {
+  height: 36px;
+}
+
+ma-query-group .query-group-alt-0 {
+  background-color: white;
+}
+
+ma-query-group .query-group-alt-1 {
+  background-color: lightgrey;
+}
+
+ma-query-predicate .md-errors-spacer {
+  display: none;
+}

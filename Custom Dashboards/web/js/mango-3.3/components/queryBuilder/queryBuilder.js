@@ -3,12 +3,12 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 var queryBuilder = function queryBuilder(cssInjector) {
     cssInjector.injectLink(require.toUrl('./queryBuilder.css'), 'queryBuilder');
-    this.queryParts = [];
+    this.rootQueryNode = new query.Query();
     
     this.$onInit = function() {
         this.ngModelCtrl.$parsers.unshift(this.parser);
@@ -18,22 +18,20 @@ var queryBuilder = function queryBuilder(cssInjector) {
     
     this.parser = function parser(value) {
         // turn object into RQL
-        console.log('parse ' + value);
-        return value.join('&');
+        return value.toString();
     }.bind(this);
     
     this.formatter = function formatter(value) {
         // parse RQL and turn into object
-        console.log('format ' + value);
-        return value.split('&');
+        return new query.Query(value);
     }.bind(this);
     
     this.render = function render() {
-        this.queryParts = angular.copy(this.ngModelCtrl.$viewValue);
+        this.rootQueryNode = angular.copy(this.ngModelCtrl.$viewValue);
     }.bind(this);
     
     this.updateModel = function() {
-        this.ngModelCtrl.$setViewValue(angular.copy(this.queryParts));
+        this.ngModelCtrl.$setViewValue(angular.copy(this.rootQueryNode));
     };
 };
 
