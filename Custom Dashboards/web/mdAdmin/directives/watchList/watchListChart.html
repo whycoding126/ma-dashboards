@@ -8,12 +8,12 @@
 </md-toolbar>
 
 <div layout="row">
-    <md-tabs md-selected="currentTab" md-stretch-tabs="never" flex>
+    <md-tabs md-selected="currentTab" md-stretch-tabs="auto" flex="60">
         <md-tab id="tab1">CHART</md-tab>
         <md-tab id="tab2">STATS</md-tab>
     </md-tabs>
-
-    <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" flex="10" aria-label="Chart Type">
+    <span flex></span>
+    <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" flex="10" flex-xs="30" aria-label="Chart Type">
         <md-option value="smoothedLine">
             Smooth
         </md-option>

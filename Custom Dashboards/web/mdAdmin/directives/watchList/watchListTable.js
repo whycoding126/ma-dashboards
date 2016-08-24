@@ -23,6 +23,13 @@ define(['require'], function(require) {
             link: function link(scope, element, attrs) {
                     scope.page.searchQuery = "xid=like=*" + scope.data + "*";
                     scope.$mdMedia = $mdMedia;
+                    
+                    if ($mdMedia('gt-sm')) {
+                        scope.page.myLimit = 15;
+                    }
+                    else {
+                        scope.page.myLimit = 5;
+                    }
                 } // End Link
         }; // End return
     }; // End DDO

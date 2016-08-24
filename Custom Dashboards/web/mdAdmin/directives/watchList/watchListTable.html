@@ -10,39 +10,38 @@
 </md-toolbar>
 
 
-    <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
-    <ma-get-point-value points="page.points"></ma-get-point-value>
+<ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
+<ma-get-point-value points="page.points"></ma-get-point-value>
 
-    <md-toolbar class="md-table-toolbar md-default" ng-show="showSearch" ng-init="page={searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
-        <div class="md-toolbar-tools">
-            <md-icon>search</md-icon>
-            <form flex="" name="filter.form">
-                <input type="text" ng-model="page.searchQuery" ng-model-options="{debounce:1000}" placeholder="search">
-            </form>
-            <md-button class="md-icon-button" ng-click="showSearch=false">
-                <md-icon>close</md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
+<md-toolbar class="md-table-toolbar md-default" ng-show="showSearch" ng-init="page={searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
+    <div class="md-toolbar-tools">
+        <md-icon>search</md-icon>
+        <form flex="" name="filter.form">
+            <input type="text" ng-model="page.searchQuery" ng-model-options="{debounce:1000}" placeholder="search">
+        </form>
+        <md-button class="md-icon-button" ng-click="showSearch=false">
+            <md-icon>close</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
 
-    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myLimit=15; myPage=1; myOrder='deviceName'">
-        <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
-            <thead md-head md-order="myOrder">
-                <tr md-row>
-                    <th md-column>Tools</th>
-                    <th md-column md-order-by="deviceName">Device</th>
-                    <th md-column md-order-by="name">Name</th>
-                    <th md-column md-numeric md-order-by="value">Value</th>
-                    <th md-column md-numeric md-order-by="time">Time</th>
-                    <th md-column md-numeric>Edit</th>
-                </tr>
-            </thead>
-            <tbody md-body>
-                <tr ng-repeat="point in page.points | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit" md-select="point" md-row md-select-id="id" watch-list-table-row>
-                </tr>
-            </tbody>
-        </table>
-    </md-table-container>
+<md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myPage=1; myOrder='deviceName'">
+    <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
+        <thead md-head md-order="myOrder">
+            <tr md-row>
+                <th md-column>Tools</th>
+                <th md-column md-order-by="deviceName">Device</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column md-numeric md-order-by="value">Value</th>
+                <th md-column md-numeric md-order-by="time">Time</th>
+                <th md-column md-numeric>Edit</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr ng-repeat="point in page.points | orderBy: myOrder | limitTo: page.myLimit: (myPage - 1) * page.myLimit" md-select="point" md-row md-select-id="id" watch-list-table-row md-no-ink>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
 
-    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 25, 50, 100]" md-page="myPage" md-total="{{page.points.length}}"></md-table-pagination>
-
+<md-table-pagination md-limit="page.myLimit" md-limit-options="[5, 10, 15, 25, 50, 100]" md-page="myPage" md-total="{{page.points.length}}"></md-table-pagination>

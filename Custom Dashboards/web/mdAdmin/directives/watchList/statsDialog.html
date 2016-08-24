@@ -1,12 +1,15 @@
-<md-dialog aria-label="{{ctrl.parent.point.name}} Statistics" class="stats-dialog">
+<md-dialog aria-label="{{ctrl.parent.point.name}} Statistics" class="stats-dialog" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}" md-no-ink>
       <form>
             <md-toolbar>
-                  <div class="md-toolbar-tools" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}">
+                  <div class="md-toolbar-tools">
                         <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s Details 
-                              <span class="nowrap">(Over {{ctrl.timeRange}} - 
-                                    {{ctrl.parent.rollupIntervalNumber}} {{ctrl.parent.rollupIntervalPeriod}} Rollup)
+                              <span class="nowrap">(Over {{ctrl.timeRange}})
                               </span>
                         </h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+                              <md-icon>close</md-icon>
+                        </md-button>
                   </div>
             </md-toolbar>
             <md-dialog-content>
@@ -27,7 +30,7 @@
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
-                        <md-tab label="History">
+                        <md-tab label="Values">
                               <md-content class="md-padding">
                                     <!-- <ma-point-values point-xid="{{point.xid}}" values="pointValuesLatest" latest="10" realtime rendered="true">
                                     </ma-point-values> -->

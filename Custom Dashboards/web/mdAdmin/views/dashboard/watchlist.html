@@ -1,4 +1,4 @@
-<div layout="column" class="watchlist-main">
+<div layout="column" class="watchlist-main" md-no-ink>
     <md-card flex class="watchlist-table">
         <watch-list-table data="dummy" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
     </md-card>
@@ -7,7 +7,7 @@
         <md-card-content layout="row" layout-align="space-around center" layout-wrap>
                   <md-input-container class="date-picker">
                         <label>Date Range</label>
-                        <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="10 seconds" aria-label="Date Preset">
+                        <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes" aria-label="Date Preset">
                         </ma-date-range-picker>
                   </md-input-container>
                     <md-input-container class="date-picker-to-from">

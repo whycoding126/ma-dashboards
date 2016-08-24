@@ -6,8 +6,8 @@
 }
 .watchlist-controls .date-picker-to-from input {
     margin: 0 !important;
-    min-width: 150px !important;
-    width: 150px !important;
+    min-width: 135px !important;
+    width: 135px !important;
 }
 .watchlist-controls .date-picker md-select {
     margin: 0 !important;
@@ -51,10 +51,10 @@ md-table-container.lg-screen {
     height: 30px;
 }
 .watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
-    padding: 0 0 0 5px !important;
+    padding: 0 0 0 8px !important;
 }
 .watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 .watchlist-main table.md-table td.md-cell i, table.md-table th.md-column i {
     color: rgb(45,197,255);
@@ -85,17 +85,31 @@ md-table-container.lg-screen {
     display: none;
 }
 
-/* Chart Component */
+/* Stats ialog */
 
 .stats-dialog {
     width: 380px;
 }
-.stats-dialog .md-toolbar-tools.mobile h2 {
+.stats-dialog .md-toolbar-tools h2 {
     line-height: 20px;
     font-size: 16px;
     text-align: center;
 }
 
-.stats-dialog .md-toolbar-tools.mobile h2 span.nowrap {
+.stats-dialog .md-toolbar-tools h2 span.nowrap {
     white-space: nowrap;
+}
+.stats-dialog.mobile table.md-table td.md-cell, table.md-table th.md-column {
+    font-size: 1.4rem;
+}
+
+/* Pagination mobile fixes*/
+.watchlist-main .md-table-pagination, .stats-dialog .md-table-pagination {
+    padding: 0 10px 0 0;
+}
+.watchlist-main .md-table-pagination md-select, .stats-dialog .md-table-pagination md-select {
+    min-width: 40px;
+}
+.watchlist-main .md-table-pagination>.buttons>.label+.md-button.md-icon-button, .stats-dialog .md-table-pagination>.buttons>.label+.md-button.md-icon-button {
+    margin-left: 10px;
 }
