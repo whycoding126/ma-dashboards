@@ -23,7 +23,6 @@ define(['require'], function(require) {
             link: function link(scope, element, attrs) {
                     scope.page.searchQuery = "xid=like=*" + scope.data + "*";
                     scope.$mdMedia = $mdMedia;
-
                 } // End Link
         }; // End return
     }; // End DDO

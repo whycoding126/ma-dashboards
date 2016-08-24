@@ -9,9 +9,8 @@
     </div>
 </md-toolbar>
 
-<md-card-content layout="column" ng-init="page={tableOrder:'deviceName', searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
+<md-card-content layout="column" ng-init="page={searchQuery:'', points:[], promise: {}}; showSearch=false; selected=[];">
 
-    <!-- <ma-point-query query="{name:searchQuery}" limit="query.limit" start="(query.page-1)*query.limit" points="points" promise="promise"></ma-point-query> -->
     <ma-point-query ng-if="page.searchQuery" query="page.searchQuery" start="0" points="page.points" promise="page.promise"></ma-point-query>
     <ma-get-point-value points="page.points"></ma-get-point-value>
 
@@ -27,9 +26,9 @@
         </div>
     </md-toolbar>
 
-    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}">
+    <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myLimit=10; myPage=1; myOrder='deviceName'">
         <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
-            <thead md-head md-order="page.tableOrder">
+            <thead md-head md-order="myOrder">
                 <tr md-row>
                     <th md-column>Tools</th>
                     <th md-column md-order-by="deviceName">Device</th>
@@ -40,11 +39,11 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr ng-repeat="point in page.points | orderBy: page.tableOrder" md-select="point" md-row md-select-id="id" watch-list-table-row>
+                <tr ng-repeat="point in page.points | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit" md-select="point" md-row md-select-id="id" watch-list-table-row>
                 </tr>
             </tbody>
         </table>
     </md-table-container>
 
-    <!-- <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15, 20, 25, 50, 100]" md-page="query.page" md-total="{{page.points.$total}}" md-page-select=""></md-table-pagination> -->
+    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15]" md-page="myPage" md-total="{{page.points.length}}"></md-table-pagination>
 </md-card-content>

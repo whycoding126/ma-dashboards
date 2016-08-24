@@ -13,6 +13,8 @@ define(['require'], function(require) {
 
                               scope.$mdMedia = $mdMedia;
                               scope.Updated = false;
+                              
+                              
 
                               scope.$watch('point.value', function(newValue, old) {
                                     if (newValue === undefined || newValue === old) return;
@@ -26,7 +28,9 @@ define(['require'], function(require) {
 
                               scope.showSetPoint = function(ev) {
                                     $mdDialog.show({
-                                                controller: function () { this.parent = scope; },
+                                                controller: function () { 
+                                                      this.parent = scope;
+                                                },
                                                 templateUrl: require.toUrl('./setPointDialog.html'),
                                                 parent: angular.element(document.body),
                                                 targetEvent: ev,
@@ -44,7 +48,10 @@ define(['require'], function(require) {
 
                               scope.showStats = function(ev) {
                                     $mdDialog.show({
-                                                controller: function () { this.parent = scope; },
+                                                controller: function () { 
+                                                      this.parent = scope; 
+                                                      this.timeRange = moment.duration(moment(scope.to).diff(moment(scope.from))).humanize();
+                                                },
                                                 templateUrl: require.toUrl('./statsDialog.html'),
                                                 parent: angular.element(document.body),
                                                 targetEvent: ev,
