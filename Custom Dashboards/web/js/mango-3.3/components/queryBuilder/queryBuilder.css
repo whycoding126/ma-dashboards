@@ -8,19 +8,11 @@ ma-query-group md-card.query-group md-card-content {
 }
 
 ma-query-group md-card.query-group md-toolbar {
-  min-height: 36px;
+  min-height: 38px;
 }
 
 ma-query-group md-toolbar .md-toolbar-tools {
-  height: 36px;
-}
-
-ma-query-group .query-group-alt-0 {
-  background-color: white;
-}
-
-ma-query-group .query-group-alt-1 {
-  background-color: lightgrey;
+  height: 38px;
 }
 
 ma-query-predicate .md-errors-spacer {

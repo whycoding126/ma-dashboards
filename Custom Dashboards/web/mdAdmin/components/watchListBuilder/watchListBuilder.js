@@ -13,7 +13,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector) {
         limit: 10,
         page: 1,
         order: 'name',
-        rql: 'name=like=*voltage*&dataSourceName=Virtual%20Meters'
+        rql: ''
     };
     
     this.showSearch = false;
