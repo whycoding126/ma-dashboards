@@ -237,7 +237,7 @@ function PointFactory($resource, $http, $timeout, Util) {
         if (!options) return this.query();
 
         var params = [];
-        if (typeof options.query === 'string') {
+        if (typeof options.query === 'string' && options.query) {
             params.push(options.query);
         } else if (options.query) {
             var and = !!options.query.$and;
@@ -279,7 +279,7 @@ function PointFactory($resource, $http, $timeout, Util) {
             params.push('limit(' + options.limit + ',' + start + ')');
         }
 
-        return params.length ? this.rql({query: params.join('&')}) : this.query();
+        return params.length ? this.query({rqlQuery: params.join('&')}) : this.query();
     };
 
     Point.prototype.setValue = function setValue(value, options) {

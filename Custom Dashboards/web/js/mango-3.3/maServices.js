@@ -17,11 +17,12 @@ define(['./services/Point',
         './services/cssInjector',
         './services/DataSource',
         './services/DeviceName',
+        './services/rqlParamSerializer',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, angular) {
+        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, rqlParamSerializer, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -49,6 +50,7 @@ maServices.factory('EventManager', EventManager);
 maServices.factory('cssInjector', cssInjector);
 maServices.factory('DataSource', DataSourceFactory);
 maServices.factory('DeviceName', DeviceNameFactory);
+maServices.factory('rqlParamSerializer', rqlParamSerializer);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
@@ -56,11 +58,13 @@ maServices.constant('mangoWatchdogTimeout', 30000);
 maServices.constant('mangoReconnectDelay', 15000);
 maServices.constant('mangoDefaultDateFormat', 'll LTS');
 
-maServices.config(['localStorageServiceProvider', function(localStorageServiceProvider) {
+maServices.config(['localStorageServiceProvider', '$httpProvider', function(localStorageServiceProvider, $httpProvider) {
     localStorageServiceProvider
         .setPrefix('maServices')
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
         .setNotify(false, false);
+    
+    $httpProvider.defaults.paramSerializer = 'rqlParamSerializer';
 }]);
 
 return maServices;
