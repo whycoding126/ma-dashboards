@@ -3,6 +3,7 @@ ma-query-group .query-group-name {
   font-weight: bold;
   text-transform: uppercase;
 }
+
 ma-query-group md-card.query-group md-card-content {
   padding: 8px;
 }

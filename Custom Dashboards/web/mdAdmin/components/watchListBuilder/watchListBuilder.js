@@ -15,9 +15,14 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector) {
         order: 'name',
         rql: ''
     };
+    this.selectedOptions = {
+        limit: 10,
+        page: 1,
+        order: 'name'
+    };
     
     this.showSearch = false;
-    this.watchlistPoints = [];
+    this.selectedPoints = [];
     this.queryProperties = [
         {
             label: 'Point name',

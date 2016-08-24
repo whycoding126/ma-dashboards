@@ -1,37 +1,95 @@
-<ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.query.rql" ng-change="$ctrl.doQuery()"></ma-query-builder>
+<md-card class="point-query">
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <span ma-tr="dashboards.v3.app.pointQuery"></span>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab>
+        <md-tab-label><span ma-tr="dashboards.v3.app.query"></span></md-tab-label>
+        <md-tab-body>
+          <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.query.rql" ng-change="$ctrl.doQuery()"></ma-query-builder>
+        </md-tab-body>
+      </md-tab>
+      <md-tab>
+        <md-tab-label><span ma-tr="dashboards.v3.app.rql"></span></md-tab-label>
+        <md-tab-body>
+          <md-content class="md-padding">
+            <div layout="row">
+              <md-input-container flex>
+                <label>RQL</label>
+                <input ng-model="$ctrl.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doQuery()">
+              </md-input-container>
+            </div>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </md-card-content>
+</md-card>
 
-<div layout="row">
-  <md-input-container flex>
-    <label>RQL</label>
-    <input ng-model="$ctrl.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doQuery()">
-  </md-input-container>
-</div>
-
-<div>
-    <em>{{$ctrl.watchlistPoints.length}} points selected for watch list</em>
-    <md-button class="md-icon-button" ng-click="$ctrl.watchlistPoints=[]">
-      <md-icon>clear</md-icon>
-    </md-button>
-</div>
-
-<md-table-container>
-  <table md-table md-row-select multiple ng-model="$ctrl.watchlistPoints" md-progress="$ctrl.queryPromise">
-    <thead md-head md-order="$ctrl.query.order" md-on-reorder="$ctrl.doQuery">
-      <tr md-row>
-          <th md-column md-order-by="name">Point name</th>
-          <th md-column md-order-by="xid">XID</th>
-          <th md-column md-order-by="dataSourceName">Data source</th>
-          <th md-column md-order-by="deviceName">Device name</th>
-        </tr>
-    </thead>
-    <tbody md-body>
-      <tr md-row md-select="point" md-select-id="id" md-auto-select ng-repeat="point in $ctrl.allPoints track by point.id">
-          <td md-cell ng-bind="point.name"></td>
-          <td md-cell ng-bind="point.xid"></td>
-          <td md-cell ng-bind="point.dataSourceName"></td>
-          <td md-cell ng-bind="point.deviceName"></td>
-      </tr>
-    </tbody>
-  </table>
-</md-table-container>
-<md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.query.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doQuery"></md-table-pagination>
+<md-card class="select-points">
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <span ma-tr="dashboards.v3.app.selectPoints"></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.selectedPoints = []"><md-icon>clear</md-icon></md-button>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab>
+        <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span ng-if="$ctrl.allPoints.$total || $ctrl.allPoints.$total === 0">({{$ctrl.allPoints.$total}})</span></md-tab-label>
+        <md-tab-body>
+          <md-table-container>
+            <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.queryPromise">
+              <thead md-head md-order="$ctrl.query.order" md-on-reorder="$ctrl.doQuery">
+                <tr md-row>
+                    <th md-column md-order-by="name">Point name</th>
+                    <th md-column md-order-by="xid">XID</th>
+                    <th md-column md-order-by="dataSourceName">Data source</th>
+                    <th md-column md-order-by="deviceName">Device name</th>
+                  </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in $ctrl.allPoints track by point.id">
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.xid"></td>
+                    <td md-cell ng-bind="point.dataSourceName"></td>
+                    <td md-cell ng-bind="point.deviceName"></td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+          <md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.query.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doQuery"></md-table-pagination>
+        </md-tab-body>
+      </md-tab>
+      <md-tab>
+        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;({{$ctrl.selectedPoints.length}})</md-tab-label>
+        <md-tab-body>
+          <md-table-container>
+            <table md-table>
+              <thead md-head md-order="$ctrl.selectedOptions.order">
+                <tr md-row>
+                    <th md-column md-order-by="name">Point name</th>
+                    <th md-column md-order-by="xid">XID</th>
+                    <th md-column md-order-by="dataSourceName">Data source</th>
+                    <th md-column md-order-by="deviceName">Device name</th>
+                  </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="point in $ctrl.selectedPoints | orderBy: $ctrl.selectedOptions.order | limitTo:$ctrl.selectedOptions.limit:($ctrl.selectedOptions.page - 1)*$ctrl.selectedOptions.limit track by point.id">
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.xid"></td>
+                    <td md-cell ng-bind="point.dataSourceName"></td>
+                    <td md-cell ng-bind="point.deviceName"></td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+          <md-table-pagination md-limit="$ctrl.selectedOptions.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.selectedOptions.page" md-total="{{$ctrl.selectedPoints.length}}" md-page-select></md-table-pagination>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </md-card-content>
+</md-card>
