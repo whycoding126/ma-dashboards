@@ -236,11 +236,11 @@ mdAdminApp.constant('MENU_ITEMS', [
         }
     },
     {
-        name: 'dashboard.dataPoint',
-        url: '/data-point',
-        templateUrl: 'views/dashboard/dataPoint.html',
+        name: 'dashboard.dataPointDetails',
+        url: '/data-point-details',
+        templateUrl: 'views/dashboard/dataPointDetails.html',
         menuText: 'Data Point Details',
-        menuIcon: 'fa fa-asterisk'
+        menuIcon: 'timeline'
     },
     {
         name: 'dashboard.apiErrors',
