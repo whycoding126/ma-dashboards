@@ -7,7 +7,7 @@
       <div flex="100" flex-gt-md="40" layout="column">
             <md-card>
                   <md-card-content layout="column">
-                        <md-input-container flex="" class="no-errors-spacer">
+                        <md-input-container class="no-errors-spacer">
                               <label>Choose a point</label>
                               <ma-filtering-point-list ng-model="myPoint" auto-init="true"></ma-filtering-point-list>
                         </md-input-container>
@@ -23,7 +23,10 @@
                               <label flex="20">Time:</label>
                               <ma-point-value flex="80" point="myPoint" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
                         </div>
-                        <ma-set-point-value point="myPoint"></ma-set-point-value>
+                        <div layout="row">
+                              <ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
+                                    <md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">edit</md-button>
+                        </div>
                   </md-card-content>
             </md-card>
             <md-card>

@@ -1,7 +1,9 @@
 <td md-cell nowrap>
-      <i class="fa fa-info-circle fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px;"></i>
-      <i ng-if="point.pointLocator.settable" class="fa fa-cogs fa-lg md-primary" style="padding: 5px;" ng-click="showSetPoint($event)"></i>
       <a href="/dashboards/data-point-details/{{point.xid}}"><i class="fa fa-line-chart fa-lg md-primary" style="padding:5px;"></i></a>
+      
+      <i class="fa fa-info-circle fa-lg md-primary" ng-if="$mdMedia('gt-sm')" ng-click="showStats($event)" style="padding: 5px;"></i>
+      
+      <i ng-if="point.pointLocator.settable" class="fa fa-cogs fa-lg md-primary" style="padding: 5px;" ng-click="showSetPoint($event)"></i>
 </td>
 <td md-cell>{{point.deviceName}}</td>
 <td md-cell>{{point.name}}</td>
