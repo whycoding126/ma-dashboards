@@ -177,3 +177,27 @@ md-progress-linear ._md-container,
 md-progress-linear ._md-container ._md-bar {
 	height: 100%;
 }
+
+/* Query builder */
+
+ma-query-group .query-group-name {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+ma-query-group md-card.query-group md-card-content {
+  padding: 8px;
+}
+
+ma-query-group md-card.query-group md-toolbar {
+  min-height: 38px;
+}
+
+ma-query-group md-toolbar .md-toolbar-tools {
+  height: 38px;
+}
+
+ma-query-predicate .md-errors-spacer {
+  display: none;
+}

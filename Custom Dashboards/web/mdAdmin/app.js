@@ -214,7 +214,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                                 }
                           });
                     $ocLazyLoad.inject('watchlist');
-                    cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/style.css','watchlistPageStyles','link[href="styles/main.css"]');
+                    cssInjector.injectLink(require.toUrl('./directives/watchList/style.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
         }
@@ -226,11 +226,12 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.watchListBuilder',
         menuIcon: 'build',
         resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {
                     angular.module('watchListBuilder', [])
                         .component('watchListBuilder', watchListBuilder);
                     $ocLazyLoad.inject('watchListBuilder');
+                    cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
                 });
             }]
         }

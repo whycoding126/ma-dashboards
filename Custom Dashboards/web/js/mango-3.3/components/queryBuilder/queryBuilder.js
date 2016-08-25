@@ -7,7 +7,6 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 var queryBuilder = function queryBuilder(cssInjector) {
-    cssInjector.injectLink(require.toUrl('./queryBuilder.css'), 'queryBuilder');
     this.rootQueryNode = new query.Query();
     
     this.$onInit = function() {

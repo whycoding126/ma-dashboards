@@ -7,8 +7,6 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 var watchListBuilder = function watchListBuilder(Point, cssInjector) {
-    cssInjector.injectLink(require.toUrl('./watchListBuilder.css'), 'watchListBuilder');
-    
     this.query = {
         limit: 10,
         page: 1,
