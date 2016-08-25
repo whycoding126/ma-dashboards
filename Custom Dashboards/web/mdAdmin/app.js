@@ -197,6 +197,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/watchlist.html',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
+        controller: ['$scope', '$mdMedia', function ($scope, $mdMedia) {
+            $scope.$mdMedia = $mdMedia;
+        }],
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./directives/watchList/watchListTable',

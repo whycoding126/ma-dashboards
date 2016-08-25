@@ -28,7 +28,7 @@ define(['require'], function(require) {
                         scope.page.myLimit = 15;
                     }
                     else {
-                        scope.page.myLimit = 5;
+                        scope.page.myLimit = 10;
                     }
                 } // End Link
         }; // End return

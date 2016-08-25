@@ -11,7 +11,7 @@
       {{point.renderedValue}} 
 </td>
 <td md-cell>{{point.time | moment:'format':'h:mm:ss'}}</td>
-<td md-cell>
+<td md-cell ng-if="$mdMedia('gt-sm')">
       <a ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank">
             <i class="fa fa-pencil fa-lg alternate"></i>
       </a>
