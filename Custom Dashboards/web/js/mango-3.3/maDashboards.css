@@ -186,8 +186,12 @@ ma-query-group .query-group-name {
   text-transform: uppercase;
 }
 
+ma-query-group md-card.query-group {
+  margin: 5px;
+}
+
 ma-query-group md-card.query-group md-card-content {
-  padding: 8px;
+  padding: 5px;
 }
 
 ma-query-group md-card.query-group md-toolbar {
@@ -198,6 +202,43 @@ ma-query-group md-toolbar .md-toolbar-tools {
   height: 38px;
 }
 
+ma-query-group md-toolbar .md-toolbar-tools .button-group .md-button {
+  min-height: 30px;
+  line-height: 30px;
+  min-width: 60px;
+}
+
 ma-query-predicate .md-errors-spacer {
   display: none;
+}
+
+/* button group */
+.button-group > .md-button {
+  margin: 0;
+}
+.button-group > .md-button.md-raised:not([disabled]) {
+  box-shadow: none;
+}
+.button-group > .md-button.md-raised:not([disabled]):active {
+  box-shadow: none;
+}
+.button-group > .md-button.left,
+.button-group .md-button.left .md-ripple-container {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.button-group > .md-button.middle,
+.button-group .md-button.middle .md-ripple-container {
+  border-radius: 0;
+}
+.button-group > .md-button.right,
+.button-group .md-button.right .md-ripple-container {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.button-group {
+  border-radius: 3px;
+  margin-left: 8px;
+  margin-right: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }

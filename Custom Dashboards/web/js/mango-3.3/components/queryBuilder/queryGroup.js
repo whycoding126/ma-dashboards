@@ -26,6 +26,11 @@ var queryGroup = function queryGroup() {
         this.builderCtrl.updateModel();
     };
     
+    this.setName = function toggleName($event, name) {
+        this.node.name = name;
+        this.builderCtrl.updateModel();
+    };
+    
     this.deleteSelf = function deleteSelf($event) {
         this.onDelete({node: this.node});
     };
