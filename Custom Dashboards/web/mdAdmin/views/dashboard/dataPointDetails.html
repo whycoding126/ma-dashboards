@@ -4,26 +4,26 @@
       }
 </style>
 <div layout="row" layout-wrap ng-init="page={}">
-      <div flex="100" flex-gt-md="33" layout="column">
+      <div flex="100" flex-gt-md="40" layout="column">
             <md-card>
                   <md-card-content layout="column">
                         <md-input-container flex="" class="no-errors-spacer">
                               <label>Choose a point</label>
-                              <ma-filtering-point-list ng-model="point1" auto-init="true"></ma-filtering-point-list>
+                              <ma-filtering-point-list ng-model="myPoint" auto-init="true"></ma-filtering-point-list>
                         </md-input-container>
                         <div layout="row">
                               <label flex="20">XID:</label>
-                              <div flex="80" ng-bind="point1.xid"></div>
+                              <div flex="80" ng-bind="myPoint.xid"></div>
                         </div>
                         <div layout="row">
                               <label flex="20">Value:</label>
-                              <ma-point-value flex="80" point="point1"></ma-point-value>
+                              <ma-point-value flex="80" point-xid="{{pointXid}}" point="myPoint"></ma-point-value>
                         </div>
                         <div layout="row">
                               <label flex="20">Time:</label>
-                              <ma-point-value flex="80" point="point1" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
+                              <ma-point-value flex="80" point="myPoint" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
                         </div>
-                        <ma-set-point-value point="point1"></ma-set-point-value>
+                        <ma-set-point-value point="myPoint"></ma-set-point-value>
                   </md-card-content>
             </md-card>
             <md-card>
@@ -71,14 +71,14 @@
                               </md-input-container>
                               
                               <!-- Load point values for chart and table -->
-                              <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupInterval}} {{rollupIntervalType}}" auto-rollup-interval="autoRollup">
+                              <ma-point-values point="myPoint" values="myPointValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupInterval}} {{rollupIntervalType}}" auto-rollup-interval="autoRollup">
                               </ma-point-values>
                               
                         </div>
                   </md-card-content>
             </md-card>
       </div>
-      <div flex="100" flex-gt-md="33">
+      <div flex="100" flex-gt-md="30">
             <md-card>
                   <md-card-content>
                         <md-table-container ng-init="myLimit=15; myPage=1; myOrder='-timestamp'">
@@ -90,21 +90,21 @@
                                           </tr>
                                     </thead>
                                     <tbody md-body>
-                                          <tr ng-repeat="value in point1Values | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
-                                                <td md-cell>{{value.timestamp | moment:'format':'ll LTS'}}</td>
+                                          <tr ng-repeat="value in myPointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
+                                                <td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
                                                 <td md-cell>{{value.value}}</td>
                                           </tr>
                                     </tbody>
                               </table>
                         </md-table-container>
-                        <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{point1Values.length}}"></md-table-pagination>
+                        <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
                   </md-card-content>
             </md-card>
       </div>
-      <div flex="100" flex-gt-md="33">
+      <div flex="100" flex-gt-md="30">
             <md-card>
                   <md-card-content layout="column">
-                        <ma-point-statistics point="point1" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+                        <ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
                         <ma-statistics-table statistics="statsObj"></ma-statistics-table>
                   </md-card-content>
             </md-card>
@@ -125,7 +125,7 @@
 
 <md-card>
       <md-card-content>
-            <ma-serial-chart style="height: 360px; width: 100%" series-1-values="point1Values" series-1-point="point1" legend="true" balloon="true" export="true">
+            <ma-serial-chart style="height: 360px; width: 100%" series-1-values="myPointValues" series-1-point="myPoint" legend="true" balloon="true" export="true">
             </ma-serial-chart>
       </md-card-content>
 </md-card>

@@ -238,10 +238,13 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.dataPointDetails',
-        url: '/data-point-details',
+        url: '/data-point-details/{pointXid}',
         templateUrl: 'views/dashboard/dataPointDetails.html',
         menuText: 'Data Point Details',
-        menuIcon: 'timeline'
+        menuIcon: 'timeline',
+        controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
+            $scope.pointXid = $stateParams.pointXid;
+        }]
     },
     {
         name: 'dashboard.apiErrors',
