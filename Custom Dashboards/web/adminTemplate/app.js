@@ -274,6 +274,12 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             if ($mdMedia('gt-sm')) {
                 $rootScope.openMenu();
             }
+            
+            // the closeMenu() function already does this but we need this for when the ESC key is pressed
+            // which just calls $mdSidenav(..).close();
+            sideNav.onClose(function () {
+                $rootScope.navLockedOpen = false;
+            });
         }
     });
 
