@@ -32,16 +32,16 @@
             <md-card>
                   <md-card-content>
                         <div layout="row" layout-wrap>
-                              <md-input-container flex="30" class="no-errors-spacer">
+                              <md-input-container flex="100" flex-gt-sm="30" class="no-errors-spacer">
                                     <label>Date preset</label>
                                     <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
                               </md-input-container>
 
-                              <md-input-container flex="35" class="no-errors-spacer">
+                              <md-input-container flex="50" flex-gt-sm="35" class="no-errors-spacer">
                                     <label>From date</label>
                                     <ma-date-picker ng-model="from" format="l LT"></ma-date-picker>
                               </md-input-container>
-                              <md-input-container flex="35" class="no-errors-spacer">
+                              <md-input-container flex="50" flex-gt-sm="35" class="no-errors-spacer">
                                     <label>To date</label>
                                     <ma-date-picker ng-model="to" format="l LT"></ma-date-picker>
                               </md-input-container>

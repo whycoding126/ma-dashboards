@@ -51,20 +51,24 @@ md-table-container.lg-screen {
     height: 30px;
 }
 .watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
-    padding: 0 0 0 8px !important;
+    padding: 0 4px 0 4px !important;
 }
 .watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
-.watchlist-main table.md-table td.md-cell i, table.md-table th.md-column i {
+.watchlist-main table.md-table:not(.desktop)  td.md-cell.icons {
+    font-size: 1.5rem;
+}
+.watchlist-main table.md-table td.md-cell i {
     color: rgb(45,197,255);
 }
-.watchlist-main table.md-table td.md-cell i.alternate, table.md-table th.md-column i.alternate {
+.watchlist-main table.md-table td.md-cell i.alternate {
     color: rgb(255,133,0);
 }
 .watchlist-main table.md-table td.md-cell.flash {
     color: rgb(255,133,0);
 }
+
 
 /* Chart Component */
 
@@ -85,7 +89,7 @@ md-table-container.lg-screen {
     display: none;
 }
 
-/* Stats ialog */
+/* Stats Dialog */
 
 .stats-dialog {
     width: 380px;
