@@ -10,7 +10,7 @@ define(['require'], function(require) {
         return {
             restrict: 'E',
             scope: {
-                data: '@',
+                points: '=',
                 to: '=',
                 from: '=',
                 selected: '=',
@@ -21,14 +21,13 @@ define(['require'], function(require) {
             },
             templateUrl: 'directives/watchList/watchListTable.html',
             link: function link(scope, element, attrs) {
-                    scope.page.searchQuery = "xid=like=*" + scope.data + "*";
                     scope.$mdMedia = $mdMedia;
                     
                     if ($mdMedia('gt-sm')) {
-                        scope.page.myLimit = 15;
+                        scope.myLimit = 15;
                     }
                     else {
-                        scope.page.myLimit = 10;
+                        scope.myLimit = 10;
                     }
                 } // End Link
         }; // End return
