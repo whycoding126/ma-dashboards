@@ -6,6 +6,7 @@
 	  </md-card-title-text>
 	</md-card-title>
 	<md-card-content>
+        <div ng-if="currentUser.username">You are currently logged in as {{currentUser.username}}.</div>
 		<md-input-container class="md-icon-float md-block">
 	      <label for="username" ma-tr="login.userId"></label>
           <md-icon>person</md-icon>
@@ -15,17 +16,17 @@
 	      </div>
 	    </md-input-container>
 	    <md-input-container class="md-icon-float md-block">
-          <label for="username" ma-tr="login.password"></label>
+          <label for="password" ma-tr="login.password"></label>
           <md-icon>vpn_key</md-icon>
 	      <input id="password" name="password" ng-model="password" type="password" required md-no-asterisk aria-label="{{'login.password'|tr}}">
 	      <div ng-messages="loginForm.password.$error">
 	        <div ng-message="required" ma-tr="login.validation.noPassword"></div>
 	      </div>
 	    </md-input-container>
-	  <div ng-messages="errors">
-         <div ng-message="invalidLogin" ma-tr="login.validation.invalidLogin"></div>
-		 <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[otherError]"></div>
-      </div>
+        <div ng-messages="errors">
+          <div ng-message="invalidLogin" ma-tr="login.validation.invalidLogin"></div>
+          <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[errors.otherError]"></div>
+        </div>
 	</md-card-content>
 	<md-card-actions layout="row" layout-align="end center">
       <md-button type="submit" ng-click="doLogin()" ma-tr="login.loginButton" class="md-accent" aria-label="{{'login.loginButton'|tr}}"></md-button>

@@ -6,11 +6,12 @@
 define(['require'], function(require) {
 'use strict';
 
-var login = function($state, User) {
+var login = function($state, User, $rootScope, $window) {
     return {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
+            $scope.currentUser = User.current();
             $scope.errors = {};
             
             $scope.$watchGroup(['username', 'password'], function() {
@@ -20,20 +21,22 @@ var login = function($state, User) {
             $scope.doLogin = function() {
                 var user = User.login({
                     username: $scope.username,
-                    password: $scope.password
+                    password: $scope.password,
+                    logout: true
                 });
-                user.$promise.then(function() {
-                    var redirect = 'dashboard.home';
-                    if ($state.loginRedirect) {
-                        redirect = $state.loginRedirect;
-                        delete $state.loginRedirect;
+                user.$promise.then(function(user) {
+                    var redirectUrl = '/';
+                    if ($state.loginRedirectUrl) {
+                        redirectUrl = $state.loginRedirectUrl;
                     }
-                    $state.go(redirect);
+                    $window.location = redirectUrl;
                 }, function(error) {
                     if (error.status === 406) {
                         $scope.errors.invalidLogin = true;
+                        $scope.errors.otherError = false;
                     }
                     else {
+                        $scope.errors.invalidLogin = false;
                         $scope.errors.otherError = error.statusText || 'Connection refused';
                     }
                 });
@@ -42,7 +45,7 @@ var login = function($state, User) {
     };
 };
 
-login.$inject = ['$state', 'User'];
+login.$inject = ['$state', 'User', '$rootScope', '$window'];
 
 return login;
 
