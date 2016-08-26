@@ -8,6 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state) {
     this.newWatchlist = function newWatchlist(name) {
+        this.selectedWatchlist = null;
         var watchlist = new WatchList();
         watchlist.isNew = true;
         watchlist.name = name || 'New watchlist';
@@ -15,6 +16,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.points = [];
         watchlist.username = MD_ADMIN_SETTINGS.user.username;
         watchlist.type = 'static';
+        watchlist.readPermission = 'user';
+        watchlist.editPermission = 'edit-watchlists';
         watchlist.query = {
             limit: 10,
             page: 1,
@@ -26,8 +29,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             page: 1,
             order: 'name'
         };
-        this.watchlist = watchlist;
-        this.watchListChanged();
+        this.editWatchlist(watchlist);
     };
 
     this.queryProperties = [
@@ -51,8 +53,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     this.save = function save() {
         this.watchlist.$save().then(function(wl) {
-            this.watchlist = wl;
-            $state.go('.', {watchListXid: this.watchlist.isNew ? null : this.watchlist.xid}, {location: 'replace', notify: false});
+            this.selectedWatchlist = wl;
+            this.watchlistSelected();
+            
             var found = false
             for (var i = 0; i < this.watchlists.length; i++) {
                 if (this.watchlists[i].xid === wl.xid) {
@@ -94,8 +97,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             if (wl.username !== user.username && !user.hasPermission(wl.writePermission)) {
                 throw 'no edit permission';
             }
-            this.watchlist = wl;
-            this.watchListChanged();
+            this.selectedWatchlist = wl;
+            this.watchlistSelected();
         }.bind(this), function() {
             this.newWatchlist();
         }.bind(this));
@@ -114,10 +117,19 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             this.watchlists = filtered;
         }.bind(this));
     };
+
+    this.watchlistSelected = function watchlistSelected() {
+        if (this.selectedWatchlist) {
+            this.editWatchlist(angular.copy(this.selectedWatchlist));
+        } else {
+            this.newWatchlist();
+        }
+    };
     
-    this.watchListChanged = function watchListChanged() {
+    this.editWatchlist = function editWatchlist(watchlist) {
+        this.watchlist = watchlist;
+        $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
         this.doPointQuery();
-        $state.go('.', {watchListXid: this.watchlist.isNew ? null : this.watchlist.xid}, {location: 'replace', notify: false});
     };
 
     this.doPointQuery = function doPointQuery() {
