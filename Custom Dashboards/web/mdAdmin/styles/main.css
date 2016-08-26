@@ -361,7 +361,7 @@ code:not(.highlight) {
 
 /* Element styles */
 
-[ng-click] {
+[ng-click]:not([disabled]) {
 	cursor: pointer;
 }
 

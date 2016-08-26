@@ -242,3 +242,9 @@ ma-query-predicate .md-errors-spacer {
   margin-right: 8px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }
+
+/* Point hierarchy browser */
+ma-point-hierarchy-folder ul li {
+  list-style:none;
+  margin-left: 30px;
+}

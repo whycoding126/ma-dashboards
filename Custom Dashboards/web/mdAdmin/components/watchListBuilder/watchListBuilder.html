@@ -15,14 +15,12 @@
       <md-tab>
         <md-tab-label><span ma-tr="dashboards.v3.app.rql"></span></md-tab-label>
         <md-tab-body>
-          <md-content class="md-padding">
-            <div layout="row">
-              <md-input-container flex>
-                <label>RQL</label>
-                <input ng-model="$ctrl.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doQuery()">
-              </md-input-container>
-            </div>
-          </md-content>
+          <div layout="row" class="md-padding">
+            <md-input-container flex>
+              <label>RQL</label>
+              <input ng-model="$ctrl.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doQuery()">
+            </md-input-container>
+          </div>
         </md-tab-body>
       </md-tab>
     </md-tabs>
@@ -45,18 +43,18 @@
             <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.queryPromise">
               <thead md-head md-order="$ctrl.query.order" md-on-reorder="$ctrl.doQuery">
                 <tr md-row>
-                    <th md-column md-order-by="name">Point name</th>
-                    <th md-column md-order-by="xid">XID</th>
                     <th md-column md-order-by="dataSourceName">Data source</th>
                     <th md-column md-order-by="deviceName">Device name</th>
+                    <th md-column md-order-by="name">Point name</th>
+                    <th md-column md-order-by="xid">XID</th>
                   </tr>
               </thead>
               <tbody md-body>
                 <tr md-row md-select="point" md-select-id="id" ng-repeat="point in $ctrl.allPoints track by point.id">
-                    <td md-cell ng-bind="point.name"></td>
-                    <td md-cell ng-bind="point.xid"></td>
                     <td md-cell ng-bind="point.dataSourceName"></td>
                     <td md-cell ng-bind="point.deviceName"></td>
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.xid"></td>
                 </tr>
               </tbody>
             </table>
@@ -71,18 +69,18 @@
             <table md-table>
               <thead md-head md-order="$ctrl.selectedOptions.order">
                 <tr md-row>
-                    <th md-column md-order-by="name">Point name</th>
-                    <th md-column md-order-by="xid">XID</th>
                     <th md-column md-order-by="dataSourceName">Data source</th>
                     <th md-column md-order-by="deviceName">Device name</th>
+                    <th md-column md-order-by="name">Point name</th>
+                    <th md-column md-order-by="xid">XID</th>
                   </tr>
               </thead>
               <tbody md-body>
                 <tr md-row ng-repeat="point in $ctrl.selectedPoints | orderBy: $ctrl.selectedOptions.order | limitTo:$ctrl.selectedOptions.limit:($ctrl.selectedOptions.page - 1)*$ctrl.selectedOptions.limit track by point.id">
-                    <td md-cell ng-bind="point.name"></td>
-                    <td md-cell ng-bind="point.xid"></td>
                     <td md-cell ng-bind="point.dataSourceName"></td>
                     <td md-cell ng-bind="point.deviceName"></td>
+                    <td md-cell ng-bind="point.name"></td>
+                    <td md-cell ng-bind="point.xid"></td>
                 </tr>
               </tbody>
             </table>

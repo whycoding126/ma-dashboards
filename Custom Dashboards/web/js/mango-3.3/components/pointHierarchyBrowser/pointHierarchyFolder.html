@@ -1,0 +1,11 @@
+<md-checkbox ng-model="$ctrl.folder.checked" md-indeterminate="$ctrl.folder.checked !== true && $ctrl.folder.checked !== false" ng-change="$ctrl.checkboxChanged()"></md-checkbox>
+
+<span ng-click="$ctrl.open = !$ctrl.open" ng-disabled="!$ctrl.folder.subfolders.length">
+  <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
+</span>
+
+<ul ng-if="$ctrl.open && $ctrl.folder.subfolders.length">
+  <li ng-repeat="subfolder in $ctrl.folder.subfolders">
+    <ma-point-hierarchy-folder folder="subfolder"></ma-point-hierarchy-folder>
+  </li>
+</ul>
