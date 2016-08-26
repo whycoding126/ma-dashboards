@@ -1,5 +1,5 @@
 <md-card class="query-group" ng-class="['query-group-depth-' + $ctrl.depth, 'query-group-alt-' + $ctrl.depth % 2]">
-  <md-toolbar class="md-hue-2" ng-hide="!$ctrl.node.args.length && $ctrl.depth === 0">
+  <md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
       <md-button ng-click="$ctrl.deleteSelf($event)" class="md-icon-button" ng-if="$ctrl.depth !== 0"><md-icon>clear</md-icon></md-button>
       

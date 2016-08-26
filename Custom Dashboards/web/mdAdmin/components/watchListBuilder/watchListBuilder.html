@@ -1,93 +1,123 @@
 <md-card class="point-query">
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
-      <span ma-tr="dashboards.v3.app.pointQuery"></span>
+      <md-input-container flex="100" flex-gt-sm="50" flex-gt-lg="30">
+        <md-select ng-model="$ctrl.watchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchListChanged()">
+          <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
+        </md-select>
+      </md-input-container>
+      <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
     </div>
   </md-toolbar>
   <md-card-content>
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab>
-        <md-tab-label><span ma-tr="dashboards.v3.app.query"></span></md-tab-label>
+        <md-tab-label><span ma-tr="dashboards.v3.app.watchListSettings"></span></md-tab-label>
         <md-tab-body>
-          <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.query.rql" ng-change="$ctrl.doQuery()"></ma-query-builder>
+          <div class="md-padding watchlist-settings" layout="column">
+            <md-radio-group ng-model="$ctrl.watchlist.type" layout="row" flex="100" flex-gt-md="50">
+              <md-radio-button ng-value="'static'" class="md-primary">Static</md-radio-button>
+              <md-radio-button ng-value="'query'">Query based</md-radio-button>
+            </md-radio-group>
+            <div layout="row" layout-wrap>
+              <md-input-container flex="100" flex-gt-md="50">
+                <label>Name</label>
+                <input ng-model="$ctrl.watchlist.name">
+              </md-input-container>
+              <md-input-container flex="100" flex-gt-md="50">
+                <label>XID</label>
+                <input ng-model="$ctrl.watchlist.xid">
+              </md-input-container>
+              <md-input-container flex="100" flex-gt-md="50">
+                <label>User</label>
+                <input ng-model="$ctrl.watchlist.username">
+              </md-input-container>
+              <md-input-container flex="100" flex-gt-md="50">
+                <label>Read permission</label>
+                <input ng-model="$ctrl.watchlist.readPermission">
+              </md-input-container>
+              <md-input-container flex="100" flex-gt-md="50">
+                <label>Write permission</label>
+                <input ng-model="$ctrl.watchlist.writePermission">
+              </md-input-container>
+            </div>
+          </div>
         </md-tab-body>
       </md-tab>
       <md-tab>
-        <md-tab-label><span ma-tr="dashboards.v3.app.rql"></span></md-tab-label>
+        <md-tab-label><span ma-tr="dashboards.v3.app.query"></span></md-tab-label>
         <md-tab-body>
-          <div layout="row" class="md-padding">
-            <md-input-container flex>
-              <label>RQL</label>
-              <input ng-model="$ctrl.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doQuery()">
-            </md-input-container>
+          <div class="md-padding watchlist-query" layout="column">
+            <div layout="row">
+              <md-input-container flex class="rql-input">
+                <label ma-tr="dashboards.v3.app.rql"></label>
+                <input ng-model="$ctrl.watchlist.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doPointQuery()">
+              </md-input-container>
+            </div>
+            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query.rql" ng-change="$ctrl.doPointQuery()"></ma-query-builder>
+          </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab>
+        <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span ng-if="$ctrl.allPoints.$total || $ctrl.allPoints.$total === 0">({{$ctrl.allPoints.$total}})</span></md-tab-label>
+        <md-tab-body>
+          <div class="watchlist-query-results">
+            <md-table-container>
+              <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.watchlist.points" md-progress="$ctrl.queryPromise">
+                <thead md-head md-order="$ctrl.watchlist.query.order" md-on-reorder="$ctrl.doPointQuery">
+                  <tr md-row>
+                      <th md-column md-order-by="dataSourceName">Data source</th>
+                      <th md-column md-order-by="deviceName">Device name</th>
+                      <th md-column md-order-by="name">Point name</th>
+                      <th md-column md-order-by="xid">XID</th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row md-select="point" md-select-id="id" ng-repeat="point in $ctrl.allPoints track by point.id">
+                      <td md-cell ng-bind="point.dataSourceName"></td>
+                      <td md-cell ng-bind="point.deviceName"></td>
+                      <td md-cell ng-bind="point.name"></td>
+                      <td md-cell ng-bind="point.xid"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+            <md-table-pagination md-limit="$ctrl.watchlist.query.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.watchlist.query.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doPointQuery"></md-table-pagination>
+          </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab ng-if="$ctrl.watchlist.type === 'static'">
+        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;({{$ctrl.watchlist.points.length}})</md-tab-label>
+        <md-tab-body>
+          <div class="watchlist-selected-points">
+            <md-table-container>
+              <table md-table>
+                <thead md-head md-order="$ctrl.watchlist.params.order">
+                  <tr md-row>
+                      <th md-column md-order-by="dataSourceName">Data source</th>
+                      <th md-column md-order-by="deviceName">Device name</th>
+                      <th md-column md-order-by="name">Point name</th>
+                      <th md-column md-order-by="xid">XID</th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | orderBy: $ctrl.watchlist.params.order | limitTo:$ctrl.watchlist.params.limit:($ctrl.watchlist.params.page - 1)*$ctrl.watchlist.params.limit track by point.id">
+                      <td md-cell ng-bind="point.dataSourceName"></td>
+                      <td md-cell ng-bind="point.deviceName"></td>
+                      <td md-cell ng-bind="point.name"></td>
+                      <td md-cell ng-bind="point.xid"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+            <md-table-pagination md-limit="$ctrl.watchlist.params.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.watchlist.params.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select></md-table-pagination>
           </div>
         </md-tab-body>
       </md-tab>
     </md-tabs>
   </md-card-content>
-</md-card>
-
-<md-card class="select-points">
-  <md-toolbar class="md-hue-3">
-    <div class="md-toolbar-tools">
-      <span ma-tr="dashboards.v3.app.selectPoints"></span>
-      <md-button class="md-icon-button" ng-click="$ctrl.selectedPoints = []"><md-icon>clear</md-icon></md-button>
-    </div>
-  </md-toolbar>
-  <md-card-content>
-    <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab>
-        <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span ng-if="$ctrl.allPoints.$total || $ctrl.allPoints.$total === 0">({{$ctrl.allPoints.$total}})</span></md-tab-label>
-        <md-tab-body>
-          <md-table-container>
-            <table md-table md-row-select multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.queryPromise">
-              <thead md-head md-order="$ctrl.query.order" md-on-reorder="$ctrl.doQuery">
-                <tr md-row>
-                    <th md-column md-order-by="dataSourceName">Data source</th>
-                    <th md-column md-order-by="deviceName">Device name</th>
-                    <th md-column md-order-by="name">Point name</th>
-                    <th md-column md-order-by="xid">XID</th>
-                  </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row md-select="point" md-select-id="id" ng-repeat="point in $ctrl.allPoints track by point.id">
-                    <td md-cell ng-bind="point.dataSourceName"></td>
-                    <td md-cell ng-bind="point.deviceName"></td>
-                    <td md-cell ng-bind="point.name"></td>
-                    <td md-cell ng-bind="point.xid"></td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
-          <md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.query.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doQuery"></md-table-pagination>
-        </md-tab-body>
-      </md-tab>
-      <md-tab>
-        <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;({{$ctrl.selectedPoints.length}})</md-tab-label>
-        <md-tab-body>
-          <md-table-container>
-            <table md-table>
-              <thead md-head md-order="$ctrl.selectedOptions.order">
-                <tr md-row>
-                    <th md-column md-order-by="dataSourceName">Data source</th>
-                    <th md-column md-order-by="deviceName">Device name</th>
-                    <th md-column md-order-by="name">Point name</th>
-                    <th md-column md-order-by="xid">XID</th>
-                  </tr>
-              </thead>
-              <tbody md-body>
-                <tr md-row ng-repeat="point in $ctrl.selectedPoints | orderBy: $ctrl.selectedOptions.order | limitTo:$ctrl.selectedOptions.limit:($ctrl.selectedOptions.page - 1)*$ctrl.selectedOptions.limit track by point.id">
-                    <td md-cell ng-bind="point.dataSourceName"></td>
-                    <td md-cell ng-bind="point.deviceName"></td>
-                    <td md-cell ng-bind="point.name"></td>
-                    <td md-cell ng-bind="point.xid"></td>
-                </tr>
-              </tbody>
-            </table>
-          </md-table-container>
-          <md-table-pagination md-limit="$ctrl.selectedOptions.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.selectedOptions.page" md-total="{{$ctrl.selectedPoints.length}}" md-page-select></md-table-pagination>
-        </md-tab-body>
-      </md-tab>
-    </md-tabs>
-  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button class="md-warn" ng-click="$ctrl.delete()"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.save()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
+  </md-card-actions>
 </md-card>

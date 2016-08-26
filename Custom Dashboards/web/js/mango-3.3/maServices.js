@@ -17,12 +17,13 @@ define(['./services/Point',
         './services/cssInjector',
         './services/DataSource',
         './services/DeviceName',
+        './services/WatchList',
         './services/rqlParamSerializer',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, rqlParamSerializer, angular) {
+        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, WatchListFactory, rqlParamSerializer, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -50,6 +51,7 @@ maServices.factory('EventManager', EventManager);
 maServices.factory('cssInjector', cssInjector);
 maServices.factory('DataSource', DataSourceFactory);
 maServices.factory('DeviceName', DeviceNameFactory);
+maServices.factory('WatchList', WatchListFactory);
 maServices.factory('rqlParamSerializer', rqlParamSerializer);
 
 maServices.constant('mangoBaseUrl', '');

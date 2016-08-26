@@ -24,14 +24,6 @@ watch-list-builder md-card md-card-content {
   padding: 0;
 }
 
-watch-list-builder md-card md-toolbar {
-   min-height: 46px;
-}
-
-watch-list-builder md-card md-toolbar .md-toolbar-tools {
-   height: 46px;
-}
-
 watch-list-builder ma-query-group md-card.query-group-depth-0 {
   margin: 0;
 }
@@ -42,4 +34,8 @@ watch-list-builder ma-query-group .button-group {
 
 watch-list-builder ma-query-group .button-group .md-button {
   font-weight: bold;
+}
+
+watch-list-builder .watchlist-settings md-radio-group {
+  margin-bottom: 18px;
 }

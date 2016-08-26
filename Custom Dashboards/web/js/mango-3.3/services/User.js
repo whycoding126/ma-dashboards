@@ -247,8 +247,8 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
     };
 
     User.prototype.hasPermission = function(desiredPerms) {
-        if (this.admin || !desiredPerms) return true;
-        if (!this.permissions) return false;
+        if (this.admin) return true;
+        if (!this.permissions || !desiredPerms) return false;
 
         if (typeof desiredPerms === 'string') {
             desiredPerms = desiredPerms.split(',');
