@@ -47,13 +47,13 @@ md-table-container.lg-screen {
 .watchlist-main th.md-checkbox-column > md-checkbox {
     display: none;
 }
-.watchlist-main table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
+.watchlist-main table.md-table tbody.md-body>tr.md-row, .watchlist-main table.md-table tfoot.md-foot>tr.md-row {
     height: 30px;
 }
-.watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
+.watchlist-main table.md-table:not(.desktop) td.md-cell, .watchlist-main table.md-table:not(.desktop) th.md-column {
     padding: 0 4px 0 4px !important;
 }
-.watchlist-main table.md-table:not(.desktop) td.md-cell, table.md-table:not(.desktop) th.md-column {
+.watchlist-main table.md-table:not(.desktop) td.md-cell, .watchlist-main table.md-table:not(.desktop) th.md-column {
     font-size: 1.1rem;
 }
 .watchlist-main table.md-table:not(.desktop)  td.md-cell.icons {
