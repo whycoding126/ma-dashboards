@@ -3,6 +3,7 @@
     <div class="md-toolbar-tools">
       <md-input-container flex="100" flex-gt-sm="50" flex-gt-lg="30">
         <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected()">
+          <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.new"></i></md-option>
           <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
         </md-select>
       </md-input-container>
