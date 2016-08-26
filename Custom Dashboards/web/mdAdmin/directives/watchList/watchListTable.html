@@ -26,7 +26,7 @@
 </md-toolbar>
 
 <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myPage=1; myOrder='deviceName'">
-    <table md-table ng-attr-md-row-select="$mdMedia('gt-sm')" ng-attr-multiple="$mdMedia('gt-sm')" ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
+    <table md-table md-row-select multiple ng-model="selected" md-progress="page.promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
         <thead md-head md-order="myOrder">
             <tr md-row>
                 <th md-column>Tools</th>

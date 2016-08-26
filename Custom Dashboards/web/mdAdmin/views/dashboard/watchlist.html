@@ -3,7 +3,7 @@
         <watch-list-table data="dummy" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
     </md-card>
     
-    <md-card flex class="watchlist-controls"  ng-if="$mdMedia('gt-sm')">
+    <md-card flex class="watchlist-controls">
         <md-card-content layout="row" layout-align="space-around center" layout-wrap>
                   <md-input-container class="date-picker">
                         <label>Date Range</label>
@@ -72,7 +72,7 @@
         </md-card-content>
     </md-card>
 
-    <md-card flex class="watchlist-chart" ng-if="$mdMedia('gt-sm')">
+    <md-card flex class="watchlist-chart">
         <watch-list-chart to="to" from="from" add-checked="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-chart>
     </md-card>
 </div>
