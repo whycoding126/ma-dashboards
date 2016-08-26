@@ -6,9 +6,10 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS) {
+var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state) {
     this.newWatchlist = function newWatchlist(name) {
         var watchlist = new WatchList();
+        watchlist.isNew = true;
         watchlist.name = name || 'New watchlist';
         watchlist.xid = 'wl_' + Util.uuid();
         watchlist.points = [];
@@ -50,6 +51,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     this.save = function save() {
         this.watchlist.$save().then(function(wl) {
+            this.watchlist = wl;
+            $state.go('.', {watchListXid: this.watchlist.isNew ? null : this.watchlist.xid}, {location: 'replace', notify: false});
             var found = false
             for (var i = 0; i < this.watchlists.length; i++) {
                 if (this.watchlists[i].xid === wl.xid) {
@@ -64,9 +67,38 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }.bind(this));
     };
     
+    this.deleteWatchlist = function deleteWatchlist() {
+        this.watchlist.$delete().then(function(wl) {
+            this.newWatchlist();
+            for (var i = 0; i < this.watchlists.length; i++) {
+                if (this.watchlists[i].xid === wl.xid) {
+                    this.watchlists.splice(i, 1);
+                    break;
+                }
+            }
+        }.bind(this));
+    };
+    
     this.$onInit = function() {
         this.refreshWatchlists();
-        this.newWatchlist();
+        if ($stateParams.watchListXid) {
+            this.getWatchlist($stateParams.watchListXid);
+        } else {
+            this.newWatchlist();
+        }
+    };
+    
+    this.getWatchlist = function getWatchlist(xid) {
+        WatchList.get({xid: xid}).$promise.then(function(wl) {
+            var user = MD_ADMIN_SETTINGS.user;
+            if (wl.username !== user.username && !user.hasPermission(wl.writePermission)) {
+                throw 'no edit permission';
+            }
+            this.watchlist = wl;
+            this.watchListChanged();
+        }.bind(this), function() {
+            this.newWatchlist();
+        }.bind(this));
     };
     
     this.refreshWatchlists = function refreshWatchlists() {
@@ -85,6 +117,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     this.watchListChanged = function watchListChanged() {
         this.doPointQuery();
+        $state.go('.', {watchListXid: this.watchlist.isNew ? null : this.watchlist.xid}, {location: 'replace', notify: false});
     };
 
     this.doPointQuery = function doPointQuery() {
@@ -100,7 +133,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     }.bind(this);
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS'];
+watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state'];
 
 return {
     controller: watchListBuilder,

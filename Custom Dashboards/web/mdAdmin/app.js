@@ -224,7 +224,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.watchListBuilder',
-        url: '/watch-list-builder',
+        url: '/watch-list-builder/{watchListXid}',
         template: '<h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
         menuTr: 'dashboards.v3.app.watchListBuilder',
         menuIcon: 'build',
