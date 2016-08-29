@@ -41,6 +41,7 @@ define(['./maServices',
         './directives/deviceNameList',
         './directives/dataSourceQuery',
         './directives/deviceNameQuery',
+        './directives/svgDisplay',
         './directives/svgRect',
         './directives/svgCircle',
         './components/queryBuilder/queryBuilder',
@@ -56,7 +57,7 @@ define(['./maServices',
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
-        dataSourceQuery, deviceNameQuery, svgRect, svgCircle, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
+        dataSourceQuery, deviceNameQuery, svgDisplay, svgRect, svgCircle, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
         trFilter, angular, require) {
 'use strict';
 /**
@@ -107,6 +108,7 @@ maDashboards.directive('maDataSourceList', dataSourceList);
 maDashboards.directive('maDeviceNameList', deviceNameList);
 maDashboards.directive('maDataSourceQuery', dataSourceQuery);
 maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
+maDashboards.directive('maSvgDisplay', svgDisplay);
 maDashboards.directive('maSvgRect', svgRect);
 maDashboards.directive('maSvgCircle', svgCircle);
 maDashboards.component('maQueryBuilder', queryBuilder);
