@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 function watchLists(WatchList, $stateParams, $injector, $state) {
@@ -24,7 +24,7 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
             alwaysShowSelect: '=?',
             selectFirst: '=?'
         },
-        controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
+        controller: ['$scope', '$element', '$attrs', 'Point', function ($scope, $element, $attrs, Point, $q) {
             var xid = $stateParams.watchListXid || this.watchListXid;
             if (xid) {
                 this.watchList = WatchList.get({xid: xid});
@@ -46,7 +46,7 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
             }
             
             this.onChange = function() {
-                setWatchList(this.watchList);
+                this.setWatchList(this.watchList);
             };
             
             this.onOpen = function() {
@@ -56,14 +56,30 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
             this.setWatchList = function(watchList) {
                 if (!watchList) return;
                 this.watchList = watchList;
-                this.points = watchList.points;
+                
+                this.points = [];
+                if (watchList.type === 'static') {
+                    var ptQuery = new query.Query({name: 'or', args: []});
+                    for (var i = 0; i < watchList.points.length; i++) {
+                        ptQuery.push(new query.Query({name: 'eq', args: ['xid', watchList.points[i].xid]}));
+                    }
+                    var rql = ptQuery.toString();
+                    Point.objQuery({query: rql}).$promise.then(function(items) {
+                        this.points = watchList.points = items;
+                    }.bind(this));
+                } else if (watchList.type === 'query') {
+                    Point.objQuery({query: watchList.query.rql}).$promise.then(function(items) {
+                        this.points = watchList.points = items;
+                    }.bind(this));
+                }
+                
                 $state.go('.', {watchListXid: this.watchList.xid}, {location: 'replace', notify: false});
             };
         }]
     };
 }
 
-watchLists.$inject = ['WatchList', '$stateParams', '$injector', '$state'];
+watchLists.$inject = ['WatchList', '$stateParams', '$injector', '$state', 'Point', '$q'];
 
 return watchLists;
 
