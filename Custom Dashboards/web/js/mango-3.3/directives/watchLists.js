@@ -59,9 +59,9 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
                 
                 this.points = [];
                 if (watchList.type === 'static') {
-                    var ptQuery = new query.Query({name: 'or', args: []});
+                    var ptQuery = new query.Query({name: 'in', args: ['xid']});
                     for (var i = 0; i < watchList.points.length; i++) {
-                        ptQuery.push(new query.Query({name: 'eq', args: ['xid', watchList.points[i].xid]}));
+                        ptQuery.push(watchList.points[i].xid);
                     }
                     var rql = ptQuery.toString();
                     Point.objQuery({query: rql}).$promise.then(function(items) {
