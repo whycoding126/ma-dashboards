@@ -123,7 +123,7 @@
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
     <md-button class="md-primary md-raised" ng-click="$ctrl.prevStep()" ng-disabled="$ctrl.selectedTab === 0"><md-icon>arrow_back</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.prevStep"></span></md-button>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.selectedTab === 3"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.nextStep"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.watchlist.type === 'static' && $ctrl.selectedTab === 3 || $ctrl.watchlist.type !== 'static' && $ctrl.selectedTab === 2"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.nextStep"></span></md-button>
   </md-card-actions>
   </div>
 </md-card>
