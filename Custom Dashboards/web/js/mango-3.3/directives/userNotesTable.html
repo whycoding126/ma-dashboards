@@ -1,0 +1,20 @@
+<md-table-container ng-init="myOrder='-timestamp'">
+    <table md-table>
+        <thead md-head md-order="myOrder">
+            <tr md-row>
+                <th md-column md-order-by="timestamp">Time</th>
+                <th md-column md-order-by="comment">Note</th>
+                <th md-column md-order-by="username">User</th>
+                <th md-column md-order-by="commentType">Type</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr ng-repeat="note in userNotes | orderBy: myOrder">
+                <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
+                <td md-cell>{{note.comment}}</td>
+                <td md-cell>{{note.username}}</td>
+                <td md-cell>{{note.commentType}}</td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>

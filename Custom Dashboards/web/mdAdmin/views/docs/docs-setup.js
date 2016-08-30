@@ -306,8 +306,26 @@ NG_DOCS={
       "shortName": "maDashboards.maTr",
       "type": "directive",
       "moduleName": "maDashboards",
-      "shortDescription": "&lt;span ma-tr=&quot;cdashboards.v3.dox.input&quot;&gt;&lt;/span&gt;",
-      "keywords": "api cdashboards current dashboards directive dox element file input language ma-tr madashboards matr properties set sets text translation translations v3 web written"
+      "shortDescription": "&lt;span ma-tr=&quot;dashboards.v3.dox.input&quot;&gt;&lt;/span&gt;",
+      "keywords": "api current dashboards directive dox element file input language ma-tr madashboards matr properties set sets text translation translations v3 web written"
+    },
+    {
+      "section": "api",
+      "id": "maDashboards.maTrAriaLabelAriaLabel",
+      "shortName": "maDashboards.maTrAriaLabelAriaLabel",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;button ma-tr-aria-label=&quot;dashboards.v3.dox.input&quot;&gt;&lt;/button&gt;",
+      "keywords": "api aria-label attribute current dashboards directive dox element file input language ma-tr-aria-label madashboards matrarialabelarialabel properties set sets translation translations v3 web written"
+    },
+    {
+      "section": "api",
+      "id": "maDashboards.maUserNotesTable",
+      "shortName": "maDashboards.maUserNotesTable",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-user-notes-table&gt;&lt;/ma-user-notes-table&gt;",
+      "keywords": "api directive displays list madashboards mausernotestable notes replace user"
     },
     {
       "section": "api",
@@ -488,6 +506,15 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of users from the Mango system, as well as logging users in and out.",
       "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts availble call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
+    },
+    {
+      "section": "api",
+      "id": "maServices.UserNotes",
+      "shortName": "maServices.UserNotes",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides a service for retrieving and adding user notes",
+      "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint http madashboards maservices matching mausernotestable method note notes object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref user usernotes"
     },
     {
       "section": "api",

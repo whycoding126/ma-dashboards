@@ -41,12 +41,12 @@ define(['./maServices',
         './directives/deviceNameList',
         './directives/dataSourceQuery',
         './directives/deviceNameQuery',
+        './directives/userNotesTable',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
         './components/pointHierarchyBrowser/pointHierarchyBrowser',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
-        './directives/watchLists',
         './filters/trFilter',
         'angular',
         'require'
@@ -55,8 +55,8 @@ define(['./maServices',
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
-        dataSourceQuery, deviceNameQuery, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
-        watchLists, trFilter, angular, require) {
+        dataSourceQuery, deviceNameQuery, userNotesTable, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
+        trFilter, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -106,12 +106,12 @@ maDashboards.directive('maDataSourceList', dataSourceList);
 maDashboards.directive('maDeviceNameList', deviceNameList);
 maDashboards.directive('maDataSourceQuery', dataSourceQuery);
 maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
+maDashboards.directive('maUserNotesTable', userNotesTable);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
 maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
-maDashboards.directive('maWatchLists', watchLists);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
