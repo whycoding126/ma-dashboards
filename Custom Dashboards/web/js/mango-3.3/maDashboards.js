@@ -46,6 +46,7 @@ define(['./maServices',
         './components/queryBuilder/queryPredicate',
         './components/pointHierarchyBrowser/pointHierarchyBrowser',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
+        './directives/watchLists',
         './filters/trFilter',
         'angular',
         'require'
@@ -55,7 +56,7 @@ define(['./maServices',
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
         dataSourceQuery, deviceNameQuery, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
-        trFilter, angular, require) {
+        watchLists, trFilter, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -110,6 +111,7 @@ maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
 maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
+maDashboards.directive('maWatchLists', watchLists);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);

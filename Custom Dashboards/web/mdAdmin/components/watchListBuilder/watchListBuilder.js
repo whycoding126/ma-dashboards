@@ -11,7 +11,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         this.selectedWatchlist = null;
         var watchlist = new WatchList();
         watchlist.isNew = true;
-        watchlist.name = name || 'New watchlist';
+        watchlist.name = name;
         watchlist.xid = 'wl_' + Util.uuid();
         watchlist.points = [];
         watchlist.username = MD_ADMIN_SETTINGS.user.username;
@@ -30,7 +30,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             order: 'name'
         };
         this.editWatchlist(watchlist);
-        this.form.$setDirty();
+        if (this.form)
+            this.form.$setPristine();
     };
 
     this.queryProperties = [

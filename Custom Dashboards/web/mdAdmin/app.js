@@ -197,9 +197,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/watchlist.html',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
-        controller: ['$scope', '$mdMedia', 'watchlistPoints', function ($scope, $mdMedia, watchlistPoints) {
+        controller: ['$scope', '$mdMedia', function ($scope, $mdMedia) {
             $scope.$mdMedia = $mdMedia;
-            $scope.points = watchlistPoints;
         }],
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -220,13 +219,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                     $ocLazyLoad.inject('watchlist');
                     cssInjector.injectLink(require.toUrl('./directives/watchList/style.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
-            }],
-            watchlistPoints: ['$stateParams', '$state', 'WatchList', function($stateParams, $state, WatchList) {
-                if ($stateParams.watchListXid) {
-                    return WatchList.get({xid: $stateParams.watchListXid}).$promise.then(function(watchlist) {
-                        return watchlist.points;
-                    });
-                }
             }]
         }
     },
