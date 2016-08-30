@@ -6,7 +6,7 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-function watchLists(WatchList, $stateParams, $injector, $state) {
+function watchLists($injector) {
     return {
         restrict: 'E',
         templateUrl: function() {
@@ -24,7 +24,8 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
             alwaysShowSelect: '=?',
             selectFirst: '=?'
         },
-        controller: ['$scope', '$element', '$attrs', 'Point', function ($scope, $element, $attrs, Point, $q) {
+        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point',
+                     function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point) {
             var xid = $stateParams.watchListXid || this.watchListXid;
             if (xid) {
                 this.watchList = WatchList.get({xid: xid});
@@ -79,7 +80,7 @@ function watchLists(WatchList, $stateParams, $injector, $state) {
     };
 }
 
-watchLists.$inject = ['WatchList', '$stateParams', '$injector', '$state', 'Point', '$q'];
+watchLists.$inject = ['$injector'];
 
 return watchLists;
 
