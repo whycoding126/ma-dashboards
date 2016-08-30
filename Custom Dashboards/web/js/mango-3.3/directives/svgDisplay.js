@@ -24,7 +24,6 @@ define([], function() {
     function svgDisplay() {
         return {
             restrict: 'E',
-            replace: true,
             scope: {
                 svg: '@',
                 point: '=',
@@ -57,10 +56,13 @@ define([], function() {
                             var shapeId = item[0].substring(0, item[0].indexOf('Mode'));
                             
                             if (item[1] === 'opacity') {
-                                angular.element(document).find('#' + shapeId).css('fill-opacity', $scope.point.value / $scope.max);
+                                //console.log($element.find('svg')[0]);
+                                //var el = $element.find('svg')[0];
+                                $element.find('svg #' + shapeId).css('fill-opacity', $scope.point.value / $scope.max);
                             }
                             else if (item[1] === 'stroke') {
-                                angular.element(document).find('#' + shapeId).css('stroke-width', $scope.point.value / $scope.max * 5);
+                                $element.find('svg #' + shapeId).css('stroke-width', $scope.point.value / $scope.max * 5);
+                                
                             }
                         });
                     }
