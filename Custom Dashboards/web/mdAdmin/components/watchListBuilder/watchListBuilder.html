@@ -10,7 +10,7 @@
       </md-input-container>
       <div flex></div>
       <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
-      <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist()" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
+      <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist($event)" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
       <md-button class="md-primary md-raised" ng-click="$ctrl.save()" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
     </div>
   </md-toolbar>

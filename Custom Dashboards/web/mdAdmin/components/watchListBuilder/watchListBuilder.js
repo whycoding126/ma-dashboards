@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state) {
+var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate) {
     this.newWatchlist = function newWatchlist(name) {
         this.selectedWatchlist = null;
         var watchlist = new WatchList();
@@ -82,15 +82,26 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }.bind(this));
     };
     
-    this.deleteWatchlist = function deleteWatchlist() {
-        this.watchlist.$delete().then(function(wl) {
-            this.newWatchlist();
-            for (var i = 0; i < this.watchlists.length; i++) {
-                if (this.watchlists[i].xid === wl.xid) {
-                    this.watchlists.splice(i, 1);
-                    break;
+    this.deleteWatchlist = function deleteWatchlist(event) {
+        
+        var confirm = $mdDialog.confirm()
+            .title(Translate.trSync('dashboards.v3.app.areYouSure'))
+            .textContent(Translate.trSync('dashboards.v3.app.confirmDeleteWatchlist'))
+            .ariaLabel(Translate.trSync('dashboards.v3.app.areYouSure'))
+            .targetEvent(event)
+            .ok(Translate.trSync('common.ok'))
+            .cancel(Translate.trSync('common.cancel'));
+        
+        $mdDialog.show(confirm).then(function() {
+            this.watchlist.$delete().then(function(wl) {
+                this.newWatchlist();
+                for (var i = 0; i < this.watchlists.length; i++) {
+                    if (this.watchlists[i].xid === wl.xid) {
+                        this.watchlists.splice(i, 1);
+                        break;
+                    }
                 }
-            }
+            }.bind(this));
         }.bind(this));
     };
     
@@ -158,7 +169,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     }.bind(this);
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state'];
+watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate'];
 
 return {
     controller: watchListBuilder,
