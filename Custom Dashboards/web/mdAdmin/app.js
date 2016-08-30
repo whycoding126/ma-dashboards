@@ -8,11 +8,14 @@ define([
     'mango-3.3/maMaterialDashboards',
     'mango-3.3/maAppComponents',
     'require',
+    './services/Page',
+    './directives/pageView/pageView',
+    './directives/liveEditor/livePreview',
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
-    './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require) {
+    './views/docs/docs-setup',
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, pageView, livePreview) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -24,10 +27,13 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'ngMessages'
 ]);
 
-mdAdminApp.constant('require', require);
-mdAdminApp.constant('CUSTOM_USER_MENU_XID', 'custom-user-menu');
-mdAdminApp.constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages');
-mdAdminApp.constant('DASHBOARDS_NG_DOCS', NG_DOCS);
+mdAdminApp.factory('Page', Page)
+    .directive('pageView', pageView)
+    .directive('livePreview', livePreview)
+    .constant('require', require)
+    .constant('CUSTOM_USER_MENU_XID', 'custom-user-menu')
+    .constant('CUSTOM_USER_PAGES_XID', 'custom-user-pages')
+    .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
     this.addStates = function(menuItems, parent) {
@@ -86,7 +92,6 @@ mdAdminApp.constant('MENU_ITEMS', [
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
-                           './services/Page',
                            './services/MenuEditor',
                            './components/menu/jsonStoreMenu',
                            './components/menu/dashboardMenu',
@@ -95,24 +100,19 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/menuEditor/menuEditor',
                            './directives/pageEditor/pageEditor',
                            './directives/liveEditor/liveEditor',
-                           './directives/liveEditor/livePreview',
                            './directives/liveEditor/dualPaneEditor',
-                           './directives/pageView/pageView',
                            './directives/iframeView/iframeView',
                            './directives/stateParams/stateParams',
                            './components/autoLoginSettings/autoLoginSettings'
-                ], function(Menu, Page, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, livePreview, dualPaneEditor, pageView, iframeView, stateParams, autoLoginSettings) {
+                ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
+                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
-                        .factory('Page', Page)
                         .factory('MenuEditor', MenuEditor)
                         .directive('menuEditor', menuEditor)
                         .directive('pageEditor', pageEditor)
                         .directive('liveEditor', liveEditor)
-                        .directive('livePreview', livePreview)
                         .directive('dualPaneEditor', dualPaneEditor)
-                        .directive('pageView', pageView)
                         .directive('iframeView', iframeView)
                         .directive('stateParams', stateParams)
                         .component('jsonStoreMenu', jsonStoreMenu)
