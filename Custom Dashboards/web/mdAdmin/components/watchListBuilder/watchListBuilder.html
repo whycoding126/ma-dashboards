@@ -1,51 +1,55 @@
 <md-card class="point-query">
+  <div ng-form="$ctrl.form">
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-input-container flex="100" flex-gt-sm="50" flex-gt-lg="30">
         <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected()">
-          <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.new"></i></md-option>
+          <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.unsavedWatchlist"></i></md-option>
           <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
         </md-select>
       </md-input-container>
+      <div flex></div>
       <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
+      <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist()" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
+      <md-button class="md-primary md-raised" ng-click="$ctrl.save()" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
     </div>
   </md-toolbar>
   <md-card-content>
-    <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab>
+    <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTab">
+      <md-tab id="watchlist-settings">
         <md-tab-label><span ma-tr="dashboards.v3.app.watchListSettings"></span></md-tab-label>
         <md-tab-body>
           <div class="md-padding watchlist-settings" layout="column">
             <md-radio-group ng-model="$ctrl.watchlist.type" layout="row" flex="100" flex-gt-md="50">
-              <md-radio-button ng-value="'static'" class="md-primary">Static</md-radio-button>
-              <md-radio-button ng-value="'query'">Query based</md-radio-button>
+              <md-radio-button ng-value="'static'" class="md-primary"><span ma-tr="dashboards.v3.app.static"></span></md-radio-button>
+              <md-radio-button ng-value="'query'"><span ma-tr="dashboards.v3.app.pointQuery"></span></md-radio-button>
             </md-radio-group>
             <div layout="row" layout-wrap>
               <md-input-container flex="100" flex-gt-md="50">
-                <label>Name</label>
+                <label ma-tr="common.name"></label>
                 <input ng-model="$ctrl.watchlist.name">
               </md-input-container>
               <md-input-container flex="100" flex-gt-md="50">
-                <label>XID</label>
+                <label ma-tr="common.xid"></label>
                 <input ng-model="$ctrl.watchlist.xid">
               </md-input-container>
               <md-input-container flex="100" flex-gt-md="50">
-                <label>User</label>
+                <label ma-tr="common.user"></label>
                 <input ng-model="$ctrl.watchlist.username">
               </md-input-container>
               <md-input-container flex="100" flex-gt-md="50">
-                <label>Read permission</label>
+                <label ma-tr="dashboards.v3.app.readPermission"></label>
                 <input ng-model="$ctrl.watchlist.readPermission">
               </md-input-container>
               <md-input-container flex="100" flex-gt-md="50">
-                <label>Write permission</label>
+                <label ma-tr="dashboards.v3.app.editPermission"></label>
                 <input ng-model="$ctrl.watchlist.editPermission">
               </md-input-container>
             </div>
           </div>
         </md-tab-body>
       </md-tab>
-      <md-tab>
+      <md-tab id="watchlist-query">
         <md-tab-label><span ma-tr="dashboards.v3.app.query"></span></md-tab-label>
         <md-tab-body>
           <div class="md-padding watchlist-query" layout="column">
@@ -59,7 +63,7 @@
           </div>
         </md-tab-body>
       </md-tab>
-      <md-tab>
+      <md-tab id="watchlist-query-results">
         <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span ng-if="$ctrl.allPoints.$total || $ctrl.allPoints.$total === 0">({{$ctrl.allPoints.$total}})</span></md-tab-label>
         <md-tab-body>
           <div class="watchlist-query-results">
@@ -67,10 +71,10 @@
               <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.watchlist.points" md-progress="$ctrl.queryPromise">
                 <thead md-head md-order="$ctrl.watchlist.query.order" md-on-reorder="$ctrl.doPointQuery">
                   <tr md-row>
-                      <th md-column md-order-by="dataSourceName">Data source</th>
-                      <th md-column md-order-by="deviceName">Device name</th>
-                      <th md-column md-order-by="name">Point name</th>
-                      <th md-column md-order-by="xid">XID</th>
+                      <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
+                      <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
+                      <th md-column md-order-by="name" ma-tr="common.pointName"></th>
+                      <th md-column md-order-by="xid" ma-tr="common.xid"></th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -87,7 +91,7 @@
           </div>
         </md-tab-body>
       </md-tab>
-      <md-tab ng-if="$ctrl.watchlist.type === 'static'">
+      <md-tab id="watchlist-selected-points" ng-if="$ctrl.watchlist.type === 'static'">
         <md-tab-label><span ma-tr="dashboards.v3.app.selectedPoints"></span>&nbsp;({{$ctrl.watchlist.points.length}})</md-tab-label>
         <md-tab-body>
           <div class="watchlist-selected-points">
@@ -95,10 +99,10 @@
               <table md-table>
                 <thead md-head md-order="$ctrl.watchlist.params.order">
                   <tr md-row>
-                      <th md-column md-order-by="dataSourceName">Data source</th>
-                      <th md-column md-order-by="deviceName">Device name</th>
-                      <th md-column md-order-by="name">Point name</th>
-                      <th md-column md-order-by="xid">XID</th>
+                      <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
+                      <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
+                      <th md-column md-order-by="name" ma-tr="common.pointName"></th>
+                      <th md-column md-order-by="xid" ma-tr="common.xid"></th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -118,7 +122,10 @@
     </md-tabs>
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
-    <md-button class="md-warn" ng-click="$ctrl.deleteWatchlist()" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
-    <md-button class="md-primary md-raised" ng-click="$ctrl.save()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.prevStep()" ng-disabled="$ctrl.selectedTab === 0"><md-icon>arrow_back</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.prevStep"></span></md-button>
+    <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.selectedTab === 3"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.nextStep"></span></md-button>
   </md-card-actions>
+  </div>
 </md-card>
+
+<pre ng-bind="$ctrl.form | json"></pre>

@@ -30,6 +30,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             order: 'name'
         };
         this.editWatchlist(watchlist);
+        this.form.$setDirty();
     };
 
     this.queryProperties = [
@@ -51,6 +52,14 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }
     ];
     
+    this.selectedTab = 0;
+    this.nextStep = function() {
+        this.selectedTab++;
+    };
+    this.prevStep = function() {
+        this.selectedTab--;
+    };
+    
     this.save = function save() {
         this.watchlist.$save().then(function(wl) {
             this.selectedWatchlist = wl;
@@ -67,6 +76,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             if (!found) {
                 this.watchlists.push(wl);
             }
+            
+            this.form.$setPristine();
         }.bind(this));
     };
     
@@ -121,6 +132,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     this.watchlistSelected = function watchlistSelected() {
         if (this.selectedWatchlist) {
             this.editWatchlist(angular.copy(this.selectedWatchlist));
+            this.form.$setPristine();
         } else {
             this.newWatchlist();
         }
