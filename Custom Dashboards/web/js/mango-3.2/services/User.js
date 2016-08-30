@@ -11,7 +11,7 @@ define(['angular', 'jquery'], function(angular, $) {
 *
 * @description
 * Provides a service for getting list of users from the Mango system, as well as logging users in and out.
-* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods availble to those objects:
+* - All methods return <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank">$resource</a> objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`
@@ -39,7 +39,7 @@ User.logout();
 * @description
 * A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -51,7 +51,7 @@ User.logout();
 * @description
 * A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/users/:username`
 * @param {object} query Object containing a `username` property which will be used in the query.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -63,7 +63,7 @@ User.logout();
 * @description
 * A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -75,7 +75,7 @@ User.logout();
 * @description
 * A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -88,7 +88,7 @@ User.logout();
 * @description
 * Passed a string containing RQL for the query and returns an array of user objects.
 * @param {string} RQL RQL string for the query
-* @returns {array} An array of user objects. Objects will be of the resource class and have resource actions availble to them.
+* @returns {array} An array of user objects. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -101,7 +101,7 @@ User.logout();
 * @description
 * Query the REST endpoint `/rest/v1/users/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -112,7 +112,7 @@ User.logout();
 *
 * @description
 * Query the REST endpoint `/rest/v1/users/current` with the `GET` method to return the currently logged in user.
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -123,7 +123,7 @@ User.logout();
 *
 * @description
 * Attempts to login in the user by using `GET` method at `/rest/v1/login/:username`
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -134,7 +134,7 @@ User.logout();
 *
 * @description
 * Logout the current user by using `GET` method at `/rest/v1/login/:username`
-* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 

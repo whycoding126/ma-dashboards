@@ -14,7 +14,7 @@ define(['angular'], function(angular) {
 * @description
 * Provides a service for getting list of data sources from the Mango system.
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maDataSourceList">`<ma-data-source-list>`</a> and <a ui-sref="dashboard.docs.maDashboards.maDataSourceQuery">`<ma-data-source-query>`</a> directives.
-* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`
@@ -53,7 +53,7 @@ define(['angular'], function(angular) {
 * @description
 * A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v1/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -65,7 +65,7 @@ define(['angular'], function(angular) {
 * @description
 * A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v1/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -77,7 +77,7 @@ define(['angular'], function(angular) {
 * @description
 * A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -89,7 +89,7 @@ define(['angular'], function(angular) {
 * @description
 * A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v1/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
-* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -102,7 +102,7 @@ define(['angular'], function(angular) {
 * @description
 * Passed an object in the format `{query: 'query', start: 0, limit: 50, sort: ['-xid']}` and returns an Array of datasource objects matching the query.
 * @param {object} query xid name for the query. Format: `{query: 'query', start: 0, limit: 50, sort: ['-xid']}`
-* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.
+* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -115,7 +115,7 @@ define(['angular'], function(angular) {
 * @description
 * Passed a string containing RQL for the query and returns an array of data source objects.
 * @param {string} RQL RQL string for the query
-* @returns {array} An array of data source objects. Objects will be of the resource class and have resource actions availble to them.
+* @returns {array} An array of data source objects. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -128,7 +128,7 @@ define(['angular'], function(angular) {
 * @description
 * Query the REST endpoint `/rest/v1/data-sources/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
-* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -141,7 +141,7 @@ define(['angular'], function(angular) {
 * @description
 * Passed an object in the format `{query: 'query', start: 0, limit: 50, sort: ['-xid']}` and returns an Array of datasource objects matching the query.
 * @param {object} query Format: `{query: 'query', start: 0, limit: 50, sort: ['-xid']}`
-* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions availble to them.
+* @returns {array} Returns an Array of datasource objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
 

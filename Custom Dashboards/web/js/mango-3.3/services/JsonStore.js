@@ -13,7 +13,7 @@ define(['angular'], function(angular) {
 * @description
 * Provides a service for reading and writing to the JsonStore within the Mango Database.
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
-* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods availble to those objects:
+* - All methods return [$resource](https://docs.angularjs.org/api/ngResource/service/$resource) objects that can call the following methods available to those objects:
 *   - `$save`
 *   - `$remove`
 *   - `$delete`
@@ -51,7 +51,7 @@ define(['angular'], function(angular) {
 * @param {string} name name of the object in the json store.
 * @param {string} readPermission readPermission of the object in the json store.
 * @param {string} editPermission editPermission of the object in the json store.
-* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -67,7 +67,7 @@ define(['angular'], function(angular) {
 * @param {string} name name of the object in the json store.
 * @param {string} readPermission readPermission of the object in the json store.
 * @param {string} editPermission editPermission of the object in the json store.
-* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -83,7 +83,7 @@ define(['angular'], function(angular) {
 * @param {string} name name of the object in the json store.
 * @param {string} readPermission readPermission of the object in the json store.
 * @param {string} editPermission editPermission of the object in the json store.
-* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 
@@ -99,7 +99,7 @@ define(['angular'], function(angular) {
 * @param {string} name name of the object in the json store.
 * @param {string} readPermission readPermission of the object in the json store.
 * @param {string} editPermission editPermission of the object in the json store.
-* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions availble to them.
+* @returns {object} Returns a json store object. Objects will be of the resource class and have resource actions available to them.
 *
 */
 function JsonStoreFactory($resource, Util) {

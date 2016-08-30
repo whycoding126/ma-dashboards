@@ -21,11 +21,11 @@ define(['require'], function(require) {
             templateUrl: 'directives/watchList/watchListChart.html',
             link: function link(scope, element, attrs) {
 
-                scope.parseInt = parseInt; // Make parseInt availble to scope
-                scope.parseFloat = parseFloat; // Make parseFloat availble to scope
+                scope.parseInt = parseInt; // Make parseInt available to scope
+                scope.parseFloat = parseFloat; // Make parseFloat available to scope
                 scope.stats = []; // Set up array for storing stats for stats tab
                 scope.points = []; // Set up array for storing charted points
-                scope.$mdMedia = $mdMedia; // Make $mdMedia service availble to scope
+                scope.$mdMedia = $mdMedia; // Make $mdMedia service available to scope
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues) return;

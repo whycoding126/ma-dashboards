@@ -11,7 +11,7 @@ define([], function() {
 *
 * @description
 * Provides an <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> factory pointing to the json-data websocket endpoint at `'/rest/v1/websocket/json-data'`
-* - All methods availble to <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> are availble.
+* - All methods available to <a ui-sref="dashboard.docs.maServices.EventManager">EventManager</a> are available.
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maJsonStore">`<ma-json-store>`</a> directive.
 *
 * # Usage

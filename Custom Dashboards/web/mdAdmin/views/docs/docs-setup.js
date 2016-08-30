@@ -388,7 +388,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of data sources from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign availble call class console dashboard data datasource datasources default delete directives docs ds endpoint format getbyid http javascript limit list log madashboards madatasourcelist madatasourcequery mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system ui-sref usage var variable xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array assign call class console dashboard data datasource datasources default delete directives docs ds endpoint format getbyid http javascript limit list log madashboards madatasourcelist madatasourcequery mango maservices matching method methods object objects objquery org passed post prettyprint-mode promise property provided query raw remove resource rest retunrned return returned returns rql save scope server service sort source sources start string system ui-sref usage var variable xid"
     },
     {
       "section": "api",
@@ -397,7 +397,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of device names from the Mango system.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit availble belongs bydatasourceid bydatasourcexid call class dashboard data datasource datasourcexid default delete device devicename devicenames directives docs endpoint http javascript length list madashboards madevicenamelist madevicenamequery mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system ui-sref usage var xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope access action actions angularjs api array autoinit belongs bydatasourceid bydatasourcexid call class dashboard data datasource datasourcexid default delete device devicename devicenames directives docs endpoint http javascript length list madashboards madevicenamelist madevicenamequery mango maservices matching method methods names ngmodel object objects org passed post prettyprint-mode promise property provided query querying queryresult raw remove resource rest return returned returns save service source string system ui-sref usage var xid"
     },
     {
       "section": "api",
@@ -424,7 +424,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for reading and writing to the JsonStore within the Mango Database.",
-      "keywords": "$delete $get $promise $q $remove $resource $save $scope action actions angular angularjs api availble call class dashboard database datapath default delete directive docs editpermission endpoint extend function http item javascript json jsondata jsonstore madashboards majsonstore mango maservices method methods newxid node object objects org post prettyprint-mode provided reading readpermission remove resource rest return returns save service set store ui-sref usage var writing xid"
+      "keywords": "$delete $get $promise $q $remove $resource $save $scope action actions angular angularjs api call class dashboard database datapath default delete directive docs editpermission endpoint extend function http item javascript json jsondata jsonstore madashboards majsonstore mango maservices method methods newxid node object objects org post prettyprint-mode provided reading readpermission remove resource rest return returns save service set store ui-sref usage var writing xid"
     },
     {
       "section": "api",
@@ -433,7 +433,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides an EventManager factory pointing to the json-data websocket endpoint at &#39;/rest/v1/websocket/json-data&#39;",
-      "keywords": "api availble dashboard directive docs endpoint eventmanager factory item javascript json-data jsonstoreeventmanager madashboards majsonstore maservices methods pointing prettyprint-mode service subscription_types ui-sref unsubscribe usage websocket websockethandler xid"
+      "keywords": "api dashboard directive docs endpoint eventmanager factory item javascript json-data jsonstoreeventmanager madashboards majsonstore maservices methods pointing prettyprint-mode service subscription_types ui-sref unsubscribe usage websocket websockethandler xid"
     },
     {
       "section": "api",
@@ -460,7 +460,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides service for getting and and updating a list of points.",
-      "keywords": "$delete $get $http $promise $remove $resource $save $scope action actions angularjs api array availble binary call called calls class converted dashboard data default defaults delete directive directives docs endpoint error example examples flip format getbyid handling holdtimeout http internally item javascript key limit list madashboards mafilteringpointlist map mapointlist mapping maservices matching method methods multistate ngmodel null object objects objquery optional options org parameter passed pending point points post prettyprint-mode promise properties property provided queries query remove renderermap resource rest result return returned returns rql save service set settable setting settingpointvalues setvalue setvalueresult sort start stored string success textrendered textrenderer timeout toggle togglevalue ui-sref updating usage valuefn valuerenderer values xid"
+      "keywords": "$delete $get $http $promise $remove $resource $save $scope action actions angularjs api array binary call called calls class converted dashboard data default defaults delete directive directives docs endpoint error example examples flip format getbyid handling holdtimeout http internally item javascript key limit list madashboards mafilteringpointlist map mapointlist mapping maservices matching method methods multistate ngmodel null object objects objquery optional options org parameter passed pending point points post prettyprint-mode promise properties property provided queries query remove renderermap resource rest result return returned returns rql save service set settable setting settingpointvalues setvalue setvalueresult sort start stored string success textrendered textrenderer timeout toggle togglevalue ui-sref updating usage valuefn valuerenderer values xid"
     },
     {
       "section": "api",
@@ -469,7 +469,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides an EventManager factory pointing to the point-value websocket endpoint at &#39;/rest/v1/websocket/point-value&#39;",
-      "keywords": "api availble dashboard directive docs endpoint eventmanager factory javascript madashboards magetpointvalue maservices methods point-value pointeventmanager pointing prettyprint-mode service subscribe subscription_types ui-sref usage websocket websockethandler"
+      "keywords": "api dashboard directive docs endpoint eventmanager factory javascript madashboards magetpointvalue maservices methods point-value pointeventmanager pointing prettyprint-mode service subscribe subscription_types ui-sref usage websocket websockethandler"
     },
     {
       "section": "api",
@@ -478,7 +478,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides service for getting point hierarchy",
-      "keywords": "$delete $get $remove $resource $save _blank action actions additionally angularjs api availble boolean byname bypath call children class contained dashboard default delete descendant directive directly docs endpoint false folder folders full getroot hierarchy href http https javascript madashboards mapointhierarchy maservices method methods narrow object objects org passed path point pointhierarchy points post prettyprint-mode property provided query remove resource rest retrieve return returns save service set specifed subfolders target true ui-sref usage"
+      "keywords": "$delete $get $remove $resource $save _blank action actions additionally angularjs api boolean byname bypath call children class contained dashboard default delete descendant directive directly docs endpoint false folder folders full getroot hierarchy href http https javascript madashboards mapointhierarchy maservices method methods narrow object objects org passed path point pointhierarchy points post prettyprint-mode property provided query remove resource rest retrieve return returns save service set specifed subfolders target true ui-sref usage"
     },
     {
       "section": "api",
@@ -505,7 +505,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of users from the Mango system, as well as logging users in and out.",
-      "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts availble call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
+      "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
     },
     {
       "section": "api",
