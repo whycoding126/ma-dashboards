@@ -60,10 +60,10 @@ md-table-container.lg-screen {
     font-size: 1.5rem;
 }
 .watchlist-main table.md-table td.md-cell i {
-    color: rgb(45,197,255);
+    color: rgb(0,173,239);
 }
 .watchlist-main table.md-table td.md-cell i.alternate {
-    color: rgb(255,133,0);
+    color: rgb(0,173,239);
 }
 .watchlist-main table.md-table td.md-cell.flash {
     color: rgb(255,133,0);
