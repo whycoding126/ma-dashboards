@@ -11,7 +11,7 @@
       <div flex></div>
       <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
       <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist($event)" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
-      <md-button class="md-primary md-raised" ng-click="$ctrl.save()" ng-disabled="$ctrl.form.$pristine"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
+      <md-button class="md-primary md-raised" ng-click="$ctrl.save()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
       <md-button class="md-raised" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchlist.xid})" ng-disabled="$ctrl.watchlist.isNew"><md-icon>visibility</md-icon>&nbsp;<span ma-tr="common.view"></span></md-button>
     </div>
   </md-toolbar>
@@ -57,10 +57,10 @@
             <div layout="row">
               <md-input-container flex class="rql-input">
                 <label ma-tr="dashboards.v3.app.rql"></label>
-                <input ng-model="$ctrl.watchlist.query.rql" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doPointQuery()">
+                <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doPointQuery()">
               </md-input-container>
             </div>
-            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query.rql" ng-change="$ctrl.doPointQuery()"></ma-query-builder>
+            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.doPointQuery()"></ma-query-builder>
           </div>
         </md-tab-body>
       </md-tab>
@@ -70,7 +70,7 @@
           <div class="watchlist-query-results">
             <md-table-container>
               <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.watchlist.points" md-progress="$ctrl.queryPromise">
-                <thead md-head md-order="$ctrl.watchlist.query.order" md-on-reorder="$ctrl.doPointQuery">
+                <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.doPointQuery">
                   <tr md-row>
                       <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
                       <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
@@ -79,7 +79,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                  <tr md-row md-select="point" md-select-id="id" ng-repeat="point in $ctrl.allPoints track by point.id">
+                  <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid">
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>
@@ -88,7 +88,7 @@
                 </tbody>
               </table>
             </md-table-container>
-            <md-table-pagination md-limit="$ctrl.watchlist.query.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.watchlist.query.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doPointQuery"></md-table-pagination>
+            <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doPointQuery"></md-table-pagination>
           </div>
         </md-tab-body>
       </md-tab>
@@ -98,7 +98,7 @@
           <div class="watchlist-selected-points">
             <md-table-container>
               <table md-table>
-                <thead md-head md-order="$ctrl.watchlist.params.order">
+                <thead md-head md-order="$ctrl.staticTableQuery.order">
                   <tr md-row>
                       <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
                       <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
@@ -107,7 +107,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | orderBy: $ctrl.watchlist.params.order | limitTo:$ctrl.watchlist.params.limit:($ctrl.watchlist.params.page - 1)*$ctrl.watchlist.params.limit track by point.id">
+                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | orderBy: $ctrl.staticTableQuery.order | limitTo:$ctrl.staticTableQuery.limit:($ctrl.staticTableQuery.page - 1)*$ctrl.staticTableQuery.limit track by point.xid">
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>
@@ -116,7 +116,7 @@
                 </tbody>
               </table>
             </md-table-container>
-            <md-table-pagination md-limit="$ctrl.watchlist.params.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.watchlist.params.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select></md-table-pagination>
+            <md-table-pagination md-limit="$ctrl.staticTableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.staticTableQuery.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select></md-table-pagination>
           </div>
         </md-tab-body>
       </md-tab>

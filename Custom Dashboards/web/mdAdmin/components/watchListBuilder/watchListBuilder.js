@@ -18,20 +18,22 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
         watchlist.editPermission = 'edit-watchlists';
-        watchlist.query = {
-            limit: 10,
-            page: 1,
-            order: 'name',
-            rql: ''
-        };
-        watchlist.params = {
-            limit: 10,
-            page: 1,
-            order: 'name'
-        };
+        watchlist.query = 'sort(name)&limit(10)';
         this.editWatchlist(watchlist);
         if (this.form)
             this.form.$setPristine();
+    };
+    
+    this.allPoints = [];
+    this.tableQuery = {
+        limit: 10,
+        page: 1,
+        order: 'name'
+    };
+    this.staticTableQuery = {
+        limit: 10,
+        page: 1,
+        order: 'name'
     };
 
     this.queryProperties = [
@@ -128,7 +130,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
     
     this.refreshWatchlists = function refreshWatchlists() {
-        WatchList.query().then(function(watchlists) {
+        WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchlists) {
             var filtered = [];
             var user = MD_ADMIN_SETTINGS.user;
             for (var i = 0; i < watchlists.length; i++) {
@@ -153,18 +155,25 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     this.editWatchlist = function editWatchlist(watchlist) {
         this.watchlist = watchlist;
         $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
+        if (!watchlist.isNew && watchlist.type === 'static') {
+            watchlist.$getPoints();
+        }
         this.doPointQuery();
     };
 
     this.doPointQuery = function doPointQuery() {
-        this.allPoints = [];
+        // makes the table disappear when paginating
+        //this.allPoints.splice(0, this.allPoints.length);
         this.queryPromise = Point.objQuery({
-            query: this.watchlist.query.rql,
-            sort: this.watchlist.query.order,
-            limit: this.watchlist.query.limit,
-            start: (this.watchlist.query.page - 1) * this.watchlist.query.limit
+            query: this.watchlist.query,
+            sort: this.tableQuery.order,
+            limit: this.tableQuery.limit,
+            start: (this.tableQuery.page - 1) * this.tableQuery.limit
         }).$promise.then(function(allPoints) {
             this.allPoints = allPoints;
+        }.bind(this), function() {
+            this.allPoints.splice(0, this.allPoints.length);
+            delete this.allPoints.$total;
         }.bind(this));
     }.bind(this);
 };

@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
+define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 function watchLists($injector) {
@@ -30,7 +30,7 @@ function watchLists($injector) {
 
             this.showSelect = !this.noSelect;
             if (this.showSelect) {
-                this.queryPromise = WatchList.query().then(function(watchLists) {
+                this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
                     if (xid) {
                         var found = false;
                         for (var i = 0; i < watchLists.length; i++) {
@@ -75,16 +75,11 @@ function watchLists($injector) {
                 
                 this.points = [];
                 if (watchList.type === 'static') {
-                    var ptQuery = new query.Query({name: 'in', args: ['xid']});
-                    for (var i = 0; i < watchList.points.length; i++) {
-                        ptQuery.push(watchList.points[i].xid);
-                    }
-                    var rql = ptQuery.toString();
-                    Point.objQuery({query: rql}).$promise.then(function(items) {
-                        this.points = watchList.points = items;
+                    watchList.$getPoints().then(function(watchList) {
+                        this.points = watchList.points;
                     }.bind(this));
                 } else if (watchList.type === 'query') {
-                    Point.objQuery({query: watchList.query.rql}).$promise.then(function(items) {
+                    Point.query({rqlQuery: watchList.query}).$promise.then(function(items) {
                         this.points = watchList.points = items;
                     }.bind(this));
                 }

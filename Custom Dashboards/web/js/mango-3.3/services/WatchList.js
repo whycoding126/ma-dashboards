@@ -6,71 +6,48 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function WatchListFactory($resource, Util, $q) {
-    
-    function watchListInterceptor(data) {
-        angular.merge(data.resource, data.resource.jsonData);
-        delete data.resource.jsonData;
-        return data.resource;
-    }
+function WatchListFactory($resource, Util, $http, Point) {
 
-    var WatchList = $resource('/rest/v1/json-data/:xid', {
-        xid: '@xid',
-        name: '@name',
-        readPermission: '@readPermission',
-        editPermission: '@editPermission'
+    var WatchList = $resource('/rest/v1/watch-lists/:xid', {
+        xid: '@xid'
     }, {
-        get: {
+        query: {
+            method: 'GET',
+            isArray: true,
+            transformResponse: Util.transformArrayResponse,
             interceptor: {
-                response: watchListInterceptor
-            }
+                response: Util.arrayResponseInterceptor
+            },
+            withCredentials: true,
+            cache: true
         },
         save: {
-            method: 'POST',
-            interceptor: {
-                response: watchListInterceptor
-            },
-            transformRequest: function(data, headersGetter) {
-                return angular.toJson({
-                    points: data.points,
-                    params: data.params,
-                    query: data.query,
-                    type: data.type,
-                    username: data.username
-                });
-            }
-        },
-        'delete': {
-            method: 'DELETE',
-            interceptor: {
-                response: watchListInterceptor
-            },
-            transformResponse: function(data, headersGetter, status) {
-                if (data && status < 400) {
-                    var item = angular.fromJson(data);
-                    item.jsonData = null;
-                    return item;
-                }
-            }
+            method: 'PUT'
         }
     });
-    
-    var queryFn = WatchList.query;
-    WatchList.query = function() {
-        return queryFn.apply(this, arguments).$promise.then(function(xids) {
-            var requests = [];
-            for (var i = 0; i < xids.length; i++) {
-                if (xids[i].indexOf('wl_') === 0)
-                    requests.push(this.get({xid: xids[i]}).$promise);
+
+    WatchList.prototype.$getPoints = function() {
+        return $http({
+            method: 'GET',
+            url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
+            withCredentials: true,
+            cache: false
+        }).then(function(response) {
+            if (response.status < 400) {
+                var points = response.data;
+                for (var i = 0; i < points.length; i++) {
+                    points[i] = angular.merge(new Point(), points[i]);
+                }
+                this.points = points;
             }
-            return $q.all(requests);
-        }.bind(this));
+            return this;
+        }.bind(this))
     };
 
     return WatchList;
 }
 
-WatchListFactory.$inject = ['$resource', 'Util', '$q'];
+WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point'];
 return WatchListFactory;
 
 }); // define
