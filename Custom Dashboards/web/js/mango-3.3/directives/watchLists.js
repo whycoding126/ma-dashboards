@@ -27,16 +27,26 @@ function watchLists($injector) {
         controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point',
                      function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point) {
             var xid = $stateParams.watchListXid || this.watchListXid;
-            if (xid) {
-                this.watchList = WatchList.get({xid: xid});
-                this.watchList.$promise.then(function(watchList) {
-                    this.setWatchList(watchList);
-                }.bind(this));
-            }
-            
+
             this.showSelect = !this.noSelect;
             if (this.showSelect) {
                 this.queryPromise = WatchList.query().then(function(watchLists) {
+                    if (xid) {
+                        var found = false;
+                        for (var i = 0; i < watchLists.length; i++) {
+                            if (watchLists[i].xid === xid) {
+                                found = true;
+                                this.setWatchList(watchLists[i]);
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            WatchList.get({xid: xid}).$promise.then(function(watchList) {
+                                this.setWatchList(watchList);
+                            }.bind(this));
+                        }
+                    }
+                    
                     this.watchLists = watchLists;
                     
                     if (!this.watchList && (angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
@@ -44,6 +54,10 @@ function watchLists($injector) {
                     }
                     
                     return watchLists;
+                }.bind(this));
+            } else if (xid) {
+                WatchList.get({xid: xid}).$promise.then(function(watchList) {
+                    this.setWatchList(watchList);
                 }.bind(this));
             }
             
