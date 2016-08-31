@@ -78,7 +78,7 @@ define(['angular'], function(angular) {
 
 
 
-function UserNotesFactory($resource, Util) {
+function UserNotesFactory($resource, Util, $mdDialog) {
     var UserNotes = $resource('/rest/v1/comments', {}, {
         query: {
             method: 'GET',
@@ -91,11 +91,29 @@ function UserNotesFactory($resource, Util) {
             cache: true
         }
     });
+    
+    UserNotes.addNote = function(ev, commentType, referenceId) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.prompt()
+            .title('Enter a new note:')
+            .placeholder('Add Note')
+            .ariaLabel('Add Note')
+            .targetEvent(ev)
+            .ok('OK')
+            .cancel('Cancel');
+        $mdDialog.show(confirm).then(function(result) {
+            // Hit OK
+            console.log(commentType, referenceId, result);
+            UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType});
+        }, function() {
+            // Canceled dialog
+        });
+  };
 
     return UserNotes;
 }
 
-UserNotesFactory.$inject = ['$resource', 'Util'];
+UserNotesFactory.$inject = ['$resource', 'Util', '$mdDialog'];
 return UserNotesFactory;
 
 }); // define

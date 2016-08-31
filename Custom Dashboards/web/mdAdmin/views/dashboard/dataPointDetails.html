@@ -110,12 +110,17 @@
 		<md-card>
 			<md-card-title>
 				<md-card-title-text>
-					<span class="md-headline">User Notes</span>
+					<span class="md-headline" flex>User Notes</span>
 				</md-card-title-text>
 			</md-card-title>
 			<md-card-content>
 				<ma-user-notes-table></ma-user-notes-table>
 			</md-card-content>
+			<md-card-actions layout="row" layout-align="end center">
+	        	<md-button class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, 'POINT', myPoint.id)">
+	        		Add
+				</md-button>
+	        </md-card-actions>
 		</md-card>
 	</div>
 </div>

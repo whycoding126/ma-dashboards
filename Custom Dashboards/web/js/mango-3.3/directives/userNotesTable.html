@@ -1,4 +1,4 @@
-<md-table-container ng-init="myOrder='-timestamp'">
+<md-table-container ng-init="myOrder='-timestamp'; myLimit=5; myPage=1;">
     <table md-table>
         <thead md-head md-order="myOrder">
             <tr md-row>
@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="note in userNotes | orderBy: myOrder">
+            <tr ng-repeat="note in userNotes | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
                 <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
                 <td md-cell>{{note.comment}}</td>
                 <td md-cell>{{note.username}}</td>
@@ -18,3 +18,4 @@
         </tbody>
     </table>
 </md-table-container>
+<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15]" md-page="myPage" md-total="{{userNotes.length}}"></md-table-pagination>

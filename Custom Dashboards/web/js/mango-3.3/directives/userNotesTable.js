@@ -30,7 +30,6 @@ function userNotesTable(UserNotes, $injector) {
             }
             return require.toUrl('./userNotesTable.html');
         },
-        replace: true,
         link: function ($scope, $element, attrs) {
             var queryResult = UserNotes.query().$promise.then(function(userNotes) {
                 $scope.userNotes = userNotes;
