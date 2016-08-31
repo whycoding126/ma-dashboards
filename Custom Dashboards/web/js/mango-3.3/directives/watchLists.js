@@ -21,7 +21,7 @@ function watchLists($injector) {
             points: '=?',
             watchList: '=?',
             watchListXid: '@',
-            alwaysShowSelect: '=?',
+            noSelect: '=?',
             selectFirst: '=?'
         },
         controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point',
@@ -33,8 +33,9 @@ function watchLists($injector) {
                     this.setWatchList(watchList);
                 }.bind(this));
             }
-            if (!xid || this.alwaysShowSelect) {
-                this.showSelect = true;
+            
+            this.showSelect = !this.noSelect;
+            if (this.showSelect) {
                 this.queryPromise = WatchList.query().then(function(watchLists) {
                     this.watchLists = watchLists;
                     
