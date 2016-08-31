@@ -255,6 +255,14 @@ mdAdminApp.constant('MENU_ITEMS', [
 
     },
     {
+        name: 'dashboard.events',
+        url: '/events',
+        templateUrl: 'views/dashboard/events.html',
+        menuText: 'Events',
+        menuIcon: 'alarm'
+
+    },
+    {
         name: 'dashboard.apiErrors',
         url: '/api-errors',
         templateUrl: 'views/dashboard/errors.html',
