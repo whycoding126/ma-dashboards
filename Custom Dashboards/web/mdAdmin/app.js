@@ -245,9 +245,12 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/dataPointDetails.html',
         menuText: 'Data Point Details',
         menuIcon: 'timeline',
-        controller: ['$scope', '$stateParams', 'UserNotes', function ($scope, $stateParams, UserNotes) {
+        controller: ['$scope', '$stateParams', 'UserNotes', 'Events', function ($scope, $stateParams, UserNotes, Events) {
             $scope.pointXid = $stateParams.pointXid;
             $scope.addNote = UserNotes.addNote;
+            Events.query().$promise.then(function(Events) {
+                $scope.events = Events;
+            });
         }]
 
     },

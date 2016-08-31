@@ -21,11 +21,12 @@ define(['./services/Point',
         './services/rqlParamSerializer',
         './services/UserNotes',
         './services/UserNotesEventManager',
+        './services/events',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, WatchListFactory, rqlParamSerializer, UserNotes, UserNotesEventManager, angular) {
+        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, WatchListFactory, rqlParamSerializer, UserNotes, UserNotesEventManager, events, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -57,6 +58,7 @@ maServices.factory('WatchList', WatchListFactory);
 maServices.factory('rqlParamSerializer', rqlParamSerializer);
 maServices.factory('UserNotes', UserNotes);
 maServices.factory('UserNotesEventManager', UserNotesEventManager);
+maServices.factory('Events', events);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);

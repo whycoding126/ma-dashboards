@@ -419,6 +419,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maServices.Events",
+      "shortName": "maServices.Events",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides a service for retrieving and adding events",
+      "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint event events http madashboards maeventstable maservices matching method object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref"
+    },
+    {
+      "section": "api",
       "id": "maServices.JsonStore",
       "shortName": "maServices.JsonStore",
       "type": "service",
@@ -515,6 +524,15 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides a service for retrieving and adding user notes",
       "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint http madashboards maservices matching mausernotestable method note notes object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref user usernotes"
+    },
+    {
+      "section": "api",
+      "id": "maServices.UserNotesEventManager",
+      "shortName": "maServices.UserNotesEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides an EventManager factory pointing to the json-data websocket endpoint at &#39;/rest/v1/websocket/json-data&#39;",
+      "keywords": "api dashboard directive docs endpoint eventmanager factory item javascript json-data jsonstoreeventmanager madashboards majsonstore maservices methods pointing prettyprint-mode service subscription_types ui-sref unsubscribe usage usernoteseventmanager websocket websockethandler xid"
     },
     {
       "section": "api",
