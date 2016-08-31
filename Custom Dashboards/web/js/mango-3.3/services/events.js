@@ -11,7 +11,7 @@ define(['angular'], function(angular) {
 *
 * @description
 * Provides a service for retrieving and adding events
-* - Used by <a ui-sref="dashboard.docs.maDashboards.maEventsTable">`<ma-events-notes-table>`</a> 
+* - Used by <a ui-sref="dashboard.docs.maDashboards.maEventsTable">`<ma-events-table>`</a> 
 *
 *
 *

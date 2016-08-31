@@ -104,6 +104,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maDashboards.maEventsTable",
+      "shortName": "maDashboards.maEventsTable",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-events-table&gt;&lt;/ma-events-table&gt;",
+      "keywords": "api directive displays events list madashboards maeventstable replace table"
+    },
+    {
+      "section": "api",
       "id": "maDashboards.maFilteringPointList",
       "shortName": "maDashboards.maFilteringPointList",
       "type": "directive",

@@ -1,0 +1,21 @@
+<md-table-container ng-init="myOrder='-activeTimestamp'; myLimit=5; myPage=1;">
+    <table md-table>
+        <thead md-head md-order="myOrder">
+            <tr md-row>
+                <th md-column md-order-by="activeTimestamp">Time</th>
+                <th md-column md-order-by="message">Message</th>
+                <th md-column md-order-by="eventType.eventType">Event Type</th>
+                <th md-column md-order-by="eventType.eventSubtype">Event Sub-Type</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr ng-repeat="event in events | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
+                <td md-cell>{{event.activeTimestamp | moment:'format':'l LT'}}</td>
+                <td md-cell>{{event.message | limitTo:500}}</td>
+                <td md-cell>{{event.eventType.eventType}}</td>
+                <td md-cell>{{event.eventType.eventSubtype}}</td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15]" md-page="myPage" md-total="{{events.$total}}"></md-table-pagination>
