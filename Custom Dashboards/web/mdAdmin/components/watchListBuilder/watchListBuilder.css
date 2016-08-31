@@ -20,7 +20,8 @@ watch-list-builder md-card {
   margin: 16px 0;
 }
 
-watch-list-builder md-card md-card-content {
+watch-list-builder md-card.query-group > md-card-content,
+watch-list-builder md-card md-card-content.no-padding {
   padding: 0;
 }
 

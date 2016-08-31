@@ -1,1 +1,31 @@
 <ma-query-group node="$ctrl.rootQueryNode" properties="$ctrl.properties" depth="0"></ma-query-group>
+
+<md-card class="query-sort-limit" ng-if="!$ctrl.hideSortLimit">
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+      <span>Sort &amp; limit</span>
+    </div>
+  </md-toolbar>
+  <md-card-content>
+    <div layout="row" layout-align="start center" flex>
+      <md-input-container flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20" ng-repeat="sort in $ctrl.sort track by $index">
+        <label>Sort {{$index+1}}</label>
+        <md-select ng-model="$ctrl.sort[$index]" ng-change="$ctrl.updateModel()">
+          <md-option ng-value="undefined"></md-option>
+          <md-option ng-repeat="prop in $ctrl.properties track by prop.value" ng-value="prop.value" ng-bind="prop.label"></md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    
+    <div layout="row" layout-align="start center" flex>
+      <md-input-container flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20">
+        <label>Limit</label>
+        <input type="number" min="0" ng-model="$ctrl.limit[0]" ng-change="$ctrl.updateModel()">
+      </md-input-container>
+      <md-input-container flex="35" flex-gt-sm="35" flex-gt-md="30" flex-gt-lg="20">
+        <label>Start</label>
+        <input type="number" min="0" ng-model="$ctrl.limit[1]" ng-change="$ctrl.updateModel()">
+      </md-input-container>
+    </div>
+  </md-card-content>
+</md-card>

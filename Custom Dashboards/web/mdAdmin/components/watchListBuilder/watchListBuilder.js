@@ -18,7 +18,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
         watchlist.editPermission = 'edit-watchlists';
-        watchlist.query = 'sort(name)&limit(10)';
+        watchlist.query = '';
         this.editWatchlist(watchlist);
         if (this.form)
             this.form.$setPristine();

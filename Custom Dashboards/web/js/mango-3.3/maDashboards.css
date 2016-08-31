@@ -194,11 +194,11 @@ ma-query-group md-card.query-group md-card-content {
   padding: 5px;
 }
 
-ma-query-group md-card.query-group md-toolbar {
+ma-query-builder md-card md-toolbar {
   min-height: 38px;
 }
 
-ma-query-group md-toolbar .md-toolbar-tools {
+ma-query-builder md-card md-toolbar .md-toolbar-tools {
   height: 38px;
 }
 

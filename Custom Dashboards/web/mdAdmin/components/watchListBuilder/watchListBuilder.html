@@ -1,4 +1,4 @@
-<md-card class="point-query">
+<md-card class="watch-list-steps">
   <div ng-form="$ctrl.form">
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
@@ -15,7 +15,7 @@
       <md-button class="md-raised" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchlist.xid})" ng-disabled="$ctrl.watchlist.isNew"><md-icon>visibility</md-icon>&nbsp;<span ma-tr="common.view"></span></md-button>
     </div>
   </md-toolbar>
-  <md-card-content>
+  <md-card-content class="no-padding">
     <md-tabs md-dynamic-height md-border-bottom md-selected="$ctrl.selectedTab">
       <md-tab id="watchlist-settings">
         <md-tab-label><span ma-tr="dashboards.v3.app.watchListSettings"></span></md-tab-label>
@@ -60,7 +60,7 @@
                 <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.queryChanged()">
               </md-input-container>
             </div>
-            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.queryChanged()"></ma-query-builder>
+            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.queryChanged()" hide-sort-limit="$ctrl.watchlist.type !== 'query'"></ma-query-builder>
           </div>
         </md-tab-body>
       </md-tab>
