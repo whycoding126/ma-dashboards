@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate) {
@@ -136,6 +136,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             for (var i = 0; i < watchlists.length; i++) {
                 var wl = watchlists[i];
                 if (wl.username === user.username || user.hasPermission(wl.writePermission)) {
+                    wl.points = [];
                     filtered.push(wl);
                 }
             }
@@ -147,7 +148,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         if (this.selectedWatchlist) {
             this.editWatchlist(angular.copy(this.selectedWatchlist));
             this.form.$setPristine();
-        } else {
+        } else if (!this.watchlist || !this.watchlist.isNew) {
             this.newWatchlist();
         }
     };
@@ -158,24 +159,45 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         if (!watchlist.isNew && watchlist.type === 'static') {
             watchlist.$getPoints();
         }
+        this.parseQuery();
         this.doPointQuery();
     };
 
     this.doPointQuery = function doPointQuery() {
         // makes the table disappear when paginating
         //this.allPoints.splice(0, this.allPoints.length);
-        this.queryPromise = Point.objQuery({
-            query: this.watchlist.query,
-            sort: this.tableQuery.order,
-            limit: this.tableQuery.limit,
-            start: (this.tableQuery.page - 1) * this.tableQuery.limit
-        }).$promise.then(function(allPoints) {
+        
+        var queryObj = new query.Query(this.tableQuery.rql);
+        queryObj.push(new query.Query({name: 'sort', args: [this.tableQuery.order]}));
+        queryObj.push(new query.Query({name: 'limit', args: [this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit]}));
+        
+        this.queryPromise = Point.query({rqlQuery: queryObj.toString()})
+        .$promise.then(function(allPoints) {
             this.allPoints = allPoints;
         }.bind(this), function() {
             this.allPoints.splice(0, this.allPoints.length);
             delete this.allPoints.$total;
         }.bind(this));
     }.bind(this);
+    
+    this.parseQuery = function parseQuery() {
+        var queryObj = new query.Query(this.watchlist.query);
+        if (queryObj.cache && queryObj.cache.sort && queryObj.cache.sort.length) {
+            this.tableQuery.order = queryObj.cache.sort[0];
+        }
+        for (var i = 0; i < queryObj.args.length; i++) {
+            var arg = queryObj.args[i];
+            if (arg.name === 'limit' || arg.name === 'sort') {
+                queryObj.args.splice(i--, 1);
+            }
+        }
+        this.tableQuery.rql = queryObj;
+    };
+    
+    this.queryChanged = function queryChanged() {
+        this.parseQuery();
+        this.doPointQuery();
+    };
 };
 
 watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate'];

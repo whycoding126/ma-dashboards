@@ -3,7 +3,7 @@
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-input-container flex="100" flex-gt-sm="50" flex-gt-lg="30">
-        <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected()">
+        <md-select ng-model="$ctrl.selectedWatchlist" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.watchlistSelected(11)">
           <md-option ng-value="undefined"><i ma-tr="dashboards.v3.app.unsavedWatchlist"></i></md-option>
           <md-option ng-value="watchlist" ng-repeat="watchlist in $ctrl.watchlists track by watchlist.xid" ng-bind="watchlist.name"></md-option>
         </md-select>
@@ -57,10 +57,10 @@
             <div layout="row">
               <md-input-container flex class="rql-input">
                 <label ma-tr="dashboards.v3.app.rql"></label>
-                <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.doPointQuery()">
+                <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.queryChanged()">
               </md-input-container>
             </div>
-            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.doPointQuery()"></ma-query-builder>
+            <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.queryChanged()"></ma-query-builder>
           </div>
         </md-tab-body>
       </md-tab>
