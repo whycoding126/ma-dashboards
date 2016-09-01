@@ -3,7 +3,7 @@
         <input ng-init="eventType='DATA_POINT'" ng-model="eventType" ng-model-options="{debounce:1000}">
 </md-input-container>
 <md-input-container>
-        <label>Event Sub Type</label>
+        <label>dataPointId</label>
         <input ng-init="dataPointId='215'" ng-model="dataPointId" ng-model-options="{debounce:1000}">
 </md-input-container>
 <ma-events-table event-type="eventType" point-id="dataPointId"></ma-events-table>
