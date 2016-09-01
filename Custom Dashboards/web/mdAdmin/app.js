@@ -242,17 +242,19 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard.dataPointDetails',
         url: '/data-point-details/{pointXid}',
-        templateUrl: 'views/dashboard/dataPointDetails.html',
+        template: '<ma-data-point-details></ma-data-point-details>',
         menuText: 'Data Point Details',
         menuIcon: 'timeline',
-        controller: ['$scope', '$stateParams', 'UserNotes', 'Events', function ($scope, $stateParams, UserNotes, Events) {
-            $scope.pointXid = $stateParams.pointXid;
-            $scope.addNote = UserNotes.addNote;
-            Events.query().$promise.then(function(Events) {
-                $scope.events = Events;
-            });
-        }]
-
+        resolve: {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                return rQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
+                    angular.module('dataPointDetailsPage', [])
+                        .component('maDataPointDetails', dataPointDetails);
+                    $ocLazyLoad.inject('dataPointDetailsPage');
+                    cssInjector.injectLink(require.toUrl('./components/dataPointDetails/dataPointDetails.css'), 'dataPointDetails' ,'link[href="styles/main.css"]');
+                });
+            }]
+        }
     },
     {
         name: 'dashboard.events',
