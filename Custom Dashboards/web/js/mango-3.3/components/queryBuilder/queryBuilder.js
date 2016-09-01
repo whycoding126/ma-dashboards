@@ -30,15 +30,26 @@ var queryBuilder = function queryBuilder(cssInjector) {
         var sort = [];
         var limit = [];
         for (var i = 0; i < node.args.length; i++) {
-            if (node.args[i].name === 'sort') {
-                sort = node.args[i].args;
+            var childNode = node.args[i];
+            if (childNode.name === 'sort') {
+                for (var j = 0; j < childNode.args.length; j++) {
+                    var sortProp = childNode.args[j];
+                    var desc = false;
+                    if (sortProp.indexOf('-') === 0) {
+                        desc = true;
+                        sortProp = sortProp.substring(1);
+                    } else if (sortProp.indexOf('+') === 0) {
+                        sortProp = sortProp.substring(1);
+                    }
+                    sort.push({prop: sortProp, desc: desc});
+                }
                 node.args.splice(i--, 1);
-            } else if (node.args[i].name === 'limit') {
-                limit = node.args[i].args;
+            } else if (childNode.name === 'limit') {
+                limit = childNode.args;
                 node.args.splice(i--, 1);
             }
         }
-        sort.push(undefined);
+        sort.push({desc: false});
         this.sort = sort;
         this.limit = limit;
         this.rootQueryNode = node;
@@ -48,15 +59,20 @@ var queryBuilder = function queryBuilder(cssInjector) {
         var node = angular.copy(this.rootQueryNode);
         var sortNode, limitNode;
         
-        if (this.sort[this.sort.length-1]) {
-            this.sort.push(undefined);
+        if (this.sort[this.sort.length-1].prop) {
+            this.sort.push({desc: false});
         }
         for (var i = 0; i < this.sort.length - 1; i++) {
-            if (!this.sort[i])
+            if (!this.sort[i].prop)
                 this.sort.splice(i--, 1);
         }
         if (this.sort.length > 1) {
-            sortNode = new query.Query({name: 'sort', args: this.sort.slice(0, this.sort.length - 1)});
+            var sortArgs = [];
+            for (i = 0; i < this.sort.length - 1; i++) {
+                var sortProp = this.sort[i];
+                sortArgs.push((sortProp.desc ? '-' : '') + sortProp.prop);
+            }
+            sortNode = new query.Query({name: 'sort', args: sortArgs});
         }
         
         if (this.limit.length) {

@@ -212,6 +212,14 @@ ma-query-predicate .md-errors-spacer {
   display: none;
 }
 
+ma-query-builder .query-sort-property {
+  padding-right: 20px;
+}
+
+ma-query-builder .query-sort-property .md-icon-button {
+  margin-left: 0;
+}
+
 /* button group */
 .button-group > .md-button {
   margin: 0;
