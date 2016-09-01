@@ -24,7 +24,7 @@ function eventsTable(Events, $injector) {
         restrict: 'E',
         scope: {
             eventType: '=?',
-            eventSubType: '=?'
+            pointId: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -33,25 +33,12 @@ function eventsTable(Events, $injector) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
-            $scope.$watch('eventType', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                console.log('eventType',newValue);
-                
-                Events.query({eventType: $scope.eventType}).$promise.then(function(events) {
+            $scope.$watchGroup(['eventType', 'pointId'], function(newValues, oldValues) {
+                if (newValues === undefined) return;
+                Events.query({eventType: newValues[0], dataPointId: newValues[1]}).$promise.then(function(events) {
                     $scope.events = events;
                 });
             });
-            
-            // $scope.$watch('eventSubType', function(newValue, oldValue) {
-            //     if (newValue === undefined) return;
-            //     console.log('eventSubType',newValue);
-            //     
-            //     Events.query({eventType: $scope.eventType, eventSubtype: $scope.eventSubType}).$promise.then(function(events) {
-            //         $scope.events = events;
-            //     });
-            // });
-            
-            
         }
     };
 }

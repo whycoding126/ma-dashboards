@@ -5,7 +5,7 @@
                 <th md-column md-order-by="activeTimestamp">Time</th>
                 <th md-column md-order-by="message">Message</th>
                 <th md-column md-order-by="eventType.eventType">Event Type</th>
-                <th md-column md-order-by="eventType.eventSubtype">Event Sub-Type</th>
+                <th md-column md-order-by="alarmLevel">Alarm Level</th>
             </tr>
         </thead>
         <tbody md-body>
@@ -13,7 +13,7 @@
                 <td md-cell>{{event.activeTimestamp | moment:'format':'l LT'}}</td>
                 <td md-cell>{{event.message | limitTo:500}}</td>
                 <td md-cell>{{event.eventType.eventType}}</td>
-                <td md-cell>{{event.eventType.eventSubtype}}</td>
+                <td md-cell>{{event.alarmLevel}}</td>
             </tr>
         </tbody>
     </table>

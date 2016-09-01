@@ -170,11 +170,11 @@
 	<md-toolbar class="md-whiteframe-1dp md-hue-3">
 		<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 			<h2 flex>
-				  <span>Events</span>
+				  <span>Events for {{myPoint.deviceName}} - {{myPoint.name}}</span>
 			</h2>
 		</div>
 	</md-toolbar>
 	<md-card-content>
-		<ma-events-table event-type="'AUDIT'" event-sub-type="'DATA_POINT'"></ma-events-table>
+		<ma-events-table event-type="'DATA_POINT'" point-id="myPoint.id"></ma-events-table>
 	</md-card-content>
 </md-card>
