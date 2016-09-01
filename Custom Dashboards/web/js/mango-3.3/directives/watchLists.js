@@ -7,6 +7,8 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 function watchLists($injector) {
+    var UPDATE_TYPES = ['update'];
+    
     return {
         restrict: 'E',
         templateUrl: function() {
@@ -24,8 +26,8 @@ function watchLists($injector) {
             noSelect: '=?',
             selectFirst: '=?'
         },
-        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point',
-                     function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point) {
+        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', //'WatchListEventManager',
+                     function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point, WatchListEventManager) {
             var xid = $stateParams.watchListXid || this.watchListXid;
 
             this.showSelect = !this.noSelect;
@@ -69,7 +71,12 @@ function watchLists($injector) {
                 return this.queryPromise;
             }
             
+            
             this.setWatchList = function(watchList) {
+                if (this.watchList) {
+                    //WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                }
+                
                 if (!watchList) return;
                 this.watchList = watchList;
                 
@@ -84,8 +91,14 @@ function watchLists($injector) {
                     }.bind(this));
                 }
                 
+                //WatchListEventManager.smartSubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                
                 $state.go('.', {watchListXid: this.watchList.xid}, {location: 'replace', notify: false});
             };
+            
+            this.updateHandler = function updateHandler() {
+                console.log(arguments);
+            }.bind(this);
         }]
     };
 }
