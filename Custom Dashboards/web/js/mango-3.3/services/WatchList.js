@@ -19,9 +19,13 @@ function WatchListFactory($resource, Util, $http, Point) {
                 response: Util.arrayResponseInterceptor
             },
             withCredentials: true,
-            cache: true
+            cache: false
         },
         save: {
+            method: 'POST',
+            url: '/rest/v1/watch-lists/'
+        },
+        update: {
             method: 'PUT'
         }
     });

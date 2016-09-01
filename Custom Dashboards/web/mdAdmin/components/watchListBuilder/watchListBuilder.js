@@ -12,13 +12,13 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         var watchlist = new WatchList();
         watchlist.isNew = true;
         watchlist.name = name;
-        watchlist.xid = 'wl_' + Util.uuid();
+        watchlist.xid = Util.uuid();
         watchlist.points = [];
         watchlist.username = MD_ADMIN_SETTINGS.user.username;
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
         watchlist.editPermission = 'edit-watchlists';
-        watchlist.query = '';
+        watchlist.query = 'sort(deviceName,name)&limit(200)';
         this.editWatchlist(watchlist);
         if (this.form)
             this.form.$setPristine();
@@ -64,7 +64,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
     
     this.save = function save() {
-        this.watchlist.$save().then(function(wl) {
+        var saveMethod = this.watchlist.isNew ? '$save' : '$update';
+        this.watchlist[saveMethod]().then(function(wl) {
             this.selectedWatchlist = wl;
             this.watchlistSelected();
             
@@ -167,9 +168,16 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         // makes the table disappear when paginating
         //this.allPoints.splice(0, this.allPoints.length);
         
-        var queryObj = new query.Query(this.tableQuery.rql);
-        queryObj.push(new query.Query({name: 'sort', args: [this.tableQuery.order]}));
-        queryObj.push(new query.Query({name: 'limit', args: [this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit]}));
+        var queryObj = new query.Query(angular.copy(this.tableQuery.rql));
+        if (queryObj.name !== 'and') {
+            if (!queryObj.args.length) {
+                queryObj = new query.Query();
+            } else {
+                queryObj = new query.Query({name: 'and', args: [queryObj]});
+            }
+        }
+        queryObj = queryObj.sort(this.tableQuery.order);
+        queryObj = queryObj.limit(this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit);
         
         this.queryPromise = Point.query({rqlQuery: queryObj.toString()})
         .$promise.then(function(allPoints) {
