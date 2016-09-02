@@ -69,7 +69,7 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
             };
             
             $scope.validateText = function(searchText) {
-                console.log(searchText);
+                // console.log(searchText);
             };
 
             $scope.querySearch = function(queryStr) {

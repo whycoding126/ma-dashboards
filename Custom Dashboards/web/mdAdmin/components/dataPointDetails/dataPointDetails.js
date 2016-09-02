@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, UserNotes) {
+var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, UserNotes, localStorageService) {
     
     this.addNote = UserNotes.addNote;
     
@@ -18,21 +18,31 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
             $this.pointXid = $stateParams.pointXid;
         }
         else {
-            // Load pointXid from local storage
+            // Attempt load pointXid from local storage
+            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
+            if (storedPoint) {
+                $this.pointXid = storedPoint.xid;
+                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
+            }
+            
         }
     };
     
     
-    // $scope.$watch('myPoint.xid', function(newValue, oldValue) {
-    //     if (newValue === undefined || newValue === oldValue) return;
-    //     // console.log(newValue);
-    //     $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
-    // });
+    $scope.$watch('myPoint.xid', function(newValue, oldValue) {
+        if (newValue === undefined || newValue === oldValue) return;
+        //console.log('New point selected:', newValue);
+        //$state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
+        
+        localStorageService.set('lastDataPointDetailsItem', {
+            xid: newValue
+        });
+    });
     
     
 };
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'UserNotes'];
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'UserNotes', 'localStorageService'];
 
 return {
     controller: dataPointDetailsController,
