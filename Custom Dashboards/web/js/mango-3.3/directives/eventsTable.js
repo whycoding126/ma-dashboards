@@ -11,12 +11,15 @@ define(['require'], function(require) {
  * @restrict E
  * @description
  * `<ma-events-table></ma-events-table>`
- * - Displays a list of Events in a table
+ * - Displays a list of Events in a table format.
  *
- * @param {object} Replace Replace
+ * @param {string} event-type Query via eventType
+ * @param {string} point-id Query via pointId, not to be used with other query by attributes
+ * @param {string} alarm-level Query via alarmLevel
+ * @param {number} limit Set the initial limit of the pagination
  *
  * @usage
- * <ma-events-table></ma-events-table>
+ * <ma-events-table event-type="eventType" limit="25"></ma-events-table>
  *
  */
 function eventsTable(Events, $injector) {
@@ -24,7 +27,9 @@ function eventsTable(Events, $injector) {
         restrict: 'E',
         scope: {
             eventType: '=?',
-            pointId: '=?'
+            pointId: '=?',
+            limit: '=?',
+            alarmLevel: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -33,11 +38,46 @@ function eventsTable(Events, $injector) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
-            $scope.$watchGroup(['eventType', 'pointId'], function(newValues, oldValues) {
-                if (newValues === undefined) return;
-                Events.query({eventType: newValues[0], dataPointId: newValues[1]}).$promise.then(function(events) {
+            
+            $scope.$watch('pointId', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                Events.query({
+                    eventType: 'DATA_POINT', 
+                    dataPointId: newValue
+                }).$promise.then(function(events) {
                     $scope.events = events;
                 });
+            });
+            
+            $scope.$watchGroup(['eventType','alarmLevel'], function(newValues, oldValues) {
+                if (newValues === undefined) return;
+                if (newValues[1]==='ALL' && newValues[0]!='ALL') {
+                    Events.query({
+                        eventType: newValues[0]
+                    }).$promise.then(function(events) {
+                        $scope.events = events;
+                    });
+                }
+                else if (newValues[0]==='ALL' && newValues[1]!='ALL') {
+                    Events.query({
+                        alarmLevel : newValues[1]
+                    }).$promise.then(function(events) {
+                        $scope.events = events;
+                    });
+                }
+                else if (newValues[0]==='ALL' && newValues[1]==='ALL') {
+                    Events.query().$promise.then(function(events) {
+                        $scope.events = events;
+                    });
+                }
+                else {
+                    Events.query({
+                        eventType: newValues[0],
+                        alarmLevel : newValues[1]
+                    }).$promise.then(function(events) {
+                        $scope.events = events;
+                    });
+                }
             });
         }
     };

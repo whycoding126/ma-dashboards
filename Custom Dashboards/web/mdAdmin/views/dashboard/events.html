@@ -1,9 +1,24 @@
-<md-input-container>
-        <label>Event Type</label>
-        <input ng-init="eventType='DATA_POINT'" ng-model="eventType" ng-model-options="{debounce:1000}">
-</md-input-container>
-<md-input-container>
-        <label>dataPointId</label>
-        <input ng-init="dataPointId='215'" ng-model="dataPointId" ng-model-options="{debounce:1000}">
-</md-input-container>
-<ma-events-table event-type="eventType" point-id="dataPointId"></ma-events-table>
+<div layout="row">
+      <md-input-container flex>
+            <label>Event Type</label>
+            <md-select ng-model="eventType" ng-init="eventType='ALL'" class="md-no-underline">
+                  <md-option value="ALL">All</md-option>
+                  <md-option value="DATA_POINT">Data Point</md-option>
+                  <md-option value="DATA_SOURCE">Data Source</md-option>
+                  <md-option value="SYSTEM">System</md-option>
+                  <md-option value="AUDIT">Audit</md-option>
+            </md-select>
+      </md-input-container>
+      <md-input-container flex>
+            <label>Alarm Level</label>
+            <md-select ng-model="alarmLevel" ng-init="alarmLevel='ALL'" class="md-no-underline">
+                  <md-option value="ALL">All</md-option>
+                  <md-option value="None">None</md-option>
+                  <md-option value="INFORMATION">Information</md-option>
+                  <md-option value="URGENT">Urgent</md-option>
+                  <md-option value="CRITICAL">Critical</md-option>
+                  <md-option value="LIFE_SAFETY">Safety</md-option
+            </md-select>
+      </md-input-container>
+</div>
+<ma-events-table event-type="eventType" limit="25" alarm-level="alarmLevel"></ma-events-table>
