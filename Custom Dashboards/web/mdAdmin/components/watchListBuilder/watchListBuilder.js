@@ -7,8 +7,10 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate, $timeout) {
-    this.newWatchlist = function newWatchlist(name) {
-        this.selectedWatchlist = null;
+    var $ctrl = this;
+    
+    $ctrl.newWatchlist = function newWatchlist(name) {
+        $ctrl.selectedWatchlist = null;
         var watchlist = new WatchList();
         watchlist.isNew = true;
         watchlist.name = name;
@@ -19,26 +21,26 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.readPermission = 'user';
         watchlist.editPermission = 'edit-watchlists';
         watchlist.query = 'sort(deviceName,name)&limit(200)';
-        this.editWatchlist(watchlist);
-        if (this.form)
-            this.form.$setPristine();
+        $ctrl.editWatchlist(watchlist);
+        if ($ctrl.form)
+            $ctrl.form.$setPristine();
     };
     
-    var defaultTotal = this.total = '\u221E';
-    this.selectedPoints = [];
-    this.staticSelected = [];
-    this.allPoints = [];
-    this.tableQuery = {
+    var defaultTotal = $ctrl.total = '\u221E';
+    $ctrl.selectedPoints = [];
+    $ctrl.staticSelected = [];
+    $ctrl.allPoints = [];
+    $ctrl.tableQuery = {
         limit: 10,
         page: 1,
         order: 'name'
     };
-    this.staticTableQuery = {
+    $ctrl.staticTableQuery = {
         limit: 10,
         page: 1
     };
 
-    this.queryProperties = [
+    $ctrl.queryProperties = [
         {
             label: 'Point name',
             value: 'name'
@@ -57,37 +59,37 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }
     ];
     
-    this.selectedTab = 0;
-    this.nextStep = function() {
-        this.selectedTab++;
+    $ctrl.selectedTab = 0;
+    $ctrl.nextStep = function() {
+        $ctrl.selectedTab++;
     };
-    this.prevStep = function() {
-        this.selectedTab--;
+    $ctrl.prevStep = function() {
+        $ctrl.selectedTab--;
     };
     
-    this.save = function save() {
-        var saveMethod = this.watchlist.isNew ? '$save' : '$update';
-        this.watchlist[saveMethod]().then(function(wl) {
-            this.selectedWatchlist = wl;
-            this.watchlistSelected();
+    $ctrl.save = function save() {
+        var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$update';
+        $ctrl.watchlist[saveMethod]().then(function(wl) {
+            $ctrl.selectedWatchlist = wl;
+            $ctrl.watchlistSelected();
             
             var found = false
-            for (var i = 0; i < this.watchlists.length; i++) {
-                if (this.watchlists[i].xid === wl.xid) {
-                    this.watchlists.splice(i, 1, wl);
+            for (var i = 0; i < $ctrl.watchlists.length; i++) {
+                if ($ctrl.watchlists[i].xid === wl.xid) {
+                    $ctrl.watchlists.splice(i, 1, wl);
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                this.watchlists.push(wl);
+                $ctrl.watchlists.push(wl);
             }
             
-            this.form.$setPristine();
-        }.bind(this));
+            $ctrl.form.$setPristine();
+        });
     };
     
-    this.deleteWatchlist = function deleteWatchlist(event) {
+    $ctrl.deleteWatchlist = function deleteWatchlist(event) {
         
         var confirm = $mdDialog.confirm()
             .title(Translate.trSync('dashboards.v3.app.areYouSure'))
@@ -98,41 +100,41 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             .cancel(Translate.trSync('common.cancel'));
         
         $mdDialog.show(confirm).then(function() {
-            this.watchlist.$delete().then(function(wl) {
-                this.newWatchlist();
-                for (var i = 0; i < this.watchlists.length; i++) {
-                    if (this.watchlists[i].xid === wl.xid) {
-                        this.watchlists.splice(i, 1);
+            $ctrl.watchlist.$delete().then(function(wl) {
+                $ctrl.newWatchlist();
+                for (var i = 0; i < $ctrl.watchlists.length; i++) {
+                    if ($ctrl.watchlists[i].xid === wl.xid) {
+                        $ctrl.watchlists.splice(i, 1);
                         break;
                     }
                 }
-            }.bind(this));
-        }.bind(this));
+            });
+        });
     };
     
-    this.$onInit = function() {
-        this.refreshWatchlists();
+    $ctrl.$onInit = function() {
+        $ctrl.refreshWatchlists();
         if ($stateParams.watchListXid) {
-            this.getWatchlist($stateParams.watchListXid);
+            $ctrl.getWatchlist($stateParams.watchListXid);
         } else {
-            this.newWatchlist();
+            $ctrl.newWatchlist();
         }
     };
     
-    this.getWatchlist = function getWatchlist(xid) {
+    $ctrl.getWatchlist = function getWatchlist(xid) {
         WatchList.get({xid: xid}).$promise.then(function(wl) {
             var user = MD_ADMIN_SETTINGS.user;
             if (wl.username !== user.username && !user.hasPermission(wl.writePermission)) {
                 throw 'no edit permission';
             }
-            this.selectedWatchlist = wl;
-            this.watchlistSelected();
-        }.bind(this), function() {
-            this.newWatchlist();
-        }.bind(this));
+            $ctrl.selectedWatchlist = wl;
+            $ctrl.watchlistSelected();
+        }, function() {
+            $ctrl.newWatchlist();
+        });
     };
     
-    this.refreshWatchlists = function refreshWatchlists() {
+    $ctrl.refreshWatchlists = function refreshWatchlists() {
         WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchlists) {
             var filtered = [];
             var user = MD_ADMIN_SETTINGS.user;
@@ -143,41 +145,41 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                     filtered.push(wl);
                 }
             }
-            this.watchlists = filtered;
-        }.bind(this));
+            $ctrl.watchlists = filtered;
+        });
     };
 
-    this.watchlistSelected = function watchlistSelected() {
-        if (this.selectedWatchlist) {
-            this.editWatchlist(angular.copy(this.selectedWatchlist));
-            this.form.$setPristine();
-        } else if (!this.watchlist || !this.watchlist.isNew) {
-            this.newWatchlist();
+    $ctrl.watchlistSelected = function watchlistSelected() {
+        if ($ctrl.selectedWatchlist) {
+            $ctrl.editWatchlist(angular.copy($ctrl.selectedWatchlist));
+            $ctrl.form.$setPristine();
+        } else if (!$ctrl.watchlist || !$ctrl.watchlist.isNew) {
+            $ctrl.newWatchlist();
         }
     };
     
-    this.editWatchlist = function editWatchlist(watchlist) {
-        this.watchlist = watchlist;
+    $ctrl.editWatchlist = function editWatchlist(watchlist) {
+        $ctrl.watchlist = watchlist;
         $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
         if (!watchlist.isNew && watchlist.type === 'static') {
             watchlist.$getPoints().then(function() {
-                this.selectedPoints = watchlist.points;
-                this.resetSort();
-                this.sortAndLimit();
-            }.bind(this));
+                $ctrl.selectedPoints = watchlist.points;
+                $ctrl.resetSort();
+                $ctrl.sortAndLimit();
+            });
         } else {
-            this.selectedPoints = [];
+            $ctrl.selectedPoints = [];
         }
-        this.staticSelected = [];
-        this.parseQuery();
-        this.doPointQuery();
+        $ctrl.staticSelected = [];
+        $ctrl.parseQuery();
+        $ctrl.doPointQuery();
     };
 
-    this.doPointQuery = function doPointQuery() {
+    $ctrl.doPointQuery = function doPointQuery() {
         // makes the table disappear when paginating
-        //this.allPoints = [];
+        //$ctrl.allPoints = [];
         
-        var queryObj = new query.Query(angular.copy(this.tableQuery.rql));
+        var queryObj = new query.Query(angular.copy($ctrl.tableQuery.rql));
         if (queryObj.name !== 'and') {
             if (!queryObj.args.length) {
                 queryObj = new query.Query();
@@ -185,29 +187,29 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                 queryObj = new query.Query({name: 'and', args: [queryObj]});
             }
         }
-        queryObj = queryObj.sort(this.tableQuery.order);
-        queryObj = queryObj.limit(this.tableQuery.limit, (this.tableQuery.page - 1) * this.tableQuery.limit);
+        queryObj = queryObj.sort($ctrl.tableQuery.order);
+        queryObj = queryObj.limit($ctrl.tableQuery.limit, ($ctrl.tableQuery.page - 1) * $ctrl.tableQuery.limit);
         
-        this.queryPromise = Point.query({rqlQuery: queryObj.toString()})
+        $ctrl.queryPromise = Point.query({rqlQuery: queryObj.toString()})
         .$promise.then(function(allPoints) {
-            this.total = allPoints.$total;
+            $ctrl.total = allPoints.$total;
             
             // set the points to an empty array and then to the actual points so that each row is destroyed and re-created
             // this ensures that checkboxes are preserved for selected points
-            this.allPoints = [];
+            $ctrl.allPoints = [];
             $timeout(function() {
-                this.allPoints = allPoints;
-            }.bind(this), 0);
+                $ctrl.allPoints = allPoints;
+            }, 0);
             
-        }.bind(this), function() {
-            this.allPoints = [];
-        }.bind(this));
-    }.bind(this);
+        }, function() {
+            $ctrl.allPoints = [];
+        });
+    };
 
-    this.parseQuery = function parseQuery() {
-        var queryObj = new query.Query(this.watchlist.query);
+    $ctrl.parseQuery = function parseQuery() {
+        var queryObj = new query.Query($ctrl.watchlist.query);
         if (queryObj.cache && queryObj.cache.sort && queryObj.cache.sort.length) {
-            this.tableQuery.order = queryObj.cache.sort[0];
+            $ctrl.tableQuery.order = queryObj.cache.sort[0];
         }
         for (var i = 0; i < queryObj.args.length; i++) {
             var arg = queryObj.args[i];
@@ -215,59 +217,59 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                 queryObj.args.splice(i--, 1);
             }
         }
-        this.tableQuery.rql = queryObj;
+        $ctrl.tableQuery.rql = queryObj;
     };
     
-    this.queryChanged = function queryChanged() {
-        this.parseQuery();
-        this.doPointQuery();
+    $ctrl.queryChanged = function queryChanged() {
+        $ctrl.parseQuery();
+        $ctrl.doPointQuery();
     };
     
-    this.resetSort = function() {
-        delete this.staticTableQuery.order;
-    }.bind(this);
+    $ctrl.resetSort = function() {
+        delete $ctrl.staticTableQuery.order;
+    };
     
-    this.sortAndLimit = function() {
-        var order = this.staticTableQuery.order;
+    $ctrl.sortAndLimit = function() {
+        var order = $ctrl.staticTableQuery.order;
         if (order) {
             var desc = false;
             if (desc = order.indexOf('-') === 0 || order.indexOf('+') === 0) {
                 order = order.substring(1);
             }
-            this.watchlist.points.sort(function(a, b) {
+            $ctrl.watchlist.points.sort(function(a, b) {
                 if (a[order] > b[order]) return desc ? -1 : 1;
                 if (a[order] < b[order]) return desc ? 1 : -1;
                 return 0;
             });
         }
         
-        var limit = this.staticTableQuery.limit;
-        var start = this.staticTableQuery.start = (this.staticTableQuery.page - 1) * this.staticTableQuery.limit
-        this.pointsInView = this.watchlist.points.slice(start, start + limit);
-    }.bind(this);
+        var limit = $ctrl.staticTableQuery.limit;
+        var start = $ctrl.staticTableQuery.start = ($ctrl.staticTableQuery.page - 1) * $ctrl.staticTableQuery.limit
+        $ctrl.pointsInView = $ctrl.watchlist.points.slice(start, start + limit);
+    };
     
-    this.dragAndDrop = function(event, ui) {
-        this.resetSort();
-        var from = this.staticTableQuery.start + ui.item.sortable.index;
-        var to = this.staticTableQuery.start + ui.item.sortable.dropindex;
+    $ctrl.dragAndDrop = function(event, ui) {
+        $ctrl.resetSort();
+        var from = $ctrl.staticTableQuery.start + ui.item.sortable.index;
+        var to = $ctrl.staticTableQuery.start + ui.item.sortable.dropindex;
         
-        var item = this.watchlist.points[from];
-        this.watchlist.points.splice(from, 1);
-        this.watchlist.points.splice(to, 0, item);
-    }.bind(this);
+        var item = $ctrl.watchlist.points[from];
+        $ctrl.watchlist.points.splice(from, 1);
+        $ctrl.watchlist.points.splice(to, 0, item);
+    };
     
-    this.removeFromWatchlist = function() {
+    $ctrl.removeFromWatchlist = function() {
         var map = {};
-        for (var i = 0; i < this.staticSelected.length; i++) {
-            map[this.staticSelected[i].xid] = true;
+        for (var i = 0; i < $ctrl.staticSelected.length; i++) {
+            map[$ctrl.staticSelected[i].xid] = true;
         }
-        for (i = 0; i < this.watchlist.points.length; i++) {
-            if (map[this.watchlist.points[i].xid]) {
-                this.watchlist.points.splice(i--, 1);
+        for (i = 0; i < $ctrl.watchlist.points.length; i++) {
+            if (map[$ctrl.watchlist.points[i].xid]) {
+                $ctrl.watchlist.points.splice(i--, 1);
             }
         }
-        this.sortAndLimit();
-    }.bind(this);
+        $ctrl.sortAndLimit();
+    };
 };
 
 watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
