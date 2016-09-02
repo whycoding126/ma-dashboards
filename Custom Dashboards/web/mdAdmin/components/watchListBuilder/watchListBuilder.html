@@ -65,11 +65,11 @@
         </md-tab-body>
       </md-tab>
       <md-tab id="watchlist-query-results">
-        <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span ng-if="$ctrl.allPoints.$total || $ctrl.allPoints.$total === 0">({{$ctrl.allPoints.$total}})</span></md-tab-label>
+        <md-tab-label><span ma-tr="dashboards.v3.app.queryResults"></span>&nbsp;<span>({{$ctrl.total}})</span></md-tab-label>
         <md-tab-body>
           <div class="watchlist-query-results">
             <md-table-container>
-              <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.watchlist.points" md-progress="$ctrl.queryPromise">
+              <table md-table md-row-select="$ctrl.watchlist.type === 'static'" multiple ng-model="$ctrl.selectedPoints" md-progress="$ctrl.queryPromise">
                 <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.doPointQuery">
                   <tr md-row>
                       <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
@@ -88,7 +88,7 @@
                 </tbody>
               </table>
             </md-table-container>
-            <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.allPoints.$total}}" md-page-select md-on-paginate="$ctrl.doPointQuery"></md-table-pagination>
+            <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.total}}" md-page-select md-on-paginate="$ctrl.doPointQuery"></md-table-pagination>
           </div>
         </md-tab-body>
       </md-tab>

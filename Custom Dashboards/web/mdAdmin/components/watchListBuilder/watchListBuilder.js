@@ -6,7 +6,7 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate) {
+var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate, $timeout) {
     this.newWatchlist = function newWatchlist(name) {
         this.selectedWatchlist = null;
         var watchlist = new WatchList();
@@ -24,6 +24,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             this.form.$setPristine();
     };
     
+    var defaultTotal = this.total = '\u221E';
+    this.selectedPoints = [];
     this.allPoints = [];
     this.tableQuery = {
         limit: 10,
@@ -158,7 +160,11 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         this.watchlist = watchlist;
         $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
         if (!watchlist.isNew && watchlist.type === 'static') {
-            watchlist.$getPoints();
+            watchlist.$getPoints().then(function() {
+                this.selectedPoints = watchlist.points;
+            }.bind(this));
+        } else {
+            this.selectedPoints = [];
         }
         this.parseQuery();
         this.doPointQuery();
@@ -166,7 +172,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
 
     this.doPointQuery = function doPointQuery() {
         // makes the table disappear when paginating
-        //this.allPoints.splice(0, this.allPoints.length);
+        //this.allPoints = [];
         
         var queryObj = new query.Query(angular.copy(this.tableQuery.rql));
         if (queryObj.name !== 'and') {
@@ -181,13 +187,20 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         
         this.queryPromise = Point.query({rqlQuery: queryObj.toString()})
         .$promise.then(function(allPoints) {
-            this.allPoints = allPoints;
+            this.total = allPoints.$total;
+            
+            // set the points to an empty array and then to the actual points so that each row is destroyed and re-created
+            // this ensures that checkboxes are preserved for selected points
+            this.allPoints = [];
+            $timeout(function() {
+                this.allPoints = allPoints;
+            }.bind(this), 0);
+            
         }.bind(this), function() {
-            this.allPoints.splice(0, this.allPoints.length);
-            delete this.allPoints.$total;
+            this.allPoints = [];
         }.bind(this));
     }.bind(this);
-    
+
     this.parseQuery = function parseQuery() {
         var queryObj = new query.Query(this.watchlist.query);
         if (queryObj.cache && queryObj.cache.sort && queryObj.cache.sort.length) {
@@ -208,7 +221,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate'];
+watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
 
 return {
     controller: watchListBuilder,
