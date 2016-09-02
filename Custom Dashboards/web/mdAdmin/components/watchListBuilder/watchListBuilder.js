@@ -162,6 +162,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             watchlist.$getPoints().then(function() {
                 this.selectedPoints = watchlist.points;
                 this.resetSort();
+                this.sortAndLimit();
             }.bind(this));
         } else {
             this.selectedPoints = [];
@@ -220,20 +221,37 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         this.doPointQuery();
     };
     
-    this.reorderStatic = function reorderStatic(order) {
-        var desc = false;
-        if (desc = order.indexOf('-') === 0 || order.indexOf('+') === 0) {
-            order = order.substring(1);
-        }
-        this.watchlist.points.sort(function(a, b) {
-            if (a[order] > b[order]) return desc ? -1 : 1;
-            if (a[order] < b[order]) return desc ? 1 : -1;
-            return 0;
-        });
-    }.bind(this);
-    
     this.resetSort = function() {
         delete this.staticTableQuery.order;
+    }.bind(this);
+    
+    this.sortAndLimit = function() {
+        var order = this.staticTableQuery.order;
+        if (order) {
+            var desc = false;
+            if (desc = order.indexOf('-') === 0 || order.indexOf('+') === 0) {
+                order = order.substring(1);
+            }
+            this.watchlist.points.sort(function(a, b) {
+                if (a[order] > b[order]) return desc ? -1 : 1;
+                if (a[order] < b[order]) return desc ? 1 : -1;
+                return 0;
+            });
+        }
+        
+        var limit = this.staticTableQuery.limit;
+        var start = this.staticTableQuery.start = (this.staticTableQuery.page - 1) * this.staticTableQuery.limit
+        this.pointsInView = this.watchlist.points.slice(start, start + limit);
+    }.bind(this);
+    
+    this.dragAndDrop = function(event, ui) {
+        this.resetSort();
+        var from = this.staticTableQuery.start + ui.item.sortable.index;
+        var to = this.staticTableQuery.start + ui.item.sortable.dropindex;
+        
+        var item = this.watchlist.points[from];
+        this.watchlist.points.splice(from, 1);
+        this.watchlist.points.splice(to, 0, item);
     }.bind(this);
 };
 

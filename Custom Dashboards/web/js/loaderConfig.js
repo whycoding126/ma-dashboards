@@ -39,6 +39,7 @@ require.config({
         'angular' : vendor + '/angular/angular',
         'angular-route' : vendor + '/angular-route/angular-route',
         'angular-ui-router' : vendor + '/angular-ui-router/angular-ui-router',
+        'angular-ui-sortable' : vendor + '/angular-ui-sortable/sortable',
         'json3' : vendor + '/json3/json3',
         'oclazyload' : vendor + '/oclazyload/ocLazyLoad',
         'angular-loading-bar' : vendor + '/angular-loading-bar/loading-bar',
@@ -54,6 +55,7 @@ require.config({
         'moment': vendor + '/moment/moment-with-locales',
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
+        'jquery-ui': vendor + '/jquery-ui/jquery-ui',
         'mdPickers': vendor + '/mdPickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
@@ -65,6 +67,9 @@ require.config({
         },
         'angular-ui-router' : {
             deps : ['angular']
+        },
+        'angular-ui-sortable' : {
+            deps : ['angular', 'jquery-ui']
         },
         'oclazyload' : {
             deps : ['angular-ui-router']

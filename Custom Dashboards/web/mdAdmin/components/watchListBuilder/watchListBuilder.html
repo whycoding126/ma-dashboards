@@ -98,7 +98,7 @@
           <div class="watchlist-selected-points">
             <md-table-container>
               <table md-table>
-                <thead md-head md-order="$ctrl.staticTableQuery.order" md-on-reorder="$ctrl.reorderStatic">
+                <thead md-head md-order="$ctrl.staticTableQuery.order" md-on-reorder="$ctrl.sortAndLimit">
                   <tr md-row>
                       <th md-column></th>
                       <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
@@ -107,9 +107,9 @@
                       <th md-column md-order-by="xid" ma-tr="common.xid"></th>
                     </tr>
                 </thead>
-                <tbody md-body>
-                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | limitTo:$ctrl.staticTableQuery.limit:($ctrl.staticTableQuery.page - 1)*$ctrl.staticTableQuery.limit track by point.xid">
-                      <td><md-button class="md-icon-button" ng-click="$ctrl.watchlist.points.splice($index, 1)"><md-icon>clear</md-icon></md-button></td>
+                <tbody md-body ng-model="$ctrl.pointsInView" ui-sortable="{update: $ctrl.dragAndDrop}">
+                  <tr md-row ng-repeat="point in $ctrl.pointsInView track by point.xid">
+                      <td md-cell><md-button class="md-icon-button" ng-click="$ctrl.watchlist.points.splice($ctrl.staticTableQuery.start + $index, 1); $ctrl.sortAndLimit()"><md-icon>clear</md-icon></md-button></td>
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>
@@ -118,7 +118,7 @@
                 </tbody>
               </table>
             </md-table-container>
-            <md-table-pagination md-limit="$ctrl.staticTableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.staticTableQuery.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select></md-table-pagination>
+            <md-table-pagination md-limit="$ctrl.staticTableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.staticTableQuery.page" md-total="{{$ctrl.watchlist.points.length}}" md-page-select md-on-paginate="$ctrl.sortAndLimit"></md-table-pagination>
           </div>
         </md-tab-body>
       </md-tab>

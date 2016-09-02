@@ -12,6 +12,7 @@ define([
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
     'angular-ui-router',
+    'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup',
@@ -21,6 +22,7 @@ define([
 var mdAdminApp = angular.module('mdAdminApp', [
     'oc.lazyLoad',
     'ui.router',
+    'ui.sortable',
     'angular-loading-bar',
     'maMaterialDashboards',
     'maAppComponents',
