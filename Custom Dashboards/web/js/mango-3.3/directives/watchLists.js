@@ -26,13 +26,15 @@ function watchLists($injector) {
             noSelect: '=?',
             selectFirst: '=?'
         },
-        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', //'WatchListEventManager',
+        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', 'WatchListEventManager',
                      function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point, WatchListEventManager) {
             var xid = $stateParams.watchListXid || this.watchListXid;
 
             this.showSelect = !this.noSelect;
             if (this.showSelect) {
                 this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
+                    this.watchLists = watchLists;
+                    
                     if (xid) {
                         var found = false;
                         for (var i = 0; i < watchLists.length; i++) {
@@ -47,11 +49,7 @@ function watchLists($injector) {
                                 this.setWatchList(watchList);
                             }.bind(this));
                         }
-                    }
-                    
-                    this.watchLists = watchLists;
-                    
-                    if (!this.watchList && (angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
+                    } else if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
                         this.setWatchList(watchLists[0]);
                     }
                     
@@ -70,34 +68,34 @@ function watchLists($injector) {
             this.onOpen = function() {
                 return this.queryPromise;
             }
-            
-            
+
             this.setWatchList = function(watchList) {
                 if (this.watchList) {
-                    //WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                    WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
                 }
                 
                 if (!watchList) return;
-                this.watchList = watchList;
                 
+                $state.go('.', {watchListXid: watchList.xid}, {location: 'replace', notify: false});
+                
+                this.watchList = null;
                 this.points = [];
-                if (watchList.type === 'static') {
-                    watchList.$getPoints().then(function(watchList) {
-                        this.points = watchList.points;
-                    }.bind(this));
-                } else if (watchList.type === 'query') {
-                    Point.query({rqlQuery: watchList.query}).$promise.then(function(items) {
-                        this.points = watchList.points = items;
-                    }.bind(this));
-                }
                 
-                //WatchListEventManager.smartSubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
-                
-                $state.go('.', {watchListXid: this.watchList.xid}, {location: 'replace', notify: false});
+                watchList.$getPoints().then(function(watchList) {
+                    this.watchList = watchList;
+                    this.points = watchList.points;
+                    WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                }.bind(this));
             };
             
-            this.updateHandler = function updateHandler() {
-                console.log(arguments);
+            this.updateHandler = function updateHandler(event, update) {
+                if (update.action === 'update') {
+                    var wl = angular.merge(new WatchList(), update.object);
+                    wl.$getPoints().then(function(watchList) {
+                        this.watchList = watchList;
+                        this.points = watchList.points;
+                    }.bind(this));
+                }
             }.bind(this);
         }]
     };

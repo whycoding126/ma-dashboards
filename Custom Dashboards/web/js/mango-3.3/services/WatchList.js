@@ -31,21 +31,28 @@ function WatchListFactory($resource, Util, $http, Point) {
     });
 
     WatchList.prototype.$getPoints = function() {
-        return $http({
-            method: 'GET',
-            url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
-            withCredentials: true,
-            cache: false
-        }).then(function(response) {
-            if (response.status < 400) {
-                var points = response.data;
-                for (var i = 0; i < points.length; i++) {
-                    points[i] = angular.merge(new Point(), points[i]);
+        if (this.type === 'static') {
+            return $http({
+                method: 'GET',
+                url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
+                withCredentials: true,
+                cache: false
+            }).then(function(response) {
+                if (response.status < 400) {
+                    var points = response.data;
+                    for (var i = 0; i < points.length; i++) {
+                        points[i] = angular.merge(new Point(), points[i]);
+                    }
+                    this.points = points;
                 }
-                this.points = points;
-            }
-            return this;
-        }.bind(this))
+                return this;
+            }.bind(this))
+        } else if (this.type === 'query') {
+            return Point.query({rqlQuery: this.query}).$promise.then(function(items) {
+                this.points = items;
+                return this;
+            }.bind(this));
+        }
     };
 
     return WatchList;
