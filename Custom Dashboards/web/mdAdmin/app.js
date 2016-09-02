@@ -798,6 +798,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
                           '/rest/v1/json-data/demo-page-2',
                           '/rest/v1/json-data/play-area-'];
 
+        if (!rejection.config)
+            return false;
+        
         var url = rejection.config.url;
         
         if (url.indexOf('/rest/v1/users/current') >= 0) {
@@ -1049,7 +1052,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
         } else {
-            $state.go('dashboard.home');
+            console.log(error);
+            //$state.go('dashboard.home');
         }
     });
 

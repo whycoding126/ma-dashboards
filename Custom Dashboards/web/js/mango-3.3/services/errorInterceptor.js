@@ -63,16 +63,19 @@ function errorInterceptorProvider($q, $rootScope) {
         return {
             responseError: function(rejection) {
                 var result = $q.reject(rejection);
-                if (this.ignore(rejection)) return result;
+                try {
+                    if (this.ignore(rejection)) return result;
+                    
+                    var errorObj = angular.copy(rejection);
+                    errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
+                    errorObj.time = new Date();
+    
+                    if ($rootScope.errors.length >= 10)
+                        $rootScope.errors.pop();
+                    $rootScope.errors.unshift(errorObj);
+
+                } catch(error) {}
                 
-                var errorObj = angular.copy(rejection);
-                errorObj.msg = rejection.status < 0 ? 'Connection Refused' : rejection.statusText;
-                errorObj.time = new Date();
-
-                if ($rootScope.errors.length >= 10)
-                    $rootScope.errors.pop();
-                $rootScope.errors.unshift(errorObj);
-
                 return result;
             }.bind(this)
         };

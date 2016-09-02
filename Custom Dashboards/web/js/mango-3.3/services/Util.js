@@ -159,7 +159,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
-function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
+function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
 	function Util() {}
 
 	/**
@@ -245,13 +245,17 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
      * and assigns it as the property $total on the array
      */
     Util.prototype.transformArrayResponse = function(data, fn, code) {
-        if (!data) return data;
-        var parsed = angular.fromJson(data);
-        if (code < 300) {
-            parsed.items.$total = parsed.total || parsed.items.length;
-            return parsed.items;
+        try {
+            if (!data) return data;
+            var parsed = angular.fromJson(data);
+            if (code < 300) {
+                parsed.items.$total = parsed.total || parsed.items.length;
+                return parsed.items;
+            }
+            return parsed;
+        } catch (error) {
+            console.log(error);
         }
-        return parsed;
     };
 
     /**
@@ -259,24 +263,32 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
      *  array and computes page number
      */
     Util.prototype.arrayResponseInterceptor = function(data) {
-        var start = 0;
-        var limit = data.resource.length;
-        var total = data.data.$total;
-
-        var matches = /(?:&|\?)limit\((\d+)(?:,(\d+))?\)/i.exec(data.config.url);
-        if (matches) {
-            limit = parseInt(matches[1], 10);
-            if (matches[2]) {
-                start = parseInt(matches[2], 10);
+        if (angular.isUndefined(data.data))
+            return $q.reject(data);
+        
+        try {
+            var start = 0;
+            var limit = data.resource.length;
+            var total = data.data.$total;
+    
+            var matches = /(?:&|\?)limit\((\d+)(?:,(\d+))?\)/i.exec(data.config.url);
+            if (matches) {
+                limit = parseInt(matches[1], 10);
+                if (matches[2]) {
+                    start = parseInt(matches[2], 10);
+                }
             }
+    
+            data.resource.$start = start;
+            data.resource.$limit = limit;
+            data.resource.$total = total;
+            data.resource.$pages = Math.ceil(total / limit);
+            data.resource.$page = Math.floor(start / limit) + 1;
         }
-
-        data.resource.$start = start;
-        data.resource.$limit = limit;
-        data.resource.$total = total;
-        data.resource.$pages = Math.ceil(total / limit);
-        data.resource.$page = Math.floor(start / limit) + 1;
-
+        catch (error) {
+            console.log(error);
+            return $q.reject(data);
+        }
         return data.resource;
     };
 
@@ -448,7 +460,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat) {
     return new Util();
 }
 
-UtilFactory.$inject = ['mangoBaseUrl', 'mangoDefaultDateFormat'];
+UtilFactory.$inject = ['mangoBaseUrl', 'mangoDefaultDateFormat', '$q'];
 return UtilFactory;
 
 }); // define
