@@ -40,3 +40,13 @@ watch-list-builder ma-query-group .button-group .md-button {
 watch-list-builder .watchlist-settings md-radio-group {
   margin-bottom: 18px;
 }
+
+watch-list-builder .watchlist-selected-tools {
+  position: relative;
+}
+
+watch-list-builder .watchlist-selected-delete {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

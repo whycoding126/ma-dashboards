@@ -26,6 +26,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     var defaultTotal = this.total = '\u221E';
     this.selectedPoints = [];
+    this.staticSelected = [];
     this.allPoints = [];
     this.tableQuery = {
         limit: 10,
@@ -167,6 +168,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         } else {
             this.selectedPoints = [];
         }
+        this.staticSelected = [];
         this.parseQuery();
         this.doPointQuery();
     };
@@ -252,6 +254,19 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         var item = this.watchlist.points[from];
         this.watchlist.points.splice(from, 1);
         this.watchlist.points.splice(to, 0, item);
+    }.bind(this);
+    
+    this.removeFromWatchlist = function() {
+        var map = {};
+        for (var i = 0; i < this.staticSelected.length; i++) {
+            map[this.staticSelected[i].xid] = true;
+        }
+        for (i = 0; i < this.watchlist.points.length; i++) {
+            if (map[this.watchlist.points[i].xid]) {
+                this.watchlist.points.splice(i--, 1);
+            }
+        }
+        this.sortAndLimit();
     }.bind(this);
 };
 
