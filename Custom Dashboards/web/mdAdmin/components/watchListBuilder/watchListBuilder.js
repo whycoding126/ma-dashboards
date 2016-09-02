@@ -268,6 +268,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                 $ctrl.watchlist.points.splice(i--, 1);
             }
         }
+        $ctrl.staticSelected = [];
         $ctrl.sortAndLimit();
     };
 };
