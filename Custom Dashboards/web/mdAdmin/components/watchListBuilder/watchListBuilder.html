@@ -79,7 +79,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                  <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid">
+                  <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid" md-on-select="$ctrl.resetSort" md-on-deselect="$ctrl.resetSort">
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>
@@ -98,8 +98,9 @@
           <div class="watchlist-selected-points">
             <md-table-container>
               <table md-table>
-                <thead md-head md-order="$ctrl.staticTableQuery.order">
+                <thead md-head md-order="$ctrl.staticTableQuery.order" md-on-reorder="$ctrl.reorderStatic">
                   <tr md-row>
+                      <th md-column></th>
                       <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
                       <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
                       <th md-column md-order-by="name" ma-tr="common.pointName"></th>
@@ -107,7 +108,8 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | orderBy: $ctrl.staticTableQuery.order | limitTo:$ctrl.staticTableQuery.limit:($ctrl.staticTableQuery.page - 1)*$ctrl.staticTableQuery.limit track by point.xid">
+                  <tr md-row ng-repeat="point in $ctrl.watchlist.points | limitTo:$ctrl.staticTableQuery.limit:($ctrl.staticTableQuery.page - 1)*$ctrl.staticTableQuery.limit track by point.xid">
+                      <td><md-button class="md-icon-button" ng-click="$ctrl.watchlist.points.splice($index, 1)"><md-icon>clear</md-icon></md-button></td>
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>

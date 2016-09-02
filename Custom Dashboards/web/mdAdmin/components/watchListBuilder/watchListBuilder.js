@@ -34,8 +34,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
     this.staticTableQuery = {
         limit: 10,
-        page: 1,
-        order: 'name'
+        page: 1
     };
 
     this.queryProperties = [
@@ -162,6 +161,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         if (!watchlist.isNew && watchlist.type === 'static') {
             watchlist.$getPoints().then(function() {
                 this.selectedPoints = watchlist.points;
+                this.resetSort();
             }.bind(this));
         } else {
             this.selectedPoints = [];
@@ -219,6 +219,22 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         this.parseQuery();
         this.doPointQuery();
     };
+    
+    this.reorderStatic = function reorderStatic(order) {
+        var desc = false;
+        if (desc = order.indexOf('-') === 0 || order.indexOf('+') === 0) {
+            order = order.substring(1);
+        }
+        this.watchlist.points.sort(function(a, b) {
+            if (a[order] > b[order]) return desc ? -1 : 1;
+            if (a[order] < b[order]) return desc ? 1 : -1;
+            return 0;
+        });
+    }.bind(this);
+    
+    this.resetSort = function() {
+        delete this.staticTableQuery.order;
+    }.bind(this);
 };
 
 watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
