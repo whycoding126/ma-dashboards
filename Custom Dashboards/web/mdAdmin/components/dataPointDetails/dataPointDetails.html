@@ -4,14 +4,14 @@
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 			        <h2 flex>
-			              <span>Data Point</span>
+			              <span>{{myPoint.deviceName}} {{myPoint.name}}</span>
 			        </h2>
 			    </div>
 			</md-toolbar>
 			<md-card-content layout="column">
 				<md-input-container class="no-errors-spacer">
 					<label>Choose a point</label>
-					<ma-filtering-point-list ng-model="myPoint" auto-init="true"></ma-filtering-point-list>
+					<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}"></ma-filtering-point-list>
 				</md-input-container>
 				<div layout="row">
 					<label flex="20">XID:</label>
@@ -19,14 +19,14 @@
 				</div>
 				<div layout="row">
 					<label flex="20">Value:</label>
-					<ma-point-value flex="80" point-xid="{{pointXid}}" point="myPoint"></ma-point-value>
+					<ma-point-value flex="80" point-xid="{{$ctrl.pointXid}}" point="myPoint"></ma-point-value>
 				</div>
 				<div layout="row">
 					<label flex="20">Time:</label>
 					<ma-point-value flex="80" point="myPoint" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
 				</div>
 				<div layout="row">
-					<!-- <ma-set-point-value point="myPoint" flex="95"></ma-set-point-value> -->
+					<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
 					<md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">edit</md-button>
 				</div>
 			</md-card-content>
@@ -83,7 +83,7 @@
 			        <h2 flex>
 			              <span>User Notes</span>
 			        </h2>
-					<md-button class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, 'Point', myPoint.id)">
+					<md-button class="md-accent md-raised" aria-label="New Note" ng-click="$ctrl.addNote($event, 'Point', myPoint.id)">
 		        		Add
 					</md-button>
 			    </div>
@@ -169,7 +169,7 @@
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>
-					  <span>Events for {{myPoint.deviceName}} - {{myPoint.name}}</span>
+					  <span>Point Events</span>
 				</h2>
 			</div>
 		</md-toolbar>

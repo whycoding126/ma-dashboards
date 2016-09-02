@@ -6,12 +6,16 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, UserNotes, Events) {
+var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, UserNotes) {
+    
+    this.addNote = UserNotes.addNote;
+    
+    var $this = this;
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
-            console.log($stateParams.pointXid);
-            this.pointXid = $stateParams.pointXid;
+            // console.log($stateParams.pointXid);
+            $this.pointXid = $stateParams.pointXid;
         }
         else {
             // Load pointXid from local storage
@@ -19,22 +23,16 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
     };
     
     
-    $scope.$watch('myPoint.xid', function(newValue, oldValue) {
-        if (newValue === undefined || newValue === oldValue) return;
-        // console.log(newValue);
-        // $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
-    });
+    // $scope.$watch('myPoint.xid', function(newValue, oldValue) {
+    //     if (newValue === undefined || newValue === oldValue) return;
+    //     // console.log(newValue);
+    //     $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
+    // });
     
     
-    this.addNote = UserNotes.addNote;
-    
-    var $this = this;
-    Events.query().$promise.then(function(Events) {
-        $this.events = Events;
-    });
 };
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'UserNotes', 'Events'];
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'UserNotes'];
 
 return {
     controller: dataPointDetailsController,
