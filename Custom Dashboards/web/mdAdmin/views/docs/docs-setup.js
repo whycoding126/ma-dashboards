@@ -118,7 +118,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-filtering-point-list ng-model=&quot;myPoint&quot;&gt;&lt;/ma-filtering-point-list&gt;",
-      "keywords": "allows api auto auto-init basics creates dashboard data defualt demo device directive enables examples false filtering hold limit limits list madashboards mafilteringpointlist mypoint names ng-model number point pointlist points search select selected selecting self-filtering text type ui-sref update variable"
+      "keywords": "allows api auto auto-init basics creates dashboard data defualt demo device directive enables examples filtering hold limit limits list madashboards mafilteringpointlist mypoint names ng-model number point point-xid pointlist points pre-select search select selected selecting self-filtering set text type ui-sref update variable xid"
     },
     {
       "section": "api",
@@ -551,6 +551,15 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides  various utility functions that can be used in other directives and services.",
       "keywords": "$total actual api appended array arraydiff arrayresponseinterceptor arrays assigns average based boolean browser calculates called cancel cancelall cancelfns cancelled changed changedxids code compare computes connection converting converts copies data depending destination diff difference digest directives duration elements emptiness endpoint equality equals extremely filters fn fns format formatted function functions holding infinite input interval intervals isempty items javascript js loops mango mangodefaultdateformat maservices memoize method minutes moment momentjs newarray null number numkeys obj object oldarray oldvalue open opensocket parses path prettyprint-mode prevent properties property providing remove removed replace response return returned returns rollup rollupintervalcalculator rolluptype service services simple specifed standard start starting str string supported test tested testing text time timestamp tomoment total transformarrayresponse transformed true type undefined usage util utility uuid var websocket whitespace works xids"
+    },
+    {
+      "section": "api",
+      "id": "maServices.WatchListEventManager",
+      "shortName": "maServices.WatchListEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides an EventManager factory pointing to the point-value websocket endpoint at &#39;/rest/v1/websocket/watch-list&#39;",
+      "keywords": "api dashboard docs endpoint eventmanager factory javascript maservices methods point-value pointing prettyprint-mode service subscribe subscription_types ui-sref usage watchlisteventmanager websocket websockethandler"
     }
   ],
   "apis": {

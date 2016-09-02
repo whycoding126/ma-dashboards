@@ -1,6 +1,6 @@
 <md-autocomplete
-  md-selected-item-change="changed()"
-  md-selected-item="ngModel"
+  md-selected-item-change="storeItem(selectedItem)"
+  md-selected-item="selectedItem"
   md-search-text="searchText"
   md-items="item in querySearch(searchText)"
   md-item-text="pointLabel(item)"
@@ -8,7 +8,7 @@
   md-min-length="0"
   placeholder="{{'dashboards.v3.app.searchBy' | tr:'points':'name or device'}}"
   md-delay="1000"
-  md-autoselect="true">
+  md-autoselect="true" md-require-match="true" md-search-text-change="validateText(searchText)">
     <md-item-template>
       <span md-highlight-text="searchText" md-highlight-flags="^i">{{pointLabel(item)}}</span>
     </md-item-template>

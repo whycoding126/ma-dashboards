@@ -16,8 +16,10 @@ define(['require'], function(require) {
  * - <a ui-sref="dashboard.examples.basics.pointList">View Demo</a>
  *
  * @param {object} ng-model Variable to hold the selected data point.
- * @param {boolean=} auto-init Enables auto selecting of the first data point in the list. (Defaults to `false`)
- * @param {number=} limit Limits the results in the list to a specified number of data points (no limit by defualt)
+ * @param {number=} limit Limits the results in the list to a specified number of data points (200 defualt)
+ * @param {boolean=} auto-init If set, enables auto selecting of the first data point in the list.
+ * @param {string=} point-xid Used with `auto-init` to pre-select the specified point by xid. 
+ 
  *
  * @usage
  * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
@@ -30,14 +32,27 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
             ngModel: '=',
             ngChange: '@',
             limit: '=?',
-            autoInit: '=?'
+            autoInit: '=?',
+            pointXid: '@'
+            
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: function ($scope, $element, attrs) {
             if ($scope.autoInit) {
-                Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
-                    $scope.ngModel = item[0];
-                });
+                if (!$scope.pointXid) {
+                    // console.log($scope.pointXid);
+                    Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
+                        $scope.ngModel = item[0];
+                        $scope.selectedItem = item[0];
+                    });
+                }
+                else {
+                    Point.rql({query: 'xid='+$scope.pointXid}).$promise.then(function(item) {
+                        $scope.ngModel = item[0];
+                        $scope.selectedItem = item[0];
+                    });
+                }
+                
             }
 
             var change = $parse(attrs.ngChange);
@@ -45,6 +60,16 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                 $timeout(function() {
                     change($scope.$parent);
                 }, 0);
+            };
+            
+            $scope.storeItem = function(selectedItem) {
+                if (selectedItem && selectedItem!=null) {
+                    $scope.ngModel = selectedItem;
+                }
+            };
+            
+            $scope.validateText = function(searchText) {
+                console.log(searchText);
             };
 
             $scope.querySearch = function(queryStr) {
