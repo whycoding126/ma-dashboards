@@ -44,6 +44,7 @@ define(['./maServices',
         './directives/userNotesTable',
         './directives/eventsTable',
         './directives/watchLists',
+        './directives/arrayInput',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -57,7 +58,8 @@ define(['./maServices',
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
-        dataSourceQuery, deviceNameQuery, userNotesTable, eventsTable, watchLists, queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
+        dataSourceQuery, deviceNameQuery, userNotesTable, eventsTable, watchLists, arrayInput,
+        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
         trFilter, angular, require) {
 'use strict';
 /**
@@ -110,7 +112,7 @@ maDashboards.directive('maDataSourceQuery', dataSourceQuery);
 maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
 maDashboards.directive('maUserNotesTable', userNotesTable);
 maDashboards.directive('maEventsTable', eventsTable);
-
+maDashboards.directive('maArrayInput', arrayInput);
 maDashboards.directive('maWatchLists', watchLists);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
