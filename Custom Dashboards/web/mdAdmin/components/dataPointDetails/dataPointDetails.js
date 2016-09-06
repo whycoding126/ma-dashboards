@@ -32,7 +32,7 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
     $scope.$watch('myPoint.xid', function(newValue, oldValue) {
         if (newValue === undefined || newValue === oldValue) return;
         //console.log('New point selected:', newValue);
-        //$state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
+        $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
         
         localStorageService.set('lastDataPointDetailsItem', {
             xid: newValue
