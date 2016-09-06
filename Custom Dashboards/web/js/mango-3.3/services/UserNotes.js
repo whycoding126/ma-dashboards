@@ -103,7 +103,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
             .cancel('Cancel');
         $mdDialog.show(confirm).then(function(result) {
             // Hit OK
-            console.log(commentType, referenceId, result);
+            // console.log(commentType, referenceId, result);
             UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType});
         }, function() {
             // Canceled dialog

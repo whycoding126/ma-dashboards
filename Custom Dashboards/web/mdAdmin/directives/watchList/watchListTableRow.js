@@ -6,13 +6,14 @@
 define(['require'], function(require) {
     'use strict';
 
-    var watchListTableRow = function($mdMedia, $mdDialog, $timeout) {
+    var watchListTableRow = function($mdMedia, $mdDialog, $timeout, UserNotes) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
 
                     scope.$mdMedia = $mdMedia;
                     scope.Updated = false;
+                    scope.addNote = UserNotes.addNote;
 
                     scope.showSetPoint = function(ev) {
                         $mdDialog.show({
@@ -75,7 +76,7 @@ define(['require'], function(require) {
         }; // End return
     }; // End DDO
 
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout'];
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes'];
 
     return watchListTableRow;
 

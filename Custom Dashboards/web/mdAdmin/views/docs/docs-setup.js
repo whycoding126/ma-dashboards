@@ -109,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-events-table&gt;&lt;/ma-events-table&gt;",
-      "keywords": "api directive displays events list madashboards maeventstable replace table"
+      "keywords": "alarm-level alarmlevel api attributes directive displays event-type events eventtype format initial limit list madashboards maeventstable pagination point-id pointid query set table"
     },
     {
       "section": "api",
@@ -334,7 +334,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-user-notes-table&gt;&lt;/ma-user-notes-table&gt;",
-      "keywords": "api directive displays list madashboards mausernotestable notes replace user"
+      "keywords": "api directive displays initial limit list madashboards mausernotestable notes pagination query reference-id referenceid set user"
     },
     {
       "section": "api",

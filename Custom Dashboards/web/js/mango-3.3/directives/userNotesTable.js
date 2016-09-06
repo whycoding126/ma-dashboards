@@ -13,7 +13,8 @@ define(['require'], function(require) {
  * `<ma-user-notes-table></ma-user-notes-table>`
  * - Displays a list of User Notes
  *
- * @param {object} Replace Replace
+ * @param {string} reference-id Query via referenceId
+ * @param {string} limit Set the initial limit of the pagination
  *
  * @usage
  * <ma-user-notes-table></ma-user-notes-table>`
@@ -23,6 +24,8 @@ function userNotesTable(UserNotes, $injector) {
     return {
         restrict: 'E',
         scope: {
+            referenceId: '=?',
+            limit: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -31,9 +34,17 @@ function userNotesTable(UserNotes, $injector) {
             return require.toUrl('./userNotesTable.html');
         },
         link: function ($scope, $element, attrs) {
-            var queryResult = UserNotes.query().$promise.then(function(userNotes) {
-                $scope.userNotes = userNotes;
+            
+            $scope.$watch('referenceId', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                UserNotes.query({
+                    commentType: 'POINT', 
+                    referenceId: newValue
+                }).$promise.then(function(events) {
+                    $scope.userNotes = events;
+                });
             });
+            
         }
     };
 }
