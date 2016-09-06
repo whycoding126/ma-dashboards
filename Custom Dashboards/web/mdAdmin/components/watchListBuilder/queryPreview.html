@@ -1,0 +1,23 @@
+<div class="watchlist-query-preview">
+  <md-table-container>
+    <table md-table md-progress="$ctrl.queryPromise">
+      <thead md-head md-order="$ctrl.tableQuery.order" md-on-reorder="$ctrl.onPaginateOrSort">
+        <tr md-row>
+            <th md-column md-order-by="dataSourceName" ma-tr="dashboards.v3.app.dataSource"></th>
+            <th md-column md-order-by="deviceName" ma-tr="common.deviceName"></th>
+            <th md-column md-order-by="name" ma-tr="common.pointName"></th>
+            <th md-column md-order-by="xid" ma-tr="common.xid"></th>
+          </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid">
+            <td md-cell ng-bind="point.dataSourceName"></td>
+            <td md-cell ng-bind="point.deviceName"></td>
+            <td md-cell ng-bind="point.name"></td>
+            <td md-cell ng-bind="point.xid"></td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="$ctrl.tableQuery.limit" md-limit-options="[5, 10, 20, 50, 100]" md-page="$ctrl.tableQuery.page" md-total="{{$ctrl.total}}" md-page-select md-on-paginate="$ctrl.onPaginateOrSort"></md-table-pagination>
+</div>

@@ -50,3 +50,16 @@ watch-list-builder .watchlist-selected-delete {
   left: 0;
   top: 0;
 }
+
+watch-list-builder .watchlist-select-table > div.md-padding > md-input-container {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+watch-list-builder .watchlist-select-table > div.md-padding > md-input-container .md-errors-spacer {
+  display: none;
+}
+
+watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
+  margin-left: -40px;
+}

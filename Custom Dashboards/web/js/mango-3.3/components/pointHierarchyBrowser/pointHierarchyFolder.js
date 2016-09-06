@@ -8,10 +8,11 @@ define(['angular', 'require'], function(angular, require) {
 
 var pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
+        this.open = this.browserCtrl.expanded;
     };
     
-    this.checkboxChanged = function checkboxChanged() {
-        this.browserCtrl.folderCheckChanged(this.folder);
+    this.folderClicked = function folderClicked($event) {
+        this.browserCtrl.folderClicked($event, this.folder);
     }
 };
 

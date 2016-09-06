@@ -8,6 +8,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate, $timeout) {
     var $ctrl = this;
+    $ctrl.baseUrl = require.toUrl('.');
     
     $ctrl.newWatchlist = function newWatchlist(name) {
         $ctrl.selectedWatchlist = null;
@@ -26,7 +27,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             $ctrl.form.$setPristine();
     };
     
-    var defaultTotal = $ctrl.total = '\u221E';
+    var defaultTotal = $ctrl.total = '\u2026';
     $ctrl.selectedPoints = [];
     $ctrl.staticSelected = [];
     $ctrl.allPoints = [];
@@ -176,10 +177,16 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.parseQuery();
         $ctrl.doPointQuery();
     };
+    
+    $ctrl.onPaginateOrSort = function onPaginateOrSort() {
+        $ctrl.doPointQuery(true);
+    };
 
-    $ctrl.doPointQuery = function doPointQuery() {
-        // makes the table disappear when paginating
-        //$ctrl.allPoints = [];
+    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort) {
+        if (!isPaginateOrSort) {
+            $ctrl.total = defaultTotal;
+            $ctrl.allPoints = [];
+        }
         
         var queryObj = new query.Query(angular.copy($ctrl.tableQuery.rql));
         if (queryObj.name !== 'and') {
@@ -222,9 +229,58 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.tableQuery.rql = queryObj;
     };
     
+    $ctrl.doSearch = function doSearch() {
+        var props = ['name', 'deviceName', 'dataSourceName', 'xid'];
+        var args = [];
+        for (var i = 0; i < props.length; i++) {
+            args.push(new query.Query({name: 'like', args: [props[i], '*' + $ctrl.tableSearch + '*']}));
+        }
+        $ctrl.tableQuery.rql = new query.Query({name: 'or', args: args});
+        $ctrl.doPointQuery();
+    };
+    
+    $ctrl.clearSearch = function clearSearch() {
+        $ctrl.tableSearch = '';
+        $ctrl.tableQuery.rql = new query.Query();
+        $ctrl.doPointQuery();
+    };
+    
     $ctrl.queryChanged = function queryChanged() {
         $ctrl.parseQuery();
         $ctrl.doPointQuery();
+    };
+    
+    $ctrl.hierarchyFolderClicked = function(folder) {
+        if (folder.points.length > 200)
+            throw 'Too many points';
+        
+        var points = $ctrl.watchlist.points;
+        var xidToPointMap = {};
+        for (var i = 0; i < points.length; i++) {
+            xidToPointMap[points[i].xid] = points[i];
+        }
+        
+        var pointXidsToGet = [];
+        for (i = 0; i < folder.points.length; i++) {
+            if (xidToPointMap[folder.points[i].xid])
+                continue;
+            
+            pointXidsToGet.push(folder.points[i].xid);
+        }
+        
+        if (pointXidsToGet.length) {
+            Point.objQuery({query: 'in(xid,' + pointXidsToGet.join(',') + ')'}).$promise.then(function(data) {
+                for (i = 0; i < data.length; i++) {
+                    points.push(data[i]);
+                }
+                
+                // update the checked rows on "Select from table" tab
+                $ctrl.doPointQuery();
+                
+                $ctrl.resetSort();
+                $ctrl.sortAndLimit();
+            });
+        }
     };
     
     $ctrl.pointSelected = function() {

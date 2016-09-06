@@ -1,0 +1,9 @@
+<div class="md-padding watchlist-query" layout="column">
+  <div layout="row">
+    <md-input-container flex class="rql-input">
+      <label ma-tr="dashboards.v3.app.rql"></label>
+      <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.queryChanged()">
+    </md-input-container>
+  </div>
+  <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-change="$ctrl.queryChanged()" hide-sort-limit="$ctrl.watchlist.type !== 'query'"></ma-query-builder>
+</div>

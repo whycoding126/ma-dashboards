@@ -11,11 +11,11 @@ function arrayInput() {
         require: 'ngModel',
         link: function($scope, $element, $attrs, ngModel) {
             ngModel.$parsers.unshift(function toArray(viewValue) {
-                return (typeof viewValue === 'string') ? viewValue.split($attrs.delim || ',') : viewValue;
+                return (typeof viewValue === 'string') ? viewValue.split($attrs.arrayDelimiter || ',') : viewValue;
             });
             
             ngModel.$formatters.push(function fromArray(modelValue) {
-                return angular.isArray(modelValue) ? modelValue.join($attrs.delim || ',') : modelValue;
+                return angular.isArray(modelValue) ? modelValue.join($attrs.arrayDelimiter || ',') : modelValue;
             });
         }
     };

@@ -24,8 +24,8 @@ var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy) {
         }
     };
     
-    this.folderCheckChanged = function folderCheckChanged(changedFolder) {
-        this.onFolderChecked({checked: changedFolder.checked, folder: changedFolder});
+    this.folderClicked = function folderClicked($event, folder) {
+        this.onFolderClicked({$event: $event, folder: folder});
     };
     
     function walkHierarchy(folder, fn, parent, index) {
@@ -43,7 +43,8 @@ return {
     templateUrl: require.toUrl('./pointHierarchyBrowser.html'),
     bindings: {
         path: '<',
-        onFolderChecked: '&'
+        onFolderClicked: '&',
+        expanded: '<'
     }
 };
 
