@@ -79,7 +79,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                  <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid" md-on-select="$ctrl.resetSort" md-on-deselect="$ctrl.resetSort">
+                  <tr md-row md-select="point" md-select-id="xid" ng-repeat="point in $ctrl.allPoints track by point.xid" md-on-select="$ctrl.pointSelected" md-on-deselect="$ctrl.pointDeselected">
                       <td md-cell ng-bind="point.dataSourceName"></td>
                       <td md-cell ng-bind="point.deviceName"></td>
                       <td md-cell ng-bind="point.name"></td>

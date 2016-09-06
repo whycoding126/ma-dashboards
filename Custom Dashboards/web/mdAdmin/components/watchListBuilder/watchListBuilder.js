@@ -168,7 +168,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                 $ctrl.sortAndLimit();
             });
         } else {
-            $ctrl.selectedPoints = [];
+            $ctrl.selectedPoints = watchlist.points;
+            $ctrl.resetSort();
+            $ctrl.sortAndLimit();
         }
         $ctrl.staticSelected = [];
         $ctrl.parseQuery();
@@ -223,6 +225,15 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.queryChanged = function queryChanged() {
         $ctrl.parseQuery();
         $ctrl.doPointQuery();
+    };
+    
+    $ctrl.pointSelected = function() {
+        $ctrl.resetSort();
+        $ctrl.sortAndLimit();
+    };
+    
+    $ctrl.pointDeselected = function() {
+        $ctrl.sortAndLimit();
     };
     
     $ctrl.resetSort = function() {
