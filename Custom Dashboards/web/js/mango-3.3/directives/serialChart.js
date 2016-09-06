@@ -257,7 +257,7 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 graph.xid = point ? point.xid : null;
                 graph.valueField = valueArray && point ? 'value_' + point.xid : 'value' + graphNum;
                 graph.title = $scope['series' + graphNum + 'Title'] ||
-                	(point && point.name) ||
+                	(point && point.deviceName + ' - ' + point.name) ||
                 	('Series ' + graphNum);
                 graph.type = graphType;
                 graph.lineColor = $scope['series' + graphNum + 'Color'] || $scope.defaultColor ||
