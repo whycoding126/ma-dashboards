@@ -114,7 +114,14 @@ require.config({
             deps: ['angular', 'angular-material']
         },
         'amcharts/plugins/export/export': {
-            deps: ['amcharts/amcharts']
+            deps: ['amcharts/amcharts',
+                   'amcharts/plugins/export/libs/blob.js/blob',
+                   'amcharts/plugins/export/libs/fabric.js/fabric.min',
+                   'amcharts/plugins/export/libs/FileSaver.js/FileSaver.min',
+                   'amcharts/plugins/export/libs/jszip/jszip.min',
+                   'amcharts/plugins/export/libs/pdfmake/pdfmake.min',
+                   'amcharts/plugins/export/libs/pdfmake/vfs_fonts',
+                   'amcharts/plugins/export/libs/xlsx/xlsx.min']
         }
     }
 });
