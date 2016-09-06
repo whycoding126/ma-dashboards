@@ -2,11 +2,11 @@
 	<div flex="100" flex-gt-md="30" layout="column">
 		<md-card>
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-			        <h2 flex>
+				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+					<h2 flex>
 			              <span>{{myPoint.deviceName}} {{myPoint.name}}</span>
 			        </h2>
-			    </div>
+				</div>
 			</md-toolbar>
 			<md-card-content layout="column">
 				<md-input-container class="no-errors-spacer">
@@ -31,14 +31,14 @@
 				</div>
 			</md-card-content>
 		</md-card>
-		
+
 		<md-card>
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-			        <h2 flex>
+				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+					<h2 flex>
 			              <span>Point Statistics</span>
 			        </h2>
-			    </div>
+				</div>
 			</md-toolbar>
 			<md-card-content layout="column">
 				<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
@@ -46,15 +46,15 @@
 			</md-card-content>
 		</md-card>
 	</div>
-	
+
 	<div flex="100" flex-gt-md="70" layout="row" layout-align="space-between" layout-wrap>
 		<md-card flex="100" flex-gt-md="50">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-			        <h2 flex>
+				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+					<h2 flex>
 			              <span>Realtime History</span>
 			        </h2>
-			    </div>
+				</div>
 			</md-toolbar>
 			<md-card-content>
 				<md-table-container ng-init="myLimit=15; myPage=1; myOrder='-timestamp'">
@@ -76,30 +76,30 @@
 				<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
 			</md-card-content>
 		</md-card>
-		
+
 		<md-card flex="100" flex-gt-md="45">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-			        <h2 flex>
+				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+					<h2 flex>
 			              <span>User Notes</span>
 			        </h2>
 					<md-button class="md-accent md-raised" aria-label="New Note" ng-click="$ctrl.addNote($event, 'Point', myPoint.id)">
-		        		Add
+						Add
 					</md-button>
-			    </div>
+				</div>
 			</md-toolbar>
 			<md-card-content>
 				<ma-user-notes-table reference-id="myPoint.id" limit="5"></ma-user-notes-table>
 			</md-card-content>
 		</md-card>
-		
+
 		<md-card flex="100">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			    <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-			        <h2 flex>
+				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+					<h2 flex>
 			              <span>Controls</span>
 			        </h2>
-			    </div>
+				</div>
 			</md-toolbar>
 			<md-card-content>
 				<div layout="row" layout-wrap>
@@ -132,10 +132,24 @@
 						<label>Interval</label>
 						<ma-interval-type-picker ng-model="rollupIntervalType" ng-init="rollupIntervalType='MINUTES'" ng-disabled="rollupType=='NONE' || autoRollup"></ma-interval-type-picker>
 					</md-input-container>
-					<md-input-container flex="50" flex-gt-sm="25" class="no-errors-spacer" ng-init="rollupType='AVERAGE'">
-						<label>Rollup type</label>
-						<md-select ng-model="rollupType">
-							<md-option ng-value="t.type" ng-repeat="t in rollupTypes">{{t.label}}</md-option>
+					<md-input-container flex="50" flex-gt-sm="25" class="no-errors-spacer">
+						<label>Rollup Type</label>
+						<md-select ng-model="rollupType" ng-init="rollupType='AVERAGE'">
+							<md-option value="MINIMUM">
+								Minimum
+							</md-option>
+							<md-option value="MAXIMUM">
+								Maximum
+							</md-option>
+							<md-option value="AVERAGE">
+								Average
+							</md-option>
+							<md-option value="DELTA">
+								Delta
+							</md-option>
+							<md-option value="NONE">
+								None
+							</md-option>
 						</md-select>
 					</md-input-container>
 					<md-input-container flex="50" flex-gt-sm="25" class="no-errors-spacer" ng-init="rollupType='AVERAGE'">
@@ -150,17 +164,31 @@
 			</md-card-content>
 		</md-card>
 	</div>
-	
+
 	<md-card flex="100">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>
 					  <span>Chart</span>
 				</h2>
+				<md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="Chart Type">
+					<md-option value="smoothedLine">
+						Smooth
+					</md-option>
+					<md-option value="line">
+						Line
+					</md-option>
+					<md-option value="step">
+						Step
+					</md-option>
+					<md-option value="column">
+						Bar
+					</md-option>
+				</md-select>
 			</div>
 		</md-toolbar>
 		<md-card-content>
-			<ma-serial-chart style="height: 360px; width: 100%" series-1-values="myPointValues" series-1-point="myPoint" legend="true" balloon="true" export="true">
+			<ma-serial-chart style="height: 360px; width: 100%" series-1-values="myPointValues" series-1-point="myPoint" legend="true" balloon="true" export="true" default-type="{{chartType}}">
 			</ma-serial-chart>
 		</md-card-content>
 	</md-card>
@@ -178,4 +206,3 @@
 		</md-card-content>
 	</md-card>
 </div>
-
