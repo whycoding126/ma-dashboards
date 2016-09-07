@@ -3,11 +3,11 @@
       
       <i ng-if="$mdMedia('gt-sm')" class="fa fa-history fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Point Stats and History</md-tooltip></i>
       
-      <i ng-if="point.pointLocator.settable" class="fa fa-pencil-square-o fa-lg md-primary" ng-click="showSetPoint($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Set Point Value</md-tooltip></i>
-      
       <i class="fa fa-commenting-o fa-lg md-primary" ng-click="addNote($event, 'Point', point.id)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Add User Note</md-tooltip></i>
       
       <a ng-if="$mdMedia('gt-sm')" ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank"><i class="fa fa-pencil fa-lg alternate" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Edit Data Point</md-tooltip></i></a>
+
+      <i ng-if="point.pointLocator.settable" class="fa fa-pencil-square-o fa-lg md-primary" ng-click="showSetPoint($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Set Point Value</md-tooltip></i>
 </td>
 <td md-cell>{{point.deviceName}}</td>
 <td md-cell>{{point.name}}</td>
