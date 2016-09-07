@@ -28,7 +28,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
     
     var defaultTotal = $ctrl.total = '\u2026';
-    $ctrl.selectedPoints = [];
+    $ctrl.tableSelection = [];
+    $ctrl.hierarchySelection = [];
     $ctrl.staticSelected = [];
     $ctrl.allPoints = [];
     $ctrl.tableQuery = {
@@ -164,12 +165,16 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
         if (!watchlist.isNew && watchlist.type === 'static') {
             watchlist.$getPoints().then(function() {
-                $ctrl.selectedPoints = watchlist.points;
+                $ctrl.tableSelection = watchlist.points.slice();
+                $ctrl.rerenderTable();
+                $ctrl.hierarchySelection = watchlist.points.slice();
                 $ctrl.resetSort();
                 $ctrl.sortAndLimit();
             });
         } else {
-            $ctrl.selectedPoints = watchlist.points;
+            $ctrl.tableSelection = watchlist.points.slice();
+            $ctrl.rerenderTable();
+            $ctrl.hierarchySelection = watchlist.points.slice();
             $ctrl.resetSort();
             $ctrl.sortAndLimit();
         }
@@ -182,7 +187,13 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.doPointQuery(true);
     };
 
-    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort) {
+    $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort, ignoreIfPending) {
+        if ($ctrl.queryPromise && $ctrl.queryPromise.$$state.status === 0) {
+            if (ignoreIfPending) {
+                return;
+            }
+        }
+        
         if (!isPaginateOrSort) {
             $ctrl.total = defaultTotal;
             $ctrl.allPoints = [];
@@ -202,17 +213,25 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.queryPromise = Point.query({rqlQuery: queryObj.toString()})
         .$promise.then(function(allPoints) {
             $ctrl.total = allPoints.$total;
-            
-            // set the points to an empty array and then to the actual points so that each row is destroyed and re-created
-            // this ensures that checkboxes are preserved for selected points
-            $ctrl.allPoints = [];
-            $timeout(function() {
-                $ctrl.allPoints = allPoints;
-            }, 0);
-            
+            $ctrl.allPoints = allPoints;
         }, function() {
             $ctrl.allPoints = [];
         });
+    };
+
+    /**
+     * set the points to an empty array and then to the actual points so that each row is destroyed and re-created
+     * this ensures that checkboxes are preserved for selected points
+     */
+    $ctrl.rerenderTable = function rerenderTable() {
+        if ($ctrl.queryPromise && $ctrl.queryPromise.$$state.status === 0) {
+            return;
+        }
+        var stored = $ctrl.allPoints;
+        $ctrl.allPoints = [];
+        $timeout(function() {
+            $ctrl.allPoints = stored;
+        }, 0);
     };
 
     $ctrl.parseQuery = function parseQuery() {
@@ -249,47 +268,36 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.parseQuery();
         $ctrl.doPointQuery();
     };
-    
-    $ctrl.hierarchyFolderClicked = function(folder) {
-        if (folder.points.length > 200)
-            throw 'Too many points';
-        
-        var points = $ctrl.watchlist.points;
-        var xidToPointMap = {};
-        for (var i = 0; i < points.length; i++) {
-            xidToPointMap[points[i].xid] = points[i];
-        }
-        
-        var pointXidsToGet = [];
-        for (i = 0; i < folder.points.length; i++) {
-            if (xidToPointMap[folder.points[i].xid])
-                continue;
-            
-            pointXidsToGet.push(folder.points[i].xid);
-        }
-        
-        if (pointXidsToGet.length) {
-            Point.objQuery({query: 'in(xid,' + pointXidsToGet.join(',') + ')'}).$promise.then(function(data) {
-                for (i = 0; i < data.length; i++) {
-                    points.push(data[i]);
-                }
-                
-                // update the checked rows on "Select from table" tab
-                $ctrl.doPointQuery();
-                
-                $ctrl.resetSort();
-                $ctrl.sortAndLimit();
-            });
-        }
-    };
-    
-    $ctrl.pointSelected = function() {
+
+    $ctrl.tableSelectionChanged = function() {
+        // do a slice to shallow copy array so ngModel update is triggered in hierarchy view
+        $ctrl.watchlist.points = $ctrl.tableSelection.slice();
+        $ctrl.hierarchySelection = $ctrl.tableSelection.slice();
         $ctrl.resetSort();
         $ctrl.sortAndLimit();
     };
-    
-    $ctrl.pointDeselected = function() {
-        $ctrl.sortAndLimit();
+
+    $ctrl.hierarchySelectionChanged = function() {
+        var pointXidsToGet = [];
+        for (var i = 0; i < $ctrl.hierarchySelection.length; i++) {
+            pointXidsToGet.push($ctrl.hierarchySelection[i].xid);
+        }
+        if (pointXidsToGet.length) {
+            // fetch full points
+            Point.objQuery({query: 'in(xid,' + pointXidsToGet.join(',') + ')'}).$promise.then(updateSelection);
+        } else {
+            updateSelection();
+        }
+        
+        function updateSelection(points) {
+            if (points)
+                $ctrl.hierarchySelection = points;
+            $ctrl.watchlist.points = $ctrl.hierarchySelection.slice();
+            $ctrl.tableSelection = $ctrl.hierarchySelection.slice();
+            $ctrl.rerenderTable();
+            $ctrl.resetSort();
+            $ctrl.sortAndLimit();
+        }
     };
     
     $ctrl.resetSort = function() {
@@ -337,6 +345,10 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }
         $ctrl.staticSelected = [];
         $ctrl.sortAndLimit();
+        // do a slice to shallow copy array so ngModel update is triggered in hierarchy view
+        $ctrl.tableSelection = $ctrl.watchlist.points.slice();
+        $ctrl.rerenderTable();
+        $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
     };
 };
 
