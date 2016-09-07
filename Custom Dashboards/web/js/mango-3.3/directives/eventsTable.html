@@ -40,7 +40,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="event in events | orderBy: myOrder | limitTo: limit: (myPage - 1) * limit">
+            <tr ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit">
                 <td md-cell>{{event.eventType.eventType}}</td>
                 <td md-cell>{{event.id}}</td>
                 <td md-cell>
@@ -69,4 +69,4 @@
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="limit" md-limit-options="[5, 10, 15, 25, 50]" md-page="myPage" md-total="{{events.$total}}"></md-table-pagination>
+<md-table-pagination md-limit="paginateLimit" md-limit-options="[5, 10, 15, 25, 50]" md-page="myPage" md-total="{{events.length}}"></md-table-pagination>

@@ -92,6 +92,17 @@ function eventsFactory($resource, Util) {
             withCredentials: true,
             cache: true
         },
+        rql: {
+        	url: '/rest/v1/events?:query',
+            method: 'GET',
+            isArray: true,
+            transformResponse: Util.transformArrayResponse,
+            interceptor: {
+                response: Util.arrayResponseInterceptor
+            },
+            withCredentials: true,
+            cache: true
+        },
         acknowledge: {
             method: 'PUT',
             url: '/rest/v1/events/acknowledge/:id',
@@ -100,7 +111,74 @@ function eventsFactory($resource, Util) {
         }
     });
     
-    
+    events.objQuery = function(options) {
+        if (!options) return this.query();
+        if (typeof options.query === 'string') {
+            return this.rql({query: options.query});
+        }
+
+        var params = [];
+        if (options.query) {
+            var and = !!options.query.$and;
+            var exact = !!options.query.$exact;
+            delete options.query.$exact;
+            delete options.query.$and;
+
+            var parts = [];
+            for (var key in options.query) {
+                var val = options.query[key] || '';
+                var comparison = '=';
+                var autoLike = false;
+                if (val.indexOf('=') < 0 && !exact) {
+                    comparison += 'like=*';
+                    autoLike = true;
+                }
+                parts.push(key + comparison + val + (autoLike ? '*': ''));
+            }
+
+            var queryPart;
+            if (and || parts.length === 1) {
+                queryPart = parts.join('&');
+            } else {
+                queryPart = 'or(' + parts.join(',') + ')';
+            }
+            params.push(queryPart);
+        }
+
+        if (options.sort) {
+            var sort = options.sort;
+            if (angular.isArray(sort)) {
+                sort = sort.join(',');
+            }
+            params.push('sort(' + sort + ')');
+        }
+
+        if (options.limit) {
+            var start = options.start || 0;
+            params.push('limit(' + options.limit + ',' + start + ')');
+        }
+        
+        if (options.alarmLevel && options.alarmLevel != '*') {
+            params.push('alarmLevel=' + options.alarmLevel);
+        }
+        
+        if (options.pointId) {
+            params.push('dataPointId=' + options.pointId);
+        }
+        
+        if (options.eventId) {
+            params.push('id=' + options.eventId);
+        }
+        
+        if (options.from) {
+            params.push('activeTimestamp=gt=' + options.from);
+        }
+        if (options.to) {
+            params.push('activeTimestamp=lt=' + options.to);
+        }
+
+        return params.length ? this.rql({query: params.join('&')}) : this.query();
+    }
 
     return events;
 }

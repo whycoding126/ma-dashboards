@@ -26,11 +26,16 @@ function eventsTable(Events, $injector, $sce) {
     return {
         restrict: 'E',
         scope: {
-            eventType: '=?',
             pointId: '=?',
-            limit: '=?',
+            eventId: '=?',
             alarmLevel: '=?',
-            from: '=?'
+            query: '=',
+            start: '=?',
+            limit: '=?',
+            sort: '=?',
+            paginateLimit: '=?',
+            from: '=?',
+            to: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -42,57 +47,29 @@ function eventsTable(Events, $injector, $sce) {
             
             $scope.parseHTML = function(text) {
                 return $sce.trustAsHtml(text);
-            }
+            };
             
             $scope.acknowledgeEvent = function(eventID) {
-                Events.acknowledge({id: eventID}, {hi: true});
-            }
+                Events.acknowledge({id: eventID}, {acknowledge: true});
+            };
             
-            $scope.$watch('pointId', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                Events.query({
-                    eventType: 'DATA_POINT', 
-                    dataPointId: newValue
-                }).$promise.then(function(events) {
-                    $scope.events = events;
-                });
-            });
+            $scope.$watch(function() {
+                return {
+                    query: $scope.query,
+                    start: $scope.start,
+                    limit: $scope.limit,
+                    sort: $scope.sort,
+                    alarmLevel: $scope.alarmLevel,
+                    pointId: $scope.pointId,
+                    eventId: $scope.eventId,
+                    from: $scope.from,
+                    to: $scope.to
+                };
+            }, function(value) {
+                value.sort = value.sort || '-activeTimestamp';
+                $scope.events = Events.objQuery(value);
+            }, true);
             
-            $scope.$watch('from', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                console.log('From Time', newValue);
-            });
-            
-            $scope.$watchGroup(['eventType','alarmLevel'], function(newValues, oldValues) {
-                if (newValues === undefined) return;
-                if (newValues[1]==='ALL' && newValues[0]!='ALL') {
-                    Events.query({
-                        eventType: newValues[0]
-                    }).$promise.then(function(events) {
-                        $scope.events = events;
-                    });
-                }
-                else if (newValues[0]==='ALL' && newValues[1]!='ALL') {
-                    Events.query({
-                        alarmLevel : newValues[1]
-                    }).$promise.then(function(events) {
-                        $scope.events = events;
-                    });
-                }
-                else if (newValues[0]==='ALL' && newValues[1]==='ALL') {
-                    Events.query().$promise.then(function(events) {
-                        $scope.events = events;
-                    });
-                }
-                else {
-                    Events.query({
-                        eventType: newValues[0],
-                        alarmLevel : newValues[1]
-                    }).$promise.then(function(events) {
-                        $scope.events = events;
-                    });
-                }
-            });
         }
     };
 }
