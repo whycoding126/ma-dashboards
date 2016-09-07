@@ -12,12 +12,12 @@
       <md-input-container flex>
             <label>Alarm Level</label>
             <md-select ng-model="alarmLevel" ng-init="alarmLevel='ALL'" class="md-no-underline">
-                  <md-option value="ALL">All</md-option>
-                  <md-option value="None">None</md-option>
-                  <md-option value="INFORMATION">Information</md-option>
-                  <md-option value="URGENT">Urgent</md-option>
-                  <md-option value="CRITICAL">Critical</md-option>
-                  <md-option value="LIFE_SAFETY">Safety</md-option
+                  <md-option value="ALL">All <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
+                  <md-option value="None">None <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
+                  <md-option value="INFORMATION">Information <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
+                  <md-option value="URGENT">Urgent <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
+                  <md-option value="CRITICAL">Critical <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
+                  <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg alarm-flag SAFETY"></i></md-option
             </md-select>
       </md-input-container>
 </div>
