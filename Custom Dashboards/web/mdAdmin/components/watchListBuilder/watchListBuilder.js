@@ -35,7 +35,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.tableQuery = {
         limit: 10,
         page: 1,
-        order: 'name'
+        order: 'deviceName'
     };
     $ctrl.staticTableQuery = {
         limit: 10,

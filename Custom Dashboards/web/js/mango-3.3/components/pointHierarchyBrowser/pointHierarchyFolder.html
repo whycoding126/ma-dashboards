@@ -1,4 +1,4 @@
-<md-checkbox ng-model="$ctrl.folder.checked" md-indeterminate="!!$ctrl.folder.partialPoints" ng-change="$ctrl.checkboxChanged()"></md-checkbox>
+<md-checkbox ng-model="$ctrl.folder.checked" ng-change="$ctrl.checkboxChanged()" ng-class="{'md-indeterminate': !!$ctrl.folder.partialPoints}"></md-checkbox>
 
 <span ng-click="$ctrl.folderClicked($event)">
   <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
