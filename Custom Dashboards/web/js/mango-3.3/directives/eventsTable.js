@@ -29,7 +29,8 @@ function eventsTable(Events, $injector, $sce) {
             eventType: '=?',
             pointId: '=?',
             limit: '=?',
-            alarmLevel: '=?'
+            alarmLevel: '=?',
+            from: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -43,6 +44,10 @@ function eventsTable(Events, $injector, $sce) {
                 return $sce.trustAsHtml(text);
             }
             
+            $scope.acknowledgeEvent = function(eventID) {
+                Events.acknowledge({id: eventID});
+            }
+            
             $scope.$watch('pointId', function(newValue, oldValue) {
                 if (newValue === undefined) return;
                 Events.query({
@@ -51,6 +56,11 @@ function eventsTable(Events, $injector, $sce) {
                 }).$promise.then(function(events) {
                     $scope.events = events;
                 });
+            });
+            
+            $scope.$watch('from', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                console.log('From Time', newValue);
             });
             
             $scope.$watchGroup(['eventType','alarmLevel'], function(newValues, oldValues) {

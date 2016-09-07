@@ -89,8 +89,17 @@ function eventsFactory($resource, Util) {
             },
             withCredentials: true,
             cache: true
+        },
+        acknowledge: {
+            method: 'PUT',
+            url: '/rest/v1/events/acknowledge/:id',
+            withCredentials: true,
+            transformRequest: function(data, headersGetter) {
+            	return angular.toJson(data.jsonData);
+            }
         }
     });
+    
     
 
     return events;

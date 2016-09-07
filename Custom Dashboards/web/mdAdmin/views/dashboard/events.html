@@ -17,8 +17,11 @@
                   <md-option value="INFORMATION">Information <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
                   <md-option value="URGENT">Urgent <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
                   <md-option value="CRITICAL">Critical <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
-                  <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg alarm-flag SAFETY"></i></md-option
-            </md-select>
+                  <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg alarm-flag SAFETY"></i></md-option </md-select>
+      </md-input-container>
+      <md-input-container flex>
+            <label>From date</label>
+            <ma-date-picker ng-model="from"></ma-date-picker>
       </md-input-container>
 </div>
-<ma-events-table event-type="eventType" limit="25" alarm-level="alarmLevel"></ma-events-table>
+<ma-events-table event-type="eventType" limit="25" alarm-level="alarmLevel" from="from"></ma-events-table>
