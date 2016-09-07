@@ -6,8 +6,10 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy) {
+var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy, Point) {
+
     this.$onInit = function() {
+        this.ngModelCtrl.$render = this.render;
     };
 
     this.$onChanges = function(changes) {
@@ -16,35 +18,98 @@ var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy) {
                     PointHierarchy.byPath({path: this.path, subfolders: true}) :
                     PointHierarchy.getRoot({subfolders: true});
             resourceObj.$promise.then(function(hierarchy) {
-                walkHierarchy(hierarchy, function(folder, parent, index) {
-                    folder.checked = false;
-                });
                 this.hierarchy = hierarchy;
+                this.render();
             }.bind(this))
         }
     };
-    
-    this.folderClicked = function folderClicked($event, folder) {
-        this.onFolderClicked({$event: $event, folder: folder});
+
+    /**
+     * Takes the $viewValue and checks the folders accordingly
+     */
+    this.render = function render() {
+        if (!this.hierarchy) return;
+        
+        // $viewValue is an array of folders/points
+        var viewArray = this.ngModelCtrl.$viewValue;
+        if (angular.isUndefined(viewArray)) {
+            return;
+        }
+        
+        var selectedMap = {};
+        var idProp = this.selectPoints ? 'xid' : 'id';
+        for (var i = 0; i < viewArray.length; i++) {
+            selectedMap[viewArray[i][idProp]] = viewArray[i];
+        }
+        
+        this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
+            if (this.selectPoints) {
+                var selectedPointsInThisFolder = [];
+                for (i = 0; i < folder.points.length; i++) {
+                    var pt = folder.points[i];
+                    var isSelected = !!selectedMap[pt.xid];
+                    if (isSelected) {
+                        selectedPointsInThisFolder.push(pt);
+                    }
+                }
+                if (selectedPointsInThisFolder.length === folder.points.length) {
+                    folder.checked = true;
+                    delete folder.partialPoints;
+                } else if (selectedPointsInThisFolder.length === 0) {
+                    folder.checked = false;
+                    delete folder.partialPoints;
+                } else {
+                    folder.checked = true;
+                    folder.partialPoints = selectedPointsInThisFolder;
+                }
+            } else {
+                folder.checked = !!selectedMap[folder.id];
+            }
+        }.bind(this));
+    }.bind(this);
+
+    /**
+     * Triggered when an checkbox changes and the $viewValue should be updated, and hence the $modelValue via the parser
+     */
+    this.folderCheckChanged = function folderCheckChanged(changedFolder) {
+        var viewArray = [];
+        // TODO track and re-add points in $modelValue which are not in any folder
+
+        this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
+            if (this.selectPoints) {
+                if (folder.partialPoints && folder.partialPoints.length) {
+                    Array.prototype.splice.apply(viewArray, [0,0].concat(folder.partialPoints));
+                } else if (folder.checked && folder.points.length) {
+                    Array.prototype.splice.apply(viewArray, [0,0].concat(folder.points));
+                }
+            } else if (folder.checked) {
+                viewArray.push(folder);
+            }
+        }.bind(this));
+
+        this.ngModelCtrl.$setViewValue(viewArray);
     };
     
-    function walkHierarchy(folder, fn, parent, index) {
+    this.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
         fn(folder, parent, index);
         for (var i = 0; i < folder.subfolders.length; i++) {
-            walkHierarchy(folder.subfolders[i], fn, folder, i);
+            this.walkHierarchy(folder.subfolders[i], fn, folder, i);
         }
-    }
+    }.bind(this);
 };
 
-pointHierarchyBrowser.$inject = ['PointHierarchy'];
+pointHierarchyBrowser.$inject = ['PointHierarchy', 'Point'];
 
 return {
     controller: pointHierarchyBrowser,
     templateUrl: require.toUrl('./pointHierarchyBrowser.html'),
+    require: {
+        'ngModelCtrl': 'ngModel'
+    },
     bindings: {
         path: '<',
-        onFolderClicked: '&',
-        expanded: '<'
+        expanded: '<',
+        selectPoints: '<'
     }
 };
 

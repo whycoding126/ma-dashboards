@@ -12,8 +12,13 @@ var pointHierarchyFolder = function pointHierarchyFolder() {
     };
     
     this.folderClicked = function folderClicked($event) {
-        this.browserCtrl.folderClicked($event, this.folder);
-    }
+        this.open = !this.open;
+    };
+    
+    this.checkboxChanged = function checkboxChanged() {
+        delete this.folder.partialPoints;
+        this.browserCtrl.folderCheckChanged(this.folder);
+    };
 };
 
 pointHierarchyFolder.$inject = [];

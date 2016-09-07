@@ -1,10 +1,11 @@
-<md-button class="md-icon-button" ng-click="$ctrl.open = !$ctrl.open" ng-disabled="!$ctrl.folder.subfolders.length"><md-icon>{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon></md-button>
+<md-checkbox ng-model="$ctrl.folder.checked" md-indeterminate="!!$ctrl.folder.partialPoints" ng-change="$ctrl.checkboxChanged()"></md-checkbox>
 
 <span ng-click="$ctrl.folderClicked($event)">
   <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
+  <md-icon>{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 </span>
 
-<ul ng-show="$ctrl.open && $ctrl.folder.subfolders.length">
+<ul ng-show="$ctrl.open">
   <li ng-repeat="subfolder in $ctrl.folder.subfolders">
     <ma-point-hierarchy-folder folder="subfolder"></ma-point-hierarchy-folder>
   </li>
