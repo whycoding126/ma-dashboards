@@ -7,16 +7,19 @@
                 <th md-column md-order-by="eventType.eventType">Event Type</th>
                 <th md-column md-order-by="alarmLevel">Alarm Level</th>
                 <th md-column md-order-by="status">Status</th>
+                <th md-column>Duration</th>
                 <th md-column md-order-by="id">Id</th>
             </tr>
         </thead>
         <tbody md-body>
             <tr ng-repeat="event in events | orderBy: myOrder | limitTo: limit: (myPage - 1) * limit">
                 <td md-cell>{{event.activeTimestamp | moment:'format':'l LT'}}</td>
-                <td md-cell>{{event.message | limitTo:500}}</td>
+                <td md-cell ng-bind-html="parseHTML(event.message)"></td>
                 <td md-cell>{{event.eventType.eventType}}</td>
                 <td md-cell>{{event.alarmLevel}}</td>
-                <td md-cell>{{event.status}}</td>
+                <td md-cell>{{event.status + event.active && ' Active'}}</td>
+                <td md-cell ng-if="event.returnToNormalTimestamp === 0">N/A</td>
+                <td md-cell ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
                 <td md-cell>{{event.id}}</td>
             </tr>
         </tbody>
