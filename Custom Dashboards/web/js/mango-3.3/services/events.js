@@ -79,7 +79,9 @@ define(['angular'], function(angular) {
 
 
 function eventsFactory($resource, Util) {
-    var events = $resource('/rest/v1/events', {}, {
+    var events = $resource('/rest/v1/events', {
+        id: '@id',
+    }, {
         query: {
             method: 'GET',
             isArray: true,
@@ -94,9 +96,7 @@ function eventsFactory($resource, Util) {
             method: 'PUT',
             url: '/rest/v1/events/acknowledge/:id',
             withCredentials: true,
-            transformRequest: function(data, headersGetter) {
-            	return angular.toJson(data.jsonData);
-            }
+            cache: true
         }
     });
     

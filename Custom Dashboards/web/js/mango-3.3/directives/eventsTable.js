@@ -45,7 +45,7 @@ function eventsTable(Events, $injector, $sce) {
             }
             
             $scope.acknowledgeEvent = function(eventID) {
-                Events.acknowledge({id: eventID});
+                Events.acknowledge({id: eventID}, {hi: true});
             }
             
             $scope.$watch('pointId', function(newValue, oldValue) {
