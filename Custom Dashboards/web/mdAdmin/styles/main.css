@@ -365,6 +365,10 @@ code:not(.highlight) {
 	cursor: pointer;
 }
 
+.move-handle {
+  cursor: move;
+}
+
 /* Live editor styles */
 
 .ace_editor {

@@ -63,7 +63,3 @@ watch-list-builder .watchlist-select-table > div.md-padding > md-input-container
 watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
   margin-left: -40px;
 }
-
-watch-list-builder .handle {
-  cursor: move;
-}
