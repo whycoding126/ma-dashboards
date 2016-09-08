@@ -260,10 +260,21 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.events',
-        url: '/events',
-        templateUrl: 'views/dashboard/events.html',
+        url: '/events?eventType&alarmLevel',
+        template: '<ma-events-page></ma-events-page>',
         menuText: 'Events',
-        menuIcon: 'alarm'
+        menuIcon: 'alarm',
+        resolve: {
+            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                return rQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
+                    angular.module('eventsPage', [])
+                        .component('maEventsPage', eventsPage);
+                    $ocLazyLoad.inject('eventsPage');
+                    cssInjector.injectLink(require.toUrl('./components/eventsPage/eventsPage.css'), 'eventsPage' ,'link[href="styles/main.css"]');
+                });
+            }]
+        }
+
     },
     {
         url: '/help',
