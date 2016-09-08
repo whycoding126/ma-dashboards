@@ -16,7 +16,7 @@ var iframeView = function() {
             src: '@',
             pollInterval: '=?'
         },
-        template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups" scrolling="no"></iframe>',
+        template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" scrolling="no"></iframe>',
         link: function($scope, $element) {
             var $iframe = $element.find('iframe');
             $iframe.attr('src', addParams($scope.src));
