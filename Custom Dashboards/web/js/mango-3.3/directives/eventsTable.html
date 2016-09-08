@@ -2,12 +2,11 @@
     <table md-table>
         <thead md-head md-order="myOrder">
             <tr md-row>
+                <th md-column md-order-by="alarmLevel">Alarm Level</th>
                 <th md-column md-order-by="eventType.eventType">Type</th>
                 <th md-column md-order-by="id">Id</th>
-                <th md-column md-order-by="alarmLevel">Level</th>
                 <th md-column md-order-by="activeTimestamp">Time</th>
                 <th md-column md-order-by="message">Message</th>
-                
                 <th md-column md-order-by="status">Status</th>
                 
                 <th md-column>Duration</th>
@@ -18,14 +17,14 @@
         </thead>
         <tbody md-body>
             <tr ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit">
-                <td md-cell>{{event.eventType.eventType}}</td>
-                <td md-cell>{{event.id}}</td>
                 <td md-cell>
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x" style="color: rgb(255,133,0)" ng-if="event.active"></i>
                         <i class="fa fa-flag alarm-flag fa-stack-1x" ng-class="event.alarmLevel"></i>
                     </span>
                 </td>
+                <td md-cell>{{event.eventType.eventType}}</td>
+                <td md-cell>{{event.id}}</td>
                 <td md-cell>{{event.activeTimestamp | moment:'format':'l LT'}}</td>
                 <td md-cell ng-bind-html="parseHTML(event.message)"></td>
                 
