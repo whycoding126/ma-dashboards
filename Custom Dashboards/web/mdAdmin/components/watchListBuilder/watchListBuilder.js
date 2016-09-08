@@ -189,6 +189,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             } else {
                 renderStatic();
             }
+            $ctrl.clearSearch();
         } else if (watchlist.type === 'query') {
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
