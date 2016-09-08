@@ -381,6 +381,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'mangoNoSql.header.icontext',
                 menuIcon: 'not_interested',
                 permission: 'superadmin'
+            },
+            {
+                url: '/internal-metrics',
+                name: 'dashboard.settings.internalMetrics',
+                template: '<iframe-view src="/internal/status.shtm"></iframe-view>',
+                menuTr: 'dox.internalMetrics',
+                menuIcon: 'memory',
+                permission: 'superadmin'
             }
         ]
     },
