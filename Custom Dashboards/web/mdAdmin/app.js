@@ -196,19 +196,18 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard.watchList',
         url: '/watch-list/{watchListXid}',
-        templateUrl: 'views/dashboard/watchlist.html',
+        template: '<ma-watchlist-page></ma-watchlist-page>',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
-        controller: ['$scope', '$mdMedia', function ($scope, $mdMedia) {
-            $scope.$mdMedia = $mdMedia;
-        }],
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./directives/watchList/watchListTable',
+                return rQ(['./components/watchlistPage/watchlistPage',
+                            './directives/watchList/watchListTable',
                             './directives/watchList/watchListTableRow',
-                           './directives/watchList/watchListChart'
-                ], function(watchListTable, watchListTableRow, watchListChart) {
-                    angular.module('watchlist', [])
+                            './directives/watchList/watchListChart'], 
+                function (WatchlistPage, watchListTable, watchListTableRow, watchListChart) {
+                    angular.module('watchlistPage', [])
+                        .component('maWatchlistPage', WatchlistPage)
                         .directive('watchListTable', watchListTable)
                         .directive('watchListTableRow', watchListTableRow)
                         .directive('watchListChart', watchListChart)
@@ -218,8 +217,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                                       else { return input.toFixed(1) + suffix; }
                                 }
                           });
-                    $ocLazyLoad.inject('watchlist');
-                    cssInjector.injectLink(require.toUrl('./directives/watchList/style.css'),'watchlistPageStyles','link[href="styles/main.css"]');
+                    $ocLazyLoad.inject('watchlistPage');
+                    cssInjector.injectLink(require.toUrl('./components/watchListPage/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
         }
