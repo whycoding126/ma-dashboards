@@ -373,6 +373,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'header.sql',
                 menuIcon: 'storage',
                 permission: 'superadmin'
+            },
+            {
+                url: '/no-sql',
+                name: 'dashboard.settings.noSql',
+                template: '<iframe-view src="/mango_no_sql.shtm"></iframe-view>',
+                menuTr: 'mangoNoSql.header.icontext',
+                menuIcon: 'not_interested',
+                permission: 'superadmin'
             }
         ]
     },
