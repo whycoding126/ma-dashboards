@@ -14,31 +14,49 @@ var eventsPageController = function eventsPageController($scope, $stateParams, $
     
     this.$onInit = function() {
         if ($stateParams.eventType) {
-            console.log($stateParams.eventType);
+            // console.log($stateParams.eventType);
             $ctrl.eventType = $stateParams.eventType;
         }
         else {
-            $ctrl.eventType = '*';
+            // Attempt load from local storage
+            var storedEventType = localStorageService.get('lastEventTypeItem');
+            if (storedEventType) {
+                $ctrl.eventType = storedEventType;
+            }
+            else {
+                // Otherwise set to all
+                $ctrl.eventType = '*';
+            }
         }
         
         if ($stateParams.alarmLevel) {
-            console.log($stateParams.alarmLevel);
+            // console.log($stateParams.alarmLevel);
             $ctrl.alarmLevel = $stateParams.alarmLevel;
         }
         else {
-            $ctrl.alarmLevel = '*';
+            // Attempt load from local storage
+            var storedAlarmLevel = localStorageService.get('lastAlarmLevelItem');
+            if (storedAlarmLevel) {
+                $ctrl.alarmLevel = storedAlarmLevel;
+            }
+            else {
+                // Otherwise set to all
+                $ctrl.alarmLevel = '*';
+            }
         }
         
         $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
             //console.log('New point selected:', newValue);
             $state.go('.', {eventType: newValue}, {location: 'replace', notify: false});
+            localStorageService.set('lastEventTypeItem', newValue);
         });
         
         $scope.$watch('$ctrl.alarmLevel', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
             //console.log('New point selected:', newValue);
             $state.go('.', {alarmLevel: newValue}, {location: 'replace', notify: false});
+            localStorageService.set('lastAlarmLevelItem', newValue);
         });
         
     };
