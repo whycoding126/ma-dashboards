@@ -16,31 +16,50 @@ var iframeView = function() {
             src: '@',
             pollInterval: '=?'
         },
-        template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms" scrolling="no"></iframe>',
+        template: '<iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups" scrolling="no"></iframe>',
         link: function($scope, $element) {
             var $iframe = $element.find('iframe');
             $iframe.attr('src', addParams($scope.src));
             
             var timer;
+            var lastHeight;
             
             $iframe.on('load', function() {
                 var iFrame = this;
-                var iframeDocument = this.contentWindow.document;
-                var iframeHeight = iframeDocument.body.offsetHeight;
-                iFrame.style.height = iframeHeight + 'px';
+                var iFrameDocument = this.contentWindow.document;
                 
                 // J.W. no other way of doing this I believe
-                timer = setInterval(function() {
-                    var iframeHeight = iframeDocument.body.offsetHeight;
-                    iFrame.style.height = iframeHeight + 'px';
-                }, $scope.pollInterval || 50);
+                timer = setInterval(setIFrameHeight, $scope.pollInterval || 50);
                 
-                var links = iframeDocument.querySelectorAll('a');
+                var links = iFrameDocument.querySelectorAll('a');
                 for (var i = 0; i < links.length; i++) {
                     var link = links[i];
-                    link.removeAttribute('target');
                     var href = link.getAttribute('href');
-                    link.setAttribute('href', addParams(href));
+                    
+                    if (link.host === window.location.host) {
+                        link.removeAttribute('target');
+                        if (href) {
+                            link.setAttribute('href', addParams(href));
+                        }
+                    } else {
+                        link.setAttribute('target', '_blank');
+                    }
+                }
+                
+                lastHeight = undefined;
+                
+                function setIFrameHeight() {
+                    var height = iFrameDocument.body.offsetHeight;
+                    // offsetHeight sometimes returns 0 for some reason, cache the last known
+                    // height and use that instead
+                    if (height === 0) {
+                        height = lastHeight;
+                    } else {
+                        lastHeight = height;
+                    }
+                    if (height) {
+                        iFrame.style.height = height + 'px';
+                    }
                 }
             });
             

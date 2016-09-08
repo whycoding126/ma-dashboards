@@ -324,7 +324,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
                 menuTr: 'header.systemSettings',
                 menuIcon: 'settings',
-                menuHidden: true,
                 permission: 'superadmin'
             },
             {
@@ -333,7 +332,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
                 menuTr: 'header.dataSources',
                 menuIcon: 'device_hub',
-                menuHidden: true,
                 permission: 'superadmin'
             },
             {
@@ -342,7 +340,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/users.shtm"></iframe-view>',
                 menuTr: 'header.users',
                 menuIcon: 'people',
-                menuHidden: true,
                 permission: 'superadmin'
             },
             {
@@ -351,7 +348,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/events.shtm"></iframe-view>',
                 menuTr: 'header.alarms',
                 menuIcon: 'alarm',
-                menuHidden: true,
                 permission: 'superadmin'
             },
             {
@@ -360,7 +356,22 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/emport.shtm"></iframe-view>',
                 menuTr: 'header.emport',
                 menuIcon: 'import_export',
-                menuHidden: true,
+                permission: 'superadmin'
+            },
+            {
+                url: '/modules',
+                name: 'dashboard.settings.modules',
+                template: '<iframe-view src="/modules.shtm"></iframe-view>',
+                menuTr: 'header.modules',
+                menuIcon: 'extension',
+                permission: 'superadmin'
+            },
+            {
+                url: '/sql-console',
+                name: 'dashboard.settings.sqlConsole',
+                template: '<iframe-view src="/sqlConsole.shtm"></iframe-view>',
+                menuTr: 'header.sql',
+                menuIcon: 'storage',
                 permission: 'superadmin'
             }
         ]
