@@ -256,3 +256,34 @@ ma-point-hierarchy-folder ul li {
   list-style:none;
   margin-left: 30px;
 }
+
+/* Watch list side bar */
+ma-watch-list-sidebar ul li {
+  list-style:none;
+  margin: 0;
+  border-bottom: 1px solid lightgrey;
+}
+
+ma-watch-list-sidebar ul li .md-button {
+  height: 60px;
+  text-transform: none;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0 12px;
+  border-radius: 0;
+}
+
+ma-watch-list-sidebar ul li .md-button .md-ripple-container {
+  border-radius: 0;
+}
+
+ma-watch-list-sidebar ul li:last-child {
+  border-bottom: none;
+}
+
+ma-watch-list-sidebar md-progress-linear.ng-hide:not(.ng-hide-animate),
+ma-watch-list-sidebar md-progress-linear.ng-hide.ng-hide-animate {
+  display: block !important;
+  visibility: hidden;
+}

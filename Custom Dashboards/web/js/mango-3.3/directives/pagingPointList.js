@@ -6,7 +6,7 @@
 define(['require', 'angular'], function(require, angular) {
 "use strict";
 
-function pagingPointList(Point, $filter, $injector, $parse, $timeout) {
+function pagingPointList(Point, $filter, $injector, $parse, $timeout, DynamicItems) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -18,38 +18,8 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout) {
         },
         templateUrl: require.toUrl('./pagingPointList.html'),
         link: function ($scope, $element, attrs) {
-            
-            var DynamicItems = function() {
-                this.loadedPages = {};
-                this.numItems = 0;
-                this.PAGE_SIZE = 20;
-                this.fetchPage_(0);
-            };
 
-            DynamicItems.prototype.getItemAtIndex = function(index) {
-                var pageNumber = Math.floor(index / this.PAGE_SIZE);
-                var page = this.loadedPages[pageNumber];
-                if (page) {
-                    return page[index % this.PAGE_SIZE];
-                } else if (page !== null) {
-                    this.fetchPage_(pageNumber);
-                }
-            };
-
-            DynamicItems.prototype.getLength = function() {
-                return this.numItems;
-            };
-
-            DynamicItems.prototype.fetchPage_ = function(pageNumber) {
-                this.loadedPages[pageNumber] = null;
-                Point.rql({query: 'limit(' + this.PAGE_SIZE + ',' + pageNumber * this.PAGE_SIZE + ')'})
-                .$promise.then(angular.bind(this, function(items) {
-                    this.loadedPages[pageNumber] = items;
-                    this.numItems = items.$total;
-                }));
-            };
-
-            $scope.dynamicItems = new DynamicItems();
+            $scope.dynamicItems = new DynamicItems({service: Point});
 
             if ($scope.autoInit) {
                 Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
@@ -86,7 +56,7 @@ function pagingPointList(Point, $filter, $injector, $parse, $timeout) {
     };
 }
 
-pagingPointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout'];
+pagingPointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout', 'DynamicItems'];
 return pagingPointList;
 
 }); // define

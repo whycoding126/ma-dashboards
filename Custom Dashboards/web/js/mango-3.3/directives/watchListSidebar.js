@@ -6,16 +6,16 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-function watchLists($injector) {
+function watchListSidebar($injector) {
     var UPDATE_TYPES = ['update'];
     
     return {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./watchLists-md.html');
+                return require.toUrl('./watchListSidebar-md.html');
             }
-            return require.toUrl('./watchLists.html');
+            return require.toUrl('./watchListSidebar.html');
         },
         controllerAs: '$ctrl',
         bindToController: true,
@@ -23,51 +23,25 @@ function watchLists($injector) {
             points: '=?',
             watchList: '=?',
             watchListXid: '@',
-            noSelect: '=?',
             selectFirst: '=?'
         },
-        controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', 'WatchListEventManager',
-                     function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point, WatchListEventManager) {
-            var xid = $stateParams.watchListXid || this.watchListXid;
+        controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
+                     function ($scope, WatchList, $stateParams, $state, WatchListEventManager) {
 
-            this.showSelect = !this.noSelect;
-            if (this.showSelect) {
-                this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
-                    this.watchLists = watchLists;
-                    
-                    if (xid) {
-                        var found = false;
-                        for (var i = 0; i < watchLists.length; i++) {
-                            if (watchLists[i].xid === xid) {
-                                found = true;
-                                this.setWatchList(watchLists[i]);
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            WatchList.get({xid: xid}).$promise.then(function(watchList) {
-                                this.setWatchList(watchList);
-                            }.bind(this));
-                        }
-                    } else if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
-                        this.setWatchList(watchLists[0]);
-                    }
-                    
-                    return watchLists;
-                }.bind(this));
-            } else if (xid) {
+            var xid = $stateParams.watchListXid || this.watchListXid;
+            if (xid) {
                 WatchList.get({xid: xid}).$promise.then(function(watchList) {
                     this.setWatchList(watchList);
                 }.bind(this));
             }
             
-            this.onChange = function() {
-                this.setWatchList(this.watchList);
-            };
-            
-            this.onOpen = function() {
-                return this.queryPromise;
-            }
+            this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
+                this.watchLists = watchLists;
+                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
+                    this.setWatchList(watchLists[0]);
+                }
+                return watchLists;
+            }.bind(this));
 
             this.setWatchList = function(watchList) {
                 if (this.watchList) {
@@ -100,8 +74,8 @@ function watchLists($injector) {
     };
 }
 
-watchLists.$inject = ['$injector'];
+watchListSidebar.$inject = ['$injector'];
 
-return watchLists;
+return watchListSidebar;
 
 }); // define
