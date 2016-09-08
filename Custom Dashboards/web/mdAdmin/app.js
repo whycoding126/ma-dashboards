@@ -264,7 +264,13 @@ mdAdminApp.constant('MENU_ITEMS', [
         templateUrl: 'views/dashboard/events.html',
         menuText: 'Events',
         menuIcon: 'alarm'
-
+    },
+    {
+        url: '/help',
+        name: 'dashboard.help',
+        template: '<iframe-view src="/help.htm"></iframe-view>',
+        menuTr: 'header.help',
+        menuIcon: 'help'
     },
     {
         name: 'dashboard.apiErrors',
@@ -388,6 +394,46 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/internal/status.shtm"></iframe-view>',
                 menuTr: 'dox.internalMetrics',
                 menuIcon: 'memory',
+                permission: 'superadmin'
+            },
+            {
+                url: '/mailing-lists',
+                name: 'dashboard.settings.mailingLists',
+                template: '<iframe-view src="/mailing_lists.shtm"></iframe-view>',
+                menuTr: 'header.mailingLists',
+                menuIcon: 'email',
+                permission: 'superadmin'
+            },
+            {
+                url: '/publishers',
+                name: 'dashboard.settings.publishers',
+                template: '<iframe-view src="/publishers.shtm"></iframe-view>',
+                menuTr: 'header.publishers',
+                menuIcon: 'publish',
+                permission: 'superadmin'
+            },
+            {
+                url: '/event-handlers',
+                name: 'dashboard.settings.eventHandlers',
+                template: '<iframe-view src="/event_handlers.shtm"></iframe-view>',
+                menuTr: 'header.eventHandlers',
+                menuIcon: 'change_history',
+                permission: 'superadmin'
+            },
+            {
+                url: '/point-hierarchy',
+                name: 'dashboard.settings.pointHierarchy',
+                template: '<iframe-view src="/point_hierarchy.shtm"></iframe-view>',
+                menuTr: 'header.pointHierarchy',
+                menuIcon: 'folder',
+                permission: 'superadmin'
+            },
+            {
+                url: '/reports',
+                name: 'dashboard.settings.reports',
+                template: '<iframe-view src="/reports.shtm"></iframe-view>',
+                menuTr: 'header.reports',
+                menuIcon: 'book',
                 permission: 'superadmin'
             }
         ]
@@ -778,8 +824,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 ]
             }
         ]
-    },
-
+    }
 ]);
 
 mdAdminApp.constant('DEFAULT_PAGES', [
