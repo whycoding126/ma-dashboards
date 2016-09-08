@@ -10,24 +10,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
-    $ctrl.newWatchlist = function newWatchlist(name) {
-        $ctrl.selectedWatchlist = null;
-        var watchlist = new WatchList();
-        watchlist.isNew = true;
-        watchlist.name = name;
-        watchlist.xid = Util.uuid();
-        watchlist.points = [];
-        watchlist.username = MD_ADMIN_SETTINGS.user.username;
-        watchlist.type = 'static';
-        watchlist.readPermission = 'user';
-        watchlist.editPermission = 'edit-watchlists';
-        watchlist.query = 'sort(deviceName,name)&limit(200)';
-        $ctrl.editWatchlist(watchlist);
-        if ($ctrl.form)
-            $ctrl.form.$setPristine();
-    };
-    
     var defaultTotal = $ctrl.total = '\u2026';
+    var defaultQuery ='sort(deviceName,name)&limit(200)';
     $ctrl.tableSelection = [];
     $ctrl.hierarchySelection = [];
     $ctrl.staticSelected = [];
@@ -41,6 +25,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         limit: 10,
         page: 1
     };
+    $ctrl.selectedTab = 0;
 
     $ctrl.queryProperties = [
         {
@@ -61,7 +46,35 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }
     ];
     
-    $ctrl.selectedTab = 0;
+    $ctrl.newWatchlist = function newWatchlist(name) {
+        $ctrl.selectedWatchlist = null;
+        var watchlist = new WatchList();
+        watchlist.isNew = true;
+        watchlist.name = name;
+        watchlist.xid = Util.uuid();
+        watchlist.points = [];
+        watchlist.username = MD_ADMIN_SETTINGS.user.username;
+        watchlist.type = 'static';
+        watchlist.readPermission = 'user';
+        watchlist.editPermission = 'edit-watchlists';
+        watchlist.query = defaultQuery;
+        $ctrl.editWatchlist(watchlist);
+        if ($ctrl.form)
+            $ctrl.form.$setPristine();
+    };
+    
+    $ctrl.typeChanged = function typeChanged() {
+        if ($ctrl.watchlist.type === 'query') {
+            $ctrl.watchlist.query = defaultQuery;
+            $ctrl.parseQuery();
+            $ctrl.doPointQuery();
+        } else if ($ctrl.watchlist.type === 'hierarchy') {
+            $ctrl.watchlist.query = '';
+        } else if ($ctrl.watchlist.type === 'static') {
+            $ctrl.watchlist.query = null;
+        }
+    };
+
     $ctrl.nextStep = function() {
         $ctrl.selectedTab++;
     };
@@ -163,24 +176,39 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.editWatchlist = function editWatchlist(watchlist) {
         $ctrl.watchlist = watchlist;
         $state.go('.', {watchListXid: watchlist.isNew ? null : watchlist.xid}, {location: 'replace', notify: false});
-        if (!watchlist.isNew && watchlist.type === 'static') {
-            watchlist.$getPoints().then(function() {
-                $ctrl.tableSelection = watchlist.points.slice();
-                $ctrl.rerenderTable();
-                $ctrl.hierarchySelection = watchlist.points.slice();
-                $ctrl.resetSort();
-                $ctrl.sortAndLimit();
-            });
-        } else {
-            $ctrl.tableSelection = watchlist.points.slice();
+        
+        $ctrl.staticSelected = [];
+        $ctrl.allPoints = [];
+        $ctrl.total = defaultTotal;
+        $ctrl.queryPromise = null;
+        $ctrl.folders = [];
+        
+        if (watchlist.type === 'static') {
+            if (!watchlist.isNew) {
+                watchlist.$getPoints().then(renderStatic);
+            } else {
+                renderStatic();
+            }
+        } else if (watchlist.type === 'query') {
+            $ctrl.parseQuery();
+            $ctrl.doPointQuery();
+        } else if (watchlist.type === 'hierarchy') {
+            var folders = [];
+            var folderIds = watchlist.query ? watchlist.query.split(',') : [];
+            for (var i = 0; i < folderIds.length; i++) {
+                var folderId = parseInt(folderIds[i], 10);
+                folders.push({id: folderId});
+            }
+            $ctrl.folders = folders;
+        }
+        
+        function renderStatic() {
+            $ctrl.tableSelection = $ctrl.watchlist.points.slice();
             $ctrl.rerenderTable();
-            $ctrl.hierarchySelection = watchlist.points.slice();
+            $ctrl.hierarchySelection = $ctrl.watchlist.points.slice();
             $ctrl.resetSort();
             $ctrl.sortAndLimit();
         }
-        $ctrl.staticSelected = [];
-        $ctrl.parseQuery();
-        $ctrl.doPointQuery();
     };
     
     $ctrl.onPaginateOrSort = function onPaginateOrSort() {
@@ -298,6 +326,14 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             $ctrl.resetSort();
             $ctrl.sortAndLimit();
         }
+    };
+    
+    $ctrl.foldersChanged = function foldersChanged() {
+        var folderIds = [];
+        for (var i = 0; i < $ctrl.folders.length; i++) {
+            folderIds.push($ctrl.folders[i].id);
+        }
+        $ctrl.watchlist.query = folderIds.join(',');
     };
     
     $ctrl.resetSort = function() {

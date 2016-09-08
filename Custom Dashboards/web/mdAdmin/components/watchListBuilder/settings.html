@@ -1,7 +1,8 @@
 <div class="md-padding watchlist-settings" layout="column">
-  <md-radio-group ng-model="$ctrl.watchlist.type" layout="row" flex="100" flex-gt-md="50">
+  <md-radio-group ng-model="$ctrl.watchlist.type" ng-change="$ctrl.typeChanged()" layout="row" flex="100" flex-gt-md="50">
     <md-radio-button ng-value="'static'" class="md-primary"><span ma-tr="dashboards.v3.app.static"></span></md-radio-button>
     <md-radio-button ng-value="'query'"><span ma-tr="dashboards.v3.app.pointQuery"></span></md-radio-button>
+    <md-radio-button ng-value="'hierarchy'"><span ma-tr="dashboards.v3.app.pointHierarchy"></span></md-radio-button>
   </md-radio-group>
   <div layout="row" layout-wrap>
     <md-input-container flex="100" flex-gt-md="50">

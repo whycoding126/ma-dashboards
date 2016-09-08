@@ -6,7 +6,7 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function WatchListFactory($resource, Util, $http, Point) {
+function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
 
     var WatchList = $resource('/rest/v1/watch-lists/:xid', {
         xid: '@xid'
@@ -52,13 +52,40 @@ function WatchListFactory($resource, Util, $http, Point) {
                 this.points = items;
                 return this;
             }.bind(this));
+        } else if (this.type === 'hierarchy') {
+            var folderIds = this.query ? this.query.split(',') : [];
+            if (!folderIds.length) {
+                this.points = [];
+                return $q.when(this);
+            }
+            
+            var requests = [];
+            for (var i = 0; i < folderIds.length; i++) {
+                var request = PointHierarchy.get({id: parseInt(folderIds[i], 10), subfolders: false}).$promise;
+                requests.push(request);
+            }
+            
+            return $q.all(requests).then(function(folders) {
+                var points = [];
+                for (var i = 0; i < folders.length; i++) {
+                    Array.prototype.splice.apply(points, [0,0].concat(folders[i].points));
+                }
+                var pointXids = [];
+                for (i = 0; i < points.length; i++) {
+                    pointXids.push(points[i].xid);
+                }
+                return Point.objQuery({query: 'in(xid,' + pointXids.join(',') + ')'}).$promise.then(function(points) {
+                    this.points = points
+                    return this;
+                }.bind(this));
+            }.bind(this));
         }
     };
 
     return WatchList;
 }
 
-WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point'];
+WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q'];
 return WatchListFactory;
 
 }); // define
