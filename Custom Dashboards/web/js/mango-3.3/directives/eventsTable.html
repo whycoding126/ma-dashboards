@@ -40,7 +40,7 @@
                 </td>
                 <td md-cell ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
                 <td md-cell>
-                    <i class="fa fa-times fa-lg" ng-click="acknowledgeEvent(event.id); event.acknowledged=true;" ng-if="!event.acknowledged"></i>
+                    <i class="fa fa-times fa-lg" ng-click="acknowledgeEvent(event.id);" ng-if="!event.acknowledged"></i>
                     <i class="fa fa-check fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
                 </td>
             </tr>

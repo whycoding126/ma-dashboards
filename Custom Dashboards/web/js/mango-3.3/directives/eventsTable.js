@@ -51,7 +51,18 @@ function eventsTable(Events, $injector, $sce) {
             };
             
             $scope.acknowledgeEvent = function(eventID) {
-                Events.acknowledge({id: eventID}, null);
+                Events.acknowledge({id: eventID}, null).$promise.then(
+                    function (data) {
+                        // console.log('Success', data.id);
+                        
+                        $scope.events.find(function(item) {
+                            return item.id === data.id;
+                        }).acknowledged = true;
+                    },
+                    function (data) {
+                        console.log('Error', data);
+                    }
+                );
             };
             
             $scope.$watch(function() {
