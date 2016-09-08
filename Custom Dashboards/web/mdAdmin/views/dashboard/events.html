@@ -1,7 +1,7 @@
 <div layout="row">
       <md-input-container flex>
             <label>Event Type</label>
-            <md-select ng-model="eventType" ng-init="eventType='*'" class="md-no-underline">
+            <md-select ng-model="eventType" ng-init="eventType='*'">
                   <md-option value="*">All</md-option>
                   <md-option value="DATA_POINT">Data Point</md-option>
                   <md-option value="DATA_SOURCE">Data Source</md-option>
@@ -10,30 +10,39 @@
             </md-select>
       </md-input-container>
       <md-input-container flex>
+            <label>Event Id</label>
+            <input type="number" step="1" min="1" ng-model="eventId">
+      </md-input-container>
+      <md-input-container flex>
             <label>Alarm Level</label>
-            <md-select ng-model="alarmLevel" ng-init="alarmLevel='*'" class="md-no-underline">
+            <md-select ng-model="alarmLevel" ng-init="alarmLevel='*'">
                   <md-option value="*">All <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
                   <md-option value="0">None <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
                   <md-option value="1">Information <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
                   <md-option value="2">Urgent <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
                   <md-option value="3">Critical <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
-                  <md-option value="4">Safety <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option </md-select>
+                  <md-option value="4">Safety <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option 
+            </md-select>
       </md-input-container>
       <md-input-container flex>
-            <label>Event Id</label>
-            <input type="number" step="1" min="1" ng-model="eventId">
+            <label>Active Status</label>
+            <md-select ng-model="activeStatus" ng-init="activeStatus='*'">
+                  <md-option value="*">All</md-option>
+                  <!-- <md-option value="true">Active</md-option> -->
+                  <md-option value="false">No RTN</md-option>
+            </md-select>
       </md-input-container>
       <md-input-container flex>
             <label>Time Range</label>
             <ma-date-range-picker from="from" to="to" preset="LAST_1_MONTHS" update-interval="1 minutes"></ma-date-range-picker>
       </md-input-container>
       <md-input-container flex>
-            <label>From date</label>
+            <label>From Date</label>
             <ma-date-picker ng-model="from"></ma-date-picker>
       </md-input-container>
       <md-input-container flex>
-            <label>To date</label>
+            <label>To Date</label>
             <ma-date-picker ng-model="to"></ma-date-picker>
       </md-input-container>
 </div>
-<ma-events-table query="{eventType:eventType}" alarm-level="alarmLevel" event-id="eventId" from="from | moment:'format':'x'" to="to | moment:'format':'x'" limit="500" paginate-limit="15"></ma-events-table>
+<ma-events-table query="{eventType:eventType}" alarm-level="alarmLevel" event-id="eventId" active-status="activeStatus" from="from" to="to" limit="500" paginate-limit="15"></ma-events-table>

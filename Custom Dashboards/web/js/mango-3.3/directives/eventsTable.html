@@ -1,24 +1,24 @@
 <style>
     .alarm-flag.ALL {
-        color: black;
+        color: #000000;
     }
     .alarm-flag.NONE {
-        color: grey;
+        color: #9E9E9E;
     }
     .alarm-flag.INFORMATION {
-        color: blue;
+        color: #00BCD4;
     }
     .alarm-flag.URGENT {
-        color: yellow;
+        color: #FDD835;
     }
     .alarm-flag.CRITICAL {
-        color: orange;
+        color: #FF9800;
     }
     .alarm-flag.LIFE_SAFETY {
-        color: red;
+        color: #F44336;
     }
-    .acknowledged-checkbox.true {
-        color: green
+    .acknowledged-checkbox {
+        color: #8BC34A;
     }
 </style>
 <md-table-container ng-init="myOrder='-activeTimestamp'; myPage=1;">
@@ -63,7 +63,8 @@
                 </td>
                 <td md-cell ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
                 <td md-cell>
-                    <i class="fa fa-check fa-lg acknowledged-checkbox" ng-class="{'true' : event.acknowledged}" ng-click="acknowledgeEvent(event.id)"></i>
+                    <i class="fa fa-times fa-lg" ng-click="acknowledgeEvent(event.id); event.acknowledged=true;" ng-if="!event.acknowledged"></i>
+                    <i class="fa fa-check fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
                 </td>
             </tr>
         </tbody>

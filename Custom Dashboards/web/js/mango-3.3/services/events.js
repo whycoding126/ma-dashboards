@@ -170,11 +170,21 @@ function eventsFactory($resource, Util) {
             params.push('id=' + options.eventId);
         }
         
+        if (options.activeStatus && options.activeStatus != '*') {
+            if (options.activeStatus==='true') {
+                params.push('active=true');
+            }
+            else if (options.activeStatus==='false') {
+                params.push('active=false');
+            }
+            
+        }
+        
         if (options.from) {
-            params.push('activeTimestamp=gt=' + options.from);
+            params.push('activeTimestamp=ge=' + options.from.valueOf());
         }
         if (options.to) {
-            params.push('activeTimestamp=lt=' + options.to);
+            params.push('activeTimestamp=lt=' + options.to.valueOf());
         }
 
         return params.length ? this.rql({query: params.join('&')}) : this.query();

@@ -29,6 +29,7 @@ function eventsTable(Events, $injector, $sce) {
             pointId: '=?',
             eventId: '=?',
             alarmLevel: '=?',
+            activeStatus: '=?',
             query: '=',
             start: '=?',
             limit: '=?',
@@ -50,7 +51,7 @@ function eventsTable(Events, $injector, $sce) {
             };
             
             $scope.acknowledgeEvent = function(eventID) {
-                Events.acknowledge({id: eventID}, {acknowledge: true});
+                Events.acknowledge({id: eventID}, null);
             };
             
             $scope.$watch(function() {
@@ -60,6 +61,7 @@ function eventsTable(Events, $injector, $sce) {
                     limit: $scope.limit,
                     sort: $scope.sort,
                     alarmLevel: $scope.alarmLevel,
+                    activeStatus: $scope.activeStatus,
                     pointId: $scope.pointId,
                     eventId: $scope.eventId,
                     from: $scope.from,
