@@ -28,15 +28,19 @@ var eventsPageController = function eventsPageController($scope, $stateParams, $
         else {
             $ctrl.alarmLevel = '*';
         }
-        // else {
-        //     // Attempt load pointXid from local storage
-        //     var storedPoint = localStorageService.get('lastDataPointDetailsItem');
-        //     if (storedPoint) {
-        //         $this.pointXid = storedPoint.xid;
-        //         //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
-        //     }
-        //     
-        // }
+        
+        $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
+            if (newValue === undefined || newValue === oldValue) return;
+            //console.log('New point selected:', newValue);
+            $state.go('.', {eventType: newValue}, {location: 'replace', notify: false});
+        });
+        
+        $scope.$watch('$ctrl.alarmLevel', function(newValue, oldValue) {
+            if (newValue === undefined || newValue === oldValue) return;
+            //console.log('New point selected:', newValue);
+            $state.go('.', {alarmLevel: newValue}, {location: 'replace', notify: false});
+        });
+        
     };
     
     
