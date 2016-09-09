@@ -6,15 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var watchListPageController = function watchListPageController() {
-    
-};
-
-watchListPageController.$inject = [];
-
 return {
-    controller: watchListPageController,
-    templateUrl: require.toUrl('./watchListPage.html')
+    controller: [function watchListPageController() {
+        // nothing for now
+    }],
+    templateUrl: require.toUrl('./watchListPage.html'),
+    bindings: {
+        watchList: '<'
+    }
 };
 
 }); // define

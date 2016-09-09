@@ -37,7 +37,7 @@ function watchListSidebar($injector) {
             
             this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
                 this.watchLists = watchLists;
-                if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
+                if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
                     this.setWatchList(watchLists[0]);
                 }
                 return watchLists;

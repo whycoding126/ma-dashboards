@@ -1,16 +1,6 @@
-<div layout="row" layout-align="start center">
-  <ma-watch-lists points="points" watch-list="watchlist" flex layout="row"></ma-watch-lists>
-  <md-button class="" aria-label="{{'common.edit'|tr}}" ng-disabled="!watchlist" ui-sref="dashboard.watchListBuilder({watchListXid: watchlist.xid})">
-    <span ma-tr="common.edit"></span>
-  </md-button>
-  <md-button class="md-accent" aria-label="{{'dashboards.v3.app.new'|tr}}" ui-sref="dashboard.watchListBuilder">
-    <span ma-tr="dashboards.v3.app.new"></span>
-  </md-button>
-</div>
-
 <div layout="column" class="watchlist-main" md-no-ink>
     <md-card flex class="watchlist-table">
-        <watch-list-table points="points" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
+        <watch-list-table points="$ctrl.watchList.points" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
     </md-card>
     
     <md-card flex class="watchlist-controls">

@@ -1,5 +1,5 @@
 <ul>
-  <li ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-class="{'watchlist-selected': $ctrl.watchList === wl}">
+  <li ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-class="{'watchlist-selected': $ctrl.watchList.xid === wl.xid}">
     <button ng-click="$ctrl.setWatchList(wl)">
       <strong ng-bind="wl.name"></strong>
       <em ng-bind="wl.username"></em>

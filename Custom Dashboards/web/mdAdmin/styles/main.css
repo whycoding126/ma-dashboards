@@ -645,3 +645,9 @@ md-input-container .hint {
 .acknowledged-checkbox {
     color: #8BC34A;
 }
+
+.move-off-screen {
+  visibility: hidden;
+  transform: translate3d(-1000%,-1000%,0);
+  position: absolute;
+}
