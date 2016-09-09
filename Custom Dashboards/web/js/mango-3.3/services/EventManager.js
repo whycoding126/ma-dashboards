@@ -95,7 +95,7 @@ define(['jquery'], function($) {
 *
 */
 
-function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
+function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 
 	var READY_STATE_CONNECTING = 0;
 	var READY_STATE_OPEN = 1;
@@ -330,7 +330,7 @@ function JsonStoreEventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	return EventManager;
 }
 
-JsonStoreEventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout'];
-return JsonStoreEventManagerFactory;
+EventManagerFactory.$inject = ['mangoBaseUrl', '$rootScope', 'mangoTimeout'];
+return EventManagerFactory;
 
 }); // define
