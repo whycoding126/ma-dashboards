@@ -108,6 +108,13 @@ function eventsFactory($resource, Util) {
             url: '/rest/v1/events/acknowledge/:id',
             withCredentials: true,
             cache: true
+        },
+        getActiveSummary: {
+        	url: '/rest/v1/events/active-summary',
+            method: 'GET',
+            isArray: true,
+            withCredentials: true,
+            cache: true
         }
     });
     

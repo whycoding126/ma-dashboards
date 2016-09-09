@@ -105,9 +105,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/liveEditor/dualPaneEditor',
                            './directives/iframeView/iframeView',
                            './directives/stateParams/stateParams',
-                           './components/autoLoginSettings/autoLoginSettings'
+                           './components/autoLoginSettings/autoLoginSettings',
+                           './components/activeEventIcons/activeEventIcons'
                 ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings) {
+                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings, activeEventIcons) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('MenuEditor', MenuEditor)
@@ -121,7 +122,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .component('dashboardMenu', dashboardMenu)
                         .component('menuLink', menuLink)
                         .component('menuToggle', menuToggle)
-                        .component('autoLoginSettings', autoLoginSettings);
+                        .component('autoLoginSettings', autoLoginSettings)
+                        .component('maActiveEventIcons', activeEventIcons);
                     $ocLazyLoad.inject('dashboard');
                 });
             }]
