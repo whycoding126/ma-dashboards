@@ -48,30 +48,27 @@ define(['require'], function(require) {
                         }, 300);
                     };
 
-                    // Only load showStats function and watch values to flash if !mobile (perf +)
-                    if ($mdMedia('gt-sm')) {
-                        scope.showStats = function(ev) {
-                            $mdDialog.show({
-                                    controller: function() {
-                                        this.parent = scope;
-                                        this.timeRange = moment.duration(moment(scope.to).diff(moment(scope.from))).humanize();
-                                        this.cancel = function cancel() {
-                                            $mdDialog.cancel();
-                                        };
-                                    },
-                                    templateUrl: require.toUrl('./statsDialog.html'),
-                                    parent: angular.element(document.body),
-                                    targetEvent: ev,
-                                    fullscreen: true,
-                                    controllerAs: 'ctrl'
-                                })
-                                .then(function(answer) {
-                                    //$scope.status = 'You said the information was "' + answer + '".';
-                                }, function() {
-                                    //$scope.status = 'You cancelled the dialog.';
-                                });
-                        }
-                    } // End if gt-sm
+                    scope.showStats = function(ev) {
+                        $mdDialog.show({
+                                controller: function() {
+                                    this.parent = scope;
+                                    this.timeRange = moment.duration(moment(scope.to).diff(moment(scope.from))).humanize();
+                                    this.cancel = function cancel() {
+                                        $mdDialog.cancel();
+                                    };
+                                },
+                                templateUrl: require.toUrl('./statsDialog.html'),
+                                parent: angular.element(document.body),
+                                targetEvent: ev,
+                                fullscreen: true,
+                                controllerAs: 'ctrl'
+                            })
+                            .then(function(answer) {
+                                //$scope.status = 'You said the information was "' + answer + '".';
+                            }, function() {
+                                //$scope.status = 'You cancelled the dialog.';
+                            });
+                    }
                 } // End Link
         }; // End return
     }; // End DDO

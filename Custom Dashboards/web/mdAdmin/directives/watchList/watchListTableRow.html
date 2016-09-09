@@ -1,7 +1,7 @@
 <td md-cell nowrap ng-class="{'icons': !$mdMedia('gt-sm')}">
       <a href="/dashboards/data-point-details/{{point.xid}}"><i class="fa fa-line-chart fa-lg md-primary" style="padding:5px;"><md-tooltip md-delay="250"  md-direction="right">Data Point Details Page</md-tooltip></i></a>
       
-      <i ng-if="$mdMedia('gt-sm')" class="fa fa-history fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Point Stats and History</md-tooltip></i>
+      <i class="fa fa-history fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Point Stats and History</md-tooltip></i>
       
       <i class="fa fa-commenting-o fa-lg md-primary" ng-click="addNote($event, 'Point', point.id)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Add User Note</md-tooltip></i>
       
