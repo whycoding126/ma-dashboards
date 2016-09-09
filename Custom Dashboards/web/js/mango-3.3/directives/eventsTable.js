@@ -34,6 +34,7 @@ function eventsTable(Events, $injector, $sce) {
             start: '=?',
             limit: '=?',
             sort: '=?',
+            sortOrder: '=?',
             paginateLimit: '=?',
             from: '=?',
             to: '=?'
@@ -45,6 +46,12 @@ function eventsTable(Events, $injector, $sce) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
+            
+            $scope.$watch('sortOrder', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                // console.log(newValue);
+                $scope.myOrder = $scope.sortOrder;
+            });
             
             $scope.parseHTML = function(text) {
                 return $sce.trustAsHtml(text);

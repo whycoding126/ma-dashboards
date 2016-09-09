@@ -1,12 +1,12 @@
 <md-menu md-position-mode="target-right target" ng-if="$ctrl.eventsSummary.length">
     <md-button aria-label="Active Events" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-        <md-tooltip md-autohide>Mango events</md-tooltip>
+        <md-tooltip md-autohide>Un-Acknowledged Events</md-tooltip>
         <md-icon md-menu-origin>alarm</md-icon>
     </md-button>
     <md-menu-content width="3">
         
         <md-menu-item ng-if="$ctrl.events.INFORMATION.unsilencedCount">
-            <md-button ui-sref="dashboard.events({alarmLevel: 1})">
+            <md-button ui-sref="dashboard.events({sortOrder: 'acknowledged', alarmLevel: 1})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag INFORMATION" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.INFORMATION.unsilencedCount}} Information Events</p>
@@ -15,7 +15,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.URGENT.unsilencedCount">
-            <md-button ui-sref="dashboard.events({alarmLevel: 2})">
+            <md-button ui-sref="dashboard.events({sortOrder: 'acknowledged', alarmLevel: 2})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag URGENT" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.URGENT.unsilencedCount}} Urgent Events</p>
@@ -24,7 +24,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.CRITICAL.unsilencedCount">
-            <md-button ui-sref="dashboard.events({alarmLevel: 3})">
+            <md-button ui-sref="dashboard.events({sortOrder: 'acknowledged', alarmLevel: 3})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag CRITICAL" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.CRITICAL.unsilencedCount}} Critical Events</p>
@@ -33,7 +33,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.LIFE_SAFETY.unsilencedCount">
-            <md-button ui-sref="dashboard.events({alarmLevel: 4})">
+            <md-button ui-sref="dashboard.events({sortOrder: 'acknowledged', alarmLevel: 4})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.LIFE_SAFETY.unsilencedCount}} Safety Events</p>
@@ -42,9 +42,9 @@
         </md-menu-item>
         
         <md-menu-item>
-            <md-button ui-sref="dashboard.events({alarmLevel: '*'})">
+            <md-button ui-sref="dashboard.events({sortOrder: 'acknowledged', alarmLevel: '*'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
-                    <i class="fa fa-flag fa-lg alarm-flag" style="padding-right:10px"></i>
+                    <i class="fa fa-flag fa-lg alarm-flag ALL" style="padding-right:10px"></i>
                     <p flex> All Events</p>
                 </div>
             </md-button>

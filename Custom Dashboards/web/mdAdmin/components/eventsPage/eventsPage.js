@@ -13,6 +13,15 @@ var eventsPageController = function eventsPageController($scope, $stateParams, $
     var $ctrl = this;
     
     this.$onInit = function() {
+        
+        if ($stateParams.sortOrder) {
+            console.log($stateParams.sortOrder);
+            $ctrl.sortOrder = $stateParams.sortOrder;
+        }
+        else {
+            $ctrl.sortOrder = '-activeTimestamp';
+        }
+        
         if ($stateParams.eventType) {
             // console.log($stateParams.eventType);
             $ctrl.eventType = $stateParams.eventType;
