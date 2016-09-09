@@ -38,13 +38,20 @@ define(['require'], function(require) {
                     }
                     
                     var timeoutPromise;
-                    scope.flashRow = function flashRow() {
-                        scope.Updated = true;
+                    var lastValue;
+                    scope.flashRow = function flashRow(point) {
+                        scope.timestampUpdated = true;
+                        if (point.value !== lastValue) {
+                            scope.valueUpdated = true;
+                        };
+                        lastValue = point.value;
+                        
                         if (timeoutPromise) {
                             $timeout.cancel(timeoutPromise);
                         }
                         timeoutPromise = $timeout(function() {
-                            scope.Updated = false;
+                            scope.timestampUpdated = false;
+                            scope.valueUpdated = false;
                         }, 300);
                     };
 
