@@ -9,9 +9,9 @@
 
       <i ng-if="point.pointLocator.settable" class="fa fa-pencil-square-o fa-lg md-primary" ng-click="showSetPoint($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Set Point Value</md-tooltip></i>
 </td>
-<td md-cell>{{point.deviceName}}</td>
-<td md-cell>{{point.name}}</td>
+<td md-cell ng-bind="point.deviceName"></td>
+<td md-cell ng-bind="point.name"></td>
 <td md-cell ng-class="{flash: Updated}">
-      {{point.renderedValue}} 
+  <ma-point-value point="point" value-updated="flashRow()"></ma-point-value>
 </td>
-<td md-cell>{{point.time | moment:'format':'h:mm:ss'}}</td>
+<td md-cell ng-class="{flash: Updated}" ng-bind="point.time | moment:'format':'h:mm:ss'"></td>

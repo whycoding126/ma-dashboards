@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'moment-timezone'], function(require, moment) {
 'use strict';
 /**
  * @ngdoc directive 
@@ -42,14 +42,15 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 </ma-point-value>
  *
  */
-function pointValue($filter, mangoDefaultDateFormat) {
+function pointValue(mangoDefaultDateFormat) {
     return {
         restrict: 'E',
         scope: {
             point: '=?',
             pointXid: '@',
             displayType: '@',
-            dateTimeFormat: '@'
+            dateTimeFormat: '@',
+            valueUpdated: '&?'
         },
         replace: true,
         templateUrl: require.toUrl('./pointValue.html'),
@@ -62,30 +63,32 @@ function pointValue($filter, mangoDefaultDateFormat) {
                 'live-value': true
             };
 
-            $scope.$watch('point.value', function(newValue, oldValue) {
-            	var point = $scope.point;
-            	if (!point || newValue === undefined) return;
+            $scope.onValueUpdated = function() {
+                if ($scope.valueUpdated) {
+                    $scope.valueUpdated({point: $scope.point});
+                }
+                
+                var point = $scope.point;
+                $scope.classes['point-disabled'] = !point.enabled;
 
-            	$scope.classes['point-disabled'] = !point.enabled;
-
-            	var valueRenderer = point.valueRenderer(point.value);
+                var valueRenderer = point.valueRenderer(point.value);
                 var color = valueRenderer ? valueRenderer.color : null;
 
                 switch(displayType) {
                 case 'converted':
-                	$scope.displayValue = point.convertedValue;
+                    $scope.displayValue = point.convertedValue;
                     break;
                 case 'rendered':
-                	$scope.displayValue = point.renderedValue;
+                    $scope.displayValue = point.renderedValue;
                     $scope.valueStyle.color = color;
                     break;
                 case 'dateTime':
-                	$scope.displayValue = $filter('moment')(point.time, 'format', dateTimeFormat);
+                    $scope.displayValue = moment(point.time).format(dateTimeFormat);
                     break;
                 default:
-                	$scope.displayValue = point.value;
+                    $scope.displayValue = point.value;
                 }
-            });
+            };
 
             $scope.$watch('point.xid', function(newXid, oldXid) {
                 if (oldXid && oldXid !== newXid) {
@@ -98,7 +101,7 @@ function pointValue($filter, mangoDefaultDateFormat) {
     };
 }
 
-pointValue.$inject = ['$filter', 'mangoDefaultDateFormat'];
+pointValue.$inject = ['mangoDefaultDateFormat'];
 return pointValue;
 
 }); // define

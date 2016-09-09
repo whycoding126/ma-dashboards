@@ -974,6 +974,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $mdThemingProvider.setDefaultTheme('mangoDefault');
 
     $httpProvider.interceptors.push('errorInterceptor');
+    $httpProvider.useApplyAsync(true);
 
     if ($injector.has('$mdpTimePickerProvider')) {
         var $mdpTimePickerProvider = $injector.get('$mdpTimePickerProvider');

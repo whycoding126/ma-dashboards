@@ -43,12 +43,13 @@ function getPointValue(pointEventManager, Point, Util) {
         scope: {
         	points: '=?',
             point: '=?',
-            pointXid: '@'
+            pointXid: '@',
+            valueUpdated: '&?'
         },
         link: function ($scope, $element, attrs) {
 
             function websocketHandler(event, payload) {
-                $scope.$apply(function() {
+                $scope.$applyAsync(function() {
                 	if ($scope.point && payload.xid !== $scope.point.xid) return;
 
                 	var point;
@@ -77,6 +78,9 @@ function getPointValue(pointEventManager, Point, Util) {
 	                    point.convertedValue = payload.convertedValue;
 	                	point.renderedValue = payload.renderedValue;
 	                	point.renderedColor = color;
+	                	
+	                	if ($scope.valueUpdated)
+	                	    $scope.valueUpdated({point: point});
 	                }
                 });
             }
@@ -85,6 +89,8 @@ function getPointValue(pointEventManager, Point, Util) {
 
             var pointPromise;
             $scope.$watch('pointXid', function(newXid) {
+                if ($scope.point && $scope.point.xid === newXid) return;
+                
                 delete $scope.point;
                 if (pointPromise) {
                     pointPromise.reject();

@@ -36,6 +36,17 @@ define(['require'], function(require) {
                                 //$scope.status = 'You cancelled the dialog.';
                             });
                     }
+                    
+                    var timeoutPromise;
+                    scope.flashRow = function flashRow() {
+                        scope.Updated = true;
+                        if (timeoutPromise) {
+                            $timeout.cancel(timeoutPromise);
+                        }
+                        timeoutPromise = $timeout(function() {
+                            scope.Updated = false;
+                        }, 300);
+                    };
 
                     // Only load showStats function and watch values to flash if !mobile (perf +)
                     if ($mdMedia('gt-sm')) {
@@ -60,18 +71,7 @@ define(['require'], function(require) {
                                     //$scope.status = 'You cancelled the dialog.';
                                 });
                         }
-                        
-                        scope.$watch('point.value', function(newValue, old) {
-                            if (newValue === undefined || newValue === old) return;
-                            // console.log('New Point Values:', scope.point.name, scope.point.value);
-
-                            scope.Updated = true;
-                            $timeout(function() {
-                                scope.Updated = false;
-                            }, 300);
-                        });
                     } // End if gt-sm
-
                 } // End Link
         }; // End return
     }; // End DDO

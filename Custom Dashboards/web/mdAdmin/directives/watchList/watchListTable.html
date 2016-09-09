@@ -6,8 +6,6 @@
     </div>
 </md-toolbar>
 
-<ma-get-point-value points="points"></ma-get-point-value>
-
 <md-table-container ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-init="myPage=1; myOrder=''">
     <table md-table md-row-select multiple ng-init="selected=[]" ng-model="selected" md-progress="promise" ng-class="{'desktop': $mdMedia('gt-sm')}">
         <thead md-head md-order="myOrder">

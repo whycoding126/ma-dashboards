@@ -153,6 +153,7 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
 
     // add the error interceptor to show REST errors on the error page
     $httpProvider.interceptors.push('errorInterceptor');
+    $httpProvider.useApplyAsync(true);
 
     // set the default state
     $urlRouterProvider.otherwise('/home');
