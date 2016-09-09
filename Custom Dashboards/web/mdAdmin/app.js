@@ -198,18 +198,18 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard.watchList',
         url: '/watch-list/{watchListXid}',
-        template: '<ma-watchlist-page></ma-watchlist-page>',
+        template: '<ma-watch-list-page></ma-watch-list-page>',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/watchlistPage/watchlistPage',
+                return rQ(['./components/watchListPage/watchListPage',
                             './directives/watchList/watchListTable',
                             './directives/watchList/watchListTableRow',
                             './directives/watchList/watchListChart'], 
                 function (WatchlistPage, watchListTable, watchListTableRow, watchListChart) {
-                    angular.module('watchlistPage', [])
-                        .component('maWatchlistPage', WatchlistPage)
+                    angular.module('watchListPage', [])
+                        .component('maWatchListPage', WatchlistPage)
                         .directive('watchListTable', watchListTable)
                         .directive('watchListTableRow', watchListTableRow)
                         .directive('watchListChart', watchListChart)
@@ -219,7 +219,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                                       else { return input.toFixed(1) + suffix; }
                                 }
                           });
-                    $ocLazyLoad.inject('watchlistPage');
+                    $ocLazyLoad.inject('watchListPage');
                     cssInjector.injectLink(require.toUrl('./components/watchListPage/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });
             }]
