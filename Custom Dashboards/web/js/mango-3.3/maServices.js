@@ -21,7 +21,7 @@ define(['./services/Point',
         './services/WatchListEventManager',
         './services/rqlParamSerializer',
         './services/UserNotes',
-        './services/UserNotesEventManager',
+        './services/eventsEventManagerFactory',
         './services/events',
         './services/DynamicItems',
         'angular',
@@ -29,7 +29,7 @@ define(['./services/Point',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
-        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, UserNotesEventManager, events, DynamicItems, angular) {
+        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events, DynamicItems, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -61,7 +61,7 @@ maServices.factory('WatchList', WatchListFactory);
 maServices.factory('WatchListEventManager', WatchListEventManagerFactory);
 maServices.factory('rqlParamSerializer', rqlParamSerializer);
 maServices.factory('UserNotes', UserNotes);
-maServices.factory('UserNotesEventManager', UserNotesEventManager);
+maServices.factory('eventsEventManager', eventsEventManagerFactory);
 maServices.factory('Events', events);
 maServices.factory('DynamicItems', DynamicItems);
 

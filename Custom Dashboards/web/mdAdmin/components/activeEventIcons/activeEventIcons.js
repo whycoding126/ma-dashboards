@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var activeEventIconsController = function activeEventIconsController(Events) {
+var activeEventIconsController = function activeEventIconsController(Events, eventsEventManager) {
     var $ctrl = this;
     
     Events.getActiveSummary().$promise.then(
@@ -19,16 +19,20 @@ var activeEventIconsController = function activeEventIconsController(Events) {
                 $ctrl.events[item.level] = item
             });
             
-            console.log($ctrl.events);
+            // console.log($ctrl.events);
             
         },
         function(data) {
             console.log('error', data);
         }
     );
+    
+    eventsEventManager.subscribe(function(msg) {
+        console.log(msg);
+    });
 };
 
-activeEventIconsController.$inject = ['Events'];
+activeEventIconsController.$inject = ['Events', 'eventsEventManager'];
 
 return {
     controller: activeEventIconsController,
