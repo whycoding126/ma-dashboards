@@ -1,3 +1,6 @@
+*Version 3.2.1*
+* Fix for amcharts export option loading JavaScript files incorrectly
+
 *Version 3.2.0*
 * Set a point limit for ma-point-list in examples
 * Add auto-init option to ma-filtering-point-list
