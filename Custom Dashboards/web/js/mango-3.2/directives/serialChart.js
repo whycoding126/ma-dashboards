@@ -103,7 +103,7 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
             }
             
             if ($scope['export']) {
-                options['export'] = {enabled: true};
+                options['export'].enabled = true;
             }
             
             if ($scope.balloon) {
@@ -382,7 +382,8 @@ function defaultOptions() {
         plotAreaFillAlphas: 0.0,
         categoryField: "timestamp",
         'export': {
-            enabled: false
+            enabled: false,
+            libs: {autoLoad: false}
         }
     };
 }
