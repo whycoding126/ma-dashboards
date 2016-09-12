@@ -21,15 +21,26 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
             
             // console.log($ctrl.events);
             
+            eventsEventManager.subscribe(function(msg) {
+                console.log(msg);
+                
+                if (msg.status === 'OK' && msg.payload.type === 'RAISED') {
+                    increment(msg.payload.event);
+                }
+                
+            });
+            
+            var increment = function(payloadEvent) {
+                console.log(payloadEvent.alarmLevel);
+                
+                $ctrl.events[payloadEvent.alarmLevel].unsilencedCount++;
+            };
+            
         },
         function(data) {
             console.log('error', data);
         }
     );
-    
-    eventsEventManager.subscribe(function(msg) {
-        console.log(msg);
-    });
 };
 
 activeEventIconsController.$inject = ['Events', 'eventsEventManager'];

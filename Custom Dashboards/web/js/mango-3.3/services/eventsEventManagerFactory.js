@@ -31,13 +31,13 @@ function eventsEventManager(EventManager) {
     
     eventsEventManager.subscribe = function(eventHandler) {
             if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
-            
+            // console.log('Socket opened');
             this.socket.send(JSON.stringify(message));
             this.eventHandler = eventHandler;
     };
     
     eventsEventManager.messageReceived = function(payload) {
-        console.log(payload);
+        // console.log(payload);
         
         this.eventHandler(payload);
     };
