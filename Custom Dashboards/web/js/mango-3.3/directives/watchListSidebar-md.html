@@ -1,9 +1,0 @@
-<ul flex layout="column">
-  <li ng-repeat="wl in $ctrl.watchLists track by wl.xid" layout="column" ng-class="{'watchlist-selected': $ctrl.watchList.xid === wl.xid}">
-    <md-button ng-click="$ctrl.setWatchList(wl)" layout="column" layout-align="center start"
-        md-colors="{'background-color': $ctrl.watchList.xid === wl.xid ? 'accent' : 'background'}">
-      <strong ng-bind="wl.name"></strong>
-      <em ng-bind="wl.username"></em>
-    </md-button>
-  </li>
-</ul>

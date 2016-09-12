@@ -6,16 +6,16 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-function watchListSidebar($injector) {
+function watchListList($injector) {
     var UPDATE_TYPES = ['update'];
     
     return {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./watchListSidebar-md.html');
+                return require.toUrl('./watchListList-md.html');
             }
-            return require.toUrl('./watchListSidebar.html');
+            return require.toUrl('./watchListList.html');
         },
         controllerAs: '$ctrl',
         bindToController: true,
@@ -74,8 +74,8 @@ function watchListSidebar($injector) {
     };
 }
 
-watchListSidebar.$inject = ['$injector'];
+watchListList.$inject = ['$injector'];
 
-return watchListSidebar;
+return watchListList;
 
 }); // define

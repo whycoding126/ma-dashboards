@@ -1,0 +1,15 @@
+<md-list flex>
+  <md-list-item class="md-2-line"
+      ng-repeat="wl in $ctrl.watchLists track by wl.xid"
+      ng-class="{'watchlist-selected': $ctrl.watchList.xid === wl.xid}"
+      md-colors="{'color': $ctrl.watchList.xid === wl.xid ? 'accent' : 'background-800'}"
+      ng-click="$ctrl.setWatchList(wl)">
+    <div class="md-list-item-text">
+      <h3 ng-bind="wl.name"></h3>
+      <p ng-bind="wl.username"></p>
+    </div>
+    <md-button class="md-secondary md-icon-button" ui-sref="dashboard.watchListBuilder({watchListXid: wl.xid})">
+      <md-icon>edit</md-icon>
+    </md-button>
+  </md-list-item>
+</md-list>

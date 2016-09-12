@@ -117,3 +117,27 @@ md-table-container.lg-screen {
 .watchlist-main .md-table-pagination>.buttons>.label+.md-button.md-icon-button, .stats-dialog .md-table-pagination>.buttons>.label+.md-button.md-icon-button {
     margin-left: 10px;
 }
+
+.watchlist-main md-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.watchlist-main md-card:first-child {
+  margin-top: 0;
+}
+
+.watchlist-main md-card:last-child {
+  margin-bottom: 0;
+}
+
+ma-watch-list-page md-card.select-watch-list {
+  margin: 0 16px 0 0;
+  max-height: 600px;
+  overflow-y: scroll;
+}
+
+ma-watch-list-page md-card.select-watch-list md-list {
+  padding: 0;
+  width: 300px;
+}

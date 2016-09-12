@@ -12,7 +12,7 @@ return {
     }],
     templateUrl: require.toUrl('./watchListPage.html'),
     bindings: {
-        watchList: '<'
+        watchList: '<?'
     }
 };
 

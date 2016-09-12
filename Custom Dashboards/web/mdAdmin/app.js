@@ -198,14 +198,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         name: 'dashboard.watchList',
         url: '/watch-list/{watchListXid}',
-        views: {
-            '': {
-                template: '<ma-watch-list-page watch-list="appVariables.watchList"></ma-watch-list-page>'
-            },
-            'sidebar@dashboard': {
-                templateUrl: 'views/dashboard/watchListSidebar.html'
-            }
-        },
+        template: '<ma-watch-list-page></ma-watch-list-page>',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',
         resolve: {
@@ -1128,6 +1121,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
     $rootScope.appVariables = {};
+    $rootScope.$mdMedia = $mdMedia;
 
     // inserts a style tag to style <a> tags with accent color
     if ($MD_THEME_CSS) {
@@ -1173,14 +1167,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-        if (toState.views && toState.views['sidebar@dashboard']) {
-            $rootScope.appVariables.hideNavigation = true;
-            $rootScope.appVariables.hasSidebar = true;
-        } else {
-            $rootScope.appVariables.hideNavigation = false;
-            $rootScope.appVariables.hasSidebar = false;
-        }
-        
         if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
