@@ -930,7 +930,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
         } else {
-            $state.go('dashboard.home');
+            console.log(error);
         }
     });
 
