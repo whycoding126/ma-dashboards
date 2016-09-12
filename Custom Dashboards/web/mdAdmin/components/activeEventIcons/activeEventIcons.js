@@ -22,7 +22,7 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
             // console.log($ctrl.events);
             
             eventsEventManager.subscribe(function(msg) {
-                console.log(msg);
+                // console.log(msg);
                 
                 if (msg.status === 'OK') {
                     counter(msg.payload.event, msg.payload.type);
@@ -31,7 +31,7 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
             });
             
             var counter = function(payloadEvent, payloadType) {
-                console.log(payloadEvent, payloadType);
+                // console.log(payloadEvent, payloadType);
                 
                 if (payloadType === 'RAISED') {
                     $ctrl.events[payloadEvent.alarmLevel].unsilencedCount++;
