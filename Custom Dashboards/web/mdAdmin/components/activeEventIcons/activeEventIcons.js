@@ -24,16 +24,22 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
             eventsEventManager.subscribe(function(msg) {
                 console.log(msg);
                 
-                if (msg.status === 'OK' && msg.payload.type === 'RAISED') {
-                    increment(msg.payload.event);
+                if (msg.status === 'OK') {
+                    counter(msg.payload.event, msg.payload.type);
                 }
                 
             });
             
-            var increment = function(payloadEvent) {
-                console.log(payloadEvent.alarmLevel);
+            var counter = function(payloadEvent, payloadType) {
+                console.log(payloadEvent, payloadType);
                 
-                $ctrl.events[payloadEvent.alarmLevel].unsilencedCount++;
+                if (payloadType === 'RAISED') {
+                    $ctrl.events[payloadEvent.alarmLevel].unsilencedCount++;
+                }
+                else if (payloadType === 'ACKNOWLEDGED') {
+                    $ctrl.events[payloadEvent.alarmLevel].unsilencedCount--;
+                }
+                
             };
             
         },
