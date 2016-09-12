@@ -5,6 +5,7 @@
 
 define(['require'], function(require) {
     'use strict';
+    var FLASH_CLASS = 'flash-on-change';
 
     var watchListTableRow = function($mdMedia, $mdDialog, $timeout, UserNotes) {
         return {
@@ -37,22 +38,30 @@ define(['require'], function(require) {
                             });
                     }
                     
-                    var timeoutPromise;
+                    var pointValueCell = element.find('.point-value');
+                    var pointTimeCell = element.find('.point-time');
+                    
+                    var timeoutID;
                     var lastValue;
                     scope.flashRow = function flashRow(point) {
-                        scope.timestampUpdated = true;
+                        // manually add and remove classes rather than using ng-class as point values can
+                        // change rapidly and result in huge slow downs / heaps of digest loops
+                        
+                        pointTimeCell.addClass(FLASH_CLASS);
                         if (point.value !== lastValue) {
-                            scope.valueUpdated = true;
+                            pointValueCell.addClass(FLASH_CLASS);
                         };
                         lastValue = point.value;
                         
-                        if (timeoutPromise) {
-                            $timeout.cancel(timeoutPromise);
+                        if (timeoutID) {
+                            clearTimeout(timeoutID);
+                            timeoutID = null;
                         }
-                        timeoutPromise = $timeout(function() {
-                            scope.timestampUpdated = false;
-                            scope.valueUpdated = false;
-                        }, 300);
+
+                        timeoutID = setTimeout(function() {
+                            pointValueCell.removeClass(FLASH_CLASS);
+                            pointTimeCell.removeClass(FLASH_CLASS);
+                        }, 400);
                     };
 
                     scope.showStats = function(ev) {

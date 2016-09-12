@@ -65,7 +65,10 @@ md-table-container.lg-screen {
 .watchlist-main table.md-table td.md-cell i.alternate {
     color: rgb(0,173,239);
 }
-.watchlist-main table.md-table td.md-cell.flash {
+.watchlist-main table.md-table td.md-cell {
+    transition: color 0.2s;
+}
+.watchlist-main table.md-table td.md-cell.flash-on-change {
     color: rgb(255,133,0);
 }
 

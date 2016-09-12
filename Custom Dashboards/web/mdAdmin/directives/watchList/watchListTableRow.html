@@ -11,7 +11,7 @@
 </td>
 <td md-cell ng-bind="point.deviceName"></td>
 <td md-cell ng-bind="point.name"></td>
-<td md-cell ng-class="{flash: valueUpdated}">
+<td md-cell class="point-value">
   <ma-point-value point="point" value-updated="flashRow(point)"></ma-point-value>
 </td>
-<td md-cell ng-class="{flash: timestampUpdated}" ng-bind="point.time | moment:'format':'h:mm:ss'"></td>
+<td md-cell class="point-time" ng-bind="point.time | moment:'format':'h:mm:ss'"></td>
