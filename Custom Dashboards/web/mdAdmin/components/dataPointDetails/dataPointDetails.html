@@ -40,10 +40,8 @@
 			        </h2>
 				</div>
 			</md-toolbar>
-			<md-card-content layout="column">
-				<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
-				<ma-statistics-table statistics="statsObj"></ma-statistics-table>
-			</md-card-content>
+			<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+			<ma-statistics-table statistics="statsObj"></ma-statistics-table>
 		</md-card>
 	</div>
 
@@ -56,25 +54,23 @@
 			        </h2>
 				</div>
 			</md-toolbar>
-			<md-card-content>
-				<md-table-container ng-init="myLimit=15; myPage=1; myOrder='-timestamp'">
-					<table md-table>
-						<thead md-head md-order="myOrder">
-							<tr md-row>
-								<th md-column md-order-by="timestamp">TimeStamp</th>
-								<th md-column md-order-by="value">Point Value</th>
-							</tr>
-						</thead>
-						<tbody md-body>
-							<tr ng-repeat="value in myPointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
-								<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-								<td md-cell>{{value.value}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</md-table-container>
-				<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
-			</md-card-content>
+			<md-table-container ng-init="myLimit=15; myPage=1; myOrder='-timestamp'">
+				<table md-table>
+					<thead md-head md-order="myOrder">
+						<tr md-row>
+							<th md-column md-order-by="timestamp">TimeStamp</th>
+							<th md-column md-order-by="value">Point Value</th>
+						</tr>
+					</thead>
+					<tbody md-body>
+						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
+							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
+							<td md-cell>{{value.value}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</md-table-container>
+			<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
 		</md-card>
 
 		<md-card flex="100" flex-gt-md="45">
@@ -88,9 +84,7 @@
 					</md-button>
 				</div>
 			</md-toolbar>
-			<md-card-content>
-				<ma-user-notes-table reference-id="myPoint.id" limit="5"></ma-user-notes-table>
-			</md-card-content>
+			<ma-user-notes-table reference-id="myPoint.id" limit="5"></ma-user-notes-table>
 		</md-card>
 
 		<md-card flex="100">

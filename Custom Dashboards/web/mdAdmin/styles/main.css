@@ -641,8 +641,8 @@ md-input-container .hint {
 
 /* Event Table */
 
-.events-table table.md-table tbody.md-body>tr.md-row, .events-table table.md-table tfoot.md-foot>tr.md-row {
-    height: 30px;
+table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
+    height: 25px;
 }
 
 /* Alarm Flags */

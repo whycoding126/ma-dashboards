@@ -8,7 +8,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="note in userNotes | orderBy: myOrder | limitTo: limit: (myPage - 1) * limit">
+            <tr md-row ng-repeat="note in userNotes | orderBy: myOrder | limitTo: limit: (myPage - 1) * limit">
                 <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
                 <td md-cell>{{note.comment}}</td>
                 <td md-cell>{{note.username}}</td>
