@@ -56,6 +56,22 @@ var eventsPageController = function eventsPageController($scope, $mdMedia, $stat
             }
         }
         
+        if ($stateParams.acknowledged) {
+            // console.log($stateParams.acknowledged);
+            $ctrl.acknowledged = $stateParams.acknowledged;
+        }
+        else {
+            // Attempt load from local storage
+            var storedAcknowledged = localStorageService.get('acknowledged');
+            if (storedAcknowledged) {
+                $ctrl.acknowledged = storedAcknowledged;
+            }
+            else {
+                // Otherwise set to all
+                $ctrl.acknowledged = '*';
+            }
+        }
+        
         $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
             //console.log('New point selected:', newValue);
@@ -68,6 +84,13 @@ var eventsPageController = function eventsPageController($scope, $mdMedia, $stat
             //console.log('New point selected:', newValue);
             $state.go('.', {alarmLevel: newValue}, {location: 'replace', notify: false});
             localStorageService.set('lastAlarmLevelItem', newValue);
+        });
+        
+        $scope.$watch('$ctrl.acknowledged', function(newValue, oldValue) {
+            if (newValue === undefined || newValue === oldValue) return;
+            //console.log('New point selected:', newValue);
+            $state.go('.', {acknowledged: newValue}, {location: 'replace', notify: false});
+            localStorageService.set('acknowledged', newValue);
         });
         
     };

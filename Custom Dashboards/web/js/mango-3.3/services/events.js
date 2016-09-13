@@ -178,13 +178,24 @@ function eventsFactory($resource, Util) {
         }
         
         if (options.activeStatus && options.activeStatus != '*') {
-            if (options.activeStatus==='true') {
+            if (options.activeStatus==='active') {
                 params.push('active=true');
             }
-            else if (options.activeStatus==='false') {
+            else if (options.activeStatus==='noRtn') {
                 params.push('active=false');
             }
-            
+            else if (options.activeStatus==='normal') {
+                params.push('rtnTs=gt=0');
+            }
+        }
+        
+        if (options.acknowledged && options.acknowledged != '*') {
+            if (options.acknowledged==='true') {
+                params.push('acknowledged=true');
+            }
+            else if (options.acknowledged==='false') {
+                params.push('acknowledged=null');
+            }
         }
         
         if (options.from) {

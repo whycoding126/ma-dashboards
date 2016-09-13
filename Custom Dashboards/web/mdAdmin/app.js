@@ -261,7 +261,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.events',
-        url: '/events?eventType&alarmLevel&sortOrder',
+        url: '/events?eventType&alarmLevel&sortOrder&acknowledged',
         template: '<ma-events-page></ma-events-page>',
         menuText: 'Events',
         menuIcon: 'alarm',

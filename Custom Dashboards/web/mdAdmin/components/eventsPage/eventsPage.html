@@ -35,13 +35,15 @@
                   <label>Active Status</label>
                   <md-select ng-model="activeStatus" ng-init="activeStatus='*'">
                         <md-option value="*">All</md-option>
-                        <!-- <md-option value="true">Active</md-option> -->
-                        <md-option value="false">No RTN</md-option>
+                        <md-option value="active">Active</md-option>
+                        <md-option value="noRtn">No RTN</md-option>
+                        <md-option value="normal">Returned To Normal</md-option>
                   </md-select>
             </md-input-container>
             <md-input-container flex="30" flex-gt-xs="20" flex-gt-md="10">
                   <label>Acknowledged</label>
-                  <md-select ng-model="acknowledged" ng-init="acknowledged=true">
+                  <md-select ng-model="$ctrl.acknowledged">
+                        <md-option value="*">All</md-option>
                         <md-option value="true">True</md-option>
                         <md-option value="false">False</md-option>
                   </md-select>
@@ -63,5 +65,5 @@
                   <ma-date-picker ng-model="to"></ma-date-picker>
             </md-input-container>
       </md-card-actions>
-      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" event-id="eventId" active-status="activeStatus" from="from" to="to" limit="500" paginate-limit="25" sort-order="$ctrl.sortOrder"></ma-events-table>
+      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" active-status="activeStatus" from="from" to="to" limit="500" paginate-limit="25" sort-order="$ctrl.sortOrder"></ma-events-table>
 </md-card>
