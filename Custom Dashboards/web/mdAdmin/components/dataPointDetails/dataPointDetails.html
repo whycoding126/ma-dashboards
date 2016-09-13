@@ -1,90 +1,4 @@
-<div layout="row" layout-wrap layout-align="space-between" ng-init="page={}">
-	<md-card flex="100" flex-gt-md="25">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-				<h2 flex>
-		              <span>{{myPoint.deviceName}} - {{myPoint.name}}</span>
-		        </h2>
-			</div>
-		</md-toolbar>
-		<md-card-content layout="column">
-			<md-input-container class="no-errors-spacer">
-				<label>Choose a point</label>
-				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}"></ma-filtering-point-list>
-			</md-input-container>
-			<div layout="row">
-				<label flex="20">XID:</label>
-				<div flex="80" ng-bind="myPoint.xid"></div>
-			</div>
-			<div layout="row">
-				<label flex="20">Value:</label>
-				<ma-point-value flex="80" point-xid="{{$ctrl.pointXid}}" point="myPoint"></ma-point-value>
-			</div>
-			<div layout="row">
-				<label flex="20">Time:</label>
-				<ma-point-value flex="80" point="myPoint" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
-			</div>
-			<div layout="row">
-				<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
-				<md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">edit</md-button>
-			</div>
-		</md-card-content>
-	</md-card>
-
-	<md-card flex="100" flex-gt-md="20">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-				<h2 flex>
-		              <span>Realtime History</span>
-		        </h2>
-			</div>
-		</md-toolbar>
-		<md-table-container ng-init="myLimit=10; myPage=1; myOrder='-timestamp'">
-			<table md-table>
-				<thead md-head md-order="myOrder">
-					<tr md-row>
-						<th md-column md-order-by="timestamp">TimeStamp</th>
-						<th md-column md-order-by="value">Point Value</th>
-					</tr>
-				</thead>
-				<tbody md-body>
-					<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
-						<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-						<td md-cell>{{value.value}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</md-table-container>
-		<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
-	</md-card>
-	
-	<md-card flex="100" flex-gt-md="25">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-				<h2 flex>
-		              <span>Point Statistics</span>
-		        </h2>
-			</div>
-		</md-toolbar>
-		<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
-		<ma-statistics-table statistics="statsObj"></ma-statistics-table>
-		<br />
-	</md-card>
-	
-	<md-card flex="100" flex-gt-md="25">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-				<h2 flex>
-					  <span>User Notes</span>
-				</h2>
-				<md-button class="md-accent md-raised" aria-label="New Note" ng-click="$ctrl.addNote($event, 'Point', myPoint.id)">
-					Add
-				</md-button>
-			</div>
-		</md-toolbar>
-		<ma-user-notes-table reference-id="myPoint.id" limit="5"></ma-user-notes-table>
-	</md-card>
-		
+<div layout="row" layout-wrap layout-align="space-between center" ng-init="page={}">
 	<md-card flex="100">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
@@ -154,6 +68,94 @@
 
 			</div>
 		</md-card-content>
+	</md-card>
+	
+	<md-card flex="100" flex-gt-md="25">
+		<md-toolbar class="md-whiteframe-1dp md-hue-3">
+			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<h2 flex>
+		              <span>{{myPoint.deviceName}} - {{myPoint.name}}</span>
+		        </h2>
+			</div>
+		</md-toolbar>
+		<md-card-content layout="column">
+			<md-input-container class="no-errors-spacer">
+				<label>Choose a point</label>
+				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}"></ma-filtering-point-list>
+			</md-input-container>
+			<br />
+			<div layout="row">
+				<label flex="20">XID:</label>
+				<div flex="80" ng-bind="myPoint.xid"></div>
+			</div>
+			<div layout="row">
+				<label flex="20">Value:</label>
+				<ma-point-value flex="80" point-xid="{{$ctrl.pointXid}}" point="myPoint"></ma-point-value>
+			</div>
+			<div layout="row">
+				<label flex="20">Time:</label>
+				<ma-point-value flex="80" point="myPoint" display-type="dateTime" date-time-format="l LTS"></ma-point-value>
+			</div>
+			<br />
+			<div layout="row">
+				<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
+				<md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">edit</md-button>
+			</div>
+		</md-card-content>
+	</md-card>
+	
+	<md-card flex="100" flex-gt-md="20">
+		<md-toolbar class="md-whiteframe-1dp md-hue-3">
+			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<h2 flex>
+		              <span>Point Statistics</span>
+		        </h2>
+			</div>
+		</md-toolbar>
+		<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+		<ma-statistics-table statistics="statsObj"></ma-statistics-table>
+		<br />
+	</md-card>
+
+	<md-card flex="100" flex-gt-md="20">
+		<md-toolbar class="md-whiteframe-1dp md-hue-3">
+			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<h2 flex>
+		              <span>Realtime History</span>
+		        </h2>
+			</div>
+		</md-toolbar>
+		<md-table-container ng-init="myLimit=5; myPage=1; myOrder='-timestamp'">
+			<table md-table>
+				<thead md-head md-order="myOrder">
+					<tr md-row>
+						<th md-column md-order-by="timestamp">TimeStamp</th>
+						<th md-column md-order-by="value">Point Value</th>
+					</tr>
+				</thead>
+				<tbody md-body>
+					<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
+						<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
+						<td md-cell>{{value.value}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</md-table-container>
+		<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 20, 25, 50]" md-page="myPage" md-total="{{myPointValues.length}}"></md-table-pagination>
+	</md-card>
+	
+	<md-card flex="100" flex-gt-md="25">
+		<md-toolbar class="md-whiteframe-1dp md-hue-3">
+			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+				<h2 flex>
+					  <span>User Notes</span>
+				</h2>
+				<md-button class="md-accent md-raised" aria-label="New Note" ng-click="$ctrl.addNote($event, 'Point', myPoint.id)">
+					Add
+				</md-button>
+			</div>
+		</md-toolbar>
+		<ma-user-notes-table reference-id="myPoint.id" limit="5"></ma-user-notes-table>
 	</md-card>
 	
 	<md-card flex="100">
