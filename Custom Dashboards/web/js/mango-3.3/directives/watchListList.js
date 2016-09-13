@@ -23,7 +23,8 @@ function watchListList($injector) {
             watchList: '=?',
             watchListXid: '@',
             selectFirst: '=?',
-            onInit: '&'
+            onInit: '&',
+            showNewButton: '=?'
         },
         controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
                      function ($scope, WatchList, $stateParams, $state, WatchListEventManager) {
