@@ -17,7 +17,9 @@ define(['require'], function(require) {
                 rollupType: '=',
                 rollupIntervalNumber: '=',
                 rollupIntervalPeriod: '=',
-                autoRollup: '='
+                autoRollup: '=',
+                watchList: '=',
+                clearWatchList: '&'
             },
             templateUrl: 'directives/watchList/watchListTable.html',
             link: function link(scope, element, attrs) {

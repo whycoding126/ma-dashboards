@@ -1,11 +1,15 @@
-<div layout="row">
-  <md-card class="select-watch-list">
-    <ma-watch-list-list watch-list="$ctrl.watchList"><ma-watch-list-list>
+<div layout="row" ng-class="{'watchlist-2-pane': $ctrl.$mdMedia('gt-md')}">
+  <md-card flex="100" flex-gt-md="25" flex-gt-lg="20" class="select-watch-list" ng-show="!$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
+    <ma-watch-list-list watch-list="$ctrl.watchList" select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl"><ma-watch-list-list>
   </md-card>
   
-  <div flex layout="column" class="watchlist-main" md-no-ink>
+  <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
       <md-card class="watchlist-table">
-          <watch-list-table points="$ctrl.watchList.points" to="to" from="from" selected="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-table>
+          <watch-list-table watch-list="$ctrl.watchList" points="$ctrl.watchList.points" clear-watch-list="$ctrl.clearWatchList()"
+            to="to" from="from" selected="selected"
+            rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber"
+            rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup">
+          </watch-list-table>
       </md-card>
       
       <md-card class="watchlist-controls">

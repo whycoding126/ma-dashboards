@@ -135,6 +135,10 @@ md-table-container.lg-screen {
 }
 
 ma-watch-list-page md-card.select-watch-list {
+  margin: 0;
+}
+
+ma-watch-list-page .watchlist-2-pane md-card.select-watch-list {
   margin: 0 16px 0 0;
   max-height: 600px;
   overflow-y: scroll;
@@ -142,5 +146,9 @@ ma-watch-list-page md-card.select-watch-list {
 
 ma-watch-list-page md-card.select-watch-list md-list {
   padding: 0;
-  width: 300px;
+}
+
+ma-watch-list-page .watch-list-back.md-button {
+  margin-left: 0;
+  margin-right: 0;
 }

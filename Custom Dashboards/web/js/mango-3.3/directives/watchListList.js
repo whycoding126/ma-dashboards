@@ -20,13 +20,15 @@ function watchListList($injector) {
         controllerAs: '$ctrl',
         bindToController: true,
         scope: {
-            points: '=?',
             watchList: '=?',
             watchListXid: '@',
-            selectFirst: '=?'
+            selectFirst: '=?',
+            onInit: '&'
         },
         controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
                      function ($scope, WatchList, $stateParams, $state, WatchListEventManager) {
+            
+            this.onInit({ctrl: this});
 
             var xid = $stateParams.watchListXid || this.watchListXid;
             if (xid) {
@@ -42,21 +44,22 @@ function watchListList($injector) {
                 }
                 return watchLists;
             }.bind(this));
-
+            
             this.setWatchList = function(watchList) {
                 if (this.watchList) {
                     WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
                 }
+
+                this.watchList = watchList;
                 
-                if (!watchList) return;
+                if (!watchList) {
+                    $state.go('.', {watchListXid: null}, {location: 'replace', notify: false});
+                    return;
+                }
                 
                 $state.go('.', {watchListXid: watchList.xid}, {location: 'replace', notify: false});
-                
-                this.watchList = watchList;
-                this.points = this.watchList.points = [];
-                
+
                 watchList.$getPoints().then(function(watchList) {
-                    this.points = watchList.points;
                     WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
                 }.bind(this));
             };
@@ -66,7 +69,6 @@ function watchListList($injector) {
                     var wl = angular.merge(new WatchList(), update.object);
                     wl.$getPoints().then(function(watchList) {
                         this.watchList = watchList;
-                        this.points = watchList.points;
                     }.bind(this));
                 }
             }.bind(this);

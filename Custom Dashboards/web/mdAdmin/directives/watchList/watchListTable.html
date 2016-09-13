@@ -1,8 +1,7 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-        <h2 flex>
-            <span>Watchlist</span>
-        </h2>
+      <md-button class="watch-list-back md-icon-button" ng-click="clearWatchList()" ng-if="!$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
+      <span ng-bind="watchList.name"></span>
     </div>
 </md-toolbar>
 

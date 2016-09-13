@@ -7,8 +7,11 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 return {
-    controller: [function watchListPageController() {
-        // nothing for now
+    controller: ['$mdMedia', function watchListPageController($mdMedia) {
+        this.$mdMedia = $mdMedia;
+        this.clearWatchList = function clearWatchList() {
+            this.listCtrl.setWatchList(null);
+        };
     }],
     templateUrl: require.toUrl('./watchListPage.html'),
     bindings: {
