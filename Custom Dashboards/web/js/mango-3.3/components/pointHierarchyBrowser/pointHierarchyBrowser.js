@@ -92,9 +92,9 @@ var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy, Point
             
             if (this.selectPoints) {
                 if (folder.partialPoints && folder.partialPoints.length) {
-                    Array.prototype.splice.apply(viewArray, [0,0].concat(folder.partialPoints));
+                    Array.prototype.splice.apply(viewArray, [viewArray.length, 0].concat(folder.partialPoints));
                 } else if (folder.checked && folder.points.length) {
-                    Array.prototype.splice.apply(viewArray, [0,0].concat(folder.points));
+                    Array.prototype.splice.apply(viewArray, [viewArray.length, 0].concat(folder.points));
                 }
             } else if (folder.checked) {
                 viewArray.push(folder);
