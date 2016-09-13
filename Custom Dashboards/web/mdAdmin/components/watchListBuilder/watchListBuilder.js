@@ -81,6 +81,11 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.prevStep = function() {
         $ctrl.selectedTab--;
     };
+    $ctrl.isLastStep = function() {
+        return $ctrl.watchlist.type === 'static' && $ctrl.selectedTab === 3 ||
+            $ctrl.watchlist.type === 'query' && $ctrl.selectedTab === 2 ||
+            $ctrl.watchlist.type === 'hierarchy' && $ctrl.selectedTab === 1;
+    };
     
     $ctrl.save = function save() {
         var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$update';
