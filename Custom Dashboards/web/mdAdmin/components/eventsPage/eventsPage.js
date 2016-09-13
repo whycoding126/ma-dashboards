@@ -6,7 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var eventsPageController = function eventsPageController($scope, $stateParams, $state, UserNotes, localStorageService) {
+var eventsPageController = function eventsPageController($scope, $mdMedia, $stateParams, $state, UserNotes, localStorageService) {
     
     this.addNote = UserNotes.addNote;
     
@@ -75,7 +75,7 @@ var eventsPageController = function eventsPageController($scope, $stateParams, $
     
 };
 
-eventsPageController.$inject = ['$scope','$stateParams', '$state', 'UserNotes', 'localStorageService'];
+eventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'UserNotes', 'localStorageService'];
 
 return {
     controller: eventsPageController,

@@ -1,27 +1,19 @@
-<md-card>
+<md-card class="events-page">
       <md-toolbar class="md-whiteframe-1dp md-hue-3">
             <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
                   <h2 flex>
                     <span>Events Table</span>
                   </h2>
-                  <md-button class="md-raised" ng-class="" ng-click="$ctrl.eventType='*'">All</md-button>
-                  <md-button class="md-raised" ng-class="" ng-click="$ctrl.eventType='DATA_POINT'">Point</md-button>
-                  <md-button class="md-raised" ng-class="" ng-click="$ctrl.eventType='DATA_SOURCE'">Data Source</md-button>
-                  <md-button class="md-raised" ng-class="" ng-click="$ctrl.eventType='SYSTEM'">System</md-button>
-                  <md-button class="md-raised" ng-class="" ng-click="$ctrl.eventType='AUDIT'">Audit</md-button>
+                  <div ng-hide="$mdMedia('xs')">
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'">All</md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }" ng-click="$ctrl.eventType='DATA_POINT'">Point</md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }" ng-click="$ctrl.eventType='DATA_SOURCE'">Data Source</md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }" ng-click="$ctrl.eventType='SYSTEM'">System</md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'AUDIT' }" ng-click="$ctrl.eventType='AUDIT'">Audit</md-button>
+                  </div>
             </div>
       </md-toolbar>
       <md-card-actions layout="row" layout-align="center center" layout-wrap>
-            <!-- <md-input-container flex="50" flex-gt-xs="30" flex-gt-md="10">
-                  <label>Event Type</label>
-                  <md-select ng-model="$ctrl.eventType">
-                        <md-option value="*">All</md-option>
-                        <md-option value="DATA_POINT">Data Point</md-option>
-                        <md-option value="DATA_SOURCE">Data Source</md-option>
-                        <md-option value="SYSTEM">System</md-option>
-                        <md-option value="AUDIT">Audit</md-option>
-                  </md-select>
-            </md-input-container> -->
             <md-input-container flex="40" flex-gt-xs="30" flex-gt-md="10">
                   <label>Alarm Level</label>
                   <md-select ng-model="$ctrl.alarmLevel">
@@ -65,5 +57,5 @@
                   <ma-date-picker ng-model="to"></ma-date-picker>
             </md-input-container>
       </md-card-actions>
-      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" event-id="eventId" active-status="activeStatus" from="from" to="to" paginate-limit="15" sort-order="$ctrl.sortOrder"></ma-events-table>
+      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" event-id="eventId" active-status="activeStatus" from="from" to="to" limit="500" paginate-limit="25" sort-order="$ctrl.sortOrder"></ma-events-table>
 </md-card>

@@ -1,42 +1,38 @@
-<md-table-container ng-init="myPage=1;">
+<md-table-container ng-init="myPage=1;" class="events-table">
     <table md-table>
         <thead md-head md-order="myOrder">
             <tr md-row>
-                <th md-column md-order-by="alarmLevel">Alarm Lvl</th>
-                <th md-column md-order-by="activeTimestamp">Time</th>
-                <th md-column md-order-by="message">Message</th>
+                <th md-column md-order-by="alarmLevel" class="narrow-column">Alarm Lvl</th>
+                <th md-column md-order-by="activeTimestamp" class="medium-column">Time</th>
+                <th md-column md-order-by="message" class="msg-column">Message</th>
                 <th md-column md-order-by="status">Status</th>
-                
-                <th md-column>Duration</th>
-                
-                <th md-column md-order-by="acknowledged">Acknowledged</th>
+                <th md-column class="medium-column">Duration</th>
+                <th md-column md-order-by="acknowledged" class="narrow-column">Acknowledged</th>
                 
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit">
-                <td md-cell>
+            <tr md-row ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit">
+                <td md-cell class="narrow-column">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x" style="color: rgb(255,133,0)" ng-if="event.active"></i>
                         <i class="fa fa-flag alarm-flag fa-stack-1x" ng-class="event.alarmLevel">
-                            <md-tooltip md-delay="250"  md-direction="right">Event Id: {{event.id}}</md-tooltip>
+                            <md-tooltip md-delay="250"  md-direction="right">Event ID: {{event.id}}</md-tooltip>
                         </i>
                     </span>
                 </td>
-                <td md-cell>{{event.activeTimestamp | moment:'format':'l LT'}}</td>
-                <td md-cell ng-bind-html="parseHTML(event.message)"></td>
-                
-                <td md-cell><span ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp | moment:'format':'l LT'}} -</span> {{event.status}} <span ng-if="event.active">Active</span></td>
-                
-                <td md-cell ng-if="event.returnToNormalTimestamp === 0">
+                <td md-cell class="medium-column">{{event.activeTimestamp | moment:'format':'l  h:mm:ss'}}</td>
+                <td md-cell class="msg-column">{{parseHTML(event.message)}}<md-tooltip md-delay="250"  md-direction="top">{{parseHTML(event.message)}}</md-tooltip></td>
+                <td md-cell><span ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp | moment:'format':'l h:mm:ss'}} -</span> {{event.status}} <span ng-if="event.active">Active</span></td>
+                <td md-cell ng-if="event.returnToNormalTimestamp === 0" class="medium-column">
                     <span ng-if="!event.active">N/A</span>
                     <span ng-if="event.active">
                         <ma-now update-interval="1 minutes" output="time"></ma-now>
                         {{time - event.activeTimestamp | duration: 'humanize'}}
                     </span>
                 </td>
-                <td md-cell ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
-                <td md-cell>
+                <td md-cell ng-if="event.returnToNormalTimestamp != 0" class="medium-column">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
+                <td md-cell class="narrow-column">
                     <i class="fa fa-times fa-lg" ng-click="acknowledgeEvent(event.id);" ng-if="!event.acknowledged"></i>
                     <i class="fa fa-check fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
                 </td>
