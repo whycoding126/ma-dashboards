@@ -8,7 +8,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 var queryGroup = function queryGroup() {
     this.$onInit = function() {
-        
+        this.addPredicate();
     };
     
     this.addPredicate = function addPredicate() {
@@ -43,7 +43,6 @@ var queryGroup = function queryGroup() {
     function newGroup(name) {
         var node = new query.Query();
         node.name = name;
-        node.push(newPredicate());
         return node;
     }
     
