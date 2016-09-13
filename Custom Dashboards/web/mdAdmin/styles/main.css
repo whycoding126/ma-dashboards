@@ -673,3 +673,11 @@ table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
   transform: translate3d(-1000%,-1000%,0);
   position: absolute;
 }
+
+li.md-nav-item {
+  margin: 0;
+}
+
+li.md-nav-item:first-of-type {
+  margin: 0;
+}

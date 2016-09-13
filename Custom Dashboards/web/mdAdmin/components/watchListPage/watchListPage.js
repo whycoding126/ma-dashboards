@@ -8,6 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 return {
     controller: ['$mdMedia', function watchListPageController($mdMedia) {
+        this.navItem = 'watchLists';
         this.$mdMedia = $mdMedia;
         this.clearWatchList = function clearWatchList() {
             this.listCtrl.setWatchList(null);

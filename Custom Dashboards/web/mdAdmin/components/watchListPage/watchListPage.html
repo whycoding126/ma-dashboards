@@ -1,6 +1,19 @@
 <div layout="row" flex="noshrink" ng-class="{'watchlist-2-pane': $ctrl.$mdMedia('gt-md')}">
   <md-card layout="column" flex="100" flex-gt-md="25" flex-gt-lg="20" class="select-watch-list" ng-show="!$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
-    <ma-watch-list-list flex layout="column" watch-list="$ctrl.watchList" select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl"><ma-watch-list-list>
+    <md-nav-bar md-selected-nav-item="$ctrl.navItem">
+      <md-nav-item md-nav-click="goto('watchLists')" name="watchLists">Watch lists</md-nav-item>
+      <md-nav-item md-nav-click="goto('hierarchy')" name="hierarchy">Point hierarchy</md-nav-item>
+    </md-nav-bar>
+    
+    <ma-watch-list-list flex layout="column" show-new-button="true" ng-show="$ctrl.navItem === 'watchLists'"
+        watch-list="$ctrl.watchList" select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl">
+    </ma-watch-list-list>
+    
+    <div class="md-padding" ng-show="$ctrl.navItem === 'hierarchy'">
+      <ma-point-hierarchy-browser expanded="true" select-points="true" select-subfolders="true" select-one-folder="true"
+          ng-model="$ctrl.hierarchyPoints">
+      </ma-point-hierarchy-browser>
+    </div>
   </md-card>
   
   <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
