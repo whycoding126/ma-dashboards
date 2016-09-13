@@ -6,13 +6,15 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var eventsPageController = function eventsPageController($scope, $mdMedia, $stateParams, $state, UserNotes, localStorageService) {
-    
-    this.addNote = UserNotes.addNote;
+var eventsPageController = function eventsPageController($scope, $mdMedia, $stateParams, $state, localStorageService) {
     
     var $ctrl = this;
     
-    this.$onInit = function() {
+    $ctrl.$mdMedia = $mdMedia;
+    
+    
+    
+    $ctrl.$onInit = function() {
         
         if ($stateParams.sortOrder) {
             console.log($stateParams.sortOrder);
@@ -75,7 +77,7 @@ var eventsPageController = function eventsPageController($scope, $mdMedia, $stat
     
 };
 
-eventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'UserNotes', 'localStorageService'];
+eventsPageController.$inject = ['$scope', '$mdMedia', '$stateParams', '$state', 'localStorageService'];
 
 return {
     controller: eventsPageController,

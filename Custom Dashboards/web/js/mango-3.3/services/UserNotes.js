@@ -95,8 +95,7 @@ function UserNotesFactory($resource, Util, $mdDialog) {
     UserNotes.addNote = function(ev, commentType, referenceId) {
         // Appending dialog to document.body to cover sidenav in docs app
         var confirm = $mdDialog.prompt()
-            .title('Enter a new note:')
-            .placeholder('Add Note')
+            .title('Add Comment:')
             .ariaLabel('Add Note')
             .targetEvent(ev)
             .ok('OK')

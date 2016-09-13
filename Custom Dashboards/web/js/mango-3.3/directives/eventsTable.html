@@ -16,13 +16,13 @@
                 <td md-cell class="narrow-column">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x" style="color: rgb(255,133,0)" ng-if="event.active"></i>
-                        <i class="fa fa-flag alarm-flag fa-stack-1x" ng-class="event.alarmLevel">
+                        <i class="fa fa-flag alarm-flag fa-stack-1x" ng-class="event.alarmLevel" ng-click="addNote($event, 'Event', event.id)">
                             <md-tooltip md-delay="250"  md-direction="right">Event ID: {{event.id}}</md-tooltip>
                         </i>
                     </span>
                 </td>
                 <td md-cell class="medium-column">{{event.activeTimestamp | moment:'format':'l  h:mm:ss'}}</td>
-                <td md-cell class="msg-column">{{parseHTML(event.message)}}<md-tooltip md-delay="250"  md-direction="top">{{parseHTML(event.message)}}</md-tooltip></td>
+                <td md-cell class="msg-column">{{parseHTML(event.message)}}<md-tooltip md-delay="250"  md-direction="bottom">{{parseHTML(event.message)}}</md-tooltip></td>
                 <td md-cell><span ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp | moment:'format':'l h:mm:ss'}} -</span> {{event.status}} <span ng-if="event.active">Active</span></td>
                 <td md-cell ng-if="event.returnToNormalTimestamp === 0" class="medium-column">
                     <span ng-if="!event.active">N/A</span>

@@ -22,7 +22,7 @@ define(['require'], function(require) {
  * <ma-events-table event-type="eventType" limit="25"></ma-events-table>
  *
  */
-function eventsTable(Events, $injector, $sce) {
+function eventsTable(Events, UserNotes, $injector, $sce) {
     return {
         restrict: 'E',
         scope: {
@@ -46,6 +46,8 @@ function eventsTable(Events, $injector, $sce) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
+            
+            $scope.addNote = UserNotes.addNote;
             
             $scope.$watch('sortOrder', function(newValue, oldValue) {
                 if (newValue === undefined) return;
@@ -94,7 +96,7 @@ function eventsTable(Events, $injector, $sce) {
     };
 }
 
-eventsTable.$inject = ['Events', '$injector', '$sce'];
+eventsTable.$inject = ['Events', 'UserNotes', '$injector', '$sce'];
 return eventsTable;
 
 }); // define

@@ -1,19 +1,25 @@
 <md-card class="events-page">
       <md-toolbar class="md-whiteframe-1dp md-hue-3">
-            <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+            <div class="md-toolbar-tools">
                   <h2 flex>
                     <span>Events Table</span>
                   </h2>
-                  <div ng-hide="$mdMedia('xs')">
+                  <div ng-show="$ctrl.$mdMedia('gt-sm')">
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'">All</md-button>
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }" ng-click="$ctrl.eventType='DATA_POINT'">Point</md-button>
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }" ng-click="$ctrl.eventType='DATA_SOURCE'">Data Source</md-button>
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }" ng-click="$ctrl.eventType='SYSTEM'">System</md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'AUDIT' }" ng-click="$ctrl.eventType='AUDIT'">Audit</md-button>
+                        
                   </div>
             </div>
       </md-toolbar>
       <md-card-actions layout="row" layout-align="center center" layout-wrap>
+            <div ng-hide="$ctrl.$mdMedia('gt-sm')" flex="100" layout="row" layout-align="center center" layout-margin layout-wrap>
+                  <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'">All</md-button>
+                  <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }" ng-click="$ctrl.eventType='DATA_POINT'">Point</md-button>
+                  <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }" ng-click="$ctrl.eventType='DATA_SOURCE'">Data Source</md-button>
+                  <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }" ng-click="$ctrl.eventType='SYSTEM'">System</md-button>
+            </div>
             <md-input-container flex="40" flex-gt-xs="30" flex-gt-md="10">
                   <label>Alarm Level</label>
                   <md-select ng-model="$ctrl.alarmLevel">
