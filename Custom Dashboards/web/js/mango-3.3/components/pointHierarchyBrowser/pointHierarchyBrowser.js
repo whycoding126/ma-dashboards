@@ -74,8 +74,22 @@ var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy, Point
     this.folderCheckChanged = function folderCheckChanged(changedFolder) {
         var viewArray = [];
         // TODO track and re-add points in $modelValue which are not in any folder
-
+        
+        var changedFolderChildren = {};
+        if (this.selectSubfolders) {
+            this.walkHierarchy(changedFolder, function(folder, parent, index) {
+                folder.checked = changedFolder.checked;
+                changedFolderChildren[folder.id] = true;
+            }.bind(this));
+        }
+        
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
+            if (this.selectOneFolder) {
+                if (!changedFolderChildren[folder.id]) {
+                    folder.checked = false;
+                }
+            }
+            
             if (this.selectPoints) {
                 if (folder.partialPoints && folder.partialPoints.length) {
                     Array.prototype.splice.apply(viewArray, [0,0].concat(folder.partialPoints));
@@ -109,7 +123,9 @@ return {
     bindings: {
         path: '<',
         expanded: '<',
-        selectPoints: '<'
+        selectPoints: '<',
+        selectSubfolders: '<',
+        selectOneFolder: '<'
     }
 };
 

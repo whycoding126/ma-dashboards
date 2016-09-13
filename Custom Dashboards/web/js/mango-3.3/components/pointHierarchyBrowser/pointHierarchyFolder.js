@@ -27,7 +27,8 @@ return {
     controller: pointHierarchyFolder,
     templateUrl: require.toUrl('./pointHierarchyFolder.html'),
     bindings: {
-        folder: '<'
+        folder: '<',
+        parent: '<'
     },
     require: {
         browserCtrl: '^^maPointHierarchyBrowser'
