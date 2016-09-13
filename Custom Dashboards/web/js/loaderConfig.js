@@ -56,6 +56,7 @@ require.config({
         'moment-timezone': vendor + '/moment-timezone/moment-timezone-with-data',
         'jquery': vendor + '/jquery/jquery',
         'jquery-ui': vendor + '/jquery-ui/jquery-ui',
+        'jquery-ui-touch-punch': vendor + '/jqueryui-touch-punch/jquery.ui.touch-punch',
         'mdPickers': vendor + '/mdPickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
@@ -69,7 +70,7 @@ require.config({
             deps : ['angular']
         },
         'angular-ui-sortable' : {
-            deps : ['angular', 'jquery-ui']
+            deps : ['angular', 'jquery-ui-touch-punch']
         },
         'oclazyload' : {
             deps : ['angular-ui-router']
@@ -122,6 +123,12 @@ require.config({
                    'amcharts/plugins/export/libs/pdfmake/pdfmake.min',
                    'amcharts/plugins/export/libs/pdfmake/vfs_fonts',
                    'amcharts/plugins/export/libs/xlsx/xlsx.min']
+        },
+        'jquery-ui': {
+            'deps' : ['jquery']
+        },
+        'jquery-ui-touch-punch': {
+            'deps' : ['jquery-ui']
         }
     }
 });
