@@ -140,12 +140,23 @@ ma-watch-list-page md-card.select-watch-list {
 
 ma-watch-list-page .watchlist-2-pane md-card.select-watch-list {
   margin: 0 16px 0 0;
-  max-height: 600px;
-  overflow-y: scroll;
+}
+
+ma-watch-list-page .watchlist-2-pane ma-watch-list-list {
+  position: relative;
+}
+
+ma-watch-list-page .watchlist-2-pane ma-watch-list-list md-list {
+  overflow-y: auto;
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 ma-watch-list-page md-card.select-watch-list md-list {
   padding: 0;
+  overflow-x: hidden;
 }
 
 ma-watch-list-page .watch-list-back.md-button {
