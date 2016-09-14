@@ -18,8 +18,12 @@
     </ma-watch-list-list>
     
     <ma-device-name-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column"
-        ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged(deviceName)">
+        ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged()">
     </ma-device-name-list>
+    
+    <ma-data-source-scroll-list ng-show="$ctrl.listType === 'dataSources'" flex layout="column"
+        ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceChanged()">
+    </ma-data-source-scroll-list>
 
     <div ng-show="$ctrl.listType === 'hierarchy'" class="md-padding">
       <ma-point-hierarchy-browser expanded="true" select-subfolders="true" select-one-folder="true"

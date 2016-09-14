@@ -38,6 +38,7 @@ define(['./maServices',
         './directives/pointHierarchy',
         './directives/pagingPointList',
         './directives/dataSourceList',
+        './directives/dataSourceScrollList',
         './directives/deviceNameList',
         './directives/dataSourceQuery',
         './directives/deviceNameQuery',
@@ -58,10 +59,10 @@ define(['./maServices',
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, trAriaLabel,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
-        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
-        dataSourceQuery, deviceNameQuery, userNotesTable, eventsTable, watchListSelect, arrayInput, watchListList,
-        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder,
-        trFilter, angular, require) {
+        jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
+        dataSourceScrollList, deviceNameList, dataSourceQuery, deviceNameQuery, userNotesTable,
+        eventsTable, watchListSelect, arrayInput, watchListList, queryBuilder, queryGroup,
+        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, trFilter, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -108,6 +109,7 @@ maDashboards.directive('maFn', fn);
 maDashboards.directive('maPointHierarchy', pointHierarchy);
 maDashboards.directive('maPagingPointList', pagingPointList);
 maDashboards.directive('maDataSourceList', dataSourceList);
+maDashboards.directive('maDataSourceScrollList', dataSourceScrollList);
 maDashboards.directive('maDeviceNameList', deviceNameList);
 maDashboards.directive('maDataSourceQuery', dataSourceQuery);
 maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
