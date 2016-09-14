@@ -1,3 +1,4 @@
+<md-table-pagination class="underline" md-limit="paginateLimit" md-limit-options="[5, 10, 15, 25, 50]" md-page="myPage" md-total="{{events.length}}"></md-table-pagination>
 <md-table-container ng-init="myPage=1;" class="events-table">
     <table md-table>
         <thead md-head md-order="myOrder">
@@ -33,11 +34,10 @@
                 </td>
                 <td md-cell ng-if="event.returnToNormalTimestamp != 0" class="medium-column">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
                 <td md-cell class="narrow-column">
-                    <i class="fa fa-times fa-lg" ng-click="acknowledgeEvent(event.id);" ng-if="!event.acknowledged"></i>
-                    <i class="fa fa-check fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
+                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="acknowledgeEvent(event.id);" ng-if="!event.acknowledged"></i>
+                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
                 </td>
             </tr>
         </tbody>
     </table>
 </md-table-container>
-<md-table-pagination md-limit="paginateLimit" md-limit-options="[5, 10, 15, 25, 50]" md-page="myPage" md-total="{{events.length}}"></md-table-pagination>

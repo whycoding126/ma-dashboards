@@ -442,7 +442,31 @@ code:not(.highlight) {
 	color: rgba(255,255,255,0.87);
 }
 
+
+
+md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {
+    height: 38px;
+	min-height: 38px;
+	max-height: 38px;
+	font-size: 16px;
+}
+
+md-card md-toolbar .md-toolbar-tools .md-button {
+    height: 30px;
+	min-height: 30px;
+	max-height: 30px;
+	line-height: 30px;
+}
+
 /* Data Tables */
+table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
+    height: 25px;
+}
+
+.md-table-pagination.underline {
+	border-top: none;
+	border-bottom: 1px rgba(0,0,0,.12) solid;
+}
 
 table.md-table td.md-cell,
 table.md-table th.md-column {
@@ -639,11 +663,6 @@ md-input-container .hint {
   margin-bottom: 5px;
 }
 
-/* Event Table */
-
-table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
-    height: 25px;
-}
 
 /* Alarm Flags */
 .alarm-flag.ALL {
