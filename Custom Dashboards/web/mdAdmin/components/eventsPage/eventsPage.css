@@ -1,6 +1,7 @@
-.events-page .md-button.active {
-	border: 2px solid black;
-}
 .events-page md-table-container {
     max-height: 600px;
+}
+.events-page div:not(.desktop) > .md-button {
+	font-size: .75rem;
+    min-width: 30px;
 }

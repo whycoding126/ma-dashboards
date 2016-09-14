@@ -448,6 +448,10 @@ md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {
     height: 38px;
 	min-height: 38px;
 	max-height: 38px;
+}
+
+md-card md-toolbar .md-toolbar-tools h2 span {
+    line-height: 18px;
 	font-size: 16px;
 }
 
