@@ -467,6 +467,9 @@ table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
 	border-top: none;
 	border-bottom: 1px rgba(0,0,0,.12) solid;
 }
+.md-table-pagination.underline>* {
+	height: 40px;
+}
 
 table.md-table td.md-cell,
 table.md-table th.md-column {

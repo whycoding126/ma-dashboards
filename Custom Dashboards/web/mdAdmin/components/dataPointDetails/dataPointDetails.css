@@ -1,3 +1,11 @@
-md-card.dpd-controls > md-card-content {
+.data-point-details-page md-card.dpd-small-card {
+    height: 300px;
+    max-height: 300px;
+}
+.data-point-details-page md-card.dpd-controls > md-card-content {
     padding-bottom: 0;
+}
+.data-point-details-page .amchart {
+    height: 420px;
+    max-height: 420px;
 }

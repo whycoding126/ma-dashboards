@@ -23,6 +23,7 @@ define(['require'], function(require) {
 function userNotesTable(UserNotes, $injector) {
     return {
         restrict: 'E',
+        replace: true,
         scope: {
             referenceId: '=?',
             limit: '=?'
