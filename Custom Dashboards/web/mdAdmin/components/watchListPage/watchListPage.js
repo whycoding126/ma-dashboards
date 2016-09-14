@@ -12,11 +12,9 @@ return {
         this.listType = 'watchLists';
         this.$mdMedia = $mdMedia;
         
-        this.watchListChanged = function watchListChanged(watchList) {
-            if (watchList) {
-                this.watchList = watchList;
-                this.hierarchyFolders = [];
-            }
+        this.watchListChanged = function watchListChanged() {
+            this.watchList = this.selectWatchList;
+            this.hierarchyFolders = [];
         };
         
         this.hierarchyChanged = function() {
@@ -30,13 +28,13 @@ return {
             } else {
                 this.watchList = null;
             }
-            this.listCtrl.setWatchList(null);
+            this.selectWatchList = null;
         };
         
         this.clear = function clearWatchList() {
             this.watchList = null;
-            
-            this.listCtrl.setWatchList(null);
+
+            this.selectWatchList = null;
             this.hierarchyFolders = [];
         };
     }],

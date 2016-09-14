@@ -13,8 +13,8 @@
     </md-toolbar>
     
     <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column"
-        show-new-button="true" on-change="$ctrl.watchListChanged(watchList)"
-        select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl">
+        show-new-button="true" ng-model="$ctrl.selectWatchList" ng-change="$ctrl.watchListChanged()"
+        select-first="$ctrl.$mdMedia('gt-md')">
     </ma-watch-list-list>
     
     <ma-device-name-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column"

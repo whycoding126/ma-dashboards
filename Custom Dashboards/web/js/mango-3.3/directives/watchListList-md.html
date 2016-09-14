@@ -12,7 +12,7 @@
       ng-repeat="wl in $ctrl.watchLists track by wl.xid"
       ng-class="{'watchlist-selected': $ctrl.watchList.xid === wl.xid}"
       md-colors="{'color': $ctrl.watchList.xid === wl.xid ? 'accent' : 'background-800'}"
-      ng-click="$ctrl.setWatchList(wl)">
+      ng-click="$ctrl.setViewValue(wl)">
     <div class="md-list-item-text">
       <h3 ng-bind="wl.name"></h3>
       <p ng-bind="wl.username"></p>
