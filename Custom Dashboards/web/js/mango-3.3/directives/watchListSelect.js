@@ -6,16 +6,19 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-function watchLists($injector) {
+watchListSelect.$inject = ['$injector'];
+return watchListSelect;
+
+function watchListSelect($injector) {
     var UPDATE_TYPES = ['update'];
     
     return {
         restrict: 'E',
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
-                return require.toUrl('./watchLists-md.html');
+                return require.toUrl('./watchListSelect-md.html');
             }
-            return require.toUrl('./watchLists.html');
+            return require.toUrl('./watchListSelect.html');
         },
         controllerAs: '$ctrl',
         bindToController: true,
@@ -99,9 +102,5 @@ function watchLists($injector) {
         }]
     };
 }
-
-watchLists.$inject = ['$injector'];
-
-return watchLists;
 
 }); // define
