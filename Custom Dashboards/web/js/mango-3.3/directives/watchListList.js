@@ -6,26 +6,28 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
+watchListList.$inject = ['$injector'];
+return watchListList;
+
 function watchListList($injector) {
     var UPDATE_TYPES = ['update'];
-    
+
     return {
         restrict: 'E',
+        controllerAs: '$ctrl',
+        bindToController: true,
+        scope: {
+            watchListXid: '@',
+            selectFirst: '<?',
+            onInit: '&',
+            onChange: '&',
+            showNewButton: '<?'
+        },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
                 return require.toUrl('./watchListList-md.html');
             }
             return require.toUrl('./watchListList.html');
-        },
-        controllerAs: '$ctrl',
-        bindToController: true,
-        scope: {
-            watchList: '=?',
-            watchListXid: '@',
-            selectFirst: '=?',
-            onInit: '&',
-            onChange: '&',
-            showNewButton: '=?'
         },
         controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
                      function ($scope, WatchList, $stateParams, $state, WatchListEventManager) {
@@ -80,9 +82,5 @@ function watchListList($injector) {
         }]
     };
 }
-
-watchListList.$inject = ['$injector'];
-
-return watchListList;
 
 }); // define
