@@ -94,7 +94,7 @@
           </md-card-content>
       </md-card>
   
-      <md-card class="watchlist-chart">
+      <md-card class="watchlist-chart" ng-show="selected.length > 0">
           <watch-list-chart to="to" from="from" add-checked="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-chart>
       </md-card>
   </div>
