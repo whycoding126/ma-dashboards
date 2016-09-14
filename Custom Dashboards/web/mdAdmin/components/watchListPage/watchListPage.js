@@ -9,7 +9,7 @@ define(['angular', 'require'], function(angular, require) {
 return {
     controller: ['$mdMedia', 'WatchList', 'Translate',
                  function watchListPageController($mdMedia, WatchList, Translate) {
-        this.navItem = 'watchLists';
+        this.listType = 'watchLists';
         this.$mdMedia = $mdMedia;
         
         this.watchListChanged = function watchListChanged(watchList) {
