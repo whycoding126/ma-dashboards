@@ -24,6 +24,7 @@ function watchListList($injector) {
             watchListXid: '@',
             selectFirst: '=?',
             onInit: '&',
+            onChange: '&',
             showNewButton: '=?'
         },
         controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
@@ -55,6 +56,7 @@ function watchListList($injector) {
                 
                 if (!watchList) {
                     $state.go('.', {watchListXid: null}, {location: 'replace', notify: false});
+                    this.onChange({watchList: null});
                     return;
                 }
                 
@@ -63,6 +65,8 @@ function watchListList($injector) {
                 watchList.$getPoints().then(function(watchList) {
                     WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
                 }.bind(this));
+                
+                this.onChange({watchList: this.watchList});
             };
             
             this.updateHandler = function updateHandler(event, update) {

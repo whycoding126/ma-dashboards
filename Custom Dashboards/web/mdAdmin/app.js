@@ -15,7 +15,7 @@ define([
     'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
-    './views/docs/docs-setup',
+    './views/docs/docs-setup'
 ], function(angular, maMaterialDashboards, maAppComponents, require, Page, pageView, livePreview) {
 'use strict';
 

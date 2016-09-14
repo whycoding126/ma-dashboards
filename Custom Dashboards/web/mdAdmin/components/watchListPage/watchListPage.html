@@ -5,20 +5,20 @@
       <md-nav-item md-nav-click="goto('hierarchy')" name="hierarchy">Point hierarchy</md-nav-item>
     </md-nav-bar>
     
-    <ma-watch-list-list flex layout="column" show-new-button="true" ng-show="$ctrl.navItem === 'watchLists'"
-        watch-list="$ctrl.watchList" select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl">
+    <ma-watch-list-list flex layout="column" show-new-button="true" ng-show="$ctrl.navItem === 'watchLists'" on-change="$ctrl.watchListChanged(watchList)"
+        select-first="$ctrl.$mdMedia('gt-md')" on-init="$ctrl.listCtrl = ctrl">
     </ma-watch-list-list>
     
     <div class="md-padding" ng-show="$ctrl.navItem === 'hierarchy'">
-      <ma-point-hierarchy-browser expanded="true" select-points="true" select-subfolders="true" select-one-folder="true"
-          ng-model="$ctrl.hierarchyPoints">
+      <ma-point-hierarchy-browser expanded="true" select-subfolders="true" select-one-folder="true"
+          ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()">
       </ma-point-hierarchy-browser>
     </div>
   </md-card>
   
   <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
       <md-card class="watchlist-table">
-          <watch-list-table watch-list="$ctrl.watchList" points="$ctrl.watchList.points" clear-watch-list="$ctrl.clearWatchList()"
+          <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()"
             to="to" from="from" selected="selected"
             rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber"
             rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup">

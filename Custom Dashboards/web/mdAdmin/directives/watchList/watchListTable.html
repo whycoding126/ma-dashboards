@@ -1,6 +1,6 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-      <md-button class="watch-list-back md-icon-button" ng-click="clearWatchList()" ng-if="!$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
+      <md-button class="watch-list-back md-icon-button" ng-click="clear()" ng-if="!$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
       <span ng-bind="watchList.name"></span>
     </div>
 </md-toolbar>
@@ -17,10 +17,10 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr ng-repeat="point in points | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit" md-select="point" md-row md-select-id="id" watch-list-table-row md-no-ink>
+            <tr ng-repeat="point in watchList.points | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit" md-select="point" md-row md-select-id="id" watch-list-table-row md-no-ink>
             </tr>
         </tbody>
     </table>
 </md-table-container>
 
-<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 25, 50, 100]" md-page="myPage" md-total="{{points.length}}"></md-table-pagination>
+<md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15, 25, 50, 100]" md-page="myPage" md-total="{{watchList.points.length}}"></md-table-pagination>

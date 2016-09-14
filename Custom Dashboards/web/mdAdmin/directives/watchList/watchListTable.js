@@ -10,7 +10,7 @@ define(['require'], function(require) {
         return {
             restrict: 'E',
             scope: {
-                points: '=',
+                watchList: '=',
                 to: '=',
                 from: '=',
                 selected: '=',
@@ -18,8 +18,7 @@ define(['require'], function(require) {
                 rollupIntervalNumber: '=',
                 rollupIntervalPeriod: '=',
                 autoRollup: '=',
-                watchList: '=',
-                clearWatchList: '&'
+                clear: '&'
             },
             templateUrl: 'directives/watchList/watchListTable.html',
             link: function link(scope, element, attrs) {
