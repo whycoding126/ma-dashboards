@@ -22,7 +22,7 @@ define(['require'], function(require) {
  * <ma-events-table event-type="eventType" limit="25"></ma-events-table>
  *
  */
-function eventsTable(Events, UserNotes, $injector, $sce) {
+function eventsTable(Events, eventsEventManager, UserNotes, $injector, $sce) {
     return {
         restrict: 'E',
         scope: {
@@ -38,7 +38,8 @@ function eventsTable(Events, UserNotes, $injector, $sce) {
             sortOrder: '=?',
             paginateLimit: '=?',
             from: '=?',
-            to: '=?'
+            to: '=?',
+            dateRange: '@'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -47,6 +48,30 @@ function eventsTable(Events, UserNotes, $injector, $sce) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
+            
+            var filterBeforePush = function (event) {
+                console.log(event.eventType.eventType, $scope.query.eventType);
+                if ($scope.query.eventType  !== event.eventType.eventType && $scope.query.eventType !== '*') {
+                    // console.log('returning');
+                    return;
+                }
+                // console.log('pushing');
+                $scope.events.push(event);
+            }
+            
+            $scope.$watch('dateRange', function(newValue, oldValue) {
+                if (newValue === undefined) return;
+                
+                if (newValue) {
+                    eventsEventManager.subscribe(function(msg) {
+                        if (msg.status === 'OK') {
+                            var event = msg.payload.event;
+                            
+                            filterBeforePush(event);
+                        }
+                    });
+                }
+            });
             
             $scope.addNote = UserNotes.addNote;
             
@@ -98,7 +123,7 @@ function eventsTable(Events, UserNotes, $injector, $sce) {
     };
 }
 
-eventsTable.$inject = ['Events', 'UserNotes', '$injector', '$sce'];
+eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$injector', '$sce'];
 return eventsTable;
 
 }); // define
