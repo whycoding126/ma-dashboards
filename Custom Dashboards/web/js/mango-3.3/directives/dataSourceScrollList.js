@@ -42,7 +42,9 @@ function dataSourceScrollList($injector) {
             
             var xid = $stateParams.dataSourceXid || this.selectXid;
             if (xid) {
-                DataSource.get({xid: xid}).$promise.then(function(item) {
+                this.fetchingInitial = true;
+                DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
+                    this.fetchingInitial = false;
                     this.setViewValue(item);
                 }.bind(this));
             }
@@ -86,6 +88,7 @@ function dataSourceScrollList($injector) {
         }.bind(this);
         
         this.setStateParam = function(item) {
+            if (this.fetchingInitial) return;
             $stateParams.dataSourceXid = item ? item.xid : null;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
         };

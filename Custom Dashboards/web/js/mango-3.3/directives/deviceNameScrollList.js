@@ -41,12 +41,16 @@ function deviceNameScrollList($injector) {
     function deviceNameScrollListController(DeviceName, $state, $stateParams) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
+            
+            var deviceName = $stateParams.deviceName;
+            if (deviceName) {
+                this.setViewValue(deviceName);
+            }
+            
             this.doQuery().then(function(items) {
-                if ($stateParams.deviceName) {
-                    if (items.indexOf($stateParams.deviceName) >= 0) {
-                        this.setViewValue($stateParams.deviceName);
-                    } else {
-                        this.setStateParam(null);
+                if (deviceName) {
+                    if (items.indexOf(deviceName) < 0) {
+                        this.setViewValue(null);
                     }
                 } else if ((angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);

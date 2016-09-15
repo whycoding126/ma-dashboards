@@ -41,25 +41,34 @@ return {
         };
         
         this.dataSourceChanged = function dataSourceChanged() {
-            var watchList = new WatchList();
-            watchList.type = 'query';
-            watchList.name = Translate.trSync('dashboards.v3.app.dataSource', [this.dataSource.name]);
-            watchList.query = 'dataSourceXid=' + this.dataSource.xid;
-            watchList.$getPoints();
-            this.watchList = watchList;
-            
+            if (this.dataSource) {
+                var watchList = new WatchList();
+                watchList.type = 'query';
+                watchList.name = Translate.trSync('dashboards.v3.app.dataSource', [this.dataSource.name]);
+                watchList.query = 'dataSourceXid=' + this.dataSource.xid;
+                watchList.$getPoints();
+                this.watchList = watchList;
+            } else {
+                this.watchList = null;
+            }
+
+            // clear other selections
             this.selectWatchList = null;
             this.deviceName = null;
             this.hierarchyFolders = [];
         };
         
         this.deviceNameChanged = function deviceNameChanged() {
-            var watchList = new WatchList();
-            watchList.type = 'query';
-            watchList.name = Translate.trSync('dashboards.v3.app.deviceName', [this.deviceName]);
-            watchList.query = 'deviceName=' + this.deviceName;
-            watchList.$getPoints();
-            this.watchList = watchList;
+            if (this.deviceName) {
+                var watchList = new WatchList();
+                watchList.type = 'query';
+                watchList.name = Translate.trSync('dashboards.v3.app.deviceName', [this.deviceName]);
+                watchList.query = 'deviceName=' + this.deviceName;
+                watchList.$getPoints();
+                this.watchList = watchList;
+            } else {
+                this.watchList = null;
+            }
             
             // clear other selections
             this.selectWatchList = null;

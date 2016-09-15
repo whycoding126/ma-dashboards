@@ -41,7 +41,9 @@ function watchListList($injector) {
             
             var xid = $stateParams.watchListXid || this.selectXid;
             if (xid) {
-                WatchList.get({xid: xid}).$promise.then(function(item) {
+                this.fetchingInitial = true;
+                WatchList.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
+                    this.fetchingInitial = false;
                     this.setViewValue(item);
                 }.bind(this));
             }
@@ -104,6 +106,7 @@ function watchListList($injector) {
         }.bind(this);
         
         this.setStateParam = function(item) {
+            if (this.fetchingInitial) return;
             $stateParams.watchListXid = item ? item.xid : null;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
         };
