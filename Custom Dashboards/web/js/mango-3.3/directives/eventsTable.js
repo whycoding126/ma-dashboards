@@ -50,11 +50,16 @@ function eventsTable(Events, eventsEventManager, UserNotes, $injector, $sce) {
         link: function ($scope, $element, attrs) {
             
             var filterBeforePush = function (event) {
-                console.log(event.eventType.eventType, $scope.query.eventType);
-                if ($scope.query.eventType  !== event.eventType.eventType && $scope.query.eventType !== '*') {
+                
+                if ($scope.query.eventType !== event.eventType.eventType && $scope.query.eventType !== '*') {
                     // console.log('returning');
                     return;
                 }
+                if ($scope.alarmLevel !== event.alarmLevel && $scope.alarmLevel !== '*') {
+                    // console.log('returning');
+                    return;
+                }
+                
                 // console.log('pushing');
                 $scope.events.push(event);
             }
