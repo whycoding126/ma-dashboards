@@ -3,11 +3,14 @@
  * @author Will Geller
  */
 
-define(['require'], function(require) {
+define(['require', 'moment-timezone'], function(require, moment) {
     'use strict';
     var FLASH_CLASS = 'flash-on-change';
+    
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS'];
+    return watchListTableRow;
 
-    var watchListTableRow = function($mdMedia, $mdDialog, $timeout, UserNotes) {
+    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
@@ -43,10 +46,14 @@ define(['require'], function(require) {
                     
                     var timeoutID;
                     var lastValue;
-                    scope.flashRow = function flashRow(point) {
+                    var timezone = MD_ADMIN_SETTINGS.user.getTimezone();
+                    
+                    scope.pointValueChanged = function pointValueChanged(point) {
                         // manually add and remove classes rather than using ng-class as point values can
                         // change rapidly and result in huge slow downs / heaps of digest loops
                         
+                        pointTimeCell.text(moment.tz(point.time, timezone).format('LTS'));
+
                         pointTimeCell.addClass(FLASH_CLASS);
                         if (point.value !== lastValue) {
                             pointValueCell.addClass(FLASH_CLASS);
@@ -87,10 +94,6 @@ define(['require'], function(require) {
                     }
                 } // End Link
         }; // End return
-    }; // End DDO
-
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes'];
-
-    return watchListTableRow;
+    } // End DDO
 
 }); // define

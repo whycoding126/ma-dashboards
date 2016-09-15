@@ -1,17 +1,13 @@
 <td md-cell nowrap ng-class="{'icons': !$mdMedia('gt-sm')}">
       <a href="/dashboards/data-point-details/{{point.xid}}"><i class="fa fa-line-chart fa-lg md-primary" style="padding:5px;"><md-tooltip md-delay="250"  md-direction="right">Data Point Details Page</md-tooltip></i></a>
-      
       <i class="fa fa-history fa-lg md-primary" ng-click="showStats($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Point Stats and History</md-tooltip></i>
-      
       <i class="fa fa-commenting-o fa-lg md-primary" ng-click="addNote($event, 'Point', point.id)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Add User Note</md-tooltip></i>
-      
       <a ng-if="$mdMedia('gt-sm')" ng-href="{{'/data_point_edit.shtm?dpid=' + point.id}}" target="_blank"><i class="fa fa-pencil fa-lg alternate" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Edit Data Point</md-tooltip></i></a>
-
       <i ng-if="point.pointLocator.settable" class="fa fa-pencil-square-o fa-lg md-primary" ng-click="showSetPoint($event)" style="padding: 5px;"><md-tooltip md-delay="250"  md-direction="right">Set Point Value</md-tooltip></i>
 </td>
 <td md-cell ng-bind="point.deviceName"></td>
 <td md-cell ng-bind="point.name"></td>
 <td md-cell class="point-value">
-  <ma-point-value point="point" value-updated="flashRow(point)"></ma-point-value>
+  <ma-point-value point="point" value-updated="pointValueChanged(point)"></ma-point-value>
 </td>
-<td md-cell class="point-time" ng-bind="point.time | moment:'format':'h:mm:ss'"></td>
+<td md-cell class="point-time"></td>
