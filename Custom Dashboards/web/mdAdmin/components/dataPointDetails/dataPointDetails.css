@@ -12,3 +12,8 @@
 .data-point-details-page table.md-table thead.md-head>tr.md-row {
     height: 30px;
 }
+.data-point-details-page .point-details label{
+    font-weight: bold;
+    text-align: right;
+    padding-right: 5px;
+}
