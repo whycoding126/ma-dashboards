@@ -52,7 +52,9 @@ define(['require', 'moment-timezone'], function(require, moment) {
                         // manually add and remove classes rather than using ng-class as point values can
                         // change rapidly and result in huge slow downs / heaps of digest loops
                         
-                        pointTimeCell.text(moment.tz(point.time, timezone).format('LTS'));
+                        var now = (new Date()).valueOf();
+                        var format = now - point.time > 86400 ? 'l LTS' : 'LTS';
+                        pointTimeCell.text(moment.tz(point.time, timezone).format(format));
 
                         pointTimeCell.addClass(FLASH_CLASS);
                         if (point.value !== lastValue) {
