@@ -497,6 +497,12 @@ table.md-table th.md-column.msg-column {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+table.md-table.statistics tbody.md-body td.md-cell:first-child {
+	font-weight: bold;
+}
+
+
 /* Menu editor */
 
 menu-editor td .md-button.md-icon-button {
