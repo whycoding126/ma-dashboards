@@ -172,3 +172,11 @@ ma-watch-list-page .watch-list-back.md-button {
   margin-left: 0;
   margin-right: 0;
 }
+
+ma-watch-list-page .watch-list-filter md-input-container {
+  margin: 8px;
+}
+
+ma-watch-list-page .watch-list-filter .md-button {
+  margin: 0 0 0 -40px;
+}

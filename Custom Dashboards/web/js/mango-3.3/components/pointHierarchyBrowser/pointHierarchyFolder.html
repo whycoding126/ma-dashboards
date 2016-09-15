@@ -4,7 +4,7 @@
 
 <span ng-click="$ctrl.folderClicked($event)">
   <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
-  <md-icon>{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+  <md-icon ng-show="$ctrl.folder.subfolders.length">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 </span>
 
 <ul ng-show="$ctrl.open">

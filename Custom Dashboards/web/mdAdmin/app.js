@@ -197,7 +197,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.watchList',
-        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName',
+        url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
         template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
         menuText: 'Watch List',
         menuIcon: 'remove_red_eye',

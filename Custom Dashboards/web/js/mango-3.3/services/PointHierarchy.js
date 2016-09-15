@@ -144,6 +144,13 @@ function PointHierarchyFactory($resource) {
         }
     });
 
+    PointHierarchy.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
+        fn(folder, parent, index);
+        for (var i = 0; i < folder.subfolders.length; i++) {
+            this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+        }
+    };
+    
     return PointHierarchy;
 }
 

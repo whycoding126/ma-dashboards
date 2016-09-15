@@ -20,7 +20,11 @@ function watchListList($injector) {
         scope: {
             selectXid: '@',
             selectFirst: '<?',
-            showNewButton: '<?'
+            showNewButton: '<?',
+            query: '<?',
+            start: '<?',
+            limit: '<?',
+            sort: '<?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
