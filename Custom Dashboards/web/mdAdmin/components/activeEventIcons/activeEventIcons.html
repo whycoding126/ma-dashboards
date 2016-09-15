@@ -6,7 +6,7 @@
     <md-menu-content width="3">
         
         <md-menu-item ng-if="$ctrl.events.INFORMATION.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 1})">
+            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'INFORMATION'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag INFORMATION" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.INFORMATION.unsilencedCount}} Information Events</p>
@@ -15,7 +15,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.URGENT.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 2})">
+            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'URGENT'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag URGENT" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.URGENT.unsilencedCount}} Urgent Events</p>
@@ -24,7 +24,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.CRITICAL.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 3})">
+            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'CRITICAL'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag CRITICAL" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.CRITICAL.unsilencedCount}} Critical Events</p>
@@ -33,7 +33,7 @@
         </md-menu-item>
         
         <md-menu-item ng-if="$ctrl.events.LIFE_SAFETY.unsilencedCount">
-            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 4})">
+            <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: 'LIFE_SAFETY'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY" style="padding-right:10px"></i>
                     <p flex> {{$ctrl.events.LIFE_SAFETY.unsilencedCount}} Safety Events</p>
