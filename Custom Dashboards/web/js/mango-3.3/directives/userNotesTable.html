@@ -1,18 +1,30 @@
-<md-table-container ng-init="myOrder='-timestamp'; myPage=1;">
-    <table md-table>
-        <thead md-head md-order="myOrder">
-            <tr md-row>
-                <th md-column md-order-by="timestamp">Time</th>
-                <th md-column md-order-by="comment">Note</th>
-                <th md-column md-order-by="username">User</th>
-            </tr>
-        </thead>
-        <tbody md-body>
-            <tr md-row ng-repeat="note in userNotes | orderBy: myOrder">
-                <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
-                <td md-cell>{{note.comment}}</td>
-                <td md-cell>{{note.username}}</td>
-            </tr>
-        </tbody>
-    </table>
-</md-table-container>
+<md-card>
+      <md-toolbar class="md-whiteframe-1dp md-hue-3">
+            <div class="md-toolbar-tools">
+                  <h2 flex>
+                  <span>Point Comments</span>
+            </h2>
+                  <md-button class="md-accent md-raised" aria-label="New Note" ng-click="addNote($event, 'Point', referenceId, updateWithNewNote)">
+                        Add
+                  </md-button>
+            </div>
+      </md-toolbar>
+      <md-table-container ng-init="myOrder='-timestamp'; myPage=1;">
+            <table md-table>
+                  <thead md-head md-order="myOrder">
+                        <tr md-row>
+                              <th md-column md-order-by="timestamp">Time</th>
+                              <th md-column md-order-by="comment">Note</th>
+                              <th md-column md-order-by="username">User</th>
+                        </tr>
+                  </thead>
+                  <tbody md-body>
+                        <tr md-row ng-repeat="note in userNotes | orderBy: myOrder">
+                              <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
+                              <td md-cell>{{note.comment}}</td>
+                              <td md-cell>{{note.username}}</td>
+                        </tr>
+                  </tbody>
+            </table>
+      </md-table-container>
+</md-card>

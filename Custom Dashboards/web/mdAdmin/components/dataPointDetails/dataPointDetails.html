@@ -73,19 +73,7 @@
 		</md-table-container>
 	</md-card>
 	
-	<md-card flex="100" flex-gt-sm="50" flex-gt-lg="25" class="dpd-small-card">
-		<md-toolbar class="md-whiteframe-1dp md-hue-3">
-			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-				<h2 flex>
-					  <span>Point Comments</span>
-				</h2>
-				<md-button class="md-accent md-raised" aria-label="New Note" ng-click="$ctrl.addNote($event, 'Point', myPoint.id)">
-					Add
-				</md-button>
-			</div>
-		</md-toolbar>
-		<ma-user-notes-table reference-id="myPoint.id" limit="3"></ma-user-notes-table>
-	</md-card>
+	<ma-user-notes-table reference-id="myPoint.id" flex="100" flex-gt-sm="50" flex-gt-lg="25" class="dpd-small-card"></ma-user-notes-table>
 	
 	<md-card class="dpd-controls" flex="100">
 		<md-card-content>

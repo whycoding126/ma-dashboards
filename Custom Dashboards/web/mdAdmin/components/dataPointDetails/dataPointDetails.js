@@ -6,9 +6,7 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, UserNotes, localStorageService) {
-    
-    this.addNote = UserNotes.addNote;
+var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService) {
     
     var $this = this;
     
@@ -42,7 +40,7 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
     
 };
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'UserNotes', 'localStorageService'];
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService'];
 
 return {
     controller: dataPointDetailsController,

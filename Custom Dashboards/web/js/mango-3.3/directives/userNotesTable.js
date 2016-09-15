@@ -25,8 +25,7 @@ function userNotesTable(UserNotes, $injector) {
         restrict: 'E',
         replace: true,
         scope: {
-            referenceId: '=?',
-            limit: '=?'
+            referenceId: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -35,6 +34,12 @@ function userNotesTable(UserNotes, $injector) {
             return require.toUrl('./userNotesTable.html');
         },
         link: function ($scope, $element, attrs) {
+            
+            $scope.addNote = UserNotes.addNote;
+            
+            $scope.updateWithNewNote = function(data) {
+                $scope.userNotes.push(data);
+            };
             
             $scope.$watch('referenceId', function(newValue, oldValue) {
                 if (newValue === undefined) return;
