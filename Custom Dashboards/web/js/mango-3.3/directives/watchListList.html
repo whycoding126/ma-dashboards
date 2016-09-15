@@ -4,11 +4,11 @@
     <em ma-tr="dashboards.v3.app.newWatchList"></em>
     <button ui-sref="dashboard.watchListBuilder()" ma-tr="dashboards.v3.app.new"></button>
   </li>
-  <li ng-repeat="wl in $ctrl.watchLists track by wl.xid"
-      ng-class="{'watchlist-selected': $ctrl.watchList.xid === wl.xid}"
-      ng-click="$ctrl.setViewValue(wl)">
-    <strong ng-bind="wl.name"></strong>
-    <em ng-bind="wl.username"></em>
-    <button ui-sref="dashboard.watchListBuilder({watchListXid: wl.xid})" ma-tr="common.edit"></button>
+  <li ng-repeat="item in $ctrl.items track by item.xid"
+      ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
+      ng-click="$ctrl.setViewValue(item)">
+    <strong ng-bind="item.name"></strong>
+    <em ng-bind="item.username"></em>
+    <button ui-sref="dashboard.watchListBuilder({watchListXid: item.xid})" ma-tr="common.edit"></button>
   </li>
 </ul>

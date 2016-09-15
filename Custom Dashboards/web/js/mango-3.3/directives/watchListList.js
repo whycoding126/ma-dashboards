@@ -10,6 +10,7 @@ watchListList.$inject = ['$injector'];
 return watchListList;
 
 function watchListList($injector) {
+    var DEFAULT_SORT = ['name'];
     var UPDATE_TYPES = ['update'];
 
     return {
@@ -17,7 +18,7 @@ function watchListList($injector) {
         controllerAs: '$ctrl',
         bindToController: true,
         scope: {
-            watchListXid: '@',
+            selectXid: '@',
             selectFirst: '<?',
             showNewButton: '<?'
         },
@@ -36,54 +37,76 @@ function watchListList($injector) {
     
     function watchListListController($scope, WatchList, $stateParams, $state, WatchListEventManager) {
         this.$onInit = function() {
-            this.ngModelCtrl.$render = this.setWatchList;
+            this.ngModelCtrl.$render = this.render;
             
-            var xid = $stateParams.watchListXid || this.watchListXid;
+            var xid = $stateParams.watchListXid || this.selectXid;
             if (xid) {
-                WatchList.get({xid: xid}).$promise.then(function(watchList) {
-                    this.setViewValue(watchList);
+                WatchList.get({xid: xid}).$promise.then(function(item) {
+                    this.setViewValue(item);
                 }.bind(this));
             }
             
-            this.queryPromise = WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchLists) {
-                this.watchLists = watchLists;
-                if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && watchLists.length) {
-                    this.setViewValue(watchLists[0]);
+            this.doQuery().then(function(items) {
+                this.items = items;
+                if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
+                    this.setViewValue(items[0]);
                 }
-                return watchLists;
             }.bind(this));
-        };
-
-        this.setViewValue = function(watchList) {
-            this.setWatchList(watchList);
-            this.ngModelCtrl.$setViewValue(watchList);
         };
         
-        this.setWatchList = function(watchList) {
-            if (this.watchList) {
-                WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+        this.$onChanges = function(changes) {
+            if ((changes.query && !changes.query.isFirstChange()) ||
+                    (changes.start && !changes.start.isFirstChange()) ||
+                    (changes.limit && !changes.limit.isFirstChange()) ||
+                    (changes.sort && !changes.sort.isFirstChange())) {
+                this.doQuery();
             }
-            
-            this.watchList = watchList;
-            
-            if (!watchList) {
-                $state.go('.', {watchListXid: null}, {location: 'replace', notify: false});
-                return;
-            }
-            
-            $state.go('.', {watchListXid: watchList.xid}, {location: 'replace', notify: false});
-            
-            watchList.$getPoints().then(function(watchList) {
-                WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+        };
+        
+        this.doQuery = function() {
+            return this.queryPromise = WatchList.objQuery({
+                query: this.query,
+                start: this.start,
+                limit: this.limit,
+                sort: this.sort || DEFAULT_SORT
+            }).$promise.then(function(items) {
+                return this.items = items;
             }.bind(this));
+        };
+        
+        this.setViewValue = function(item) {
+            this.render(item);
+            this.ngModelCtrl.$setViewValue(item);
+        };
+        
+        this.render = function(item) {
+            var sameXid = this.selected && item && this.selected.xid === item.xid;
+            if (this.selected && !sameXid) {
+                WatchListEventManager.unsubscribe(this.selected.xid, UPDATE_TYPES, this.updateHandler);
+            }
+            
+            this.selected = item;
+            this.setStateParam(item);
+            
+            if (this.selected) {
+                this.selected.$getPoints();
+                if (!sameXid) {
+                    WatchListEventManager.smartSubscribe($scope, this.selected.xid, UPDATE_TYPES, this.updateHandler);
+                }
+            }
         }.bind(this);
-        
+
         this.updateHandler = function updateHandler(event, update) {
             if (update.action === 'update') {
-                var wl = angular.merge(new WatchList(), update.object);
-                this.setViewValue(wl);
+                var item = angular.merge(new WatchList(), update.object);
+                this.setViewValue(item);
             }
         }.bind(this);
+        
+        this.setStateParam = function(item) {
+            $stateParams.watchListXid = item ? item.xid : null;
+            $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
     }
 }
 

@@ -148,16 +148,19 @@ ma-watch-list-page .watchlist-2-pane md-card.select-watch-list {
   margin: 0 16px 0 0;
 }
 
-ma-watch-list-page .watchlist-2-pane ma-watch-list-list {
+ma-watch-list-page .watchlist-2-pane .ma-scroll-parent {
   position: relative;
 }
 
-ma-watch-list-page .watchlist-2-pane ma-watch-list-list md-list {
+ma-watch-list-page .watchlist-2-pane .ma-scroll-parent md-list,
+ma-watch-list-page .watchlist-2-pane .ma-scroll-parent .ma-scroll-child {
   overflow-y: auto;
   display: block;
   position: absolute;
-  height: 100%;
-  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 ma-watch-list-page md-card.select-watch-list md-list {

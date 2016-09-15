@@ -1,6 +1,6 @@
 <ul>
   <li ng-repeat="item in $ctrl.items track by item.xid"
-      ng-class="{'selected-selected': $ctrl.selected.xid === item.xid}"
+      ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
       ng-click="$ctrl.setViewValue(item)">
     <strong ng-bind="item.name"></strong>
   </li>

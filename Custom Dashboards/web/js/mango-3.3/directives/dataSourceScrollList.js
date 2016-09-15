@@ -47,12 +47,31 @@ function dataSourceScrollList($injector) {
                 }.bind(this));
             }
             
-            this.queryPromise = DataSource.query({rqlQuery: 'sort(name)'}).$promise.then(function(items) {
+            this.doQuery().then(function(items) {
                 this.items = items;
                 if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);
                 }
-                return items;
+            }.bind(this));
+        };
+        
+        this.$onChanges = function(changes) {
+            if ((changes.query && !changes.query.isFirstChange()) ||
+                    (changes.start && !changes.start.isFirstChange()) ||
+                    (changes.limit && !changes.limit.isFirstChange()) ||
+                    (changes.sort && !changes.sort.isFirstChange())) {
+                this.doQuery();
+            }
+        };
+        
+        this.doQuery = function() {
+            return this.queryPromise = DataSource.objQuery({
+                query: this.query,
+                start: this.start,
+                limit: this.limit,
+                sort: this.sort || DEFAULT_SORT
+            }).$promise.then(function(items) {
+                return this.items = items;
             }.bind(this));
         };
         
@@ -63,9 +82,13 @@ function dataSourceScrollList($injector) {
         
         this.render = function(item) {
             this.selected = item;
-            $state.go('.', {dataSourceXid: item ? item.xid : null},
-                    {location: 'replace', notify: false});
+            this.setStateParam(item);
         }.bind(this);
+        
+        this.setStateParam = function(item) {
+            $stateParams.dataSourceXid = item ? item.xid : null;
+            $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
     }
 }
 

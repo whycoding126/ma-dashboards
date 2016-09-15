@@ -145,6 +145,8 @@ function JsonStoreFactory($resource, Util) {
             }
         }
     });
+    
+    JsonStore.objQuery = Util.objQuery;
 
     return JsonStore;
 }

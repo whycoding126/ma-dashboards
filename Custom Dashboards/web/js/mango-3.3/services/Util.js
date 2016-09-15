@@ -340,7 +340,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
             uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
         }
         return uuid;
-    }
+    };
 	
 
     Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType) {
@@ -455,7 +455,56 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
 		// console.log(rollupInterval);
 		
 		return rollupInterval;
-    }
+    };
+    
+    Util.prototype.objQuery = function(options) {
+        if (!options) return this.query();
+
+        var params = [];
+        if (typeof options.query === 'string' && options.query) {
+            params.push(options.query);
+        } else if (options.query) {
+            var and = !!options.query.$and;
+            var exact = !!options.query.$exact;
+            delete options.query.$exact;
+            delete options.query.$and;
+
+            var parts = [];
+            for (var key in options.query) {
+                var val = options.query[key] || '';
+                var comparison = '=';
+                var autoLike = false;
+                if (val.indexOf('=') < 0 && !exact) {
+                    comparison += 'like=*';
+                    autoLike = true;
+                }
+                parts.push(key + comparison + val + (autoLike ? '*': ''));
+            }
+
+            var queryPart;
+            if (and || parts.length === 1) {
+                queryPart = parts.join('&');
+            } else {
+                queryPart = 'or(' + parts.join(',') + ')';
+            }
+            params.push(queryPart);
+        }
+
+        if (options.sort) {
+            var sort = options.sort;
+            if (angular.isArray(sort)) {
+                sort = sort.join(',');
+            }
+            params.push('sort(' + sort + ')');
+        }
+
+        if (options.limit) {
+            var start = options.start || 0;
+            params.push('limit(' + options.limit + ',' + start + ')');
+        }
+
+        return params.length ? this.query({rqlQuery: params.join('&')}) : this.query();
+    };
 
     return new Util();
 }

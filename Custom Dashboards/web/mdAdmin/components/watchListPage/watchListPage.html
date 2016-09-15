@@ -12,23 +12,23 @@
       </div>
     </md-toolbar>
     
-    <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column"
+    <ma-watch-list-list ng-show="$ctrl.listType === 'watchLists'" flex layout="column" class="ma-scroll-parent"
         show-new-button="true" ng-model="$ctrl.selectWatchList" ng-change="$ctrl.watchListChanged()"
-        select-first="$ctrl.$mdMedia('gt-md')">
+        select-first="$ctrl.selectFirstWatchList">
     </ma-watch-list-list>
     
-    <ma-device-name-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column"
-        ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged()">
-    </ma-device-name-list>
+    <ma-device-name-scroll-list ng-show="$ctrl.listType === 'deviceNames'" flex layout="column" class="ma-scroll-parent"
+        ng-model="$ctrl.deviceName" ng-change="$ctrl.deviceNameChanged()" select-first="false">
+    </ma-device-name-scroll-list>
     
-    <ma-data-source-scroll-list ng-show="$ctrl.listType === 'dataSources'" flex layout="column"
-        ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceChanged()">
+    <ma-data-source-scroll-list ng-show="$ctrl.listType === 'dataSources'" flex layout="column" class="ma-scroll-parent"
+        ng-model="$ctrl.dataSource" ng-change="$ctrl.dataSourceChanged()" select-first="false">
     </ma-data-source-scroll-list>
 
-    <div ng-show="$ctrl.listType === 'hierarchy'" class="md-padding">
-      <ma-point-hierarchy-browser expanded="true" select-subfolders="true" select-one-folder="true"
-          ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()">
-      </ma-point-hierarchy-browser>
+    <div ng-show="$ctrl.listType === 'hierarchy'" flex layout="column" class="ma-scroll-parent">
+          <ma-point-hierarchy-browser expanded="true" select-subfolders="true" select-one-folder="true" class="md-padding ma-scroll-child"
+              ng-model="$ctrl.hierarchyFolders" ng-change="$ctrl.hierarchyChanged()">
+          </ma-point-hierarchy-browser>
     </div>
   </md-card>
   

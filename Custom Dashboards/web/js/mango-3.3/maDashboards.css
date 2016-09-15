@@ -259,6 +259,6 @@ ma-point-hierarchy-folder ul li {
 
 /* Watch list list */
 
-ma-watch-list-list md-list-item.watchlist-selected .md-list-item-text h3 {
+md-list-item.ma-list-selected .md-list-item-text h3 {
   color: inherit !important;
 }

@@ -40,6 +40,7 @@ define(['./maServices',
         './directives/dataSourceList',
         './directives/dataSourceScrollList',
         './directives/deviceNameList',
+        './directives/deviceNameScrollList',
         './directives/dataSourceQuery',
         './directives/deviceNameQuery',
         './directives/userNotesTable',
@@ -60,7 +61,7 @@ define(['./maServices',
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
-        dataSourceScrollList, deviceNameList, dataSourceQuery, deviceNameQuery, userNotesTable,
+        dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, watchListList, queryBuilder, queryGroup,
         queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, trFilter, angular, require) {
 'use strict';
@@ -111,6 +112,7 @@ maDashboards.directive('maPagingPointList', pagingPointList);
 maDashboards.directive('maDataSourceList', dataSourceList);
 maDashboards.directive('maDataSourceScrollList', dataSourceScrollList);
 maDashboards.directive('maDeviceNameList', deviceNameList);
+maDashboards.directive('maDeviceNameScrollList', deviceNameScrollList);
 maDashboards.directive('maDataSourceQuery', dataSourceQuery);
 maDashboards.directive('maDeviceNameQuery', deviceNameQuery);
 maDashboards.directive('maUserNotesTable', userNotesTable);
