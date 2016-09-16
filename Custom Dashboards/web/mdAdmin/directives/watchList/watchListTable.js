@@ -23,13 +23,6 @@ define(['require'], function(require) {
             templateUrl: 'directives/watchList/watchListTable.html',
             link: function link(scope, element, attrs) {
                     scope.$mdMedia = $mdMedia;
-                    
-                    if ($mdMedia('gt-sm')) {
-                        scope.myLimit = 15;
-                    }
-                    else {
-                        scope.myLimit = 10;
-                    }
                 } // End Link
         }; // End return
     }; // End DDO
