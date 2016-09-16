@@ -7,13 +7,14 @@ define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 return {
-    controller: ['$mdMedia', 'WatchList', 'Translate', '$stateParams', '$state', 'PointHierarchy',
-                 function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $state, PointHierarchy) {
+    controller: ['$mdMedia', 'WatchList', 'Translate', '$stateParams', '$state', 'PointHierarchy', 'MD_ADMIN_SETTINGS',
+                 function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $state, PointHierarchy, MD_ADMIN_SETTINGS) {
         this.watchList = null;
         this.selectWatchList = null;
         this.dataSource = null;
         this.deviceName = null;
         this.hierarchyFolders = [];
+        this.settings = MD_ADMIN_SETTINGS;
         
         this.selectFirstWatchList = false;
         if ($stateParams.watchListXid) {
@@ -132,6 +133,10 @@ return {
             // clear hierarchy state
             $stateParams.hierarchyFolderId = null;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
+        
+        this.editWatchList = function editWatchList(watchList) {
+            $state.go('dashboard.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
         };
     }],
     templateUrl: require.toUrl('./watchListPage.html'),

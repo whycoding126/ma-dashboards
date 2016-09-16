@@ -24,7 +24,10 @@ function watchListList($injector) {
             query: '<?',
             start: '<?',
             limit: '<?',
-            sort: '<?'
+            sort: '<?',
+            user: '<?',
+            newButtonClicked: '&',
+            editButtonClicked: '&'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {

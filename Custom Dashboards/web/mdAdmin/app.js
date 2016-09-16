@@ -226,23 +226,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         }
     },
     {
-        name: 'dashboard.watchListBuilder',
-        url: '/watch-list-builder/{watchListXid}',
-        template: '<h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
-        menuTr: 'dashboards.v3.app.watchListBuilder',
-        menuIcon: 'playlist_add_check',
-        resolve: {
-            loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {
-                    angular.module('watchListBuilder', [])
-                        .component('watchListBuilder', watchListBuilder);
-                    $ocLazyLoad.inject('watchListBuilder');
-                    cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
-                });
-            }]
-        }
-    },
-    {
         name: 'dashboard.dataPointDetails',
         url: '/data-point-details/{pointXid}',
         template: '<ma-data-point-details></ma-data-point-details>',
@@ -335,6 +318,23 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'dashboards.v3.app.autoLoginSettings',
                 menuIcon: 'face',
                 permission: 'superadmin'
+            },
+            {
+                name: 'dashboard.settings.watchListBuilder',
+                url: '/watch-list-builder/{watchListXid}',
+                template: '<h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
+                menuTr: 'dashboards.v3.app.watchListBuilder',
+                menuIcon: 'playlist_add_check',
+                resolve: {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                        return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {
+                            angular.module('watchListBuilder', [])
+                                .component('watchListBuilder', watchListBuilder);
+                            $ocLazyLoad.inject('watchListBuilder');
+                            cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');
+                        });
+                    }]
+                }
             },
             {
                 url: '/system-settings',
