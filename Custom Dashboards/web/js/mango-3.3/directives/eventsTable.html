@@ -23,7 +23,7 @@
                     </span>
                 </td>
                 <td md-cell class="medium-column">{{event.activeTimestamp | moment:'format':'l  h:mm:ss'}}</td>
-                <td md-cell class="msg-column"><span ng-bind-html="parseHTML(event.message)" ng-click=""></span></td>
+                <td md-cell class="msg-column" ng-class="{'truncated' : !toggle}"><span  ng-click="toggle = !toggle" ng-bind-html="parseHTML(event.message)"></span></td>
                 <td md-cell><span ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp | moment:'format':'l h:mm:ss'}} -</span> {{event.status}} <span ng-if="event.active">Active</span></td>
                 <td md-cell ng-if="event.returnToNormalTimestamp === 0" class="medium-column">
                     <span ng-if="!event.active">N/A</span>

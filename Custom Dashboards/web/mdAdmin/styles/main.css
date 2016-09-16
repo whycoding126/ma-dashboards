@@ -496,14 +496,14 @@ table.md-table th.md-column.medium-column {
 table.md-table td.md-cell.msg-column,
 table.md-table th.md-column.msg-column {
 	max-width: 380px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 table.md-table.mobile td.md-cell.msg-column,
 table.md-table.mobile th.md-column.msg-column {
 	max-width: 200px;
+}
+
+table.md-table td.md-cell.msg-column.truncated {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

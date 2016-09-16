@@ -182,10 +182,10 @@ function eventsFactory($resource, Util) {
                 params.push('active=true');
             }
             else if (options.activeStatus==='noRtn') {
-                params.push('active=false');
+                params.push('');
             }
             else if (options.activeStatus==='normal') {
-                params.push('rtnTs=gt=0');
+                params.push('active=false');
             }
         }
         
@@ -194,7 +194,7 @@ function eventsFactory($resource, Util) {
                 params.push('acknowledged=true');
             }
             else if (options.acknowledged==='false') {
-                params.push('acknowledged=null');
+                params.push('acknowledged=false');
             }
         }
         
