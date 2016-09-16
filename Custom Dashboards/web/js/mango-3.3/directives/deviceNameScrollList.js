@@ -35,16 +35,18 @@ function deviceNameScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DeviceName', '$state', '$stateParams', deviceNameScrollListController]
+        controller: ['DeviceName', '$state', '$stateParams', '$timeout', deviceNameScrollListController]
     };
     
-    function deviceNameScrollListController(DeviceName, $state, $stateParams) {
+    function deviceNameScrollListController(DeviceName, $state, $stateParams, $timeout) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
             var deviceName = $stateParams.deviceName;
             if (deviceName) {
-                this.setViewValue(deviceName);
+                $timeout(function() {
+                    this.setViewValue(deviceName);
+                }.bind(this), 0);
             }
             
             this.doQuery().then(function(items) {
