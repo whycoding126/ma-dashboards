@@ -6,9 +6,10 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService) {
+var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS) {
     
     var $this = this;
+    this.dateBar = MD_ADMIN_SETTINGS.dateBar;
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
@@ -40,7 +41,7 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
     
 };
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService'];
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS'];
 
 return {
     controller: dataPointDetailsController,

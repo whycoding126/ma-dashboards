@@ -41,22 +41,6 @@
                         <md-option value="false">False</md-option>
                   </md-select>
             </md-input-container>
-            <md-input-container flex="60" flex-gt-xs="30" flex-gt-md="20">
-                  <label>Time Range</label>
-                  <ma-date-range-picker from="from" to="to" preset="LAST_1_MONTHS"></ma-date-range-picker>
-            </md-input-container>
-            <!-- <md-input-container flex="40" flex-gt-xs="20" flex-gt-md="10" class="no-errors-spacer">
-                  <label>Refresh Interval (s)</label>
-                  <input type="number" step="1" min="1" ng-init="updateInterval=30" ng-model="updateInterval">
-            </md-input-container> -->
-            <md-input-container flex="50" flex-gt-xs="50" flex-gt-md="20" class="no-errors-spacer">
-                  <label>From Date</label>
-                  <ma-date-picker ng-model="from"></ma-date-picker>
-            </md-input-container>
-            <md-input-container flex="50" flex-gt-xs="50" flex-gt-md="20" class="no-errors-spacer">
-                  <label>To Date</label>
-                  <ma-date-picker ng-model="to"></ma-date-picker>
-            </md-input-container>
       </md-card-actions>
-      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" active-status="activeStatus" date-range="true" from="from" to="to" paginate-limit="15" sort-order="$ctrl.sortOrder"></ma-events-table>
+      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" active-status="activeStatus" date-range="true" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" paginate-limit="15" sort-order="$ctrl.sortOrder"></ma-events-table>
 </md-card>

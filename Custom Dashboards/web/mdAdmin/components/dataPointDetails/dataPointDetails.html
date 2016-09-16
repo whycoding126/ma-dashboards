@@ -1,10 +1,13 @@
 <div layout="row" layout-wrap layout-align="space-between start" ng-init="page={}" class="data-point-details-page">
+    <ma-point-values point="myPoint" values="myPointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" rollup="{{$ctrl.dateBar.rollupType}}"
+      rollup-interval="{{$ctrl.dateBar.rollupInterval}} {{$ctrl.dateBar.rollupIntervalType}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
+    </ma-point-values>
 
 	<md-card flex="100" flex-gt-sm="45" flex-gt-lg="20" class="dpd-small-card">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>
-		              <span>Data Point: {{myPoint.deviceName}} - {{myPoint.name}}</span>
+	              <span>Data Point: {{myPoint.deviceName}} - {{myPoint.name}}</span>
 		        </h2>
 			</div>
 		</md-toolbar>
@@ -39,7 +42,7 @@
 		        </h2>
 			</div>
 		</md-toolbar>
-		<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+		<ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
 		<ma-statistics-table statistics="statsObj"></ma-statistics-table>
 		<br />
 	</md-card>
@@ -71,70 +74,7 @@
 	</md-card>
 	
 	<ma-user-notes-table reference-id="myPoint.id" flex="100" flex-gt-sm="50" flex-gt-lg="25" class="dpd-small-card"></ma-user-notes-table>
-	
-	<md-card class="dpd-controls" flex="100">
-		<md-card-content>
-			<div layout="row" layout-wrap>
-				<md-input-container flex-xs="50" flex="33" flex-gt-md="15" class="no-errors-spacer">
-					<label>Date preset</label>
-					<ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
-				</md-input-container>
-				<md-input-container flex-xs="50" flex="33" flex-gt-md="15" class="no-errors-spacer">
-					<label>From date</label>
-					<ma-date-picker ng-model="from" format="l LT"></ma-date-picker>
-				</md-input-container>
-				<md-input-container flex-xs="50" flex="33" flex-gt-md="15" class="no-errors-spacer">
-					<label>To date</label>
-					<ma-date-picker ng-model="to" format="l LT"></ma-date-picker>
-				</md-input-container>
-				<md-input-container flex-xs="15" flex="10" flex-gt-md="5" class="no-errors-spacer">
-					<label>Update</label>
-					<input type="number" step="1" min="1" ng-model="updateInterval" ng-init="updateInterval=1">
-				</md-input-container>
-				<md-input-container flex-xs="35" flex="20" flex-gt-md="10" class="no-errors-spacer">
-					<label>Interval</label>
-					<ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>
-				</md-input-container>
 
-				<md-input-container flex-xs="15" flex="10" flex-gt-md="10" class="no-errors-spacer">
-					<label>Rollup</label>
-					<input type="number" step="1" min="1" ng-model="rollupInterval" ng-init="rollupInterval=1" ng-disabled="rollupType=='NONE' || autoRollup">
-				</md-input-container>
-				<md-input-container flex-xs="30" flex="20" flex-gt-md="10" class="no-errors-spacer">
-					<label>Interval</label>
-					<ma-interval-type-picker ng-model="rollupIntervalType" ng-init="rollupIntervalType='MINUTES'" ng-disabled="rollupType=='NONE' || autoRollup"></ma-interval-type-picker>
-				</md-input-container>
-				<md-input-container flex-xs="25" flex="15" flex-gt-md="10" class="no-errors-spacer">
-					<label>Rollup Type</label>
-					<md-select ng-model="rollupType" ng-init="rollupType='AVERAGE'">
-						<md-option value="MINIMUM">
-							Minimum
-						</md-option>
-						<md-option value="MAXIMUM">
-							Maximum
-						</md-option>
-						<md-option value="AVERAGE">
-							Average
-						</md-option>
-						<md-option value="DELTA">
-							Delta
-						</md-option>
-						<md-option value="NONE">
-							None
-						</md-option>
-					</md-select>
-				</md-input-container>
-				<md-input-container flex-xs="30" flex="25" flex-gt-md="10" class="no-errors-spacer" ng-init="rollupType='AVERAGE'">
-					<md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto-Interval</md-checkbox>
-				</md-input-container>
-
-				<!-- Load point values for chart and table -->
-				<ma-point-values point="myPoint" values="myPointValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupInterval}} {{rollupIntervalType}}" auto-rollup-interval="autoRollup">
-				</ma-point-values>
-
-			</div>
-		</md-card-content>
-	</md-card>
 	<md-card flex="100">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
@@ -169,6 +109,6 @@
 				</h2>
 			</div>
 		</md-toolbar>
-		<ma-events-table point-id="myPoint.id" limit="500" paginate-limit="5" from="from" to="to"></ma-events-table>
+		<ma-events-table point-id="myPoint.id" limit="500" paginate-limit="5" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to"></ma-events-table>
 	</md-card>
 </div>

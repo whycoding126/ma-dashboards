@@ -2,9 +2,7 @@
     height: 330px;
     max-height: 330px;
 }
-.data-point-details-page md-card.dpd-controls > md-card-content {
-    padding-bottom: 0;
-}
+
 .data-point-details-page .amchart {
     height: 420px;
     max-height: 420px;
