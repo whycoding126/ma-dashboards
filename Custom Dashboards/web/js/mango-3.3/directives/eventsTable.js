@@ -22,7 +22,7 @@ define(['require'], function(require) {
  * <ma-events-table event-type="eventType" limit="25"></ma-events-table>
  *
  */
-function eventsTable(Events, eventsEventManager, UserNotes, $injector, $sce) {
+function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce) {
     return {
         restrict: 'E',
         scope: {
@@ -48,6 +48,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $injector, $sce) {
             return require.toUrl('./eventsTable.html');
         },
         link: function ($scope, $element, attrs) {
+            
+            $scope.$mdMedia = $mdMedia;
             
             var filterBeforePush = function (event) {
                 
@@ -128,7 +130,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $injector, $sce) {
     };
 }
 
-eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$injector', '$sce'];
+eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$mdMedia', '$injector', '$sce'];
 return eventsTable;
 
 }); // define
