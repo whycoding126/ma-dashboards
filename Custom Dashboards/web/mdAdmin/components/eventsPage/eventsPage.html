@@ -5,10 +5,10 @@
                     <span>Events Table</span>
                   </h2>
                   <div ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'">All</md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }" ng-click="$ctrl.eventType='DATA_POINT'"><span ng-if="$ctrl.$mdMedia('gt-sm')">Data </span>Point</md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }" ng-click="$ctrl.eventType='DATA_SOURCE'"><span ng-if="$ctrl.$mdMedia('gt-sm')">Data </span>Source</md-button>
-                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }" ng-click="$ctrl.eventType='SYSTEM'">System</md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'" ma-tr="dashboards.v3.app.all"></md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_POINT' }" ng-click="$ctrl.eventType='DATA_POINT'"><span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="dashboards.v3.app.data"></span> <span ma-tr="dashboards.v3.app.point"></span></md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'DATA_SOURCE' }" ng-click="$ctrl.eventType='DATA_SOURCE'"><span ng-if="$ctrl.$mdMedia('gt-sm')" ma-tr="dashboards.v3.app.data"></span> <span ma-tr="dashboards.v3.app.source"></span></md-button>
+                        <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === 'SYSTEM' }" ng-click="$ctrl.eventType='SYSTEM'" ma-tr="dashboards.v3.app.system"></md-button>
                   </div>
             </div>
       </md-toolbar>

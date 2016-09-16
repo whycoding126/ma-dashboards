@@ -3,12 +3,12 @@
     <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
         <thead md-head md-order="myOrder">
             <tr md-row>
-                <th md-column md-order-by="alarmLevel" class="narrow-column">Alarm Lvl</th>
-                <th md-column md-order-by="activeTimestamp" class="medium-column">Time</th>
-                <th md-column md-order-by="message" class="msg-column">Message</th>
-                <th md-column md-order-by="status">Status</th>
-                <th md-column class="medium-column">Duration</th>
-                <th md-column md-order-by="acknowledged" class="narrow-column">Acknowledge</th>
+                <th md-column md-order-by="alarmLevel" ma-tr="dashboards.v3.app.alarmLvl" class="narrow-column"></th>
+                <th md-column md-order-by="activeTimestamp" ma-tr="dashboards.v3.app.time" class="medium-column"></th>
+                <th md-column md-order-by="message" ma-tr="dashboards.v3.app.msg" class="msg-column"></th>
+                <th md-column md-order-by="status" ma-tr="dashboards.v3.app.status"></th>
+                <th md-column class="medium-column" ma-tr="dashboards.v3.app.duration"></th>
+                <th md-column md-order-by="acknowledged" ma-tr="dashboards.v3.app.acknowledge" class="narrow-column"></th>
                 
             </tr>
         </thead>
@@ -18,7 +18,7 @@
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x" style="color: rgb(255,133,0)" ng-if="event.active"></i>
                         <i class="fa fa-flag alarm-flag fa-stack-1x" ng-class="event.alarmLevel" ng-click="addNote($event, 'Event', event.id)">
-                            <md-tooltip md-delay="250"  md-direction="right">Event ID: {{event.id}}</md-tooltip>
+                            <md-tooltip md-delay="250"  md-direction="right"><span ma-tr="dashboards.v3.app.eventId"></span>: {{event.id}}</md-tooltip>
                         </i>
                     </span>
                 </td>
