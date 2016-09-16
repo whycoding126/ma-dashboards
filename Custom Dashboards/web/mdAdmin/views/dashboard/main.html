@@ -2,10 +2,17 @@
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
         md-is-locked-open="navLockedOpen" md-swipe-left="closeMenu()" class="navigation-menu">
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
-        <span flex></span>
+      <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
+      <div flex layout="row">
         <img src="/modules/dashboards/web/img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
-        <span ng-bind="user.username"></span>
-        <span class="email" ng-bind="user.email"></span>
+        <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">
+          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'LT'" class="dashboard-user-time"></span>
+          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'ddd ll'" class="dashboard-user-date"></span>
+          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'z'" class="dashboard-user-date"></span>
+        </div>
+      </div>
+      <span ng-bind="user.username"></span>
+      <span class="email" ng-bind="user.email"></span>
     </md-toolbar>
 
     <md-content flex role="navigation" md-colors="{background: 'background-A100'}">

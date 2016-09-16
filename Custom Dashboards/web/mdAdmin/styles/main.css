@@ -60,6 +60,19 @@ body {
     margin-bottom: 8px;
 }
 
+.dashboard-sidebar-header .dashboard-user-datetime {
+	opacity: 0.8;
+}
+
+.dashboard-sidebar-header .dashboard-user-time {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.dashboard-sidebar-header .dashboard-user-date {
+	font-size: 13px;
+}
+
 .dashboard-sidebar-header .email {
 	opacity: 0.8;
 }
