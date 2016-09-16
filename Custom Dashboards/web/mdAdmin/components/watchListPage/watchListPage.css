@@ -25,9 +25,9 @@
 
 /* Table Component */
 
-.watchlist-main md-table-container {
+/*.watchlist-main md-table-container {
     max-height:655px;
-}
+}*/
 
 .watchlist-main .md-toolbar-tools.mobile h2 {
     line-height: 18px;

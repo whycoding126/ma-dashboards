@@ -25,10 +25,10 @@ define(['require'], function(require) {
                     scope.$mdMedia = $mdMedia;
                     
                     if ($mdMedia('gt-sm')) {
-                        scope.myLimit = 15;
+                        scope.myLimit = 200;
                     }
                     else {
-                        scope.myLimit = 10;
+                        scope.myLimit = 25;
                     }
                 } // End Link
         }; // End return
