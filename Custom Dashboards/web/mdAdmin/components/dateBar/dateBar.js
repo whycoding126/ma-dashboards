@@ -8,11 +8,12 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['MD_ADMIN_SETTINGS', dateBarController]
+    controller: ['MD_ADMIN_SETTINGS', '$stateParams', dateBarController]
 };
 
-function dateBarController(MD_ADMIN_SETTINGS) {
+function dateBarController(MD_ADMIN_SETTINGS, $stateParams) {
     this.params = MD_ADMIN_SETTINGS.dateBar;
+    this.stateParams = $stateParams;
     
     this.$onInit = function() {
     };

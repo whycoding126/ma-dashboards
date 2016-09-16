@@ -204,7 +204,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.watchList',
         menuIcon: 'remove_red_eye',
         params: {
-            showDateBar: true
+            dateBar: {
+                rollupControls: true
+            }
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -236,6 +238,11 @@ mdAdminApp.constant('MENU_ITEMS', [
         template: '<ma-data-point-details></ma-data-point-details>',
         menuTr: 'dashboards.v3.app.dataPointDetails',
         menuIcon: 'timeline',
+        params: {
+            dateBar: {
+                rollupControls: true
+            }
+        },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/dataPointDetails/dataPointDetails'], function (dataPointDetails) {
@@ -253,6 +260,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         template: '<ma-events-page></ma-events-page>',
         menuTr: 'dashboards.v3.app.events',
         menuIcon: 'alarm',
+        params: {
+            dateBar: {}
+        },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/eventsPage/eventsPage'], function (eventsPage) {
