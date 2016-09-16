@@ -82,6 +82,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.selectedTab--;
     };
     $ctrl.isLastStep = function() {
+        if (!$ctrl.watchlist) return false;
         return $ctrl.watchlist.type === 'static' && $ctrl.selectedTab === 3 ||
             $ctrl.watchlist.type === 'query' && $ctrl.selectedTab === 2 ||
             $ctrl.watchlist.type === 'hierarchy' && $ctrl.selectedTab === 1;
@@ -144,7 +145,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.getWatchlist = function getWatchlist(xid) {
         WatchList.get({xid: xid}).$promise.then(function(wl) {
             var user = MD_ADMIN_SETTINGS.user;
-            if (wl.username !== user.username && !user.hasPermission(wl.writePermission)) {
+            if (wl.username !== user.username && !user.hasPermission(wl.editPermission)) {
                 throw 'no edit permission';
             }
             $ctrl.selectedWatchlist = wl;
@@ -160,7 +161,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             var user = MD_ADMIN_SETTINGS.user;
             for (var i = 0; i < watchlists.length; i++) {
                 var wl = watchlists[i];
-                if (wl.username === user.username || user.hasPermission(wl.writePermission)) {
+                if (wl.username === user.username || user.hasPermission(wl.editPermission)) {
                     wl.points = [];
                     filtered.push(wl);
                 }
