@@ -1,0 +1,64 @@
+<div flex layout="row" layout-align="start center" layout-wrap>
+  <md-input-container>
+    <label>Rollup Type</label>
+    <md-select ng-model="$ctrl.params.rollupType">
+      <md-option value="MINIMUM">
+          Minimum
+      </md-option>
+      <md-option value="MAXIMUM">
+          Maximum
+      </md-option>
+      <md-option value="AVERAGE">
+          Average
+      </md-option>
+      <md-option value="DELTA">
+          Delta
+      </md-option>
+      <md-option value="NONE">
+          None
+      </md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container class="no-errors-spacer">
+    <label>Rollup Interval</label>
+    <input ng-model="$ctrl.params.rollupIntervals" type="number" step="1" ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup">
+  </md-input-container>
+  <md-input-container>
+    <label>Rollup Interval</label>
+    <md-select ng-model="$ctrl.params.rollupIntervalPeriod" ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup">
+      <md-option value="SECONDS">
+          Seconds
+      </md-option>
+      <md-option value="MINUTES">
+          Minutes
+      </md-option>
+      <md-option value="HOURS">
+          Hours
+      </md-option>
+      <md-option value="DAYS">
+          Days
+      </md-option>
+      <md-option value="WEEKS">
+          Weeks
+      </md-option>
+      <md-option value="MONTHS">
+          Months
+      </md-option>
+      <md-option value="YEARS">
+          Years
+      </md-option>
+    </md-select>
+  </md-input-container>
+  <md-checkbox ng-model="$ctrl.params.autoRollup">Auto-Interval</md-checkbox>
+  
+  <div class="flex"></div>
+  
+  <md-input-container class="no-errors-spacer">
+    <label>From Date</label>
+    <ma-date-picker ng-model="$ctrl.params.from" format="l LT"></ma-date-picker>
+  </md-input-container>
+  <md-input-container class="no-errors-spacer">
+    <label>To Date</label>
+    <ma-date-picker ng-model="$ctrl.params.to" format="l LT"></ma-date-picker>
+  </md-input-container>
+</div>

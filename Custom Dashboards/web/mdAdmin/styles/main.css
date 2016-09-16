@@ -724,3 +724,17 @@ li.md-nav-item {
 li.md-nav-item:first-of-type {
   margin: 0;
 }
+
+/* Date bar */
+md-toolbar.date-bar,
+md-toolbar.date-bar .md-toolbar-tools {
+  font-size: inherit;
+}
+
+md-toolbar.date-bar md-checkbox {
+  margin-bottom: 0;
+}
+
+md-toolbar.date-bar md-input-container {
+  margin-bottom: 0;
+}

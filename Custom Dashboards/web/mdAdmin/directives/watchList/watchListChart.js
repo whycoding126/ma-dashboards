@@ -6,20 +6,16 @@
 define(['require'], function(require) {
     'use strict';
 
-    var watchListChart = function($mdMedia, $timeout) {
+    var watchListChart = function($mdMedia, $timeout, MD_ADMIN_SETTINGS) {
         return {
             restrict: 'E',
             scope: {
-                to: '=',
-                from: '=',
-                addChecked: '=',
-                rollupType: '=',
-                rollupIntervalNumber: '=',
-                rollupIntervalPeriod: '=',
-                autoRollup: '='
+                addChecked: '='
             },
             templateUrl: 'directives/watchList/watchListChart.html',
             link: function link(scope, element, attrs) {
+                
+                scope.dateBar = MD_ADMIN_SETTINGS.dateBar;
 
                 scope.parseInt = parseInt; // Make parseInt available to scope
                 scope.parseFloat = parseFloat; // Make parseFloat available to scope
@@ -44,7 +40,7 @@ define(['require'], function(require) {
         }; // End return
     }; // End DDO
 
-    watchListChart.$inject = ['$mdMedia', '$timeout'];
+    watchListChart.$inject = ['$mdMedia', '$timeout', 'MD_ADMIN_SETTINGS'];
 
     return watchListChart;
 

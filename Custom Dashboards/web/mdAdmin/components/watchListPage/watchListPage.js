@@ -15,6 +15,7 @@ return {
         this.deviceName = null;
         this.hierarchyFolders = [];
         this.settings = MD_ADMIN_SETTINGS;
+        this.dateBar = MD_ADMIN_SETTINGS.dateBar;
         
         this.selectFirstWatchList = false;
         if ($stateParams.watchListXid) {

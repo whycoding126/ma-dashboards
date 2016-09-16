@@ -11,13 +11,7 @@ define(['require'], function(require) {
             restrict: 'E',
             scope: {
                 watchList: '=',
-                to: '=',
-                from: '=',
                 selected: '=',
-                rollupType: '=',
-                rollupIntervalNumber: '=',
-                rollupIntervalPeriod: '=',
-                autoRollup: '=',
                 clear: '&'
             },
             templateUrl: 'directives/watchList/watchListTable.html',

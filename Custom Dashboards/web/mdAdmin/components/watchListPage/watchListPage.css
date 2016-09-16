@@ -1,28 +1,3 @@
-
-/* Date Pickers */
-
-.watchlist-controls > md-card-content {
-    padding-bottom: 0;
-}
-.watchlist-controls .date-picker-to-from input {
-    margin: 0 !important;
-    min-width: 135px !important;
-    width: 135px !important;
-}
-.watchlist-controls .date-picker md-select {
-    margin: 0 !important;
-    min-width: 160px !important;
-    width: 160px !important;
-}
-/* Rollup Pickers */
-.watchlist-controls md-select, .watchlist-controls .md-input {
-    margin: 0 !important;
-    min-width: 100px !important;
-    width: 100px !important;
-}
-
-
-
 /* Table Component */
 
 /*.watchlist-main md-table-container {

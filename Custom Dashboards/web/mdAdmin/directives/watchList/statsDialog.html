@@ -16,14 +16,14 @@
                   <md-tabs md-dynamic-height md-border-bottom md-no-pagination md-stretch-tabs="always">
                         <md-tab label="Stats">
                               <md-content class="md-padding">
-                                    <ma-point-statistics point="ctrl.parent.point" from="ctrl.parent.from" to="ctrl.parent.to" statistics="statsObj"></ma-point-statistics>
+                                    <ma-point-statistics point="ctrl.parent.point" from="ctrl.dateBar.from" to="ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
 
                                     <ma-statistics-table statistics="statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
                         <md-tab label="Chart">
                               <md-content class="md-padding">
-                                    <ma-point-values point-xid="{{ctrl.parent.point.xid}}" values="pointValues" from="ctrl.parent.from" to="ctrl.parent.to" rollup="{{ctrl.parent.rollupType}}" rollup-interval="{{ctrl.parent.rollupIntervalNumber}} {{ctrl.parent.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.parent.autoRollup">
+                                    <ma-point-values point-xid="{{ctrl.parent.point.xid}}" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup">
                                     </ma-point-values>
 
                                     <ma-serial-chart style="height: 300px; width: 100%" series-1-values="pointValues" series-1-point="ctrl.parent.point" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">

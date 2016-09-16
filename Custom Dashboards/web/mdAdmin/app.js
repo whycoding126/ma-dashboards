@@ -106,9 +106,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                            './directives/iframeView/iframeView',
                            './directives/stateParams/stateParams',
                            './components/autoLoginSettings/autoLoginSettings',
-                           './components/activeEventIcons/activeEventIcons'
+                           './components/activeEventIcons/activeEventIcons',
+                           './components/dateBar/dateBar'
                 ], function(Menu, MenuEditor, jsonStoreMenu, dashboardMenu, menuLink, menuToggle,
-                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings, activeEventIcons) {
+                        menuEditor, pageEditor, liveEditor, dualPaneEditor, iframeView, stateParams, autoLoginSettings, activeEventIcons, dateBar) {
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('MenuEditor', MenuEditor)
@@ -123,7 +124,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                         .component('menuLink', menuLink)
                         .component('menuToggle', menuToggle)
                         .component('autoLoginSettings', autoLoginSettings)
-                        .component('maActiveEventIcons', activeEventIcons);
+                        .component('maActiveEventIcons', activeEventIcons)
+                        .component('dateBar', dateBar);
                     $ocLazyLoad.inject('dashboard');
                 });
             }]
@@ -201,6 +203,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
         menuTr: 'dashboards.v3.app.watchList',
         menuIcon: 'remove_red_eye',
+        params: {
+            showDateBar: true
+        },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListPage/watchListPage',
@@ -1113,14 +1118,22 @@ mdAdminApp.run([
     'MD_ADMIN_SETTINGS',
     'Translate',
     '$location',
+    '$stateParams',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location) {
+        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location, $stateParams) {
 
+    MD_ADMIN_SETTINGS.dateBar = {
+        rollupType: 'AVERAGE',
+        rollupIntervals: 5,
+        rollupIntervalPeriod: 'MINUTES',
+        autoRollup: true
+    };
+    MD_ADMIN_SETTINGS.stateParams = $stateParams;
+    
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
-    $rootScope.appVariables = {};
     $rootScope.$mdMedia = $mdMedia;
 
     // inserts a style tag to style <a> tags with accent color
