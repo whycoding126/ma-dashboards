@@ -199,7 +199,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.watchList',
         url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
         template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
-        menuText: 'Watch List',
+        menuTr: 'dashboards.v3.app.watchList',
         menuIcon: 'remove_red_eye',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -229,7 +229,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.dataPointDetails',
         url: '/data-point-details/{pointXid}',
         template: '<ma-data-point-details></ma-data-point-details>',
-        menuText: 'Data Point Details',
+        menuTr: 'dashboards.v3.app.dataPointDetails',
         menuIcon: 'timeline',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -246,7 +246,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.events',
         url: '/events?eventType&alarmLevel&sortOrder&acknowledged',
         template: '<ma-events-page></ma-events-page>',
-        menuText: 'Events',
+        menuTr: 'dashboards.v3.app.events',
         menuIcon: 'alarm',
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
