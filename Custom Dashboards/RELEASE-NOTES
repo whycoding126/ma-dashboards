@@ -1,3 +1,6 @@
+*Version 3.2.2*
+* Fix login bug where user was not redirected to /dashboards/home
+
 *Version 3.2.1*
 * Fix for amcharts export option loading JavaScript files incorrectly
 
@@ -16,8 +19,8 @@
 * mdAdmin interface notifies user about connectivity to Mango API via watchdog functionality
 * Documentation of Mango Dashboards AngularJS directives, services and filters
 * Live value displays have a red cross hatch applied when the API goes down
-* Added option on <ma-point-values> for auto rollup intervals
-* Added export, legend, and balloon attributes to <am-serial-chart>
+* Added option on ma-point-values for auto rollup intervals
+* Added export, legend, and balloon attributes to am-serial-chart
 
 *Version 3.1.1*
 * Fix admin template menu in Firefox

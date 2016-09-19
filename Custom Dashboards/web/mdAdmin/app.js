@@ -801,7 +801,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         
         if (path === '/dashboards/') {
             var homeUrl = user.homeUrl;
-            if (homeUrl.indexOf('/dashboards') === 0) {
+            if (homeUrl && homeUrl.indexOf('/dashboards') === 0) {
                 return homeUrl.substring(11); // strip dashboards from start of url
             }
             if (MD_ADMIN_SETTINGS.defaultUrl) {
