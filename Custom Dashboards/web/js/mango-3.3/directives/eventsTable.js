@@ -95,11 +95,12 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.acknowledgeEvent = function(eventID) {
                 Events.acknowledge({id: eventID}, null).$promise.then(
                     function (data) {
-                        // console.log('Success', data.id);
+                        // console.log('Success', data);
                         
                         $scope.events.find(function(item) {
                             return item.id === data.id;
                         }).acknowledged = true;
+                        
                     },
                     function (data) {
                         console.log('Error', data);

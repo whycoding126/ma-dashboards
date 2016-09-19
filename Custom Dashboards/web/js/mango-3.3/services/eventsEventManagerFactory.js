@@ -26,8 +26,8 @@ function eventsEventManager(EventManager) {
     	url: '/rest/v1/websocket/events'
     });
     
-    var message = {"eventTypes":["ACKNOWLEDGED","RAISED","RETURN_TO_NORMAL","DEACTIVATED"],
-    "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
+    // var message = {"eventTypes":["ACKNOWLEDGED","RAISED","RETURN_TO_NORMAL","DEACTIVATED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
+    var message = {"eventTypes":["RAISED"], "levels":["LIFE_SAFETY","CRITICAL","URGENT","INFORMATION","NONE"]};
     
     eventsEventManager.eventHandlers = [];
     

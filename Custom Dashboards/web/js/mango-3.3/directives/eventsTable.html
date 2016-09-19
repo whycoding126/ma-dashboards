@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody md-body>
-            <tr md-row ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit">
+            <tr md-row ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit track by event.id">
                 <td md-cell class="narrow-column">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x" style="color: rgb(255,133,0)" ng-if="event.active"></i>
