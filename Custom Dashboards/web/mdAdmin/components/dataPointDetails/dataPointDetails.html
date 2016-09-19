@@ -1,10 +1,10 @@
 <div layout="column" ng-init="page={}" class="data-point-details-page">
-	<div flex="100" layout="column" layout-gt-sm="row">
+	<div flex layout="column" layout-gt-sm="row">
 		<ma-point-values point="myPoint" values="myPointValues" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" rollup="{{$ctrl.dateBar.rollupType}}"
 	      rollup-interval="{{$ctrl.dateBar.rollupInterval}} {{$ctrl.dateBar.rollupIntervalType}}" auto-rollup-interval="$ctrl.dateBar.autoRollup">
 	    </ma-point-values>
 
-		<md-card flex="100" class="dpd-small-card">
+		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
 				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 					<h2 flex>
@@ -35,7 +35,7 @@
 			</md-card-content>
 		</md-card>
 		
-		<md-card flex="100" class="dpd-small-card">
+		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
 				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 					<h2 flex>
@@ -62,8 +62,8 @@
 		</md-card>
 	</div>
 	
-	<div flex="100" layout="column" layout-gt-sm="row">
-		<md-card flex="100" class="dpd-small-card">
+	<div flex layout="column" layout-gt-sm="row">
+		<md-card flex class="dpd-small-card">
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
 				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 					<h2 flex>
@@ -76,12 +76,12 @@
 			<br />
 		</md-card>
 		
-		<ma-user-notes-table reference-id="myPoint.id" flex="100" class="dpd-small-card"></ma-user-notes-table>	
+		<ma-user-notes-table reference-id="myPoint.id" flex class="dpd-small-card"></ma-user-notes-table>	
 	</div>
     
 
 	
-	<md-card flex="100">
+	<md-card flex>
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>
@@ -107,7 +107,7 @@
 		</ma-serial-chart>
 	</md-card>
 
-	<md-card flex="100">
+	<md-card flex>
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>
