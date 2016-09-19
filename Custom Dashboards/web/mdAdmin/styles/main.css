@@ -521,7 +521,9 @@ table.md-table td.md-cell.msg-column.truncated {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-
+table.md-table.statistics tbody.md-body td.md-cell {
+	border-top: none;
+}
 table.md-table.statistics tbody.md-body td.md-cell:first-child {
 	font-weight: bold;
 }

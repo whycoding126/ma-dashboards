@@ -1,6 +1,6 @@
 .data-point-details-page md-card.dpd-small-card {
-    height: 330px;
-    max-height: 330px;
+    height: 305px;
+    max-height: 305px;
 }
 
 .data-point-details-page .amchart {
@@ -13,5 +13,5 @@
 .data-point-details-page .point-details label{
     font-weight: bold;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 20px;
 }

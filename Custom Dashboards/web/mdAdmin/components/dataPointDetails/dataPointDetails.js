@@ -38,7 +38,7 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
         });
         
         PointHierarchy.pathByXid({xid: newValue}).$promise.then(function (data) {
-            console.log(data);
+            // console.log(data);
             $ctrl.path = data;
         },
         function(data) {
