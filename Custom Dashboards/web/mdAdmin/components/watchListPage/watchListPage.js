@@ -60,7 +60,7 @@ return {
             if (this.dataSource) {
                 var watchList = new WatchList();
                 watchList.type = 'query';
-                watchList.name = Translate.trSync('dashboards.v3.app.dataSource', [this.dataSource.name]);
+                watchList.name = Translate.trSync('dashboards.v3.app.dataSourceX', [this.dataSource.name]);
                 watchList.query = 'dataSourceXid=' + this.dataSource.xid;
                 watchList.$getPoints();
                 this.watchList = watchList;
@@ -82,7 +82,7 @@ return {
             if (this.deviceName) {
                 var watchList = new WatchList();
                 watchList.type = 'query';
-                watchList.name = Translate.trSync('dashboards.v3.app.deviceName', [this.deviceName]);
+                watchList.name = Translate.trSync('dashboards.v3.app.deviceNameX', [this.deviceName]);
                 watchList.query = 'deviceName=' + this.deviceName;
                 watchList.$getPoints();
                 this.watchList = watchList;
@@ -104,7 +104,7 @@ return {
             if (this.hierarchyFolders && this.hierarchyFolders.length) {
                 var watchList = new WatchList();
                 watchList.type = 'hierarchy';
-                watchList.name = Translate.trSync('dashboards.v3.app.hierarchyFolder', [this.hierarchyFolders[0].name]);
+                watchList.name = Translate.trSync('dashboards.v3.app.hierarchyFolderX', [this.hierarchyFolders[0].name]);
                 watchList.hierarchyFolders = this.hierarchyFolders;
                 watchList.$getPoints();
                 this.watchList = watchList;

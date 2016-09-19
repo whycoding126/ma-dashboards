@@ -970,21 +970,22 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             'hue-2': 'A200',
             'hue-3': 'A700'
         });
-
+    
     $mdThemingProvider
-        .theme('mangoInverse')
-        .primaryPalette('mango-orange', {
+        .theme('mangoDark')
+        .primaryPalette('mango-blue', {
             'default': '500',
             'hue-1': '300',
             'hue-2': '800',
             'hue-3': '100'
         })
-        .accentPalette('mango-blue', {
+        .accentPalette('mango-orange', {
             'default': 'A400',
             'hue-1': 'A100',
             'hue-2': 'A200',
             'hue-3': 'A700'
-        });
+        })
+        .dark();
 
     $mdThemingProvider.setDefaultTheme('mangoDefault');
 
@@ -1024,7 +1025,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         
         if (path === '/dashboards/') {
             var homeUrl = user.homeUrl;
-            if (homeUrl.indexOf('/dashboards') === 0) {
+            if (homeUrl && homeUrl.indexOf('/dashboards') === 0) {
                 return homeUrl.substring(11); // strip dashboards from start of url
             }
             if (MD_ADMIN_SETTINGS.defaultUrl) {

@@ -2,13 +2,13 @@
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
         md-is-locked-open="navLockedOpen" md-swipe-left="closeMenu()" class="navigation-menu">
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
-      <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
+      <ma-now update-interval="1 MINUTES" output="currentTime" time-zone="{{user.getTimezone()}}"></ma-now>
       <div flex layout="row">
         <img src="/modules/dashboards/web/img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
         <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">
-          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'LT'" class="dashboard-user-time"></span>
-          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'ddd ll'" class="dashboard-user-date"></span>
-          <span ng-bind="currentTime | moment:'tz':user.getTimezone() |moment:'format':'z'" class="dashboard-user-date"></span>
+          <span ng-bind="currentTime.format('LT')" class="dashboard-user-time"></span>
+          <span ng-bind="currentTime.format('ddd ll')" class="dashboard-user-date"></span>
+          <span ng-bind="currentTime.format('z')" class="dashboard-user-date"></span>
         </div>
       </div>
       <span ng-bind="user.username"></span>
@@ -21,7 +21,7 @@
   </md-sidenav>
 
   <div layout="column" tabIndex="-1" flex class="main-page-area">
-    <md-toolbar class="md-whiteframe-glow-z1 dashboard-main-toolbar" role="toolbar">
+    <md-toolbar md-theme="mangoDark" class="md-whiteframe-glow-z1 dashboard-main-toolbar" role="toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
         <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
@@ -57,9 +57,10 @@
                 <ma-date-range-picker from="mdAdmin.dateBar.from" to="mdAdmin.dateBar.to"
                   preset="LAST_1_DAYS" update-interval="1 minutes" aria-label="{{'dashboards.v3.app.datePreset' | tr}}"></ma-date-range-picker>
               </md-input-container>
-              <md-button class="md-icon-button" ng-click="mdAdmin.dateBar.expanded = !mdAdmin.dateBar.expanded"
-                aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}">
-                  <md-icon>{{mdAdmin.dateBar.expanded ? 'expand_less' : 'expand_more'}}</md-icon>
+              <md-button class="md-icon-button md-hue-1" ng-click="mdAdmin.dateBar.expanded = !mdAdmin.dateBar.expanded"
+                aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
+                ng-class="{'md-accent': mdAdmin.dateBar.expanded}">
+                  <md-icon>date_range</md-icon>
               </md-button>
             </div>
           
@@ -95,14 +96,6 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button aria-label="{{'dashboards.v3.app.legacyUi'|tr}}" ng-href="/" target="_blank">
-                    <div layout="row" flex layout-align="start center" layout-fill>
-                      <p flex ma-tr="dashboards.v3.app.legacyUi">Legacy UI</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">launch</md-icon>
-                    </div>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
                   <md-button aria-label="{{'header.logout'|tr}}" ui-sref="logout">
                     <div layout="row" flex layout-align="start center" layout-fill>
                       <p flex ma-tr="header.logout">Logout</p>
@@ -118,10 +111,9 @@
 
     </md-toolbar>
     
-    <md-toolbar class="md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="mdAdmin.dateBar.expanded">
+    <md-toolbar md-theme="mangoDark" class="md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="mdAdmin.dateBar.expanded">
       <div class="md-toolbar-tools">
         <date-bar flex></date-bar>
-        <md-button class="md-icon-button" ng-click="mdAdmin.dateBar.expanded = false"><md-icon>close</md-icon></md-button>
       </div>
     </md-toolbar>
 

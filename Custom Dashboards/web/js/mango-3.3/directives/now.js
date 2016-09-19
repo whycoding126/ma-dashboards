@@ -11,11 +11,12 @@ define(['moment-timezone'], function(moment) {
  * @restrict E
  * @description
  * `<ma-now update-interval="1 SECONDS" output="time"></ma-now>`
- * - This directive will output the current browser time as a timestamp.
+ * - This directive will output the current browser time as a Moment.js date object.
  * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>
  *
- * @param {object} output Variable to hold the outputted timestamp.
- * @param {string} update-interval The timestamp will update on this given interval.
+ * @param {object} output Variable to hold the output date.
+ * @param {string} update-interval The date will update on this given interval.
+ * @param {string} time-zone The output date will have the given timezone.
  Format the interval duration as a string starting with a number followed by one of these units:
 <ul>
     <li>years</li>
@@ -34,65 +35,71 @@ define(['moment-timezone'], function(moment) {
 </ma-clock>
  *
  */
-function now($rootScope, Util, $interval) {
+function now() {
     return {
-        scope: false,
-        compile: function() {
-    		var name = this.name;
-    		return postLink.bind(null, name);
-        }
+        scope: {
+            output: '=?',
+            updateInterval: '@',
+            timeZone: '@',
+            onUpdate: '&'
+        },
+        restrict: 'E',
+        controllerAs: '$ctrl',
+        bindToController: true,
+        controller: ['Util', '$interval', function nowController(Util, $interval) {
+
+            this.$onChanges = function(changes) {
+                if (changes.updateInterval) {
+                    this.startUpdateTimer();
+                }
+            };
+
+            this.$onDestroy = function() {
+                this.cancelUpdateTimer();
+            };
+
+            this.startUpdateTimer = function startUpdateTimer() {
+                this.cancelUpdateTimer();
+                this.doUpdate();
+
+                var millis = parseUpdateInterval(this.updateInterval);
+
+                // dont allow continuous loops
+                if (!millis) return;
+
+                this.intervalPromise = $interval(this.doUpdate, millis);
+            };
+
+            this.cancelUpdateTimer = function cancelUpdateTimer() {
+                if (this.intervalPromise) {
+                    $interval.cancel(this.intervalPromise);
+                    this.intervalPromise = null;
+                }
+            };
+            
+            this.doUpdate = function doUpdate() {
+                var m = moment();
+                if (this.timeZone) {
+                    m.tz(this.timeZone);
+                }
+                this.output = m;
+                this.onUpdate({now: m});
+            }.bind(this);
+
+            function parseUpdateInterval(updateInterval) {
+                if (Util.isEmpty(updateInterval)) return;
+                var parts = updateInterval.split(' ');
+                if (parts.length < 2) return;
+                if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
+
+                var duration = moment.duration(parseFloat(parts[0]), parts[1]);
+                return duration.asMilliseconds();
+            }
+        }]
     };
-
-    function postLink(name, $scope, $element, attrs) {
-    	var outputVariable = attrs[name] || attrs.output;
-
-    	attrs.$observe('updateInterval', function() {
-        	startUpdateTimer();
-        });
-
-        $scope.$on('$destroy', function() {
-        	cancelUpdateTimer();
-        });
-
-        var intervalPromise;
-        function startUpdateTimer() {
-            cancelUpdateTimer();
-
-            doUpdate();
-
-            var millis = parseUpdateInterval(attrs.updateInterval);
-
-            // dont allow continuous loops
-            if (!millis) return;
-
-            intervalPromise = $interval(doUpdate, millis);
-        }
-
-        function doUpdate() {
-        	$scope[outputVariable] = moment();
-        }
-
-        function parseUpdateInterval(updateInterval) {
-        	if (Util.isEmpty(updateInterval)) return;
-            var parts = updateInterval.split(' ');
-            if (parts.length < 2) return;
-            if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
-
-            var duration = moment.duration(parseFloat(parts[0]), parts[1]);
-            return duration.asMilliseconds();
-        }
-
-        function cancelUpdateTimer() {
-        	if (intervalPromise) {
-            	$interval.cancel(intervalPromise);
-            	intervalPromise = null;
-        	}
-        }
-    }
 }
 
-now.$inject = ['$rootScope', 'Util', '$interval'];
-
+now.$inject = [];
 return now;
 
 }); // define
