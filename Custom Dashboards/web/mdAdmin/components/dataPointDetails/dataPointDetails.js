@@ -6,21 +6,21 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS) {
+var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS, PointHierarchy) {
     
-    var $this = this;
+    var $ctrl = this;
     this.dateBar = MD_ADMIN_SETTINGS.dateBar;
     
     this.$onInit = function() {
         if ($stateParams.pointXid) {
             // console.log($stateParams.pointXid);
-            $this.pointXid = $stateParams.pointXid;
+            $ctrl.pointXid = $stateParams.pointXid;
         }
         else {
             // Attempt load pointXid from local storage
             var storedPoint = localStorageService.get('lastDataPointDetailsItem');
             if (storedPoint) {
-                $this.pointXid = storedPoint.xid;
+                $ctrl.pointXid = storedPoint.xid;
                 //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
             }
             
@@ -36,12 +36,20 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
         localStorageService.set('lastDataPointDetailsItem', {
             xid: newValue
         });
+        
+        PointHierarchy.pathByXid({xid: newValue}).$promise.then(function (data) {
+            console.log(data);
+            $ctrl.path = data;
+        },
+        function(data) {
+            console.log('error', data);
+        });
     });
     
     
 };
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS'];
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS', 'PointHierarchy'];
 
 return {
     controller: dataPointDetailsController,

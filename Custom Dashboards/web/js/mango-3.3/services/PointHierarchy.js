@@ -141,6 +141,13 @@ function PointHierarchyFactory($resource) {
             isArray: false,
             withCredentials: true,
             cache: true
+        },
+        pathByXid: {
+            method: 'GET',
+            url: ' /rest/v1/hierarchy/path/:xid',
+            isArray: true,
+            withCredentials: true,
+            cache: true
         }
     });
 
