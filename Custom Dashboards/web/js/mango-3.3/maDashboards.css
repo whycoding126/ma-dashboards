@@ -271,11 +271,11 @@ ma-badge {
     font-size: 10px;
     line-height: 11px;
     color: white;
-    padding: 2px;
+    padding: 3px 5px;
     position: absolute;
-    border-radius: 5px;
+    border-radius: 8px;
     bottom: 0px;
-    right: -4px;
+    right: 0px;
 }
 .md-button.ma-badge {
    overflow: visible;

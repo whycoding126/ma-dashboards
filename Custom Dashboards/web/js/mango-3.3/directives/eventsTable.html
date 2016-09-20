@@ -1,4 +1,8 @@
-<md-table-pagination class="underline" md-limit="paginateLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]" md-page="myPage" md-total="{{events.length}}"></md-table-pagination>
+
+<div ng-class="{'desktop': $mdMedia('gt-sm')}" layout="column" layout-gt-sm="row" flex layout-align="end end">
+    <md-table-pagination flex flex-order="3" flex-order-gt-sm="1" class="underline" md-limit="paginateLimit" md-limit-options="[5, 10, 15, 25, 50, 100, 200]" md-page="myPage" md-total="{{events.length}}"></md-table-pagination>
+    <md-button flex-order="2" class="md-raised md-primary md-hue-2" ng-click="acknowledgeEvents(events)" ng-disabled="!events.length">Acknowledge All {{events.length}} Events</md-button>
+</div>
 <md-table-container ng-init="myPage=1;" class="events-table">
     <table md-table ng-class="{'mobile': !$mdMedia('gt-sm')}">
         <thead md-head md-order="myOrder">
@@ -9,10 +13,16 @@
                 <th md-column md-order-by="status" ma-tr="dashboards.v3.app.status"></th>
                 <th md-column class="medium-column" ma-tr="dashboards.v3.app.duration"></th>
                 <th md-column md-order-by="acknowledged" ma-tr="dashboards.v3.app.acknowledge" class="narrow-column"></th>
-                
             </tr>
         </thead>
-        <tbody md-body>
+        <tbody md-body ng-hide="events.length">
+            <tr md-row>
+                <td md-cell colspan="6" style="height:60px; font-weight: bold;">
+                    No Events Found
+                </td>
+            </tr>
+        </tbody>
+        <tbody md-body ng-show="events.length">
             <tr md-row ng-repeat="event in events | orderBy: myOrder | limitTo: paginateLimit: (myPage - 1) * paginateLimit track by event.id">
                 <td md-cell class="narrow-column">
                     <span class="fa-stack fa-lg">
@@ -34,8 +44,8 @@
                 </td>
                 <td md-cell ng-if="event.returnToNormalTimestamp != 0" class="medium-column">{{event.returnToNormalTimestamp - event.activeTimestamp | duration: 'humanize'}}</td>
                 <td md-cell class="narrow-column">
-                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="acknowledgeEvent(event.id);" ng-if="!event.acknowledged"></i>
-                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged"></i>
+                    <i class="fa fa-circle-o fa-lg acknowledged-checkbox" ng-click="acknowledgeEvents([event]);" ng-if="!event.acknowledged"></i>
+                    <i class="fa fa-check-circle-o fa-lg acknowledged-checkbox" ng-if="event.acknowledged" ng-click="acknowledgeEvents([event]);" ></i>
                 </td>
             </tr>
         </tbody>

@@ -94,20 +94,23 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 return $sce.trustAsHtml(text);
             };
             
-            $scope.acknowledgeEvent = function(eventID) {
-                Events.acknowledge({id: eventID}, null).$promise.then(
-                    function (data) {
-                        // console.log('Success', data);
-                        
-                        $scope.events.find(function(item) {
-                            return item.id === data.id;
-                        }).acknowledged = true;
-                        
-                    },
-                    function (data) {
-                        console.log('Error', data);
-                    }
-                );
+            $scope.acknowledgeEvents = function(events) {
+                events.forEach(function(event) {
+                    Events.acknowledge({id: event.id}, null).$promise.then(
+                        function (data) {
+                            // console.log('Success', data);
+                            
+                            if (data.id) {
+                                $scope.events.find(function(item) {
+                                    return item.id === data.id;
+                                }).acknowledged = true;
+                            }
+                        },
+                        function (data) {
+                            console.log('Error', data);
+                        }
+                    );
+                });
             };
             
             $scope.$watch(function() {
