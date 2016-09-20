@@ -262,3 +262,21 @@ ma-point-hierarchy-folder ul li {
 md-list-item.ma-list-selected .md-list-item-text h3 {
   color: inherit !important;
 }
+
+/* Badges */
+md-badge {
+    display: block;
+    z-index: 10;
+    background-color: rgb(255,133,0);
+    font-size: 10px;
+    line-height: 11px;
+    color: white;
+    padding: 2px;
+    position: absolute;
+    border-radius: 5px;
+    bottom: -5px;
+    right: -5px;
+}
+.md-button.md-fab.md-badge {
+   overflow: visible;
+}

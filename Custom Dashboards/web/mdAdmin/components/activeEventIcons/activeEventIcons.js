@@ -12,14 +12,14 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
     Events.getActiveSummary().$promise.then(
         function(data) {
             // console.log('success', data);
-            $ctrl.eventsSummary = data;
-            $ctrl.events = {};
+            $ctrl.events = {totalCount: 0};
             
-            $ctrl.eventsSummary.forEach(function(item, index, array) {
-                $ctrl.events[item.level] = item
+            data.forEach(function(item, index, array) {
+                $ctrl.events[item.level] = item;
+                $ctrl.events.totalCount += item.unsilencedCount;
             });
             
-            // console.log($ctrl.events);
+            // console.log($ctrl.events.totalCount);
             
             eventsEventManager.subscribe(function(msg) {
                 // console.log(msg);
@@ -35,9 +35,11 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
                 
                 if (payloadType === 'RAISED') {
                     $ctrl.events[payloadEvent.alarmLevel].unsilencedCount++;
+                    $ctrl.events.totalCount++;
                 }
                 else if (payloadType === 'ACKNOWLEDGED') {
                     $ctrl.events[payloadEvent.alarmLevel].unsilencedCount--;
+                    $ctrl.events.totalCount--;
                 }
                 
             };
