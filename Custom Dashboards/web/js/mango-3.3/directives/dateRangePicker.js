@@ -67,111 +67,135 @@ Eg: `update-interval="10 minutes"`
        update-interval="5 seconds"></ma-date-range-picker>
   </md-input-container>
  */
-function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
+function dateRangePicker($injector) {
     return {
         restrict: 'E',
+        controllerAs: '$ctrl',
+        bindToController: true,
         scope: {
             preset: '@',
-            from: '=',
-            to: '=',
+            from: '<',
+            to: '<',
             format: '@',
-            updateInterval: '@'
+            updateInterval: '@',
+            refresh: '<?',
+            onChange: '&',
+            noUnderline: '<?'
         },
-        replace: true,
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
-                return '<md-select ng-model="preset">' +
-                '<md-option ng-value="p.type" ng-repeat="p in presets track by p.type">{{p.label}}</md-option>' +
+                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.doUpdate()" ma-tr="dashboards.v3.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
+                '<md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">{{p.label}}</md-option>' +
                 '</md-select>';
             }
 
-            return '<select ng-options="p.type as p.label for p in presets" ng-model="preset"></select>';
+            return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.doUpdate()"></select>';
         },
-        link: function ($scope, $element) {
+        controller: ['$attrs', '$parse', '$scope', '$timeout', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDefaultDateFormat',
+                     function($attrs, $parse, $scope, $timeout, Util, MA_DATE_RANGE_PRESETS, mangoDefaultDateFormat) {
+            
+            var fromAssign = $parse($attrs.from).assign.bind(null, $scope.$parent);
+            var toAssign = $parse($attrs.to).assign.bind(null, $scope.$parent);
+            
+            this.$onChanges = function(changes) {
+                if (changes.preset) {
+                    this.doUpdate();
+                }
+                
+                if (changes.refresh && !changes.refresh.isFirstChange()) {
+                    this.doUpdate();
+                    this.startUpdateTimer();
+                }
+                
+                if (changes.updateInterval) {
+                    this.startUpdateTimer();
+                }
+                
+                if (changes.from && !changes.from.isFirstChange() || changes.to && !changes.to.isFirstChange()) {
+                    if (!(this.isSame(this.fromMoment, this.from) && this.isSame(this.toMoment, this.to))) {
+                        this.preset = '';
+                    }
+                }
+            };
+            
+            this.$onDestroy = function() {
+                $timeout.cancel(this.timerPromise);
+            };
+            
             var mdPickers = $injector.has('$mdpDatePicker');
+            this.presets = MA_DATE_RANGE_PRESETS;
 
-        	var from, to;
-        	$scope.presets = $rootScope.dateRangePresets;
-
-        	$scope.$watch('preset', doUpdate);
-
-        	$scope.$watch('updateInterval', function() {
-            	startUpdateTimer();
-            });
-
-        	$scope.$watchGroup(['from', 'to'], function(newValues) {
-        		if (!(isSame(from, newValues[0]) && isSame(to, newValues[1]))) {
-        			$scope.preset = '';
-        		}
-        	});
-
-        	function isSame(m, check) {
+            this.isSame = function isSame(m, check) {
                 if (typeof check === 'string') {
-                    return m.format($scope.format || mangoDefaultDateFormat) === check;
+                    return m.format(this.format || mangoDefaultDateFormat) === check;
                 }
                 return m.isSame(check);
-        	}
+            };
 
-        	function doUpdate() {
-        		if (!$scope.preset) return;
-        		from = moment();
-        		to = moment();
-        		switch($scope.preset) {
-        		case 'LAST_5_MINUTES': from = from.subtract(5, 'minutes'); break;
-        		case 'LAST_15_MINUTES': from = from.subtract(15, 'minutes'); break;
-        		case 'LAST_30_MINUTES': from = from.subtract(30, 'minutes'); break;
-        		case 'LAST_1_HOURS': from = from.subtract(1, 'hours'); break;
-        		case 'LAST_3_HOURS': from = from.subtract(3, 'hours'); break;
-        		case 'LAST_6_HOURS': from = from.subtract(6, 'hours'); break;
-        		case 'LAST_12_HOURS': from = from.subtract(12, 'hours'); break;
-        		case 'LAST_1_DAYS': from = from.subtract(1, 'days'); break;
-        		case 'LAST_1_WEEKS': from = from.subtract(1, 'weeks'); break;
-        		case 'LAST_2_WEEKS': from = from.subtract(2, 'weeks'); break;
-        		case 'LAST_1_MONTHS': from = from.subtract(1, 'months'); break;
-        		case 'LAST_3_MONTHS': from = from.subtract(3, 'months'); break;
-        		case 'LAST_6_MONTHS': from = from.subtract(6, 'months'); break;
-        		case 'LAST_1_YEARS': from = from.subtract(1, 'years'); break;
-        		case 'LAST_2_YEARS': from = from.subtract(2, 'years'); break;
-        		case 'DAY_SO_FAR': from = from.startOf('day'); break;
-        		case 'WEEK_SO_FAR': from = from.startOf('week'); break;
-        		case 'MONTH_SO_FAR': from = from.startOf('month'); break;
-        		case 'YEAR_SO_FAR': from = from.startOf('year'); break;
-        		case 'PREVIOUS_DAY':
-        			from = from.subtract(1, 'days').startOf('day');
-        			to = to.startOf('day');
-        			break;
-        		case 'PREVIOUS_WEEK':
-        			from = from.subtract(1, 'weeks').startOf('week');
-        			to = to.startOf('week');
-        			break;
-        		case 'PREVIOUS_MONTH':
-        			from = from.subtract(1, 'months').startOf('month');
-        			to = to.startOf('month');
-        			break;
-        		case 'PREVIOUS_YEAR':
-        			from = from.subtract(1, 'years').startOf('year');
-        			to = to.startOf('year');
-        			break;
-        		}
+            this.doUpdate = function doUpdate() {
+                if (!this.preset) return;
+                var from = moment();
+                var to = moment();
+                switch(this.preset) {
+                case 'LAST_5_MINUTES': from.subtract(5, 'minutes'); break;
+                case 'LAST_15_MINUTES': from.subtract(15, 'minutes'); break;
+                case 'LAST_30_MINUTES': from.subtract(30, 'minutes'); break;
+                case 'LAST_1_HOURS': from.subtract(1, 'hours'); break;
+                case 'LAST_3_HOURS': from.subtract(3, 'hours'); break;
+                case 'LAST_6_HOURS': from.subtract(6, 'hours'); break;
+                case 'LAST_12_HOURS': from.subtract(12, 'hours'); break;
+                case 'LAST_1_DAYS': from.subtract(1, 'days'); break;
+                case 'LAST_1_WEEKS': from.subtract(1, 'weeks'); break;
+                case 'LAST_2_WEEKS': from.subtract(2, 'weeks'); break;
+                case 'LAST_1_MONTHS': from.subtract(1, 'months'); break;
+                case 'LAST_3_MONTHS': from.subtract(3, 'months'); break;
+                case 'LAST_6_MONTHS': from.subtract(6, 'months'); break;
+                case 'LAST_1_YEARS': from.subtract(1, 'years'); break;
+                case 'LAST_2_YEARS': from.subtract(2, 'years'); break;
+                case 'DAY_SO_FAR': from.startOf('day'); break;
+                case 'WEEK_SO_FAR': from.startOf('week'); break;
+                case 'MONTH_SO_FAR': from.startOf('month'); break;
+                case 'YEAR_SO_FAR': from.startOf('year'); break;
+                case 'PREVIOUS_DAY':
+                    from.subtract(1, 'days').startOf('day');
+                    to.startOf('day');
+                    break;
+                case 'PREVIOUS_WEEK':
+                    from.subtract(1, 'weeks').startOf('week');
+                    to.startOf('week');
+                    break;
+                case 'PREVIOUS_MONTH':
+                    from.subtract(1, 'months').startOf('month');
+                    to.startOf('month');
+                    break;
+                case 'PREVIOUS_YEAR':
+                    from.subtract(1, 'years').startOf('year');
+                    to.startOf('year');
+                    break;
+                }
+                
+                this.fromMoment = from;
+                this.toMoment = to;
 
-        		if (mdPickers || $scope.format === 'false') {
-        		    $scope.from = from.toDate();
-                    $scope.to = to.toDate();
-        		} else {
-        		    var format = $scope.format || mangoDefaultDateFormat;
-                    $scope.from = from.format(format);
-                    $scope.to = to.format(format);
-        		}
-        	}
+                if (mdPickers || this.format === 'false') {
+                    fromAssign(from.toDate());
+                    toAssign(to.toDate());
+                } else {
+                    var format = this.format || mangoDefaultDateFormat;
+                    fromAssign(from.format(format));
+                    toAssign(to.format(format));
+                }
+                
+                this.onChange({from: from, to: to});
+            }.bind(this);
 
-            var timerId;
-            function startUpdateTimer() {
-                cancelUpdateTimer();
+            this.startUpdateTimer = function startUpdateTimer() {
+                $timeout.cancel(this.timerPromise);
 
-                if (isEmpty($scope.updateInterval)) return;
-                var parts = $scope.updateInterval.split(' ');
+                if (Util.isEmpty(this.updateInterval)) return;
+                var parts = this.updateInterval.split(' ');
                 if (parts.length < 2) return;
-                if (isEmpty(parts[0]) || isEmpty(parts[1])) return;
+                if (Util.isEmpty(parts[0]) || Util.isEmpty(parts[1])) return;
 
                 var duration = moment.duration(parseFloat(parts[0]), parts[1]);
                 var millis = duration.asMilliseconds();
@@ -179,29 +203,13 @@ function dateRangePicker($rootScope, $injector, mangoDefaultDateFormat) {
                 // dont allow continuous loops
                 if (millis === 0) return;
 
-                timerId = setInterval(function() {
-                    $scope.$apply(function() {
-                        doUpdate();
-                    });
-                }, millis);
+                this.timerPromise = $timeout(this.doUpdate, millis);
             }
-
-            // test for null, undefined or whitespace
-            function isEmpty(str) {
-            	return !str || /^\s*$/.test(str);
-            }
-
-            function cancelUpdateTimer() {
-                if (timerId) {
-                    clearInterval(timerId);
-                    timerId = null;
-                }
-            }
-        }
+        }]
     };
 }
 
-dateRangePicker.$inject = ['$rootScope', '$injector', 'mangoDefaultDateFormat'];
+dateRangePicker.$inject = ['$injector'];
 
 return dateRangePicker;
 
