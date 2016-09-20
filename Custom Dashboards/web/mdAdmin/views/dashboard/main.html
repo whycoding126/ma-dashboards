@@ -11,8 +11,23 @@
           <span ng-bind="currentTime.format('z')" class="dashboard-user-date"></span>
         </div>
       </div>
-      <span ng-bind="user.username"></span>
-      <span class="email" ng-bind="user.email"></span>
+      <md-select class="md-no-underline" ng-model="userMenu" ng-init="userMenu='user'" ng-change="userMenu === 'logout' && $state.go('logout')">
+        <md-option value="user" class="user-menu">
+          <div layout="row" layout-align="start center">
+            <md-icon>person</md-icon>
+            <div flex layout="column">
+              <span ng-bind="user.username"></span>
+              <span class="email" ng-bind="user.email"></span>
+            </div>
+          </div>
+        </md-option>
+        <md-option value="logout" class="user-menu">
+          <div layout="row" layout-align="start center">
+            <md-icon>power_settings_new</md-icon>
+            <span ma-tr="header.logout" flex>Logout</span>
+          </div>
+        </md-option>
+      </md-select>
     </md-toolbar>
 
     <md-content flex role="navigation" md-colors="{background: 'background-A100'}">
@@ -62,52 +77,7 @@
                 ng-class="{'md-accent': mdAdmin.dateBar.expanded}">
                   <md-icon>date_range</md-icon>
               </md-button>
-              <md-button class="md-icon-button" ng-click="refresh={}" aria-label="{{'common.refresh' | tr}}">
-                  <md-icon>refresh</md-icon>
-              </md-button>
             </div>
-          
-            <md-menu md-position-mode="target-right target">
-              <md-button aria-label="User menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                <md-icon md-menu-origin>more_vert</md-icon>
-              </md-button>
-              <md-menu-content width="4">
-                <!--
-                <md-menu-item>
-                  <md-button aria-label="User profile" ng-href="/users.shtm" target="_blank">
-                    <div layout="row" flex layout-align="start center" layout-fill>
-                      <p flex>{{user.username}}</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">person</md-icon>
-                    </div>
-                  </md-button>
-                </md-menu-item>
-                -->
-                <md-menu-item ng-if="user.hasPermission('edit-menus')">
-                  <md-button aria-label="{{'dashboards.v3.app.editMenu'|tr}}" ui-sref="dashboard.settings.editMenu">
-                    <div layout="row" flex layout-align="start center" layout-fill>
-                      <p flex ma-tr="dashboards.v3.app.editMenu">Edit menu</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">toc</md-icon>
-                    </div>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item ng-if="user.hasPermission('superadmin')">
-                  <md-button aria-label="{{'header.systemSettings'|tr}}" ui-sref="dashboard.settings.systemSettings">
-                    <div layout="row" flex layout-align="start center" layout-fill>
-                      <p flex ma-tr="header.systemSettings">System settings</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
-                    </div>
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button aria-label="{{'header.logout'|tr}}" ui-sref="logout">
-                    <div layout="row" flex layout-align="start center" layout-fill>
-                      <p flex ma-tr="header.logout">Logout</p>
-                      <md-icon md-menu-align-target style="margin: auto 3px auto 0;">power_settings_new</md-icon>
-                    </div>
-                  </md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
-<div flex layout="row" layout-align="start center" layout-wrap>
-  <div ng-show="$ctrl.stateParams.dateBar.rollupControls">
+<div flex layout="row" layout-align="start center">
+  <div layout="row" layout-align="start center" ng-show="$ctrl.stateParams.dateBar.rollupControls">
     <md-input-container>
       <label>Rollup Type</label>
       <md-select ng-model="$ctrl.params.rollupType">
@@ -20,7 +20,7 @@
         </md-option>
       </md-select>
     </md-input-container>
-    <md-input-container class="no-errors-spacer">
+    <md-input-container class="no-errors-spacer" flex="nogrow">
       <label>Rollup Interval</label>
       <input ng-model="$ctrl.params.rollupIntervals" type="number" step="1" ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup">
     </md-input-container>
@@ -51,13 +51,30 @@
       </md-select>
     </md-input-container>
     <md-checkbox ng-model="$ctrl.params.autoRollup">Auto-Interval</md-checkbox>
+    <md-button class="md-icon-button" ng-click="refresh=$event" aria-label="{{'common.refresh' | tr}}">
+        <md-icon>refresh</md-icon>
+    </md-button>
   </div>
-  
-  <div class="flex"></div>
-  <div layout="row" class="date-bar-date-pickers">
-    <mdp-date-picker mdp-placeholder="From date" mdp-open-on-click mdp-format="l" ng-model="$ctrl.params.from"></mdp-date-picker>
-    <mdp-time-picker mdp-placeholder="From time" mdp-open-on-click mdp-auto-switch="true" ng-model="$ctrl.params.from" mdp-format="LT"></mdp-time-picker>
-    <mdp-date-picker mdp-placeholder="To date" mdp-open-on-click mdp-format="l" ng-model="$ctrl.params.to"></mdp-date-picker>
-    <mdp-time-picker mdp-placeholder="To time" mdp-open-on-click mdp-auto-switch="true" ng-model="$ctrl.params.to" mdp-format="LT"></mdp-time-picker>
+
+  <div flex="100"></div>
+
+  <div layout="row" layout-align="start center" class="date-bar-date-pickers">
+    <md-input-container class="no-errors-spacer">
+      <label>From date</label>
+      <ma-date-picker ng-model="$ctrl.params.from"></ma-date-picker>
+    </md-input-container>
+    <md-input-container class="no-errors-spacer">
+      <label>From time</label>
+      <ma-date-picker format="LT" ng-model="$ctrl.params.from" mode="time"></ma-date-picker>
+    </md-input-container>
+    
+    <md-input-container class="no-errors-spacer">
+      <label>To date</label>
+      <ma-date-picker format="l" ng-model="$ctrl.params.to" mode="date"></ma-date-picker>
+    </md-input-container>
+    <md-input-container class="no-errors-spacer">
+      <label>To time</label>
+      <ma-date-picker format="LT" ng-model="$ctrl.params.to" mode="time"></ma-date-picker>
+    </md-input-container>
   </div>
 </div>

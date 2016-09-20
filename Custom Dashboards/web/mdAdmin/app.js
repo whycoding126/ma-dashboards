@@ -1146,6 +1146,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
+    $rootScope.$state = $state;
 
     // inserts a style tag to style <a> tags with accent color
     if ($MD_THEME_CSS) {

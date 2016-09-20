@@ -51,13 +51,35 @@ body {
 }
 
 .dashboard-sidebar-header {
-	padding: 10px;
+	padding: 8px;
 	font-size: small;
 }
 
 .dashboard-sidebar-header img {
 	width: 150px;
     margin-bottom: 8px;
+}
+
+.dashboard-sidebar-header md-select {
+  margin: 0;
+  height: 40px;
+}
+
+.dashboard-sidebar-header md-select .md-select-value {
+  padding: 0;
+  border-bottom-width: 0;
+}
+
+.dashboard-sidebar-header md-select .md-select-value md-icon {
+  display: none;
+}
+
+md-option.user-menu md-icon {
+  margin-right: 10px;
+}
+
+.dashboard-sidebar-header md-select:not([disabled]):focus .md-select-value {
+  border-bottom-width: 0;
 }
 
 .dashboard-sidebar-header .dashboard-user-datetime {
@@ -749,6 +771,15 @@ li.md-nav-item:first-of-type {
 md-toolbar.date-bar,
 md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
+  height: 64px;
+}
+
+@media (max-width: 959px) {
+  md-toolbar.date-bar,
+  md-toolbar.date-bar .md-toolbar-tools {
+    font-size: inherit;
+    height: 128px;
+  }
 }
 
 md-toolbar.date-bar md-checkbox {
@@ -757,16 +788,4 @@ md-toolbar.date-bar md-checkbox {
 
 md-toolbar.date-bar md-input-container {
   margin-bottom: 0;
-}
-
-.date-bar-date-pickers .md-errors-spacer {
-  display: none;
-}
-
-.date-bar-date-pickers .md-icon-button {
-  margin: 13px 0 0 0 !important;
-}
-
-.date-bar-date-pickers input {
-  width: 100px !important;
 }
