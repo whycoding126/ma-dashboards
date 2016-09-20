@@ -264,7 +264,7 @@ md-list-item.ma-list-selected .md-list-item-text h3 {
 }
 
 /* Badges */
-md-badge {
+ma-badge {
     display: block;
     z-index: 10;
     background-color: rgb(255,133,0);
@@ -274,9 +274,9 @@ md-badge {
     padding: 2px;
     position: absolute;
     border-radius: 5px;
-    bottom: -5px;
-    right: -5px;
+    bottom: 0px;
+    right: -4px;
 }
-.md-button.md-fab.md-badge {
+.md-button.ma-badge {
    overflow: visible;
 }

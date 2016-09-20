@@ -1,8 +1,8 @@
 <md-menu md-position-mode="target-right target" ng-if="$ctrl.events.totalCount">
-    <md-button aria-label="Active Events" class="md-fab md-mini md-primary md-badge" ng-click="$mdOpenMenu($event)">
+    <md-button aria-label="Active Events" class="md-icon-button ma-badge" ng-click="$mdOpenMenu($event)">
         <md-tooltip md-autohide>{{$ctrl.events.totalCount}} Un-Acknowledged Events</md-tooltip>
         <md-icon md-menu-origin>alarm</md-icon>
-        <md-badge>{{$ctrl.events.totalCount}}</md-badge>
+        <ma-badge>{{$ctrl.events.totalCount}}</ma-badge>
     </md-button>
     <md-menu-content width="3">
         
