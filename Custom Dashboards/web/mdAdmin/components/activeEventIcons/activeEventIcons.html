@@ -1,4 +1,4 @@
-<md-menu md-position-mode="target-right target" ng-if="$ctrl.eventsSummary.length">
+<md-menu md-position-mode="target-right target" ng-if="$ctrl.events.INFORMATION.unsilencedCount || $ctrl.events.URGENT.unsilencedCount || $ctrl.events.CRITICAL.unsilencedCount || $ctrl.events.LIFE_SAFETY.unsilencedCount">
     <md-button aria-label="Active Events" class="md-icon-button" ng-click="$mdOpenMenu($event)">
         <md-tooltip md-autohide>Un-Acknowledged Events</md-tooltip>
         <md-icon md-menu-origin>alarm</md-icon>
