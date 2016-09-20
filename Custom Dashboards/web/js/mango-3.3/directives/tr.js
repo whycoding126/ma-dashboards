@@ -54,18 +54,22 @@ function maTr(Translate) {
 	            	var text = result.text;
 	            	var tagName = $elem.prop('tagName');
 	            	if (tagName === 'IMG') {
-	            		$elem.attr('alt', text);
+                        $attrs.$set('alt', text);
 	            		return;
 	            	} else if (tagName === 'INPUT') {
-	            		$elem.attr('placeholder', text);
+                        $attrs.$set('placeholder', text);
 	            		return;
 	            	} else if (tagName === 'BUTTON' || $elem.hasClass('md-button')) {
-	            	    $elem.attr('aria-label', text);
+	            	    $attrs.$set('aria-label', text);
 	            	    // if button already has text contents, then only set the aria-label
 	            	    if ($elem.contents().length) return;
 	            	} else if (tagName === 'MDP-DATE-PICKER' || tagName === 'MDP-TIME-PICKER' ||
 	            	        tagName === 'MD-INPUT-CONTAINER' || tagName === 'MA-FILTERING-POINT-LIST') {
 	            	    $elem.find('label').text(text);
+	            	    return;
+	            	} else if (tagName === 'MD-SELECT') {
+                        $attrs.$set('ariaLabel', text);
+	            	    $attrs.$set('placeholder', text);
 	            	    return;
 	            	}
 
