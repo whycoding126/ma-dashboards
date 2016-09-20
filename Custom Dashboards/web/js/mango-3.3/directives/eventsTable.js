@@ -50,6 +50,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
         link: function ($scope, $element, attrs) {
             
             $scope.$mdMedia = $mdMedia;
+            $scope.addNote = UserNotes.addNote;
             
             var filterBeforePush = function (event) {
                 
@@ -80,7 +81,6 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 }
             });
             
-            $scope.addNote = UserNotes.addNote;
             
             $scope.$watch('sortOrder', function(newValue, oldValue) {
                 if (newValue === undefined) return;

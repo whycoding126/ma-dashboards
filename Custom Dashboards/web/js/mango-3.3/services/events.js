@@ -182,7 +182,7 @@ function eventsFactory($resource, Util) {
                 params.push('active=true');
             }
             else if (options.activeStatus==='noRtn') {
-                params.push('');
+                params.push('rtnApplicable=false');
             }
             else if (options.activeStatus==='normal') {
                 params.push('active=false');
