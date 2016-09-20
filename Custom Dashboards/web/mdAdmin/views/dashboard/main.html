@@ -54,13 +54,16 @@
             
             <div ng-if="mdAdmin.stateParams.dateBar">
               <md-input-container class="date-preset">
-                <ma-date-range-picker from="mdAdmin.dateBar.from" to="mdAdmin.dateBar.to"
-                  preset="LAST_1_DAYS" update-interval="1 minutes" aria-label="{{'dashboards.v3.app.datePreset' | tr}}"></ma-date-range-picker>
+                <ma-date-range-picker from="mdAdmin.dateBar.from" to="mdAdmin.dateBar.to" no-underline="true"
+                  preset="LAST_1_DAYS" update-interval="1 minutes" refresh="refresh"></ma-date-range-picker>
               </md-input-container>
               <md-button class="md-icon-button md-hue-1" ng-click="mdAdmin.dateBar.expanded = !mdAdmin.dateBar.expanded"
                 aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
                 ng-class="{'md-accent': mdAdmin.dateBar.expanded}">
                   <md-icon>date_range</md-icon>
+              </md-button>
+              <md-button class="md-icon-button" ng-click="refresh={}" aria-label="{{'common.refresh' | tr}}">
+                  <md-icon>refresh</md-icon>
               </md-button>
             </div>
           

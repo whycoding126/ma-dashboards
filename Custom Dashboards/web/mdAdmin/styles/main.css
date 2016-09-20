@@ -741,6 +741,11 @@ li.md-nav-item:first-of-type {
 }
 
 /* Date bar */
+
+.date-preset ma-date-range-picker md-select {
+  margin: 0;
+}
+
 md-toolbar.date-bar,
 md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
@@ -752,4 +757,16 @@ md-toolbar.date-bar md-checkbox {
 
 md-toolbar.date-bar md-input-container {
   margin-bottom: 0;
+}
+
+.date-bar-date-pickers .md-errors-spacer {
+  display: none;
+}
+
+.date-bar-date-pickers .md-icon-button {
+  margin: 13px 0 0 0 !important;
+}
+
+.date-bar-date-pickers input {
+  width: 100px !important;
 }

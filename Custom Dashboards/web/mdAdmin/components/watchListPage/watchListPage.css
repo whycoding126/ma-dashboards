@@ -114,11 +114,6 @@ ma-watch-list-page md-card.select-watch-list md-select {
   margin: 0;
 }
 
-ma-watch-list-page md-card.select-watch-list md-select .md-select-value,
-ma-watch-list-page md-card.select-watch-list md-select:focus .md-select-value {
-  border-bottom: none;
-}
-
 ma-watch-list-page .watchlist-2-pane md-card.select-watch-list {
   margin: 0 16px 0 0;
 }

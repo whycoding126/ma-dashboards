@@ -3,7 +3,7 @@
       class="select-watch-list" ng-show="!$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
     <md-toolbar class="md-whiteframe-1dp md-hue-3">
       <div class="md-toolbar-tools" flex layout="row">
-        <md-select ng-model="$ctrl.listType" flex>
+        <md-select ng-model="$ctrl.listType" flex class="md-no-underline">
           <md-option value="watchLists" ma-tr="dashboards.v3.app.watchLists"></md-option>
           <md-option value="hierarchy" ma-tr="dashboards.v3.app.pointHierarchy"></md-option>
           <md-option value="deviceNames" ma-tr="dashboards.v3.app.deviceNames"></md-option>

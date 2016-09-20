@@ -54,13 +54,10 @@
   </div>
   
   <div class="flex"></div>
-  
-  <md-input-container class="no-errors-spacer">
-    <label>From Date</label>
-    <ma-date-picker ng-model="$ctrl.params.from" format="l LT"></ma-date-picker>
-  </md-input-container>
-  <md-input-container class="no-errors-spacer">
-    <label>To Date</label>
-    <ma-date-picker ng-model="$ctrl.params.to" format="l LT"></ma-date-picker>
-  </md-input-container>
+  <div layout="row" class="date-bar-date-pickers">
+    <mdp-date-picker mdp-placeholder="From date" mdp-open-on-click mdp-format="l" ng-model="$ctrl.params.from"></mdp-date-picker>
+    <mdp-time-picker mdp-placeholder="From time" mdp-open-on-click mdp-auto-switch="true" ng-model="$ctrl.params.from" mdp-format="LT"></mdp-time-picker>
+    <mdp-date-picker mdp-placeholder="To date" mdp-open-on-click mdp-format="l" ng-model="$ctrl.params.to"></mdp-date-picker>
+    <mdp-time-picker mdp-placeholder="To time" mdp-open-on-click mdp-auto-switch="true" ng-model="$ctrl.params.to" mdp-format="LT"></mdp-time-picker>
+  </div>
 </div>
