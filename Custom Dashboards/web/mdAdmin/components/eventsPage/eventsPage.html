@@ -42,5 +42,5 @@
                   </md-select>
             </md-input-container>
       </md-card-actions>
-      <ma-events-table query="{eventType:$ctrl.eventType}" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" active-status="activeStatus" date-range="true" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" paginate-limit="15" sort-order="$ctrl.sortOrder"></ma-events-table>
+      <ma-events-table event-type="$ctrl.eventType" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" active-status="activeStatus" date-range="true" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" paginate-limit="15" sort-order="$ctrl.sortOrder"></ma-events-table>
 </md-card>

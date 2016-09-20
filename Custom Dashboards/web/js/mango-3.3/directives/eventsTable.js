@@ -27,11 +27,13 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
         restrict: 'E',
         scope: {
             pointId: '=?',
+            singlePoint: '@',
             eventId: '=?',
             alarmLevel: '=?',
+            eventType:'=?',
             acknowledged: '=?',
             activeStatus: '=?',
-            query: '=',
+            query: '=?',
             start: '=?',
             limit: '=?',
             sort: '=?',
@@ -110,7 +112,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             
             $scope.$watch(function() {
                 return {
-                    query: $scope.query,
+                    eventType: $scope.eventType,
                     start: $scope.start,
                     limit: $scope.limit,
                     sort: $scope.sort,
@@ -124,6 +126,12 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 };
             }, function(value) {
                 value.sort = value.sort || '-activeTimestamp';
+                
+                if ($scope.singlePoint && !$scope.pointId) {
+                    // console.log('Returning', $scope.singlePoint, $scope.pointId);
+                    return;
+                }
+                // console.log('Querying', $scope.singlePoint, $scope.pointId);
                 $scope.events = Events.objQuery(value);
             }, true);
             

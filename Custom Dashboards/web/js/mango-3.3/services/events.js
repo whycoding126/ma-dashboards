@@ -169,6 +169,10 @@ function eventsFactory($resource, Util) {
             params.push('alarmLevel=' + options.alarmLevel);
         }
         
+        if (options.eventType && options.eventType != '*') {
+            params.push('eventType=' + options.eventType);
+        }
+        
         if (options.pointId) {
             params.push('dataPointId=' + options.pointId);
         }
