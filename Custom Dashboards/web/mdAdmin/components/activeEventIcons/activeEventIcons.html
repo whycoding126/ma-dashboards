@@ -1,8 +1,8 @@
 <md-menu md-position-mode="target-right target" ng-if="$ctrl.events.totalCount">
     <md-button aria-label="Active Events" class="md-icon-button ma-badge" ng-click="$mdOpenMenu($event)">
-        <md-tooltip md-autohide>{{$ctrl.events.totalCount}} Un-Acknowledged Events</md-tooltip>
+        <md-tooltip md-autohide>{{$ctrl.renderCount($ctrl.events.totalCount)}} Un-Acknowledged Events</md-tooltip>
         <md-icon md-menu-origin>alarm</md-icon>
-        <ma-badge>{{$ctrl.events.totalCount}}</ma-badge>
+        <ma-badge>{{$ctrl.renderCount($ctrl.events.totalCount)}}</ma-badge>
     </md-button>
     <md-menu-content width="3">
         
@@ -46,7 +46,7 @@
             <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: '*'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag ALL" style="padding-right:10px"></i>
-                    <p flex> {{$ctrl.events.totalCount}} All Events</p>
+                    <p flex> {{$ctrl.renderCount($ctrl.events.totalCount)}} Total Events</p>
                 </div>
             </md-button>
         </md-menu-item>

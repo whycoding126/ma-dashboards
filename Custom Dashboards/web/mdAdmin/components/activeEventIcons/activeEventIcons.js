@@ -14,6 +14,15 @@ var activeEventIconsController = function activeEventIconsController(Events, eve
             // console.log('success', data);
             $ctrl.events = {totalCount: 0};
             
+            $ctrl.renderCount = function(count) {
+                if (count < 1000) {
+                    return count;
+                }
+                else {
+                    return '> 999';
+                }
+            };
+            
             data.forEach(function(item, index, array) {
                 $ctrl.events[item.level] = item;
                 $ctrl.events.totalCount += item.unsilencedCount;
