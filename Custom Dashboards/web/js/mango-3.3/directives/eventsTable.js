@@ -54,13 +54,16 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.$mdMedia = $mdMedia;
             $scope.addNote = UserNotes.addNote;
             
-            var filterBeforePush = function (event) {
-                
-                if ($scope.query.eventType !== event.eventType.eventType && $scope.query.eventType !== '*') {
+            var filterBeforePush = function (payload) {
+                if (payload.type === 'ACKNOWLEDGED') {
+                    console.log('returning');
+                    return;
+                }
+                if ($scope.query.eventType !== payload.event.eventType.eventType && $scope.query.eventType !== '*') {
                     // console.log('returning');
                     return;
                 }
-                if ($scope.alarmLevel !== event.alarmLevel && $scope.alarmLevel !== '*') {
+                if ($scope.alarmLevel !== payload.event.alarmLevel && $scope.alarmLevel !== '*') {
                     // console.log('returning');
                     return;
                 }
@@ -74,10 +77,12 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 
                 if (newValue) {
                     eventsEventManager.subscribe(function(msg) {
+                        console.log(msg);
                         if (msg.status === 'OK') {
-                            var event = msg.payload.event;
-                            
-                            filterBeforePush(event);
+                            filterBeforePush(msg.payload);
+                        }
+                        else {
+                            console.log('Error:', msg);
                         }
                     });
                 }

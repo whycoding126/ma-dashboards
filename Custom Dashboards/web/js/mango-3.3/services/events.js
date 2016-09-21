@@ -89,8 +89,7 @@ function eventsFactory($resource, Util) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
-            cache: true
+            withCredentials: true
         },
         rql: {
         	url: '/rest/v1/events?:query',
@@ -100,8 +99,7 @@ function eventsFactory($resource, Util) {
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
-            withCredentials: true,
-            cache: true
+            withCredentials: true
         },
         acknowledge: {
             method: 'PUT',
@@ -151,19 +149,6 @@ function eventsFactory($resource, Util) {
             }
             params.push(queryPart);
         }
-
-        if (options.sort) {
-            var sort = options.sort;
-            if (angular.isArray(sort)) {
-                sort = sort.join(',');
-            }
-            params.push('sort(' + sort + ')');
-        }
-
-        if (options.limit) {
-            var start = options.start || 0;
-            params.push('limit(' + options.limit + ',' + start + ')');
-        }
         
         if (options.alarmLevel && options.alarmLevel != '*') {
             params.push('alarmLevel=' + options.alarmLevel);
@@ -208,6 +193,20 @@ function eventsFactory($resource, Util) {
         if (options.to) {
             params.push('activeTimestamp=lt=' + options.to.valueOf());
         }
+
+        if (options.sort) {
+            var sort = options.sort;
+            if (angular.isArray(sort)) {
+                sort = sort.join(',');
+            }
+            params.push('sort(' + sort + ')');
+        }
+
+        if (options.limit) {
+            var start = options.start || 0;
+            params.push('limit(' + options.limit + ',' + start + ')');
+        }
+        
 
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     }
