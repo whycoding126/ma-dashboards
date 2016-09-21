@@ -2,7 +2,7 @@
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
       <span>Chart &amp; Compare</span>
       <div flex></div>
-      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[];">Clear</md-button>
+      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; graphOptions=[];">Clear</md-button>
     </div>
 </md-toolbar>
 
@@ -12,6 +12,20 @@
         <md-tab id="tab2">STATS</md-tab>
     </md-tabs>
     <span flex></span>
+    <md-select ng-model="selectedAxis" ng-init="selectedAxis='right'" flex="10" flex-xs="30" aria-label="Select Axis">
+        <md-option value="right">
+            Right
+        </md-option>
+        <md-option value="left">
+            Left
+        </md-option>
+        <md-option value="right-2">
+            Right 2
+        </md-option>
+        <md-option value="left-2">
+            Left 2
+        </md-option>
+    </md-select>
     <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" flex="10" flex-xs="30" aria-label="Chart Type">
         <md-option value="smoothedLine">
             Smooth
@@ -39,11 +53,11 @@
         <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}" auto-rollup-interval="dateBar.autoRollup">
         </ma-point-values>
         <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-if="points.length">
-            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true">
+            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="graphOptions">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true">
+            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true">
+            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions">
             </ma-serial-chart>
         </div>
     </md-tab>
