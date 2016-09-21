@@ -34,11 +34,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             acknowledged: '=?',
             activeStatus: '=?',
             query: '=?',
-            start: '=?',
             limit: '=?',
             sort: '=?',
-            sortOrder: '=?',
-            paginateLimit: '=?',
             from: '=?',
             to: '=?',
             dateRange: '@'
@@ -54,9 +51,12 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.$mdMedia = $mdMedia;
             $scope.addNote = UserNotes.addNote;
             
+            $scope.page = 1;
+            $scope.total = 0;
+            
             var filterBeforePush = function (payload) {
                 if (payload.type === 'ACKNOWLEDGED') {
-                    console.log('returning');
+                    // console.log('returning');
                     return;
                 }
                 if ($scope.query.eventType !== payload.event.eventType.eventType && $scope.query.eventType !== '*') {
@@ -77,7 +77,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 
                 if (newValue) {
                     eventsEventManager.subscribe(function(msg) {
-                        console.log(msg);
+                        // console.log(msg);
                         if (msg.status === 'OK') {
                             filterBeforePush(msg.payload);
                         }
@@ -88,12 +88,9 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 }
             });
             
-            
-            $scope.$watch('sortOrder', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                // console.log(newValue);
-                $scope.myOrder = $scope.sortOrder;
-            });
+            $scope.onPaginate = function(page, limit) {
+                $scope.start = (page - 1) * limit;
+            };
             
             $scope.parseHTML = function(text) {
                 return $sce.trustAsHtml(text);
@@ -118,6 +115,11 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 });
             };
             
+            $scope.$watch('events.$total', function(newValue, oldValue){
+                if (newValue === undefined || newValue === oldValue) return;
+                $scope.total = newValue;
+            });
+            
             $scope.$watch(function() {
                 return {
                     eventType: $scope.eventType,
@@ -133,7 +135,6 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                     to: $scope.to
                 };
             }, function(value) {
-                value.sort = value.sort || '-activeTimestamp';
                 
                 if ($scope.singlePoint && !$scope.pointId) {
                     // console.log('Returning', $scope.singlePoint, $scope.pointId);
