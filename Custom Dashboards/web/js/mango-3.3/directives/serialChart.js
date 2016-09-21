@@ -49,29 +49,32 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
 	var MAX_SERIES = 10;
 
 	var scope = {
-		options: '=?',
+		options: '<?',
 	    timeFormat: '@',
         timezone: '@',
 	    stackType: '@',
-	    values: '=?',
-	    points: '=?',
+	    values: '<?',
+	    points: '<?',
+	    graphOptions: '<?',
 	    defaultType: '@',
 	    defaultColor: '@',
         defaultAxis: '@',
         defaultBalloonText: '@',
-        'export': '=?',
-        balloon: '=?',
-        legend: '=?'
+        defaultGraphOptions: '<?',
+        'export': '<?',
+        balloon: '<?',
+        legend: '<?'
 	};
 
 	for (var j = 1; j <= MAX_SERIES; j++) {
-		scope['series' + j + 'Values'] = '=';
+		scope['series' + j + 'Values'] = '<?';
 		scope['series' + j + 'Type'] = '@';
 		scope['series' + j + 'Title'] = '@';
 		scope['series' + j + 'Color'] = '@';
-		scope['series' + j + 'Point'] = '=?';
 		scope['series' + j + 'Axis'] = '@';
         scope['series' + j + 'BalloonText'] = '@';
+        scope['series' + j + 'Point'] = '<?';
+        scope['series' + j + 'GraphOptions'] = '<?';
 	}
 
     return {
@@ -126,36 +129,44 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 'defaultType',
                 'defaultColor',
                 'defaultAxis',
-                'defaultBalloonText'
-            ], typeOrTitleChanged.bind(null, null));
+                'defaultBalloonText',
+                'defaultGraphOptions'
+            ], graphOptionsChanged.bind(null, null));
 
-            var i;
             if (valueArray) {
             	$scope.$watchCollection('values', watchValues);
             	$scope.$watchCollection('points', watchPoints);
-
-            	for (i = 1; i <= MAX_SERIES; i++) {
-	        		$scope.$watchGroup([
-	        		    'series' + i + 'Type',
-	        		    'series' + i + 'Title',
-	        		    'series' + i + 'Color',
-	        		    'series' + i + 'Axis',
-                        'series' + i + 'BalloonText'
-	        		], typeOrTitleChanged.bind(null, i));
-	        	}
-            } else {
-            	for (i = 1; i <= MAX_SERIES; i++) {
-	        		$scope.$watchGroup([
-	        		    'series' + i + 'Type',
-	        		    'series' + i + 'Title',
-	        		    'series' + i + 'Color',
-	        		    'series' + i + 'Point',
-	        		    'series' + i + 'Axis',
-                        'series' + i + 'BalloonText'
-	        		], typeOrTitleChanged.bind(null, i));
-
-	        		$scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
-	        	}
+            }
+            
+            for (var i = 1; i <= MAX_SERIES; i++) {
+                var seriesAttributes = [
+                    'series' + i + 'Type',
+                    'series' + i + 'Title',
+                    'series' + i + 'Color',
+                    'series' + i + 'Axis',
+                    'series' + i + 'BalloonText',
+                    'series' + i + 'GraphOptions'
+                ];
+                
+                if (!valueArray) {
+                    seriesAttributes.push('series' + i + 'Values');
+                    seriesAttributes.push('series' + i + 'Point');
+                }
+                
+                var hasSeries = false;
+                for (var j = 0; j < seriesAttributes.length; j++) {
+                    if (!angular.isUndefined(attrs[seriesAttributes[j]])) {
+                        hasSeries = true;
+                        break;
+                    }
+                }
+                
+                if (hasSeries) {
+                    $scope.$watchGroup(seriesAttributes, graphOptionsChanged.bind(null, i));
+                    if (!valueArray) {
+                        $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
+                    }
+                }
             }
 
             function watchValues(newValues, oldValues) {
@@ -189,7 +200,7 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 }
             }
 
-            function typeOrTitleChanged(graphNum, values) {
+            function graphOptionsChanged(graphNum, values) {
             	if (isAllUndefined(values)) return;
 
             	if (graphNum === null) {
@@ -216,6 +227,14 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 }
                 updateValues();
             }
+            
+            function getPointForGraph(graphNum) {
+                var point = $scope['series' + graphNum + 'Point'];
+                if (!point && $scope.points) {
+                    point = $scope.points[graphNum - 1];
+                }
+                return point;
+            }
 
             function setupGraph(graphNum, point) {
                 var graph;
@@ -227,48 +246,69 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
                 } else {
                     graph = findGraph('graphNum', graphNum);
                 }
-
-            	if (!point) {
-                	if (valueArray) {
-                		point = $scope.points[graphNum - 1];
-                	} else {
-                		point = $scope['series' + graphNum + 'Point'];
-                	}
-                }
-
-                var graphType = $scope['series' + graphNum + 'Type'] || $scope.defaultType ||
-                	(point && point.plotType && point.plotType.toLowerCase()) ||
-                	'smoothedLine';
-
-                // change mango plotType to amCharts graphType
-                // step and line are equivalent
-                if (graphType === 'spline') {
-                	graphType = 'smoothedLine';
-                }
-
                 if (!graph) {
                     graph = {};
                     chart.graphs.push(graph);
                 }
-                $.extend(graph, graphType === 'column' ? defaultColumnGraph() : defaultLineGraph());
+                
+            	var hardDefaults = {
+            	    graphNum: graphNum,
+        	        id: 'series-' + graphNum,
+                    valueField: 'value_' + graphNum,
+                    title: 'Series ' + graphNum,
+                    type: 'smoothedLine',
+                    valueAxis: 'left',
+                    balloonText: '[[value]]'
+            	};
 
-                graph.graphNum = graphNum;
-                graph.id = 'series-' + graphNum;
-                graph.xid = point ? point.xid : null;
-                graph.valueField = valueArray && point ? 'value_' + point.xid : 'value' + graphNum;
-                graph.title = $scope['series' + graphNum + 'Title'] ||
-                	(point && point.deviceName + ' - ' + point.name) ||
-                	('Series ' + graphNum);
-                graph.type = graphType;
-                graph.lineColor = $scope['series' + graphNum + 'Color'] || $scope.defaultColor ||
-                	(point && point.chartColour) ||
-                	null;
-                graph.valueAxis = $scope['series' + graphNum + 'Axis'] ||  $scope.defaultAxis || 'left';
-                graph.balloonText = $scope['series' + graphNum + 'BalloonText'] ||  $scope.defaultBalloonText || '[[value]]';
-                var stackType = options.valueAxes[0].stackType;
-                if (stackType && stackType !== 'none') {
-                	graph.fillAlphas = 0.8;
+            	var pointDefaults;
+                point = point || getPointForGraph(graphNum);
+            	if (point) {
+            	    pointDefaults = {
+            	        xid: point.xid,
+            	        valueField: 'value_' + point.xid,
+            	        title: point.deviceName + ' - ' + point.name,
+            	        type: point.plotType && point.plotType.toLowerCase(),
+            	        lineColor: point.chartColour
+                	};
+            	    
+            	    // change mango plotType to amCharts graphType
+                    // step and line are equivalent
+                    if (pointDefaults.type === 'spline') {
+                        pointDefaults.type = 'smoothedLine';
+                    }
+            	};
+
+                var defaultAttributes = {
+                    type: $scope.defaultType,
+                    lineColor: $scope.defaultColor,
+                    valueAxis: $scope.defaultAxis,
+                    balloonText: $scope.defaultBalloonText
+                };
+                
+            	var attributeOptions = {
+        	        title: $scope['series' + graphNum + 'Title'],
+        	        type: $scope['series' + graphNum + 'Type'],
+        	        lineColor: $scope['series' + graphNum + 'Color'],
+                    valueAxis: $scope['series' + graphNum + 'Axis'],
+                    balloonText: $scope['series' + graphNum + 'BalloonText']
+            	};
+            	
+            	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
+            	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
+
+                var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
+                if (angular.isUndefined(opts.fillAlphas)) {
+                    opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
+                    var firstAxis = options.valueAxes[0];
+                    if (opts.valueAxis === 'left' && firstAxis && firstAxis.id === 'left' && firstAxis.stackType && firstAxis.stackType !== 'none') {
+                        opts.fillAlphas = 0.7;
+                    }
                 }
+                if (angular.isUndefined(opts.lineThickness)) {
+                    opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
+                }
+                $.extend(true, graph, opts);
             }
 
             function sortGraphs() {
@@ -303,7 +343,11 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
 
             	for (var i = 1; i <= MAX_SERIES; i++) {
             		var seriesValues = $scope['series' + i + 'Values'];
-            		combine(values, seriesValues, 'value' + i);
+
+            		var point = getPointForGraph(i);
+            		var valueField = 'value_' + (point ? point.xid : i);
+            		
+            		combine(values, seriesValues, valueField);
             	}
 
                 // normalize sparse array or object into dense array
@@ -334,22 +378,6 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
 }
 
 serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector'];
-
-function defaultLineGraph() {
-    return {
-        fillAlphas: 0,
-        lineAlpha: 0.8,
-        lineThickness: 2.0
-    };
-}
-
-function defaultColumnGraph() {
-    return {
-        fillAlphas: 0.8,
-        lineAlpha: 0.9,
-        lineThickness: 1
-    };
-}
 
 function defaultOptions() {
     return {
