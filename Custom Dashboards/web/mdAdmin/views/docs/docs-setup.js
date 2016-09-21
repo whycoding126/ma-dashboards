@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-now update-interval=&quot;1 SECONDS&quot; output=&quot;time&quot;&gt;&lt;/ma-now&gt;",
-      "keywords": "api basics browser clocksandtimezones current dashboard demo directive duration examples format height hold interval madashboards manow number output outputted seconds starting string style text time time1 timestamp timezone ui-sref units update update-interval variable width"
+      "keywords": "api basics browser clocksandtimezones current dashboard demo directive duration examples format height hold interval js madashboards manow moment number object output seconds starting string style text time time-zone time1 timezone ui-sref units update update-interval variable width"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-serial-chart style=&quot;height: 300px; width: 100%&quot; series-1-values=&quot;point1Values&quot; series-1-point=&quot;point1&quot; default-type=&quot;column&quot;&gt;",
-      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column configuration create created cursor customizing dashboard data default default-axis default-balloon-text default-color default-type defaults demo design directive displaying element example examples export extend format functionality generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects option options overides pass point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x- series-x-axis series-x-balloon-text series-x-color series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps timezone true turned type ui-sref values variations width"
+      "keywords": "advanced advancedchart allows amcharts api array attributes axis balloon bar chart charts color column config configuration create created cursor customizing dashboard data default default-axis default-balloon-text default-color default-graph-options default-type defaults demo design directive displaying element example examples export extend format functionality generated graphs height hex inputs js left legend linechart madashboards maserialchart mode moment note number object objects option options overides pass point point1 point1values points provide provided range regular render replace rollup series series-1-point series-1-values series-x- series-x-axis series-x-balloon-text series-x-color series-x-graph-options series-x-point series-x-title series-x-type series-x-values set sets settings smoothedline stack-type stacking starting step string style text time time-format timestamps timezone true turned type ui-sref values variations width"
     },
     {
       "section": "api",
@@ -437,6 +437,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maServices.eventsEventManager",
+      "shortName": "maServices.eventsEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides an EventManager factory pointing to the events websocket at &#39;/rest/v1/websocket/events&#39;",
+      "keywords": "api dashboard docs eventmanager events eventseventmanager factory maservices methods pointing service ui-sref websocket"
+    },
+    {
+      "section": "api",
       "id": "maServices.JsonStore",
       "shortName": "maServices.JsonStore",
       "type": "service",
@@ -533,15 +542,6 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides a service for retrieving and adding user notes",
       "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint http madashboards maservices matching mausernotestable method note notes object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref user usernotes"
-    },
-    {
-      "section": "api",
-      "id": "maServices.UserNotesEventManager",
-      "shortName": "maServices.UserNotesEventManager",
-      "type": "service",
-      "moduleName": "maServices",
-      "shortDescription": "Provides an EventManager factory pointing to the json-data websocket endpoint at &#39;/rest/v1/websocket/json-data&#39;",
-      "keywords": "api dashboard directive docs endpoint eventmanager factory item javascript json-data jsonstoreeventmanager madashboards majsonstore maservices methods pointing prettyprint-mode service subscription_types ui-sref unsubscribe usage usernoteseventmanager websocket websockethandler xid"
     },
     {
       "section": "api",
