@@ -1134,10 +1134,16 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location, $stateParams) {
 
     MD_ADMIN_SETTINGS.dateBar = {
+        preset: 'LAST_1_DAYS',
         rollupType: 'AVERAGE',
-        rollupIntervals: 5,
+        rollupIntervals: 10,
         rollupIntervalPeriod: 'MINUTES',
-        autoRollup: true
+        autoRollup: true,
+        updateIntervals: 10,
+        updateIntervalPeriod: 'MINUTES',
+        autoUpdate: true,
+        useRollupForUpdate: true,
+        expanded: true
     };
     MD_ADMIN_SETTINGS.stateParams = $stateParams;
     

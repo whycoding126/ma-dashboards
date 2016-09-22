@@ -8,14 +8,40 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['MD_ADMIN_SETTINGS', '$stateParams', dateBarController]
+    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', dateBarController]
 };
 
-function dateBarController(MD_ADMIN_SETTINGS, $stateParams) {
+function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util) {
     this.params = MD_ADMIN_SETTINGS.dateBar;
     this.stateParams = $stateParams;
-    
+
     this.$onInit = function() {
+    };
+    
+    this.$doCheck = function() {
+        if (this.params.from !== this.prevFrom || this.params.to !== this.prevTo) {
+            this.prevFrom = this.params.from;
+            this.prevTo = this.params.to;
+            
+            if (this.params.autoRollup) {
+                var calc = Util.rollupIntervalCalculator(this.params.from, this.params.to, this.params.rollupType, true);
+                this.params.rollupIntervals = calc.intervals;
+                this.params.rollupIntervalPeriod = calc.units;
+            }
+        }
+        
+        if (this.params.useRollupForUpdate &&
+                (this.params.rollupIntervals !== this.params.updateIntervals ||
+                 this.params.rollupIntervalPeriod !== this.params.updateIntervalPeriod)) {
+            this.calcUpdateInterval();
+        }
+    };
+    
+    this.calcUpdateInterval = function calcUpdateInterval() {
+        if (this.params.useRollupForUpdate) {
+            this.params.updateIntervals = this.params.rollupIntervals;
+            this.params.updateIntervalPeriod = this.params.rollupIntervalPeriod;
+        }
     };
 }
 

@@ -1,80 +1,86 @@
-<div flex layout="row" layout-align="start center">
-  <div layout="row" layout-align="start center" ng-show="$ctrl.stateParams.dateBar.rollupControls">
-    <md-input-container>
-      <label>Rollup Type</label>
-      <md-select ng-model="$ctrl.params.rollupType">
-        <md-option value="MINIMUM">
-            Minimum
-        </md-option>
-        <md-option value="MAXIMUM">
-            Maximum
-        </md-option>
-        <md-option value="AVERAGE">
-            Average
-        </md-option>
-        <md-option value="DELTA">
-            Delta
-        </md-option>
-        <md-option value="NONE">
-            None
-        </md-option>
-      </md-select>
-    </md-input-container>
-    <md-input-container class="no-errors-spacer" flex="nogrow">
-      <label>Rollup Interval</label>
-      <input ng-model="$ctrl.params.rollupIntervals" type="number" step="1" ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup">
-    </md-input-container>
-    <md-input-container>
-      <label>Rollup Interval</label>
-      <md-select ng-model="$ctrl.params.rollupIntervalPeriod" ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup">
-        <md-option value="SECONDS">
-            Seconds
-        </md-option>
-        <md-option value="MINUTES">
-            Minutes
-        </md-option>
-        <md-option value="HOURS">
-            Hours
-        </md-option>
-        <md-option value="DAYS">
-            Days
-        </md-option>
-        <md-option value="WEEKS">
-            Weeks
-        </md-option>
-        <md-option value="MONTHS">
-            Months
-        </md-option>
-        <md-option value="YEARS">
-            Years
-        </md-option>
-      </md-select>
-    </md-input-container>
-    <md-checkbox ng-model="$ctrl.params.autoRollup">Auto-Interval</md-checkbox>
-    <md-button class="md-icon-button" ng-click="refresh=$event" aria-label="{{'common.refresh' | tr}}">
-        <md-icon>refresh</md-icon>
+<div flex layout>
+  <div layout flex="65" flex-gt-sm layout-align="start start" layout-wrap>
+    <div flex="100" flex-gt-sm="50" layout layout-align="start center" ng-if="$ctrl.stateParams.dateBar.rollupControls">
+      <md-input-container flex="30">
+        <label>Rollup Type</label>
+        <md-select ng-model="$ctrl.params.rollupType">
+          <md-option value="MINIMUM">Minimum</md-option>
+          <md-option value="MAXIMUM">Maximum</md-option>
+          <md-option value="AVERAGE">Average</md-option>
+          <md-option value="DELTA">Delta</md-option>
+          <md-option value="NONE">None</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container class="no-errors-spacer" flex="20">
+        <label>Rollup</label>
+        <input ng-model="$ctrl.params.rollupIntervals" type="number" step="1" ng-disabled="$ctrl.params.rollupType === 'NONE' || $ctrl.params.autoRollup">
+      </md-input-container>
+      <md-input-container flex="30">
+        <label>Rollup</label>
+        <md-select ng-model="$ctrl.params.rollupIntervalPeriod" ng-disabled="$ctrl.params.rollupType=='NONE' || $ctrl.params.autoRollup">
+          <md-option value="SECONDS">Seconds</md-option>
+          <md-option value="MINUTES">Minutes</md-option>
+          <md-option value="HOURS">Hours</md-option>
+          <md-option value="DAYS">Days</md-option>
+          <md-option value="WEEKS">Weeks</md-option>
+          <md-option value="MONTHS">Months</md-option>
+          <md-option value="YEARS">Years</md-option>
+        </md-select>
+      </md-input-container>
+      <md-checkbox flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoRollup" ng-disabled="$ctrl.params.rollupType === 'NONE'">Auto rollup</md-checkbox>
+    </div>
+
+    <div flex="100" flex-gt-sm="50" layout layout-align="start center" ng-if="$ctrl.params.preset">
+      <md-input-container class="no-errors-spacer" flex="20">
+        <label>Update</label>
+        <input ng-model="$ctrl.params.updateIntervals" type="number" step="1" ng-disabled="!$ctrl.params.autoUpdate || $ctrl.params.useRollupForUpdate">
+      </md-input-container>
+      <md-input-container flex="40">
+        <label>Update</label>
+        <md-select ng-model="$ctrl.params.updateIntervalPeriod" ng-disabled="!$ctrl.params.autoUpdate || $ctrl.params.useRollupForUpdate">
+          <md-option value="SECONDS">Seconds</md-option>
+          <md-option value="MINUTES">Minutes</md-option>
+          <md-option value="HOURS">Hours</md-option>
+          <md-option value="DAYS">Days</md-option>
+          <md-option value="WEEKS">Weeks</md-option>
+          <md-option value="MONTHS">Months</md-option>
+          <md-option value="YEARS">Years</md-option>
+        </md-select>
+      </md-input-container>
+      <md-checkbox flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.useRollupForUpdate" ng-change="$ctrl.calcUpdateInterval()" ng-disabled="!$ctrl.params.autoUpdate">Use rollup</md-checkbox>
+      <md-checkbox flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoUpdate">Auto update</md-checkbox>
+    </div>
+  </div>
+
+  <div layout flex="35" flex-gt-sm layout-align="start center" layout-wrap class="date-bar-date-pickers">
+    <div flex="100" flex-gt-sm="50" layout layout-align="start center">
+      <md-input-container flex="50" class="no-errors-spacer">
+        <label>From date</label>
+        <ma-date-picker ng-model="$ctrl.params.from" mode="date"></ma-date-picker>
+      </md-input-container>
+      <md-input-container flex="50" class="no-errors-spacer">
+        <label>From time</label>
+        <ma-date-picker ng-model="$ctrl.params.from" mode="time"></ma-date-picker>
+      </md-input-container>
+    </div>
+
+    <div flex="100" flex-gt-sm="50" layout layout-align="start center">
+      <md-input-container flex="50" class="no-errors-spacer">
+        <label>To date</label>
+        <ma-date-picker ng-model="$ctrl.params.to" mode="date"></ma-date-picker>
+      </md-input-container>
+      <md-input-container flex="50" class="no-errors-spacer">
+        <label>To time</label>
+        <ma-date-picker ng-model="$ctrl.params.to" mode="time"></ma-date-picker>
+      </md-input-container>
+    </div>
+  </div>
+  
+  
+  <div flex="noshrink" layout layout-align="end center">
+    <md-button class="md-icon-button" ng-click="refresh=$event" aria-label="{{'common.refresh' | tr}}" ng-disabled="!$ctrl.params.preset">
+      <md-icon>refresh</md-icon>
     </md-button>
   </div>
-
-  <div flex="100"></div>
-
-  <div layout="row" layout-align="start center" class="date-bar-date-pickers">
-    <md-input-container class="no-errors-spacer">
-      <label>From date</label>
-      <ma-date-picker ng-model="$ctrl.params.from"></ma-date-picker>
-    </md-input-container>
-    <md-input-container class="no-errors-spacer">
-      <label>From time</label>
-      <ma-date-picker format="LT" ng-model="$ctrl.params.from" mode="time"></ma-date-picker>
-    </md-input-container>
-    
-    <md-input-container class="no-errors-spacer">
-      <label>To date</label>
-      <ma-date-picker format="l" ng-model="$ctrl.params.to" mode="date"></ma-date-picker>
-    </md-input-container>
-    <md-input-container class="no-errors-spacer">
-      <label>To time</label>
-      <ma-date-picker format="LT" ng-model="$ctrl.params.to" mode="time"></ma-date-picker>
-    </md-input-container>
-  </div>
+  
 </div>

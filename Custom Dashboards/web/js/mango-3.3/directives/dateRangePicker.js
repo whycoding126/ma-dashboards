@@ -84,12 +84,12 @@ function dateRangePicker($injector) {
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
-                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.doUpdate()" ma-tr="dashboards.v3.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
+                return '<md-select ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)" ma-tr="dashboards.v3.app.dateRangePreset" ng-class="{\'md-no-underline\': $ctrl.noUnderline}">' +
                 '<md-option ng-value="p.type" ng-repeat="p in $ctrl.presets track by p.type">{{p.label}}</md-option>' +
                 '</md-select>';
             }
 
-            return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.doUpdate()"></select>';
+            return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>';
         },
         controller: ['$attrs', '$parse', '$scope', '$timeout', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDefaultDateFormat',
                      function($attrs, $parse, $scope, $timeout, Util, MA_DATE_RANGE_PRESETS, mangoDefaultDateFormat) {
@@ -114,6 +114,7 @@ function dateRangePicker($injector) {
                 if (changes.from && !changes.from.isFirstChange() || changes.to && !changes.to.isFirstChange()) {
                     if (!(this.isSame(this.fromMoment, this.from) && this.isSame(this.toMoment, this.to))) {
                         this.preset = '';
+                        this.onChange({from: this.from, to: this.to, preset: this.preset});
                     }
                 }
             };
@@ -132,6 +133,11 @@ function dateRangePicker($injector) {
                 return m.isSame(check);
             };
 
+            this.inputChanged = function inputChanged($event) {
+                this.doUpdate();
+                this.onChange({from: this.from, to: this.to, preset: this.preset, '$event': $event});
+            };
+            
             this.doUpdate = function doUpdate() {
                 if (!this.preset) return;
                 var from = moment();
@@ -185,8 +191,6 @@ function dateRangePicker($injector) {
                     fromAssign(from.format(format));
                     toAssign(to.format(format));
                 }
-                
-                this.onChange({from: from, to: to});
             }.bind(this);
 
             this.startUpdateTimer = function startUpdateTimer() {

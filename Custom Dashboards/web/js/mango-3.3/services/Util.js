@@ -343,118 +343,122 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
     };
 	
 
-    Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType) {
-		
-		var rollupInterval = '1 SECONDS';
+    Util.prototype.rollupIntervalCalculator = function rollupIntervalCalculator(from, to, rollupType, asObject) {
+
 		var duration = moment(to).diff(moment(from));
+		var result = {intervals: 1, units: 'SECONDS'};
 		
 		// console.log(duration,moment.duration(duration).humanize(),rollupType);
 		
 		if (duration > 60001 && duration <= 300001) {
 			// 1 min - 5 mins
-			rollupInterval = '5 SECONDS';
+		    result = {intervals: 5, units: 'SECONDS'};
 		}
 		else if (duration > 300001 && duration <= 900001) {
 			// 5 min - 15 mins
-			rollupInterval = '10 SECONDS';
+            result = {intervals: 10, units: 'SECONDS'};
 		}
 		else if (duration > 900001 && duration <= 1800001) {
 			// 15 min - 30 mins
-			rollupInterval = '30 SECONDS';
+            result = {intervals: 30, units: 'SECONDS'};
 		}
 		else if (duration > 1800001 && duration <= 10800001) {
 			// 30 mins - 3 hours
 			if (rollupType == 'DELTA') {
-				rollupInterval = '5 MINUTES';
+	            result = {intervals: 5, units: 'MINUTES'};
 			}
 			else {
-				rollupInterval = '1 MINUTES';
+                result = {intervals: 1, units: 'MINUTES'};
 			}
 		}
 		else if (duration > 10800001 && duration <= 21600001) {
 			// 3 hours - 6 hours
 			if (rollupType == 'DELTA') {
-				rollupInterval = '30 MINUTES';
+                result = {intervals: 30, units: 'MINUTES'};
 			}
 			else {
-				rollupInterval = '2 MINUTES';
+                result = {intervals: 2, units: 'MINUTES'};
 			}
 		}
 		else if (duration > 21600001 && duration <= 86400001) {
 			// 6 hours - 24 hours
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 HOURS';
+                result = {intervals: 1, units: 'HOURS'};
 			}
 			else {
-				rollupInterval = '10 MINUTES';
+                result = {intervals: 10, units: 'MINUTES'};
 			}
 		}
 		else if (duration > 86400001 && duration <= 259200001) {
 			// 1 day - 3 days
 			if (rollupType == 'DELTA') {
-				rollupInterval = '6 HOURS';
+                result = {intervals: 6, units: 'HOURS'};
 			}
 			else {
-				rollupInterval = '30 MINUTES';
+                result = {intervals: 30, units: 'MINUTES'};
 			}
 		}
 		else if (duration > 259200001 && duration <= 604800001) {
 			// 3 days - 1 week
 			if (rollupType == 'DELTA') {
-				rollupInterval = '12 HOURS';
+                result = {intervals: 12, units: 'HOURS'};
 			}
 			else {
-				rollupInterval = '2 HOURS';
+                result = {intervals: 2, units: 'HOURS'};
 			}
 		}
 		else if (duration > 604800001 && duration <= 1209600001) {
 			// 1 week - 2 weeks
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 DAYS';
+                result = {intervals: 1, units: 'DAYS'};
 			}
 			else {
-				rollupInterval = '3 HOURS';
+                result = {intervals: 3, units: 'HOURS'};
 			}
 		}
 		else if (duration > 1209600001 && duration <= 2678400001) {
 			// 2 weeks - 1 month
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 DAYS';
+                result = {intervals: 1, units: 'DAYS'};
 			}
 			else {
-				rollupInterval = '4 HOURS';
+                result = {intervals: 4, units: 'HOURS'};
 			}
 		}
 		else if (duration > 2678400001 && duration <= 15721200001) {
 			// 1 month - 6 months
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 WEEKS';
+                result = {intervals: 1, units: 'WEEKS'};
 			}
 			else {
-				rollupInterval = '24 HOURS';
+                result = {intervals: 24, units: 'HOURS'};
 			}
 		}
 		else if (duration > 15721200001 && duration <= 31622400001) {
 			// 6 months - 1 YR
 			if (rollupType == 'DELTA') {
-				rollupInterval = '2 WEEKS';
+                result = {intervals: 2, units: 'WEEKS'};
 			}
 			else {
-				rollupInterval = '48 HOURS';
+                result = {intervals: 48, units: 'HOURS'};
 			}
 		}
 		else if (duration > 31622400001) {
 			// > 1 YR
 			if (rollupType == 'DELTA') {
-				rollupInterval = '1 MONTHS';
+                result = {intervals: 1, units: 'MONTHS'};
 			}
 			else {
-				rollupInterval = '96 HOURS';
+                result = {intervals: 96, units: 'HOURS'};
 			}
 		}
 		// console.log(rollupInterval);
 		
-		return rollupInterval;
+		if (asObject) {
+		    return result;
+		} else {
+		    return result.intervals + ' ' + result.units;
+		}
     };
     
     Util.prototype.objQuery = function(options) {
