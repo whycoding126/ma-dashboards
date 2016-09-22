@@ -47,10 +47,7 @@
   
   <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
       <md-card class="watchlist-table">
-          <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()"
-            to="$ctrl.dateBar.to" from="$ctrl.dateBar.from" selected="selected"
-            rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
-            rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" auto-rollup="$ctrl.dateBar.autoRollup">
+          <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()" selected="selected">
           </watch-list-table>
       </md-card>
 

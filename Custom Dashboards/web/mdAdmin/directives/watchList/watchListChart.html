@@ -50,7 +50,7 @@
 
 <md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
     <md-tab label="Chart">
-        <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}" auto-rollup-interval="dateBar.autoRollup">
+        <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
         <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-if="points.length">
             <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="graphOptions">

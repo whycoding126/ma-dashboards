@@ -1142,7 +1142,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         updateIntervals: 10,
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
-        useRollupForUpdate: true,
         expanded: true
     };
     MD_ADMIN_SETTINGS.stateParams = $stateParams;

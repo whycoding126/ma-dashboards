@@ -8,7 +8,10 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', dateBarController]
+    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', dateBarController],
+    bindings: {
+        onRefresh: '&'
+    }
 };
 
 function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util) {
@@ -30,17 +33,25 @@ function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util) {
             }
         }
         
-        if (this.params.useRollupForUpdate &&
-                (this.params.rollupIntervals !== this.params.updateIntervals ||
-                 this.params.rollupIntervalPeriod !== this.params.updateIntervalPeriod)) {
-            this.calcUpdateInterval();
+        if (this.params.autoUpdate !== this.prevAutoUpdate) {
+            this.prevAutoUpdate = this.params.autoUpdate;
+            if (!this.params.autoUpdate) {
+                this.params.updateIntervals = '';
+                this.params.updateIntervalPeriod = '';
+            }
         }
-    };
-    
-    this.calcUpdateInterval = function calcUpdateInterval() {
-        if (this.params.useRollupForUpdate) {
-            this.params.updateIntervals = this.params.rollupIntervals;
-            this.params.updateIntervalPeriod = this.params.rollupIntervalPeriod;
+        
+        var intervalControlsPristine = !this.form ||
+            ((!this.form.updateIntervals || this.form.updateIntervals.$pristine) &&
+                    (!this.form.updateIntervalPeriod || this.form.updateIntervalPeriod.$pristine));
+        if (intervalControlsPristine) {
+            var intervalsDifferent = this.params.rollupIntervals !== this.params.updateIntervals ||
+                this.params.rollupIntervalPeriod !== this.params.updateIntervalPeriod;
+            
+            if (intervalsDifferent && this.params.autoUpdate) {
+                this.params.updateIntervals = this.params.rollupIntervals;
+                this.params.updateIntervalPeriod = this.params.rollupIntervalPeriod;
+            }
         }
     };
 }

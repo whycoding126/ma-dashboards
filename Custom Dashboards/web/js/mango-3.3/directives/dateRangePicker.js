@@ -91,8 +91,8 @@ function dateRangePicker($injector) {
 
             return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>';
         },
-        controller: ['$attrs', '$parse', '$scope', '$timeout', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDefaultDateFormat',
-                     function($attrs, $parse, $scope, $timeout, Util, MA_DATE_RANGE_PRESETS, mangoDefaultDateFormat) {
+        controller: ['$attrs', '$parse', '$scope', '$interval', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDefaultDateFormat',
+                     function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDefaultDateFormat) {
             
             var fromAssign = $parse($attrs.from).assign.bind(null, $scope.$parent);
             var toAssign = $parse($attrs.to).assign.bind(null, $scope.$parent);
@@ -120,7 +120,7 @@ function dateRangePicker($injector) {
             };
             
             this.$onDestroy = function() {
-                $timeout.cancel(this.timerPromise);
+                $interval.cancel(this.timerPromise);
             };
             
             var mdPickers = $injector.has('$mdpDatePicker');
@@ -194,7 +194,7 @@ function dateRangePicker($injector) {
             }.bind(this);
 
             this.startUpdateTimer = function startUpdateTimer() {
-                $timeout.cancel(this.timerPromise);
+                $interval.cancel(this.timerPromise);
 
                 if (Util.isEmpty(this.updateInterval)) return;
                 var parts = this.updateInterval.split(' ');
@@ -207,7 +207,7 @@ function dateRangePicker($injector) {
                 // dont allow continuous loops
                 if (millis === 0) return;
 
-                this.timerPromise = $timeout(this.doUpdate, millis);
+                this.timerPromise = $interval(this.doUpdate, millis);
             }
         }]
     };
