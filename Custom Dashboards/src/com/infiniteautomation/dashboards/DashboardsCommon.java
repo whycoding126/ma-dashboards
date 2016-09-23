@@ -19,6 +19,11 @@ public class DashboardsCommon{
 	public static final String DASHBOARDS_ICON_DESTINATION = "dashboards.icon.destination";
 	public static final String DASHBOARDS_ICON_LOCATION = "dashboards.icon.location";
 	public static final String DASHBOARDS_LOGIN_PAGE = "dashboards.login.page";
+	public static final String DASHBOARDS_FIRST_USER_LOGIN_PAGE = "dashboards.login.userFirstLogin.page";
+	public static final String DASHBOARDS_FIRST_LOGIN_PAGE = "dashboards.login.firstLogin.page";
+	public static final String DASHBOARDS_LOGGED_IN_PAGE = "dashboards.login.loggedIn.page";
+	public static final String DASHBOARDS_UNAUTHORIZED_PAGE = "dashboards.unauthorized.page";
+	
 	
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX = "/public-dashboards/";
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION = "/web/public/";

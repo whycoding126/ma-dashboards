@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.DefaultPagesDefinition;
+import com.serotonin.m2m2.vo.User;
 
 /**
  * Class that will allow overidding the default login page if the system setting is set to a valid string
@@ -31,4 +32,77 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 			return null;
 		}
     }
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getFirstLoginPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public String getFirstLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_LOGIN_PAGE, null);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getLoggedInPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.serotonin.m2m2.vo.User)
+	 */
+	@Override
+	public String getLoggedInPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, null);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getFirstUserLoginPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.serotonin.m2m2.vo.User)
+	 */
+	@Override
+	public String getFirstUserLoginPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_USER_LOGIN_PAGE, null);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getLoggedInPageUriPreHome(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.serotonin.m2m2.vo.User)
+	 */
+	@Override
+	public String getLoggedInPageUriPreHome(HttpServletRequest request, HttpServletResponse response, User user) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, null);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getUnauthorizedPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.serotonin.m2m2.vo.User)
+	 */
+	@Override
+	public String getUnauthorizedPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_UNAUTHORIZED_PAGE, null);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+	}	
 }
+
+
+
