@@ -28,12 +28,21 @@ define(['require'], function(require) {
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues) return;
                     
-                    if(newValues.length > oldValues.length) {
-                        scope.graphOptions.push({valueAxis: scope.selectedAxis});
+                    if(oldValues === undefined || newValues.length > oldValues.length) {
+                        var graphOption = {valueAxis: scope.selectedAxis, xid: newValues[newValues.length-1].xid};
+                        if (scope.assignColors) {
+                            graphOption.lineColor = scope.selectedColor;
+                        }
+                        scope.graphOptions.push(graphOption);
+                        console.log('Adding', newValues[newValues.length-1].xid);
                     }
                     else if (newValues.length < oldValues.length) {
-                        // Need to splice at index of removed point rather then pop off at end!
-                        scope.graphOptions.pop();
+                        var arrayDiff = oldValues.filter(function(x) { return newValues.indexOf(x) < 0 });
+                        var removedXid = arrayDiff[0].xid;
+                        var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
+                        
+                        scope.graphOptions.splice(removedIndex, 1);
+                        console.log('Removed', removedXid, 'at index', removedIndex);
                     }
 
                     // Clear
@@ -42,6 +51,7 @@ define(['require'], function(require) {
                     // assign the chart's points equal to the checked from table
                     scope.points = newValues;
                     // console.log(newValues);
+                    console.log('Graph Options', scope.graphOptions);
                 });
 
             } // End Link

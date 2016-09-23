@@ -7,58 +7,82 @@
 </md-toolbar>
 
 <div layout="row">
-    <md-tabs md-selected="currentTab" md-stretch-tabs="auto" flex="60">
+    <md-tabs md-selected="currentTab" md-stretch-tabs="auto" flex="40">
         <md-tab id="tab1">CHART</md-tab>
         <md-tab id="tab2">STATS</md-tab>
     </md-tabs>
     <span flex></span>
-    <md-select ng-model="selectedAxis" ng-init="selectedAxis='right'" flex="10" flex-xs="30" aria-label="Select Axis">
-        <md-option value="right">
-            Right
-        </md-option>
-        <md-option value="left">
-            Left
-        </md-option>
-        <md-option value="right-2">
-            Right 2
-        </md-option>
-        <md-option value="left-2">
-            Left 2
-        </md-option>
-    </md-select>
-    <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" flex="10" flex-xs="30" aria-label="Chart Type">
-        <md-option value="smoothedLine">
-            Smooth
-        </md-option>
-        <md-option value="line">
-            Line
-        </md-option>
-        <md-option value="step">
-            Step
-        </md-option>
-        <md-option value="column">
-            Bar
-        </md-option>
-        <md-option value="stacked">
-            Stacked
-        </md-option>
-        <md-option value="area">
-            Area
-        </md-option>
-    </md-select>
+    <md-input-container  flex="10" flex-xs="30">
+        <label>Chart Type</label>
+        <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="Chart Type">
+            <md-option value="smoothedLine">
+                Smooth
+            </md-option>
+            <md-option value="line">
+                Line
+            </md-option>
+            <md-option value="step">
+                Step
+            </md-option>
+            <md-option value="column">
+                Bar
+            </md-option>
+            <md-option value="stacked">
+                Stacked
+            </md-option>
+            <md-option value="area">
+                Area
+            </md-option>
+        </md-select>
+    </md-input-container>
 </div>
 
 <md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
     <md-tab label="Chart">
-        <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}" auto-rollup-interval="dateBar.autoRollup">
+        <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
-        <div class="chart-content" ng-class="{'lg-screen': $mdMedia('gt-lg')}" ng-if="points.length">
-            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="graphOptions">
+        <div class="chart-content" ng-if="points.length">
+            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="graphOptions" options="{valueAxes:[{axisColor:axisColors.leftAxisColor, color:axisColors.leftAxisColor}, {axisColor:axisColors.rightAxisColor, color:axisColors.rightAxisColor}, {axisColor:axisColors.left2AxisColor, color:axisColors.left2AxisColor}, {axisColor:axisColors.right2AxisColor, color:axisColors.right2AxisColor}]}">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions">
+            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions" >
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions">
+            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions" >
             </ma-serial-chart>
+        </div>
+        <div layout="row" layout-wrap layout-margin>
+            <md-input-container flex="30">
+                <md-radio-group ng-model="selectedAxis" ng-init="selectedAxis='left'" layout="row" layout-align="start center">
+                    <md-radio-button value="left">Left</md-radio-button>
+                    <md-radio-button value="right">Right</md-radio-button>
+                    <md-radio-button value="left-2">Far Left</md-radio-button>
+                    <md-radio-button value="right-2">Far Right</md-radio-button>
+                </md-radio-group>
+            </md-input-container>
+            <md-input-container flex="10">
+                <md-checkbox ng-model="assignColors" ng-init="assignColors=false">
+                Pick Colors
+                </md-checkbox>
+            </md-input-container>
+            <md-input-container flex="10" ng-show="assignColors">
+                <label>Next Line Color</label>
+                <input type="color" ng-model="selectedColor" ng-init="selectedColor='#C2185B'" ng-disabled="!assignColors">
+            </md-input-container>
+            <md-input-container  flex="10" ng-show="assignColors">
+                <label>Left Axis</label>
+                <input type="color" ng-model="axisColors.leftAxisColor" ng-init="axisColors.leftAxisColor='#000000'" ng-disabled="!assignColors">
+            </md-input-container>
+            <md-input-container  flex="10" ng-show="assignColors">
+                <label>Right Axis</label>
+                <input type="color" ng-model="axisColors.rightAxisColor" ng-init="axisColors.rightAxisColor='#000000'" ng-disabled="!assignColors">
+            </md-input-container>
+            <md-input-container  flex="10" ng-show="assignColors">
+                <label>Outer Left Axis</label>
+                <input type="color" ng-model="axisColors.left2AxisColor" ng-init="axisColors.left2AxisColor='#000000'" ng-disabled="!assignColors">
+            </md-input-container>
+            <md-input-container  flex="10" ng-show="assignColors">
+                <label>Outer Right Axis</label>
+                <input type="color" ng-model="axisColors.right2AxisColor" ng-init="axisColors.right2AxisColor='#000000'" ng-disabled="!assignColors">
+            </md-input-container>
         </div>
     </md-tab>
 

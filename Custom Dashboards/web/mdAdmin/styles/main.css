@@ -772,13 +772,14 @@ md-toolbar.date-bar,
 md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
   height: 64px;
+  max-height: 64px;
 }
 
 @media (max-width: 959px) {
   md-toolbar.date-bar,
   md-toolbar.date-bar .md-toolbar-tools {
-    font-size: inherit;
     height: 128px;
+    max-height: 128px;
   }
 }
 
@@ -788,4 +789,42 @@ md-toolbar.date-bar md-checkbox {
 
 md-toolbar.date-bar md-input-container {
   margin-bottom: 0;
+}
+
+/* checkbox with label at top */
+
+md-checkbox.checkbox-top-label {
+  margin-top: 16px;
+}
+
+md-checkbox.checkbox-top-label.checkbox-centered .md-container {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+
+md-checkbox.checkbox-top-label .md-label {
+    position: absolute;
+    -webkit-transform: scale(.75);
+    transform: scale(.75);
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    left: 0;
+    bottom: 100%;
+    margin: 0;
+    color: rgba(255,255,255,0.7);
+    -webkit-font-smoothing: antialiased;
+    white-space: inherit;
+}
+
+md-checkbox.checkbox-top-label.checkbox-centered .md-label {
+    -webkit-transform: scale(.75) translateX(-50%);
+    transform: scale(.75) translateX(-50%);
+    left: 50%;
+}
+
+/* angular material fix */
+
+md-select[disabled] .md-select-value {
+    padding-bottom: 2px;
 }

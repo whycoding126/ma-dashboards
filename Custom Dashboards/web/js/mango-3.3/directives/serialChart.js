@@ -399,25 +399,31 @@ function defaultOptions() {
         theme: "light",
         addClassNames: true,
         dataProvider: [],
+        synchronizeGrid: true,
         valueAxes: [{
         	id: "left",
-            position: "left"
+            position: "left",
+            axisThickness: 2
         },{
         	id: "right",
-            position: "right"
+            position: "right",
+            axisThickness: 2
         },{
         	id: "left-2",
             position: "left",
-            offset: 50
+            offset: 50,
+            axisThickness: 2
         },{
         	id: "right-2",
             position: "right",
-            offset: 50
+            offset: 50,
+            axisThickness: 2
         }],
         categoryAxis: {
             parseDates: true,
             minPeriod: 'fff',
-            equalSpacing: true
+            equalSpacing: true,
+            axisThickness: 0
         },
         startDuration: 0,
         graphs: [],

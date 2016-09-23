@@ -59,7 +59,8 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
                 method: 'GET',
                 url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
                 withCredentials: true,
-                cache: false
+                cache: false,
+                transformResponse: Util.transformArrayResponse
             }).then(function(response) {
                 if (response.status < 400) {
                     this.setPoints(response.data);
