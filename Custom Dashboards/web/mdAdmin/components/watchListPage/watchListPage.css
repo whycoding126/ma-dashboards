@@ -48,10 +48,7 @@
 /* Chart Component */
 
 .watchlist-main .chart-content {
-    height: 300px;
-}
-.watchlist-main .chart-content.lg-screen {
-    height: 400px;
+    height: 500px;
 }
 .watchlist-main path.amcharts-graph-stroke {
     stroke-width: 2.5px;
