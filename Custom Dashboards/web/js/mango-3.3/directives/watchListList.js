@@ -21,6 +21,7 @@ function watchListList($injector) {
             selectXid: '@',
             selectFirst: '<?',
             showNewButton: '<?',
+            showEditButtons: '<?',
             query: '<?',
             start: '<?',
             limit: '<?',
