@@ -70,7 +70,7 @@
             <div ng-if="mdAdmin.stateParams.dateBar">
               <md-input-container class="date-preset">
                 <ma-date-range-picker from="mdAdmin.dateBar.from" to="mdAdmin.dateBar.to" no-underline="true"
-                  preset="{{mdAdmin.dateBar.preset}}" update-interval="{{mdAdmin.dateBar.updateIntervals}} {{mdAdmin.dateBar.updateIntervalPeriod}}"
+                  preset="{{mdAdmin.dateBar.preset}}" update-interval="{{mdAdmin.dateBar.updateIntervalString}}"
                   refresh="mdAdmin.dateBar.refresh" on-change="mdAdmin.dateBar.preset = preset"></ma-date-range-picker>
               </md-input-container>
               <md-button class="md-icon-button md-hue-1" ng-click="mdAdmin.dateBar.expanded = !mdAdmin.dateBar.expanded"
