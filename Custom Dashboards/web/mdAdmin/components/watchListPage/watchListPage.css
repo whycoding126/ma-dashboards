@@ -147,3 +147,19 @@ ma-watch-list-page .watch-list-filter md-input-container {
 ma-watch-list-page .watch-list-filter .md-button {
   margin: 0 0 0 -40px;
 }
+
+ma-watch-list-page md-list-item.md-2-line,
+ma-watch-list-page md-list-item.md-2-line > .md-no-style,
+ma-watch-list-page md-list-item.md-2-line:before,
+ma-watch-list-page md-list-item.md-2-line > .md-no-style:before {
+  height: 64px;
+  min-height: 64px;
+}
+
+ma-watch-list-page md-list-item,
+ma-watch-list-page md-list-item > .md-no-style,
+ma-watch-list-page md-list-item:before,
+ma-watch-list-page md-list-item > .md-no-style:before {
+  height: 40px;
+  min-height: 40px;
+}
