@@ -340,6 +340,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>\n<watch-list-builder></watch-list-builder>',
                 menuTr: 'dashboards.v3.app.watchListBuilder',
                 menuIcon: 'playlist_add_check',
+                params: {
+                    watchList: null
+                },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                         return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {

@@ -1,9 +1,16 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
       <md-button class="watch-list-back md-icon-button" ng-click="clear()" ng-if="!$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
-      <h2 flex>
-          <span ng-bind="watchList.name"></span>
-      </h2>
+      <h2><span ng-bind="watchList.name"></span></h2>
+      <div flex></div>
+      <md-button class="md-primary md-raised" ui-sref="dashboard.settings.watchListBuilder({watchListXid: watchList.xid})" ng-if="!watchList.isNew">
+        <md-icon>edit</md-icon>
+        <span ma-tr="common.edit"></span>
+      </md-button>
+      <md-button class="md-primary md-raised" ui-sref="dashboard.settings.watchListBuilder({watchList: watchList})" ng-if="watchList.isNew">
+        <md-icon>save</md-icon>
+        <span ma-tr="common.save"></span>
+      </md-button>
     </div>
 </md-toolbar>
 

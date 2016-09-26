@@ -137,6 +137,17 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.refreshWatchlists();
         if ($stateParams.watchListXid) {
             $ctrl.getWatchlist($stateParams.watchListXid);
+        } else if ($stateParams.watchList) {
+            $ctrl.selectedWatchlist = null;
+            var watchlist = $stateParams.watchList;
+            if (!watchlist.xid)
+                watchlist.xid = Util.uuid();
+            watchlist.username = MD_ADMIN_SETTINGS.user.username;
+            watchlist.readPermission = 'user';
+            watchlist.editPermission = MD_ADMIN_SETTINGS.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+            $ctrl.editWatchlist(watchlist);
+            if ($ctrl.form)
+                $ctrl.form.$setPristine();
         } else {
             $ctrl.newWatchlist();
         }
@@ -200,13 +211,18 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
         } else if (watchlist.type === 'hierarchy') {
-            var folders = [];
-            var folderIds = watchlist.query ? watchlist.query.split(',') : [];
-            for (var i = 0; i < folderIds.length; i++) {
-                var folderId = parseInt(folderIds[i], 10);
-                folders.push({id: folderId});
+            if (watchlist.hierarchyFolders) {
+                $ctrl.folders = watchlist.hierarchyFolders;
+                $ctrl.foldersChanged(); // updates the watchlist query string
+            } else {
+                var folders = [];
+                var folderIds = watchlist.query ? watchlist.query.split(',') : [];
+                for (var i = 0; i < folderIds.length; i++) {
+                    var folderId = parseInt(folderIds[i], 10);
+                    folders.push({id: folderId});
+                }
+                $ctrl.folders = folders;
             }
-            $ctrl.folders = folders;
         }
         
         function renderStatic() {
