@@ -1,7 +1,8 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
-      <span>Chart &amp; Compare</span>
-      <div flex></div>
+        <h2 flex>
+            <span>Chart &amp; Compare</span>        
+        </h2>
       <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; graphOptions=[];">Clear</md-button>
     </div>
 </md-toolbar>
@@ -49,8 +50,8 @@
             <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions" >
             </ma-serial-chart>
         </div>
-        <div layout="row" layout-wrap layout-margin>
-            <md-input-container flex="30">
+        <div layout="row" layout-wrap layout-margin layout-align="space-between start">
+            <md-input-container flex="70" flex-xs="100">
                 <md-radio-group ng-model="selectedAxis" ng-init="selectedAxis='left'" layout="row" layout-align="start center">
                     <md-radio-button value="left">Left</md-radio-button>
                     <md-radio-button value="right">Right</md-radio-button>
@@ -58,28 +59,30 @@
                     <md-radio-button value="right-2">Far Right</md-radio-button>
                 </md-radio-group>
             </md-input-container>
-            <md-input-container flex="10">
+            <md-input-container flex="20" flex-xs="100" layout="row" layout-align="end" layout-align-xs="start">
                 <md-checkbox ng-model="assignColors" ng-init="assignColors=false">
                 Pick Colors
                 </md-checkbox>
             </md-input-container>
-            <md-input-container flex="10" ng-show="assignColors">
+        </div>
+        <div layout="row" layout-margin>
+            <md-input-container flex ng-show="assignColors">
                 <label>Next Line Color</label>
                 <input type="color" ng-model="selectedColor" ng-init="selectedColor='#C2185B'" ng-disabled="!assignColors">
             </md-input-container>
-            <md-input-container  flex="10" ng-show="assignColors">
+            <md-input-container  flex ng-show="assignColors">
                 <label>Left Axis</label>
                 <input type="color" ng-model="axisColors.leftAxisColor" ng-init="axisColors.leftAxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
-            <md-input-container  flex="10" ng-show="assignColors">
+            <md-input-container  flex ng-show="assignColors">
                 <label>Right Axis</label>
                 <input type="color" ng-model="axisColors.rightAxisColor" ng-init="axisColors.rightAxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
-            <md-input-container  flex="10" ng-show="assignColors">
+            <md-input-container  flex ng-show="assignColors">
                 <label>Outer Left Axis</label>
                 <input type="color" ng-model="axisColors.left2AxisColor" ng-init="axisColors.left2AxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
-            <md-input-container  flex="10" ng-show="assignColors">
+            <md-input-container  flex ng-show="assignColors">
                 <label>Outer Right Axis</label>
                 <input type="color" ng-model="axisColors.right2AxisColor" ng-init="axisColors.right2AxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
