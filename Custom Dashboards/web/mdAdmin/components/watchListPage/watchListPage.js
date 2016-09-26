@@ -3,7 +3,7 @@
  * @author Will Geller
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 return {
@@ -138,6 +138,15 @@ return {
         
         this.editWatchList = function editWatchList(watchList) {
             $state.go('dashboard.settings.watchListBuilder', {watchListXid: watchList ? watchList.xid : null});
+        };
+        
+        this.updateQuery = function updateQuery() {
+            var filterText = '*' + this.filter + '*';
+            var rqlQuery = new query.Query({name: 'or', args: []});
+            rqlQuery.push(new query.Query({name: 'like', args: ['name', filterText]}));
+            this.dataSourceQuery = rqlQuery.toString();
+            rqlQuery.push(new query.Query({name: 'like', args: ['username', filterText]}));
+            this.watchListQuery = rqlQuery.toString();
         };
     }],
     templateUrl: require.toUrl('./watchListPage.html'),
