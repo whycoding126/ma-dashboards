@@ -52,11 +52,11 @@ var pointHierarchyBrowser = function pointHierarchyBrowser(PointHierarchy, Point
                         selectedPointsInThisFolder.push(pt);
                     }
                 }
-                if (selectedPointsInThisFolder.length === folder.points.length) {
-                    folder.checked = true;
-                    delete folder.partialPoints;
-                } else if (selectedPointsInThisFolder.length === 0) {
+                if (selectedPointsInThisFolder.length === 0) {
                     folder.checked = false;
+                    delete folder.partialPoints;
+                } else if (selectedPointsInThisFolder.length === folder.points.length) {
+                    folder.checked = true;
                     delete folder.partialPoints;
                 } else {
                     folder.checked = true;
