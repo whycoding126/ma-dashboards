@@ -56,7 +56,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.username = MD_ADMIN_SETTINGS.user.username;
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
-        watchlist.editPermission = 'edit-watchlists';
+        watchlist.editPermission = MD_ADMIN_SETTINGS.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
         watchlist.query = defaultQuery;
         $ctrl.editWatchlist(watchlist);
         if ($ctrl.form)
