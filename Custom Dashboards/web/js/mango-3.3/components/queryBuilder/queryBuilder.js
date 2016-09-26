@@ -8,6 +8,8 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 var queryBuilder = function queryBuilder(cssInjector) {
     this.rootQueryNode = new query.Query();
+    this.sort = [{desc: false}];
+    this.limit = [];
     
     this.$onInit = function() {
         this.ngModelCtrl.$parsers.unshift(this.parser);
