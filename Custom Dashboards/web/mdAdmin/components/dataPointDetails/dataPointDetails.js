@@ -42,8 +42,14 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
             $ctrl.path = data;
         },
         function(data) {
-            console.log('error', data);
+            console.log('PointHierarchy.pathByXid Error', data);
         });
+        
+        var pointType = $scope.myPoint.pointLocator.dataType;
+        // console.log('Point Type:', pointType);
+        if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' ) {
+            $ctrl.dateBar.rollupType = 'NONE';
+        }
     });
     
     
