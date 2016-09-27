@@ -115,6 +115,19 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 });
             };
             
+            $scope.acknowledgeAll = function() {
+                Events.acknowledgeViaRql({rql: 'acknowledged=false&sort(-activeTimestamp)&limit(3,0)'}, null).$promise.then(
+                    function (data) {
+                        if (data.count) {
+                            console.log('Acknowledged ', data.count, ' events');
+                        }
+                    },
+                    function (data) {
+                        console.log('Error', data);
+                    }
+                );
+            };
+            
             $scope.$watch('events.$total', function(newValue, oldValue){
                 if (newValue === undefined || newValue === oldValue) return;
                 $scope.total = newValue;

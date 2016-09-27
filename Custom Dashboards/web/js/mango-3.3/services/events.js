@@ -107,6 +107,11 @@ function eventsFactory($resource, Util) {
             withCredentials: true,
             cache: true
         },
+        acknowledgeViaRql: {
+            method: 'POST',
+            url: '/rest/v1/events/acknowledge/?:rql',
+            withCredentials: true
+        },
         getActiveSummary: {
         	url: '/rest/v1/events/active-summary',
             method: 'GET',
