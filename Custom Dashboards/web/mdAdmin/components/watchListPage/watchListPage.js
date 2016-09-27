@@ -58,11 +58,16 @@ return {
         
         this.dataSourceChanged = function dataSourceChanged() {
             if (this.dataSource) {
+                var dsQuery = new query.Query()
+                    .eq('dataSourceXid', this.dataSource.xid)
+                    .sort('name')
+                    .limit(200);
+
                 var watchList = new WatchList();
                 watchList.isNew = true;
                 watchList.type = 'query';
                 watchList.name = Translate.trSync('dashboards.v3.app.dataSourceX', [this.dataSource.name]);
-                watchList.query = 'dataSourceXid=' + this.dataSource.xid;
+                watchList.query = dsQuery.toString();
                 watchList.$getPoints();
                 this.watchList = watchList;
             } else {
@@ -81,11 +86,16 @@ return {
         
         this.deviceNameChanged = function deviceNameChanged() {
             if (this.deviceName) {
+                var dnQuery = new query.Query()
+                    .eq('deviceName', this.deviceName)
+                    .sort('name')
+                    .limit(200);
+
                 var watchList = new WatchList();
                 watchList.isNew = true;
                 watchList.type = 'query';
                 watchList.name = Translate.trSync('dashboards.v3.app.deviceNameX', [this.deviceName]);
-                watchList.query = 'deviceName=' + this.deviceName;
+                watchList.query = dnQuery.toString();
                 watchList.$getPoints();
                 this.watchList = watchList;
             } else {
