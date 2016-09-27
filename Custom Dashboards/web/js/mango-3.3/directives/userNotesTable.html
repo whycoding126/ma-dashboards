@@ -18,7 +18,14 @@
                               <th md-column md-order-by="username">User</th>
                         </tr>
                   </thead>
-                  <tbody md-body>
+                  <tbody md-body ng-hide="userNotes.length > 0">
+                        <tr md-row>
+                            <td md-cell colspan="3" style="height:60px; font-weight: bold;">
+                                No Comments Found
+                            </td>
+                        </tr>
+                   </tbody>
+                  <tbody md-body ng-show="userNotes.length > 0">
                         <tr md-row ng-repeat="note in userNotes | orderBy: myOrder">
                               <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
                               <td md-cell>{{note.comment}}</td>
