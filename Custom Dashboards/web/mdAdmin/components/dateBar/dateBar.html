@@ -4,7 +4,7 @@
       <md-input-container flex="30">
         <label ma-tr="dashboards.v3.app.rollupType"></label>
         <md-select name="rollupType" ng-model="$ctrl.params.rollupType">
-          <md-option ng-repeat="t in $ctrl.rollupTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
+          <md-option ng-repeat="t in $ctrl.rollupTypes | filter:$ctrl.params.rollupTypesFilter track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
         </md-select>
       </md-input-container>
       <md-input-container class="no-errors-spacer" flex="20">

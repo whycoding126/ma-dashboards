@@ -1145,7 +1145,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         updateIntervals: 10,
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
-        expanded: true
+        expanded: true,
+        rollupTypesFilter: {}
     };
     MD_ADMIN_SETTINGS.stateParams = $stateParams;
     
@@ -1197,6 +1198,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                 contentDiv.scrollTop = 0;
             }
         }
+        
+        MD_ADMIN_SETTINGS.dateBar.rollupTypesFilter = {};
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {

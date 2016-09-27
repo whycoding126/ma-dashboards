@@ -10,8 +10,7 @@ return {
     templateUrl: require.toUrl('./dateBar.html'),
     controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', dateBarController],
     bindings: {
-        onRefresh: '&',
-        
+        onRefresh: '&'
     }
 };
 
