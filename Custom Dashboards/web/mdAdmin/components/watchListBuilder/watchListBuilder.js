@@ -200,12 +200,12 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         $ctrl.folders = [];
         
         if (watchlist.type === 'static') {
+            $ctrl.clearSearch();
             if (!watchlist.isNew) {
                 watchlist.$getPoints().then(renderStatic);
             } else {
                 renderStatic();
             }
-            $ctrl.clearSearch();
         } else if (watchlist.type === 'query') {
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
