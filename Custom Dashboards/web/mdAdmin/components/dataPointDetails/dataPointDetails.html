@@ -39,8 +39,13 @@
 			<md-toolbar class="md-whiteframe-1dp md-hue-3">
 				<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 					<h2 flex>
-			              <span>Point Value History</span>
+			            <span>Point Value History</span>
 			        </h2>
+					<h2 style="padding-right: 5px;">
+			            <span>Realtime: </span>
+			        </h2>
+					<md-switch ng-model="$ctrl.realtimeMode" aria-label="Realtime Mode">
+					</md-switch>
 				</div>
 			</md-toolbar>
 			<md-table-container ng-init="myOrder='-timestamp'">
@@ -51,8 +56,15 @@
 							<th md-column md-order-by="value">Point Value</th>
 						</tr>
 					</thead>
-					<tbody md-body>
+					<tbody md-body ng-if="!$ctrl.realtimeMode">
 						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder">
+							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
+							<td md-cell>{{value.value}}</td>
+						</tr>
+					</tbody>
+					<tbody md-body ng-if="$ctrl.realtimeMode">
+						<ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
+						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
 							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
 							<td md-cell>{{value.value}}</td>
 						</tr>
