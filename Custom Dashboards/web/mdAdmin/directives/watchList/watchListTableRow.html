@@ -11,5 +11,5 @@
 </td>
 <td md-cell class="point-time"></td>
 <td md-cell>
-  <a href="/dashboards/data-point-details/{{point.xid}}"><md-icon>timeline<md-tooltip md-delay="250" md-direction="right" md-autohide><span ma-tr="dashboards.v3.app.dpd"></span></md-tooltip></md-icon></a>
+  <md-icon ng-click="openPage('dashboard.dataPointDetails', point.xid)" class="md-primary">timeline<md-tooltip md-delay="250" md-direction="left" md-autohide><span ma-tr="dashboards.v3.app.dpd"></span></md-tooltip></md-icon>
 </td>

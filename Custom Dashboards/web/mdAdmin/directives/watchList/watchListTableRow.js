@@ -7,10 +7,10 @@ define(['require', 'moment-timezone'], function(require, moment) {
     'use strict';
     var FLASH_CLASS = 'flash-on-change';
     
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS'];
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS', '$state'];
     return watchListTableRow;
 
-    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS) {
+    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS, $state) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
@@ -18,6 +18,10 @@ define(['require', 'moment-timezone'], function(require, moment) {
                     scope.$mdMedia = $mdMedia;
                     scope.Updated = false;
                     scope.addNote = UserNotes.addNote;
+                    
+                    scope.openPage = function(state, param) {
+                        $state.go(state, { pointXid: param });
+                    };
 
                     scope.showSetPoint = function(ev) {
                         $mdDialog.show({
@@ -88,6 +92,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
                                 fullscreen: true,
+                                clickOutsideToClose: true,
                                 controllerAs: 'ctrl'
                             })
                             .then(function(answer) {
