@@ -103,6 +103,18 @@ public class MyMenuItemDefinition extends MenuItemDefinition{
 		if (DashboardsCommon.DEFAULT_DASHBOARDS_LOGIN_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE))) {
 			systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
 		}
+        if (DashboardsCommon.DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_USER_LOGIN_PAGE))) {
+            systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
+        }
+        if (DashboardsCommon.DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_LOGIN_PAGE))) {
+            systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
+        }
+        if (DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE))) {
+            systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
+        }
+        if (DashboardsCommon.DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE.equals(SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_UNAUTHORIZED_PAGE))) {
+            systemSettingsDao.removeValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE);
+        }
 	}
 
 }

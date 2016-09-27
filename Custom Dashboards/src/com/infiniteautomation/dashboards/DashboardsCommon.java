@@ -23,8 +23,7 @@ public class DashboardsCommon{
 	public static final String DASHBOARDS_FIRST_LOGIN_PAGE = "dashboards.login.firstLogin.page";
 	public static final String DASHBOARDS_LOGGED_IN_PAGE = "dashboards.login.loggedIn.page";
 	public static final String DASHBOARDS_UNAUTHORIZED_PAGE = "dashboards.unauthorized.page";
-	
-	
+
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX = "/public-dashboards/";
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION = "/web/public/";
 	public static final String DEFAULT_DASHBOARDS_PRIVATE_URL_PREFIX = "/private-dashboards/";
@@ -32,5 +31,9 @@ public class DashboardsCommon{
 	public static final String DEFAULT_DASHBOARDS_ICON_DESTINATION = "/dashboards/";
 	public static final String DEFAULT_DASHBOARDS_ICON_LOCATION = "web/img/dashboards.png";
 	public static final String DEFAULT_DASHBOARDS_LOGIN_PAGE = "";
+    public static final String DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE = "";
+    public static final String DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE = "";
+    public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE = "";
+    public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "";
 
 }

@@ -24,7 +24,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	@Override
     public String getLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
     	
-		String loginPage = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE, null);
+		String loginPage = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGIN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGIN_PAGE);
 		
 		if(!StringUtils.isEmpty(loginPage)){
 			return loginPage;
@@ -38,7 +38,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getFirstLoginPageUri(HttpServletRequest request, HttpServletResponse response) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_LOGIN_PAGE, null);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_LOGIN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -52,7 +52,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getLoggedInPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, null);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -66,7 +66,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getFirstUserLoginPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_USER_LOGIN_PAGE, null);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_FIRST_USER_LOGIN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -80,7 +80,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getLoggedInPageUriPreHome(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, null);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_LOGGED_IN_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_LOGGED_IN_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
@@ -94,7 +94,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getUnauthorizedPageUri(HttpServletRequest request, HttpServletResponse response, User user) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_UNAUTHORIZED_PAGE, null);
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_UNAUTHORIZED_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
 			return page;
