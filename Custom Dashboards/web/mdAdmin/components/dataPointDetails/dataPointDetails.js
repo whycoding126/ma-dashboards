@@ -9,24 +9,37 @@ define(['angular', 'require'], function(angular, require) {
 var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS, PointHierarchy) {
     
     var $ctrl = this;
-    this.dateBar = MD_ADMIN_SETTINGS.dateBar;
+    $ctrl.dateBar = MD_ADMIN_SETTINGS.dateBar;
+    var timezone = MD_ADMIN_SETTINGS.user.getTimezone();
+    var pointValueCell = angular.element('div.point-details').find('.point-value');
+    var pointTimeCell = angular.element('div.point-details').find('.point-time');
+    var timeoutID;
+    var lastValue;
     
-    this.$onInit = function() {
-        if ($stateParams.pointXid) {
-            // console.log($stateParams.pointXid);
-            $ctrl.pointXid = $stateParams.pointXid;
+    $ctrl.pointValueChanged = function pointValueChanged(point) {
+        // manually add and remove classes rather than using ng-class as point values can
+        // change rapidly and result in huge slow downs / heaps of digest loops
+        
+        var now = (new Date()).valueOf();
+        var format = now - point.time > 86400 ? 'l LTS' : 'LTS';
+        $ctrl.pointTime = moment.tz(point.time, timezone).format(format);
+
+        pointTimeCell.addClass('flash-on-change');
+        if (point.value !== lastValue) {
+            pointValueCell.addClass('flash-on-change');
+        };
+        lastValue = point.value;
+        
+        if (timeoutID) {
+            clearTimeout(timeoutID);
+            timeoutID = null;
         }
-        else {
-            // Attempt load pointXid from local storage
-            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
-            if (storedPoint) {
-                $ctrl.pointXid = storedPoint.xid;
-                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
-            }
-            
-        }
+
+        timeoutID = setTimeout(function() {
+            pointValueCell.removeClass('flash-on-change');
+            pointTimeCell.removeClass('flash-on-change');
+        }, 400);
     };
-    
     
     $scope.$watch('myPoint.xid', function(newValue, oldValue) {
         if (newValue === undefined || newValue === oldValue) return;
@@ -52,7 +65,21 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
         }
     });
     
-    
+    $ctrl.$onInit = function() {
+        if ($stateParams.pointXid) {
+            // console.log($stateParams.pointXid);
+            $ctrl.pointXid = $stateParams.pointXid;
+        }
+        else {
+            // Attempt load pointXid from local storage
+            var storedPoint = localStorageService.get('lastDataPointDetailsItem');
+            if (storedPoint) {
+                $ctrl.pointXid = storedPoint.xid;
+                //console.log('Loaded', storedPoint.xid, 'from LocalStorage');
+            }
+            
+        }
+    };
 };
 
 dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS', 'PointHierarchy'];
