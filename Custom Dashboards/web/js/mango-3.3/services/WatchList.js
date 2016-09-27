@@ -7,14 +7,54 @@ define(['angular'], function(angular) {
 'use strict';
 
 function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
+    
+    function jsonDataToProperties(data, headersGetter, status) {
+        if (!angular.isObject(data)) return data;
+        
+        var isArray = angular.isArray(data);
+        if (!isArray)
+            data = [data];
+        
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+            if (item.type === 'query') {
+                item.query = item.jsonData ? item.jsonData.query : '';
+            }
+            if (item.type === 'hierarchy') {
+                item.folderIds = item.jsonData ? item.jsonData.folderIds : [];
+            }
+            delete item.jsonData;
+        }
+        
+        return isArray ? data : data[0];
+    }
+    
+    function propertiesToJsonData(data, headersGetter) {
+        data.jsonData = {};
+        if (data.type === 'query') {
+            data.jsonData.query = data.query;
+            delete data.query;
+        }
+        if (data.type === 'hierarchy') {
+            data.jsonData.folderIds = data.folderIds;
+            delete data.folderIds;
+        }
+        return angular.toJson(data);
+    }
+    
+    var transformWatchListResponse = $http.defaults.transformResponse.concat(jsonDataToProperties);
 
     var WatchList = $resource('/rest/v1/watch-lists/:xid', {
         xid: '@xid'
     }, {
+        get: {
+            method: 'GET',
+            transformResponse: transformWatchListResponse
+        },
         query: {
             method: 'GET',
             isArray: true,
-            transformResponse: Util.transformArrayResponse,
+            transformResponse: [Util.transformArrayResponse, jsonDataToProperties],
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
@@ -23,10 +63,18 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
         },
         save: {
             method: 'POST',
-            url: '/rest/v1/watch-lists/'
+            url: '/rest/v1/watch-lists/',
+            transformRequest: propertiesToJsonData,
+            transformResponse: transformWatchListResponse
         },
         update: {
-            method: 'PUT'
+            method: 'PUT',
+            transformRequest: propertiesToJsonData,
+            transformResponse: transformWatchListResponse
+        },
+        'delete': {
+            method: 'DELETE',
+            transformResponse: transformWatchListResponse
         }
     });
     
@@ -78,15 +126,14 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
             if (this.hierarchyFolders) {
                 foldersPromise = $q.when(this.hierarchyFolders);
             } else {
-                var folderIds = this.query ? this.query.split(',') : [];
-                if (!folderIds.length) {
+                if (!this.folderIds || !this.folderIds.length) {
                     this.points = [];
                     return $q.when(this);
                 }
                 
                 var requests = [];
-                for (var i = 0; i < folderIds.length; i++) {
-                    var request = PointHierarchy.get({id: parseInt(folderIds[i], 10), subfolders: false}).$promise;
+                for (var i = 0; i < this.folderIds.length; i++) {
+                    var request = PointHierarchy.get({id: this.folderIds[i], subfolders: false}).$promise;
                     requests.push(request);
                 }
                 foldersPromise = $q.all(requests);

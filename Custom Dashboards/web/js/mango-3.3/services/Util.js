@@ -165,7 +165,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
 	/**
 	 * @return difference object
 	 */
-	Util.prototype.arrayDiff = function (newArray, oldArray) {
+	Util.prototype.arrayDiff = function arrayDiff(newArray, oldArray) {
     	if (newArray === undefined) newArray = [];
     	if (oldArray === undefined) oldArray = [];
 
@@ -182,7 +182,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
     /**
      * Converts input to a moment
      */
-    Util.prototype.toMoment = function(input, now, format) {
+    Util.prototype.toMoment = function toMoment(input, now, format) {
         if (!input || input === 'now') return moment(now);
         if (typeof input === 'string') {
         	return moment(input, format || mangoDefaultDateFormat);
@@ -193,14 +193,14 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
     /**
      * test for null, undefined or whitespace
      */
-    Util.prototype.isEmpty = function(str) {
+    Util.prototype.isEmpty = function isEmpty(str) {
     	return !str || /^\s*$/.test(str);
     };
 
     /**
      * @return Number of keys in object starting with xxx
      */
-    Util.prototype.numKeys = function(obj, start) {
+    Util.prototype.numKeys = function numKeys(obj, start) {
     	var count = 0;
     	for (var key in obj) {
     		if (key.indexOf(start) === 0) count++;
@@ -209,14 +209,14 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
     };
 
 
-    Util.prototype.cancelAll = function(cancelFns) {
+    Util.prototype.cancelAll = function cancelAll(cancelFns) {
     	// remove all elements from cancelFns array so cancel fns are never called again
     	cancelFns = cancelFns.splice(0, cancelFns.length);
     	for (var i = 0; i < cancelFns.length; i++)
     		cancelFns[i]();
     };
 
-    Util.prototype.openSocket = function(path) {
+    Util.prototype.openSocket = function openSocket(path) {
         if (!('WebSocket' in window)) {
             throw new Error('WebSocket not supported');
         }
@@ -244,7 +244,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
      * Parses an array response from a Mango endpoint which contains a total
      * and assigns it as the property $total on the array
      */
-    Util.prototype.transformArrayResponse = function(data, fn, code) {
+    Util.prototype.transformArrayResponse = function transformArrayResponse(data, fn, code) {
         try {
             if (!data) return data;
             var parsed = angular.fromJson(data);
@@ -262,7 +262,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
      *  Copies the total from the transformed array onto the actual destination
      *  array and computes page number
      */
-    Util.prototype.arrayResponseInterceptor = function(data) {
+    Util.prototype.arrayResponseInterceptor = function arrayResponseInterceptor(data) {
         if (angular.isUndefined(data.data))
             return $q.reject(data);
         
@@ -296,7 +296,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
      * Extremely simple memoize function that works on === equality
      * Used to prevent infinite digest loops in filters etc
      */
-    Util.prototype.memoize = function(fn, cacheSize) {
+    Util.prototype.memoize = function memoize(fn, cacheSize) {
         var cache = [];
         cacheSize = cacheSize || 10;
         do {
@@ -461,7 +461,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
 		}
     };
     
-    Util.prototype.objQuery = function(options) {
+    Util.prototype.objQuery = function objQuery(options) {
         if (!options) return this.query();
 
         var params = [];

@@ -57,7 +57,6 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
         watchlist.editPermission = MD_ADMIN_SETTINGS.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
-        watchlist.query = defaultQuery;
         $ctrl.editWatchlist(watchlist);
         if ($ctrl.form)
             $ctrl.form.$setPristine();
@@ -65,13 +64,13 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     $ctrl.typeChanged = function typeChanged() {
         if ($ctrl.watchlist.type === 'query') {
-            $ctrl.watchlist.query = defaultQuery;
+            if (!$ctrl.watchlist.query)
+                $ctrl.watchlist.query = defaultQuery;
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
         } else if ($ctrl.watchlist.type === 'hierarchy') {
-            $ctrl.watchlist.query = '';
-        } else if ($ctrl.watchlist.type === 'static') {
-            $ctrl.watchlist.query = null;
+            if (!$ctrl.watchlist.folderIds)
+                $ctrl.watchlist.folderIds = [];
         }
     };
 
@@ -216,9 +215,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
                 $ctrl.foldersChanged(); // updates the watchlist query string
             } else {
                 var folders = [];
-                var folderIds = watchlist.query ? watchlist.query.split(',') : [];
-                for (var i = 0; i < folderIds.length; i++) {
-                    var folderId = parseInt(folderIds[i], 10);
+                for (var i = 0; i < watchlist.folderIds.length; i++) {
+                    var folderId = parseInt(watchlist.folderIds[i], 10);
                     folders.push({id: folderId});
                 }
                 $ctrl.folders = folders;
@@ -335,7 +333,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         }
         if (pointXidsToGet.length) {
             // fetch full points
-            Point.objQuery({query: 'in(xid,' + pointXidsToGet.join(',') + ')'}).$promise.then(updateSelection);
+            var ptQuery = new query.Query({name: 'in', args: ['xid'].concat(pointXidsToGet)});
+            Point.query({rqlQuery: ptQuery.toString()}).$promise.then(updateSelection);
         } else {
             updateSelection();
         }
@@ -356,7 +355,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         for (var i = 0; i < $ctrl.folders.length; i++) {
             folderIds.push($ctrl.folders[i].id);
         }
-        $ctrl.watchlist.query = folderIds.join(',');
+        $ctrl.watchlist.folderIds = folderIds;
     };
     
     $ctrl.resetSort = function() {
