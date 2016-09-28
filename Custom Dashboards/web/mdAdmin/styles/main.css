@@ -762,6 +762,12 @@ li.md-nav-item:first-of-type {
   margin: 0;
 }
 
+/* Main tool bar */
+
+.dashboard-main-toolbar {
+  z-index: 3;
+}
+
 /* Date bar */
 
 .date-preset ma-date-range-picker md-select {
@@ -789,6 +795,16 @@ md-toolbar.date-bar md-checkbox {
 
 md-toolbar.date-bar md-input-container {
   margin-bottom: 0;
+}
+
+md-toolbar.date-bar {
+  transition: 0.3s linear max-height;
+  overflow: hidden;
+  min-height: 0;
+}
+
+md-toolbar.date-bar.ng-hide {
+  max-height: 0;
 }
 
 /* checkbox with label at top */

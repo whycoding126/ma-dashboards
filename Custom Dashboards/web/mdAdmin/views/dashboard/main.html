@@ -36,7 +36,7 @@
   </md-sidenav>
 
   <div layout="column" tabIndex="-1" flex class="main-page-area">
-    <md-toolbar md-theme="mangoDark" class="md-whiteframe-glow-z1 dashboard-main-toolbar" role="toolbar">
+    <md-toolbar md-theme="mangoDark" class="dashboard-main-toolbar" ng-class="{'md-whiteframe-glow-z1': !(mdAdmin.stateParams.dateBar && dateBar.expanded)}" role="toolbar">
 
       <div class="md-toolbar-tools dashboard-toolbar-tools" tabIndex="-1">
         <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
@@ -85,7 +85,7 @@
 
     </md-toolbar>
     
-    <md-toolbar md-theme="mangoDark" class="md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="dateBar.expanded">
+    <md-toolbar md-theme="mangoDark" class="md-whiteframe-glow-z1 md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="dateBar.expanded">
       <div class="md-toolbar-tools">
         <date-bar flex layout-align="start center" on-refresh="dateBar.refresh = $event"></date-bar>
       </div>
