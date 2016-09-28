@@ -120,7 +120,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 Events.acknowledgeViaRql({rql: $scope.RQL.RQLforAcknowldege}, null).$promise.then(
                     function (data) {
                         if (data.count) {
-                            console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
+                            //console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
                             // Filter by acknowledged
                             $scope.acknowledged = true;
                         }
@@ -134,9 +134,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.$watch('events.$total', function(newValue, oldValue){
                 if (newValue === undefined || newValue === oldValue) return;
                 $scope.total = newValue;
-                console.log($scope.acknowledged);
+                
                 if ($scope.acknowledged === 'false' || $scope.acknowledged === '*' || $scope.acknowledged === undefined) {
-                    console.log('query for count');
                     Events.rql({query: $scope.RQL.RQLforAcknowldege+'&limit(0)'}, null).$promise.then(
                         function (data) {
                             if (data.$total) {
@@ -150,7 +149,6 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                     );
                 }
                 else {
-                    console.log('Set to 0');
                     $scope.totalUnAcknowledged = 0;
                 }
                 
@@ -179,7 +177,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 }
                 
                 $scope.RQL = doQuery(value);
-                console.log('Querying on:', $scope.RQL.RQLforDisplay);
+                //console.log('Querying on:', $scope.RQL.RQLforDisplay);
                 $scope.events = Events.rql({query: $scope.RQL.RQLforDisplay});
             }, true);
             
