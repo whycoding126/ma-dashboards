@@ -1172,6 +1172,21 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         }
     });
 
+    $rootScope.titleSuffix = 'Mango Dashboards v3';
+    $rootScope.setTitleText = function setTitleText() {
+        if ($state.$current.menuText) {
+            this.titleText = $state.$current.menuText + ' - ' + this.titleSuffix;
+        } else if ($state.$current.menuTr) {
+            Translate.tr($state.$current.menuTr).then(function(text) {
+                this.titleText = text + ' - ' + this.titleSuffix;
+            }.bind(this), function() {
+                this.titleText = this.titleSuffix;
+            }.bind(this));
+        } else {
+            this.titleText = this.titleSuffix;
+        }
+    };
+    
     $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         var crumbs = [];
         var state = $state.$current;
@@ -1183,6 +1198,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             }
         } while (state = state.parent);
         $rootScope.crumbs = crumbs;
+        
+        $rootScope.setTitleText();
         
         if (toState !== fromState) {
             var contentDiv = document.querySelector('.main-content');
