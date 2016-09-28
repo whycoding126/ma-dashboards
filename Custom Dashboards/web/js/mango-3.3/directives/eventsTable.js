@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 /**
  * @ngdoc directive
@@ -53,6 +53,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             
             $scope.page = 1;
             $scope.total = 0;
+            $scope.totalUnAcknowledged = 0;
             
             var filterBeforePush = function (payload) {
                 if (payload.type === 'ACKNOWLEDGED') {
@@ -116,10 +117,12 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             };
             
             $scope.acknowledgeAll = function() {
-                Events.acknowledgeViaRql({rql: 'acknowledged=false&sort(-activeTimestamp)&limit(3,0)'}, null).$promise.then(
+                Events.acknowledgeViaRql({rql: $scope.RQL.RQLforAcknowldege}, null).$promise.then(
                     function (data) {
                         if (data.count) {
-                            console.log('Acknowledged ', data.count, ' events');
+                            console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
+                            // Filter by acknowledged
+                            $scope.acknowledged = true;
                         }
                     },
                     function (data) {
@@ -131,6 +134,27 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.$watch('events.$total', function(newValue, oldValue){
                 if (newValue === undefined || newValue === oldValue) return;
                 $scope.total = newValue;
+                console.log($scope.acknowledged);
+                if ($scope.acknowledged === 'false' || $scope.acknowledged === '*' || $scope.acknowledged === undefined) {
+                    console.log('query for count');
+                    Events.rql({query: $scope.RQL.RQLforAcknowldege+'&limit(0)'}, null).$promise.then(
+                        function (data) {
+                            if (data.$total) {
+                                console.log($scope.RQL.RQLforAcknowldege+'&limit(0)', data.$total);
+                                $scope.totalUnAcknowledged = data.$total;
+                            }
+                        },
+                        function (data) {
+                            console.log('Error', data);
+                        }
+                    );
+                }
+                else {
+                    console.log('Set to 0');
+                    $scope.totalUnAcknowledged = 0;
+                }
+                
+                
             });
             
             $scope.$watch(function() {
@@ -153,9 +177,72 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                     // console.log('Returning', $scope.singlePoint, $scope.pointId);
                     return;
                 }
-                // console.log('Querying', $scope.singlePoint, $scope.pointId);
-                $scope.events = Events.objQuery(value);
+                
+                $scope.RQL = doQuery(value);
+                console.log('Querying on:', $scope.RQL.RQLforDisplay);
+                $scope.events = Events.rql({query: $scope.RQL.RQLforDisplay});
             }, true);
+            
+            var doQuery = function(options) {
+                var params = [];
+                
+                if (options.alarmLevel && options.alarmLevel != '*') {
+                    params.push('alarmLevel=' + options.alarmLevel);
+                }
+                if (options.eventType && options.eventType != '*') {
+                    params.push('eventType=' + options.eventType);
+                }
+                if (options.pointId) {
+                    params.push('dataPointId=' + options.pointId);
+                }
+                if (options.eventId) {
+                    params.push('id=' + options.eventId);
+                }
+                if (options.activeStatus && options.activeStatus != '*') {
+                    if (options.activeStatus==='active') {
+                        params.push('active=true');
+                    }
+                    else if (options.activeStatus==='noRtn') {
+                        params.push('rtnApplicable=false');
+                    }
+                    else if (options.activeStatus==='normal') {
+                        params.push('active=false');
+                    }
+                }
+                if (options.acknowledged && options.acknowledged != '*') {
+                    if (options.acknowledged==='true') {
+                        params.push('acknowledged=true');
+                    }
+                    else if (options.acknowledged==='false') {
+                        params.push('acknowledged=false');
+                    }
+                }
+                if (options.from) {
+                    params.push('activeTimestamp=ge=' + options.from.valueOf());
+                }
+                if (options.to) {
+                    params.push('activeTimestamp=lt=' + options.to.valueOf());
+                }
+                
+                var RQLforAcknowldege = params.join('&');
+                var RQLforDisplay = params.join('&');
+                
+                RQLforAcknowldege += '&acknowledged=false';
+                
+                if (options.sort) {
+                    var sort = options.sort;
+                    if (angular.isArray(sort)) {
+                        sort = sort.join(',');
+                    }
+                    RQLforDisplay += '&sort(' + sort + ')';
+                }
+                if (options.limit) {
+                    var start = options.start || 0;
+                    RQLforDisplay += '&limit(' + options.limit + ',' + start + ')';
+                }
+
+                return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay}; 
+            }
             
         }
     };

@@ -155,64 +155,6 @@ function eventsFactory($resource, Util) {
             params.push(queryPart);
         }
         
-        if (options.alarmLevel && options.alarmLevel != '*') {
-            params.push('alarmLevel=' + options.alarmLevel);
-        }
-        
-        if (options.eventType && options.eventType != '*') {
-            params.push('eventType=' + options.eventType);
-        }
-        
-        if (options.pointId) {
-            params.push('dataPointId=' + options.pointId);
-        }
-        
-        if (options.eventId) {
-            params.push('id=' + options.eventId);
-        }
-        
-        if (options.activeStatus && options.activeStatus != '*') {
-            if (options.activeStatus==='active') {
-                params.push('active=true');
-            }
-            else if (options.activeStatus==='noRtn') {
-                params.push('rtnApplicable=false');
-            }
-            else if (options.activeStatus==='normal') {
-                params.push('active=false');
-            }
-        }
-        
-        if (options.acknowledged && options.acknowledged != '*') {
-            if (options.acknowledged==='true') {
-                params.push('acknowledged=true');
-            }
-            else if (options.acknowledged==='false') {
-                params.push('acknowledged=false');
-            }
-        }
-        
-        if (options.from) {
-            params.push('activeTimestamp=ge=' + options.from.valueOf());
-        }
-        if (options.to) {
-            params.push('activeTimestamp=lt=' + options.to.valueOf());
-        }
-
-        if (options.sort) {
-            var sort = options.sort;
-            if (angular.isArray(sort)) {
-                sort = sort.join(',');
-            }
-            params.push('sort(' + sort + ')');
-        }
-
-        if (options.limit) {
-            var start = options.start || 0;
-            params.push('limit(' + options.limit + ',' + start + ')');
-        }
-        
-
         return params.length ? this.rql({query: params.join('&')}) : this.query();
     }
 
