@@ -8,14 +8,14 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', dateBarController],
+    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', dateBarController],
     bindings: {
         onRefresh: '&'
     }
 };
 
-function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES) {
-    this.params = MD_ADMIN_SETTINGS.dateBar;
+function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar) {
+    this.params = DateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;
     this.timePeriodTypes = MA_TIME_PERIOD_TYPES;
@@ -52,6 +52,13 @@ function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util, MA_ROLLUP_TYPE
             this.params.rollupIntervalPeriod = calc.units;
             this.updateIntervalFromRollupInterval();
         }
+    };
+    
+    this.saveSettings = function saveSettings() {
+        localStorageService.set('storedCredentials', {
+            username: username,
+            password: password
+        });
     };
 }
 

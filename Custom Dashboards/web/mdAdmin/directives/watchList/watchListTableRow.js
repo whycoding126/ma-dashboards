@@ -7,10 +7,10 @@ define(['require', 'moment-timezone'], function(require, moment) {
     'use strict';
     var FLASH_CLASS = 'flash-on-change';
     
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS', '$state'];
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS', '$state', 'DateBar'];
     return watchListTableRow;
 
-    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS, $state) {
+    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS, $state, DateBar) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
@@ -80,7 +80,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
                     scope.showStats = function(ev) {
                         $mdDialog.show({
                                 controller: function() {
-                                    this.dateBar = MD_ADMIN_SETTINGS.dateBar;
+                                    this.dateBar = DateBar;
                                     
                                     this.parent = scope;
                                     this.timeRange = moment.duration(moment(this.dateBar.to).diff(moment(this.dateBar.from))).humanize();

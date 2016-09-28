@@ -9,6 +9,7 @@ define([
     'mango-3.3/maAppComponents',
     'require',
     './services/Page',
+    './services/DateBar',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
     'angular-ui-router',
@@ -16,7 +17,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, pageView, livePreview) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, pageView, livePreview) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -30,6 +31,7 @@ var mdAdminApp = angular.module('mdAdminApp', [
 ]);
 
 mdAdminApp.factory('Page', Page)
+    .factory('DateBar', DateBar)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
@@ -113,6 +115,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                     angular.module('dashboard', ['ui.ace'])
                         .factory('Menu', Menu)
                         .factory('MenuEditor', MenuEditor)
+                        .factory('DateBar', DateBar)
                         .directive('menuEditor', menuEditor)
                         .directive('pageEditor', pageEditor)
                         .directive('liveEditor', liveEditor)
@@ -1133,23 +1136,12 @@ mdAdminApp.run([
     'Translate',
     '$location',
     '$stateParams',
+    'DateBar',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location, $stateParams) {
+        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location, $stateParams, DateBar) {
 
-    MD_ADMIN_SETTINGS.dateBar = {
-        preset: 'LAST_1_DAYS',
-        rollupType: 'AVERAGE',
-        rollupIntervals: 10,
-        rollupIntervalPeriod: 'MINUTES',
-        autoRollup: true,
-        updateIntervals: 10,
-        updateIntervalPeriod: 'MINUTES',
-        autoUpdate: true,
-        expanded: true,
-        rollupTypesFilter: {}
-    };
     MD_ADMIN_SETTINGS.stateParams = $stateParams;
-    
+    $rootScope.dateBar = DateBar;
     $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
     $rootScope.user = MD_ADMIN_SETTINGS.user;
     $rootScope.menuItems = MENU_ITEMS;
@@ -1199,7 +1191,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             }
         }
         
-        MD_ADMIN_SETTINGS.dateBar.rollupTypesFilter = {};
+        DateBar.rollupTypesFilter = {};
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {

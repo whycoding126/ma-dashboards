@@ -6,7 +6,8 @@
 define(['require'], function(require) {
     'use strict';
 
-    var watchListChart = function($mdMedia, $timeout, MD_ADMIN_SETTINGS) {
+    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar'];
+    function watchListChart($mdMedia, $timeout, DateBar) {
         return {
             restrict: 'E',
             scope: {
@@ -15,7 +16,7 @@ define(['require'], function(require) {
             templateUrl: 'directives/watchList/watchListChart.html',
             link: function link(scope, element, attrs) {
                 
-                scope.dateBar = MD_ADMIN_SETTINGS.dateBar;
+                scope.dateBar = DateBar;
                 
                 scope.graphOptions = [];
                 
@@ -57,8 +58,6 @@ define(['require'], function(require) {
             } // End Link
         }; // End return
     }; // End DDO
-
-    watchListChart.$inject = ['$mdMedia', '$timeout', 'MD_ADMIN_SETTINGS'];
 
     return watchListChart;
 

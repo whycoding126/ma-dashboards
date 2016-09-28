@@ -6,10 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var dataPointDetailsController = function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS, PointHierarchy) {
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS', 'PointHierarchy', 'DateBar'];
+function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS, PointHierarchy, DateBar) {
     
     var $ctrl = this;
-    $ctrl.dateBar = MD_ADMIN_SETTINGS.dateBar;
+    $ctrl.dateBar = DateBar;
     var timezone = MD_ADMIN_SETTINGS.user.getTimezone();
     var pointValueCell = angular.element('div.point-details').find('.point-value');
     var pointTimeCell = angular.element('div.point-details').find('.point-time');
@@ -81,8 +82,6 @@ var dataPointDetailsController = function dataPointDetailsController($scope, $st
         }
     };
 };
-
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS', 'PointHierarchy'];
 
 return {
     controller: dataPointDetailsController,

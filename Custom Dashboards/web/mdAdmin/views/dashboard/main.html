@@ -69,13 +69,13 @@
             
             <div ng-if="mdAdmin.stateParams.dateBar">
               <md-input-container class="date-preset">
-                <ma-date-range-picker from="mdAdmin.dateBar.from" to="mdAdmin.dateBar.to" no-underline="true"
-                  preset="{{mdAdmin.dateBar.preset}}" update-interval="{{mdAdmin.dateBar.updateIntervalString}}"
-                  refresh="mdAdmin.dateBar.refresh" on-change="mdAdmin.dateBar.preset = preset"></ma-date-range-picker>
+                <ma-date-range-picker from="dateBar.from" to="dateBar.to" no-underline="true"
+                  preset="{{dateBar.preset}}" update-interval="{{dateBar.updateIntervalString}}"
+                  refresh="dateBar.refresh" on-change="dateBar.preset = preset"></ma-date-range-picker>
               </md-input-container>
-              <md-button class="md-icon-button md-hue-1" ng-click="mdAdmin.dateBar.expanded = !mdAdmin.dateBar.expanded"
+              <md-button class="md-icon-button md-hue-1" ng-click="dateBar.expanded = !dateBar.expanded"
                 aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
-                ng-class="{'md-accent': mdAdmin.dateBar.expanded}">
+                ng-class="{'md-accent': dateBar.expanded}">
                   <md-icon>date_range</md-icon>
               </md-button>
             </div>
@@ -85,9 +85,9 @@
 
     </md-toolbar>
     
-    <md-toolbar md-theme="mangoDark" class="md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="mdAdmin.dateBar.expanded">
+    <md-toolbar md-theme="mangoDark" class="md-hue-2 date-bar" ng-if="mdAdmin.stateParams.dateBar" ng-show="dateBar.expanded">
       <div class="md-toolbar-tools">
-        <date-bar flex layout-align="start center" on-refresh="mdAdmin.dateBar.refresh = $event"></date-bar>
+        <date-bar flex layout-align="start center" on-refresh="dateBar.refresh = $event"></date-bar>
       </div>
     </md-toolbar>
 
