@@ -5,11 +5,14 @@
 
 define(['angular',
         './maDashboards',
+        './components/colorPreview/colorPreview',
         'angular-material',
         'mdPickers',
-        'angular-material-data-table'], function(angular, maDashboards) {
+        'angular-material-data-table'], function(angular, maDashboards, colorPreview) {
 'use strict';
 
-return angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers', 'md.data.table']);
+var maMaterialDashboards = angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers', 'md.data.table']);
+maDashboards.component('maColorPreview', colorPreview);
+return maMaterialDashboards;
 
 }); // define

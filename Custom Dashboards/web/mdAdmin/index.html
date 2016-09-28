@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
-<body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn}">
+<body layout="column" ng-class="{'api-down': !mangoWatchdog.apiUp, 'logged-out': !mangoWatchdog.loggedIn}" md-theme="{{mdAdmin.defaultTheme}}">
 	<div ng-if="appLoading" class="app-loading">
 		<i class="fa fa-cog fa-spin"></i>
 	</div>

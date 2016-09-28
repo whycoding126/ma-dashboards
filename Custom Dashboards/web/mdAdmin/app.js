@@ -924,76 +924,35 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         return false;
     };
 
-    $mdThemingProvider.definePalette('mango-orange', {
-        '50': '#ffffff',
-        '100': '#ffdfbd',
-        '200': '#ffc485',
-        '300': '#ffa23d',
-        '400': '#ff941f',
-        '500': '#ff8500',
-        '600': '#e07500',
-        '700': '#c26500',
-        '800': '#a35500',
-        '900': '#854500',
-        'A100': '#ffba6f',
-        'A200': '#ff921c',
-        'A400': '#ff8500',
-        'A700': '#da7200',
-        'contrastDefaultColor': 'light',
-        'contrastDarkColors': '50 100 200 300 A100'
-    });
+    if (MD_ADMIN_SETTINGS.palettes) {
+        for (var name in MD_ADMIN_SETTINGS.palettes) {
+            $mdThemingProvider.definePalette(name, MD_ADMIN_SETTINGS.palettes[name]);
+        }
+    }
 
-    $mdThemingProvider.definePalette('mango-blue', {
-        '50': '#f9fdff',
-        '100': '#ade8ff',
-        '200': '#75d9ff',
-        '300': '#2dc5ff',
-        '400': '#0fbdff',
-        '500': '#00adef',
-        '600': '#0097d0',
-        '700': '#0081b2',
-        '800': '#006b93',
-        '900': '#005475',
-        'A100': '#6dcaed',
-        'A200': '#24bbf5',
-        'A400': '#00adef',
-        'A700': '#006389',
-        'contrastDefaultColor': 'light',
-        'contrastDarkColors': '50 100 200 300 A100'
-    });
+    if (MD_ADMIN_SETTINGS.themes) {
+        for (var name in MD_ADMIN_SETTINGS.themes) {
+            var themeSettings = MD_ADMIN_SETTINGS.themes[name];
+            var theme = $mdThemingProvider.theme(name);
+            if (themeSettings.primaryPalette) {
+                theme.primaryPalette(themeSettings.primaryPalette, themeSettings.primaryPaletteHues);
+            }
+            if (themeSettings.accentPalette) {
+                theme.accentPalette(themeSettings.accentPalette, themeSettings.accentPaletteHues);
+            }
+            if (themeSettings.warnPalette) {
+                theme.warnPalette(themeSettings.warnPalette, themeSettings.warnPaletteHues);
+            }
+            if (themeSettings.backgroundPalette) {
+                theme.backgroundPalette(themeSettings.backgroundPalette, themeSettings.backgroundPaletteHues);
+            }
+            if (themeSettings.dark) {
+                theme.dark();
+            }
+        }
+    }
 
-    $mdThemingProvider
-        .theme('mangoDefault')
-        .primaryPalette('mango-blue', {
-            'default': '500',
-            'hue-1': '300',
-            'hue-2': '800',
-            'hue-3': '100'
-        })
-        .accentPalette('mango-orange', {
-            'default': 'A400',
-            'hue-1': 'A100',
-            'hue-2': 'A200',
-            'hue-3': 'A700'
-        });
-    
-    $mdThemingProvider
-        .theme('mangoDark')
-        .primaryPalette('mango-blue', {
-            'default': '500',
-            'hue-1': '300',
-            'hue-2': '800',
-            'hue-3': '100'
-        })
-        .accentPalette('mango-orange', {
-            'default': 'A400',
-            'hue-1': 'A100',
-            'hue-2': 'A200',
-            'hue-3': 'A700'
-        })
-        .dark();
-
-    $mdThemingProvider.setDefaultTheme('mangoDefault');
+    $mdThemingProvider.setDefaultTheme(MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault');
 
     $httpProvider.interceptors.push('errorInterceptor');
     $httpProvider.useApplyAsync(true);
@@ -1360,6 +1319,8 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 var servicesInjector = angular.injector(['maServices'], true);
 var User = servicesInjector.get('User');
 var JsonStore = servicesInjector.get('JsonStore');
+var $q = servicesInjector.get('$q');
+var $http = servicesInjector.get('$http');
 
 var mdAdminSettings = {};
 
@@ -1367,13 +1328,39 @@ User.current().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
     mdAdminSettings.user = user;
-    return JsonStore.get({xid: 'custom-user-menu'}).$promise;
-}).then(function(store) {
-    mdAdminSettings.customMenuItems = store.jsonData.menuItems;
-    mdAdminSettings.defaultUrl = store.jsonData.defaultUrl;
-}).then(null, function() {
-    // consume error
-}).then(function() {
+    
+    var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
+        return store.jsonData;
+    }, angular.noop);
+    
+    var userDashboardSettingsPromise = JsonStore.get({xid: 'dashboard-settings'}).$promise.then(function(store) {
+        return store.jsonData;
+    }, angular.noop);
+    
+    var dashboardSettingsPromise = $http({
+        method: 'GET',
+        url: require.toUrl('./dashboardSettings.json')
+    }).then(function(data) {
+        return data.data;
+    }, angular.noop);
+    
+    return $q.all([userMenuPromise, userDashboardSettingsPromise, dashboardSettingsPromise]);
+}).then(function(data) {
+    var userMenu = data[0];
+    var userDashboardSettings = data[1];
+    var dashboardSettings = data[2];
+    
+    if (dashboardSettings) {
+        angular.merge(mdAdminSettings, dashboardSettings);
+    }
+    if (userDashboardSettings) {
+        angular.merge(mdAdminSettings, userDashboardSettings);
+    }
+    if (userMenu) {
+        mdAdminSettings.customMenuItems = userMenu.menuItems;
+        mdAdminSettings.defaultUrl = userMenu.defaultUrl;
+    }
+    
     servicesInjector.get('$rootScope').$destroy();
     mdAdminApp.constant('MD_ADMIN_SETTINGS', mdAdminSettings);
     angular.element(document).ready(function() {

@@ -1,0 +1,76 @@
+{
+  "defaultTheme": "mangoDark",
+  "palettes": {
+    "mango-orange": {
+      "50": "#ffffff",
+      "100": "#ffdfbd",
+      "200": "#ffc485",
+      "300": "#ffa23d",
+      "400": "#ff941f",
+      "500": "#ff8500",
+      "600": "#e07500",
+      "700": "#c26500",
+      "800": "#a35500",
+      "900": "#854500",
+      "A100": "#ffba6f",
+      "A200": "#ff921c",
+      "A400": "#ff8500",
+      "A700": "#da7200",
+      "contrastDefaultColor": "light",
+      "contrastDarkColors": "50 100 200 300 A100"
+    },
+    "mango-blue": {
+      "50": "#f9fdff",
+      "100": "#ade8ff",
+      "200": "#75d9ff",
+      "300": "#2dc5ff",
+      "400": "#0fbdff",
+      "500": "#00adef",
+      "600": "#0097d0",
+      "700": "#0081b2",
+      "800": "#006b93",
+      "900": "#005475",
+      "A100": "#6dcaed",
+      "A200": "#24bbf5",
+      "A400": "#00adef",
+      "A700": "#006389",
+      "contrastDefaultColor": "light",
+      "contrastDarkColors": "50 100 200 300 A100"
+    }
+  },
+  "themes": {
+    "mangoDefault": {
+      "primaryPalette": "mango-blue",
+      "primaryPaletteHues": {
+        "default": "500",
+        "hue-1": "300",
+        "hue-2": "800",
+        "hue-3": "100"
+      },
+      "accentPalette": "mango-orange",
+      "accentPaletteHues": {
+        "default": "A400",
+        "hue-1": "A100",
+        "hue-2": "A200",
+        "hue-3": "A700"
+      }
+    },
+    "mangoDark": {
+      "primaryPalette": "mango-blue",
+      "primaryPaletteHues": {
+        "default": "500",
+        "hue-1": "300",
+        "hue-2": "800",
+        "hue-3": "100"
+      },
+      "accentPalette": "mango-orange",
+      "accentPaletteHues": {
+        "default": "A400",
+        "hue-1": "A100",
+        "hue-2": "A200",
+        "hue-3": "A700"
+      },
+      "dark": true
+    }
+  }
+}
