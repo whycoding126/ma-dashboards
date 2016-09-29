@@ -954,7 +954,11 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         }
     }
 
-    $mdThemingProvider.setDefaultTheme(MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault');
+    var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault';
+    $mdThemingProvider.setDefaultTheme(theme);
+    $mdThemingProvider.enableBrowserColor({
+        theme: theme
+    });
 
     $httpProvider.interceptors.push('errorInterceptor');
     $httpProvider.useApplyAsync(true);

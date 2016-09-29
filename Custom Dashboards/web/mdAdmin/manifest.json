@@ -3,7 +3,6 @@
     "short_name": "Dashboards v3",
     "start_url": "/dashboards/",
     "display": "standalone",
-    "theme_color": "#00adef",
     "icons": [
         {
             "src": "/modules/dashboards/web/img/icon36.png",
