@@ -280,3 +280,10 @@ ma-badge {
 .md-button.ma-badge {
    overflow: visible;
 }
+
+/* Color preview */
+.color-preview-box {
+    margin: 0 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+}

@@ -11,8 +11,8 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming) {
 
     function MdAdminSettings() {
         angular.extend(this, MD_ADMIN_SETTINGS);
-        //this.themes = $mdTheming.THEMES;
-        //this.palettes = $mdTheming.PALETTES;
+        this.registeredThemes = $mdTheming.THEMES;
+        this.registeredPalettes = $mdTheming.PALETTES;
     }
     
     MdAdminSettings.prototype = {
