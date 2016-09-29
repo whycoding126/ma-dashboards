@@ -1,4 +1,8 @@
-<div flex layout="column" layout-align="start center">
-    <img ng-src="/modules/dashboards/web/img/logo.png" class="login-logo">
-	<login></login>
+<div flex>
+  <div layout layout-align="center center">
+    <img ng-src="{{mdAdmin.logoSrc}}" class="login-logo" ma-tr="header.dashboards.v3.dox.heading">
+  </div>
+  <div layout layout-align="center center">
+    <login flex="100" flex-gt-xs="65" flex-gt-sm="50" flex-gt-md="30" flex-gt-lg="25"></login>
+  </div>
 </div>

@@ -1,4 +1,5 @@
 {
+  "logoSrc": "/modules/dashboards/web/img/logo.svg",
   "defaultTheme": "mangoDefault",
   "palettes": {
     "mango-orange": {

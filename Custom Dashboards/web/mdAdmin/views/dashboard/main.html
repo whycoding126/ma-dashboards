@@ -4,7 +4,7 @@
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
       <ma-now update-interval="1 MINUTES" output="currentTime" time-zone="{{user.getTimezone()}}"></ma-now>
       <div flex layout="row">
-        <img src="/modules/dashboards/web/img/logo.svg" ma-tr="header.dashboards.v3.dox.heading">
+        <img ng-src="{{mdAdmin.logoSrc}}" ma-tr="header.dashboards.v3.dox.heading">
         <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">
           <span ng-bind="currentTime.format('LT')" class="dashboard-user-time"></span>
           <span ng-bind="currentTime.format('ddd ll')" class="dashboard-user-date"></span>

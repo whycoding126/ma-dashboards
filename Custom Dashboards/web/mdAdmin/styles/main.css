@@ -25,7 +25,15 @@ body {
 
 .login-logo {
 	margin-top: 20px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
+	height: auto;
+	width: auto;
+	max-height: 150px;
+	max-width: 300px;
+}
+
+.already-logged-in {
+  margin-bottom: 30px;
 }
 
 /* Dashboard pages */
@@ -46,12 +54,13 @@ body {
 }
 
 .dashboard-sidebar-header img {
-	width: 150px;
-    margin-bottom: 8px;
+	max-width: 180px;
+	width: auto;
+	height: 100%;
 }
 
 .dashboard-sidebar-header md-select {
-  margin: 0;
+  margin: 8px 0 0 0;
   height: 40px;
 }
 
