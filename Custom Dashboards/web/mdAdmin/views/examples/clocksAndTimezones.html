@@ -17,8 +17,8 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maClock"><code
         <ma-clock style="width: 100%; height: 200px;" time="time" text="Browser timezone"></ma-clock>
     </div>
     <div flex="50" layout="column" layout-align="center center">
-        <span>{{time|moment:'tz':user.getTimezone()|moment:'format':'ll LTS Z z'}}</span>
-        <ma-clock style="width: 100%; height: 200px;" time="time" timezone="{{user.getTimezone()}}" text="User timezone"></ma-clock>
+        <span>{{time|moment:'tz':mdAdminSettings.user.getTimezone()|moment:'format':'ll LTS Z z'}}</span>
+        <ma-clock style="width: 100%; height: 200px;" time="time" timezone="{{mdAdminSettings.user.getTimezone()}}" text="User timezone"></ma-clock>
     </div>
     <div flex="50" layout="column" layout-align="center center">
         <span>{{time|moment:'tz':'Australia/Sydney'|moment:'format':'ll LTS Z z'}}</span>

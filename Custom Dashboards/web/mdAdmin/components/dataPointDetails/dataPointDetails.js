@@ -6,12 +6,12 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'MD_ADMIN_SETTINGS', 'PointHierarchy', 'DateBar'];
-function dataPointDetailsController($scope, $stateParams, $state, localStorageService, MD_ADMIN_SETTINGS, PointHierarchy, DateBar) {
+dataPointDetailsController.$inject = ['$scope','$stateParams', '$state', 'localStorageService', 'mdAdminSettings', 'PointHierarchy', 'DateBar'];
+function dataPointDetailsController($scope, $stateParams, $state, localStorageService, mdAdminSettings, PointHierarchy, DateBar) {
     
     var $ctrl = this;
     $ctrl.dateBar = DateBar;
-    var timezone = MD_ADMIN_SETTINGS.user.getTimezone();
+    var timezone = mdAdminSettings.user.getTimezone();
     var pointValueCell = angular.element('div.point-details').find('.point-value');
     var pointTimeCell = angular.element('div.point-details').find('.point-time');
     var timeoutID;

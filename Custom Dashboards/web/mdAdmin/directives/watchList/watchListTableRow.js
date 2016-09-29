@@ -7,10 +7,10 @@ define(['require', 'moment-timezone'], function(require, moment) {
     'use strict';
     var FLASH_CLASS = 'flash-on-change';
     
-    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'MD_ADMIN_SETTINGS', '$state', 'DateBar'];
+    watchListTableRow.$inject = ['$mdMedia', '$mdDialog', '$timeout', 'UserNotes', 'mdAdminSettings', '$state', 'DateBar'];
     return watchListTableRow;
 
-    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, MD_ADMIN_SETTINGS, $state, DateBar) {
+    function watchListTableRow($mdMedia, $mdDialog, $timeout, UserNotes, mdAdminSettings, $state, DateBar) {
         return {
             templateUrl: 'directives/watchList/watchListTableRow.html',
             link: function link(scope, element, attrs) {
@@ -50,7 +50,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
                     
                     var timeoutID;
                     var lastValue;
-                    var timezone = MD_ADMIN_SETTINGS.user.getTimezone();
+                    var timezone = mdAdminSettings.user.getTimezone();
                     
                     scope.pointValueChanged = function pointValueChanged(point) {
                         // manually add and remove classes rather than using ng-class as point values can

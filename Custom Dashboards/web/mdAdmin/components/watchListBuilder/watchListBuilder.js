@@ -6,7 +6,7 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, MD_ADMIN_SETTINGS, $stateParams, $state, $mdDialog, Translate, $timeout) {
+var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
@@ -53,10 +53,10 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.name = name;
         watchlist.xid = Util.uuid();
         watchlist.points = [];
-        watchlist.username = MD_ADMIN_SETTINGS.user.username;
+        watchlist.username = mdAdminSettings.user.username;
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
-        watchlist.editPermission = MD_ADMIN_SETTINGS.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+        watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
         $ctrl.editWatchlist(watchlist);
         if ($ctrl.form)
             $ctrl.form.$setPristine();
@@ -141,9 +141,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             var watchlist = $stateParams.watchList;
             if (!watchlist.xid)
                 watchlist.xid = Util.uuid();
-            watchlist.username = MD_ADMIN_SETTINGS.user.username;
+            watchlist.username = mdAdminSettings.user.username;
             watchlist.readPermission = 'user';
-            watchlist.editPermission = MD_ADMIN_SETTINGS.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+            watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
             $ctrl.editWatchlist(watchlist);
             if ($ctrl.form)
                 $ctrl.form.$setPristine();
@@ -154,7 +154,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     $ctrl.getWatchlist = function getWatchlist(xid) {
         WatchList.get({xid: xid}).$promise.then(function(wl) {
-            var user = MD_ADMIN_SETTINGS.user;
+            var user = mdAdminSettings.user;
             if (wl.username !== user.username && !user.hasPermission(wl.editPermission)) {
                 throw 'no edit permission';
             }
@@ -168,7 +168,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.refreshWatchlists = function refreshWatchlists() {
         WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchlists) {
             var filtered = [];
-            var user = MD_ADMIN_SETTINGS.user;
+            var user = mdAdminSettings.user;
             for (var i = 0; i < watchlists.length; i++) {
                 var wl = watchlists[i];
                 if (wl.username === user.username || user.hasPermission(wl.editPermission)) {
@@ -410,7 +410,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'MD_ADMIN_SETTINGS', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
+watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
 
 return {
     controller: watchListBuilder,

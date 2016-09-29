@@ -6,7 +6,7 @@
 
 <state-params state-params="stateParams"></state-params>
 
-<ma-json-store xid="play-area-{{user.username}}" item="playArea" value="paVal"
+<ma-json-store xid="play-area-{{mdAdminSettings.user.username}}" item="playArea" value="paVal"
   ng-init="playArea={readPermission: 'user', editPermission: 'user'}" item-loaded="$item.jsonData.text=stateParams.markup||$item.jsonData.text">
 </ma-json-store>
 

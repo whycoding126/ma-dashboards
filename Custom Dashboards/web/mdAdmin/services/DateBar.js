@@ -131,7 +131,7 @@ function DateBarFactory(localStorageService) {
             }
             return this.cache.to;
         }
-    }
+    };
     
     return new DateBar();
 }

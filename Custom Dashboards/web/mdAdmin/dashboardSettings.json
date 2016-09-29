@@ -72,6 +72,13 @@
         "hue-3": "A700"
       },
       "dark": true
+    },
+    "userTheme": {
+	    "primaryPalette": "yellow",
+	    "accentPalette": "pink",
+	    "warnPalette": "red",
+	    "backgroundPalette": "grey",
+	    "dark": false
     }
   }
 }

@@ -14,8 +14,8 @@ function colorPreviewController($mdColors) {
     this.theme = '';
     
     this.$onChanges = function(changes) {
-        if (changes.palette || changes.theme) {
-            this.colors = this.huesToColorStrings(namedHues).concat(this.huesToColorStrings(hues));
+        if (changes.palette || changes.theme || changes.allHues) {
+            this.colors = this.allHues ? this.huesToColorStrings(hues) : this.huesToColorStrings(namedHues);
         }
     };
     
@@ -53,7 +53,8 @@ function colorPreviewController($mdColors) {
 return {
     bindings: {
         theme: '@',
-        palette: '@'
+        palette: '@',
+        allHues: '<'
     },
     controller: colorPreviewController,
     templateUrl: require.toUrl('./colorPreview.html')

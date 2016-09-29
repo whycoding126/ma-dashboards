@@ -1,0 +1,74 @@
+<h1 ma-tr="dashboards.v3.app.dashboardSettings"></h1>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+<style>
+.color-preview-box {
+    margin: 0 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-family: 'Roboto Mono';
+}
+</style>
+
+<ma-json-store xid="dashboard-settings" item="dashboardSettingsStore" value="dashboardSettings"></ma-json-store>
+<div layout layout-align="start center" layout-wrap>
+    <md-input-container flex="100" flex-gt-md="30">
+        <label>Choose theme</label>
+        <md-select ng-model="dashboardSettings.defaultTheme">
+            <md-option ng-value="undefined" md-option-empty><em>Default</em></md-option>
+            <md-option ng-value="'mangoDefault'">Mango</md-option>
+            <md-option ng-value="'mangoDark'">Mango Dark</md-option>
+            <md-option ng-value="'userTheme'">User theme</md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container flex="100" flex-gt-md="70" class="no-errors-spacer">
+        <label>Logo source</label>
+        <input ng-model="dashboardSettings.logoSrc" ma-empty-input>
+    </md-input-container>
+</div>
+
+<md-button class="md-raised md-primary" ng-click="dashboardSettingsStore.$save(); mdAdmin.logoSrc = dashboardSettings.logoSrc;"><md-icon>save</md-icon> Save</md-button>
+
+<h2>Theme hues</h2>
+<div layout layout-wrap>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Primary</strong>
+        <md-input-container flex="100" flex-gt-md="70" class="no-errors-spacer">
+            <label>Primary palette</label>
+            <input ng-model="dashboardSettings.themes.userTheme.primaryPalette" ma-empty-input>
+        </md-input-container>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="primary"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Accent</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="accent"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Warning</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="warn"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Background</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="background"></ma-color-preview>
+    </div>
+</div>
+
+<h2>All hues</h2>
+<div layout layout-wrap>
+        <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Primary</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="primary" all-hues="true"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Accent</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="accent" all-hues="true"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Warning</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="warn" all-hues="true"></ma-color-preview>
+    </div>
+    <div flex="25" layout="column" layout-align="start stretch">
+        <strong layout="column" layout-align="start center">Background</strong>
+        <ma-color-preview theme="{{dashboardSettings.defaultTheme}}" palette="background" all-hues="true"></ma-color-preview>
+    </div>
+</div>

@@ -6,14 +6,14 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', '$state', 'PointHierarchy', 'MD_ADMIN_SETTINGS', 'DateBar'];
-function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $state, PointHierarchy, MD_ADMIN_SETTINGS, DateBar) {
+watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
+function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $state, PointHierarchy, mdAdminSettings, DateBar) {
     this.watchList = null;
     this.selectWatchList = null;
     this.dataSource = null;
     this.deviceName = null;
     this.hierarchyFolders = [];
-    this.settings = MD_ADMIN_SETTINGS;
+    this.settings = mdAdminSettings;
     this.dateBar = DateBar;
     
     this.selectFirstWatchList = false;

@@ -8,13 +8,13 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['MD_ADMIN_SETTINGS', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', dateBarController],
+    controller: ['$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', dateBarController],
     bindings: {
         onRefresh: '&'
     }
 };
 
-function dateBarController(MD_ADMIN_SETTINGS, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar) {
+function dateBarController($stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar) {
     this.params = DateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;

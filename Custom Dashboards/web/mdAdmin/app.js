@@ -10,6 +10,7 @@ define([
     'require',
     './services/Page',
     './services/DateBar',
+    './services/mdAdminSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
     'angular-ui-router',
@@ -17,7 +18,7 @@ define([
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, pageView, livePreview) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -32,6 +33,7 @@ var mdAdminApp = angular.module('mdAdminApp', [
 
 mdAdminApp.factory('Page', Page)
     .factory('DateBar', DateBar)
+    .factory('mdAdminSettings', mdAdminSettings)
     .directive('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
@@ -88,8 +90,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['Translate', 'MD_ADMIN_SETTINGS', function(Translate, MD_ADMIN_SETTINGS) {
-                if (!MD_ADMIN_SETTINGS.user) {
+            auth: ['Translate', 'mdAdminSettings', function(Translate, mdAdminSettings) {
+                if (!mdAdminSettings.user) {
                     throw 'No user';
                 }
                 return Translate.loadNamespaces(['dashboards', 'common']);
@@ -335,6 +337,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 templateUrl: 'views/dashboard/autoLoginSettings.html',
                 menuTr: 'dashboards.v3.app.autoLoginSettings',
                 menuIcon: 'face',
+                permission: 'superadmin'
+            },
+            {
+                url: '/dashboard-settings',
+                name: 'dashboard.settings.dashboardSettings',
+                templateUrl: 'views/dashboard/dashboardSettings.html',
+                menuTr: 'dashboards.v3.app.dashboardSettings',
+                menuIcon: 'color_lens',
                 permission: 'superadmin'
             },
             {
@@ -980,9 +990,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
-        var MD_ADMIN_SETTING = $injector.get('MD_ADMIN_SETTINGS');
+        var MD_ADMIN_SETTING = $injector.get('mdAdminSettings');
         var $state = $injector.get('$state');
-        var user = MD_ADMIN_SETTINGS.user;
+        var user = mdAdminSettings.user;
         
         var path = '/dashboards/';
         if ($location.path()) {
@@ -999,8 +1009,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             if (homeUrl && homeUrl.indexOf('/dashboards') === 0) {
                 return homeUrl.substring(11); // strip dashboards from start of url
             }
-            if (MD_ADMIN_SETTINGS.defaultUrl) {
-                return MD_ADMIN_SETTINGS.defaultUrl;
+            if (mdAdminSettings.defaultUrl) {
+                return mdAdminSettings.defaultUrl;
             }
             return '/home';
         }
@@ -1100,18 +1110,17 @@ mdAdminApp.run([
     'cssInjector',
     '$mdToast',
     'User',
-    'MD_ADMIN_SETTINGS',
+    'mdAdminSettings',
     'Translate',
     '$location',
     '$stateParams',
     'DateBar',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
-        $mdToast, User, MD_ADMIN_SETTINGS, Translate, $location, $stateParams, DateBar) {
+        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar) {
 
-    MD_ADMIN_SETTINGS.stateParams = $stateParams;
+    $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = DateBar;
-    $rootScope.mdAdmin = MD_ADMIN_SETTINGS;
-    $rootScope.user = MD_ADMIN_SETTINGS.user;
+    $rootScope.mdAdminSettings = mdAdminSettings;
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
@@ -1196,8 +1205,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             User.logout().$promise.then(null, function() {
                 // consume error
             }).then(function() {
-                $rootScope.user = null;
-                MD_ADMIN_SETTINGS.user = null;
+                mdAdminSettings.user = null;
                 $state.go('login');
             });
         }
@@ -1271,27 +1279,26 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         switch(current.status) {
         case 'API_DOWN':
             message = Translate.trSync('dashboards.v3.app.apiDown');
-            MD_ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
             break;
         case 'STARTING_UP':
             message = Translate.trSync('dashboards.v3.app.startingUp');
-            MD_ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
             break;
         case 'API_ERROR':
             message = Translate.trSync('dashboards.v3.app.returningErrors');
-            MD_ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
             break;
         case 'API_UP':
             if (previous.status && previous.status !== 'LOGGED_IN')
                 message = Translate.trSync('dashboards.v3.app.connectivityRestored');
             hideDelay = 5000;
-            MD_ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
 
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    MD_ADMIN_SETTINGS.user = user;
-                    $rootScope.user = user;
+                    mdAdminSettings.user = user;
                 }, function() {
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
@@ -1304,16 +1311,14 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
             if (previous.status && previous.status !== 'API_UP')
                 message = Translate.trSync('dashboards.v3.app.connectivityRestored');
-            if (!MD_ADMIN_SETTINGS.user) {
+            if (!mdAdminSettings.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
-                    MD_ADMIN_SETTINGS.user = user;
-                    $rootScope.user = user;
+                    mdAdminSettings.user = user;
                 });
             }
             break;
         }
-        $rootScope.user = MD_ADMIN_SETTINGS.user;
 
         if (message) {
             var toast = $mdToast.simple()

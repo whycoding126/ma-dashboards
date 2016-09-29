@@ -6,14 +6,14 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, MD_ADMIN_SETTINGS, Menu, $templateRequest) {
+var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, User, MenuEditor, $stateParams, $state, $mdDialog, Translate, mdAdminSettings, Menu, $templateRequest) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
         scope: {},
         templateUrl: require.toUrl('./pageEditor.html'),
         link: function($scope, $element) {
-            $scope.user = MD_ADMIN_SETTINGS.user;
+            $scope.user = mdAdminSettings.user;
             $scope.showEditor = true;
             $scope.showPreview = true;
 
@@ -191,7 +191,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     };
 };
 
-pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', 'MD_ADMIN_SETTINGS', 'Menu', '$templateRequest'];
+pageEditor.$inject = ['Page', 'jsonStoreEventManager', 'CUSTOM_USER_PAGES_XID', 'User', 'MenuEditor', '$stateParams', '$state', '$mdDialog', 'Translate', 'mdAdminSettings', 'Menu', '$templateRequest'];
 
 return pageEditor;
 
