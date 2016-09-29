@@ -966,6 +966,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault';
     $mdThemingProvider.setDefaultTheme(theme);
+    $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.enableBrowserColor({
         theme: theme
     });

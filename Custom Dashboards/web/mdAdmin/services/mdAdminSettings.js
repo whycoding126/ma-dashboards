@@ -6,11 +6,13 @@
 define(['angular'], function(angular) {
 'use strict';
 
-mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdColors'];
-function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdColors) {
+mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming'];
+function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming) {
 
     function MdAdminSettings() {
         angular.extend(this, MD_ADMIN_SETTINGS);
+        //this.themes = $mdTheming.THEMES;
+        //this.palettes = $mdTheming.PALETTES;
     }
     
     MdAdminSettings.prototype = {
