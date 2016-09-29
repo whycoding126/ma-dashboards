@@ -552,7 +552,9 @@ table.md-table.statistics tbody.md-body td.md-cell:first-child {
 
 table.md-table th.md-column,
 table.md-table td.md-cell,
-.md-table-pagination {
+.md-table-pagination,
+table.md-table th.md-column.md-active,
+table.md-table th.md-column.md-active md-icon {
   color: inherit;
 }
 
