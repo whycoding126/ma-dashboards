@@ -58,7 +58,8 @@ cssInjector.injectLink('/modules/dashboards/web/mdAdmin/directives/watchList/sty
 * @param {string} href File path of the external CSS document.
 * @param {string} trackingName Identifier used to determine if this particular CSS injection has already been done, as to not duplicate the CSS.
 * For example, two directives could utilize the same CSS injection, and if they are both on the same page the injection will only take place once.
-* @param {string=} afterSelector If provided the CSS will be injected within the head, after the the given CSS link.
+* @param {string=} selector If provided the CSS will be injected within the head, after the the given CSS link.
+* @param {boolean} insertBefore CSS is injected before the selector instead of after
 * Pass a string of the attribute selector ie. `'link[href="/modules/dashboards/web/vendor/angular-material-data-table/md-data-table.css"]'`
 * to insert new CSS link after the specified CSS link. The CSS definitions that come after take precedence.
 *
@@ -96,29 +97,33 @@ function cssInjectorFactory() {
         return false;
     };
 
-    CssInjector.prototype.injectLink = function(href, trackingName, afterSelector) {
+    CssInjector.prototype.injectLink = function(href, trackingName, selector, insertBefore) {
         if (this.isInjected(trackingName, true)) return;
 
         var linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'stylesheet');
         linkElement.setAttribute('href', href);
-        insert(linkElement, afterSelector);
+        insert(linkElement, selector, insertBefore);
     };
 
-    CssInjector.prototype.injectStyle = function(content, trackingName, afterSelector) {
+    CssInjector.prototype.injectStyle = function(content, trackingName, selector, insertBefore) {
         if (this.isInjected(trackingName, true)) return;
 
         var styleElement = document.createElement('style');
         styleElement.appendChild(document.createTextNode(content));
-        insert(styleElement, afterSelector);
+        insert(styleElement, selector, insertBefore);
     };
 
-    function insert(element, afterSelector) {
-        if (afterSelector) {
-            var matches = document.head.querySelectorAll(afterSelector);
+    function insert(element, selector, insertBefore) {
+        if (selector) {
+            var matches = document.head.querySelectorAll(selector);
             if (matches.length) {
-                var last = matches[matches.length - 1];
-                angular.element(last).after(element);
+                var last = angular.element(matches[matches.length - 1]);
+                if (insertBefore) {
+                    last.before(element);
+                } else {
+                    last.after(element);
+                }
                 return;
             }
         }

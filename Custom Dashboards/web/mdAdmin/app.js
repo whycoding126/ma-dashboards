@@ -892,8 +892,10 @@ mdAdminApp.config([
     '$locationProvider',
     '$mdAriaProvider',
     'errorInterceptorProvider',
+    'cfpLoadingBarProvider',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
-        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider, errorInterceptorProvider) {
+        $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
+        errorInterceptorProvider, cfpLoadingBarProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
@@ -1077,6 +1079,8 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     mangoStateProvider.addStates(MENU_ITEMS);
     if (MD_ADMIN_SETTINGS.customMenuItems)
         mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems);
+    
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
 }]);
 
 mdAdminApp.run([
@@ -1110,14 +1114,22 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
 
     // inserts a style tag to style <a> tags with accent color
     if ($MD_THEME_CSS) {
-        var acc = $mdColors.getThemeColor('accent-500-1.0');
-        var accT = $mdColors.getThemeColor('accent-500-0.2');
-        var accD = $mdColors.getThemeColor('accent-700-1.0');
+        var accent500 = $mdColors.getThemeColor('accent-500-1.0');
+        var accent500Clear = $mdColors.getThemeColor('accent-500-0.2');
+        var accent700 = $mdColors.getThemeColor('accent-700-1.0');
         var styleContent =
-            'a:not(.md-button) {color: ' + acc +'; border-bottom-color: ' + accT + ';}\n' +
-            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accD + '; border-bottom-color: ' + accD + ';}\n';
+            'a:not(.md-button) {color: ' + accent500 +'; border-bottom-color: ' + accent500Clear + ';}\n' +
+            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accent700 + '; border-bottom-color: ' + accent700 + ';}\n';
 
         cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
+
+        var mdTableStyles = 'table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {\n' +
+            '  background-color: ' + $mdColors.getThemeColor('background-400-0.4') + ' !important;\n' +
+            '}\n\n' +
+            'table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {\n' +
+            '  background-color: ' + $mdColors.getThemeColor('background-400-0.6') + ' !important;\n' +
+            '}\n';
+        cssInjector.injectStyle(mdTableStyles, null, '[href="styles/main.css"]', true);
     }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
@@ -1322,13 +1334,9 @@ var JsonStore = servicesInjector.get('JsonStore');
 var $q = servicesInjector.get('$q');
 var $http = servicesInjector.get('$http');
 
-var mdAdminSettings = {};
-
-User.current().$promise.then(null, function() {
+var userAndUserSettingsPromise = User.current().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
-    mdAdminSettings.user = user;
-    
     var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
         return store.jsonData;
     }, angular.noop);
@@ -1337,18 +1345,28 @@ User.current().$promise.then(null, function() {
         return store.jsonData;
     }, angular.noop);
     
-    var dashboardSettingsPromise = $http({
-        method: 'GET',
-        url: require.toUrl('./dashboardSettings.json')
-    }).then(function(data) {
-        return data.data;
-    }, angular.noop);
-    
-    return $q.all([userMenuPromise, userDashboardSettingsPromise, dashboardSettingsPromise]);
+    return $q.all([user, userMenuPromise, userDashboardSettingsPromise]);
+}, angular.noop).then(function(data) {
+    return {
+        user: data && data[0],
+        userMenu: data && data[1],
+        userDashboardSettings: data && data[2]
+    }
+});
+
+var dashboardSettingsPromise = $http({
+    method: 'GET',
+    url: require.toUrl('./dashboardSettings.json')
 }).then(function(data) {
-    var userMenu = data[0];
-    var userDashboardSettings = data[1];
-    var dashboardSettings = data[2];
+    return data.data;
+}, angular.noop);
+
+$q.all([userAndUserSettingsPromise, dashboardSettingsPromise]).then(function(data) {
+    var mdAdminSettings = {};
+    mdAdminSettings.user = data[0].user;
+    var userMenu = data[0].userMenu;
+    var userDashboardSettings = data[0].userDashboardSettings;
+    var dashboardSettings = data[1];
     
     if (dashboardSettings) {
         angular.merge(mdAdminSettings, dashboardSettings);

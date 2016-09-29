@@ -10,7 +10,7 @@ body {
 /* Login page and page template */
 
 #loading-bar .bar {
-	background-color: rgba(255,255,255,0.87);
+	background-color: currentcolor;
 }
 
 #loading-bar-spinner {
@@ -19,8 +19,8 @@ body {
 }
 
 #loading-bar-spinner .spinner-icon  {
-	border-top-color: rgba(255,255,255,0.87);
-    border-left-color: rgba(255,255,255,0.87);
+	border-top-color: currentcolor;
+    border-left-color: currentcolor;
 }
 
 .app-loading {
@@ -550,6 +550,11 @@ table.md-table.statistics tbody.md-body td.md-cell:first-child {
 	font-weight: bold;
 }
 
+table.md-table th.md-column,
+table.md-table td.md-cell,
+.md-table-pagination {
+  color: inherit;
+}
 
 /* Menu editor */
 
