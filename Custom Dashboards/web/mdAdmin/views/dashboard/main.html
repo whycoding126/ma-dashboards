@@ -42,8 +42,8 @@
         <md-button id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
         <div layout="row" flex class="fill-height">
-          <h2 class="md-toolbar-item dashboard-breadcrumb" ng-class="{'gt-sm': $mdMedia('gt-sm')}">
-            <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-xs': !$last}">
+          <h2 class="md-toolbar-item dashboard-breadcrumb hide-xs">
+            <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-sm': !$last}">
                 <span ma-tr="{{crumb.maTr}}" ng-bind="crumb.text"></span>
                 <span ng-if="!$last">
                     <md-icon>chevron_right</md-icon>
