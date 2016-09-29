@@ -990,7 +990,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     $locationProvider.html5Mode(true);
 
     $urlRouterProvider.otherwise(function($injector, $location) {
-        var MD_ADMIN_SETTING = $injector.get('mdAdminSettings');
+        var mdAdminSettings = $injector.get('mdAdminSettings');
         var $state = $injector.get('$state');
         var user = mdAdminSettings.user;
         
