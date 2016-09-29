@@ -56,17 +56,7 @@
 
           <div class="md-toolbar-item dashboard-tools" layout="row" layout-align="start center">
             <ma-active-event-icons></ma-active-event-icons>
-            <md-button class="md-icon-button" ng-if="errors.length">
-                <md-tooltip md-autohide>REST API errors</md-tooltip>
-                <a ui-sref="dashboard.apiErrors"><md-icon>warning</md-icon></a>
-            </md-button>
-            <!--
-            <md-button class="md-icon-button" aria-label="Mango events" ng-href="/events.shtm" target="_blank">
-                <md-tooltip md-autohide>Mango Events</md-tooltip>
-                <md-icon>alarm</md-icon>
-            </md-button>
-            -->
-            
+
             <div ng-if="mdAdmin.stateParams.dateBar">
               <md-input-container class="date-preset">
                 <ma-date-range-picker from="dateBar.from" to="dateBar.to" no-underline="true"
