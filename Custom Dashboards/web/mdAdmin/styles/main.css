@@ -13,16 +13,6 @@ body {
 	background-color: currentcolor;
 }
 
-#loading-bar-spinner {
-	left: 50% !important;
-	transform: translate(-50%, 0);
-}
-
-#loading-bar-spinner .spinner-icon  {
-	border-top-color: currentcolor;
-    border-left-color: currentcolor;
-}
-
 .app-loading {
 	text-align: center;
 	width: 100%;

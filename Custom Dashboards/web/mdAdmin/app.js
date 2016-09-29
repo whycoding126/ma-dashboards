@@ -1080,6 +1080,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     if (MD_ADMIN_SETTINGS.customMenuItems)
         mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems);
     
+    cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
 }]);
 
