@@ -1,7 +1,7 @@
 <div class="input-group">
 	<input ng-if="point.pointLocator.dataType === 'NUMERIC' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererPlain')" type="number" step="any"
 		ng-model="input.value" class="form-control"
-		ma-copy-blurred="point.value" ng-disabled="!point.pointLocator.settable"
+		ma-copy-blurred="convertRendered()" ng-disabled="!point.pointLocator.settable"
 		ma-enter="point.setValue(input.value)">
 	<input ng-if="point.pointLocator.dataType === 'ALPHANUMERIC'" type="text"
 		ng-model="input.value" class="form-control"

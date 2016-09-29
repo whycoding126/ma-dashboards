@@ -64,6 +64,13 @@ function setPointValue(Translate, $q, $injector) {
         	    if ($scope.setOnChange || !$scope.showButton)
         	        $scope.result = $scope.point.setValueResult($scope.input.value);
         	};
+            
+            $scope.convertRendered = function(renderedValue) {
+                if ($scope.point.unit.length>=0) {
+                    return Math.round($scope.point.value * 100) / 100;
+                }
+        	    return $scope.point.renderedValue * 1;
+        	};
 
         	$scope.$watch('point', function(newValue) {
         		if (newValue === undefined) return;
