@@ -47,12 +47,12 @@
   
   <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
       <md-card class="watchlist-table">
-          <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()" selected="selected">
+          <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()" selected="$ctrl.selected">
           </watch-list-table>
       </md-card>
 
-      <md-card class="watchlist-chart" ng-show="selected.length > 0">
-          <watch-list-chart to="to" from="from" add-checked="selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-chart>
+      <md-card class="watchlist-chart" ng-show="$ctrl.selected.length > 0">
+          <watch-list-chart to="to" from="from" add-checked="$ctrl.selected" rollup-type="rollupType" rollup-interval-number="rollupIntervalNumber" rollup-interval-period="rollupIntervalPeriod" auto-rollup="autoRollup"></watch-list-chart>
       </md-card>
   </div>
 </div>

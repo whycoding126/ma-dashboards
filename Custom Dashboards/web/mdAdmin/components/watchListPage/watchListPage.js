@@ -53,6 +53,9 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
         // clear hierarchy state
         $stateParams.hierarchyFolderId = null;
         $state.go('.', $stateParams, {location: 'replace', notify: false});
+        
+        // clear checked points from table/chart
+        this.selected = [];
     };
     
     this.dataSourceChanged = function dataSourceChanged() {
@@ -81,6 +84,9 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
         // clear hierarchy state
         $stateParams.hierarchyFolderId = null;
         $state.go('.', $stateParams, {location: 'replace', notify: false});
+        
+        // clear checked points from table/chart
+        this.selected = [];
     };
     
     this.deviceNameChanged = function deviceNameChanged() {
@@ -109,6 +115,9 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
         // clear hierarchy state
         $stateParams.hierarchyFolderId = null;
         $state.go('.', $stateParams, {location: 'replace', notify: false});
+        
+        // clear checked points from table/chart
+        this.selected = [];
     };
     
     this.hierarchyChanged = function hierarchyChanged() {
@@ -132,6 +141,9 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
         this.selectWatchList = null;
         this.dataSource = null;
         this.deviceName = null;
+        
+        // clear checked points from table/chart
+        this.selected = [];
     };
     
     this.clear = function clear() {

@@ -29,13 +29,26 @@ define(['require'], function(require) {
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues) return;
                     
+                    // If cleared from selecting a new watchlist clear stats and graphOptions
+                    if (newValues.length === 0) {
+                        scope.stats = [];
+                        scope.graphOptions = [];
+                    }
+                    
+                    
+                    // Clear Stats before new ones are generated
+                    scope.stats = [];
+                    
+                    // assign the chart's points equal to the checked from table
+                    scope.points = newValues;
+                    
                     if(oldValues === undefined || newValues.length > oldValues.length) {
                         var graphOption = {valueAxis: scope.selectedAxis, xid: newValues[newValues.length-1].xid};
                         if (scope.assignColors) {
                             graphOption.lineColor = scope.selectedColor;
                         }
                         scope.graphOptions.push(graphOption);
-                        console.log('Adding', newValues[newValues.length-1].xid);
+                        // console.log('Adding', newValues[newValues.length-1].xid);
                     }
                     else if (newValues.length < oldValues.length) {
                         var arrayDiff = oldValues.filter(function(x) { return newValues.indexOf(x) < 0 });
@@ -43,16 +56,10 @@ define(['require'], function(require) {
                         var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
                         
                         scope.graphOptions.splice(removedIndex, 1);
-                        console.log('Removed', removedXid, 'at index', removedIndex);
+                        // console.log('Removed', removedXid, 'at index', removedIndex);
                     }
 
-                    // Clear
-                    scope.stats = [];
-                    scope.points = [];
-                    // assign the chart's points equal to the checked from table
-                    scope.points = newValues;
-                    // console.log(newValues);
-                    console.log('Graph Options', scope.graphOptions);
+                    // console.log('Graph Options', scope.graphOptions);
                 });
 
             } // End Link
