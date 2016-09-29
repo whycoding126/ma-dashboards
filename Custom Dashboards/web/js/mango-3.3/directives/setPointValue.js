@@ -76,21 +76,22 @@ function setPointValue(Translate, $q, $injector) {
         		$scope.options = null;
 
         		if (type === 'MULTISTATE') {
-        			var values = locator.values;
+        			var values = textRenderer.multistateValues;
         			var i;
-
-        			$scope.options = [];
-        			for (i = 0; i < values.length; i++) {
-        				var renderer = $scope.point.valueRenderer(values[i]);
-        				var label = renderer ? renderer.text : values[i];
-        				var option = {
-        					id: values[i],
-        					label: label,
-        					style: {}
-        				};
-        				if (renderer && renderer.color) option.style.color = renderer.colour;
-        				$scope.options.push(option);
-        			}
+                    if (values != undefined) {
+                        $scope.options = [];
+            			for (i = 0; i < values.length; i++) {
+            				var label = values[i].text;
+            				var option = {
+            					id: values[i].key,
+            					label: label,
+            					style: {
+            					    color: values[i].color
+            					}
+            				};
+            				$scope.options.push(option);
+            			}
+                    }
         		} else if (type === 'BINARY') {
         			if ($scope.point.rendererMap()) {
         				var falseRenderer = $scope.point.valueRenderer(false);
