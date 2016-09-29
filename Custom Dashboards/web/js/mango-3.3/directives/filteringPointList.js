@@ -78,7 +78,7 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                 if (attrs.query) {
                     query += '&' + attrs.query;
                 } else {
-                    query += '&sort(deviceName,name)&limit(' + ($scope.limit || 200) +')';
+                    query += '&sort(deviceName,name)&limit(' + ($scope.limit || 1000) +')';
                 }
                 return Point.rql({
                     query: query

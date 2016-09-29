@@ -59,11 +59,11 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
             console.log('PointHierarchy.pathByXid Error', data);
         });
         
-        var pointType = $scope.myPoint.pointLocator.dataType;
-        // console.log('Point Type:', pointType);
-        if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' ) {
-            $ctrl.dateBar.rollupType = 'NONE';
-        }
+        // var pointType = $scope.myPoint.pointLocator.dataType;
+        // // console.log('Point Type:', pointType);
+        // if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' ) {
+        //     $ctrl.dateBar.rollupType = 'NONE';
+        // }
     });
     
     $ctrl.$onInit = function() {
