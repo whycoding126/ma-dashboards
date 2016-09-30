@@ -97,19 +97,23 @@ function cssInjectorFactory() {
         return false;
     };
 
-    CssInjector.prototype.injectLink = function(href, trackingName, selector, insertBefore) {
-        if (this.isInjected(trackingName, true)) return;
+    CssInjector.prototype.injectLink = function(href, trackingName, selector, insertBefore, alwaysInject) {
+        if (!alwaysInject && this.isInjected(trackingName, true)) return;
 
         var linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'stylesheet');
         linkElement.setAttribute('href', href);
+        if (trackingName)
+            linkElement.setAttribute('tracking-name', trackingName);
         insert(linkElement, selector, insertBefore);
     };
 
-    CssInjector.prototype.injectStyle = function(content, trackingName, selector, insertBefore) {
-        if (this.isInjected(trackingName, true)) return;
+    CssInjector.prototype.injectStyle = function(content, trackingName, selector, insertBefore, alwaysInject) {
+        if (!alwaysInject && this.isInjected(trackingName, true)) return;
 
         var styleElement = document.createElement('style');
+        if (trackingName)
+            styleElement.setAttribute('tracking-name', trackingName);
         styleElement.appendChild(document.createTextNode(content));
         insert(styleElement, selector, insertBefore);
     };

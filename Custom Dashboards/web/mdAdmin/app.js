@@ -1110,9 +1110,6 @@ mdAdminApp.run([
     '$timeout',
     '$mdSidenav',
     '$mdMedia',
-    '$mdColors',
-    '$MD_THEME_CSS',
-    'cssInjector',
     '$mdToast',
     'User',
     'mdAdminSettings',
@@ -1120,7 +1117,7 @@ mdAdminApp.run([
     '$location',
     '$stateParams',
     'DateBar',
-function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
+function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
         $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar) {
 
     mdAdminSettings.generateTheme();
@@ -1131,26 +1128,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
-
-    // inserts a style tag to style <a> tags with accent color
-    if ($MD_THEME_CSS) {
-        var accent500 = $mdColors.getThemeColor('accent-500-1.0');
-        var accent500Clear = $mdColors.getThemeColor('accent-500-0.2');
-        var accent700 = $mdColors.getThemeColor('accent-700-1.0');
-        var styleContent =
-            'a:not(.md-button) {color: ' + accent500 +'; border-bottom-color: ' + accent500Clear + ';}\n' +
-            'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accent700 + '; border-bottom-color: ' + accent700 + ';}\n';
-
-        cssInjector.injectStyle(styleContent, null, '[md-theme-style]');
-
-        var mdTableStyles = 'table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {\n' +
-            '  background-color: ' + $mdColors.getThemeColor('background-400-0.4') + ' !important;\n' +
-            '}\n\n' +
-            'table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {\n' +
-            '  background-color: ' + $mdColors.getThemeColor('background-400-0.6') + ' !important;\n' +
-            '}\n';
-        cssInjector.injectStyle(mdTableStyles, null, '[href="styles/main.css"]', true);
-    }
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
@@ -1203,6 +1180,12 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
     });
 
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        if ($state.includes('dashboard.settings.dashboardSettings')) {
+            // resets themes to the last saved state when leaving the settings page
+            mdAdminSettings.reset();
+            mdAdminSettings.generateTheme();
+        }
+        
         if ($state.includes('dashboard') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }

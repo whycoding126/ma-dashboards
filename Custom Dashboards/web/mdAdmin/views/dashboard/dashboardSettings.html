@@ -14,9 +14,7 @@
 </div>
 
 <md-button class="md-raised md-primary" ng-click="mdAdminSettings.save()"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-<md-button class="md-raised" ng-click="mdAdminSettings.reset()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.dox.revert"></span></md-button>
-
-<!--<pre ng-bind="mdAdminSettings.registeredThemes[mdAdminSettings.defaultTheme]|json"></pre>-->
+<md-button class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.dox.revert"></span></md-button>
 
 <md-checkbox ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].dark"
     ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
