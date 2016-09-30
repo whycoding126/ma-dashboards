@@ -35,14 +35,14 @@ function deviceNameScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DeviceName', '$state', '$stateParams', '$timeout', deviceNameScrollListController]
+        controller: ['DeviceName', '$state', '$stateParams', '$timeout', 'localStorageService', deviceNameScrollListController]
     };
     
-    function deviceNameScrollListController(DeviceName, $state, $stateParams, $timeout) {
+    function deviceNameScrollListController(DeviceName, $state, $stateParams, $timeout, localStorageService) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var deviceName = $stateParams.deviceName;
+            var deviceName = $stateParams.deviceName || localStorageService.get('watchListPage').deviceName;
             if (deviceName) {
                 $timeout(function() {
                     this.setViewValue(deviceName);
@@ -103,11 +103,22 @@ function deviceNameScrollList($injector) {
         this.render = function(item) {
             this.selected = item;
             this.setStateParam(item);
+            this.setLocalStorageParam(item);
         }.bind(this);
         
         this.setStateParam = function(item) {
             $stateParams.deviceName = item;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
+        
+        this.setLocalStorageParam = function(item) {
+            var deviceName = item;
+            
+            if (deviceName != null) {
+                localStorageService.set('watchListPage', {
+                    deviceName: deviceName
+                });
+            }
         };
     }
 }

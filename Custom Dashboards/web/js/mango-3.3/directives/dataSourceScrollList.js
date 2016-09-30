@@ -33,14 +33,14 @@ function dataSourceScrollList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['DataSource', '$state', '$stateParams', dataSourceScrollListController]
+        controller: ['DataSource', '$state', '$stateParams', 'localStorageService', dataSourceScrollListController]
     };
     
-    function dataSourceScrollListController(DataSource, $state, $stateParams) {
+    function dataSourceScrollListController(DataSource, $state, $stateParams, localStorageService) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var xid = $stateParams.dataSourceXid || this.selectXid;
+            var xid = $stateParams.dataSourceXid || localStorageService.get('watchListPage').dataSourceXid || this.selectXid;
             if (xid) {
                 this.fetchingInitial = true;
                 DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
@@ -85,12 +85,25 @@ function dataSourceScrollList($injector) {
         this.render = function(item) {
             this.selected = item;
             this.setStateParam(item);
+            this.setLocalStorageParam(item);
         }.bind(this);
         
         this.setStateParam = function(item) {
             if (this.fetchingInitial) return;
             $stateParams.dataSourceXid = item ? item.xid : null;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
+        
+        this.setLocalStorageParam = function(item) {
+            if (this.fetchingInitial) return;
+            
+            var dataSourceXid = item ? item.xid : null;
+            
+            if (dataSourceXid != null) {
+                localStorageService.set('watchListPage', {
+                    dataSourceXid: dataSourceXid
+                });
+            }
         };
     }
 }

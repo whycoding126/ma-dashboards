@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
-function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $state, PointHierarchy, mdAdminSettings, DateBar) {
+watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
+function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar) {
     this.watchList = null;
     this.selectWatchList = null;
     this.dataSource = null;
@@ -15,17 +15,21 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
     this.hierarchyFolders = [];
     this.settings = mdAdminSettings;
     this.dateBar = DateBar;
-    
+
     this.selectFirstWatchList = false;
-    if ($stateParams.watchListXid) {
+    this.localStorage = localStorageService.get('watchListPage');
+    
+    if ($stateParams.watchListXid || this.localStorage.watchListXid) {
         this.listType = 'watchLists';
-    } else if ($stateParams.dataSourceXid) {
+    } else if ($stateParams.dataSourceXid || this.localStorage.dataSourceXid) {
         this.listType = 'dataSources';
-    } else if ($stateParams.deviceName) {
+    } else if ($stateParams.deviceName || this.localStorage.deviceName) {
         this.listType = 'deviceNames';
-    } else if ($stateParams.hierarchyFolderId) {
+    } else if ($stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId) {
         this.listType = 'hierarchy';
-        PointHierarchy.get({id: $stateParams.hierarchyFolderId}).$promise.then(function(folder) {
+        var hierarchyFolderId = $stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId;
+        
+        PointHierarchy.get({id: hierarchyFolderId}).$promise.then(function(folder) {
             var folders = [];
             PointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
                 folders.push(folder);
@@ -130,6 +134,12 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, $
             watchList.$getPoints();
             this.watchList = watchList;
             $stateParams.hierarchyFolderId = this.hierarchyFolders[0].id;
+            
+            if (this.hierarchyFolders[0].id != null) {
+                localStorageService.set('watchListPage', {
+                    hierarchyFolderId: this.hierarchyFolders[0].id
+                });
+            }
         } else {
             this.watchList = null;
             $stateParams.hierarchyFolderId = null;

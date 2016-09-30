@@ -39,15 +39,15 @@ function watchListList($injector) {
         require: {
             'ngModelCtrl': 'ngModel'
         },
-        controller: ['$scope', 'WatchList', '$stateParams', '$state', 'WatchListEventManager',
+        controller: ['$scope', 'WatchList', '$stateParams', '$state', 'localStorageService', 'WatchListEventManager',
                      watchListListController]
     };
     
-    function watchListListController($scope, WatchList, $stateParams, $state, WatchListEventManager) {
+    function watchListListController($scope, WatchList, $stateParams, $state, localStorageService, WatchListEventManager) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var xid = $stateParams.watchListXid || this.selectXid;
+            var xid = $stateParams.watchListXid || localStorageService.get('watchListPage').watchListXid || this.selectXid;
             if (xid) {
                 this.fetchingInitial = true;
                 WatchList.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
@@ -97,6 +97,7 @@ function watchListList($injector) {
             
             this.selected = item;
             this.setStateParam(item);
+            this.setLocalStorageParam(item);
             
             if (this.selected) {
                 this.selected.$getPoints();
@@ -117,6 +118,18 @@ function watchListList($injector) {
             if (this.fetchingInitial) return;
             $stateParams.watchListXid = item ? item.xid : null;
             $state.go('.', $stateParams, {location: 'replace', notify: false});
+        };
+        
+        this.setLocalStorageParam = function(item) {
+            if (this.fetchingInitial) return;
+            
+            var watchListXid = item ? item.xid : null;
+            
+            if (watchListXid != null) {
+                localStorageService.set('watchListPage', {
+                    watchListXid: watchListXid
+                });
+            }
         };
     }
 }
