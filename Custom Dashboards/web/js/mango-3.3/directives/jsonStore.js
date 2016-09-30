@@ -86,7 +86,7 @@ function jsonStore(JsonStore, jsonStoreEventManager, $q) {
             });
 
             function websocketHandler(event, payload) {
-                $scope.$apply(function() {
+                $scope.$applyAsync(function() {
                 	if (!angular.equals(payload.object, $scope.item)) {
                 		angular.copy(payload.object, $scope.item);
                 	}

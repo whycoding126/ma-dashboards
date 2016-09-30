@@ -938,7 +938,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     if (MD_ADMIN_SETTINGS.palettes) {
         for (var name in MD_ADMIN_SETTINGS.palettes) {
-            $mdThemingProvider.definePalette(name, MD_ADMIN_SETTINGS.palettes[name]);
+            $mdThemingProvider.definePalette(name, angular.copy(MD_ADMIN_SETTINGS.palettes[name]));
         }
     }
 
@@ -963,10 +963,14 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
             }
         }
     }
+    
+    // need to store a reference to the theming provider in order to generate themes at runtime
+    MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
 
     var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault';
     $mdThemingProvider.setDefaultTheme(theme);
     $mdThemingProvider.alwaysWatchTheme(true);
+    $mdThemingProvider.generateThemesOnDemand(true);
     $mdThemingProvider.enableBrowserColor({
         theme: theme
     });
@@ -1119,6 +1123,7 @@ mdAdminApp.run([
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColors, $MD_THEME_CSS, cssInjector,
         $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar) {
 
+    mdAdminSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = DateBar;
     $rootScope.mdAdminSettings = mdAdminSettings;
@@ -1348,20 +1353,14 @@ var $http = servicesInjector.get('$http');
 var userAndUserSettingsPromise = User.current().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
-    var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(function(store) {
-        return store.jsonData;
-    }, angular.noop);
-    
-    var userDashboardSettingsPromise = JsonStore.get({xid: 'dashboard-settings'}).$promise.then(function(store) {
-        return store.jsonData;
-    }, angular.noop);
-    
+    var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(null, angular.noop);
+    var userDashboardSettingsPromise = JsonStore.get({xid: 'dashboard-settings'}).$promise.then(null, angular.noop);
     return $q.all([user, userMenuPromise, userDashboardSettingsPromise]);
 }, angular.noop).then(function(data) {
     return {
         user: data && data[0],
-        userMenu: data && data[1],
-        userDashboardSettings: data && data[2]
+        userMenuStore: data && data[1],
+        userSettingsStore: data && data[2]
     }
 });
 
@@ -1375,19 +1374,21 @@ var dashboardSettingsPromise = $http({
 $q.all([userAndUserSettingsPromise, dashboardSettingsPromise]).then(function(data) {
     var mdAdminSettings = {};
     mdAdminSettings.user = data[0].user;
-    var userMenu = data[0].userMenu;
-    var userDashboardSettings = data[0].userDashboardSettings;
-    var dashboardSettings = data[1];
+    var userMenuStore = data[0].userMenuStore;
+    var userSettingsStore = data[0].userSettingsStore;
+    var defaultSettings = data[1];
     
-    if (dashboardSettings) {
-        angular.merge(mdAdminSettings, dashboardSettings);
+    if (defaultSettings) {
+        mdAdminSettings.defaultSettings = defaultSettings;
+        angular.merge(mdAdminSettings, defaultSettings);
     }
-    if (userDashboardSettings) {
-        angular.merge(mdAdminSettings, userDashboardSettings);
+    if (userSettingsStore) {
+        mdAdminSettings.initialSettings = userSettingsStore.jsonData;
+        angular.merge(mdAdminSettings, userSettingsStore.jsonData);
     }
-    if (userMenu) {
-        mdAdminSettings.customMenuItems = userMenu.menuItems;
-        mdAdminSettings.defaultUrl = userMenu.defaultUrl;
+    if (userMenuStore) {
+        mdAdminSettings.customMenuItems = userMenuStore.jsonData.menuItems;
+        mdAdminSettings.defaultUrl = userMenuStore.jsonData.defaultUrl;
     }
     
     servicesInjector.get('$rootScope').$destroy();
