@@ -85,6 +85,9 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
             $mdTheming.generateTheme(themeName);
             this.activeTheme = dynamicThemeName || themeName;
             this.themingProvider.setDefaultTheme(this.activeTheme);
+            this.theming.setBrowserColor({
+                theme: this.activeTheme
+            });
             this.generateCustomStyles();
         },
         themeFromSettings: function themeFromSettings(themeName, themeSettings) {
