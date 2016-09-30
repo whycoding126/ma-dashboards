@@ -336,7 +336,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
 
                     var item = {
                         value : value,
-                        timestamp : payload.value.timestamp
+                        timestamp : payload.value.timestamp,
+                        annotation : payload.value.annotation
                     };
 
                     var destArray = singlePoint ? $scope.values : values[xid];

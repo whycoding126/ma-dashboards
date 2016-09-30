@@ -57,14 +57,14 @@
 					<tbody md-body ng-if="!$ctrl.realtimeMode">
 						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder">
 							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-							<td md-cell>{{value.value}}</td>
+							<td md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
 						</tr>
 					</tbody>
 					<tbody md-body ng-if="$ctrl.realtimeMode">
 						<ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
 						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
 							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-							<td md-cell>{{value.value}}</td>
+							<td md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
 						</tr>
 					</tbody>
 				</table>
