@@ -19,13 +19,13 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.selectFirstWatchList = false;
     this.localStorage = localStorageService.get('watchListPage');
     
-    if ($stateParams.watchListXid || this.localStorage.watchListXid) {
+    if ( $stateParams.watchListXid || (this.localStorage && this.localStorage.watchListXid) ) {
         this.listType = 'watchLists';
-    } else if ($stateParams.dataSourceXid || this.localStorage.dataSourceXid) {
+    } else if ( $stateParams.dataSourceXid || (this.localStorage && this.localStorage.dataSourceXid) ) {
         this.listType = 'dataSources';
-    } else if ($stateParams.deviceName || this.localStorage.deviceName) {
+    } else if ( $stateParams.deviceName || (this.localStorage && this.localStorage.deviceName) ) {
         this.listType = 'deviceNames';
-    } else if ($stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId) {
+    } else if ( $stateParams.hierarchyFolderId || (this.localStorage && this.localStorage.hierarchyFolderId) ) {
         this.listType = 'hierarchy';
         var hierarchyFolderId = $stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId;
         

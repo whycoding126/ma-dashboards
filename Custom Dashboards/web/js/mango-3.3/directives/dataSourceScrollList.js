@@ -40,7 +40,9 @@ function dataSourceScrollList($injector) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var xid = $stateParams.dataSourceXid || localStorageService.get('watchListPage').dataSourceXid || this.selectXid;
+            var localStorageDataSourceXid = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').dataSourceXid : null;
+            
+            var xid = $stateParams.dataSourceXid || localStorageDataSourceXid || this.selectXid;
             if (xid) {
                 this.fetchingInitial = true;
                 DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {

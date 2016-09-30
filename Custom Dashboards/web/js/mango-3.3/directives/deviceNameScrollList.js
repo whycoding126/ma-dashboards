@@ -42,7 +42,9 @@ function deviceNameScrollList($injector) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var deviceName = $stateParams.deviceName || localStorageService.get('watchListPage').deviceName;
+            var localStorageDeviceName = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').deviceName : null;
+            
+            var deviceName = $stateParams.deviceName || localStorageDeviceName;
             if (deviceName) {
                 $timeout(function() {
                     this.setViewValue(deviceName);

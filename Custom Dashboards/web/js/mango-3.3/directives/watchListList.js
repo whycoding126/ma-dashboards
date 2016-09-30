@@ -47,7 +47,9 @@ function watchListList($injector) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var xid = $stateParams.watchListXid || localStorageService.get('watchListPage').watchListXid || this.selectXid;
+            var localStorageWatchListXid = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').watchListXid : null;
+            
+            var xid = $stateParams.watchListXid || localStorageWatchListXid || this.selectXid;
             if (xid) {
                 this.fetchingInitial = true;
                 WatchList.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
