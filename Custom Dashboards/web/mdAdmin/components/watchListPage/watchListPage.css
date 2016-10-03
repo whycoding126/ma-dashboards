@@ -163,3 +163,14 @@ ma-watch-list-page md-list-item > .md-no-style:before {
   height: 40px;
   min-height: 40px;
 }
+
+ma-watch-list-page md-card md-toolbar.watchlist-picker {
+  max-height: 85px !important;
+  height: 85px !important;
+}
+
+ma-watch-list-page md-radio-button {
+  margin-bottom: 0px !important;
+  font-size: 20px !important;
+  padding:3px !important;
+}

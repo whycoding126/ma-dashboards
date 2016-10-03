@@ -12,7 +12,7 @@
 			        </h2>
 				</div>
 			</md-toolbar>
-			<md-card-content layout="column">
+			<md-card-content layout="column" layout-align="space-between" flex>
 				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}"></ma-filtering-point-list>
 				
 				<div layout="row" layout-wrap class="point-details">
@@ -25,7 +25,6 @@
 						<!-- <ma-point-hierarchy></ma-point-hierarchy> -->
 					</div>
 				</div>
-				<br />
 				<div layout="row">
 					<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
 					<md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">{{'dashboards.v3.app.edit' | tr}}</md-button>
