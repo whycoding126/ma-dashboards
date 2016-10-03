@@ -2,7 +2,7 @@
       <md-toolbar class="md-whiteframe-1dp md-hue-3">
             <div class="md-toolbar-tools">
                   <h2 flex>
-                    <span>Events Table</span>
+                    <span ma-tr="dashboards.v3.app.eventsTable"></span>
                   </h2>
                   <div ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'" ma-tr="dashboards.v3.app.all"></md-button>
@@ -14,31 +14,31 @@
       </md-toolbar>
       <md-card-actions layout="row" layout-align="start center" layout-wrap>
             <md-input-container flex>
-                  <label>Alarm Level</label>
+                  <label ma-tr="dashboards.v3.app.alarmLvl"></label>
                   <md-select ng-model="$ctrl.alarmLevel">
-                        <md-option value="*">All <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
-                        <md-option value="NONE">None <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
-                        <md-option value="INFORMATION">Information <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
-                        <md-option value="URGENT">Urgent <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
-                        <md-option value="CRITICAL">Critical <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
-                        <md-option value="LIFE_SAFETY">Safety <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option 
+                        <md-option value="*">{{ 'dashboards.v3.app.all' | tr }} <i class="fa fa-flag fa-lg alarm-flag ALL"></i></md-option>
+                        <md-option value="NONE">{{ 'dashboards.v3.app.none' | tr }} <i class="fa fa-flag fa-lg alarm-flag NONE"></i></md-option>
+                        <md-option value="INFORMATION">{{ 'dashboards.v3.app.information' | tr }} <i class="fa fa-flag fa-lg alarm-flag INFORMATION"></i></md-option>
+                        <md-option value="URGENT">{{ 'dashboards.v3.app.urgent' | tr }} <i class="fa fa-flag fa-lg alarm-flag URGENT"></i></md-option>
+                        <md-option value="CRITICAL">{{ 'dashboards.v3.app.critical' | tr }} <i class="fa fa-flag fa-lg alarm-flag CRITICAL"></i></md-option>
+                        <md-option value="LIFE_SAFETY">{{ 'dashboards.v3.app.safety' | tr }} <i class="fa fa-flag fa-lg alarm-flag LIFE_SAFETY"></i></md-option 
                   </md-select>
             </md-input-container>
             <md-input-container flex>
-                  <label>Active Status</label>
+                  <label>{{ 'dashboards.v3.app.activeStatus' | tr }} </label>
                   <md-select ng-model="activeStatus" ng-init="activeStatus='*'">
-                        <md-option value="*">All</md-option>
-                        <md-option value="active">Active</md-option>
-                        <md-option value="noRtn">No RTN</md-option>
-                        <md-option value="normal">Returned To Normal</md-option>
+                        <md-option value="*">{{ 'dashboards.v3.app.all' | tr }} </md-option>
+                        <md-option value="active">{{ 'dashboards.v3.app.active' | tr }} </md-option>
+                        <md-option value="noRtn">{{ 'dashboards.v3.app.noRtn' | tr }} </md-option>
+                        <md-option value="normal">{{ 'dashboards.v3.app.returnedToNormal' | tr }} </md-option>
                   </md-select>
             </md-input-container>
             <md-input-container flex>
-                  <label>Acknowledged</label>
+                  <label>{{ 'dashboards.v3.app.acknowledged' | tr }} </label>
                   <md-select ng-model="$ctrl.acknowledged">
-                        <md-option value="*">All</md-option>
-                        <md-option value="true">Acknowledged</md-option>
-                        <md-option value="false">Un-Acknowledged</md-option>
+                        <md-option value="*">{{ 'dashboards.v3.app.all' | tr }} </md-option>
+                        <md-option value="true">{{ 'dashboards.v3.app.acknowledged' | tr }} </md-option>
+                        <md-option value="false">{{ 'dashboards.v3.app.unAcknowledged' | tr }} </md-option>
                   </md-select>
             </md-input-container>
       </md-card-actions>

@@ -2,9 +2,8 @@
       <form>
             <md-toolbar>
                   <div class="md-toolbar-tools">
-                        <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s History 
-                              <span class="nowrap">(Over {{ctrl.timeRange}})
-                              </span>
+                        <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s {{ 'dashboards.v3.app.history' | tr }} 
+                              <span class="nowrap" ma-tr="dashboards.v3.app.overTimeRange" ma-tr-args="[ctrl.timeRange]"></span>
                         </h2>
                         <span flex></span>
                         <md-button class="md-icon-button" ng-click="ctrl.cancel()">
@@ -14,14 +13,14 @@
             </md-toolbar>
             <md-dialog-content>
                   <md-tabs md-dynamic-height md-border-bottom md-no-pagination md-stretch-tabs="always">
-                        <md-tab label="Stats">
+                        <md-tab label="{{'dashboards.v3.app.stats' | tr}}">
                               <md-content class="md-padding">
                                     <ma-point-statistics point="ctrl.parent.point" from="ctrl.dateBar.from" to="ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
 
                                     <ma-statistics-table statistics="statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
-                        <md-tab label="Chart">
+                        <md-tab label="{{'dashboards.v3.app.chart' | tr}}">
                               <md-content class="md-padding">
                                     <ma-point-values point-xid="{{ctrl.parent.point.xid}}" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup">
                                     </ma-point-values>
@@ -30,7 +29,7 @@
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
-                        <md-tab label="Values">
+                        <md-tab label="{{'dashboards.v3.app.values' | tr}}">
                               <md-content class="md-padding">
                                     <!-- <ma-point-values point-xid="{{point.xid}}" values="pointValuesLatest" latest="10" realtime rendered="true">
                                     </ma-point-values> -->
@@ -38,8 +37,8 @@
                                           <table md-table>
                                                 <thead md-head md-order="myOrder">
                                                       <tr md-row>
-                                                            <th md-column md-order-by="timestamp">TimeStamp</th>
-                                                            <th md-column md-order-by="value">Point Value</th>
+                                                            <th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.timestamp"></th>
+                                                            <th md-column md-order-by="value" ma-tr="dashboards.v3.app.pointValue"></th>
                                                       </tr>
                                                 </thead>
                                                 <tbody md-body>

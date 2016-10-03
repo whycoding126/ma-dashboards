@@ -1,39 +1,27 @@
 <md-toolbar class="md-whiteframe-1dp md-hue-3">
     <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
         <h2 flex>
-            <span>Chart &amp; Compare</span>        
+            <span>{{'dashboards.v3.app.chart' | tr}} &amp; {{'dashboards.v3.app.compare' | tr}}</span>        
         </h2>
-      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; graphOptions=[];">Clear</md-button>
+      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; graphOptions=[];" ma-tr="dashboards.v3.app.clear"></md-button>
     </div>
 </md-toolbar>
 
 <div layout="row">
     <md-tabs md-selected="currentTab" md-stretch-tabs="auto" flex="40">
-        <md-tab id="tab1">CHART</md-tab>
-        <md-tab id="tab2">STATS</md-tab>
+        <md-tab id="tab1">{{'dashboards.v3.app.chart' | tr}}</md-tab>
+        <md-tab id="tab2">{{'dashboards.v3.app.stats' | tr}}</md-tab>
     </md-tabs>
     <span flex></span>
     <md-input-container  flex="10" flex-xs="30">
-        <label>Chart Type</label>
-        <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="Chart Type">
-            <md-option value="smoothedLine">
-                Smooth
-            </md-option>
-            <md-option value="line">
-                Line
-            </md-option>
-            <md-option value="step">
-                Step
-            </md-option>
-            <md-option value="column">
-                Bar
-            </md-option>
-            <md-option value="stacked">
-                Stacked
-            </md-option>
-            <md-option value="area">
-                Area
-            </md-option>
+        <label ma-tr="dashboards.v3.app.chartType"></label>
+        <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="{{'dashboards.v3.app.chartType' | tr}}">
+            <md-option value="smoothedLine" ma-tr="dashboards.v3.app.smooth"></md-option>
+            <md-option value="line" ma-tr="dashboards.v3.app.line"></md-option>
+            <md-option value="step" ma-tr="dashboards.v3.app.step"></md-option>
+            <md-option value="column" ma-tr="dashboards.v3.app.bar"></md-option>
+            <md-option value="stacked" ma-tr="dashboards.v3.app.stacked"></md-option>
+            <md-option value="area" ma-tr="dashboards.v3.app.area"></md-option>
         </md-select>
     </md-input-container>
 </div>
@@ -53,37 +41,35 @@
         <div layout="row" layout-wrap layout-margin layout-align="space-between start">
             <md-input-container flex="70" flex-xs="100">
                 <md-radio-group ng-model="selectedAxis" ng-init="selectedAxis='left'" layout="row" layout-align="start center">
-                    <md-radio-button value="left">Left</md-radio-button>
-                    <md-radio-button value="right">Right</md-radio-button>
-                    <md-radio-button value="left-2">Far Left</md-radio-button>
-                    <md-radio-button value="right-2">Far Right</md-radio-button>
+                    <md-radio-button value="left">{{'dashboards.v3.app.left' | tr}}</md-radio-button>
+                    <md-radio-button value="right">{{'dashboards.v3.app.right' | tr}}</md-radio-button>
+                    <md-radio-button value="left-2">{{'dashboards.v3.app.farLeft' | tr}}</md-radio-button>
+                    <md-radio-button value="right-2">{{'dashboards.v3.app.farRight' | tr}}</md-radio-button>
                 </md-radio-group>
             </md-input-container>
             <md-input-container flex="20" flex-xs="100" layout="row" layout-align="end" layout-align-xs="start">
-                <md-checkbox ng-model="assignColors" ng-init="assignColors=false">
-                Pick Colors
-                </md-checkbox>
+                <md-checkbox ng-model="assignColors" ng-init="assignColors=false">{{'dashboards.v3.app.pickColors' | tr}}</md-checkbox>
             </md-input-container>
         </div>
         <div layout="row" layout-margin>
             <md-input-container flex ng-show="assignColors">
-                <label>Next Line Color</label>
+                <label ma-tr="dashboards.v3.app.nextLineColor"></label>
                 <input type="color" ng-model="selectedColor" ng-init="selectedColor='#C2185B'" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
-                <label>Left Axis</label>
+                <label ma-tr="dashboards.v3.app.leftAxis"></label>
                 <input type="color" ng-model="axisColors.leftAxisColor" ng-init="axisColors.leftAxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
-                <label>Right Axis</label>
+                <label ma-tr="dashboards.v3.app.rightAxis"></label>
                 <input type="color" ng-model="axisColors.rightAxisColor" ng-init="axisColors.rightAxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
-                <label>Outer Left Axis</label>
+                <label ma-tr="dashboards.v3.app.outerLeftAxis"></label>
                 <input type="color" ng-model="axisColors.left2AxisColor" ng-init="axisColors.left2AxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
-                <label>Outer Right Axis</label>
+                <label ma-tr="dashboards.v3.app.OuterRightAxis"></label>
                 <input type="color" ng-model="axisColors.right2AxisColor" ng-init="axisColors.right2AxisColor='#000000'" ng-disabled="!assignColors">
             </md-input-container>
         </div>
@@ -109,15 +95,15 @@
             <table md-table ng-class="{'desktop': $mdMedia('gt-sm')}">
                 <thead md-head md-order="tableOrder">
                     <tr>
-                        <th md-column md-order-by="device">Device</th>
-                        <th md-column md-order-by="name">Name</th>
-                        <th md-column md-numeric md-order-by="avg">Avg</th>
-                        <th md-column md-numeric md-order-by="max">Max</th>
-                        <th md-column md-numeric md-order-by="min">Min</th>
-                        <th md-column md-numeric md-order-by="sum">Sum</th>
-                        <th md-column md-numeric md-order-by="first">First</th>
-                        <th md-column md-numeric md-order-by="last">Last</th>
-                        <th md-column md-numeric md-order-by="count">Count</th>
+                        <th md-column md-order-by="device" ma-tr="dashboards.v3.app.device"></th>
+                        <th md-column md-order-by="name" ma-tr="dashboards.v3.app.name"></th>
+                        <th md-column md-numeric md-order-by="avg" ma-tr="dashboards.v3.app.avg"></th>
+                        <th md-column md-numeric md-order-by="max" ma-tr="dashboards.v3.app.max"></th>
+                        <th md-column md-numeric md-order-by="min" ma-tr="dashboards.v3.app.min"></th>
+                        <th md-column md-numeric md-order-by="sum" ma-tr="dashboards.v3.app.sum"></th>
+                        <th md-column md-numeric md-order-by="first" ma-tr="dashboards.v3.app.first"></th>
+                        <th md-column md-numeric md-order-by="last" ma-tr="dashboards.v3.app.last"></th>
+                        <th md-column md-numeric md-order-by="count" ma-tr="dashboards.v3.app.count"></th>
                     </tr>
                 </thead>
                 <tbody md-body ng-init="tableOrder='device'">
