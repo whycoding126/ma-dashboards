@@ -57,6 +57,13 @@
   </md-card>
   
   <div flex layout="column" class="watchlist-main" md-no-ink ng-show="$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
+      <div layout>
+        <md-input-container>
+        <label>Device name</label>
+          <ma-device-name-list ng-model="$ctrl.deviceNameParam" ng-change="$ctrl.updateWatchListParameters()"></ma-device-name-list>
+        </md-input-container>
+      </div>
+  
       <md-card class="watchlist-table">
           <watch-list-table watch-list="$ctrl.watchList" clear="$ctrl.clear()" selected="$ctrl.selected">
           </watch-list-table>

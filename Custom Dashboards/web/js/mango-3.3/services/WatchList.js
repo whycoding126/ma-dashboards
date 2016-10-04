@@ -3,10 +3,11 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 
-function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
+WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q', '$interpolate', '$sce'];
+function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $interpolate, $sce) {
     
     function jsonDataToProperties(data, headersGetter, status) {
         if (!angular.isObject(data)) return data;
@@ -97,7 +98,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
         }
     };
 
-    WatchList.prototype.$getPoints = function() {
+    WatchList.prototype.$getPoints = function(params) {
         if (!this.points) {
             this.points = [];
         }
@@ -116,7 +117,8 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
                 return this;
             }.bind(this))
         } else if (this.type === 'query') {
-            return Point.query({rqlQuery: this.query}).$promise.then(function(items) {
+            var query = this.interpolateQuery(params);
+            return Point.query({rqlQuery: query}).$promise.then(function(items) {
                 this.setPoints(items);
                 return this;
             }.bind(this));
@@ -155,11 +157,22 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q) {
             }.bind(this));
         }
     };
+    
+    WatchList.prototype.interpolateQuery = function interpolateQuery(params) {
+        params = params || {};
+        var parsed = new query.Query(this.query);
+        parsed.walk(function(name, args) {
+            for (var i = 0; i < args.length; i++) {
+                if (typeof args[i] !== 'string' || args[i].indexOf('{{') < 0) continue;
+                args[i] = $interpolate(args[i])(params, false, $sce.URL, false)
+            }
+        }.bind(this));
+        return parsed.toString();
+    };
 
     return WatchList;
 }
 
-WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q'];
 return WatchListFactory;
 
 }); // define

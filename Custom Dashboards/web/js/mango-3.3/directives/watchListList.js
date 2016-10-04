@@ -102,7 +102,6 @@ function watchListList($injector) {
             this.setLocalStorageParam(item);
             
             if (this.selected) {
-                this.selected.$getPoints();
                 if (!sameXid) {
                     WatchListEventManager.smartSubscribe($scope, this.selected.xid, UPDATE_TYPES, this.updateHandler);
                 }

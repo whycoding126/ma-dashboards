@@ -48,6 +48,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     
     this.watchListChanged = function watchListChanged() {
         this.watchList = this.selectWatchList;
+        this.watchList.$getPoints({deviceName: this.deviceNameParam});
         
         // clear other selections
         this.dataSource = null;
@@ -60,6 +61,10 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         
         // clear checked points from table/chart
         this.selected = [];
+    };
+    
+    this.updateWatchListParameters = function updateWatchListParameters() {
+        this.watchList.$getPoints({deviceName: this.deviceNameParam});
     };
     
     this.dataSourceChanged = function dataSourceChanged() {
