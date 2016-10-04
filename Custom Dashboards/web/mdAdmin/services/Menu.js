@@ -42,6 +42,7 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
         var i = 1;
         this.eachMenuItem(menuItems, null, function(menuItem) {
             menuItem.id = i++;
+            menuItem.builtIn = true;
         });
         storeObject.jsonData.menuItems = menuItems;
         storeObject.jsonData.defaultUrl = '/home';
