@@ -73,12 +73,12 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
             };
 
             $scope.querySearch = function(queryStr) {
-                queryStr = queryStr || '';
-                var query = 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)';
+                //queryStr = queryStr || '';
+                var query = queryStr ? 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)&' : '';
                 if (attrs.query) {
-                    query += '&' + attrs.query;
+                    query += attrs.query;
                 } else {
-                    query += '&sort(deviceName,name)&limit(' + ($scope.limit || 1000) +')';
+                    query += 'sort(deviceName,name)&limit(' + ($scope.limit || 150) +')';
                 }
                 return Point.rql({
                     query: query
