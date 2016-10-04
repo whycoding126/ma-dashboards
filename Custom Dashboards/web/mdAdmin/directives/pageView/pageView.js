@@ -6,7 +6,8 @@
 define(['require'], function(require) {
 'use strict';
 
-var pageView = function(Page, jsonStoreEventManager, User, $rootScope) {
+pageView.$inject = ['Page', 'jsonStoreEventManager', 'User', 'mdAdminSettings'];
+function pageView (Page, jsonStoreEventManager, User, mdAdminSettings) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
@@ -15,7 +16,7 @@ var pageView = function(Page, jsonStoreEventManager, User, $rootScope) {
         },
         templateUrl: require.toUrl('./pageView.html'),
         link: function($scope, $element) {
-            $scope.user = $rootScope.user;
+            $scope.user = mdAdminSettings.user;
             
             Page.loadPage($scope.xid).then(function(page) {
                 $scope.page = page;
@@ -28,8 +29,6 @@ var pageView = function(Page, jsonStoreEventManager, User, $rootScope) {
         }
     };
 };
-
-pageView.$inject = ['Page', 'jsonStoreEventManager', 'User', '$rootScope'];
 
 return pageView;
 
