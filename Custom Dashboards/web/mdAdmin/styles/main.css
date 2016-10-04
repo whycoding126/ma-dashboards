@@ -478,9 +478,9 @@ code:not(.highlight) {
 
 
 md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {
-    height: 38px;
-	min-height: 38px;
-	max-height: 38px;
+    height: 42px;
+	min-height: 42px;
+	max-height: 42px;
 }
 
 md-card md-toolbar .md-toolbar-tools h2 span {
