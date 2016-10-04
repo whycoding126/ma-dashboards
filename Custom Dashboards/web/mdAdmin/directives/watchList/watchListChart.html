@@ -13,7 +13,7 @@
         <md-tab id="tab2">{{'dashboards.v3.app.stats' | tr}}</md-tab>
     </md-tabs>
     <span flex></span>
-    <md-input-container  flex="10" flex-xs="30">
+    <md-input-container  flex="15" flex-xs="30">
         <label ma-tr="dashboards.v3.app.chartType"></label>
         <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="{{'dashboards.v3.app.chartType' | tr}}">
             <md-option value="smoothedLine" ma-tr="dashboards.v3.app.smooth"></md-option>
@@ -40,7 +40,7 @@
         </div>
         <div layout="row" layout-wrap layout-margin layout-align="space-between start">
             <md-input-container flex="70" flex-xs="100">
-                <md-radio-group ng-model="selectedAxis" ng-init="selectedAxis='left'" layout="row" layout-align="start center">
+                <md-radio-group ng-model="selectedAxis" layout="row" ng-change="updateColors()" layout-align="start center">
                     <md-radio-button value="left">{{'dashboards.v3.app.left' | tr}}</md-radio-button>
                     <md-radio-button value="right">{{'dashboards.v3.app.right' | tr}}</md-radio-button>
                     <md-radio-button value="left-2">{{'dashboards.v3.app.farLeft' | tr}}</md-radio-button>
@@ -48,29 +48,29 @@
                 </md-radio-group>
             </md-input-container>
             <md-input-container flex="20" flex-xs="100" layout="row" layout-align="end" layout-align-xs="start">
-                <md-checkbox ng-model="assignColors" ng-init="assignColors=false">{{'dashboards.v3.app.pickColors' | tr}}</md-checkbox>
+                <md-checkbox ng-model="assignColors" ng-change="updateColors()">{{'dashboards.v3.app.pickColors' | tr}}</md-checkbox>
             </md-input-container>
         </div>
         <div layout="row" layout-margin>
             <md-input-container flex ng-show="assignColors">
                 <label ma-tr="dashboards.v3.app.nextLineColor"></label>
-                <input type="color" ng-model="selectedColor" ng-init="selectedColor='#C2185B'" ng-disabled="!assignColors">
+                <input type="color" ng-model="selectedColor" ng-change="updateColors()" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
                 <label ma-tr="dashboards.v3.app.leftAxis"></label>
-                <input type="color" ng-model="axisColors.leftAxisColor" ng-init="axisColors.leftAxisColor='#000000'" ng-disabled="!assignColors">
+                <input type="color" ng-model="axisColors.leftAxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
                 <label ma-tr="dashboards.v3.app.rightAxis"></label>
-                <input type="color" ng-model="axisColors.rightAxisColor" ng-init="axisColors.rightAxisColor='#000000'" ng-disabled="!assignColors">
+                <input type="color" ng-model="axisColors.rightAxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
                 <label ma-tr="dashboards.v3.app.outerLeftAxis"></label>
-                <input type="color" ng-model="axisColors.left2AxisColor" ng-init="axisColors.left2AxisColor='#000000'" ng-disabled="!assignColors">
+                <input type="color" ng-model="axisColors.left2AxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
             </md-input-container>
             <md-input-container  flex ng-show="assignColors">
                 <label ma-tr="dashboards.v3.app.OuterRightAxis"></label>
-                <input type="color" ng-model="axisColors.right2AxisColor" ng-init="axisColors.right2AxisColor='#000000'" ng-disabled="!assignColors">
+                <input type="color" ng-model="axisColors.right2AxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
             </md-input-container>
         </div>
     </md-tab>

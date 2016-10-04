@@ -6,8 +6,8 @@
 define(['require'], function(require) {
     'use strict';
 
-    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar'];
-    function watchListChart($mdMedia, $timeout, DateBar) {
+    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar', 'localStorageService'];
+    function watchListChart($mdMedia, $timeout, DateBar, localStorageService) {
         return {
             restrict: 'E',
             scope: {
@@ -25,6 +25,25 @@ define(['require'], function(require) {
                 scope.stats = []; // Set up array for storing stats for stats tab
                 scope.points = []; // Set up array for storing charted points
                 scope.$mdMedia = $mdMedia; // Make $mdMedia service available to scope
+                
+                var watchlistChartColors = localStorageService.get('watchlistChartColors');
+                
+                if (watchlistChartColors != null) {
+                    scope.selectedAxis = watchlistChartColors.selectedAxis;
+                    scope.assignColors = watchlistChartColors.assignColors;
+                    scope.axisColors = watchlistChartColors.axisColors;
+                    scope.selectedColor = watchlistChartColors.selectedColor
+                }
+                else {
+                    scope.assignColors = false;
+                    scope.selectedAxis = left;
+                    scope.axisColors = { left2AxisColor: "#000000",
+                        leftAxisColor: "#000000",
+                        right2AxisColor: "#000000",
+                        rightAxisColor: "#000000"
+                    }
+                    scope.selectedColor = '#C2185B';
+                }
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues) return;
@@ -61,6 +80,12 @@ define(['require'], function(require) {
 
                     // console.log('Graph Options', scope.graphOptions);
                 });
+                
+                scope.updateColors = function () {
+                    localStorageService.set('watchlistChartColors', {assignColors: scope.assignColors, selectedColor: scope.selectedColor, axisColors: scope.axisColors, selectedAxis: scope.selectedAxis});
+                    
+                    // console.log(localStorageService.get('watchlistChartColors'));
+                };
 
             } // End Link
         }; // End return
