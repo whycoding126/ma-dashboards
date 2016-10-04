@@ -43,7 +43,7 @@
       </md-input-container>
       <md-input-container>
           <label>State URL</label>
-          <input name="url" pattern="^/([\w-{}]+/)*[\w-{}?&]+$"
+          <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
               ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
           <div class="hint" ng-hide="menuItemEditForm.url.$invalid && (menuItemEditForm.url.$touched || menuItemEditForm.$submitted)">Choose a URL for this menu item. Will be prefixed with parents URL.</div>
           <div ng-messages="menuItemEditForm.url.$error">
