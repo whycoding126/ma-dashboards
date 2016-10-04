@@ -2,7 +2,7 @@
     <md-button aria-label="Active Events" class="md-icon-button ma-badge" ng-click="$mdOpenMenu($event)">
         <md-tooltip md-autohide>{{$ctrl.renderCount($ctrl.events.totalCount)}} Un-Acknowledged Events</md-tooltip>
         <md-icon md-menu-origin>alarm</md-icon>
-        <ma-badge>{{$ctrl.renderCount($ctrl.events.totalCount)}}</ma-badge>
+        <ma-badge md-colors="{'background': 'accent-hue-2'}">{{$ctrl.renderCount($ctrl.events.totalCount)}}</ma-badge>
     </md-button>
     <md-menu-content width="3">
         
