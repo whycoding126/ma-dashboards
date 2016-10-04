@@ -379,7 +379,6 @@ code.highlight {
 }
 
 code:not(.highlight) {
-  color: #106CC8;
   margin-left: 1px;
   margin-right: 1px;
   -webkit-font-smoothing: auto;
@@ -642,6 +641,7 @@ table.variables-matrix {
 
 .variables-matrix td {
   vertical-align: top;
+  color: black;
 }
 
 .variables-matrix td div>em{
