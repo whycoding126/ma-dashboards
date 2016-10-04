@@ -36,7 +36,7 @@ define(['require'], function(require) {
                 }
                 else {
                     scope.assignColors = false;
-                    scope.selectedAxis = left;
+                    scope.selectedAxis = 'left';
                     scope.axisColors = { left2AxisColor: "#000000",
                         leftAxisColor: "#000000",
                         right2AxisColor: "#000000",
