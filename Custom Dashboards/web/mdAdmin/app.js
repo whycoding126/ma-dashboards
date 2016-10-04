@@ -179,30 +179,6 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'home'
     },
     {
-        name: 'dashboard.demoPage1',
-        url: '/demo-page-1',
-        linkToPage: true,
-        pageXid: 'demo-page-1',
-        menuText: 'Demo Page 1',
-        menuIcon: 'favorite'
-    },
-    {
-        name: 'dashboard.demoFolder',
-        url: '/demo-folder',
-        menuText: 'Demo Folder',
-        menuIcon: 'folder',
-        children: [
-            {
-                name: 'dashboard.demoFolder.demoPage2',
-                url: '/demo-page-2',
-                linkToPage: true,
-                pageXid: 'demo-page-2',
-                menuText: 'Demo Page 2',
-                menuIcon: 'cake'
-            }
-        ]
-    },
-    {
         name: 'dashboard.watchList',
         url: '/watch-list/{watchListXid}?dataSourceXid&deviceName&hierarchyFolderId',
         template: '<ma-watch-list-page flex="noshrink" layout="column"></ma-watch-list-page>',
@@ -870,23 +846,6 @@ mdAdminApp.constant('MENU_ITEMS', [
     }
 ]);
 
-mdAdminApp.constant('DEFAULT_PAGES', [
-    {
-        xid: 'demo-page-1',
-        name: 'Demo Page 1',
-        editPermission: 'edit-pages',
-        readPermission: 'user',
-        markup: '<h1>Demo page 1</h1>\n<p>You can edit this page by clicking the pencil at the top right of the page.</p>'
-    },
-    {
-        xid: 'demo-page-2',
-        name: 'Demo Page 2',
-        editPermission: 'edit-pages',
-        readPermission: 'user',
-        markup: '<h1>Demo page 2</h1>\n<p>You can edit this page by clicking the pencil at the top right of the page.</p>'
-    }
-]);
-
 mdAdminApp.config([
     'MENU_ITEMS',
     'MD_ADMIN_SETTINGS',
@@ -913,8 +872,6 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     errorInterceptorProvider.ignore = function(rejection) {
         var ignoreUrls = ['/rest/v1/json-data/custom-user-menu',
                           '/rest/v1/json-data/custom-user-pages',
-                          '/rest/v1/json-data/demo-page-1',
-                          '/rest/v1/json-data/demo-page-2',
                           '/rest/v1/json-data/play-area-'];
 
         if (!rejection.config)

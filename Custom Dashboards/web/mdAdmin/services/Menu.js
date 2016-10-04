@@ -41,8 +41,6 @@ function MenuFactory(MENU_ITEMS, mdAdminSettings, JsonStore, CUSTOM_USER_MENU_XI
         var menuItems = angular.copy(MENU_ITEMS);
         var i = 1;
         this.eachMenuItem(menuItems, null, function(menuItem) {
-            if (menuItem.name.indexOf('dashboard.demo') !== 0)
-                menuItem.builtIn = true;
             menuItem.id = i++;
         });
         storeObject.jsonData.menuItems = menuItems;

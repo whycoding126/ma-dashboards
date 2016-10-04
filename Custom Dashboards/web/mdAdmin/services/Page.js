@@ -6,29 +6,9 @@
 define(['angular'], function(angular) {
 'use strict';
 
-function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, DEFAULT_PAGES, $q) {
+function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, $q) {
 
     function Page() {
-        this.defaultPages = [];
-        this.xidToPageMap = {};
-        
-        for (var i = 0; i < DEFAULT_PAGES.length; i++) {
-            var pageSummary = DEFAULT_PAGES[i];
-            
-            var page = new JsonStore();
-            page.xid = pageSummary.xid;
-            page.name = pageSummary.name;
-            page.jsonData = {
-                markup: pageSummary.markup
-            };
-            page.editPermission = pageSummary.editPermission;
-            page.readPermission = pageSummary.readPermission;
-            
-            this.xidToPageMap[page.xid] = page;
-            
-            delete pageSummary.markup;
-            this.defaultPages.push(pageSummary);
-        }
     }
     
     Page.prototype.getPages = function getPages() {
@@ -44,7 +24,7 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, DEFAULT_PAGES, $q) 
         storeObject.xid = CUSTOM_USER_PAGES_XID;
         storeObject.name = CUSTOM_USER_PAGES_XID;
         storeObject.jsonData = {
-            pages: this.defaultPages
+            pages: []
         };
         storeObject.editPermission = 'edit-pages';
         storeObject.readPermission = 'user';
@@ -56,8 +36,18 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, DEFAULT_PAGES, $q) 
         return JsonStore.get({
             xid: xid
         }).$promise.then(null, function(error) {
-            var page = this.xidToPageMap[xid];
-            return page ? page : $q.reject(error);
+            this.getPages().then(function(pagesStore) {
+                var pages = pagesStore.jsonData.pages;
+                for (var i = 0; i < pages.length;) {
+                    if (pages[i].xid === xid) {
+                        pages.splice(i, 1);
+                        continue;
+                    }
+                    i++;
+                }
+                pagesStore.$save();
+            });
+            return $q.reject(error);
         }.bind(this));
     };
     
@@ -76,7 +66,7 @@ function PageFactory(JsonStore, CUSTOM_USER_PAGES_XID, Util, DEFAULT_PAGES, $q) 
     return new Page();
 }
 
-PageFactory.$inject = ['JsonStore', 'CUSTOM_USER_PAGES_XID', 'Util', 'DEFAULT_PAGES', '$q'];
+PageFactory.$inject = ['JsonStore', 'CUSTOM_USER_PAGES_XID', 'Util', '$q'];
 return PageFactory;
 
 }); // define
