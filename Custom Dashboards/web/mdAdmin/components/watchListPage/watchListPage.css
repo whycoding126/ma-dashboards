@@ -61,6 +61,10 @@
     display: none;
 }
 
+watch-list-chart md-input-container, watch-list-chart md-checkbox {
+  margin: 0;
+}
+
 /* Stats Dialog */
 
 .stats-dialog {
