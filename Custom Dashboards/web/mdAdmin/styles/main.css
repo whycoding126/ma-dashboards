@@ -54,9 +54,9 @@ body {
 }
 
 .dashboard-sidebar-header img {
-	max-width: 180px;
+	max-width: 200px;
 	width: auto;
-	height: 100%;
+	max-height: 64px;
 }
 
 .dashboard-sidebar-header md-select {
