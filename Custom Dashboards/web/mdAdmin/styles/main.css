@@ -572,6 +572,11 @@ menu-editor td .md-button.md-icon-button {
   height: 48px;
 }
 
+.menu-editor-dialog .md-dialog-content md-radio-button {
+  margin-right: 20px;
+}
+
+
 page-view {
   position: relative;
   display: block;

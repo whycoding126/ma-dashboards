@@ -63,6 +63,12 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 item.showOnMenu = true;
             }
             
+            if (item.params && item.params.dateBar) {
+                item.dateBarOptions = item.params.dateBar.rollupControls ? 'dateAndRollup' : 'date';
+            } else {
+                item.dateBarOptions = 'none';
+            }
+            
             return $mdDialog.show({
                 templateUrl: require.toUrl('./MenuEditorDialog.html'),
                 parent: angular.element(document.body),
@@ -124,6 +130,25 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, Page, mangoState, $q) {
                 }
                 delete item.showOnMenu;
                 
+                switch(item.dateBarOptions) {
+                case 'date': {
+                    if (!item.params) item.params = {};
+                    item.params.dateBar = {}
+                    break;
+                }
+                case 'dateAndRollup': {
+                    if (!item.params) item.params = {};
+                    item.params.dateBar = {
+                        rollupControls: true
+                    }
+                    break;
+                }
+                default:
+                    if (item.params) {
+                        delete item.params.dateBar;
+                    }
+                }
+
                 if (!isNew && (item.deleted || parent !== newParent)) {
                     var array = parent ? parent.children : menuItems;
                     for (var i = 0; i < array.length; i++) {

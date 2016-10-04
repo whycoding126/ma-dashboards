@@ -1,4 +1,4 @@
-<md-dialog style="width:50%;">
+<md-dialog class="menu-editor-dialog">
   <form name="menuItemEditForm" novalidate ng-submit="save()">
   <md-toolbar>
     <div class="md-toolbar-tools">
@@ -28,7 +28,7 @@
       <md-switch ng-model="editCtrl.item.showOnMenu" aria-label="{{'dashboards.v3.app.showMenuItem'|tr}}">
         <span ma-tr="dashboards.v3.app.showMenuItem"></span>
       </md-switch>
-        
+
       <md-input-container>
           <label>State name</label>
           <input name="stateName" required pattern="^(\w+\.)*\w+$"
@@ -51,6 +51,14 @@
             <div ng-message="pattern" ma-tr="dashboards.v3.app.urlPattern"></div>
           </div>
       </md-input-container>
+
+      <md-radio-group ng-model="editCtrl.item.dateBarOptions">
+        <div layout="row">
+          <md-radio-button value="none" ng-disabled="editCtrl.item.builtIn"><span ma-tr="dashboards.v3.app.dateBarDisabled"></span></md-radio-button>
+          <md-radio-button value="date" ng-disabled="editCtrl.item.builtIn"><span ma-tr="dashboards.v3.app.dateBarEnabled"></span></md-radio-button>
+          <md-radio-button value="dateAndRollup" ng-disabled="editCtrl.item.builtIn"><span ma-tr="dashboards.v3.app.dateBarAndRollup"></span></md-radio-button>
+        </div>
+      </md-radio-group>
 
       <md-checkbox ng-model="editCtrl.item.linkToPage" ng-disabled="editCtrl.item.builtIn">
         Link to custom page
