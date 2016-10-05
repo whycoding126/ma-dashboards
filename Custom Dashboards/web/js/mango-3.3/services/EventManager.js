@@ -102,13 +102,15 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	var READY_STATE_CLOSING = 2;
 	var READY_STATE_CLOSED = 3;
 
-	function nop() {}
-
 	function EventManager(options) {
 		 // keys are xid, value is object where key is event type and value is the number of subscriptions
-	    this.subscriptions = {};
+	    this.subscriptionsByXid = {};
 	    // keys are xid, value is array of event types
-	    this.activeSubscriptions = {};
+	    this.activeEventTypesByXid = {};
+        // subscriptions to all xids
+        this.allSubscriptions = {};
+        // array of event types active for all xids
+        this.activeAllEventTypes = [];
 
 	    $.extend(this, options);
 
@@ -166,7 +168,14 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	    socket.onopen = function() {
 	    	clearTimeout(this.connectTimer);
 	    	delete this.connectTimer;
+	    	
+	    	// update subscriptions for individual xids
+	    	for (var xidKey in this.subscriptionsByXid) {
+                this.updateSubscriptions(xidKey);
+            }
+	    	// update subscriptions to all xids
 	    	this.updateSubscriptions();
+	    	
 	    }.bind(this);
 	    
 	    socket.onmessage = function(event) {
@@ -183,15 +192,16 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
             delete this.connectTimer;
 	    }
 		if (this.socket) {
-			this.socket.onclose = nop;
-			this.socket.onerror = nop;
-			this.socket.onopen = nop;
-			this.socket.onmessage = nop;
+			this.socket.onclose = angular.noop;
+			this.socket.onerror = angular.noop;
+			this.socket.onopen = angular.noop;
+			this.socket.onmessage = angular.noop;
 			this.socket.close();
 			delete this.socket;
 		}
 
-		this.activeSubscriptions = {};
+		this.activeEventTypesByXid = {};
+        this.activeAllEventTypes = [];
 	};
 
 	EventManager.prototype.messageReceived = function(message) {
@@ -200,55 +210,83 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	        var eventType = payload.event || payload.action;
 	        var xid = payload.xid || payload.object.xid;
 
-	        var xidSubscriptions = this.subscriptions[xid];
-	        if (!xidSubscriptions)
-	            return;
-	        $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
-	        $(this).trigger(xid, payload);
+	        var xidSubscriptions = this.subscriptionsByXid[xid];
+	        if (xidSubscriptions) {
+	            $(xidSubscriptions.eventEmitter).trigger(eventType, payload);
+	        }
+	        $(this).trigger(eventType, payload);
 	    }
 	};
 
 	EventManager.prototype.subscribe = function(xid, eventTypes, eventHandler) {
-	    if (!this.subscriptions[xid])
-	        this.subscriptions[xid] = {eventEmitter: {}};
-	    var xidSubscriptions = this.subscriptions[xid];
+	    var xidSubscriptions;
+	    if (xid) {
+    	    if (!this.subscriptionsByXid[xid])
+    	        this.subscriptionsByXid[xid] = {eventEmitter: {}};
+    	    xidSubscriptions = this.subscriptionsByXid[xid];
+	    }
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
 
 	    for (var i = 0; i < eventTypes.length; i++) {
 	    	var eventType = eventTypes[i];
-	        if (typeof eventHandler === 'function') {
-	            $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
-	        }
-
-	        if (!xidSubscriptions[eventType]) {
-	            xidSubscriptions[eventType] = 1;
-	        }
-	        else {
-	            xidSubscriptions[eventType] = xidSubscriptions[eventType] + 1;
-	        }
+	        
+	    	if (xidSubscriptions) {
+    	    	if (typeof eventHandler === 'function') {
+    	            $(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
+    	        }
+    
+    	        if (!xidSubscriptions[eventType]) {
+    	            xidSubscriptions[eventType] = 1;
+    	        }
+    	        else {
+    	            xidSubscriptions[eventType]++;
+    	        }
+	    	} else {
+	    	    if (typeof eventHandler === 'function') {
+                    $(this).on(eventType, eventHandler);
+                }
+	    	    
+	    	    if (!this.allSubscriptions[eventType]) {
+	    	        this.allSubscriptions[eventType] = 1;
+                }
+                else {
+                    this.allSubscriptions[eventType]++;
+                }
+	    	}
 	    }
 
 	    this.updateSubscriptions(xid);
 	};
 
 	EventManager.prototype.unsubscribe = function(xid, eventTypes, eventHandler) {
-	    var xidSubscriptions = this.subscriptions[xid];
-	    if (!xidSubscriptions)
-	        return;
+	    var xidSubscriptions;
+	    if (xid) {
+	        xidSubscriptions = this.subscriptionsByXid[xid];
+	    }
 
 	    if (!$.isArray(eventTypes)) eventTypes = [eventTypes];
 
 	    for (var i = 0; i < eventTypes.length; i++) {
 	    	var eventType = eventTypes[i];
-	    	if (typeof eventHandler === 'function') {
-	            $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
-	    	}
+	    	
+	    	if (xidSubscriptions) {
+    	    	if (typeof eventHandler === 'function') {
+    	            $(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
+    	    	}
 
-	        var count = xidSubscriptions[eventType];
-	        if (count >= 1) {
-	            xidSubscriptions[eventType] = count - 1;
-	        }
+    	        if (xidSubscriptions[eventType] > 0) {
+    	            xidSubscriptions[eventType]--;
+    	        }
+	    	} else {
+	    	    if (typeof eventHandler === 'function') {
+                    $(this).off(eventType, eventHandler);
+                }
+	    	    
+	    	    if (this.allSubscriptions[eventType] > 0) {
+	                this.allSubscriptions[eventType]--;
+	    	    }
+	    	}
 	    }
 
 	    this.updateSubscriptions(xid);
@@ -275,44 +313,41 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	EventManager.prototype.updateSubscriptions = function(xid) {
 		if (!this.socket || this.socket.readyState !== READY_STATE_OPEN) return;
 
-		if (!xid) {
-			for (var xidKey in this.subscriptions) {
-				this.updateSubscriptions(xidKey);
-			}
-			return;
-		}
-
-	    var xidSubscriptions = this.subscriptions[xid];
-	    if (!xidSubscriptions)
-	        return;
+		var subscriptions = xid ? this.subscriptionsByXid[xid] : this.allSubscriptions;
 
 	    var eventTypes = [];
-	    for (var key in xidSubscriptions) {
+	    for (var key in subscriptions) {
 	        if (key === 'eventEmitter')
 	            continue;
 
-	        if (xidSubscriptions[key] === 0) {
-	        	delete xidSubscriptions[key];
+	        if (subscriptions[key] === 0) {
+	        	delete subscriptions[key];
 	        } else {
 	        	eventTypes.push(key);
 	        }
 	    }
 	    eventTypes.sort();
 
-	    var activeSubs = this.activeSubscriptions[xid];
+	    var activeSubs = xid ? this.activeEventTypesByXid[xid] : this.activeAllEventTypes;
 
 	    // there are no subscriptions for any event types for this xid
-	    if (eventTypes.length === 0) {
-	        delete this.subscriptions[xid];
-	        delete this.activeSubscriptions[xid];
+	    if (xid && eventTypes.length === 0) {
+	        delete this.subscriptionsByXid[xid];
+	        delete this.activeEventTypesByXid[xid];
 	    }
 
 	    if (!activeSubs || !arraysEqual(activeSubs, eventTypes)) {
-	    	if (eventTypes.length)
-	    		this.activeSubscriptions[xid] = eventTypes;
+	    	if (eventTypes.length) {
+	    	    if (xid) {
+	                this.activeEventTypesByXid[xid] = eventTypes;
+	    	    } else {
+	    	        this.activeAllEventTypes = eventTypes;
+	    	    }
+	    	}
 
 	        var message = {};
-	        message.xid = xid;
+	        if (xid)
+	            message.xid = xid;
 	        message.eventTypes = eventTypes;
 
 	        this.socket.send(JSON.stringify(message));
