@@ -8,17 +8,18 @@ define(['require'], function(require) {
 
 return {
     templateUrl: require.toUrl('./dateBar.html'),
-    controller: ['$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', dateBarController],
+    controller: ['$mdMedia', '$stateParams', 'Util', 'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'DateBar', dateBarController, ],
     bindings: {
         onRefresh: '&'
     }
 };
 
-function dateBarController($stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar) {
+function dateBarController($mdMedia, $stateParams, Util, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, DateBar) {
     this.params = DateBar;
     this.stateParams = $stateParams;
     this.rollupTypes = MA_ROLLUP_TYPES;
     this.timePeriodTypes = MA_TIME_PERIOD_TYPES;
+    this.mdMedia = $mdMedia;
 
     this.$onInit = function() {
     };

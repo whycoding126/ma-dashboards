@@ -795,19 +795,28 @@ li.md-nav-item:first-of-type {
   margin: 0;
 }
 
-md-toolbar.date-bar,
-md-toolbar.date-bar .md-toolbar-tools {
+
+md-toolbar.date-bar,  md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
   height: 64px;
   max-height: 64px;
 }
 
-@media (max-width: 959px) {
-  md-toolbar.date-bar,
-  md-toolbar.date-bar .md-toolbar-tools {
-    height: 128px;
-    max-height: 128px;
-  }
+
+md-toolbar.date-bar.two-rows, md-toolbar.date-bar.two-rows .md-toolbar-tools {
+  height: 128px;
+  max-height: 128px;
+}
+
+
+md-toolbar.date-bar.three-rows, md-toolbar.date-bar.three-rows .md-toolbar-tools {
+  height: 192px;
+  max-height: 192px;
+}
+
+md-toolbar.date-bar.four-rows, md-toolbar.date-bar.four-rows .md-toolbar-tools {
+  height: 256px;
+  max-height: 256px;
 }
 
 md-toolbar.date-bar md-checkbox {
@@ -819,12 +828,12 @@ md-toolbar.date-bar md-input-container {
 }
 
 md-toolbar.date-bar {
-  transition: 0.3s linear max-height;
+  transition: max-height 0.3s linear;
   overflow: hidden;
   min-height: 0;
 }
 
-md-toolbar.date-bar.ng-hide {
+date-bar.ng-hide md-toolbar.date-bar {
   max-height: 0;
 }
 

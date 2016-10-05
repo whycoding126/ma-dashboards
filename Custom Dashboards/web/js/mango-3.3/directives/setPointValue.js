@@ -66,7 +66,6 @@ function setPointValue(Translate, $q, $injector) {
         	};
             
             $scope.convertRendered = function() {
-                console.log($scope.point);
                 if ($scope.point.unit.length>0) {
                     // return $scope.point.renderedValue.replace($scope.point.textRenderer.unit, '') * 1;
                     return Math.round($scope.point.value * 100) / 100;
