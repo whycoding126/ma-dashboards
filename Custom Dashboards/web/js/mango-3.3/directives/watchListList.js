@@ -11,7 +11,7 @@ return watchListList;
 
 function watchListList($injector) {
     var DEFAULT_SORT = ['name'];
-    var UPDATE_TYPES = ['update'];
+    var UPDATE_TYPES = ['add', 'update', 'delete'];
 
     return {
         restrict: 'E',
@@ -63,6 +63,8 @@ function watchListList($injector) {
                 if (!xid && (angular.isUndefined(this.selectFirst) || this.selectFirst) && items.length) {
                     this.setViewValue(items[0]);
                 }
+                
+                WatchListEventManager.smartSubscribe($scope, null, UPDATE_TYPES, this.updateHandler);
             }.bind(this));
         };
         
@@ -92,27 +94,36 @@ function watchListList($injector) {
         };
         
         this.render = function(item) {
-            var sameXid = this.selected && item && this.selected.xid === item.xid;
-            if (this.selected && !sameXid) {
-                WatchListEventManager.unsubscribe(this.selected.xid, UPDATE_TYPES, this.updateHandler);
-            }
-            
             this.selected = item;
             this.setStateParam(item);
             this.setLocalStorageParam(item);
-            
-            if (this.selected) {
-                if (!sameXid) {
-                    WatchListEventManager.smartSubscribe($scope, this.selected.xid, UPDATE_TYPES, this.updateHandler);
-                }
-            }
         }.bind(this);
 
         this.updateHandler = function updateHandler(event, update) {
-            if (update.action === 'update') {
-                var item = angular.merge(new WatchList(), update.object);
-                this.setViewValue(item);
+            var item;
+            if (update.object) {
+                var item = WatchList.toWatchList(update.object);
             }
+            
+            if (update.action === 'add') {
+                this.items.push(item);
+            } else {
+                for (var i = 0; i < this.items.length; i++) {
+                    if (this.items[i].xid === item.xid) {
+                        if (update.action === 'update') {
+                            this.items[i] = item;
+                        } else if (update.action === 'delete') {
+                            this.items.splice(i, 1);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (this.selected && this.selected.xid === item.xid) {
+                this.setViewValue(update.action === 'delete' ? null : item);
+            }
+            
         }.bind(this);
         
         this.setStateParam = function(item) {
