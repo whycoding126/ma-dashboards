@@ -169,6 +169,10 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         }.bind(this));
         return parsed.toString();
     };
+    
+    WatchList.toWatchList = function toWatchList(item) {
+        return jsonDataToProperties(angular.merge(new WatchList(), item));
+    };
 
     return WatchList;
 }

@@ -48,7 +48,8 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     
     this.watchListChanged = function watchListChanged() {
         this.watchList = this.selectWatchList;
-        this.watchList.$getPoints({deviceName: this.deviceNameParam});
+        if (this.watchList)
+            this.watchList.$getPoints({deviceName: this.deviceNameParam});
         
         // clear other selections
         this.dataSource = null;
