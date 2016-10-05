@@ -46,7 +46,7 @@
             <md-button ui-sref="dashboard.events({acknowledged: 'false', eventType: '*', alarmLevel: '*'})">
                 <div layout="row" flex layout-align="start center" layout-fill>
                     <i class="fa fa-flag fa-lg alarm-flag ALL" style="padding-right:10px"></i>
-                    <p flex> {{$ctrl.renderCount($ctrl.events.totalCount)}} Total Events</p>
+                    <p flex> {{$ctrl.events.totalCount}} Total Events</p>
                 </div>
             </md-button>
         </md-menu-item>
