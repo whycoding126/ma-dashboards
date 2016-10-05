@@ -44,6 +44,17 @@
     color: rgb(255,133,0);
 }
 
+.watchlist-main .md-table-pagination {
+  border: 0;
+}
+
+.watchlist-main .parameter-inputs md-input-container {
+  margin-bottom: 0;
+}
+
+.watchlist-main .parameter-inputs md-input-container .md-errors-spacer {
+  display: none;
+}
 
 /* Chart Component */
 

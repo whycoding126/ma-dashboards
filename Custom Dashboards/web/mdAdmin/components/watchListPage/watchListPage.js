@@ -8,6 +8,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
 function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar) {
+    this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
     this.dataSource = null;
@@ -15,6 +16,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.hierarchyFolders = [];
     this.settings = mdAdminSettings;
     this.dateBar = DateBar;
+    this.watchListParams = {};
 
     this.selectFirstWatchList = false;
     this.localStorage = localStorageService.get('watchListPage');
@@ -45,11 +47,12 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     }
     
     this.$mdMedia = $mdMedia;
-    
+    this.numberOfRows = $mdMedia('gt-sm') ? 200 : 25;
+
     this.watchListChanged = function watchListChanged() {
         this.watchList = this.selectWatchList;
         if (this.watchList)
-            this.watchList.$getPoints({deviceName: this.deviceNameParam});
+            this.updateWatchListParameters();
         
         // clear other selections
         this.dataSource = null;
@@ -65,7 +68,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     };
     
     this.updateWatchListParameters = function updateWatchListParameters() {
-        this.watchList.$getPoints({deviceName: this.deviceNameParam});
+        this.watchList.$getPoints(this.watchListParams);
     };
     
     this.dataSourceChanged = function dataSourceChanged() {

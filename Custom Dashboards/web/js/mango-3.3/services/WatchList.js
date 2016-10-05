@@ -20,6 +20,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             var item = data[i];
             if (item.type === 'query') {
                 item.query = item.jsonData ? item.jsonData.query : '';
+                item.params = item.jsonData && item.jsonData.params || [];
             }
             if (item.type === 'hierarchy') {
                 item.folderIds = item.jsonData ? item.jsonData.folderIds : [];
@@ -34,7 +35,9 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         data.jsonData = {};
         if (data.type === 'query') {
             data.jsonData.query = data.query;
+            data.jsonData.params = data.params;
             delete data.query;
+            delete data.params;
         }
         if (data.type === 'hierarchy') {
             data.jsonData.folderIds = data.folderIds;
@@ -163,7 +166,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         var parsed = new query.Query(this.query);
         parsed.walk(function(name, args) {
             for (var i = 0; i < args.length; i++) {
-                if (typeof args[i] !== 'string' || args[i].indexOf('{{') < 0) continue;
+                if (typeof args[i] !== 'string') continue;
                 args[i] = $interpolate(args[i])(params, false, $sce.URL, false)
             }
         }.bind(this));

@@ -66,6 +66,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         if ($ctrl.watchlist.type === 'query') {
             if (!$ctrl.watchlist.query)
                 $ctrl.watchlist.query = defaultQuery;
+            if (!$ctrl.watchlist.params) {
+                $ctrl.watchlist.params = [];
+            }
             $ctrl.parseQuery();
             $ctrl.doPointQuery();
         } else if ($ctrl.watchlist.type === 'hierarchy') {

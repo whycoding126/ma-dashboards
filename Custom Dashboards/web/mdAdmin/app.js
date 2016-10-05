@@ -192,13 +192,11 @@ mdAdminApp.constant('MENU_ITEMS', [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListPage/watchListPage',
-                            './directives/watchList/watchListTable',
                             './directives/watchList/watchListTableRow',
                             './directives/watchList/watchListChart'], 
-                function (WatchlistPage, watchListTable, watchListTableRow, watchListChart) {
+                function (WatchlistPage, watchListTableRow, watchListChart) {
                     angular.module('watchListPage', [])
                         .component('maWatchListPage', WatchlistPage)
-                        .directive('watchListTable', watchListTable)
                         .directive('watchListTableRow', watchListTableRow)
                         .directive('watchListChart', watchListChart)
                         .filter('noNaN', function () {

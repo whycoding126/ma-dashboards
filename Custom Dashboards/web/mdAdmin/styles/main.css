@@ -548,12 +548,22 @@ table.md-table.statistics tbody.md-body td.md-cell:first-child {
 	font-weight: bold;
 }
 
-table.md-table th.md-column,
 table.md-table td.md-cell,
 .md-table-pagination,
+table.md-table th.md-column,
 table.md-table th.md-column.md-active,
-table.md-table th.md-column.md-active md-icon {
+table.md-table th.md-column.md-active md-icon,
+table.md-table th.md-column md-icon.md-sort-icon {
   color: inherit;
+}
+
+table.md-table th.md-column:hover md-icon.md-sort-icon {
+  opacity: 0.6;
+}
+
+table.md-table th.md-column.md-active md-icon,
+table.md-table th.md-column.md-active:hover md-icon.md-sort-icon {
+  opacity: 1.0;
 }
 
 /* Menu editor */
