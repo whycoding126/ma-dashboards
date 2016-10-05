@@ -20,13 +20,21 @@
       <label ng-bind="param.label"></label>
       <input ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}">
     </md-input-container>
+    <md-input-container ng-if="param.type === 'number'" flex>
+      <label ng-bind="param.label"></label>
+      <input ng-model="$ctrl.watchListParams[param.name]" type="number" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}">
+    </md-input-container>
+    <md-input-container ng-if="param.type === 'date'" flex>
+      <label ng-bind="param.label"></label>
+      <ma-date-picker ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"></ma-date-picker>
+    </md-input-container>
     <md-input-container ng-if="param.type === 'deviceName'" flex>
       <label ng-bind="param.label"></label>
-      <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"></ma-device-name-list>
+      <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" auto-init="false"></ma-device-name-list>
     </md-input-container>
     <md-input-container ng-if="param.type === 'dataSource'" flex>
       <label ng-bind="param.label"></label>
-      <ma-data-source-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"></ma-data-source-list>
+      <ma-data-source-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" auto-init="false"></ma-data-source-list>
     </md-input-container>
   </div>
 </div>

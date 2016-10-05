@@ -318,7 +318,8 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     
     $ctrl.queryChanged = function queryChanged() {
         $ctrl.parseQuery();
-        $ctrl.doPointQuery();
+        if (!$ctrl.watchlist.params.length)
+            $ctrl.doPointQuery();
     };
 
     $ctrl.tableSelectionChanged = function() {

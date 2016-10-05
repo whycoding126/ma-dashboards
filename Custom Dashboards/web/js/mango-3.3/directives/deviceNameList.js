@@ -78,10 +78,9 @@ function deviceNameList(DeviceName, $injector) {
                 }
 
                 $scope.deviceNames = [];
-                $scope.ngModel = null;
                 promise = queryResult.$promise.then(function(deviceNames) {
                     $scope.deviceNames = deviceNames;
-                    if ($scope.autoInit && deviceNames.length) {
+                    if (!$scope.ngModel && $scope.autoInit && deviceNames.length) {
                         $scope.ngModel = deviceNames[0];
                     }
                 });

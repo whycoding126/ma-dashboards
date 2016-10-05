@@ -1,0 +1,27 @@
+<div class="md-padding watchlist-parameters" layout="column">
+  <p ng-if="!$ctrl.watchlist.params.length" ma-tr="dashboards.v3.app.noParameters"></p>
+  <div ng-repeat="param in $ctrl.watchlist.params" layout="row" layout-align="start center">
+    <md-button class="md-icon-button" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
+    <md-input-container flex="33" flex-gt-md="25" class="no-errors-spacer">
+      <label ma-tr="dashboards.v3.app.label"></label>
+      <input ng-model="param.label" required md-no-asterisk>
+    </md-input-container>
+    <md-input-container flex="33" flex-gt-md="25" class="no-errors-spacer">
+      <label ma-tr="dashboards.v3.app.parameterName"></label>
+      <input ng-model="param.name" required md-no-asterisk>
+    </md-input-container>
+    <md-input-container flex="33" flex-gt-md="25">
+      <label ma-tr="dashboards.v3.app.parameterType"></label>
+      <md-select ng-model="param.type" required md-no-asterisk>
+        <md-option ng-value="'input'" ma-tr="dashboards.v3.app.input"></md-option>
+        <md-option ng-value="'number'" ma-tr="dashboards.v3.app.number"></md-option>
+        <md-option ng-value="'date'" ma-tr="dashboards.v3.app.date"></md-option>
+        <md-option ng-value="'deviceName'" ma-tr="common.deviceName"></md-option>
+        <md-option ng-value="'dataSource'" ma-tr="dashboards.v3.app.dataSource"></md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div layout="row" layout-align="start center">
+    <md-button class="md-raised" ma-tr="dashboards.v3.app.addParameter" ng-click="$ctrl.watchlist.params.push({type:'input'})"></md-button>
+  </div>
+</div>

@@ -6,8 +6,8 @@
 define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 
-WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q', '$interpolate', '$sce'];
-function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $interpolate, $sce) {
+WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q', '$interpolate', '$sce', '$parse'];
+function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $interpolate, $sce, $parse) {
     
     function jsonDataToProperties(data, headersGetter, status) {
         if (!angular.isObject(data)) return data;
@@ -166,8 +166,16 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         var parsed = new query.Query(this.query);
         parsed.walk(function(name, args) {
             for (var i = 0; i < args.length; i++) {
-                if (typeof args[i] !== 'string') continue;
-                args[i] = $interpolate(args[i])(params, false, $sce.URL, false)
+                var arg = args[i];
+                if (typeof arg !== 'string' || arg.indexOf('{{') < 0) continue;
+                
+                var matches = /{{(.*?)}}/.exec(arg);
+                if (matches && matches[0] === matches.input) {
+                    var evaluated = $parse(matches[1])(params);
+                    args[i] = angular.isUndefined(evaluated) ? '' : evaluated;
+                } else {
+                    args[i] = $interpolate(arg)(params, false, $sce.URL, false);
+                }
             }
         }.bind(this));
         return parsed.toString();

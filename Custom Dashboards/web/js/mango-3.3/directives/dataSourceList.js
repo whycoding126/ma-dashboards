@@ -78,7 +78,7 @@ function dataSourceList(DataSource, $injector) {
                 promise.then(function(dataSources) {
                     $scope.dataSources = dataSources;
 
-                    if ($scope.autoInit && !$scope.ngModel && $scope.dataSources.length) {
+                    if (!$scope.ngModel && $scope.autoInit && !$scope.ngModel && $scope.dataSources.length) {
                         $scope.ngModel = $scope.dataSources[0];
                     }
                 });

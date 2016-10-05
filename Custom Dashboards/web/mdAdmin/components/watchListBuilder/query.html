@@ -5,32 +5,6 @@
       <input ng-model="$ctrl.watchlist.query" ng-model-options="{debounce: 1000}" ng-change="$ctrl.queryChanged()">
     </md-input-container>
   </div>
-  <div layout="column">
-    <h2>Dynamic query parameters</h2>
-    <div ng-if="!$ctrl.watchlist.params.length">No parameters</div>
-    <div ng-repeat="param in $ctrl.watchlist.params" layout="row" layout-align="start center">
-      <md-input-container flex="33" flex-gt-md="25">
-        <label>Label</label>
-        <input ng-model="param.label" required md-no-asterisk>
-      </md-input-container>
-      <md-input-container flex="33" flex-gt-md="25">
-        <label>Parameter name</label>
-        <input ng-model="param.name" required md-no-asterisk>
-      </md-input-container>
-      <md-input-container flex="33" flex-gt-md="25">
-        <label>Parameter type</label>
-        <md-select ng-model="param.type" required md-no-asterisk>
-          <md-option ng-value="'input'">Input</md-option>
-          <md-option ng-value="'deviceName'">Device name</md-option>
-          <md-option ng-value="'dataSource'">Data source</md-option>
-        </md-select>
-      </md-input-container>
-      <md-button class="md-icon-button" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
-    </div>
-    <div layout="row" layout-align="start center">
-      <md-button ma-tr="common.add" ng-click="$ctrl.watchlist.params.push({type:'input'})"></md-button>
-    </div>
-  </div>
   <ma-query-builder properties="$ctrl.queryProperties" ng-model="$ctrl.watchlist.query" ng-model-options="{allowInvalid: true}"
       ng-change="$ctrl.queryChanged()" hide-sort-limit="$ctrl.watchlist.type !== 'query'">
   </ma-query-builder>
