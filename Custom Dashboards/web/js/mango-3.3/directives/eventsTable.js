@@ -37,8 +37,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             limit: '=?',
             sort: '=?',
             from: '=?',
-            to: '=?',
-            dateRange: '@'
+            to: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -55,40 +54,6 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             $scope.total = 0;
             $scope.totalUnAcknowledged = 0;
             
-            var filterBeforePush = function (payload) {
-                if (payload.type === 'ACKNOWLEDGED') {
-                    // console.log('returning');
-                    return;
-                }
-                if ($scope.query.eventType !== payload.event.eventType.eventType && $scope.query.eventType !== '*') {
-                    // console.log('returning');
-                    return;
-                }
-                if ($scope.alarmLevel !== payload.event.alarmLevel && $scope.alarmLevel !== '*') {
-                    // console.log('returning');
-                    return;
-                }
-                
-                // console.log('pushing');
-                $scope.events.push(event);
-            }
-            
-            $scope.$watch('dateRange', function(newValue, oldValue) {
-                if (newValue === undefined) return;
-                
-                if (newValue) {
-                    eventsEventManager.subscribe(function(msg) {
-                        // console.log(msg);
-                        if (msg.status === 'OK') {
-                            filterBeforePush(msg.payload);
-                        }
-                        else {
-                            console.log('Error:', msg);
-                        }
-                    });
-                }
-            });
-            
             $scope.onPaginate = function(page, limit) {
                 $scope.start = (page - 1) * limit;
             };
@@ -97,6 +62,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 return $sce.trustAsHtml(text);
             };
             
+            // Acknowledge single event
             $scope.acknowledgeEvents = function(events) {
                 events.forEach(function(event) {
                     Events.acknowledge({id: event.id}, null).$promise.then(
@@ -116,13 +82,14 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 });
             };
             
+            // Acknowledge all matching RQL with button
             $scope.acknowledgeAll = function() {
                 Events.acknowledgeViaRql({rql: $scope.RQL.RQLforAcknowldege}, null).$promise.then(
                     function (data) {
                         if (data.count) {
                             //console.log('Acknowledged ', data.count, ' events with RQL', $scope.RQL.RQLforAcknowldege);
                             // Filter by acknowledged
-                            $scope.acknowledged = true;
+                            $scope.acknowledged = 'true';
                         }
                     },
                     function (data) {
@@ -131,7 +98,9 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 );
             };
             
-            $scope.$watch('events.$total', function(newValue, oldValue){
+            // Watch events.$total to return a clean $scope.total that isn't ever undefined
+            // Also query with limit(0) with RQLforAcknowldege to get a count of unacknowledged events to display on acknowledgeAll button
+            $scope.$watch('events.$total', function(newValue, oldValue) {
                 if (newValue === undefined || newValue === oldValue) return;
                 $scope.total = newValue;
                 
@@ -151,10 +120,10 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 else {
                     $scope.totalUnAcknowledged = 0;
                 }
-                
-                
             });
             
+            // Watch for changes to controls on directive to update query
+            // Contains logic for building the RWL string in doQuery
             $scope.$watch(function() {
                 return {
                     eventType: $scope.eventType,
@@ -171,6 +140,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 };
             }, function(value) {
                 
+                // Return if singlePoint and pointId doesn't exist yet
                 if ($scope.singlePoint && !$scope.pointId) {
                     // console.log('Returning', $scope.singlePoint, $scope.pointId);
                     return;
