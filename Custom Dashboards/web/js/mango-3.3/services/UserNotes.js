@@ -106,7 +106,9 @@ function UserNotesFactory($resource, Util, $mdDialog) {
             UserNotes.save({referenceId: referenceId, comment: result, commentType: commentType}).$promise.then(
                 function (data) {
                     // console.log('Success', data, referenceId);
-                    callback(data);
+                    if (callback) {
+                        callback(data);
+                    }
                 },
                 function (data) {
                     console.log('Error', data);
