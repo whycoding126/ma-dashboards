@@ -178,8 +178,12 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                 }
             }
             
-            if (name === 'in' && args.length > 1 && angular.isArray(args[1])) {
-                Array.prototype.splice.apply(args, [1, 1].concat(args[1]));
+            if (name === 'in' && args.length > 1) {
+                if (angular.isArray(args[1])) {
+                    Array.prototype.splice.apply(args, [1, 1].concat(args[1]));
+                } else if (typeof args[1] === 'string') {
+                    Array.prototype.splice.apply(args, [1, 1].concat(args[1].split(',')));
+                }
             }
         }.bind(this));
         return parsed.toString();
