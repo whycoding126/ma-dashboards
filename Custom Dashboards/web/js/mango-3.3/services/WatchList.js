@@ -177,6 +177,10 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                     args[i] = $interpolate(arg)(params, false, $sce.URL, false);
                 }
             }
+            
+            if (name === 'in' && args.length > 1 && angular.isArray(args[1])) {
+                Array.prototype.splice.apply(args, [1, 1].concat(args[1]));
+            }
         }.bind(this));
         return parsed.toString();
     };

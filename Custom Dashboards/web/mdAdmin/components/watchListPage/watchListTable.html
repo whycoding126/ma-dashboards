@@ -24,7 +24,7 @@
     <md-input-container ng-if="param.type === 'select'" flex>
       <label ng-bind="param.label"></label>
       <md-select ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-multiple="!!param.options.multiple">
-        <md-option ng-repeat="option in param.options.options" ng-value="option.value" ng-bind="option.label"></md-option>
+        <md-option ng-repeat="option in param.options.options" ng-value="option.value" ng-bind="option.label || option.value"></md-option>
       </md-select>
     </md-input-container>
     <md-input-container ng-if="param.type === 'number'" flex>
