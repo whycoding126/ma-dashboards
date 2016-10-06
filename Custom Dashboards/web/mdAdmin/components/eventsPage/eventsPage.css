@@ -1,5 +1,6 @@
 .events-page md-table-container {
-    max-height: 600px;
+    /*max-height: 600px;*/
+    padding-bottom: 10px;
 }
 .events-page div:not(.desktop) > .md-button {
     height: 25px;
