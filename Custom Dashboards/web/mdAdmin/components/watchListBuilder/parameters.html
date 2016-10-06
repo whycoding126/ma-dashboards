@@ -1,7 +1,7 @@
-<div class="md-padding watchlist-parameters" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-row > .move-handle'}">
+<div class="md-padding watchlist-parameters" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.watchlist-parameter-main > .move-handle'}">
   <p ng-if="!$ctrl.watchlist.params.length" ma-tr="dashboards.v3.app.noParameters"></p>
-  <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" md-colors="{'background': $odd ? 'background-hue-2-0.0' : 'background-hue-2-0.2'}">
-    <div layout="row" layout-align="start center" class="watchlist-parameter-row-main">
+  <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" md-colors="{'background': $odd ? 'primary-hue-3-0.0' : 'primary-hue-3-0.1'}">
+    <div layout="row" layout-align="start center" class="watchlist-parameter-main">
       <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
       <md-input-container flex="33">
         <label ma-tr="dashboards.v3.app.label"></label>
@@ -26,16 +26,17 @@
       <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
       <md-icon class="move-handle">reorder</md-icon>
     </div>
-    <div ng-if="showSettings" class="watchlist-parameter-settings">
+    <div ng-if="showSettings" class="watchlist-parameter-options">
       <div ng-if="param.type === 'input'" layout="row" layout-align="end center">
         <md-input-container>
           <label ma-tr="dashboards.v3.app.pattern"></label>
           <input ng-model="param.options.pattern">
         </md-input-container>
       </div>
-      <div ng-if="param.type === 'select'" layout="column" layout-align="start end">
+      <div ng-if="param.type === 'select'" layout="column" layout-align="start end" ng-model="param.options.options" ui-sortable="{handle: '.move-handle'}">
         <md-checkbox ng-model="param.options.multiple"><span ma-tr="dashboards.v3.app.selectMultiple"></span></md-checkbox>
         <div ng-repeat="option in param.options.options" layout="row" layout-align="end center">
+          <md-button class="md-icon-button" ng-click="param.options.options.splice($index, 1)"><md-icon>clear</md-icon></md-button>
           <md-input-container>
             <label ma-tr="dashboards.v3.app.label"></label>
             <input ng-model="option.label">
@@ -44,6 +45,7 @@
             <label ma-tr="dashboards.v3.app.value"></label>
             <input ng-model="option.value">
           </md-input-container>
+          <md-icon class="move-handle">reorder</md-icon>
         </div>
         <md-button class="md-raised" ng-click="param.options.options ? param.options.options.push({}) : param.options.options = [{}]" ma-tr="dashboards.v3.app.addOption"></md-button>
       </div>
@@ -94,6 +96,7 @@
           <label ma-tr="dashboards.v3.app.nameContains"></label>
           <input ng-model="param.options.contains">
         </md-input-container>
+        <md-checkbox ng-model="param.options.multiple"><span ma-tr="dashboards.v3.app.selectMultiple"></span></md-checkbox>
       </div>
       <div ng-if="param.type === 'dataSource'" layout="row" layout-align="end center">
         <md-input-container>

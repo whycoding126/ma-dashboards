@@ -46,7 +46,7 @@
     <md-input-container ng-if="param.type === 'deviceName'" flex>
       <label ng-bind="param.label"></label>
       <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
-          auto-init="false" contains="param.options.contains"></ma-device-name-list>
+          auto-init="false" contains="param.options.contains" multiple="!!param.options.multiple"></ma-device-name-list>
     </md-input-container>
     <md-input-container ng-if="param.type === 'dataSource'" flex>
       <label ng-bind="param.label"></label>

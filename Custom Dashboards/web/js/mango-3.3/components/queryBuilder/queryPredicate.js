@@ -14,7 +14,8 @@ var queryPredicate = function queryPredicate() {
         { label: '>=', value: 'ge' },
         { label: '<',  value: 'lt' },
         { label: '<=', value: 'le' },
-        { label: '!=', value: 'ne' }
+        { label: '!=', value: 'ne' },
+        { label: 'in', value: 'in' }
     ];
 
     this.$onInit = function() {
