@@ -18,23 +18,28 @@
   <div ng-repeat="param in $ctrl.watchList.params" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
     <md-input-container ng-if="param.type === 'input'" flex>
       <label ng-bind="param.label"></label>
-      <input ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}">
+      <input ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"
+          pattern="{{param.options.pattern}}">
     </md-input-container>
     <md-input-container ng-if="param.type === 'number'" flex>
       <label ng-bind="param.label"></label>
-      <input ng-model="$ctrl.watchListParams[param.name]" type="number" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}">
+      <input ng-model="$ctrl.watchListParams[param.name]" type="number" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"
+          min="{{param.options.min}}" max="{{param.options.max}}" step="{{param.options.step}}">
     </md-input-container>
     <md-input-container ng-if="param.type === 'date'" flex>
       <label ng-bind="param.label"></label>
-      <ma-date-picker ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"></ma-date-picker>
+      <ma-date-picker ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"
+          mode="{{param.options.mode}}" format="{{param.options.format}}"></ma-date-picker>
     </md-input-container>
     <md-input-container ng-if="param.type === 'deviceName'" flex>
       <label ng-bind="param.label"></label>
-      <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" auto-init="false"></ma-device-name-list>
+      <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
+          auto-init="false" contains="param.options.contains"></ma-device-name-list>
     </md-input-container>
     <md-input-container ng-if="param.type === 'dataSource'" flex>
       <label ng-bind="param.label"></label>
-      <ma-data-source-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" auto-init="false"></ma-data-source-list>
+      <ma-data-source-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
+          auto-init="false" query="param.options.nameIsLike && 'name=like=' + param.options.nameIsLike"></ma-data-source-list>
     </md-input-container>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="md-padding watchlist-parameters" layout="column">
+<div class="md-padding watchlist-parameters" layout="column" ng-model="$ctrl.watchlist.params" ui-sortable="{handle: '.move-handle'}">
   <p ng-if="!$ctrl.watchlist.params.length" ma-tr="dashboards.v3.app.noParameters"></p>
   <div ng-repeat="param in $ctrl.watchlist.params" layout="row" layout-align="start center">
     <md-button class="md-icon-button" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
@@ -20,6 +20,78 @@
         <md-option ng-value="'dataSource'" ma-tr="dashboards.v3.app.dataSource"></md-option>
       </md-select>
     </md-input-container>
+  <div ng-repeat="param in $ctrl.watchlist.params" layout="column" class="watchlist-parameter-row" md-colors="{'background': $odd ? 'background-hue-2-0.0' : 'background-hue-2-0.2'}">
+    <div layout="row" layout-align="start center" class="watchlist-parameter-row-main">
+      <md-button class="md-icon-button remove-parameter" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
+      <md-input-container flex="33" class="no-errors-spacer">
+        <label ma-tr="dashboards.v3.app.label"></label>
+        <input ng-model="param.label" required md-no-asterisk>
+      </md-input-container>
+      <md-input-container flex="33" class="no-errors-spacer">
+        <label ma-tr="dashboards.v3.app.parameterName"></label>
+        <input ng-model="param.name" required md-no-asterisk>
+      </md-input-container>
+      <md-input-container flex="33">
+        <label ma-tr="dashboards.v3.app.parameterType"></label>
+        <md-select ng-model="param.type" required md-no-asterisk>
+          <md-option ng-value="'input'" ma-tr="dashboards.v3.app.input"></md-option>
+          <md-option ng-value="'number'" ma-tr="dashboards.v3.app.number"></md-option>
+          <md-option ng-value="'date'" ma-tr="dashboards.v3.app.date"></md-option>
+          <md-option ng-value="'deviceName'" ma-tr="common.deviceName"></md-option>
+          <md-option ng-value="'dataSource'" ma-tr="dashboards.v3.app.dataSource"></md-option>
+        </md-select>
+      </md-input-container>
+      <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
+      <md-icon class="move-handle">reorder</md-icon>
+    </div>
+    <div ng-if="showSettings" class="watchlist-parameter-settings">
+      <div ng-if="param.type === 'input'" layout="row" layout-align="end center">
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.pattern"></label>
+          <input ng-model="param.options.pattern">
+        </md-input-container>
+      </div>
+      <div ng-if="param.type === 'number'" layout="row" layout-align="end center">
+        <md-input-container>
+          <label ma-tr="common.stats.min"></label>
+          <input ng-model="param.options.min" type="number">
+        </md-input-container>
+        <md-input-container>
+          <label ma-tr="common.stats.max"></label>
+          <input ng-model="param.options.max" type="number">
+        </md-input-container>
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.step"></label>
+          <input ng-model="param.options.step" type="number" min="1">
+        </md-input-container>
+      </div>
+      <div ng-if="param.type === 'date'" layout="row" layout-align="end center">
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.dateMode"></label>
+          <md-select ng-model="param.options.mode">
+            <md-option ng-value="'both'" ma-tr="dashboards.v3.app.dateModeBoth"></md-option>
+            <md-option ng-value="'date'" ma-tr="dashboards.v3.app.dateModeDate"></md-option>
+            <md-option ng-value="'time'" ma-tr="dashboards.v3.app.dateModeTime"></md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.dateFormat"></label>
+          <input ng-model="param.options.format">
+        </md-input-container>
+      </div>
+      <div ng-if="param.type === 'deviceName'" layout="row" layout-align="end center">
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.nameContains"></label>
+          <input ng-model="param.options.contains">
+        </md-input-container>
+      </div>
+      <div ng-if="param.type === 'dataSource'" layout="row" layout-align="end center">
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.nameIsLike"></label>
+          <input ng-model="param.options.nameIsLike">
+        </md-input-container>
+      </div>
+    </div>
   </div>
   <div layout="row" layout-align="start center">
     <md-button class="md-raised" ma-tr="dashboards.v3.app.addParameter" ng-click="$ctrl.watchlist.params.push({type:'input'})"></md-button>

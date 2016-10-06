@@ -63,3 +63,20 @@ watch-list-builder .watchlist-select-table > div.md-padding > md-input-container
 watch-list-builder .watchlist-select-table > div.md-padding > .md-icon-button {
   margin-left: -40px;
 }
+
+watch-list-builder .watchlist-parameter-row .md-icon-button {
+  margin: 0;
+}
+
+watch-list-builder .watchlist-parameter-settings {
+  padding: 5px 10px 10px 10px;
+}
+
+watch-list-builder .watchlist-parameter-settings md-input-container {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+watch-list-builder .watchlist-parameter-settings md-input-container .md-errors-spacer {
+  display: none;
+}

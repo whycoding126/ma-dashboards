@@ -397,6 +397,7 @@ code:not(.highlight) {
 
 .move-handle {
   cursor: move;
+  margin: 8px;
 }
 
 /* Live editor styles */
