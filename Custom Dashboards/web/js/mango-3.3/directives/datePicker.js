@@ -61,21 +61,23 @@ function datePicker($injector, mangoDefaultDateFormat, mangoDefaultDateOnlyForma
             var $mdpDatePicker = $injector.get('$mdpDatePicker');
             var $mdpTimePicker = $injector.get('$mdpTimePicker');
 
-            if ($scope.mode === 'date') {
-                $scope.format = $scope.format || mangoDefaultDateOnlyFormat;
-            } else if ($scope.mode === 'time') {
-                $scope.format = $scope.format || mangoDefaultTimeFormat;
-            } else {
-                $scope.mode = 'both';
-                $scope.format = $scope.format || mangoDefaultDateFormat;
-            }
+            $scope.getFormat = function getFormat() {
+                if ($scope.format) return $scope.format;
+                if ($scope.mode === 'date') {
+                    return mangoDefaultDateOnlyFormat;
+                } else if ($scope.mode === 'time') {
+                    return mangoDefaultTimeFormat;
+                } else {
+                    return mangoDefaultDateFormat;
+                }
+            };
 
             // formatter converts from Date ($modelValue) into String ($viewValue)
             ngModel.$formatters.push(function(value) {
                 if (angular.isDate(value)) {
-                    return moment(value).format($scope.format);
+                    return moment(value).format($scope.getFormat());
                 } else if (moment.isMoment(value)) {
-                    return value.format($scope.format);
+                    return value.format($scope.getFormat());
                 }
             });
 
@@ -83,7 +85,7 @@ function datePicker($injector, mangoDefaultDateFormat, mangoDefaultDateOnlyForma
             ngModel.$parsers.unshift(function(value) {
                 if (typeof value === 'string') {
                     var initialDate = moment(ngModel.$modelValue);
-                    var m = moment(value, $scope.format, true);
+                    var m = moment(value, $scope.getFormat(), true);
                     
                     if ($scope.mode === 'date') {
                         m.hours(initialDate.hours());
@@ -106,7 +108,7 @@ function datePicker($injector, mangoDefaultDateFormat, mangoDefaultDateOnlyForma
                 var initialDate = ngModel.$modelValue;
                 
                 var promise;
-                if ($scope.mode === 'both' || $scope.mode === 'date') {
+                if (!$scope.mode || $scope.mode === 'both' || $scope.mode === 'date') {
                     promise = $mdpDatePicker(initialDate, {
                         targetEvent: ev
                     });
@@ -114,7 +116,7 @@ function datePicker($injector, mangoDefaultDateFormat, mangoDefaultDateOnlyForma
                     promise = $q.when(initialDate);
                 }
                 
-                if ($scope.mode === 'both' || $scope.mode === 'time') {
+                if (!$scope.mode || $scope.mode === 'both' || $scope.mode === 'time') {
                     promise = promise.then(function(date) {
                         return $mdpTimePicker(date, {
                             targetEvent: ev,
@@ -124,7 +126,7 @@ function datePicker($injector, mangoDefaultDateFormat, mangoDefaultDateOnlyForma
                 }
                 
                 promise.then(function(date) {
-                    var stringValue = moment(date).format($scope.format);
+                    var stringValue = moment(date).format($scope.getFormat());
                     ngModel.$setViewValue(stringValue, ev);
                     ngModel.$render();
                 });
