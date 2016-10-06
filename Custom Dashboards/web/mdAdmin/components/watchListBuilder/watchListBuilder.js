@@ -91,7 +91,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
     
     $ctrl.save = function save() {
-        var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$update';
+        var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$updateWithRename';
         $ctrl.watchlist[saveMethod]().then(function(wl) {
             $ctrl.selectedWatchlist = wl;
             $ctrl.watchlistSelected();
@@ -185,7 +185,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
 
     $ctrl.watchlistSelected = function watchlistSelected() {
         if ($ctrl.selectedWatchlist) {
-            $ctrl.editWatchlist(angular.copy($ctrl.selectedWatchlist));
+            var copiedWatchList = angular.copy($ctrl.selectedWatchlist);
+            copiedWatchList.originalXid = copiedWatchList.xid;
+            $ctrl.editWatchlist(copiedWatchList);
             $ctrl.form.$setPristine();
         } else if (!$ctrl.watchlist || !$ctrl.watchlist.isNew) {
             $ctrl.newWatchlist();

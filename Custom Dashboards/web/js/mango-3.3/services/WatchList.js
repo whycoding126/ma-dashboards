@@ -49,7 +49,8 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
     var transformWatchListResponse = $http.defaults.transformResponse.concat(jsonDataToProperties);
 
     var WatchList = $resource('/rest/v1/watch-lists/:xid', {
-        xid: '@xid'
+        xid: '@xid',
+        originalXid: '@originalXid'
     }, {
         get: {
             method: 'GET',
@@ -73,6 +74,12 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         },
         update: {
             method: 'PUT',
+            transformRequest: propertiesToJsonData,
+            transformResponse: transformWatchListResponse
+        },
+        updateWithRename: {
+            method: 'PUT',
+            url: '/rest/v1/watch-lists/:originalXid',
             transformRequest: propertiesToJsonData,
             transformResponse: transformWatchListResponse
         },
