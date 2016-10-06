@@ -796,18 +796,11 @@ li.md-nav-item:first-of-type {
 }
 
 
-md-toolbar.date-bar,  md-toolbar.date-bar .md-toolbar-tools {
+md-toolbar.date-bar, md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
-  height: 64px;
-  max-height: 64px;
-}
-
-
-md-toolbar.date-bar.two-rows, md-toolbar.date-bar.two-rows .md-toolbar-tools {
   height: 128px;
   max-height: 128px;
 }
-
 
 md-toolbar.date-bar.three-rows, md-toolbar.date-bar.three-rows .md-toolbar-tools {
   height: 192px;
