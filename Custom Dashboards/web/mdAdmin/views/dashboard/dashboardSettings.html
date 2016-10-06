@@ -7,7 +7,7 @@
             <md-option ng-repeat="(name,theme) in mdAdminSettings.theming.THEMES" ng-if="name.indexOf('dynamicTheme') !== 0" ng-value="name" ng-bind="name"></md-option>
         </md-select>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="70" class="no-errors-spacer">
+    <md-input-container flex="100" flex-gt-md="70" >
         <label ma-tr="dashboards.v3.app.logoSource"></label>
         <input ng-model="mdAdminSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 1000}">
     </md-input-container>
@@ -25,7 +25,7 @@
 <div layout layout-wrap>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
         <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.primaryPalette"></h3>
-        <md-input-container class="no-errors-spacer">
+        <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].primaryPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
               <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
@@ -36,7 +36,7 @@
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
         <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.accentPalette"></h3>
-        <md-input-container class="no-errors-spacer">
+        <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].accentPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
               <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
@@ -47,7 +47,7 @@
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
         <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.warnPalette"></h3>
-        <md-input-container class="no-errors-spacer">
+        <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].warnPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
               <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>
@@ -58,7 +58,7 @@
     </div>
     <div flex="50" flex-gt-md="25" layout="column" layout-align="start stretch">
         <h3 layout="column" layout-align="start center" ma-tr="dashboards.v3.app.backgroundPalette"></h3>
-        <md-input-container class="no-errors-spacer">
+        <md-input-container >
             <md-select ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].backgroundPalette"
                 ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
               <md-option ng-value="undefined"><em ma-tr="dashboards.v3.app.notSet"></em></md-option>

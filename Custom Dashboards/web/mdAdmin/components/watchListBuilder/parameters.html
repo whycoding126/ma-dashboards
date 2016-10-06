@@ -2,11 +2,11 @@
   <p ng-if="!$ctrl.watchlist.params.length" ma-tr="dashboards.v3.app.noParameters"></p>
   <div ng-repeat="param in $ctrl.watchlist.params" layout="row" layout-align="start center">
     <md-button class="md-icon-button" ng-click="$ctrl.watchlist.params.splice($index, 1)"><md-icon>clear</md-icon></md-button>
-    <md-input-container flex="33" flex-gt-md="25" class="no-errors-spacer">
+    <md-input-container flex="33" flex-gt-md="25" >
       <label ma-tr="dashboards.v3.app.label"></label>
       <input ng-model="param.label" required md-no-asterisk>
     </md-input-container>
-    <md-input-container flex="33" flex-gt-md="25" class="no-errors-spacer">
+    <md-input-container flex="33" flex-gt-md="25" >
       <label ma-tr="dashboards.v3.app.parameterName"></label>
       <input ng-model="param.name" required md-no-asterisk>
     </md-input-container>

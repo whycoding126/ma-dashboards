@@ -1,4 +1,4 @@
-<form class="ma-set-point-value no-errors-spacer">
+<form class="ma-set-point-value">
     <div layout="row">
         <md-input-container flex ng-if="point.pointLocator.dataType === 'NUMERIC' || (point.pointLocator.dataType === 'MULTISTATE' && point.textRenderer.type === 'textRendererPlain')">
             <input type="number" step="any" ng-model="input.value"  aria-label="{{'common.value' | tr}}"
