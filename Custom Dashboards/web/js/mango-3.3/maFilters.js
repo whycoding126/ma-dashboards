@@ -114,6 +114,15 @@ maFilters.filter('unique', function() {
 	};
 });
 
+maFilters.filter('range', function() {
+    return function(input, start, end, step) {
+        input.splice(0, input.length);
+        for (var i = start || 0; i <= (end || 100); i = i + (step || 1))
+            input.push(i);
+        return input;
+    };
+});
+
 return maFilters;
 
 }); // require

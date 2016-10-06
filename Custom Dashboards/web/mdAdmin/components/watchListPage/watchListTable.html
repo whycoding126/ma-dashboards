@@ -26,6 +26,12 @@
       <input ng-model="$ctrl.watchListParams[param.name]" type="number" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"
           min="{{param.options.min}}" max="{{param.options.max}}" step="{{param.options.step}}">
     </md-input-container>
+    <md-input-container ng-if="param.type === 'numberRange'" flex>
+      <label ng-bind="param.label"></label>
+      <md-select ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()">
+        <md-option ng-repeat="val in [] | range:param.options.start:param.options.end:param.options.step" ng-value="val" ng-bind="val"></md-option>
+      </md-select>
+    </md-input-container>
     <md-input-container ng-if="param.type === 'date'" flex>
       <label ng-bind="param.label"></label>
       <ma-date-picker ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-model-options="{debounce: 1000}"
