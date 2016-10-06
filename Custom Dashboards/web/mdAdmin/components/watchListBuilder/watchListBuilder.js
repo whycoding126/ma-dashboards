@@ -6,7 +6,7 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout) {
+var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout, $scope) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
@@ -58,8 +58,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         watchlist.readPermission = 'user';
         watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
         $ctrl.editWatchlist(watchlist);
-        if ($ctrl.form)
-            $ctrl.form.$setPristine();
+        $ctrl.resetForm();
     };
     
     $ctrl.typeChanged = function typeChanged() {
@@ -90,26 +89,41 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             $ctrl.watchlist.type === 'hierarchy' && $ctrl.selectedTab === 1;
     };
     
+    $ctrl.isError = function isError(name) {
+        if (!$scope.watchListForm || !$scope.watchListForm[name]) return false;
+        return $scope.watchListForm[name].$invalid && ($scope.watchListForm.$submitted || $scope.watchListForm[name].$touched);
+    };
+    
+    $ctrl.resetForm = function resetForm() {
+        if ($scope.watchListForm) {
+            $scope.watchListForm.$setUntouched();
+            $scope.watchListForm.$setPristine();
+            $scope.watchListForm.$submitted = false;
+        }
+    };
+    
     $ctrl.save = function save() {
         var saveMethod = $ctrl.watchlist.isNew ? '$save' : '$updateWithRename';
-        $ctrl.watchlist[saveMethod]().then(function(wl) {
-            $ctrl.selectedWatchlist = wl;
-            $ctrl.watchlistSelected();
-            
-            var found = false
-            for (var i = 0; i < $ctrl.watchlists.length; i++) {
-                if ($ctrl.watchlists[i].xid === wl.xid) {
-                    $ctrl.watchlists.splice(i, 1, wl);
-                    found = true;
-                    break;
+        if ($scope.watchListForm.$valid) {
+            $ctrl.watchlist[saveMethod]().then(function(wl) {
+                $ctrl.selectedWatchlist = wl;
+                $ctrl.watchlistSelected();
+                
+                var found = false
+                for (var i = 0; i < $ctrl.watchlists.length; i++) {
+                    if ($ctrl.watchlists[i].xid === wl.xid) {
+                        $ctrl.watchlists.splice(i, 1, wl);
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                $ctrl.watchlists.push(wl);
-            }
-            
-            $ctrl.form.$setPristine();
-        });
+                if (!found) {
+                    $ctrl.watchlists.push(wl);
+                }
+                
+                $ctrl.resetForm();
+            });
+        }
     };
     
     $ctrl.deleteWatchlist = function deleteWatchlist(event) {
@@ -148,8 +162,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             watchlist.readPermission = 'user';
             watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
             $ctrl.editWatchlist(watchlist);
-            if ($ctrl.form)
-                $ctrl.form.$setPristine();
+            $ctrl.resetForm();
         } else {
             $ctrl.newWatchlist();
         }
@@ -188,7 +201,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             var copiedWatchList = angular.copy($ctrl.selectedWatchlist);
             copiedWatchList.originalXid = copiedWatchList.xid;
             $ctrl.editWatchlist(copiedWatchList);
-            $ctrl.form.$setPristine();
+            $ctrl.resetForm();
         } else if (!$ctrl.watchlist || !$ctrl.watchlist.isNew) {
             $ctrl.newWatchlist();
         }
@@ -416,7 +429,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout'];
+watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope'];
 
 return {
     controller: watchListBuilder,

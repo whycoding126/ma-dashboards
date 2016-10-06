@@ -1,5 +1,5 @@
 <md-card class="watch-list-steps">
-  <div ng-form="$ctrl.form">
+  <form name="watchListForm" novalidate ng-submit="$ctrl.save()">
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-input-container flex="100" flex-gt-sm="50" flex-gt-lg="30">
@@ -11,7 +11,7 @@
       <div flex></div>
       <md-button class="md-raised" ng-click="$ctrl.newWatchlist()"><md-icon>add</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.new"></span></md-button>
       <md-button class="md-warn md-raised" ng-click="$ctrl.deleteWatchlist($event)" ng-disabled="$ctrl.watchlist.isNew"><md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span></md-button>
-      <md-button class="md-primary md-raised" ng-click="$ctrl.save()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
+      <md-button class="md-primary md-raised" type="submit"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
       <md-button class="md-raised" ui-sref="dashboard.watchList({watchListXid: $ctrl.watchlist.xid})" ng-disabled="$ctrl.watchlist.isNew"><md-icon>visibility</md-icon>&nbsp;<span ma-tr="common.view"></span></md-button>
     </div>
   </md-toolbar>
@@ -72,5 +72,5 @@
     <md-button class="md-primary md-raised" ng-click="$ctrl.nextStep()" ng-hide="$ctrl.isLastStep()"><md-icon>arrow_forward</md-icon>&nbsp;<span ma-tr="dashboards.v3.app.nextStep"></span></md-button>
     <md-button class="md-primary md-raised" ng-click="$ctrl.save()" ng-show="$ctrl.isLastStep()"><md-icon>save</md-icon>&nbsp;<span ma-tr="common.save"></span></md-button>
   </md-card-actions>
-  </div>
+  </form>
 </md-card>
