@@ -54,7 +54,7 @@
           <span flex></span>
           <!-- use up the empty space -->
 
-          <div class="md-toolbar-item dashboard-tools" layout="row" layout-align="start center">
+          <div class="md-toolbar-item dashboard-tools" layout="row" layout-align="start center" layout-padding>
             <ma-active-event-icons></ma-active-event-icons>
 
             <div ng-if="stateParams.dateBar">
@@ -63,7 +63,7 @@
                   preset="{{dateBar.preset}}" update-interval="{{dateBar.updateIntervalString}}"
                   refresh="dateBar.refresh" on-change="dateBar.preset = preset"></ma-date-range-picker>
               </md-input-container>
-              <md-button class="md-icon-button md-hue-1" ng-click="dateBar.expanded = !dateBar.expanded"
+              <md-button class="md-icon-button md-hue-2" ng-click="dateBar.expanded = !dateBar.expanded"
                 aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
                 ng-class="{'md-accent': dateBar.expanded}">
                   <md-icon>date_range</md-icon>

@@ -796,6 +796,10 @@ li.md-nav-item:first-of-type {
   margin: 0;
 }
 
+md-input-container .md-input:not([disabled]), md-input-container:not(.md-input-invalid).md-input-has-value label {
+    color: inherit !important;
+}
+
 
 md-toolbar.date-bar, md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;

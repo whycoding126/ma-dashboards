@@ -129,6 +129,11 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                     '  background-color: ' + $mdColors.getThemeColor(this.activeTheme + '-background-400-0.6') + ' !important;\n' +
                     '}\n';
                 cssInjector.injectStyle(mdTableStyles, 'mdTableColors', '[href="styles/main.css"]', true, true);
+                
+                var mdInputStles = 'md-menu-content md-menu-item {\n' +
+                    '  color: ' + $mdColors.getThemeColor(this.activeTheme + '-background-900-1.0') + ' !important;\n' +
+                    '}\n';
+                cssInjector.injectStyle(mdInputStles, 'mdInputStles', '[href="styles/main.css"]', true, true);
             }
         }
     };
