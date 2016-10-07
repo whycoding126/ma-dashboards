@@ -62,6 +62,15 @@
       <ma-data-source-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
           auto-init="false" query="param.options.nameIsLike && 'name=like=' + param.options.nameIsLike"></ma-data-source-list>
     </md-input-container>
+    <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
+      <label ng-bind="param.label"></label>
+      <ma-point-hierarchy-select ng-if="!param.options.multiple"
+          ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
+          path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+      <ma-point-hierarchy-select ng-if="param.options.multiple" multiple
+          ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
+          path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+    </md-input-container>
   </div>
 </div>
 

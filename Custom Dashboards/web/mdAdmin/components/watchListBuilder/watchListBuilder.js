@@ -43,6 +43,10 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         {
             label: 'XID',
             value: 'xid'
+        },
+        {
+            label: 'Point hierarchy folder ID',
+            value: 'pointFolderId'
         }
     ];
     
