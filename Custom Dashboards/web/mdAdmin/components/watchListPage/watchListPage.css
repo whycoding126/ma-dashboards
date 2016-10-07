@@ -52,10 +52,6 @@
   margin-bottom: 0;
 }
 
-.watchlist-main .parameter-inputs md-input-container .md-errors-spacer {
-  display: none;
-}
-
 /* Chart Component */
 
 .watchlist-main .chart-content {

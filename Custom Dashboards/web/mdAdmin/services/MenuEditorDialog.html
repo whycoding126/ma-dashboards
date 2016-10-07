@@ -29,7 +29,7 @@
         <span ma-tr="dashboards.v3.app.showMenuItem"></span>
       </md-switch>
 
-      <md-input-container>
+      <md-input-container class="has-hints">
           <label>State name</label>
           <input name="stateName" required pattern="^(\w+\.)*\w+$"
               ng-model="editCtrl.item.name" ng-disabled="editCtrl.item.builtIn" ng-change="stateNameChanged()">
@@ -41,7 +41,7 @@
             <div ng-message="stateNameMustBeginWithParent" ma-tr="dashboards.v3.app.stateNameMustBeginWithParent"></div>
           </div>
       </md-input-container>
-      <md-input-container>
+      <md-input-container class="has-hints">
           <label>State URL</label>
           <input name="url" pattern="^\/(?:[\w\-\{\}]+\/)*[\w\-\{\}?&]+$"
               ng-model="editCtrl.item.url" ng-disabled="editCtrl.item.builtIn">
@@ -81,7 +81,7 @@
           <div class="hint">Template URLs are relative to the mdAdmin directory.</div>
       </md-input-container>
       
-      <md-input-container>
+      <md-input-container class="has-hints">
           <label>Menu text</label>
           <input name="menuText" ng-model="editCtrl.item.menuText" ng-required="!editCtrl.item.menuHidden && !editCtrl.item.menuTr">
           <div class="hint" ng-hide="menuItemEditForm.menuText.$invalid && (menuItemEditForm.menuText.$touched || menuItemEditForm.$submitted)">Menu text takes precedence over the menu translation key.</div>
@@ -104,7 +104,7 @@
         </md-input-container>
       </div>
       
-      <md-input-container flex>
+      <md-input-container flex class="has-hints">
           <label>Menu icon name</label>
           <md-icon ng-class="editCtrl.item.menuIcon.indexOf('fa-') === 0 ? 'fa fa-fw ' + editCtrl.item.menuIcon : ''" class="menu-icon"
               style="pointer-events: none">{{editCtrl.item.menuIcon.indexOf('fa-') !== 0 ? editCtrl.item.menuIcon : ''}}</md-icon>
@@ -113,7 +113,7 @@
           a <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> name (with spaces changed to underscores).</div>
       </md-input-container>
       
-      <md-input-container>
+      <md-input-container class="has-hints">
           <label>Permission required</label>
           <input name="permission" ng-model="editCtrl.item.permission">
           <div class="hint">If user doesn't have this permission the menu item will not be shown.</div>

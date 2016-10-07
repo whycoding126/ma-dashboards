@@ -33,7 +33,7 @@ body {
 }
 
 .already-logged-in {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 /* Dashboard pages */
@@ -699,13 +699,18 @@ a.type-hint {
 /* Input hints */
 
 md-input-container .hint {
-  position: absolute;
-  left: 2px;
-  right: auto;
-  bottom: 7px;
   font-size: 12px;
   line-height: 14px;
   color: grey;
+  overflow: hidden;
+  padding: 5px 5px 0 0;
+  transition: opacity 0.3s cubic-bezier(.55,0,.55,.2);
+  position: absolute;
+  top: 32px;
+}
+
+md-input-container .hint.ng-hide {
+  opacity: 0;
 }
 
 /* Centered toast for watchdog notifications */
@@ -867,8 +872,23 @@ md-checkbox.checkbox-top-label.checkbox-centered .md-label {
     left: 50%;
 }
 
-/* angular material fix */
+/* angular material fixes */
 
 md-select[disabled] .md-select-value {
     padding-bottom: 2px;
+}
+
+md-input-container md-select {
+    margin: 0;
+    -webkit-box-ordinal-group: 3;
+    -webkit-order: 2;
+    order: 2;
+}
+
+md-input-container:not(.has-hints) .md-errors-spacer {
+    display: none;
+}
+
+md-select {
+	/*min-width: 200px;*/
 }
