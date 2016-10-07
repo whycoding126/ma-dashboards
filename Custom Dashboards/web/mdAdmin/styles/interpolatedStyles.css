@@ -20,3 +20,11 @@ table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {
 md-menu-content md-menu-item {
   color: {{getThemeColor('background-900-1.0')}} !important;
 }
+
+mdp-calendar .md-button.md-raised:not(.md-accent) {
+    background-color: {{getThemeColor('background-100-0.8')}} !important;
+}
+
+.mdp-clock .md-button:not(.md-primary):not(:hover) {
+    color: {{getThemeColor('primary-hue-2-1.0')}} !important;
+}

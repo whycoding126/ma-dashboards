@@ -795,16 +795,24 @@ li.md-nav-item:first-of-type {
   z-index: 3;
 }
 
+.dashboard-main-toolbar md-select .md-select-value.md-select-placeholder {
+    color: inherit !important;
+}
+
 /* Date bar */
 
 .date-preset ma-date-range-picker md-select {
   margin: 0;
 }
 
-md-input-container .md-input:not([disabled]), md-input-container:not(.md-input-invalid).md-input-has-value label {
+date-bar md-input-container .md-input:not([disabled]), date-bar md-input-container:not(.md-input-invalid).md-input-has-value label {
     color: inherit !important;
 }
 
+date-bar md-checkbox:not(.md-checked) .md-icon, date-bar md-checkbox .md-ink-ripple {
+	border-color: inherit !important;
+	color: inherit !important;
+}
 
 md-toolbar.date-bar, md-toolbar.date-bar .md-toolbar-tools {
   font-size: inherit;
