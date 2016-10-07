@@ -23,8 +23,15 @@
     </md-input-container>
     <md-input-container ng-if="param.type === 'select'" flex>
       <label ng-bind="param.label"></label>
-      <md-select ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-multiple="!!param.options.multiple">
-        <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label" ng-bind="option.label || option.value"></md-option>
+      <md-select ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-if="!param.options.multiple">
+        <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
+          <span ng-bind="option.label || option.value"></span>
+        </md-option>
+      </md-select>
+      <md-select ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()" ng-if="param.options.multiple" multiple>
+        <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
+          <span ng-bind="option.label || option.value"></span>
+        </md-option>
       </md-select>
     </md-input-container>
     <md-input-container ng-if="param.type === 'number'" flex>
@@ -46,7 +53,9 @@
     <md-input-container ng-if="param.type === 'deviceName'" flex>
       <label ng-bind="param.label"></label>
       <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
-          auto-init="false" contains="param.options.contains" multiple="!!param.options.multiple"></ma-device-name-list>
+          auto-init="false" contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
+      <ma-device-name-list ng-model="$ctrl.watchListParams[param.name]" ng-change="$ctrl.updateWatchListParameters()"
+          auto-init="false" contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
     </md-input-container>
     <md-input-container ng-if="param.type === 'dataSource'" flex>
       <label ng-bind="param.label"></label>

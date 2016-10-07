@@ -39,7 +39,6 @@ function deviceNameList(DeviceName, $injector) {
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            multiple: '=?',
             // attributes that start with data- have the prefix stripped
             dataSourceId: '=?sourceId',
             dataSourceXid: '=?sourceXid',
@@ -50,7 +49,8 @@ function deviceNameList(DeviceName, $injector) {
           var optionsExpr = 'deviceName in deviceNames track by $index';
 
           if ($injector.has('$mdUtil')) {
-              return '<md-select ng-multiple="multiple" md-on-open="onOpen()"><md-option ng-value="deviceName" ng-repeat="' + optionsExpr + '" ng-bind="deviceName"></md-option></md-select>';
+              return '<md-select md-on-open="onOpen()"><md-option ng-value="deviceName" ng-repeat="' +
+                  optionsExpr + '"><span ng-bind="deviceName"></span></md-option></md-select>';
           }
 
           return '<select ng-options="' + optionsExpr + '"></select>';
