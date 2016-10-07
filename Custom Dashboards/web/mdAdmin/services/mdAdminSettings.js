@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', '$sce'];
-function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, $sce) {
+mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate'];
+function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate) {
     var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
     var NOT_SETTINGS_PROPERTIES = ['user', 'defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
     var themeId = 0;
@@ -114,8 +114,9 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                 
                 $templateRequest(require.toUrl('../styles/interpolatedStyles.css')).then(function(text) {
                     var result = $interpolate(text)({
-                        $mdColors: $mdColors,
-                        activeTheme: this.activeTheme
+                        getThemeColor: function(colorString) {
+                            return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
+                        }.bind(this)
                     });
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));
