@@ -123,6 +123,16 @@ maFilters.filter('range', function() {
     };
 });
 
+maFilters.filter('property', ['Util', function(Util) {
+    return Util.memoize(function(input, propertyName) {
+        if (!input || !angular.isArray(input)) return input;
+        var result = [];
+        for (var i = 0; i < input.length; i++)
+            result.push(input[i][propertyName]);
+        return result;
+    });
+}]);
+
 return maFilters;
 
 }); // require

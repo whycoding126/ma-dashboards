@@ -8,9 +8,6 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 var queryGroup = function queryGroup() {
     this.$onInit = function() {
-        if (!this.node.args.length) {
-            this.node.push(newPredicate());
-        }
     };
     
     this.addPredicate = function addPredicate() {

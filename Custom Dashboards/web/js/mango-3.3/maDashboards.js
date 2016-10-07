@@ -49,6 +49,7 @@ define(['./maServices',
         './directives/arrayInput',
         './directives/emptyInput',
         './directives/watchListList',
+        './directives/pointHierarchySelect',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -63,7 +64,7 @@ define(['./maServices',
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
-        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, queryBuilder, queryGroup,
+        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, queryBuilder, queryGroup,
         queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, trFilter, angular, require) {
 'use strict';
 /**
@@ -122,6 +123,7 @@ maDashboards.directive('maArrayInput', arrayInput);
 maDashboards.directive('maEmptyInput', emptyInput);
 maDashboards.directive('maWatchListSelect', watchListSelect);
 maDashboards.directive('maWatchListList', watchListList);
+maDashboards.directive('maPointHierarchySelect', pointHierarchySelect);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
