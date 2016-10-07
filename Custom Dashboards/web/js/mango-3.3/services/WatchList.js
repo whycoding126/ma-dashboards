@@ -8,58 +8,15 @@ define(['angular', 'rql/query'], function(angular, query) {
 
 WatchListFactory.$inject = ['$resource', 'Util', '$http', 'Point', 'PointHierarchy', '$q', '$interpolate', '$sce', '$parse'];
 function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $interpolate, $sce, $parse) {
-    
-    function jsonDataToProperties(data, headersGetter, status) {
-        if (!angular.isObject(data)) return data;
-        
-        var isArray = angular.isArray(data);
-        if (!isArray)
-            data = [data];
-        
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            if (item.type === 'query') {
-                item.query = item.jsonData ? item.jsonData.query : '';
-                item.params = item.jsonData && item.jsonData.params || [];
-            }
-            if (item.type === 'hierarchy') {
-                item.folderIds = item.jsonData ? item.jsonData.folderIds : [];
-            }
-            delete item.jsonData;
-        }
-        
-        return isArray ? data : data[0];
-    }
-    
-    function propertiesToJsonData(data, headersGetter) {
-        data.jsonData = {};
-        if (data.type === 'query') {
-            data.jsonData.query = data.query;
-            data.jsonData.params = data.params;
-            delete data.query;
-            delete data.params;
-        }
-        if (data.type === 'hierarchy') {
-            data.jsonData.folderIds = data.folderIds;
-            delete data.folderIds;
-        }
-        return angular.toJson(data);
-    }
-    
-    var transformWatchListResponse = $http.defaults.transformResponse.concat(jsonDataToProperties);
 
     var WatchList = $resource('/rest/v1/watch-lists/:xid', {
         xid: '@xid',
         originalXid: '@originalXid'
     }, {
-        get: {
-            method: 'GET',
-            transformResponse: transformWatchListResponse
-        },
         query: {
             method: 'GET',
             isArray: true,
-            transformResponse: [Util.transformArrayResponse, jsonDataToProperties],
+            transformResponse: Util.transformArrayResponse,
             interceptor: {
                 response: Util.arrayResponseInterceptor
             },
@@ -68,24 +25,14 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         },
         save: {
             method: 'POST',
-            url: '/rest/v1/watch-lists/',
-            transformRequest: propertiesToJsonData,
-            transformResponse: transformWatchListResponse
+            url: '/rest/v1/watch-lists/'
         },
         update: {
-            method: 'PUT',
-            transformRequest: propertiesToJsonData,
-            transformResponse: transformWatchListResponse
+            method: 'PUT'
         },
         updateWithRename: {
             method: 'PUT',
-            url: '/rest/v1/watch-lists/:originalXid',
-            transformRequest: propertiesToJsonData,
-            transformResponse: transformWatchListResponse
-        },
-        'delete': {
-            method: 'DELETE',
-            transformResponse: transformWatchListResponse
+            url: '/rest/v1/watch-lists/:originalXid'
         }
     });
     
@@ -194,10 +141,6 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             }
         }.bind(this));
         return parsed.toString();
-    };
-    
-    WatchList.toWatchList = function toWatchList(item) {
-        return jsonDataToProperties(angular.merge(new WatchList(), item));
     };
 
     return WatchList;

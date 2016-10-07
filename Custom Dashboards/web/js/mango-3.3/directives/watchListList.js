@@ -102,7 +102,7 @@ function watchListList($injector) {
         this.updateHandler = function updateHandler(event, update) {
             var item;
             if (update.object) {
-                var item = WatchList.toWatchList(update.object);
+                item = angular.merge(new WatchList(), update.object);
             }
             
             if (update.action === 'add') {
