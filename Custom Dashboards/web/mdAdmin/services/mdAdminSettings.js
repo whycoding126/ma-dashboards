@@ -3,11 +3,11 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector'];
-function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector) {
+mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', '$sce'];
+function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, $sce) {
     var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
     var NOT_SETTINGS_PROPERTIES = ['user', 'defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme'];
     var themeId = 0;
@@ -110,30 +110,15 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
         generateCustomStyles: function generateCustomStyles() {
             // inserts a style tag to style <a> tags with accent color
             if ($MD_THEME_CSS) {
-                angular.element('head > style[tracking-name="hrefColors"]').remove();
-                angular.element('head > style[tracking-name="mdTableColors"]').remove();
+                angular.element('head > style[tracking-name="interpolatedStyles"]').remove();
                 
-                var accent500 = $mdColors.getThemeColor(this.activeTheme + '-accent-500-1.0');
-                var accent500Clear = $mdColors.getThemeColor(this.activeTheme + '-accent-500-0.2');
-                var accent700 = $mdColors.getThemeColor(this.activeTheme + '-accent-700-1.0');
-                var styleContent =
-                    'a:not(.md-button) {color: ' + accent500 +'; border-bottom-color: ' + accent500Clear + ';}\n' +
-                    'a:not(.md-button):hover, a:not(.md-button):focus {color: ' + accent700 + '; border-bottom-color: ' + accent700 + ';}\n';
-
-                cssInjector.injectStyle(styleContent, 'hrefColors', '[md-theme-style]', false, true);
-
-                var mdTableStyles = 'table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {\n' +
-                    '  background-color: ' + $mdColors.getThemeColor(this.activeTheme + '-background-400-0.4') + ' !important;\n' +
-                    '}\n\n' +
-                    'table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {\n' +
-                    '  background-color: ' + $mdColors.getThemeColor(this.activeTheme + '-background-400-0.6') + ' !important;\n' +
-                    '}\n';
-                cssInjector.injectStyle(mdTableStyles, 'mdTableColors', '[href="styles/main.css"]', true, true);
-                
-                var mdInputStles = 'md-menu-content md-menu-item {\n' +
-                    '  color: ' + $mdColors.getThemeColor(this.activeTheme + '-background-900-1.0') + ' !important;\n' +
-                    '}\n';
-                cssInjector.injectStyle(mdInputStles, 'mdInputStles', '[href="styles/main.css"]', true, true);
+                $templateRequest(require.toUrl('../styles/interpolatedStyles.css')).then(function(text) {
+                    var result = $interpolate(text)({
+                        $mdColors: $mdColors,
+                        activeTheme: this.activeTheme
+                    });
+                    cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
+                }.bind(this));
             }
         }
     };

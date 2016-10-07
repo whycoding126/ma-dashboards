@@ -1,0 +1,22 @@
+a:not(.md-button) {
+  color: {{$mdColors.getThemeColor(activeTheme + '-accent-500-1.0')}};
+  border-bottom-color: {{$mdColors.getThemeColor(activeTheme + '-accent-500-0.2')}};
+}
+
+a:not(.md-button):hover,
+a:not(.md-button):focus {
+  color: {{$mdColors.getThemeColor(activeTheme + '-accent-700-1.0')}};
+  border-bottom-color: {{$mdColors.getThemeColor(activeTheme + '-accent-700-1.0')}};
+}
+
+table.md-table.md-row-select tbody.md-body>tr.md-row.md-selected {
+  background-color: {{$mdColors.getThemeColor(activeTheme + '-background-400-0.4')}} !important;
+}
+
+table.md-table.md-row-select tbody.md-body>tr.md-row:not([disabled]):hover {
+  background-color: {{$mdColors.getThemeColor(activeTheme + '-background-400-0.6')}} !important;
+}
+
+md-menu-content md-menu-item {
+  color: {{$mdColors.getThemeColor(activeTheme + '-background-900-1.0')}} !important;
+}
