@@ -55,6 +55,7 @@ define(['./maServices',
         './components/queryBuilder/queryPredicate',
         './components/pointHierarchyBrowser/pointHierarchyBrowser',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
+        './components/watchListParameters/watchListParameters',
         './filters/trFilter',
         'angular',
         'require'
@@ -65,7 +66,8 @@ define(['./maServices',
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, queryBuilder, queryGroup,
-        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, trFilter, angular, require) {
+        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters,
+        trFilter, angular, require) {
 'use strict';
 /**
  * @ngdoc overview
@@ -129,6 +131,7 @@ maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
 maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
+maDashboards.component('maWatchListParameters', watchListParameters);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);

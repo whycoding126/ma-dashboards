@@ -1,0 +1,57 @@
+<div ng-repeat="param in $ctrl.watchList.params" layout flex="100" flex-gt-sm="50" flex-gt-md="25">
+  <md-input-container ng-if="param.type === 'input'" flex>
+    <label ng-bind="param.label"></label>
+    <input ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
+        pattern="{{param.options.pattern}}">
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'select'" flex>
+    <label ng-bind="param.label"></label>
+    <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-if="!param.options.multiple">
+      <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
+        <span ng-bind="option.label || option.value"></span>
+      </md-option>
+    </md-select>
+    <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-if="param.options.multiple" multiple>
+      <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
+        <span ng-bind="option.label || option.value"></span>
+      </md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'number'" flex>
+    <label ng-bind="param.label"></label>
+    <input ng-model="$ctrl.parameters[param.name]" type="number" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
+        min="{{param.options.min}}" max="{{param.options.max}}" step="{{param.options.step}}">
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'numberRange'" flex>
+    <label ng-bind="param.label"></label>
+    <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()">
+      <md-option ng-repeat="val in [] | range:param.options.start:param.options.end:param.options.step" ng-value="val" ng-bind="val"></md-option>
+    </md-select>
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'date'" flex>
+    <label ng-bind="param.label"></label>
+    <ma-date-picker ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
+        mode="{{param.options.mode}}" format="{{param.options.format}}"></ma-date-picker>
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'deviceName'" flex>
+    <label ng-bind="param.label"></label>
+    <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+        auto-init="false" contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
+    <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+        auto-init="false" contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'dataSource'" flex>
+    <label ng-bind="param.label"></label>
+    <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+        auto-init="false" query="param.options.nameIsLike && 'name=like=' + param.options.nameIsLike"></ma-data-source-list>
+  </md-input-container>
+  <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
+    <label ng-bind="param.label"></label>
+    <ma-point-hierarchy-select ng-if="!param.options.multiple"
+        ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+        path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+    <ma-point-hierarchy-select ng-if="param.options.multiple" multiple
+        ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+        path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+  </md-input-container>
+</div>

@@ -16,7 +16,6 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.hierarchyFolders = [];
     this.settings = mdAdminSettings;
     this.dateBar = DateBar;
-    this.watchListParams = {};
 
     this.selectFirstWatchList = false;
     this.localStorage = localStorageService.get('watchListPage');
@@ -67,7 +66,10 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.selected = [];
     };
     
-    this.updateWatchListParameters = function updateWatchListParameters() {
+    this.updateWatchListParameters = function updateWatchListParameters(parameters) {
+        if (parameters) {
+            this.watchListParams = parameters;
+        }
         this.watchList.$getPoints(this.watchListParams);
     };
     
