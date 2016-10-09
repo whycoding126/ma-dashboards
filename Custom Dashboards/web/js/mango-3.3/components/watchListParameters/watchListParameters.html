@@ -36,11 +36,11 @@
   <md-input-container ng-if="param.type === 'deviceName'" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="param.options.dataSourceXid"
-        contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+        contains="$ctrl.interpolateOption(param.options.contains)" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="param.options.dataSourceXid"
-        contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+        contains="$ctrl.interpolateOption(param.options.contains)" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <md-input-container ng-if="param.type === 'dataSource'" flex>
     <label ng-bind="param.label"></label>
@@ -53,9 +53,11 @@
     <label ng-bind="param.label"></label>
     <ma-point-hierarchy-select ng-if="!param.options.multiple"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+        path="$ctrl.interpolateOption(param.options.path)"
+        subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
     <ma-point-hierarchy-select ng-if="param.options.multiple" multiple
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        path="param.options.path" subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+        path="$ctrl.interpolateOption(param.options.path)"
+        subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
   </md-input-container>
 </div>

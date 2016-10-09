@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListParametersController.$inject = [];
-function watchListParametersController() {
+watchListParametersController.$inject = ['$parse', '$interpolate'];
+function watchListParametersController($parse, $interpolate) {
     this.parameters = {};
 
     this.inputChanged = function inputChanged() {
@@ -20,12 +20,31 @@ function watchListParametersController() {
         }
         var q = new query.Query();
         if (options.nameIsLike) {
-            q.push(new query.Query({name: 'like', args: ['name', options.nameIsLike]}));
+            q.push(new query.Query({
+                name: 'like',
+                args: ['name', this.interpolateOption(options.nameIsLike)]
+            }));
         }
         if (options.xidIsLike) {
-            q.push(new query.Query({name: 'like', args: ['xid', options.xidIsLike]}));
+            q.push(new query.Query({
+                name: 'like',
+                args: ['xid', this.interpolateOption(options.xidIsLike)]
+            }));
         }
         return q.toString();
+    };
+    
+    this.interpolateOption = function interpolateOption(option) {
+        if (typeof option !== 'string' || option.indexOf('{{') < 0)
+            return option;
+        
+        var matches = /{{(.*?)}}/.exec(option);
+        if (matches && matches[0] === matches.input) {
+            option = $parse(matches[1])(this.parameters);
+        } else {
+            option = $interpolate(option)(this.parameters);
+        }
+        return option;
     };
 };
 
