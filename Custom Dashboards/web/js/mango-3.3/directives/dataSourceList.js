@@ -48,8 +48,11 @@ function dataSourceList(DataSource, $injector) {
         template: function(element, attrs) {
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()">' +
-              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid"><span ng-bind="dataSourceLabel(dataSource)"></span></md-option>' +
-              '</md-select>';
+              (!angular.isUndefined(attrs.showClear) ?
+                      '<md-option ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="dashboards.v3.app.clear"></em></md-option>' : '') +
+              '<md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">' +
+              '<span ng-bind="dataSourceLabel(dataSource)"></span>' +
+              '</md-option></md-select>';
           }
           return '<select ng-options="dataSourceLabel(dataSource) for dataSource in dataSources track by dataSource.xid"></select>';
         },

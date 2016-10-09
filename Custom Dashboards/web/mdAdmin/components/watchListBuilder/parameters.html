@@ -101,6 +101,10 @@
       </div>
       <div ng-if="param.type === 'dataSource'" layout="row" layout-align="end center">
         <md-input-container>
+          <label ma-tr="dashboards.v3.app.xidIsLike"></label>
+          <input ng-model="param.options.xidIsLike">
+        </md-input-container>
+        <md-input-container>
           <label ma-tr="dashboards.v3.app.nameIsLike"></label>
           <input ng-model="param.options.nameIsLike">
         </md-input-container>

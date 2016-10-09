@@ -36,14 +36,18 @@
   <md-input-container ng-if="param.type === 'deviceName'" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
+        auto-init="false" show-clear="true"
+        contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
+        auto-init="false" show-clear="true"
+        contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <md-input-container ng-if="param.type === 'dataSource'" flex>
     <label ng-bind="param.label"></label>
     <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" query="param.options.nameIsLike && 'name=like=' + param.options.nameIsLike"></ma-data-source-list>
+        auto-init="false" show-clear="true"
+        query="$ctrl.createDsQuery(param.options)">
+    </ma-data-source-list>
   </md-input-container>
   <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
     <label ng-bind="param.label"></label>

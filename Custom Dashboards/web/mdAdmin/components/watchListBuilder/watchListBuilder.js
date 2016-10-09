@@ -37,12 +37,16 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
             value: 'deviceName'
         },
         {
+            label: 'XID',
+            value: 'xid'
+        },
+        {
             label: 'Data source name',
             value: 'dataSourceName'
         },
         {
-            label: 'XID',
-            value: 'xid'
+            label: 'Data source XID',
+            value: 'dataSourceXid'
         },
         {
             label: 'Point hierarchy folder ID',
