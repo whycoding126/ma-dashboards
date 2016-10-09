@@ -36,10 +36,10 @@
   <md-input-container ng-if="param.type === 'deviceName'" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true"
+        auto-init="false" show-clear="true" data-source-xid="param.options.dataSourceXid"
         contains="param.options.contains" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true"
+        auto-init="false" show-clear="true" data-source-xid="param.options.dataSourceXid"
         contains="param.options.contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <md-input-container ng-if="param.type === 'dataSource'" flex>

@@ -94,6 +94,10 @@
       </div>
       <div ng-if="param.type === 'deviceName'" layout="row" layout-align="end center">
         <md-input-container>
+          <label ma-tr="dashboards.v3.app.dataSourceXid"></label>
+          <input ng-model="param.options.dataSourceXid">
+        </md-input-container>
+        <md-input-container>
           <label ma-tr="dashboards.v3.app.nameContains"></label>
           <input ng-model="param.options.contains">
         </md-input-container>
