@@ -124,13 +124,17 @@ maFilters.filter('range', function() {
 });
 
 maFilters.filter('property', ['Util', function(Util) {
-    return Util.memoize(function(input, propertyName) {
-        if (!input || !angular.isArray(input)) return input;
+    var propertyFilter = Util.memoize(function propertyFilter(input, propertyName) {
         var result = [];
         for (var i = 0; i < input.length; i++)
             result.push(input[i][propertyName]);
         return result;
     });
+    
+    return function(input, propertyName) {
+        if (!input || !angular.isArray(input)) return input;
+        return propertyFilter.apply(null, arguments);
+    };
 }]);
 
 return maFilters;

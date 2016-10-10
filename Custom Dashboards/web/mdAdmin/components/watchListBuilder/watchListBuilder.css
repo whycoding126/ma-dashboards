@@ -74,5 +74,5 @@ watch-list-builder .watchlist-parameter-options > div > md-input-container {
 }
 
 watch-list-builder .watchlist-parameter-options > div > md-checkbox {
-  margin: 0;
+  margin: 0 5px 0 5px;
 }
