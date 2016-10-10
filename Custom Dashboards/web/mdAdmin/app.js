@@ -471,6 +471,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'header.reports',
                 menuIcon: 'book',
                 permission: 'superadmin'
+            },
+            {
+                url: '/logging-console',
+                name: 'dashboard.settings.loggingConsole',
+                template: '<iframe-view src="/logging_console.shtm"></iframe-view>',
+                menuTr: 'logging.header.icontext',
+                menuIcon: 'find_in_page',
+                permission: 'superadmin'
             }
         ]
     },
