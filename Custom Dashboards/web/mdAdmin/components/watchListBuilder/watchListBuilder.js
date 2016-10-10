@@ -51,6 +51,18 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
         {
             label: 'Point hierarchy folder ID',
             value: 'pointFolderId'
+        },
+        {
+            label: 'Enabled',
+            value: 'enabled'
+        },
+        {
+            label: 'Read permission',
+            value: 'readPermission'
+        },
+        {
+            label: 'Set permission',
+            value: 'setPermission'
         }
     ];
     
