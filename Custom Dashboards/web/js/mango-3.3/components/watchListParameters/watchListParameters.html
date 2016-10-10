@@ -51,13 +51,19 @@
   </md-input-container>
   <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
     <label ng-bind="param.label"></label>
-    <ma-point-hierarchy-select ng-if="!param.options.multiple"
+    <ma-point-hierarchy-select ng-if="!param.options.multiple" show-clear="true"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         path="$ctrl.interpolateOption(param.options.path)"
-        subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
-    <ma-point-hierarchy-select ng-if="param.options.multiple" multiple
+        subfolders-only="param.options.subfoldersOnly"
+        name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
+        replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+        unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
+    <ma-point-hierarchy-select ng-if="param.options.multiple" multiple show-clear="true"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         path="$ctrl.interpolateOption(param.options.path)"
-        subfolders-only="param.options.subfoldersOnly"></ma-point-hierarchy-select>
+        subfolders-only="param.options.subfoldersOnly"
+        name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
+        replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+        unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
   </md-input-container>
 </div>

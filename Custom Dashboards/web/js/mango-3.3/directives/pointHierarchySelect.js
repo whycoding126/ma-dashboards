@@ -22,14 +22,18 @@ function pointHierarchySelect($injector) {
         scope: {
             path: '<?',
             subfolders: '<?',
-            subfoldersOnly: '<?'
+            subfoldersOnly: '<?',
+            nameMatches: '@?',
+            replaceName: '@?',
+            uniqueNames: '<?',
+            showClear: '<?'
         },
         controller: pointHierarchyController
     };
 }
 
-pointHierarchyController.$inject = ['$scope', '$element', '$attrs', 'PointHierarchy'];
-function pointHierarchyController($scope, $element, $attrs, PointHierarchy) {
+pointHierarchyController.$inject = ['$attrs', 'PointHierarchy'];
+function pointHierarchyController($attrs, PointHierarchy) {
     this.$onChanges = function(changes) {
         this.doQuery();
     };
@@ -48,13 +52,27 @@ function pointHierarchyController($scope, $element, $attrs, PointHierarchy) {
                 PointHierarchy.byPath({path: path, subfolders: subfolders}) :
                 PointHierarchy.getRoot({subfolders: subfolders});
 
-        var folderList = this.folderList = [];
+        this.folderList = [];
+        var seenNames = {};
+        var matcher = this.nameMatches && new RegExp(this.nameMatches, 'gi');
+        this.displayProp = this.replaceName ? 'replacedName' : 'name';
+        
         this.queryPromise = hierarchy.$promise.then(function(folder) {
             PointHierarchy.walkHierarchy(folder, function(subFolder) {
                 if (subfoldersOnly && subFolder === folder) return;
-                folderList.push(subFolder);
-            });
-        });
+                if (matcher) {
+                    subFolder.matches = matcher.exec(subFolder.name);
+                    if (this.replaceName && subFolder.matches) {
+                        subFolder.replacedName = subFolder.name.replace(matcher, this.replaceName);
+                    }
+                }
+                var displayName = subFolder[this.displayProp];
+                if ((!matcher || subFolder.matches) && !(this.uniqueNames && seenNames[displayName])) {
+                    this.folderList.push(subFolder);
+                    seenNames[displayName] = true;
+                }
+            }.bind(this));
+        }.bind(this));
     };
     
     this.onOpen = function onOpen() {

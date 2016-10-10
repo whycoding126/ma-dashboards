@@ -43,15 +43,15 @@ function deviceNameList(DeviceName, $injector) {
             dataSourceId: '=?sourceId',
             dataSourceXid: '=?sourceXid',
             contains: '=?',
-            autoInit: '=?'
+            autoInit: '=?',
+            showClear: '<?'
         },
         template: function(element, attrs) {
           var optionsExpr = 'deviceName in deviceNames track by $index';
 
           if ($injector.has('$mdUtil')) {
               return '<md-select md-on-open="onOpen()">' +
-                  (!angular.isUndefined(attrs.showClear) ?
-                          '<md-option ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="dashboards.v3.app.clear"></em></md-option>' : '') +
+                  '<md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="dashboards.v3.app.clear"></em></md-option>' +
                   '<md-option ng-value="deviceName" ng-repeat="' +
                   optionsExpr + '"><span ng-bind="deviceName"></span></md-option></md-select>';
           }

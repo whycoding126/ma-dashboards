@@ -118,6 +118,15 @@
           <label ma-tr="dashboards.v3.app.hierarchyPath"></label>
           <input ng-model="param.options.path">
         </md-input-container>
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.nameMatches"></label>
+          <input ng-model="param.options.nameMatches">
+        </md-input-container>
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.replaceName"></label>
+          <input ng-model="param.options.replaceName">
+        </md-input-container>
+        <md-checkbox ng-model="param.options.uniqueNames"><span ma-tr="dashboards.v3.app.uniqueNames"></span></md-checkbox>
         <md-checkbox ng-model="param.options.multiple"><span ma-tr="dashboards.v3.app.selectMultiple"></span></md-checkbox>
         <md-checkbox ng-model="param.options.subfoldersOnly"><span ma-tr="dashboards.v3.app.subFoldersOnly"></span></md-checkbox>
       </div>
