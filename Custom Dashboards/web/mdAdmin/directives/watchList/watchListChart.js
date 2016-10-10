@@ -46,7 +46,8 @@ define(['require'], function(require) {
                 }
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
-                    if (newValues === undefined || newValues === oldValues) return;
+                    if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
+                    // console.log('addChecked Watcher:', newValues, oldValues);
                     
                     // If cleared from selecting a new watchlist clear stats and graphOptions
                     if (newValues.length === 0) {
@@ -54,14 +55,13 @@ define(['require'], function(require) {
                         scope.graphOptions = [];
                     }
                     
-                    
                     // Clear Stats before new ones are generated
                     scope.stats = [];
                     
                     // assign the chart's points equal to the checked from table
                     scope.points = newValues;
                     
-                    if(oldValues === undefined || newValues.length > oldValues.length) {
+                    if ( (oldValues === undefined && newValues.length >= 0) || (newValues.length > oldValues.length) ) {
                         var graphOption = {valueAxis: scope.selectedAxis, xid: newValues[newValues.length-1].xid};
                         if (scope.assignColors) {
                             graphOption.lineColor = scope.selectedColor;
