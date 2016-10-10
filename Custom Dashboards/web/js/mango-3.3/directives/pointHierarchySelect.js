@@ -37,9 +37,11 @@ function pointHierarchyController($scope, $element, $attrs, PointHierarchy) {
     this.doQuery = function doQuery() {
         var subfoldersOnly = !!this.subfoldersOnly;
         var subfolders = subfoldersOnly || (angular.isUndefined($attrs.subfolders) ? true : !!this.subfolders);
-        var path = typeof this.path === 'string' ? this.path.split(',') : this.path;
-        if (!path) {
+        var path;
+        if (!this.path) {
             path = [];
+        } else {
+            path = typeof this.path === 'string' ? this.path.split(',') : this.path;
         }
         
         var hierarchy = path.length ?
