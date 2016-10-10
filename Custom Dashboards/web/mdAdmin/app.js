@@ -255,11 +255,30 @@ mdAdminApp.constant('MENU_ITEMS', [
 
     },
     {
-        url: '/help',
         name: 'dashboard.help',
-        template: '<iframe-view src="/help.htm"></iframe-view>',
+        url: '/help',
         menuTr: 'header.help',
-        menuIcon: 'help'
+        menuIcon: 'help',
+        children: [
+            {
+                url: '/help1',
+                name: 'dashboard.help.help1',
+                templateUrl: 'views/help/help1.html',
+                menuTr: 'dashboards.v3.app.help1'
+            },
+            {
+                url: '/help2',
+                name: 'dashboard.help.help2',
+                templateUrl: 'views/help/help2.html',
+                menuTr: 'dashboards.v3.app.help2'
+            },
+            {
+                url: '/help3',
+                name: 'dashboard.help.help3',
+                templateUrl: 'views/help/help3.html',
+                menuTr: 'dashboards.v3.app.help3'
+            }
+        ]
     },
     {
         name: 'dashboard.apiErrors',
