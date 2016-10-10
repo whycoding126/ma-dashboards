@@ -115,7 +115,8 @@ function JsonStoreFactory($resource, Util) {
     	dataPath: '@dataPath',
         name: '@name',
         readPermission: '@readPermission',
-        editPermission: '@editPermission'
+        editPermission: '@editPermission',
+        publicData: '@publicData'
     }, {
     	get: {
     	    interceptor: {
@@ -142,6 +143,13 @@ function JsonStoreFactory($resource, Util) {
                     item.jsonData = null;
                     return item;
         	    }
+            }
+        },
+        getPublic: {
+            method: 'GET',
+            url: '/rest/v1/json-data/public/:xid/:dataPath',
+            interceptor: {
+                response: setDataPathInterceptor
             }
         }
     });

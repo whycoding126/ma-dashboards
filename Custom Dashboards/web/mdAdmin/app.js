@@ -1331,13 +1331,11 @@ var userAndUserSettingsPromise = User.current().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
     var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(null, angular.noop);
-    var userDashboardSettingsPromise = JsonStore.get({xid: 'dashboard-settings'}).$promise.then(null, angular.noop);
-    return $q.all([user, userMenuPromise, userDashboardSettingsPromise]);
+    return $q.all([user, userMenuPromise]);
 }, angular.noop).then(function(data) {
     return {
         user: data && data[0],
-        userMenuStore: data && data[1],
-        userSettingsStore: data && data[2]
+        userMenuStore: data && data[1]
     }
 });
 
@@ -1347,21 +1345,22 @@ var dashboardSettingsPromise = $http({
 }).then(function(data) {
     return data.data;
 }, angular.noop);
+var customDashboardSettingsPromise = JsonStore.getPublic({xid: 'dashboard-settings'}).$promise.then(null, angular.noop);
 
-$q.all([userAndUserSettingsPromise, dashboardSettingsPromise]).then(function(data) {
+$q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSettingsPromise]).then(function(data) {
     var mdAdminSettings = {};
     mdAdminSettings.user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
-    var userSettingsStore = data[0].userSettingsStore;
     var defaultSettings = data[1];
+    var customSettingsStore = data[2];
     
     if (defaultSettings) {
         mdAdminSettings.defaultSettings = defaultSettings;
         angular.merge(mdAdminSettings, defaultSettings);
     }
-    if (userSettingsStore) {
-        mdAdminSettings.initialSettings = userSettingsStore.jsonData;
-        angular.merge(mdAdminSettings, userSettingsStore.jsonData);
+    if (customSettingsStore) {
+        mdAdminSettings.initialSettings = customSettingsStore.jsonData;
+        angular.merge(mdAdminSettings, customSettingsStore.jsonData);
     }
     if (userMenuStore) {
         mdAdminSettings.customMenuItems = userMenuStore.jsonData.menuItems;

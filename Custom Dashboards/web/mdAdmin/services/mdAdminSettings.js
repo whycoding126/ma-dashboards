@@ -21,7 +21,7 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
         this.userSettingsStore.name = DASHBOARD_SETTINGS_XID;
         this.userSettingsStore.xid = DASHBOARD_SETTINGS_XID;
         this.userSettingsStore.jsonData = this.initialSettings || {};
-        this.userSettingsStore['public'] = true; // XXX
+        this.userSettingsStore.publicData = true;
         this.userSettingsStore.readPermission = 'user';
         this.userSettingsStore.editPermission = 'superadmin';
 
