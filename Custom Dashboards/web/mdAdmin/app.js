@@ -291,6 +291,18 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'dashboards.v3.dox.dateBar'
             },
             {
+                url: '/dashboard-settings',
+                name: 'dashboard.help.dashboardSettings',
+                templateUrl: 'views/help/dashboardSettings.html',
+                menuTr: 'dashboards.v3.app.dashboardSettings'
+            },
+            {
+                url: '/watch-list-builder',
+                name: 'dashboard.help.watchListBuilder',
+                templateUrl: 'views/help/watchListBuilder.html',
+                menuTr: 'dashboards.v3.app.watchListBuilder'
+            },
+            {
                 url: '/pages-and-menu',
                 name: 'dashboard.help.pagesAndMenu',
                 templateUrl: 'views/help/pagesAndMenu.html',
