@@ -261,22 +261,46 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'help',
         children: [
             {
-                url: '/help1',
-                name: 'dashboard.help.help1',
-                templateUrl: 'views/help/help1.html',
-                menuTr: 'dashboards.v3.app.help1'
+                url: '/getting-started',
+                name: 'dashboard.help.gettingStarted',
+                templateUrl: 'views/help/gettingStarted.html',
+                menuTr: 'dashboards.v3.dox.gettingStarted'
             },
             {
-                url: '/help2',
-                name: 'dashboard.help.help2',
-                templateUrl: 'views/help/help2.html',
-                menuTr: 'dashboards.v3.app.help2'
+                url: '/watch-list',
+                name: 'dashboard.help.watchList',
+                templateUrl: 'views/help/watchList.html',
+                menuTr: 'dashboards.v3.dox.watchList'
             },
             {
-                url: '/help3',
-                name: 'dashboard.help.help3',
-                templateUrl: 'views/help/help3.html',
-                menuTr: 'dashboards.v3.app.help3'
+                url: '/data-point-details',
+                name: 'dashboard.help.dataPointDetails',
+                templateUrl: 'views/help/dataPointDetails.html',
+                menuTr: 'dashboards.v3.dox.dataPointDetails'
+            },
+            {
+                url: '/events',
+                name: 'dashboard.help.events',
+                templateUrl: 'views/help/events.html',
+                menuTr: 'dashboards.v3.dox.events'
+            },
+            {
+                url: '/date-bar',
+                name: 'dashboard.help.dateBar',
+                templateUrl: 'views/help/dateBar.html',
+                menuTr: 'dashboards.v3.dox.dateBar'
+            },
+            {
+                url: '/pages-and-menu',
+                name: 'dashboard.help.pagesAndMenu',
+                templateUrl: 'views/help/pagesAndMenu.html',
+                menuTr: 'dashboards.v3.dox.pagesAndMenu'
+            },
+            {
+                url: '/custom-dashboards',
+                name: 'dashboard.help.customDashboards',
+                templateUrl: 'views/help/customDashboards.html',
+                menuTr: 'dashboards.v3.dox.customDashboards'
             }
         ]
     },
@@ -513,18 +537,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'dashboards.v3.dox.basics',
                 menuIcon: 'fa-info-circle',
                 children: [
-                    {
-                        name: 'dashboard.examples.basics.pagesAndMenu',
-                        templateUrl: 'views/examples/pagesAndMenu.html',
-                        url: '/pages-and-menu',
-                        menuTr: 'dashboards.v3.dox.pagesAndMenu'
-                    },
-                    {
-                        name: 'dashboard.examples.basics.createDashboard',
-                        templateUrl: 'views/examples/createDashboard.html',
-                        url: '/create-dashboard',
-                        menuTr: 'dashboards.v3.dox.createDashboard'
-                    },
                     {
                         name: 'dashboard.examples.basics.angular',
                         templateUrl: 'views/examples/angular.html',
