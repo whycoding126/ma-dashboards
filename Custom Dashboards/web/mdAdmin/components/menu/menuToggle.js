@@ -18,7 +18,7 @@ var menuToggleController = function menuToggleController($state, $timeout, $elem
             if ($state.includes(this.item.name)) {
                 this.open();
             } else {
-                this.close();
+                //this.close();
             }
         }.bind(this));
     };
