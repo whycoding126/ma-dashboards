@@ -375,8 +375,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
-                        return rQ(['./components/watchListBuilder/watchListBuilder'], function (watchListBuilder) {
+                        return rQ(['./components/watchListBuilder/watchListBuilder', './directives/bracketEscape/bracketEscape'], function (watchListBuilder, bracketEscape) {
                             angular.module('watchListBuilder', [])
+                                .directive('bracketEscape', bracketEscape)
                                 .component('watchListBuilder', watchListBuilder);
                             $ocLazyLoad.inject('watchListBuilder');
                             cssInjector.injectLink(require.toUrl('./components/watchListBuilder/watchListBuilder.css'), 'watchListBuilder' ,'link[href="styles/main.css"]');

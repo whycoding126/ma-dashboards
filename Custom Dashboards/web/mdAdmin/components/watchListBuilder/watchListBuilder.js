@@ -263,6 +263,9 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
 
     $ctrl.doPointQuery = function doPointQuery(isPaginateOrSort, ignoreIfPending) {
+        // the query preview tab is hidden if there are parameters, dont do query
+        if ($ctrl.watchlist.params.length) return;
+        
         if ($ctrl.queryPromise && $ctrl.queryPromise.$$state.status === 0) {
             if (ignoreIfPending) {
                 return;
