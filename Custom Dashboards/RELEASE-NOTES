@@ -1,3 +1,6 @@
+*Version 3.2.3*
+* Fix bug where states that are not descendants of dashboard would not load
+
 *Version 3.2.2*
 * Fix login bug where user was not redirected to /dashboards/home
 
