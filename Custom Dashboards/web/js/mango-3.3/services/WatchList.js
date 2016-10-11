@@ -61,7 +61,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
         }
         
         if (this.type === 'static') {
-            return $http({
+            this.pointsPromise = $http({
                 method: 'GET',
                 url: '/rest/v1/watch-lists/' + encodeURIComponent(this.xid) +'/data-points',
                 withCredentials: true,
@@ -75,7 +75,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
             }.bind(this))
         } else if (this.type === 'query') {
             var ptQuery = this.interpolateQuery(params);
-            return Point.query({rqlQuery: ptQuery}).$promise.then(function(items) {
+            this.pointsPromise = Point.query({rqlQuery: ptQuery}).$promise.then(function(items) {
                 this.setPoints(items);
                 return this;
             }.bind(this));
@@ -94,11 +94,15 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                 return $q.when(this);
             }
             
-            return PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
+            this.pointsPromise = PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
                 this.setPoints(points);
                 return this;
             }.bind(this));
+        } else {
+            this.pointsPromise = $q.reject('unknown watchlist type');
         }
+        
+        return this.pointsPromise;
     };
     
     WatchList.prototype.interpolateQuery = function interpolateQuery(params) {
