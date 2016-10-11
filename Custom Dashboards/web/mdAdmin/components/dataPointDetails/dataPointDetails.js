@@ -65,7 +65,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
             $ctrl.dateBar.rollupType = 'NONE';
         }
         else {
-            $ctrl.dateBar.rollupTypesFilter = {nonNumeric: false};
+            $ctrl.dateBar.rollupTypesFilter = {};
             $ctrl.dateBar.rollupType = 'AVERAGE';
         }
     });
