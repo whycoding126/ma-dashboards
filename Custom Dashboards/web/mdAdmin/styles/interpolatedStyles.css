@@ -28,3 +28,10 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
 .mdp-clock .md-button:not(.md-primary):not(:hover) {
     color: {{getThemeColor('primary-hue-2-1.0')}} !important;
 }
+
+/* AmCharts */
+
+.amcharts-gauge-arrow, .amcharts-gauge-arrow-nail {
+    fill: {{getThemeColor('accent')}};
+    stroke: {{getThemeColor('accent')}};
+}
