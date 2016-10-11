@@ -30,7 +30,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.listType = 'hierarchy';
         var hierarchyFolderId = $stateParams.hierarchyFolderId || this.localStorage.hierarchyFolderId;
         
-        PointHierarchy.get({id: hierarchyFolderId}).$promise.then(function(folder) {
+        PointHierarchy.get({id: hierarchyFolderId, points: false}).$promise.then(function(folder) {
             var folders = [];
             PointHierarchy.walkHierarchy(folder, function(folder, parent, index) {
                 folders.push(folder);

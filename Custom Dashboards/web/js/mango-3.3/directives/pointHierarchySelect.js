@@ -21,6 +21,7 @@ function pointHierarchySelect($injector) {
         replace: true,
         scope: {
             path: '<?',
+            points: '<?',
             subfolders: '<?',
             subfoldersOnly: '<?',
             nameMatches: '@?',
@@ -41,6 +42,8 @@ function pointHierarchyController($attrs, PointHierarchy) {
     this.doQuery = function doQuery() {
         var subfoldersOnly = !!this.subfoldersOnly;
         var subfolders = subfoldersOnly || (angular.isUndefined($attrs.subfolders) ? true : !!this.subfolders);
+        var getPoints = angular.isUndefined($attrs.points) ? true : !!this.points;
+        
         var path;
         if (!this.path) {
             path = [];
@@ -49,8 +52,8 @@ function pointHierarchyController($attrs, PointHierarchy) {
         }
         
         var hierarchy = path.length ?
-                PointHierarchy.byPath({path: path, subfolders: subfolders}) :
-                PointHierarchy.getRoot({subfolders: subfolders});
+                PointHierarchy.byPath({path: path, subfolders: subfolders, points: getPoints}) :
+                PointHierarchy.getRoot({subfolders: subfolders, points: getPoints});
 
         this.folderList = [];
         var seenNames = {};

@@ -14,12 +14,12 @@
     </div>
 </md-toolbar>
 
+<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="myPage" md-total="{{$ctrl.watchList.points.length}}"></md-table-pagination>
+
 <ma-watch-list-parameters watch-list="$ctrl.watchList" parameters-changed="$ctrl.updateWatchListParameters(parameters)"
   ng-if="$ctrl.watchList.type === 'query' && $ctrl.watchList.params.length"
   class="parameter-inputs md-padding" layout layout-wrap>
 </ma-watch-list-parameters>
-
-<md-table-pagination md-limit="$ctrl.numberOfRows" md-limit-options="[10, 15, 25, 50, 100, 200]" md-page="myPage" md-total="{{$ctrl.watchList.points.length}}"></md-table-pagination>
 
 <md-table-container ng-class="{'lg-screen': $ctrl.$mdMedia('gt-lg')}" ng-init="myPage=1; myOrder=''">
     <table md-table md-row-select multiple ng-init="$ctrl.selected=[]" ng-model="$ctrl.selected" md-progress="promise" ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
