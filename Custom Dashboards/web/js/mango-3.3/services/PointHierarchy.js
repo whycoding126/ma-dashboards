@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular'], function(angular) {
+define(['angular', 'rql/query'], function(angular, query) {
 'use strict';
 /**
 * @ngdoc service
@@ -117,7 +117,8 @@ By default this is set to `true` and all descendant points are given, even those
 /*
  * Provides service for getting point hierarchy
  */
-function PointHierarchyFactory($resource) {
+PointHierarchyFactory.$inject = ['$resource', 'Point'];
+function PointHierarchyFactory($resource, Point) {
     var PointHierarchy = $resource('/rest/v1/hierarchy/by-id/:id', {
     		id: '@id'
     	}, {
@@ -150,6 +151,28 @@ function PointHierarchyFactory($resource) {
             cache: true
         }
     });
+    
+    PointHierarchy.prototype.walkHierarchy = function walkHierarchy(fn) {
+        return PointHierarchy.walkHierarchy(this, fn);
+    };
+    
+    PointHierarchy.prototype.getPoints = function getPoints(subFolders) {
+        var folderIds = [];
+        if (subFolders) {
+            this.walkHierarchy(function(folder) {
+                folderIds.push(folder.id);
+            });
+        } else {
+            folderIds.push(this.id);
+        }
+        
+        return PointHierarchy.getPointsForFolderIds(folderIds);
+    };
+    
+    PointHierarchy.getPointsForFolderIds = function getPointsForFolderIds(folderIds) {
+        var ptQuery = new query.Query({name: 'in', args: ['pointFolderId'].concat(folderIds)});
+        return Point.query({rqlQuery: ptQuery.toString()}).$promise;
+    };
 
     PointHierarchy.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
         fn(folder, parent, index);
@@ -163,7 +186,6 @@ function PointHierarchyFactory($resource) {
     return PointHierarchy;
 }
 
-PointHierarchyFactory.$inject = ['$resource'];
 return PointHierarchyFactory;
 
 }); // define

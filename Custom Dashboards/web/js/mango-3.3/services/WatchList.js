@@ -74,43 +74,29 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                 return this;
             }.bind(this))
         } else if (this.type === 'query') {
-            var query = this.interpolateQuery(params);
-            return Point.query({rqlQuery: query}).$promise.then(function(items) {
+            var ptQuery = this.interpolateQuery(params);
+            return Point.query({rqlQuery: ptQuery}).$promise.then(function(items) {
                 this.setPoints(items);
                 return this;
             }.bind(this));
         } else if (this.type === 'hierarchy') {
-            var foldersPromise;
+            var folderIds = this.folderIds;
             
             if (this.hierarchyFolders) {
-                foldersPromise = $q.when(this.hierarchyFolders);
-            } else {
-                if (!this.folderIds || !this.folderIds.length) {
-                    this.points = [];
-                    return $q.when(this);
+                folderIds = [];
+                for (var i = 0; i < this.hierarchyFolders.length; i++) {
+                    folderIds.push(this.hierarchyFolders[i].id);
                 }
-                
-                var requests = [];
-                for (var i = 0; i < this.folderIds.length; i++) {
-                    var request = PointHierarchy.get({id: this.folderIds[i], subfolders: false}).$promise;
-                    requests.push(request);
-                }
-                foldersPromise = $q.all(requests);
             }
             
-            return foldersPromise.then(function(folders) {
-                var points = [];
-                for (var i = 0; i < folders.length; i++) {
-                    Array.prototype.splice.apply(points, [0,0].concat(folders[i].points));
-                }
-                var pointXids = [];
-                for (i = 0; i < points.length; i++) {
-                    pointXids.push(points[i].xid);
-                }
-                return Point.objQuery({query: 'in(xid,' + pointXids.join(',') + ')'}).$promise.then(function(points) {
-                    this.setPoints(points);
-                    return this;
-                }.bind(this));
+            if (!folderIds || !folderIds.length) {
+                this.setPoints([]);
+                return $q.when(this);
+            }
+            
+            return PointHierarchy.getPointsForFolderIds(folderIds).then(function(points) {
+                this.setPoints(points);
+                return this;
             }.bind(this));
         }
     };
