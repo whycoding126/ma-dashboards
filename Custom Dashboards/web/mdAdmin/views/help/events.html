@@ -1,24 +1,56 @@
 <h1 ma-tr="dashboards.v3.dox.events"></h1>
 
 <p>
-    The Events page allows you to view a table of all events (also known as alarms) 
-    that are stored in the system. You can filter the table by event type, alarm level, 
-    active status, and whether or not the event has been acknowledged. You can sort the 
-    table by clicking a column header. You can acknowledge a single event by clicking 
-    the green circle on the far right of the row. You can acknowledge all events that 
-    match the filter results by clicking the Acknowledge ### Events button.
+    The <a ui-sref="dashboard.events">Events Page</a> allows you to view a table of all <code>Events</code> (also known as <code>Alarms</code>) 
+    that are stored in the system. You can sort the table by clicking a <code>Column Header.</code> The <code>Arrow</code> next to the header will show which column
+    the table is sorting by and whether it is sorting by ascending or descending.
 </p>
 
-<p>
-    If you have any unacknowledged events in your system they will display in the 
-    header bar as an alarm icon. You can see the total count as well as the breakdown 
-    by alarm level by clicking the icon to expand the menu. Clicking any of these menu 
-    items will open the Events page with the filters automatically set to the selected alarm level.
-</p>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-EventsTable.png" alt="Help-ScreenShots-Events-EventsTable"/>
 
 <p>
-    *Note: If you don’t see any events after clicking one of these menu items you 
-    may need to expand your time range. The events table is filtered by the time 
-    range selected in the header bar so if the event is older than the selected 
-    time range it won’t show up on the table.
+    You can filter the table by <code>Event Type, Alarm Level, 
+    Active Status,</code> and whether or not the event has been <code>Acknowledged.</code>
 </p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-EventTypeButtons.png" alt="Help-ScreenShots-Events-EventTypeButtons"/>
+<br><br>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-FilterDropdowns.png" alt="Help-ScreenShots-Events-FilterDropdowns"/>
+
+<p>
+    You can <code>Acknowledge a Single Event</code> by clicking 
+    the <code>Green Circle Icon</code> on the far right of the row.
+</p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AcknowledgeGreenCircle.png" alt="Help-ScreenShots-Events-AcknowledgeGreenCircle"/>
+
+<p>
+    You can <code>Acknowledge All Events</code> that 
+    match the <code>Filter Results</code> by clicking the <code>Acknowledge # Events Button.</code>
+</p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AcknowledgeAllButton.png" alt="Help-ScreenShots-Events-AcknowledgeAllButton"/>
+
+<p>
+    If you have any <code>Unacknowledged Events</code> in your system they will display in the 
+    <code>Header Bar</code> under the <code>Alarm Icon.</code> 
+</p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AlarmIcon.png" alt="Help-ScreenShots-Events-AlarmIcon"/>
+
+<p>
+    You can see the <code>Total Count</code> of <code>Unacknowledged Events</code> 
+    as well as the breakdown by <code>Alarm Level</code> by clicking the <code>Alarm Icon</code> to <code>Expand the Menu.</code> Clicking any of these menu 
+    items will open the <a ui-sref="dashboard.events">Events Page</a> with the filters automatically set to the chosen <code>Alarm Level.</code>
+</p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-Events-AlarmIconMenu.png" alt="Help-ScreenShots-Events-AlarmIconMenu"/>
+
+<p>
+    <strong>*Note:</strong> If you don’t see any events after clicking one of these menu items you 
+    may need to <code>Expand your Time Range.</code> The <code>Events Table</code> is filtered by the <code>Selected Time 
+    Range</code> in the <code>Header Bar</code> so if the event is older than the <code>Selected 
+    Time Range</code> it won’t show up on the <code>Events Table.</code>
+</p>
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-HeaderTimeRange.png" alt="Help-ScreenShots-HeaderTimeRange"/>

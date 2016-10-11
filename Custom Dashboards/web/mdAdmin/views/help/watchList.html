@@ -9,38 +9,47 @@
 <p>
     On the left side of the <code>Watch List</code> page you can choose between custom <code>Watch Lists,</code> <code>Devices,</code> <code>Data Sources,</code> or directly 
     from folders of the <code>point hierarchy.</code> Choosing a new list will clear the chart and load the new points contained within 
-    that list into the table view.
+    that list into the table view. Each type of list is explained below:
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker.png" alt="Help-ScreenShots-WatchListPicker"/>
+<ul>
+    <li><strong>Watch Lists</strong> - A custom list of points that can be generated using the <a ui-sref="dashboard.help.watchListBuilder">Watchlist Builder</a>. Lists can be generated that are dynamic and based on query parameters.</li>
+    <li><strong>Device Names</strong> - An arbitrary group assigned to data points. Typically used to refer to a machine name. Data sources can have multiple device names, grouping points within a single data source.</li>
+    <li><strong>Data Sources</strong> - A "place" from which data is received. Virtually anything can be a Data Source, insofar as the communications protocol is supported by the application. Examples include Modbus Data Sources, SNMP Data Sources, and HTTP Data Sources.</li>
+    <li><strong>Point Hierarchy</strong> - The point hierarchy can be used to arrange the points in your system in meaningful ways. Data points can be arranged in a hierarchical folder like structure regardless of there data source or device name.</li>
+</ul>
+
+<br />
+
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker.png" alt="Help-ScreenShots-WatchListPicker"/>
 
 <p>
-    All column names on the <code>Watchlist Table</code> can be clicked to sort ascending or 
+    All column names on the <code>Watch List Table</code> can be clicked to sort ascending or 
     descending by the selected field. Point values will flash with the live value as they update in realtime.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListTable.png" alt="Help-ScreenShots-WatchListTable"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListTable.png" alt="Help-ScreenShots-WatchListTable"/>
 
 <p>
-    If you have a <code>Custom Watch List</code> selected you can click the edit button to open the <a ui-sref="dashboard.help.watchListBuilder">Watch List Builder</a> page.
+    If you have a <code>Custom Watch List</code> selected you can click the edit button to open the <a ui-sref="dashboard.help.watchListBuilder">Watch List Builder</a> page and edit the points on the selected <code>Watch List</code>.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-WatchListEditButton.png" alt="Help-Screenshots-WatchListEditButton"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-WatchListEditButton.png" alt="Help-Screenshots-WatchListEditButton"/>
 
 <p>
-    You can click the checkbox on the far left of each row on the <code>Watchlist Table</code> to add a data point to the <code>Chart and Compare</code> pane. 
+    You can click the checkbox on the far left of each row on the <code>Watch List Table</code> to add a data point to the <code>Chart and Compare</code> pane. 
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListChart.png" alt="Help-ScreenShots-WatchListChart"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListChart.png" alt="Help-ScreenShots-WatchListChart"/>
 
 <p>        
     Once added to the chart you can also click the <code>Stats</code> tab to view a comparison of 
-    statistics over the selected time range in the header bar.
+    statistics over the <code>Selected Time Range</code> in the <code>Header Bar.</code>
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-HeaderTimeRange.png" alt="Help-ScreenShots-HeaderTimeRange"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-HeaderTimeRange.png" alt="Help-ScreenShots-HeaderTimeRange"/>
 <br /><br />
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListStatsTab.png" alt="Help-ScreenShots-WatchListStatsTab"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListStatsTab.png" alt="Help-ScreenShots-WatchListStatsTab"/>
 
 <p>
     By default a point will be added to the chart using the the left axis and the line color set in the 
@@ -50,7 +59,7 @@
     that share a far different range.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListChartAxisColors.png" alt="Help-ScreenShots-WatchListChartAxisColors"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListChartAxisColors.png" alt="Help-ScreenShots-WatchListChartAxisColors"/>
 
 <p>
     If you check the <code>Pick Colors</code> checkbox you can set the line color used by the next data point added to the chart. 
@@ -59,27 +68,27 @@
 </p>
 
 <p>
-    The <code>selected time range</code> will be used on the <code>chart,</code> <code>stats tab,</code> and <code>stats/history</code> popup which can be accessed by 
-    clicking the <code>graph icon</code> to the right of the checkbox. Clicking this icon will open a popup dialog showing statistics, 
-    a line chart and a point value history for the data point, corresponding to the <code>selected time range</code> in the header bar.
+    The <code>Selected Time Range</code> will be used on the <code>Chart,</code> <code>Stats Tab,</code> and <code>Stats/History</code> popup which can be accessed by 
+    clicking the <code>Graph Icon</code> to the right of the checkbox. Clicking this icon will open a popup dialog showing statistics, 
+    a line chart and a point value history for the data point, corresponding to the <code>Selected Time Range</code> in the <code>Header Bar</code>.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListTableHistoryIcon.png" alt="Help-ScreenShots-WatchListTableHistoryIcon"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListTableHistoryIcon.png" alt="Help-ScreenShots-WatchListTableHistoryIcon"/>
 <br /><br />
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListHistoryStatsPopUp.png" alt="Help-ScreenShots-WatchListHistoryStatsPopUp"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListHistoryStatsPopUp.png" alt="Help-ScreenShots-WatchListHistoryStatsPopUp"/>
 
 <p>
-    If a data point is <code>settable</code> a <code>wrench icon</code> will display on the <code>Watchlist Table Row</code> that will open a popup dialog you can use to 
-    manually set a data point’s value. The appropriate interface element will be shown for <code>numeric</code> vs. 
-    <code>binary/multistate/alphanumeric</code> type data points.
+    If a data point is <code>Settable</code> a <code>Wrench icon</code> will display on the <code>Watchlist Table Row</code> that will open a popup dialog you can use to 
+    manually set a data point’s value. The appropriate interface element will be shown for <code>Numeric</code> vs. 
+    <code>Binary/Multistate/Alphanumeric</code> type data points.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-WatchListWrenchIcon.png" alt="Help-Screenshots-WatchListWrenchIcon"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-WatchListWrenchIcon.png" alt="Help-Screenshots-WatchListWrenchIcon"/>
 <br /><br />
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-SetPointDialog.png" alt="Help-Screenshots-SetPointDialog"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-SetPointDialog.png" alt="Help-Screenshots-SetPointDialog"/>
 
 <p>
     To the far right of the <code>Watchlist Table Row</code> you can click the icon to link to the <a ui-sref="dashboard.help.dataPointDetails">Data Point Details</a> page for that data point.
 </p>
 
-<img md-whiteframe="5" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png" alt="Help-ScreenShots-WatchListDPD-Icon"/>
+<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png" alt="Help-ScreenShots-WatchListDPD-Icon"/>
