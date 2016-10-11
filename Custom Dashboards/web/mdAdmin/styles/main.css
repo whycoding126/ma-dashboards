@@ -951,3 +951,7 @@ md-select {
 .amcharts-export-menu li:hover > a {
   border-bottom-color: #f2f2f2;
 }
+
+div.help-doc-container {
+	max-width: 1450px;
+}
