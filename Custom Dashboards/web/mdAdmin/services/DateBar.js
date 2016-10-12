@@ -19,7 +19,7 @@ function DateBarFactory(localStorageService) {
         updateIntervals: 10,
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
-        expanded: true,
+        expanded: false,
         rollupTypesFilter: {}
     };
     
