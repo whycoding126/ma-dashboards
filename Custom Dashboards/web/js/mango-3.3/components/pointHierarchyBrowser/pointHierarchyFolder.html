@@ -3,7 +3,7 @@
 </md-checkbox>
 
 <span ng-click="$ctrl.folderClicked($event)">
-  <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.pointCount}} points)</em>
+  <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
   <md-icon ng-show="$ctrl.folder.subfolders.length">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 </span>
 
