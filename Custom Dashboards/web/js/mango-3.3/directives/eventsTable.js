@@ -195,7 +195,10 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 var RQLforAcknowldege = params.join('&');
                 var RQLforDisplay = params.join('&');
                 
-                RQLforAcknowldege += '&acknowledged=false';
+                
+                if (options.acknowledged != 'false') {
+                    RQLforAcknowldege += '&acknowledged=false';
+                }
                 
                 if (options.sort) {
                     var sort = options.sort;
