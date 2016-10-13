@@ -984,7 +984,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     // need to store a reference to the theming provider in order to generate themes at runtime
     MD_ADMIN_SETTINGS.themingProvider = $mdThemingProvider;
 
-    var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDefault';
+    var theme = MD_ADMIN_SETTINGS.defaultTheme || 'mangoDark';
     $mdThemingProvider.setDefaultTheme(theme);
     $mdThemingProvider.alwaysWatchTheme(true);
     $mdThemingProvider.generateThemesOnDemand(true);

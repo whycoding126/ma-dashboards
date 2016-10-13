@@ -1,6 +1,6 @@
 {
   "logoSrc": "/modules/dashboards/web/img/logo.svg",
-  "defaultTheme": "mangoDefault",
+  "defaultTheme": "mangoDark",
   "palettes": {
     "mango-orange": {
       "50": "#ffffff",
@@ -40,7 +40,7 @@
     }
   },
   "themes": {
-    "mangoDefault": {
+    "mangoLight": {
       "primaryPalette": "mango-blue",
       "primaryPaletteHues": {
         "default": "500",
