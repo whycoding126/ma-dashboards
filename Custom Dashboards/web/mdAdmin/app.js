@@ -423,14 +423,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuIcon: 'people',
                 permission: 'superadmin'
             },
-            {
+            /*{
                 url: '/events',
                 name: 'dashboard.settings.events',
                 template: '<iframe-view src="/events.shtm"></iframe-view>',
                 menuTr: 'header.alarms',
                 menuIcon: 'alarm',
                 permission: 'superadmin'
-            },
+            },*/
             {
                 url: '/import-export',
                 name: 'dashboard.settings.importExport',
@@ -517,6 +517,14 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/logging_console.shtm"></iframe-view>',
                 menuTr: 'logging.header.icontext',
                 menuIcon: 'find_in_page',
+                permission: 'superadmin'
+            },
+            {
+                url: '/scheduled-events',
+                name: 'dashboard.settings.scheduledEvents',
+                template: '<iframe-view src="/scheduled_events.shtm"></iframe-view>',
+                menuTr: 'header.scheduledEvents',
+                menuIcon: 'alarm',
                 permission: 'superadmin'
             }
         ]
