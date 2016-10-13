@@ -35,7 +35,8 @@ var liveEditor = function($templateRequest, $sce) {
             $scope.aceConfig = {
                     useWrapMode : true,
                     showGutter: false,
-                    theme: $scope.theme || 'chrome',
+                    theme: $scope.theme || 'tomorrow_night_blue',
+                    fontSize: '13px',
                     mode: $scope.mode || 'html',
                     onLoad: function(editor_) {
                         editor = editor_;

@@ -14,7 +14,7 @@ var prettyprint = function() {
         },
         link: function($scope, $element) {
             $scope.editor = ace.edit($element[0]);
-            $scope.editor.setTheme("ace/theme/chrome");
+            $scope.editor.setTheme("ace/theme/tomorrow_night_blue");
             $scope.editor.getSession().setMode("ace/mode/" + ($scope.prettyprintMode || 'html'));
             $scope.editor.setShowPrintMargin(false);
             $scope.editor.setReadOnly(true);
