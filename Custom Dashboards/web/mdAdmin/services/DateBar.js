@@ -20,7 +20,8 @@ function DateBarFactory(localStorageService) {
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
         expanded: false,
-        rollupTypesFilter: {}
+        rollupTypesFilter: {},
+        dateFilter: true
     };
     
     function DateBar() {
@@ -87,6 +88,10 @@ function DateBarFactory(localStorageService) {
             this.data.to = value.valueOf();
             this.save();
         },
+        set dateFilter(value) {
+            this.data.dateFilter = value;
+            this.save();
+        },
         get preset() {
             return this.data.preset;
         },
@@ -130,6 +135,9 @@ function DateBarFactory(localStorageService) {
                 this.cache.to = new Date(this.data.to);
             }
             return this.cache.to;
+        },
+        get dateFilter() {
+            return this.data.dateFilter;
         }
     };
     

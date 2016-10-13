@@ -240,7 +240,9 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.events',
         menuIcon: 'alarm',
         params: {
-            dateBar: {}
+            dateBar: {
+                dateFilter: true
+            }
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {

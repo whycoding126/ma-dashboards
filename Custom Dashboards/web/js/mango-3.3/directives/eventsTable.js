@@ -37,7 +37,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             limit: '=?',
             sort: '=?',
             from: '=?',
-            to: '=?'
+            to: '=?',
+            dateFilter: '=?'
         },
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
@@ -136,7 +137,8 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                     pointId: $scope.pointId,
                     eventId: $scope.eventId,
                     from: $scope.from,
-                    to: $scope.to
+                    to: $scope.to,
+                    dateFilter: $scope.dateFilter
                 };
             }, function(value) {
                 
@@ -185,10 +187,10 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                         params.push('acknowledged=false');
                     }
                 }
-                if (options.from) {
+                if (options.from && options.dateFilter) {
                     params.push('activeTimestamp=ge=' + options.from.valueOf());
                 }
-                if (options.to) {
+                if (options.to && options.dateFilter) {
                     params.push('activeTimestamp=lt=' + options.to.valueOf());
                 }
                 
