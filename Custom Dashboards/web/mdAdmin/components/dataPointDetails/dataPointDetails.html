@@ -27,7 +27,7 @@
 				</div>
 				<div layout="row">
 					<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
-					<md-button class="md-accent md-raised" ng-href="{{'/data_point_edit.shtm?dpid=' + myPoint.id}}" target="_blank">{{'dashboards.v3.app.edit' | tr}}</md-button>
+					<md-button class="md-accent md-raised" ng-click="$ctrl.openEditPage('dashboard.settings.dataSources', myPoint.id)">{{'dashboards.v3.app.edit' | tr}}</md-button>
 				</div>
 			</md-card-content>
 		</md-card>

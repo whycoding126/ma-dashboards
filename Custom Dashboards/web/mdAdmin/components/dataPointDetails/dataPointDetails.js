@@ -17,6 +17,10 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     var timeoutID;
     var lastValue;
     
+    $ctrl.openEditPage = function(state, param) {
+        $state.go(state, { pointId: param });
+    };
+    
     $ctrl.pointValueChanged = function pointValueChanged(point) {
         // manually add and remove classes rather than using ng-class as point values can
         // change rapidly and result in huge slow downs / heaps of digest loops

@@ -408,12 +408,15 @@ mdAdminApp.constant('MENU_ITEMS', [
                 permission: 'superadmin'
             },
             {
-                url: '/data-sources',
+                url: '/data-sources/{pointId}',
                 name: 'dashboard.settings.dataSources',
-                template: '<iframe-view src="/data_sources.shtm"></iframe-view>',
+                template: '<iframe-view src="{{ \'/data_point_edit.shtm\' + pointId}}"></iframe-view>',
                 menuTr: 'header.dataSources',
                 menuIcon: 'device_hub',
-                permission: 'superadmin'
+                permission: 'superadmin',
+                controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
+                    $scope.pointId = $stateParams.pointId ? '?dpid='+$stateParams.pointId : '';
+                }]
             },
             {
                 url: '/users',
