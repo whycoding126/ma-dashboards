@@ -2,39 +2,27 @@
 	<h1 ma-tr="dashboards.v3.dox.pagesAndMenu"></h1>
 
 	<p>
-		Custom dashboard pages can be created from within the app itself, using our 
-		built in code editor and UI component library. Basic HTML code can be used 
-		to create beautiful and dynamic dashboards that are integrated into the app. 
-		Examples of how to use our components, and full documentation of each 
-		component can be found under the <code>Examples</code> and <code>API Docs</code> menu items.
+		Custom pages can be created from within the app's <code>CMS</code> environment, using our 
+		built in <code>Code Editor</code> and <code>UI Component Library</code> to create and link new pages to the app.
+		Mango's <code>HTML Web Components</code> combined with <code>Angular</code> 
+		templating logic allows you to create simple or complex dynamic pages that pull data
+		from Mango's database and visualize the data as responsive interface elements, charts and tables.
+		Interactive demos and examples can be found under the <code>Examples</code> menu section.
+		Full documentation of all parameters of each component can be found under <code>API Docs.</code>
 	</p>
-
+	
 	<p>
-		Under <a ui-sref="dashboard.settings.editPages">Settings > Edit Pages</a> you 
-		will find the page editor tool. You can use this tool to manage all of your custom pages, 
-		including creating new pages, setting permissions, deleting pages and modifying a
-		pages menu item. You will need to enter the HTML into the code editor on the left. 
-		You will see a live preview on the right as you enter code. 
-		At any time you can save and view the page in full screen.
+		The <a ui-sref="dashboard.settings.editPages">Page Editor</a> can be found under <code>Settings > Edit Pages</code> in the menu.
+		You can use this tool to manage all of your custom pages.
 	</p>
-	<p> 
-		A quick way to get started is to click the
-		<code>Copy markup to new custom page</code> link from any of the example pages. 
-		You will first give the page a name and hit save. You can then add a menu item 
-		for your new custom page by clicking the <code>ADD/EDIT MENU ITEM</code> button.
-	</p>
-
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Controls.png" alt="Help-ScreenShots-EditPages-Controls"/>
+	
 	<p>
-		 If you are looking to start with a pre-made layout you can also copy one of 
-		 the <a ui-sref="dashboard.examples.templates.adaptiveLayouts">Adaptive Layout</a> 
-		 pages as a starting point. You can then copy and paste in the components into the pre-built card layouts.
-	<p>
-		You will then want to give the menu item a parent item, state URL, menu text, and menu icon. 
-		The entire menu is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Settings > Edit Menu</a> 
-		page. You can hide/show menu items, edit menu item text and icons, reorder menu items, add new menu 
-		items and delete custom menu items.
+		The inputs above the button row allow you to choose a pre-existing page to edit, update the name of a page, and set the page's permissions.
+		<code>Read / Edit Permissions</code> can be used to prevent access to a page. 
 	</p>
-
+	
 	<h2>Permissions</h2>
 
 	<p>
@@ -48,6 +36,67 @@
 		Users with the <strong>edit-menus</strong> permission can edit the menus. 
 		When editing the menu items you can set a permission for each menu item, 
 		if the user does not have this permission then the menu item will not be shown.
+	</p>
+	
+	<p>
+		The row of buttons allows you to <code>Save</code> your changes to the page you are currently editing. The <code>Revert</code>
+		button will reset the code editor to the last saved state. The <code>Delete</code> button will remove a page from the sytem after confirming.
+		The <code>New Page</code> button will set-up a blank page for you to work with. Be sure to <code>Save</code> changes to the previous page first.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Buttons.png" alt="Help-ScreenShots-EditPages-Buttons"/>
+	
+	<p>
+		Before you can <code>Save</code> a new page you will need to name it.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-ButtonsNoName.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
+	
+	<p> 
+		You will need to enter the HTML into the code editor on the left. 
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-CodePane.png" alt="Help-ScreenShots-EditPages-CodePane"/>
+	
+	<p>
+		You will see a live preview on the right as you enter code. 
+		At any time you can save and view the page in full screen.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-PreviewPane.png" alt="Help-ScreenShots-EditPages-PreviewPane"/>
+	
+	<p>
+		The <code>View Page</code> button will open the last saved state of the page in full-screen mode in a new tab. 
+		This is the same link that you can use to share the page with somebody
+		and will be used by the page's <code>Menu Item.</code>
+	</p>
+	
+	<h2>Starting from an Example or Template</h2>
+	
+	<p> 
+		A quick way to get started is to click the
+		<code>Copy markup to new custom page</code> link from any of the example pages.
+		This will create a new page with the code copied into it.
+	</p>
+
+	<img src="" alt="" />
+	
+	<p>
+		 If you are looking to start with a pre-made layout you can also copy one of 
+		 the <a ui-sref="dashboard.examples.templates.adaptiveLayouts">Adaptive Layout</a> 
+		 pages as a starting point. These examples give you a predefined responsive layout 
+		 that you can adapt to your needs.
+	</p>
+	
+	<img src="" alt="">
+	
+	<h2>Adding a Menu Item</h2>
+	<p>
+		The <code>Add Edit Menu Item</code> button will open up the <code>Edit Menu Item</code> dialog.
+		From here you will give the menu item a parent item, state URL, menu text, and menu icon. 
+		The entire menu is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Settings > Edit Menu</a> 
+		page. You can hide/show menu items, edit menu item text and icons, reorder menu items, add new menu 
+		items and delete custom menu items.
 	</p>
 
 	<h2>Adding Your Own Images</h2>
