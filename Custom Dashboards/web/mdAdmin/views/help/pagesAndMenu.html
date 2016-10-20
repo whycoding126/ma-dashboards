@@ -7,9 +7,13 @@
 		Mango's <code>HTML Web Components</code> combined with <code>Angular</code> 
 		templating logic allows you to create simple or complex dynamic pages that pull data
 		from Mango's database and visualize the data as responsive interface elements, charts and tables.
-		Interactive demos and examples can be found under the <code>Examples</code> menu section.
-		Full documentation of all parameters of each component can be found under <code>API Docs.</code>
+		Interactive <code>Demos</code> and <code>Examples</code> can be found under the <code>Examples</code> menu section.
+		Full documentation of all parameters of each component can be found under <code>API Docs</code>.
 	</p>
+	
+	<br>
+	
+	<h2>The Page Editor</h2>
 	
 	<p>
 		The <a ui-sref="dashboard.settings.editPages">Page Editor</a> can be found under <code>Settings > Edit Pages</code> in the menu.
@@ -23,6 +27,90 @@
 		<code>Read / Edit Permissions</code> can be used to prevent access to a page. 
 	</p>
 	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Buttons.png" alt="Help-ScreenShots-EditPages-Buttons"/>
+	
+	<p>
+		The first button will <code>Save</code> your changes to the page you are currently editing. The <code>Revert</code>
+		button will reset the code editor to the last saved state. The <code>Delete</code> button will remove a page from the sytem after confirming.
+		The <code>New Page</code> button will set-up a blank page for you to work with. Be sure to <code>Save</code> changes to the previous page first.
+	</p>
+	
+	<p>
+		Before you can <code>Save</code> a new page you will need to give it a <code>Name</code>.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-ButtonsNoName.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
+	
+	<p>
+		You can <code>Toggle</code> on and off the <code>Editor Pane</code> and <code>Preview Pane</code> allowing you to view just one pane or both in a side-by-side view.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Toggles.png" alt="Help-ScreenShots-EditPages-Toggles"/>
+	
+	<br><br>
+	
+	<h2>Editing Code</h2>
+	
+	<p> 
+		You will enter HTML into the code editor on the left. If you prefer you can work in your desktop code editor of choice and <code>Copy &amp; Paste</code>
+		your code into the <code>Editor Pane</code>.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-CodePane.png" alt="Help-ScreenShots-EditPages-CodePane"/>
+	
+	<br><br>
+	
+	<h2>Previewing the Page</h2>
+	
+	<p>
+		You will see a live preview of your page in the <code>Preview Pane</code> on the right as you enter code. 
+		At any time you can <code>Save</code> and <code>View</code> the page in full screen or even from a different browser or mobile device.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-PreviewPane.png" alt="Help-ScreenShots-EditPages-PreviewPane"/>
+	
+	<p>
+		The <code>View Page</code> button will open the last saved state of the page in full-screen mode in a new tab. 
+		This is the same <code>URL</code> that you can use to share the page with somebody
+		and will be used by the page's <code>Menu Item</code>.
+	</p>
+	
+	<br>
+	
+	<h2>Starting from an Example or Template</h2>
+	
+	<p> 
+		A quick way to get started is to click the
+		<code>Copy Markup to New Custom Page</code> link from any of the example pages.
+		This will create a new page with the code copied into it.
+	</p>
+
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-CopyExampleLink.png" alt="Help-ScreenShots-EditPages-CopyExampleLink"/>
+	
+	<p>
+		 If you are looking to start with a pre-made layout you can also copy one of 
+		 the <a ui-sref="dashboard.examples.templates.adaptiveLayouts">Adaptive Layout</a> 
+		 templates as a starting point. Click the <code>New Page From Layout</code> button 
+		 to create a new page using the layout shown. These examples give you a predefined responsive layout 
+		 that you can adapt to your needs.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-CopyLayout.png" alt="Help-ScreenShots-EditPages-CopyLayout"/>
+	
+	<br><br>
+	
+	<h2>Adding Your Own Images</h2>
+
+	<p>
+		If you would like to include your own images on a page you can put them in an 
+		image folder in your overrides. Create a new folder at
+		<code>${MA_HOME}/overrides/web/modules/dashboards/web/images</code> and place 
+		your image files in there. You can then insert the image onto a page using:
+		<code ng-non-bindable>&lt;img ng-src="/modules/dashboards/web/images/myImage.png" alt="My Image"/&gt;</code>
+	</p>
+	
+	<br>
+	
 	<h2>Permissions</h2>
 
 	<p>
@@ -35,77 +123,19 @@
 	<p>
 		Users with the <strong>edit-menus</strong> permission can edit the menus. 
 		When editing the menu items you can set a permission for each menu item, 
-		if the user does not have this permission then the menu item will not be shown.
+		if the user does not have this permission the menu item will not be shown.
 	</p>
 	
-	<p>
-		The row of buttons allows you to <code>Save</code> your changes to the page you are currently editing. The <code>Revert</code>
-		button will reset the code editor to the last saved state. The <code>Delete</code> button will remove a page from the sytem after confirming.
-		The <code>New Page</code> button will set-up a blank page for you to work with. Be sure to <code>Save</code> changes to the previous page first.
-	</p>
-	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Buttons.png" alt="Help-ScreenShots-EditPages-Buttons"/>
-	
-	<p>
-		Before you can <code>Save</code> a new page you will need to name it.
-	</p>
-	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-ButtonsNoName.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
-	
-	<p> 
-		You will need to enter the HTML into the code editor on the left. 
-	</p>
-	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-CodePane.png" alt="Help-ScreenShots-EditPages-CodePane"/>
-	
-	<p>
-		You will see a live preview on the right as you enter code. 
-		At any time you can save and view the page in full screen.
-	</p>
-	
-	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-PreviewPane.png" alt="Help-ScreenShots-EditPages-PreviewPane"/>
-	
-	<p>
-		The <code>View Page</code> button will open the last saved state of the page in full-screen mode in a new tab. 
-		This is the same link that you can use to share the page with somebody
-		and will be used by the page's <code>Menu Item.</code>
-	</p>
-	
-	<h2>Starting from an Example or Template</h2>
-	
-	<p> 
-		A quick way to get started is to click the
-		<code>Copy markup to new custom page</code> link from any of the example pages.
-		This will create a new page with the code copied into it.
-	</p>
-
-	<img src="" alt="" />
-	
-	<p>
-		 If you are looking to start with a pre-made layout you can also copy one of 
-		 the <a ui-sref="dashboard.examples.templates.adaptiveLayouts">Adaptive Layout</a> 
-		 pages as a starting point. These examples give you a predefined responsive layout 
-		 that you can adapt to your needs.
-	</p>
-	
-	<img src="" alt="">
+	<br>
 	
 	<h2>Adding a Menu Item</h2>
+	
 	<p>
 		The <code>Add Edit Menu Item</code> button will open up the <code>Edit Menu Item</code> dialog.
-		From here you will give the menu item a parent item, state URL, menu text, and menu icon. 
-		The entire menu is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Settings > Edit Menu</a> 
-		page. You can hide/show menu items, edit menu item text and icons, reorder menu items, add new menu 
-		items and delete custom menu items.
-	</p>
-
-	<h2>Adding Your Own Images</h2>
-
-	<p>
-		If you would like to include your own images on a page you can put them in an 
-		image folder in your overrides. Create a new folder at
-		<code>${MA_HOME}/overrides/web/modules/dashboards/web/images</code> and place 
-		your image files in there. You can then insert the image onto a page using:
-		<code ng-non-bindable>&lt;img ng-src="/modules/dashboards/web/images/myImage.png" alt="My Image"/&gt;</code>
+		From here you will give the menu item a <code>Parent Item,</code>  <code>URL,</code> <code>Label,</code> and <code>Menu Icon</code>. 
+		The entire menu is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Menu Editor</a> under 
+		<code>Settings > Edit Menu</code> in the menu.
+		You can <code>Hide/Show</code> menu items, <code>Edit</code> menu item <code>Labels</code> and <code>Icons,</code> <code>Reorder</code> menu items, add <code>New</code> menu 
+		items and <code>Delete</code> custom menu items. For more information see the <code>Menu Help Page</code>.
 	</p>
 </div>
