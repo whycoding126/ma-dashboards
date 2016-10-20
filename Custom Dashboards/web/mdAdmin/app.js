@@ -305,10 +305,16 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'dashboards.v3.app.watchListBuilder'
             },
             {
-                url: '/pages-and-menu',
-                name: 'dashboard.help.pagesAndMenu',
-                templateUrl: 'views/help/pagesAndMenu.html',
-                menuTr: 'dashboards.v3.dox.pagesAndMenu'
+                url: '/custom-pages',
+                name: 'dashboard.help.customPages',
+                templateUrl: 'views/help/customPages.html',
+                menuTr: 'dashboards.v3.dox.customPages'
+            },
+            {
+                url: '/menu-editor',
+                name: 'dashboard.help.menuEditor',
+                templateUrl: 'views/help/menuEditor.html',
+                menuTr: 'dashboards.v3.dox.menuEditor'
             },
             {
                 url: '/custom-dashboards',

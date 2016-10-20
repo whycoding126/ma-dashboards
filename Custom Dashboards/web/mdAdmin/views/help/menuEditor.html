@@ -1,0 +1,79 @@
+<div class="help-doc-container">
+	<h1 ma-tr="dashboards.v3.dox.menuEditor"></h1>
+
+	<p>
+		Custom pages can be created from within the app's <code>CMS</code> environment, using our 
+		built in <code>Code Editor</code> and <code>UI Component Library</code> to create and link new pages to the app.
+		Mango's <code>HTML Web Components</code> combined with <code>Angular</code> 
+		templating logic allows you to create simple or complex dynamic pages that pull data
+		from Mango's database and visualize the data as responsive interface elements, charts and tables.
+		Interactive <code>Demos</code> and <code>Examples</code> can be found under the <code>Examples</code> menu section.
+		Full documentation of all parameters of each component can be found under <code>API Docs</code>.
+	</p>
+	
+	<br>
+	
+	<h2>The Page Editor</h2>
+	
+	<p>
+		The <a ui-sref="dashboard.settings.editPages">Page Editor</a> can be found under <code>Settings > Edit Pages</code> in the menu.
+		You can use this tool to manage all of your custom pages.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Controls.png" alt="Help-ScreenShots-EditPages-Controls"/>
+	
+	<p>
+		The inputs above the button row allow you to choose a pre-existing page to edit, update the name of a page, and set the page's permissions.
+		<code>Read / Edit Permissions</code> can be used to prevent access to a page. 
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Buttons.png" alt="Help-ScreenShots-EditPages-Buttons"/>
+	
+	<p>
+		The first button will <code>Save</code> your changes to the page you are currently editing. The <code>Revert</code>
+		button will reset the code editor to the last saved state. The <code>Delete</code> button will remove a page from the sytem after confirming.
+		The <code>New Page</code> button will set-up a blank page for you to work with. Be sure to <code>Save</code> changes to the previous page first.
+	</p>
+	
+	<p>
+		Before you can <code>Save</code> a new page you will need to give it a <code>Name</code>.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-ButtonsNoName.png" alt="Help-ScreenShots-EditPages-ButtonsNoName"/>
+	
+	<p>
+		You can <code>Toggle</code> on and off the <code>Editor Pane</code> and <code>Preview Pane</code> allowing you to view just one pane or both in a side-by-side view.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditPages-Toggles.png" alt="Help-ScreenShots-EditPages-Toggles"/>
+	
+	<br><br>
+	
+	<h2>Permissions</h2>
+
+	<p>
+		By default, all pages that are created can be viewed by all users and require 
+		the user to have the <strong>edit-pages</strong> permission to edit them. 
+		If you want to restrict the pages to be viewable only by
+		admin users, change the read permission to <strong>superadmin</strong>.
+	</p>
+
+	<p>
+		Users with the <strong>edit-menus</strong> permission can edit the menus. 
+		When editing the menu items you can set a permission for each menu item, 
+		if the user does not have this permission the menu item will not be shown.
+	</p>
+	
+	<br>
+	
+	<h2>Adding a Menu Item</h2>
+	
+	<p>
+		The <code>Add Edit Menu Item</code> button will open up the <code>Edit Menu Item</code> dialog.
+		From here you will give the menu item a <code>Parent Item,</code>  <code>URL,</code> <code>Label,</code> and <code>Menu Icon</code>. 
+		The entire menu is completely customizable from the <a ui-sref="dashboard.settings.editMenu">Menu Editor</a> under 
+		<code>Settings > Edit Menu</code> in the menu.
+		You can <code>Hide/Show</code> menu items, <code>Edit</code> menu item <code>Labels</code> and <code>Icons,</code> <code>Reorder</code> menu items, add <code>New</code> menu 
+		items and <code>Delete</code> custom menu items. For more information see the <code>Menu Help Page</code>.
+	</p>
+</div>
