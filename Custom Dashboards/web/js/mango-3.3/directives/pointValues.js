@@ -455,7 +455,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                     if (dataType === 'NUMERIC' && $scope.rendered !== 'true') {
                         for (var i = 0; i < values.length; i++) {
                             if (typeof values[i].value === 'string') {
-                                values[i].value = parseFloat(values[i].value);
+                                values[i].value = parseInternationalFloat(values[i].value);
                             }
                         }
                     }
@@ -471,6 +471,31 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             }
         } // End link funciton
     };
+    
+    function parseInternationalFloat(strValue) {
+        // replace 1,234,567 with 1234567
+        strValue = strValue.replace(/\b\d{1,3}(?:,\d{3})+\b/g, function(match) {
+            return match.replace(/,/g, '');
+        });
+
+        // replace 1.234.567 with 1234567 (i.e. 2 or more periods with groups of 3 digits)
+        strValue = strValue.replace(/\b\d{1,3}(?:\.\d{3}){2,}\b/g, function(match) {
+            return match.replace(/\./g, '');
+        });
+        
+        // replace 1.234,89 with 1234.89 (i.e. only one period but has comma as decimal separator)
+        strValue = strValue.replace(/\b(\d{1,3}(?:\.\d{3})),(\d+)\b/g, function(match, whole, fraction) {
+            return whole.replace(/\./g, '') + '.' + fraction;
+        });
+        
+        // replace any other commas with decimal points
+        strValue = strValue.replace(/,/g, '.');
+        
+        // remove spaces and single quotes (can be thousands separators)
+        strValue = strValue.replace(/[ ']/g, '');
+
+        return parseFloat(strValue);
+    }
 }
 
 pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeout', 'Util'];
