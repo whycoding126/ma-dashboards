@@ -97,11 +97,56 @@
 	
 	<br><br>
 	
+	<p>
+		From this dialog you can set the menu item's properties. At the top you can choose a <code>Parent Item</code> to nest your menu item under. Alternatively you can choose
+		to hide the item from the menu by clicking the <code>Show Menu Item</code> toggle.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ParentItem-Toggle.png" alt="Help-ScreenShots-EditMenu-ParentItem-Toggle"/>
+	
+	<p>
+		The <code>State Name</code> is the unique ID for the menu item. If you are using a parent item it should contain the parent menu item's state name. All state names should 
+		start with <code>dashboard.</code> as this is the state name of the root (top level). The <code>State URL</code> is what will display in the browser's address bar and will be 
+		used in the <code>URL</code> to directly link to the page. It will be prefixed with the parent states URL.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-State-Url.png" alt="Help-ScreenShots-EditMenu-State-Url"/>
+	
+	<p>
+		The radio buttons allow you to choose whether or not make the <a ui-sref="dashboard.help.dateBar">Date Bar</a> visible on the page. Also, you can choose whether or not to have rollup
+		controls display on the <code>Date Bar</code>.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-DateBarOn.png" alt="Help-ScreenShots-EditMenu-DateBarOn"/>
+	
+	<p>
+		The <code>Choose a Custom Page</code> dropdown will list all the <code>User Created</code> custom pages that are saved in the system. You can choose one to link to or disable this functionality
+		if the menu item should function just as a folder.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ChoosePage.png" alt="Help-ScreenShots-EditMenu-ChoosePage"/>
+	
+	<p>
+		The <code>Menu Text</code> input defines the label that will display with the Menu Item and also in the <code>Header Bar</code>. If you are using custom translations you can enter
+		the translation key defined in <code>i18n.properties</code>. You can overide the <code>Menu Text</code> on default pages here as well.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-Label.png" alt="Help-ScreenShots-EditMenu-Label"/>
+	
+	<p>
+		The <code>Icon</code> to display to the left of the <code>Menu Text</code> can be set here using a <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a> 
+		or <a href="https://design.google.com/icons/" target="_blank">Material Icon</a> name. You will see a preview of the icon on the left.
+	</p>
+	
+	<img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-Icon-Permission.png" alt="Help-ScreenShots-EditMenu-Icon-Permission"/>
+	
+	<br><br>
+	
 	<h2>Permissions</h2>
 
 	<p>
-		Users with the <strong>edit-menus</strong> permission can edit the menus. 
-		When editing the menu items you can set a permission for each menu item, 
-		if the user does not have this permission the menu item will not be shown.
+		Users with the <strong>edit-menus</strong> permission can edit any of the menu items or structure. 
+		When editing the menu items you can set a permission under the <code>Permission Required</code> input of the <code>Edit Menu Dialog</code>.
+		If the user does not have this permission the menu item will not be shown.
 	</p>
 </div>
