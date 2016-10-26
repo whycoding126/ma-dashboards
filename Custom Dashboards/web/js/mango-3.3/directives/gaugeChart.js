@@ -70,7 +70,16 @@ function gaugeChart() {
           band2Color: '@',
           band3End: '@',
           band3Color: '@',
-          interval: '@'
+          interval: '@',
+          radius: '@',
+          valueOffset: '@',
+          valueFontSize: '@',
+          axisLabelFontSize: '@',
+          axisThickness: '@',
+          tickInterval: '@',
+          arrowInnerRadius: '@',
+          arrowInnerRadius: '@',
+          arrowAlpha: '@'
         },
         template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
@@ -88,6 +97,7 @@ function gaugeChart() {
                     return;
                 }
                 var axis = options.axes[0];
+                var arrow = options.arrows[0];
                 axis.bands = [];
                 axis.startValue = parseFloat($scope.start) || 0;
                 axis.endValue = parseFloat($scope.end) || 100;
@@ -125,6 +135,23 @@ function gaugeChart() {
                         axis.endValue = stop3;
                 }
                 axis.valueInterval = parseFloat($scope.interval) || (axis.endValue - axis.startValue) / 5;
+				
+				axis.radius = $scope.radius || '95%';
+				axis.bottomTextYOffset =  parseFloat($scope.valueOffset) || -20;
+                axis.bottomTextFontSize =  parseFloat($scope.valueFontSize) || 12;
+                axis.axisThickness =  parseFloat($scope.axisThickness) || 1;
+                if ($scope.axisLabelFontSize) {
+                    axis.fontSize = parseFloat($scope.axisLabelFontSize);
+                }
+                if ($scope.tickInterval) {
+                    axis.minorTickInterval = parseFloat($scope.tickInterval);
+                }
+                
+                arrow.nailRadius = parseFloat($scope.arrowInnerRadius) || 8;
+                arrow.innerRadius = parseFloat($scope.arrowInnerRadius)+3 || 10;
+                arrow.alpha = parseFloat($scope.arrowAlpha) || 1;
+                arrow.nailBorderAlpha = parseFloat($scope.arrowAlpha) || 1;
+                
                 if (chart) chart.validateNow();
             }
 
@@ -166,16 +193,18 @@ function defaultOptions() {
         theme: "light",
         addClassNames: true,
         axes: [{
-            axisThickness: 1,
             axisAlpha: 0.5,
             tickAlpha: 0.5,
             startValue: 0,
             endValue: 100,
             bands: [],
-            bottomText: "",
-            bottomTextYOffset: -20
+            bottomText: ""
         }],
-        arrows: [{}]
+        arrows: [{
+            nailAlpha: 0,
+            borderAlpha: 0,
+            nailBorderThickness: 6
+        }]
     };
 }
 

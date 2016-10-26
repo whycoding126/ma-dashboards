@@ -925,7 +925,7 @@ md-select {
     stroke: inherit;
 }
 
-.amcharts-axis-label {
+.amcharts-axis-label, .amcharts-axis-bottom-label {
   font-family: inherit;
   fill: inherit;
   stroke-width: 0;
