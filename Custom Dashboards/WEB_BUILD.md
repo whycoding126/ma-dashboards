@@ -5,4 +5,7 @@ You will need [node.js](https://nodejs.org/), [Bower](http://bower.io/) and [Gul
 2. bower install
 3. gulp
 
+To run JavaScript (mocha) tests
+1. npm test
+
 Notes, ace has a loader regression in 1.2.4, fixed version to 1.2.3
