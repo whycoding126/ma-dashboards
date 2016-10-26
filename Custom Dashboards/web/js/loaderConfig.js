@@ -1,31 +1,38 @@
 (function(root) {
 'use strict';
 
+// when run under node.js (e.g. for testing) we set an explicit path to the dashboard module
+var module = requirejs.dashboardModulePath;
 var mangoUrl = '';
 
-// finds the script tag used to load the mango core loader config
-// and extracts the mango base url from its src
-var scriptTags = document.getElementsByTagName('script');
-var scriptSuffix = '/resources/loaderConfig.js';
-for (var i = scriptTags.length - 1; i >= 0; i--) {
-    var script = scriptTags[i];
-    var scriptSrc = script.getAttribute('src');
-    if (!scriptSrc) continue;
-    
-    var from = scriptSrc.length - scriptSuffix.length;
-    if (scriptSrc.indexOf(scriptSuffix, from) === from) {
-        var match = /^(http|https):\/\/.*?(?=\/)/.exec(scriptSrc);
-        if (match) mangoUrl = match[0];
-        break;
+// no explicit module path set on requirejs object, detect base URL and set path
+// to Mango's web path for the dashboard module
+if (!module) {
+    // finds the script tag used to load the mango core loader config
+    // and extracts the mango base url from its src
+    var scriptTags = document.getElementsByTagName('script');
+    var scriptSuffix = '/resources/loaderConfig.js';
+    for (var i = scriptTags.length - 1; i >= 0; i--) {
+        var script = scriptTags[i];
+        var scriptSrc = script.getAttribute('src');
+        if (!scriptSrc) continue;
+        
+        var from = scriptSrc.length - scriptSuffix.length;
+        if (scriptSrc.indexOf(scriptSuffix, from) === from) {
+            var match = /^(http|https):\/\/.*?(?=\/)/.exec(scriptSrc);
+            if (match) mangoUrl = match[0];
+            break;
+        }
     }
+    
+    module = mangoUrl + '/modules/dashboards/web';
 }
 
-var module = mangoUrl + '/modules/dashboards/web';
 var vendor = module + '/vendor';
 
-require.config({
+requirejs.config({
     // set the base url to the old base prefixed by the mango server base url
-    baseUrl: mangoUrl + require.toUrl(''),
+    baseUrl: mangoUrl + requirejs.toUrl(''),
     paths : {
         'dashboards' : module,
         // The mango-3.0 folder contains the actual 3.0 code, however when 3.1 was released the updated
@@ -64,6 +71,92 @@ require.config({
         'amcharts' : vendor + '/amcharts'
     },
     shim : {
+        'amcharts/funnel': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/gauge': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/pie': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/radar': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/serial': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/xy': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/gantt': {
+            deps: ['amcharts/serial'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/themes/chalk': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/themes/light': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/themes/dark': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'amcharts/themes/black': {
+            deps: ['amcharts/amcharts'],
+            exports: 'AmCharts',
+            init: function() {
+                AmCharts.isReady = true;
+            }
+        },
+        'angular': {
+            deps: ['jquery'],
+            init: function() {
+                return window.angular;
+            }
+        },
+        'angular-resource': {
+            deps: ['angular']
+        },
         'angular-route' : {
             deps : ['angular']
         },
@@ -98,9 +191,6 @@ require.config({
             deps : ['angular']
         },
         'angular-aria' : {
-            deps : ['angular']
-        },
-        'angular-resource' : {
             deps : ['angular']
         },
         'angular-local-storage' : {

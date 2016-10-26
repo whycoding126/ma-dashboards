@@ -1,16 +1,36 @@
 {
-  "dependencies": {
-    "gulp": "*",
-    "gulp-load-plugins": "*",
-    "gulp-filter": "*",
-    "main-bower-files": "*",
-    "gulp-uglify": "*",
-    "gulp-clean": "*",
-    "path-exists": "*",
-    "gulp-rename": "*"
-  },
+  "name": "mango_dashboards",
+  "version": "3.3.0",
+  "description": "Mango Custom Dashboards",
+  "main": "index.js",
+  "dependencies": {},
   "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.5.8",
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-filter": "^4.0.0",
     "gulp-ignore": "^2.0.1",
-    "gulp-ngdocs": "^0.2.13"
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-ngdocs": "^0.2.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4",
+    "jsdom": "^9.8.3",
+    "jsdom-global": "^2.1.0",
+    "main-bower-files": "^2.13.1",
+    "mocha": "^3.1.2",
+    "path-exists": "^3.0.0",
+    "requirejs": "^2.3.2",
+    "sinon": "^1.17.6"
+  },
+  "scripts": {
+    "test": "mocha web/js/**/*.spec.js"
+  },
+  "author": "Jared Wiltshire <jared@infiniteautomation.com>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infiniteautomation/ma-dashboards.git"
   }
 }
