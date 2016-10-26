@@ -67,21 +67,19 @@
 </div>
 
 <div layout="column" layout-gt-md="row">
-    <div flex="100" ng-if="showEditor">
-        <md-card>
-            <md-card-title>
+    <div flex="100" layout="column" ng-show="showEditor" style="min-width: 50%;">
+        <md-card flex layout="column">
+            <md-card-title flex="nogrow">
               <md-card-title-text>
                 <span class="md-headline" ma-tr="dashboards.v3.app.editor"></span>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content layout="column">
-                <div flex>
-                    <div style="height:400px" live-editor="selectedPage.jsonData.markup"></div>
-                </div>
+            <md-card-content flex layout="column">
+              <div flex style="height: 500px;" live-editor="selectedPage.jsonData.markup"></div>
             </md-card-content>
         </md-card>
     </div>
-    <div flex="100" ng-if="showPreview">
+    <div flex="100" ng-show="showPreview" style="min-width: 50%;">
         <md-card>
             <md-card-title>
               <md-card-title-text>
