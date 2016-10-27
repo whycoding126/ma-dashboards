@@ -2,6 +2,16 @@
 * Internal build only!
 * Add IFRAME views for various legacy Mango pages
 * Add watchlist view
+* Add powerful watchlist builder with query  and dynamic parameter support
+* Add events services, table page and icons to the header bar
+* Add dateBar for setting date range and rollups across pages
+* Add the new data point details page
+* Add user Notes service and table
+* Update amCharts to 3.20.13
+* Update angular material to 1.1.1
+* Add dashboard settings page where user can set theme colors and set logo.
+* Add help pages for the new pages
+
 
 *Version 3.2.2*
 * Fix login bug where user was not redirected to /dashboards/home
