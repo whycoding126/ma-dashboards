@@ -18,12 +18,12 @@ describe('Util service', function() {
             // alternative approach
             //injector = angular.injector(['maServices'], true);
             //Util = injector.get('Util');
-            mock.module('maServices');
+            angular.mock.module('maServices');
             done();
         });
     });
     
-    beforeEach(mock.inject(function(_Util_) {
+    beforeEach(angular.mock.inject(function(_Util_) {
         Util = _Util_;
     }));
 

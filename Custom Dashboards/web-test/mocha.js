@@ -53,5 +53,3 @@ require('angular/angular');
 // angular/index.js tries to export angular not window.angular
 global.angular = window.angular;
 require('angular-mocks');
-
-global.mock = window.angular.mock;
