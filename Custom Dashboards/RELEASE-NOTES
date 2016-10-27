@@ -1,4 +1,4 @@
-*Version 3.3.0*
+*Version 3.3.0* - 8/23/2016
 * Internal build only!
 * Add IFRAME views for various legacy Mango pages
 * Add watchlist view
@@ -13,13 +13,13 @@
 * Add help pages for the new pages
 
 
-*Version 3.2.2*
+*Version 3.2.2* - 9/19/2016
 * Fix login bug where user was not redirected to /dashboards/home
 
-*Version 3.2.1*
+*Version 3.2.1* - 9/19/2016
 * Fix for amcharts export option loading JavaScript files incorrectly
 
-*Version 3.2.0*
+*Version 3.2.0* - 8/02/2016
 * Set a point limit for ma-point-list in examples
 * Add auto-init option to ma-filtering-point-list
 * Add daily comparison chart example
@@ -37,10 +37,10 @@
 * Added option on ma-point-values for auto rollup intervals
 * Added export, legend, and balloon attributes to am-serial-chart
 
-*Version 3.1.1*
+*Version 3.1.1* - 6/28/2016
 * Fix admin template menu in Firefox
 
-*Version 3.1.0*
+*Version 3.1.0* - 4/12/2016
 * Point lists and point queries are queried using an object now, you can still pass a string by enclosing in single quotes
 * Add a separate sort, start and limit attributes to point lists and point queries
 * Add a CSS injection service and improve CSS injection from app and directives
@@ -53,7 +53,7 @@
 * Add single page app template with login page
 * Add some layout examples
 
-*Version 3.0.1*
+*Version 3.0.1* - 4/18/2016
 * Update demo virtual data sources JSON file
 * Slight tweak of color scheme
 * Updates to examples
@@ -66,7 +66,7 @@
 * Add ma-point-hierarchy directive and examples
 * Include md-data-table in maMaterialDashboards
 
-*Version 3.0.0*
+*Version 3.0.0* - 4/12/2016
 * Complete rebuild of the module to use AngularJS and Material Design Template
 * Moved from JavaScript v2 Library to Mango 3.0 Angular library
 * Added Material Design Template with many example pages
@@ -76,7 +76,7 @@
 * See additional documentation and links within the modules pages.
 * Added Last-Modified header to /mango-javascript/ mapped resources
 
-*Version 1.1.3*
+*Version 1.1.3* - 3/15/2016
 * Adding Angular API
 * Adding Angular icon and page for evaluating new directives
 
