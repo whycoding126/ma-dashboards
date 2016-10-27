@@ -79,7 +79,8 @@ function gaugeChart() {
           tickInterval: '@',
           arrowInnerRadius: '@',
           arrowInnerRadius: '@',
-          arrowAlpha: '@'
+          arrowAlpha: '@',
+          axisAlpha: '@'
         },
         template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
@@ -140,6 +141,9 @@ function gaugeChart() {
 				axis.bottomTextYOffset =  parseFloat($scope.valueOffset) || -20;
                 axis.bottomTextFontSize =  parseFloat($scope.valueFontSize) || 12;
                 axis.axisThickness =  parseFloat($scope.axisThickness) || 1;
+                axis.axisAlpha =  parseFloat($scope.axisAlpha) || 0.5;
+                axis.tickAlpha =  parseFloat($scope.axisAlpha) || 0.5;
+                
                 if ($scope.axisLabelFontSize) {
                     axis.fontSize = parseFloat($scope.axisLabelFontSize);
                 }
@@ -193,8 +197,6 @@ function defaultOptions() {
         theme: "light",
         addClassNames: true,
         axes: [{
-            axisAlpha: 0.5,
-            tickAlpha: 0.5,
             startValue: 0,
             endValue: 100,
             bands: [],
