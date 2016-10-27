@@ -19,17 +19,27 @@ define(['amcharts/gauge', 'jquery'], function(AmCharts, $) {
  *
 
  * @param {object} point The point object with the live value provided by `<ma-get-point-value>`.
+ * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
  * @param {number=} start Sets the starting value for the gauge.
  * @param {number=} end Sets the ending value for the gauge.
- * @param {number=} interval Sets the interval for each numbered tick on the gauge.
  * @param {number=} band-1-end Sets the ending value for the first band.
  * @param {string=} band-1-color Sets the color for the first band.
  * @param {number=} band-2-end Sets the ending value for the second band.
  * @param {string=} band-2-color Sets the color for the second band.
  * @param {number=} band-3-end Sets the ending value for the third band.
  * @param {string=} band-3-color Sets the color for the third band.
+ * @param {number=} radius Sets the radius of the axis circled around the gauge. (default: 95%)
+ * @param {number=} value-offset Sets the vertical offset of the value text. Negative moves the value up. (default: -20)
+ * @param {number=} value-font-size Sets the fontsize of the value text. (default: 12)
+ * @param {number=} axis-label-font-size Sets the fontsize of the labels around the axis.
+ * @param {number=} axis-thickness Sets the thickness of the axis circle. (default: 1)
+ * @param {number=} interval Sets the interval for each numbered tick on the gauge. (default: 6 evenly distributed numbered ticks)
+ * @param {number=} tick-interval Sets the interval for the minor ticks. Divide this number into the numbered tick interval to get the number of minor ticks per numbered interval. (default: 5 evenly distributed minor ticks per numbered interval)
+ * @param {number=} arrow-inner-radius Radius of the ring the arrow is attached to. (default: 8)
+ * @param {number=} arrow-alpha Opacity of the arrow and the arrow ring. Ranges 0-1 as a decimal. (default: 1)
+ * @param {number=} axis-alpha Opacity of the circular axis. Ranges 0-1 as a decimal. (default: 0.5)
  * @param {object=} options Extend [amCharts](https://www.amcharts.com/demos/angular-gauge/) configuration object for customizing design of the gauge.
- * @param {number=} value Allows you to set the gauge to a value that is not provided by the `point` attribute. Only use without the `point` attribute.
+ 
  *
  * @usage
  * 
@@ -78,9 +88,8 @@ function gaugeChart() {
           axisThickness: '@',
           tickInterval: '@',
           arrowInnerRadius: '@',
-          arrowInnerRadius: '@',
           arrowAlpha: '@',
-          axisAlpha: '@'
+          axisAlpha: '@' 
         },
         template: '<div ng-class="classes" class="amchart"></div>',
         link: function ($scope, $element, attributes) {
