@@ -48,7 +48,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 //menuItem.parent = parent;
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
-                    menuItem.template = '<page-view xid="' + menuItem.pageXid + '"></page-view>';
+                    menuItem.template = '<page-view xid="' + menuItem.pageXid + '" flex layout="column"></page-view>';
                 }
                 if (menuItem.templateUrl) {
                     delete menuItem.template;
@@ -335,7 +335,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     {
         url: '/view-page/{pageXid}',
         name: 'dashboard.viewPage',
-        template: '<page-view xid="{{pageXid}}"></page-view>',
+        template: '<page-view xid="{{pageXid}}" flex layout="column"></page-view>',
         menuTr: 'dashboards.v3.app.viewPage',
         menuHidden: true,
         controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
