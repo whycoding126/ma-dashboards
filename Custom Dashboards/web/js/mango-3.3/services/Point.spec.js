@@ -10,7 +10,7 @@ describe('Point service', function() {
     'use strict';
 
     var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, Point, $timeout;
+    var cleanupJsDom, injector, Point, $timeout, $q, $rootScope;
 
     before('Load maServices module', function(done) {
         cleanupJsDom = mochaConfig.initEnvironment('http://localhost:8080');
@@ -19,8 +19,9 @@ describe('Point service', function() {
             angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', 'http://localhost:8080')
                 .constant('mangoTimeout', 5000)
-                .config(['$httpProvider', function($httpProvider) {
+                .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
                     $httpProvider.interceptors.push('mangoHttpInterceptor');
+                    $exceptionHandlerProvider.mode('log');
                 }])
                 .run(['$httpBackend', function($httpBackend) {
                     $httpBackend.whenGET(/.*/).passThrough();
@@ -36,53 +37,54 @@ describe('Point service', function() {
         cleanupJsDom();
     });
 
-    beforeEach(function() {
+    beforeEach(function(done) {
         injector = angular.injector(['ng', 'ngMock', 'PointMockModule'], true);
         Point = injector.get('Point');
         $timeout = injector.get('$timeout');
-        
-        /*
-        this.timeout(10000);
-        injector.get('User').login({username: 'admin', password: 'admian'}).$promise.then(function() {
+        $q = injector.get('$q');
+        $rootScope = injector.get('$rootScope');
+
+        injector.get('User')
+        .login({username: 'admin', password: 'admin'}).$promise
+        .then(function() {
             done();
         }, function() {
-            done(new Error());
+            done(new Error('Invalid credentials, couldn\'t log in'));
         });
-        */
+        
+        $rootScope.$digest();
     });
     
     afterEach(function() {
         mochaConfig.cleanupInjector(injector);
     });
 
-    it('/GET point via xid', function(done) {
-        this.timeout(10000);
-        Point.get({xid: 'voltage'}).$promise.then(function() {
-            // TODO verify point
-            done();
-        }, function(response) {
-            done(new Error('Error retrieving point - ' + response.statusText));
+    it('/GET point via xid', function() {
+        var promise = Point.get({xid: 'voltage'}).$promise
+        .then(function(response) {
+            assert.equal(response.xid, 'voltage');
+        }, function(error) {
+            throw new Error(error.statusText);
         });
-        $timeout.flush();
-        //$rootScope.$apply();
+        /*
+        if (!$rootScope.$$phase)
+            $rootScope.$digest();
+        */
+        return promise;
     });
     
-    it('/GET non-existing point via xid', function(done) {
-        this.timeout(10000);
-        Point.get({xid: '003a5f46-b239-4bf4-9a8a-d71643f282db'}).$promise.then(function(response) {
-            done(new Error('Received success response when point should not exist - ' + response.statusText));
+    it('/GET non-existing point via xid', function() {
+        var promise = Point.get({xid: '003a5f46-b239-4bf4-9a8a-d71643f282db'}).$promise
+        .then(function() {
+            throw new Error('Shouldn\'t get a point for a random XID');
         }, function(response) {
-            try {
-                assert.equal(response.status, 404);
-                done();
-            } catch (e) {
-                done(e);
-            }
-        }).then(null, function(e) {
-            console.log(e);
-            done(e);
+            assert.equal(response.status, 404);
+            return $q.when();
         });
-        $timeout.flush();
-        //$rootScope.$apply();
+        /*
+        if (!$rootScope.$$phase)
+            $rootScope.$digest();
+        */
+        return promise;
     });
 });
