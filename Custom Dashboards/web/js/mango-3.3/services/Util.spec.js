@@ -6,26 +6,31 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-require('../../../../web-test/mocha');
-
 describe('Util service', function() {
     'use strict';
+
+    var mochaConfig = require('../../../../web-test/mocha');
+    var cleanupJsDom, injector, Util;
     
-    var Util;
-    
-    beforeEach(function(done) {
+    before('Load maServices module', function(done) {
+        cleanupJsDom = mochaConfig.initEnvironment();
         requirejs(['mango-3.3/maServices'], function(maServices) {
-            // alternative approach
-            //injector = angular.injector(['maServices'], true);
-            //Util = injector.get('Util');
-            angular.mock.module('maServices');
             done();
         });
     });
     
-    beforeEach(angular.mock.inject(function(_Util_) {
-        Util = _Util_;
-    }));
+    after(function() {
+        cleanupJsDom();
+    });
+
+    beforeEach(function() {
+        injector = angular.injector(['ng', 'ngMock', 'maServices'], true);
+        Util = injector.get('Util');
+    });
+
+    afterEach(function() {
+        mochaConfig.cleanupInjector(injector);
+    });
 
     describe('parseInternationalFloat()', function() {
         it('parses numbers with no thousands separators', function() {

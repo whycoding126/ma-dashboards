@@ -9,6 +9,8 @@
  * via "npm test"
  */
 
+module.exports = {};
+
 // load requirejs as a global (node has a built in function called require)
 global.requirejs = require('requirejs');
 
@@ -23,9 +25,6 @@ requirejs.config({
 // the loaderConfig will use this as the dashboards path
 requirejs.dashboardModulePath = __dirname + '/../web';
 
-// sets up a virtual DOM and the window object
-require('jsdom-global')();
-
 // load the dashboards loaderConfig.js so we can locate AMD modules
 require('../web/js/loaderConfig.js');
 // remove angular from paths so requirejs falls back to node require('angular')
@@ -35,21 +34,48 @@ requirejs.config({
     }
 });
 
-// load the chai assertion library
+//load the chai assertion library
 global.chai = require('chai');
 global.assert = chai.assert;
 
-// load the sinon spying library
+//load the sinon spying library
 global.sinon = require('sinon');
 
-// needed to get angular-mocks to create module and inject functions
-window.mocha = true;
-window.beforeEach = beforeEach;
-window.afterEach = afterEach;
+var jsDomGlobal = require('jsdom-global');
 
-// load angular mocks
-require('angular/angular');
-// put angular on global so doing require('angular') doesnt fail
-// angular/index.js tries to export angular not window.angular
-global.angular = window.angular;
-require('angular-mocks');
+module.exports.initEnvironment = function initEnvironment(url) {
+  //sets up a virtual DOM and the window object
+  var cleanupJsDom = url ? jsDomGlobal(undefined, {url: 'http://localhost:8080'}) : jsDomGlobal();
+
+  // load angular mocks
+  require('angular/angular');
+  // put angular on global so doing require('angular') doesnt fail
+  // angular/index.js tries to export angular not window.angular
+  if (!global.angular)
+      global.angular = window.angular;
+  require('angular-mocks');
+  
+  return cleanupJsDom;
+};
+
+// see angular-mocks.js module.$$cleanup()
+module.exports.cleanupInjector = function cleanupInjector(injector) {
+    var $rootElement = injector.get('$rootElement');
+    var rootNode = $rootElement && $rootElement[0];
+    if (rootNode) {
+        angular.element.cleanData([rootNode]);
+    }
+    
+    var $rootScope = injector.get('$rootScope');
+    if ($rootScope && $rootScope.$destroy) $rootScope.$destroy();
+    
+    // clean up jquery's fragment cache
+    angular.forEach(angular.element.fragments, function(val, key) {
+      delete angular.element.fragments[key];
+    });
+
+    angular.forEach(angular.callbacks, function(val, key) {
+      delete angular.callbacks[key];
+    });
+    angular.callbacks.$$counter = 0;
+};
