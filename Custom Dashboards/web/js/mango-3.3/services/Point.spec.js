@@ -240,7 +240,7 @@ describe('Point service', function() {
         var promise = Point.query({rqlQuery: q.toString()}).$promise
         .then(function(result) {
             assert.isArray(result);
-            assert.equal(result.length, 3);
+            assert.equal(result.length, 2);
             assert.equal(result.$total, 5);
             angular.forEach(result, function(point) {
                 checkPoint(point);
@@ -520,6 +520,52 @@ describe('Point service', function() {
             return $q.when();
         });
         return promise;
+    }));
+
+    var createdPointXid;
+    
+    it('Create point', runDigestAfter(function() {
+        var point = new Point();
+        point.name = 'temporary test point';
+        //point.xid = 'temp_test_point';
+        point.dataSourceXid = 'DS_997094';
+        point.deviceName = 'Dashboard Demo';
+        point.pointLocator = {
+            modelType: 'PL.VIRTUAL',
+            changeType: 'NO_CHANGE',
+            startValue: '0',
+            dataType: 'BINARY'
+        };
+        
+        return point.$save().then(function(point) {
+            createdPointXid = point.xid;
+            checkPoint(point);
+            assert.equal(point.name, 'temporary test point');
+            assert.equal(point.deviceName, 'Dashboard Demo');
+            assert.equal(point.dataSourceXid, 'DS_997094');
+            assert.equal(point.dataSourceName, 'Dashboard Demo');
+            return Point.get({xid: createdPointXid}).$promise;
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText);
+        });
+    }));
+
+    it('Delete created point', runDigestAfter(function() {
+        return Point['delete']({xid: createdPointXid}).$promise.then(function(point) {
+            checkPoint(point);
+            assert.equal(point.name, 'temporary test point');
+            assert.equal(point.deviceName, 'Dashboard Demo');
+            assert.equal(point.dataSourceXid, 'DS_997094');
+            assert.equal(point.dataSourceName, 'Dashboard Demo');
+            return Point.get({xid: createdPointXid}).$promise;
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText);
+        }).then(function() {
+            throw new Error('Retrieved point which should have been deleted');
+        }, function(error) {
+            assert.equal(error.status, 404);
+            return $q.when();
+        });
     }));
 
     function checkPoint(point) {
