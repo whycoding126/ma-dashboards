@@ -13,11 +13,11 @@ describe('Point service', function() {
     var cleanupJsDom, injector, Point, $q, $rootScope, user;
 
     before('Load maServices module', function(done) {
-        cleanupJsDom = mochaConfig.initEnvironment('http://localhost:8080');
+        cleanupJsDom = mochaConfig.initEnvironment(mochaConfig.config.url);
         
         requirejs(['mango-3.3/maServices'], function(maServices) {
             angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
-                .constant('mangoBaseUrl', 'http://localhost:8080')
+                .constant('mangoBaseUrl', mochaConfig.config.url)
                 .constant('mangoTimeout', 5000)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
                     $httpProvider.interceptors.push('mangoHttpInterceptor');
@@ -46,11 +46,14 @@ describe('Point service', function() {
             if (!this.$$phase)
                 this.$digest();
         };
-        
+
         var promise;
         if (!user) {
             var promise = injector.get('User')
-            .login({username: 'admin', password: 'admin'}).$promise
+            .login({
+                username: mochaConfig.config.username,
+                password: mochaConfig.config.password
+            }).$promise
             .then(function(_user) {
                 user = _user;
             }, function() {

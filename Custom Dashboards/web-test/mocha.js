@@ -11,6 +11,19 @@
 
 module.exports = {};
 
+try {
+    module.exports.config = require('./config.json');
+} catch (e) {
+    module.exports.config = {};
+}
+
+if (module.exports.config.username == null)
+    module.exports.config.username = 'admin';
+if (module.exports.config.password == null)
+    module.exports.config.password = 'admin';
+if (module.exports.config.url == null)
+    module.exports.config.url = 'http://localhost:8080';
+
 // load requirejs as a global (node has a built in function called require)
 global.requirejs = require('requirejs');
 
