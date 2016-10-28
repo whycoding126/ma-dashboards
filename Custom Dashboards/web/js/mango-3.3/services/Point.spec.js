@@ -13,6 +13,8 @@ describe('Point service', function() {
     var cleanupJsDom, injector, Point, $q, $rootScope, user, query;
     var voltagePointId;
     
+    // angular promises only resolve on digest, and http requests are only flushed on digest
+    // so we have to run the digest loop after each test
     function runDigestAfter(fn) {
         return function() {
             var result = fn.apply(this, arguments);
