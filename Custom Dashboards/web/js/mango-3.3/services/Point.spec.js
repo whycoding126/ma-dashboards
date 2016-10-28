@@ -10,7 +10,7 @@ describe('Point service', function() {
     'use strict';
 
     var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, Point, $q, $rootScope, user, query;
+    var cleanupJsDom, injector, Point, $q, $rootScope, user, query, PointHierarchy;
     var voltagePointId;
     
     // angular promises only resolve on digest, and http requests are only flushed on digest
@@ -56,6 +56,7 @@ describe('Point service', function() {
         Point = injector.get('Point');
         $q = injector.get('$q');
         $rootScope = injector.get('$rootScope');
+        PointHierarchy = injector.get('PointHierarchy');
 
         if (!user) {
             return injector.get('User').login({
@@ -491,22 +492,24 @@ describe('Point service', function() {
         return promise;
     }));
     
-    it('Query for points in root folder', runDigestAfter(function() {
+    it('Query for points in "Demo" folder', runDigestAfter(function() {
         this.timeout(10000);
-        var q = new query.Query()
-            .eq('pointFolderId', 0)
-            .limit(1);
-        var promise = Point.query({rqlQuery: q.toString()}).$promise
-        .then(function(result) {
-            assert.isArray(result);
-            assert.equal(result.length, 1);
-            assert.isAbove(result.$total, 1);
-            checkPoint(result[0]);
-            assert.equal(result[0].pointFolderId, 0);
+        return PointHierarchy.byName({name: 'Demo'}).$promise.then(function(folder) {
+            var q = new query.Query()
+                .eq('pointFolderId', folder.id)
+                .limit(1);
+            return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+                assert.isArray(result);
+                assert.equal(result.length, 1);
+                assert.equal(result.$total, 5);
+                checkPoint(result[0]);
+                assert.equal(result[0].pointFolderId, folder.id);
+            }, function(error) {
+                throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+            });
         }, function(error) {
-            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+            throw new Error(error.status + ' - ' + error.statusText + ' - Error retrieving point hierarchy folder "Demo"');
         });
-        return promise;
     }));
 
     it('Query on non-existing property', runDigestAfter(function() {

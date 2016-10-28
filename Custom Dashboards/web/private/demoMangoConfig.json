@@ -2217,7 +2217,8 @@
             "binary",
             "multistate",
             "temperature",
-            "voltage"
+            "voltage",
+            "DP_253536"
          ],
          "name":"Demo",
          "subfolders":[
