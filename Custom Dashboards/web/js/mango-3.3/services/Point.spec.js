@@ -10,7 +10,7 @@ describe('Point service', function() {
     'use strict';
 
     var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, Point, $timeout, $q, $rootScope;
+    var cleanupJsDom, injector, Point, $q, $rootScope, user;
 
     before('Load maServices module', function(done) {
         cleanupJsDom = mochaConfig.initEnvironment('http://localhost:8080');
@@ -32,30 +32,36 @@ describe('Point service', function() {
             done();
         });
     });
-    
-    after(function() {
+
+    after('Clean up environment', function() {
         cleanupJsDom();
     });
 
-    beforeEach(function(done) {
+    beforeEach('Get injector and dependencies', function() {
         injector = angular.injector(['ng', 'ngMock', 'PointMockModule'], true);
         Point = injector.get('Point');
-        $timeout = injector.get('$timeout');
         $q = injector.get('$q');
         $rootScope = injector.get('$rootScope');
-
-        injector.get('User')
-        .login({username: 'admin', password: 'admin'}).$promise
-        .then(function() {
-            done();
-        }, function() {
-            done(new Error('Invalid credentials, couldn\'t log in'));
-        });
+        $rootScope.checkAndDigest = function checkAndDigest() {
+            if (!this.$$phase)
+                this.$digest();
+        };
         
-        $rootScope.$digest();
+        var promise;
+        if (!user) {
+            var promise = injector.get('User')
+            .login({username: 'admin', password: 'admin'}).$promise
+            .then(function(_user) {
+                user = _user;
+            }, function() {
+                throw new Error('Invalid credentials, couldn\'t log in');
+            });
+            $rootScope.checkAndDigest();
+        }
+        return promise;
     });
     
-    afterEach(function() {
+    afterEach('Clean up injector', function() {
         mochaConfig.cleanupInjector(injector);
     });
 
@@ -66,10 +72,7 @@ describe('Point service', function() {
         }, function(error) {
             throw new Error(error.statusText);
         });
-        /*
-        if (!$rootScope.$$phase)
-            $rootScope.$digest();
-        */
+        $rootScope.checkAndDigest();
         return promise;
     });
     
@@ -81,10 +84,7 @@ describe('Point service', function() {
             assert.equal(response.status, 404);
             return $q.when();
         });
-        /*
-        if (!$rootScope.$$phase)
-            $rootScope.$digest();
-        */
+        $rootScope.checkAndDigest();
         return promise;
     });
 });
