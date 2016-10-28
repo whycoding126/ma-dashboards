@@ -6,12 +6,13 @@ You will need [node.js](https://nodejs.org/), [Bower](http://bower.io/) and [Gul
 3. gulp
 
 To run JavaScript (mocha) tests
-1. Create web-test/config.json e.g.
+1. Import web/private/demoMangoConfig.json into your Mango
+2. Create web-test/config.json e.g.
 {
   "url": "http://localhost:8080",
   "username": "admin",
   "password": "admin"
 }
-2. Run "npm test"
+3. Run "npm test"
 
 Notes, ace has a loader regression in 1.2.4, fixed version to 1.2.3
