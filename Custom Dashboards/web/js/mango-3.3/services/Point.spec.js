@@ -14,7 +14,7 @@ describe('Point service', function() {
     
     function runDigestAfter(fn) {
         return function() {
-            var result = fn.apply(null, arguments);
+            var result = fn.apply(this, arguments);
             if (!$rootScope.$$phase)
                 $rootScope.$digest();
             return result;
@@ -446,6 +446,24 @@ describe('Point service', function() {
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
+        }, function(error) {
+            throw new Error(error.statusText);
+        });
+        return promise;
+    }));
+    
+    it('Query for points in root folder', runDigestAfter(function() {
+        this.timeout(10000);
+        var q = new query.Query()
+            .eq('pointFolderId', 0)
+            .limit(1);
+        var promise = Point.query({rqlQuery: q.toString()}).$promise
+        .then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 1);
+            assert.isAbove(result.$total, 1);
+            checkPoint(result[0]);
+            assert.equal(result[0].pointFolderId, 0);
         }, function(error) {
             throw new Error(error.statusText);
         });
