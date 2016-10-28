@@ -230,6 +230,13 @@ function PointFactory($resource, $http, $timeout, Util) {
             isArray: false,
             withCredentials: true,
             cache: true
+        },
+        save: {
+            method: 'POST',
+            url: '/rest/v1/data-points'
+        },
+        update: {
+            method: 'PUT'
         }
     });
 
