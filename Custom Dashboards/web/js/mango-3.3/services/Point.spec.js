@@ -70,8 +70,36 @@ describe('Point service', function() {
 
     it('/GET point via xid', function() {
         var promise = Point.get({xid: 'voltage'}).$promise
-        .then(function(response) {
-            assert.equal(response.xid, 'voltage');
+        .then(function(point) {
+            assert.isBoolean(point.enabled);
+            assert.property(point, 'templateXid');
+            assert.isObject(point.loggingProperties);
+            assert.isObject(point.textRenderer);
+            assert.property(point, 'chartRenderer');
+            assert.equal(point.modelType, 'DATA_POINT');
+            assert.isArray(point.validationMessages);
+            assert.lengthOf(point.validationMessages, 0);
+            assert.isNumber(point.id);
+            assert.isAtLeast(point.id, 0);
+            assert.isNumber(point.dataSourceId);
+            assert.isAtLeast(point.dataSourceId, 0);
+            assert.isBoolean(point.useRenderedUnit);
+            assert.isBoolean(point.useIntegralUnit);
+            assert.isString(point.dataSourceName);
+            assert.isString(point.setPermission);
+            assert.isString(point.chartColour);
+            assert.isBoolean(point.purgeOverride);
+            assert.isString(point.plotType);
+            assert.isObject(point.purgePeriod);
+            assert.isObject(point.pointLocator);
+            assert.isString(point.deviceName);
+            assert.isString(point.readPermission);
+            assert.isNumber(point.pointFolderId);
+            assert.isAtLeast(point.pointFolderId, 0);
+            assert.property(point, 'integralUnit');
+            assert.property(point, 'unit');
+            assert.isString(point.name);
+            assert.equal(point.xid, 'voltage');
         }, function(error) {
             throw new Error(error.statusText);
         });
