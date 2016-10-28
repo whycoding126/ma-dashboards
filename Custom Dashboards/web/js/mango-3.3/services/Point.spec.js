@@ -188,7 +188,7 @@ describe('Point service', function() {
         .then(function(result) {
             assert.isArray(result);
             assert.equal(result.length, 6);
-            assert.equal(result.$total, 6);
+            assert.equal(result.$total, 5);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -205,7 +205,7 @@ describe('Point service', function() {
         .then(function(result) {
             assert.isArray(result);
             assert.equal(result.length, 6);
-            assert.equal(result.$total, 6);
+            assert.equal(result.$total, 5);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -223,7 +223,7 @@ describe('Point service', function() {
         .then(function(result) {
             assert.isArray(result);
             assert.equal(result.length, 3);
-            assert.equal(result.$total, 6);
+            assert.equal(result.$total, 5);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -241,7 +241,7 @@ describe('Point service', function() {
         .then(function(result) {
             assert.isArray(result);
             assert.equal(result.length, 3);
-            assert.equal(result.$total, 6);
+            assert.equal(result.$total, 5);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -259,7 +259,7 @@ describe('Point service', function() {
         .then(function(result) {
             assert.isArray(result);
             assert.equal(result.length, 0);
-            assert.equal(result.$total, 6);
+            assert.equal(result.$total, 5);
         }, function(error) {
             throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
@@ -388,8 +388,8 @@ describe('Point service', function() {
         var promise = Point.query({rqlQuery: q.toString()}).$promise
         .then(function(result) {
             assert.isArray(result);
-            assert.equal(result.length, 5);
-            assert.equal(result.$total, 5);
+            assert.equal(result.length, 4);
+            assert.equal(result.$total, 4);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -406,8 +406,8 @@ describe('Point service', function() {
         var promise = Point.query({rqlQuery: q.toString()}).$promise
         .then(function(result) {
             assert.isArray(result);
-            assert.equal(result.length, 5);
-            assert.equal(result.$total, 5);
+            assert.equal(result.length, 4);
+            assert.equal(result.$total, 4);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -424,8 +424,8 @@ describe('Point service', function() {
         var promise = Point.query({rqlQuery: q.toString()}).$promise
         .then(function(result) {
             assert.isArray(result);
-            assert.equal(result.length, 5);
-            assert.equal(result.$total, 5);
+            assert.equal(result.length, 4);
+            assert.equal(result.$total, 4);
             angular.forEach(result, function(point) {
                 checkPoint(point);
             });
@@ -521,6 +521,7 @@ describe('Point service', function() {
         });
         return promise;
     }));
+
 
     function checkPoint(point) {
         assert.instanceOf(point, Point);
