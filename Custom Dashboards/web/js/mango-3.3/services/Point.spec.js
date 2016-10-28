@@ -551,6 +551,9 @@ describe('Point service', function() {
     }));
 
     it('Delete created point', runDigestAfter(function() {
+        if (!createdPointXid) {
+            throw new Error('Can\'t perform test, point was not created');
+        }
         return Point['delete']({xid: createdPointXid}).$promise.then(function(point) {
             checkPoint(point);
             assert.equal(point.name, 'temporary test point');
