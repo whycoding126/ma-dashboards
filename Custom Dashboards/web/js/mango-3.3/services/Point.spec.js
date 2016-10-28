@@ -11,6 +11,7 @@ describe('Point service', function() {
 
     var mochaConfig = require('../../../../web-test/mocha');
     var cleanupJsDom, injector, Point, $q, $rootScope, user, query;
+    var voltagePointId;
     
     function runDigestAfter(fn) {
         return function() {
@@ -70,11 +71,27 @@ describe('Point service', function() {
         mochaConfig.cleanupInjector(injector);
     });
 
-    it('Get point via xid', runDigestAfter(function() {
+    it('Get point via XID', runDigestAfter(function() {
         var promise = Point.get({xid: 'voltage'}).$promise
         .then(function(point) {
             checkPoint(point);
             assert.equal(point.xid, 'voltage');
+            assert.equal(point.name, 'Voltage');
+            assert.equal(point.deviceName, 'Dashboard Demo');
+            assert.equal(point.dataSourceName, 'Dashboard Demo');
+            voltagePointId = point.id;
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText);
+        });
+        return promise;
+    }));
+    
+    it('Get point via ID', runDigestAfter(function() {
+        var promise = Point.getById({id: voltagePointId}).$promise
+        .then(function(point) {
+            checkPoint(point);
+            assert.equal(point.xid, 'voltage');
+            assert.equal(point.id, voltagePointId);
             assert.equal(point.name, 'Voltage');
             assert.equal(point.deviceName, 'Dashboard Demo');
             assert.equal(point.dataSourceName, 'Dashboard Demo');
@@ -84,7 +101,7 @@ describe('Point service', function() {
         return promise;
     }));
 
-    it('Get non-existing point via xid', runDigestAfter(function() {
+    it('Get non-existing point via XID', runDigestAfter(function() {
         var promise = Point.get({xid: '003a5f46-b239-4bf4-9a8a-d71643f282db'}).$promise
         .then(function() {
             throw new Error('Shouldn\'t get a point for a random XID');
@@ -105,6 +122,26 @@ describe('Point service', function() {
             var point = result[0];
             checkPoint(point);
             assert.equal(point.xid, 'voltage');
+            assert.equal(point.name, 'Voltage');
+            assert.equal(point.deviceName, 'Dashboard Demo');
+            assert.equal(point.dataSourceName, 'Dashboard Demo');
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+        return promise;
+    }));
+    
+    it('Query for point on ID', runDigestAfter(function() {
+        var q = new query.Query({name: 'eq', args: ['id', voltagePointId]});
+        var promise = Point.query({rqlQuery: q.toString()}).$promise
+        .then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 1);
+            assert.equal(result.$total, 1);
+            var point = result[0];
+            checkPoint(point);
+            assert.equal(point.xid, 'voltage');
+            assert.equal(point.id, voltagePointId);
             assert.equal(point.name, 'Voltage');
             assert.equal(point.deviceName, 'Dashboard Demo');
             assert.equal(point.dataSourceName, 'Dashboard Demo');
