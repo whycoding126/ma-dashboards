@@ -60,8 +60,8 @@ describe('Point service', function() {
                 password: mochaConfig.config.password
             }).$promise.then(function(_user) {
                 user = _user;
-            }, function() {
-                throw new Error('Invalid credentials, couldn\'t log in');
+            }, function(error) {
+                throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
             });
         }
     }));
@@ -79,7 +79,7 @@ describe('Point service', function() {
             assert.equal(point.deviceName, 'Dashboard Demo');
             assert.equal(point.dataSourceName, 'Dashboard Demo');
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText);
         });
         return promise;
     }));
@@ -109,7 +109,7 @@ describe('Point service', function() {
             assert.equal(point.deviceName, 'Dashboard Demo');
             assert.equal(point.dataSourceName, 'Dashboard Demo');
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -124,7 +124,7 @@ describe('Point service', function() {
             assert.equal(result.length, 0);
             assert.equal(result.$total, 1);
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -139,7 +139,7 @@ describe('Point service', function() {
             assert.equal(result.length, 0);
             assert.equal(result.$total, 1);
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -156,7 +156,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -173,7 +173,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -191,7 +191,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -209,7 +209,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -224,7 +224,7 @@ describe('Point service', function() {
             assert.equal(result.length, 0);
             assert.equal(result.$total, 6);
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -242,7 +242,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -260,7 +260,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -284,7 +284,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -309,7 +309,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -339,7 +339,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -357,7 +357,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -375,7 +375,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -393,7 +393,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -411,7 +411,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -429,7 +429,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -447,7 +447,7 @@ describe('Point service', function() {
                 checkPoint(point);
             });
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
@@ -465,7 +465,7 @@ describe('Point service', function() {
             checkPoint(result[0]);
             assert.equal(result[0].pointFolderId, 0);
         }, function(error) {
-            throw new Error(error.statusText);
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
         return promise;
     }));
