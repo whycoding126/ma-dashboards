@@ -382,7 +382,7 @@ describe('Point service', function() {
         });
     }));
     
-    it('Query for enabled points using true', runDigestAfter(function() {
+    it.skip('Query for enabled points using true', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'DS_997094')
             .eq('enabled', true);
@@ -430,7 +430,7 @@ describe('Point service', function() {
         });
     }));
     
-    it('Query for enabled points using false', runDigestAfter(function() {
+    it.skip('Query for enabled points using false', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'DS_997094')
             .eq('enabled', false);
