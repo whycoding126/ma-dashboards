@@ -35,6 +35,7 @@ var liveEditor = function($templateRequest, $sce) {
             $scope.aceConfig = {
                     useWrapMode : true,
                     showGutter: false,
+					showPrintMargin: false,
                     theme: $scope.theme || mdAdminSettings.codeTheme,
                     fontSize: '13px',
                     mode: $scope.mode || 'html',
