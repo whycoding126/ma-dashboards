@@ -1154,6 +1154,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
+    
+    // store pre-bootstrap user back to User service
+    User.cachedUser = mdAdminSettings.user;
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {

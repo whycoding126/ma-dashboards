@@ -185,7 +185,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             withCredentials: true,
             cache: false,
             interceptor: {
-                response: setWatchdogToLoggedIn
+                response: loginInterceptor
             }
         },
         login: {
@@ -207,7 +207,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             withCredentials: true,
             cache: false,
             interceptor: {
-                response: setWatchdogToLoggedIn
+                response: loginInterceptor
             }
         },
         logout: {
@@ -215,12 +215,22 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             method: 'GET',
             isArray: false,
             withCredentials: true,
-            cache: false
+            cache: false,
+            interceptor: {
+                response: logoutInterceptor
+            }
         }
     });
     
-    function setWatchdogToLoggedIn(data) {
+    function loginInterceptor(data) {
+        User.cachedUser = data.resource;
         mangoWatchdog.setStatus('LOGGED_IN');
+        return data.resource;
+    }
+    
+    function logoutInterceptor(data) {
+        User.cachedUser = null;
+        mangoWatchdog.setStatus('API_UP');
         return data.resource;
     }
 

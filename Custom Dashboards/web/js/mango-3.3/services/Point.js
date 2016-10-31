@@ -199,7 +199,8 @@ See how it is used with `<md-checkbox>` and `<md-switch>` in the <a ui-sref="das
 /*
  * Provides service for getting list of points and create, update, delete
  */
-function PointFactory($resource, $http, $timeout, Util) {
+PointFactory.$inject = ['$resource', '$http', '$timeout', 'Util', 'User'];
+function PointFactory($resource, $http, $timeout, Util, User) {
     var Point = $resource('/rest/v1/data-points/:xid', {
     		xid: '@xid'
     	}, {
@@ -258,7 +259,7 @@ function PointFactory($resource, $http, $timeout, Util) {
     		value = {
     		    value: value,
     		    dataType: dataType,
-                annotation: 'Set from web by user: ' // TODO + MD_ADMIN_SETTINGS.user.username
+                annotation: 'Set from web by user: ' + User.cachedUser.username
     		};
     	}
 
@@ -346,7 +347,6 @@ function PointFactory($resource, $http, $timeout, Util) {
     return Point;
 }
 
-PointFactory.$inject = ['$resource', '$http', '$timeout', 'Util'];
 return PointFactory;
 
 }); // define
