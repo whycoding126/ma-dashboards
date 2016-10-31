@@ -516,36 +516,21 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
         
         function standardizeFloat(strValue) {
             var matches;
-            
-            // has obvious thousands separator and a period as decimal mark
-            // i.e. converts 1,234,567.89 to 1234567.89
-            if (matches = /\b(\d{1,3}(?:[, ']\d{3})+)\.(\d+)(?!\d)/.exec(strValue)) {
-                return matches[1].replace(/[, ']/g, '') + '.' + matches[2];
-            }
-            
-            // has obvious thousands separator and a comma as decimal mark
+
+            // has obvious space or full stop thousands separator and a comma as radix point
             // i.e. converts 1 234 567,89 to 1234567.89
-            if (matches = /\b(\d{1,3}(?:[\. ]\d{3})+),(\d+)(?!\d)/.exec(strValue)) {
+            if (matches = /\b(\d{1,3}(?:[\. ]\d{3})+),(\d+)/.exec(strValue)) {
                 return matches[1].replace(/[\. ]/g, '') + '.' + matches[2];
             }
             
-            // convert groups of digits with 2 or more thousands separators
-            // i.e. converts 1,234,567 to 1234567
-            if (matches = /\b\d{1,3}(?:[, ']\d{3}){2,}(?!\d)/.exec(strValue)) {
-                return matches[0].replace(/[, ']/g, '');
-            }
-            
-            // convert groups of digits with 2 or more thousands separators
+            // convert groups of digits with 2 or more full stop thousands separators
             // i.e. converts 1.234.567 to 1234567
             if (matches = /\b\d{1,3}(?:\.\d{3}){2,}(?!\d)/.exec(strValue)) {
                 return matches[0].replace(/\./g, '');
             }
 
-            // replace any other commas with decimal points
-            strValue = strValue.replace(/,/g, '.');
-
-            // remove any other spaces and single quotes (can be thousands separators)
-            strValue = strValue.replace(/[ ']/g, '');
+            // remove any other commas, spaces and single quotes (can be thousands separators)
+            strValue = strValue.replace(/[, ']/g, '');
             
             if (matches = /[-+\.\d]+/.exec(strValue)) {
                 return matches[0];
