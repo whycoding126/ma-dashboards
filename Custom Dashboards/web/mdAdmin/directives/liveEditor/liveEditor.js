@@ -21,7 +21,7 @@ var liveEditor = function($templateRequest, $sce) {
             mode: '@',
             theme: '@'
         },
-        controller: ['$scope', '$element', function($scope, $element) {
+        controller: ['$scope', '$element', 'mdAdminSettings', function($scope, $element, mdAdminSettings) {
             
             var initialText = $element.data('htmlContent');
             $element.removeData('htmlContent');
@@ -35,7 +35,7 @@ var liveEditor = function($templateRequest, $sce) {
             $scope.aceConfig = {
                     useWrapMode : true,
                     showGutter: false,
-                    theme: $scope.theme || 'monokai',
+                    theme: $scope.theme || mdAdminSettings.codeTheme,
                     fontSize: '13px',
                     mode: $scope.mode || 'html',
                     onLoad: function(editor_) {

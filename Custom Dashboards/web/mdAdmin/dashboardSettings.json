@@ -1,6 +1,7 @@
 {
   "logoSrc": "/modules/dashboards/web/img/logo.svg",
   "defaultTheme": "mangoDark",
+  "codeTheme": "monokai",
   "palettes": {
     "mango-orange": {
       "50": "#ffffff",

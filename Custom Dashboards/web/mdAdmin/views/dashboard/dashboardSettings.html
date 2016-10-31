@@ -7,9 +7,48 @@
             <md-option ng-repeat="(name,theme) in mdAdminSettings.theming.THEMES" ng-if="name.indexOf('dynamicTheme') !== 0" ng-value="name" ng-bind="name"></md-option>
         </md-select>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="70" >
+    <md-input-container flex="100" flex-gt-md="40" >
         <label ma-tr="dashboards.v3.app.logoSource"></label>
         <input ng-model="mdAdminSettings.logoSrc" ma-empty-input ng-model-options="{debounce: 1000}">
+    </md-input-container>
+	<md-input-container flex="100" flex-gt-md="30" >
+        <label ma-tr="dashboards.v3.app.codeColoring"></label>
+        <md-select ng-model="mdAdminSettings.codeTheme">
+            <md-option value="ambiance">Ambiance</md-option>
+            <md-option value="chaos">Chaos</md-option>
+            <md-option value="chrome">Chrome</md-option>
+            <md-option value="clouds_midnight">Clouds Midnight</md-option>
+            <md-option value="clouds">Clouds</md-option>
+            <md-option value="cobalt">Cobalt</md-option>
+            <md-option value="crimson_editor">Crimson Editor</md-option>
+            <md-option value="dawn">Dawn</md-option>
+            <md-option value="dreamweaver">Dreamweaver</md-option>
+            <md-option value="ecliplse">Eclipse</md-option>
+            <md-option value="github">Github</md-option>
+            <md-option value="idle_fingers">Idle Fingers</md-option>
+            <md-option value="iplastic">iPlastic</md-option>
+            <md-option value="katzenmilch">Katzenmilch</md-option>
+            <md-option value="kr_theme">Kr Theme</md-option>
+            <md-option value="kuroir">Kuroir</md-option>
+            <md-option value="merbivore_soft">Merbivore Soft</md-option>
+            <md-option value="merbivore">Merbivore</md-option>
+            <md-option value="mono_industrial">Mono Industrial</md-option>
+            <md-option value="monokai">Monokai</md-option>
+            <md-option value="pastel_on_dark">Pastel On Dark</md-option>
+            <md-option value="solarized_dark">Solarized Dark</md-option>
+            <md-option value="solarized_light">Solarized Light</md-option>
+            <md-option value="sqlserver">Sql Server</md-option>
+            <md-option value="terminal">Terminal</md-option>
+            <md-option value="textmate">TextMate</md-option>
+            <md-option value="tomorrow_night_blue">Tomorrow Night Blue</md-option>
+            <md-option value="tomorrow_night_bright">Tomorrow Night Bright</md-option>
+            <md-option value="tomorrow_night_eighties">Tomorrow Night Eighties</md-option>
+            <md-option value="tomorrow_night">Tomorrow Night</md-option>
+            <md-option value="tomorrow">Tomorrow</md-option>
+            <md-option value="twilight">Twilight</md-option>
+            <md-option value="vibrant_ink">Vibrant Ink</md-option>
+            <md-option value="xcode">xCode</md-option>
+        </md-select>
     </md-input-container>
 </div>
 
