@@ -445,7 +445,115 @@ describe('Point service', function() {
             throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
     }));
+
+    it('Sort by point name', runDigestAfter(function() {
+        var q = new query.Query()
+            .eq('dataSourceXid', 'DS_997094')
+            .sort('name');
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 5);
+            assert.equal(result.$total, 5);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+            assert.equal(result[0].name, 'Binary');
+            assert.equal(result[4].name, 'Voltage');
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
     
+    it('Sort by point name descending', runDigestAfter(function() {
+        var q = new query.Query()
+            .eq('dataSourceXid', 'DS_997094')
+            .sort('-name');
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 5);
+            assert.equal(result.$total, 5);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+            assert.equal(result[0].name, 'Voltage');
+            assert.equal(result[4].name, 'Binary');
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+    
+    it('Sort by device name then point name', runDigestAfter(function() {
+        var q = new query.Query()
+            .eq('dataSourceXid', 'vmeters')
+            .sort('deviceName', 'name');
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 39);
+            assert.equal(result.$total, 39);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+            assert.equal(result[0].name, 'Current Phase A (A)');
+            assert.equal(result[0].deviceName, 'Meter 1');
+            assert.equal(result[38].name, 'Voltage C-N (V)');
+            assert.equal(result[38].deviceName, 'Meter 3');
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+    
+    it('Sort by descending device name then point name', runDigestAfter(function() {
+        var q = new query.Query()
+            .eq('dataSourceXid', 'vmeters')
+            .sort('-deviceName', 'name');
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 39);
+            assert.equal(result.$total, 39);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+            assert.equal(result[0].name, 'Current Phase A (A)');
+            assert.equal(result[0].deviceName, 'Meter 3');
+            assert.equal(result[38].name, 'Voltage C-N (V)');
+            assert.equal(result[38].deviceName, 'Meter 1');
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+    
+    it('Sort by data source XID', runDigestAfter(function() {
+        this.timeout(5000);
+        var q = new query.Query()
+            .sort('dataSourceXid')
+            .limit(10);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 10);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+    
+    it('Sort by data source name', runDigestAfter(function() {
+        this.timeout(5000);
+        var q = new query.Query()
+            .sort('dataSourceName')
+            .limit(10);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 10);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+
     it('Query for points in "Demo" folder', runDigestAfter(function() {
         this.timeout(10000);
         return PointHierarchy.byName({name: 'Demo'}).$promise.then(function(folder) {
@@ -469,6 +577,19 @@ describe('Point service', function() {
 
     it('Query on non-existing property', runDigestAfter(function() {
         var q = new query.Query({name: 'eq', args: ['xyz', 'blah']});
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            throw new Error('Returned successful result for invalid query');
+        }, function(error) {
+            assert.equal(error.status, 500);
+            assert.isObject(error.data);
+            assert.equal(error.data.message, 'No column found for: xyz');
+            assert.isString(error.data.stackTrace);
+            return $q.when();
+        });
+    }));
+    
+    it('Sort on non-existing property', runDigestAfter(function() {
+        var q = new query.Query({name: 'sort', args: ['xyz']});
         return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
             throw new Error('Returned successful result for invalid query');
         }, function(error) {
