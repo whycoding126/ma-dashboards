@@ -32,7 +32,7 @@ describe('Point service', function() {
             
             angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaConfig.config.url)
-                .constant('mangoTimeout', 5000)
+                .constant('mangoTimeout', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
                     $httpProvider.interceptors.push('mangoHttpInterceptor');
                     $exceptionHandlerProvider.mode('log');
@@ -523,7 +523,7 @@ describe('Point service', function() {
     }));
     
     it('Sort by data source XID', runDigestAfter(function() {
-        this.timeout(5000);
+        this.timeout(30000);
         var q = new query.Query()
             .sort('dataSourceXid')
             .limit(10);
@@ -539,7 +539,7 @@ describe('Point service', function() {
     }));
     
     it('Sort by data source name', runDigestAfter(function() {
-        this.timeout(5000);
+        this.timeout(30000);
         var q = new query.Query()
             .sort('dataSourceName')
             .limit(10);
