@@ -69,7 +69,8 @@ requirejs.config({
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
         'rql': vendor + '/rql',
         'amcharts' : vendor + '/amcharts',
-        'amcharts/plugins/export/export': vendor + '/amcharts/plugins/export/export.min',
+        // cant use as export.css then maps to export.min.css
+        //'amcharts/plugins/export/export': vendor + '/amcharts/plugins/export/export.min',
         'amcharts/plugins/responsive/responsive': vendor + '/amcharts/plugins/responsive/responsive.min',
         'amcharts/plugins/dataloader/dataloader': vendor + '/amcharts/plugins/dataloader/dataloader.min',
         'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min'
