@@ -68,86 +68,13 @@ requirejs.config({
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
         'rql': vendor + '/rql',
-        'amcharts' : vendor + '/amcharts'
+        'amcharts' : vendor + '/amcharts',
+        'amcharts/plugins/export/export': vendor + '/amcharts/plugins/export/export.min',
+        'amcharts/plugins/responsive/responsive': vendor + '/amcharts/plugins/responsive/responsive.min',
+        'amcharts/plugins/dataloader/dataloader': vendor + '/amcharts/plugins/dataloader/dataloader.min',
+        'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min'
     },
     shim : {
-        'amcharts/funnel': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/gauge': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/pie': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/radar': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/serial': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/xy': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/gantt': {
-            deps: ['amcharts/serial'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/themes/chalk': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/themes/light': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/themes/dark': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
-        'amcharts/themes/black': {
-            deps: ['amcharts/amcharts'],
-            exports: 'AmCharts',
-            init: function() {
-                AmCharts.isReady = true;
-            }
-        },
         'angular': {
             deps: ['jquery'],
             init: function() {
@@ -204,18 +131,6 @@ requirejs.config({
         },
         'angular-material-data-table': {
             deps: ['angular', 'angular-material']
-        },
-        'amcharts/plugins/export/export': {
-            deps: ['amcharts/amcharts',
-                   'amcharts/plugins/export/libs/blob.js/blob',
-                   'amcharts/plugins/export/libs/fabric.js/fabric.min',
-                   'amcharts/plugins/export/libs/FileSaver.js/FileSaver.min',
-                   'amcharts/plugins/export/libs/jszip/jszip.min',
-                   'amcharts/plugins/export/libs/pdfmake/vfs_fonts',
-                   'amcharts/plugins/export/libs/xlsx/xlsx.min']
-        },
-        'amcharts/plugins/export/libs/pdfmake/vfs_fonts': {
-            deps: ['amcharts/plugins/export/libs/pdfmake/pdfmake.min']
         },
         'jquery-ui': {
             'deps' : ['jquery']

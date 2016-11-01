@@ -19,7 +19,7 @@ var amExport = {
         exportJPG   : true,
         exportPNG   : true,
         exportSVG   : true,
-        exportPFG   : true
+        exportPDF   : true
 };
 
 var amChart = {
