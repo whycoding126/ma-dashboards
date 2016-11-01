@@ -67,8 +67,14 @@
                 aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"
                 ng-class="{'md-accent': dateBar.expanded}">
                   <md-icon>date_range</md-icon>
+                  <md-tooltip md-autohide><span ma-tr="dashboards.v3.app.expandDateBar"></span></md-tooltip>
               </md-button>
             </div>
+            
+            <md-button class="md-icon-button" ng-if="stateParams.helpPage" ui-sref="{{stateParams.helpPage}}">
+                <md-icon>help</md-icon>
+                <md-tooltip md-autohide><span ma-tr="dashboards.v3.app.viewHelpPage"></span></md-tooltip>
+            </md-button>
           </div>
         </div>
       </div>

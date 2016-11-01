@@ -176,7 +176,10 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/home',
         templateUrl: 'views/dashboard/home.html',
         menuTr: 'dashboards.v3.dox.home',
-        menuIcon: 'home'
+        menuIcon: 'home',
+        params: {
+            helpPage: 'dashboard.help.gettingStarted'
+        }
     },
     {
         name: 'dashboard.watchList',
@@ -187,7 +190,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         params: {
             dateBar: {
                 rollupControls: true
-            }
+            },
+            helpPage: 'dashboard.help.watchList'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -220,7 +224,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         params: {
             dateBar: {
                 rollupControls: true
-            }
+            },
+            helpPage: 'dashboard.help.dataPointDetails'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -242,7 +247,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         params: {
             dateBar: {
                 dateFilter: true
-            }
+            },
+            helpPage: 'dashboard.help.events'
         },
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
@@ -357,7 +363,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                 permission: 'edit-pages',
                 params: {
                     markup: null,
-                    templateUrl: null
+                    templateUrl: null,
+                    helpPage: 'dashboard.help.customPages'
                 }
             },
             {
@@ -366,7 +373,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                 templateUrl: 'views/dashboard/editMenu.html',
                 menuTr: 'dashboards.v3.app.editMenu',
                 menuIcon: 'toc',
-                permission: 'edit-menus'
+                permission: 'edit-menus',
+                params: {
+                    helpPage: 'dashboard.help.menuEditor'
+                }
             },
             {
                 url: '/auto-login-settings',
@@ -382,7 +392,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                 templateUrl: 'views/dashboard/dashboardSettings.html',
                 menuTr: 'dashboards.v3.app.dashboardSettings',
                 menuIcon: 'color_lens',
-                permission: 'superadmin'
+                permission: 'superadmin',
+                params: {
+                    helpPage: 'dashboard.help.dashboardSettings'
+                }
             },
             {
                 name: 'dashboard.settings.watchListBuilder',
@@ -391,7 +404,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'dashboards.v3.app.watchListBuilder',
                 menuIcon: 'playlist_add_check',
                 params: {
-                    watchList: null
+                    watchList: null,
+                    helpPage: 'dashboard.help.watchListBuilder'
                 },
                 resolve: {
                     loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
