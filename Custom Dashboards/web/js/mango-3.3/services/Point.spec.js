@@ -570,7 +570,7 @@ describe('Point service', function() {
                 throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
             });
         }, function(error) {
-            if (error instanceof Error) return error;
+            if (error instanceof Error) return $q.reject(error);
             throw new Error(error.status + ' - ' + error.statusText + ' - Error retrieving point hierarchy folder "Demo"');
         });
     }));
@@ -656,11 +656,11 @@ describe('Point service', function() {
                     throw new Error(error.status + ' - ' + error.statusText + ' - Couldn\'t get updated point');
                 });
             }, function(error) {
-                if (error instanceof Error) return error;
+                if (error instanceof Error) return $q.reject(error);
                 throw new Error(error.status + ' - ' + error.statusText);
             });
         }, function(error) {
-            if (error instanceof Error) return error;
+            if (error instanceof Error) return $q.reject(error);
             throw new Error(error.status + ' - ' + error.statusText + ' - Couldn\'t get created point');
         });
     }));
@@ -681,7 +681,7 @@ describe('Point service', function() {
         }).then(function() {
             throw new Error('Retrieved point which should have been deleted');
         }, function(error) {
-            if (error instanceof Error) return error;
+            if (error instanceof Error) return $q.reject(error);
             assert.equal(error.status, 404);
             return $q.when();
         });
