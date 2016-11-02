@@ -105,7 +105,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     $ctrl.isLastStep = function() {
         if (!$ctrl.watchlist) return false;
         return $ctrl.watchlist.type === 'static' && $ctrl.selectedTab === 3 ||
-            $ctrl.watchlist.type === 'query' && $ctrl.selectedTab === 2 ||
+            $ctrl.watchlist.type === 'query' && $ctrl.selectedTab === ($ctrl.watchlist.params.length ?  2 : 3) ||
             $ctrl.watchlist.type === 'hierarchy' && $ctrl.selectedTab === 1;
     };
     
