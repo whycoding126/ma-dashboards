@@ -53,17 +53,18 @@ function pointHierarchy(PointHierarchy) {
                 }
 
                 var subfolders = typeof attrs.subfolders === 'undefined' ? true : !!$scope.subfolders;
-
+                var getPoints = attrs.points !== undefined;
+                
             	$scope.hierarchy = path.length ?
-            	        PointHierarchy.byPath({path: path, subfolders: subfolders}) :
-            	        PointHierarchy.getRoot({subfolders: subfolders});
+            	        PointHierarchy.byPath({path: path, subfolders: subfolders, points: getPoints}) :
+            	        PointHierarchy.getRoot({subfolders: subfolders, points: getPoints});
             	$scope.hierarchy.$promise.then(null, function() {
             	    delete $scope.hierarchy;
                     delete $scope.points;
             	});
 
             	// only do the work if we are actually going to use it
-            	if (attrs.points !== undefined) {
+            	if (getPoints) {
             	    $scope.hierarchy.$promise.then(function(folder) {
                         $scope.points = getPoints(folder);
             	    });

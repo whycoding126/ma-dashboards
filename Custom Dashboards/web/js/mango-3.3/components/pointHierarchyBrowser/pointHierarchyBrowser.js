@@ -16,8 +16,8 @@ function pointHierarchyBrowserController(PointHierarchy, Point) {
     this.$onChanges = function(changes) {
         if (changes.path) {
             var resourceObj = this.path && this.path.length ?
-                    PointHierarchy.byPath({path: this.path, subfolders: true, points: !!this.selectPoints}) :
-                    PointHierarchy.getRoot({subfolders: true, points: !!this.selectPoints});
+                    PointHierarchy.byPath({path: this.path, subfolders: true, points: true}) :
+                    PointHierarchy.getRoot({subfolders: true, points: true});
             resourceObj.$promise.then(function(hierarchy) {
                 this.hierarchy = hierarchy;
                 this.render();
