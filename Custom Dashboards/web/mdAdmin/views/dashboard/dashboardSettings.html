@@ -52,9 +52,9 @@
     </md-input-container>
 </div>
 
-<div layout layout-align="start end">
-  <md-button class="md-raised md-primary" ng-click="mdAdminSettings.save()"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.dox.revert"></span></md-button>
+<div layout layout-align="start end" layout-wrap>
+  <md-button flex="nogrow" class="md-raised md-primary" ng-click="mdAdminSettings.save()"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
+  <md-button flex="nogrow" class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.dox.revert"></span></md-button>
 
   <md-checkbox flex ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].dark"
       ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">
@@ -63,7 +63,8 @@
 
 
   <!-- <h4>Code Coloring Preview:</h4> -->
-  <div style="height: 40px; min-height:40px; width:500px;" live-editor="'&lt;ma-calc input=&quot;points | filter:{name:&lsquo;Real Power &lsquo; + phase + &lsquo; (kW)&lsquo;} | first&quot; output=&quot;power&quot;&gt;&lt;/ma-calc&gt;'" theme="{{mdAdminSettings.codeTheme}}"></div>
+  <div flex="100" flex-gt-md="50" flex-order="-5" flex-order-gt-md="5" style="height: 60px; min-height:60px; width:100%;" live-editor="'&lt;h1&gt;Code Coloring Preview&lt;/h1&gt;
+&lt;ma-calc input=&quot;points | filter:{name:&lsquo;Real Power &lsquo; + phase + &lsquo; (kW)&lsquo;} | first&quot; output=&quot;power&quot;&gt;&lt;/ma-calc&gt;'" theme="{{mdAdminSettings.codeTheme}}"></div>
 </div>
 
 <h2 ma-tr="dashboards.v3.app.themeHues" layout layout-align="center start"></h2>
