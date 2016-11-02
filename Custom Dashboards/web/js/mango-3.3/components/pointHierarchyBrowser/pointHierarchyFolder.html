@@ -9,6 +9,6 @@
 
 <ul ng-show="$ctrl.open">
   <li ng-repeat="subfolder in $ctrl.folder.subfolders">
-    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder"></ma-point-hierarchy-folder>
+    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1"></ma-point-hierarchy-folder>
   </li>
 </ul>

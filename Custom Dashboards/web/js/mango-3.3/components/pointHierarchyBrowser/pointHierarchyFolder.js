@@ -8,7 +8,7 @@ define(['angular', 'require'], function(angular, require) {
 
 var pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
-        this.open = this.browserCtrl.expanded;
+        this.open = isFinite(this.browserCtrl.expanded) ? this.depth < this.browserCtrl.expanded : !!this.browserCtrl.expanded;
     };
     
     this.folderClicked = function folderClicked($event) {
@@ -28,7 +28,8 @@ return {
     templateUrl: require.toUrl('./pointHierarchyFolder.html'),
     bindings: {
         folder: '<',
-        parent: '<'
+        parent: '<',
+        depth: '<'
     },
     require: {
         browserCtrl: '^^maPointHierarchyBrowser'
