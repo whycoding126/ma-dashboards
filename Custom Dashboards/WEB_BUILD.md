@@ -14,5 +14,3 @@ To run JavaScript (mocha) tests
   "password": "admin"
 }
 3. Run "npm test"
-
-Notes, ace has a loader regression in 1.2.4, fixed version to 1.2.3
