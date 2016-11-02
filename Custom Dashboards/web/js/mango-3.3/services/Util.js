@@ -540,6 +540,33 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
         }
     };
 
+    Util.prototype.resolvedPromise = function resolvedPromise(result, cancel) {
+        var promise = $q.when(result);
+        promise.cancel = cancel || angular.noop;
+        return promise;
+    };
+    
+    Util.prototype.rejectedPromise = function rejectedPromise(result, cancel) {
+        var promise = $q.reject(result);
+        promise.cancel = cancel || angular.noop;
+        return promise;
+    };
+
+    Util.prototype.rejectedPromiseAsError = function rejectedPromiseAsError(result, cancel) {
+        var promise = $q.reject(this.newError(result.toString()));
+        promise.cancel = cancel || angular.noop;
+        return promise;
+    };
+    
+    Util.prototype.newError = function newError(message) {
+        // some browsers only generate the stack trace if the error is thrown
+        try {
+            throw new Error(message);
+        } catch (e) {
+            return e;
+        }
+    };
+
     return new Util();
 }
 

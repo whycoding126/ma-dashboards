@@ -24,12 +24,14 @@ define(['./services/Point',
         './services/eventsEventManagerFactory',
         './services/events',
         './services/DynamicItems',
+        './services/pointValuesFactory',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
-        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events, DynamicItems, angular) {
+        WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
+        DynamicItems, pointValuesFactory, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -64,6 +66,7 @@ maServices.factory('UserNotes', UserNotes);
 maServices.factory('eventsEventManager', eventsEventManagerFactory);
 maServices.factory('Events', events);
 maServices.factory('DynamicItems', DynamicItems);
+maServices.factory('pointValues', pointValuesFactory);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
