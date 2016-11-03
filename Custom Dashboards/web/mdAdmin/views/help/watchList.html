@@ -4,26 +4,31 @@
     <p>
         The <a ui-sref="dashboard.watchList">Watch List</a> page allows you to compare many data points at 
         the same time in a table view. Powerful query and parameter based watchlists can be built using the 
-        <a ui-sref="dashboard.help.watchListBuilder">Watchlist Builder</a>, and later viewed on the this page.
+        <a ui-sref="dashboard.help.watchListBuilder">Watch List Builder</a>, and later viewed on the this page.
     </p>
 
     <p>
-        On the left side of the <code>Watch List</code> page you can choose between custom <code>Watch Lists,</code> <code>Devices,</code> <code>Data Sources,</code> or directly 
-        from folders of the <code>point hierarchy.</code> Choosing a new list will clear the chart and load the new points contained within 
+        On the left side of the <code>Watch List</code> page you can choose between custom <code>Watch Lists,</code> <code>Devices Names,</code> <code>Data Sources,</code> or directly 
+        from folders of the <code>Point Hierarchy</code>. Choosing a new list will clear the chart and load the new points contained within 
         that list into the table view. Each type of list is explained below:
     </p>
 
     <ul>
-        <li><strong>Watch Lists</strong> - A custom list of points that can be generated using the <a ui-sref="dashboard.help.watchListBuilder">Watchlist Builder</a>. Lists can be generated that are dynamic and based on query parameters.</li>
+        <li><strong>Watch Lists</strong> - A custom list of points that can be generated using the <a ui-sref="dashboard.settings.watchListBuilder">Watch List Builder</a>. Lists can be generated that are dynamic and based on query parameters.</li>
         <li><strong>Device Names</strong> - An arbitrary group assigned to data points. Typically used to refer to a machine name. Data sources can have multiple device names, grouping points within a single data source.</li>
         <li><strong>Data Sources</strong> - A "place" from which data is received. Virtually anything can be a Data Source, insofar as the communications protocol is supported by the application. Examples include Modbus Data Sources, SNMP Data Sources, and HTTP Data Sources.</li>
-        <li><strong>Point Hierarchy</strong> - The point hierarchy can be used to arrange the points in your system in meaningful ways. Data points can be arranged in a hierarchical folder like structure regardless of there data source or device name.</li>
+        <li><strong>Point Hierarchy</strong> - The point hierarchy can be used to arrange the points in your system in meaningful ways. Data points can be arranged in a hierarchical folder like structure regardless of their data source or device name.</li>
     </ul>
 
     <br />
-
-    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker.png" alt="Help-ScreenShots-WatchListPicker"/>
-
+    
+    <div layout layout-wrap layout-align="space-between start" layout-margin>
+        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker-Lists.png" alt="Help-ScreenShots-WatchListPicker-Lists"/>
+        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker-Devices.png" alt="Help-ScreenShots-WatchListPicker-Devices"/>
+        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker-Sources.png" alt="Help-ScreenShots-WatchListPicker-Sources"/>
+        <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker-Hierarchy.png" alt="Help-ScreenShots-WatchListPicker-Hierarchy"/>
+    </div>
+    
     <p>
         All column names on the <code>Watch List Table</code> can be clicked to sort ascending or 
         descending by the selected field. Point values will flash with the live value as they update in realtime.
@@ -36,6 +41,12 @@
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-WatchListEditButton.png" alt="Help-Screenshots-WatchListEditButton"/>
+    
+    <p>
+        Under <code>Lists</code> in the <code>Watch List Chooser</code> the top option will allow you to create a <code>New Watch List</code> and you will be linked to the <code>Watch List Builder</code> page.
+    </p>
+
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListPicker-New.png" alt="Help-ScreenShots-WatchListPicker-New"/>
 
     <p>
         You can click the checkbox on the far left of each row on the <code>Watch List Table</code> to add a data point to the <code>Chart and Compare</code> pane. 
@@ -79,7 +90,7 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListHistoryStatsPopUp.png" alt="Help-ScreenShots-WatchListHistoryStatsPopUp"/>
 
     <p>
-        If a data point is <code>Settable</code> a <code>Wrench icon</code> will display on the <code>Watchlist Table Row</code> that will open a popup dialog you can use to 
+        If a data point is <code>Settable</code> a <code>Wrench icon</code> will display on the <code>Watch List Table Row</code> that will open a popup dialog you can use to 
         manually set a data point’s value. The appropriate interface element will be shown for <code>Numeric</code> vs. 
         <code>Binary/Multistate/Alphanumeric</code> type data points.
     </p>
@@ -89,7 +100,7 @@
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-Screenshots-SetPointDialog.png" alt="Help-Screenshots-SetPointDialog"/>
 
     <p>
-        To the far right of the <code>Watchlist Table Row</code> you can click the icon to link to the <a ui-sref="dashboard.help.dataPointDetails">Data Point Details</a> page for that data point.
+        To the far right of the <code>Watch List Table Row</code> you can click the icon to link to the <a ui-sref="dashboard.help.dataPointDetails">Data Point Details</a> page for that data point.
     </p>
 
     <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListDPD-Icon.png" alt="Help-ScreenShots-WatchListDPD-Icon"/>

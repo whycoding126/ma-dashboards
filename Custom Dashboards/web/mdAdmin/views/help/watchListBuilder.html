@@ -2,6 +2,95 @@
     <h1 ma-tr="dashboards.v3.app.watchListBuilder"></h1>
 
     <p>
-        The <code>Watch List Builder</code> is a tool used to create groups of <code>Data Points</code> to display on the <code>Watchlist Page</code>
+        The <a ui-sref="dashboard.settings.watchListBuilder">Watch List Builder</a> page is used to create groups of 
+		<code>Data Points</code> to display on the <a ui-sref="dashboard.help.watchList">Watch List</a> page.
+        A <code>Watch List</code> at its most basic can be a group of <code>Data Points</code> you arbitrarily choose from your system.
+        A more complex <code>Query</code> based <code>Watch List</code> can include parameters and <code>RQL</code> logic allowing you to create dynamic
+        <code>Watch Lists</code> that are respond to system structure and user interaction with parameter values.
     </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder.png" alt="Help-ScreenShots-WatchListBuilder"/>
+    
+    <p>
+        When you first create a <code>Watch List</code> you will need to set a <code>Name</code> before saving. An <code>Export ID (XID)</code>
+        for that <code>Watch List</code> will automatically be assigned if you don't set one. <code>Read Permission</code> will automatically be set to
+        <code>user</code> and <code>Edit Permission</code> will be set to <code>edit-watchlists</code>.
+    </p>
+    
+    <p>
+        The dropdown to the left in the <code>Header</code> at the top of the <code>Watch List Builder</code> 
+        allows you to pick a <code>Watch List</code> to edit.
+        To create a new <code>Watch List</code> click the <code>New</code> button. The <code>Delete</code> button will
+        remove a <code>Watch List</code> from the system after confirming. At any point a <code>Watch List</code> can be
+        saved with the <code>Save</code> button and viewed on the <code>Watch List Page</code> with the <code>View</code> button.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Header.png" alt="Help-ScreenShots-WatchListBuilder-Header"/>
+    
+    <p>
+        The three type of <code>Watch Lists</code> currently supported are <code>Static, Point Query,</code> and <code>Point Hierarchy</code>. 
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-RadioButtons.png" alt="Help-ScreenShots-WatchListBuilder-RadioButtons"/>
+    
+    
+    <br><br>
+    
+    <h2>Static Watch Lists</h2>
+    
+    <p>
+        <code>Static Watch Lists</code> allow you to manually select from any of the <code>Data Points</code> in the system.
+        The table on the <code>Select From Table Tab</code> allows you to filter by searching. Multiple <code>Data Points</code>
+        can be selected by clicking the top <code>Checkbox</code> and all rows currently viewed will be added to the <code>Watch List</code>.
+        You can view more rows at a time and tab between pages using the controls below the table.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-SelectFromTable.png" alt="Help-ScreenShots-WatchListBuilder-SelectFromTable"/>
+    
+    <p>
+        Any <code>Checked Data Points</code> will show up on the <code>Selected Points Tab</code>.
+        From this tab you can removed any selected points by <code>Checking</code> them and clicking the <code>Remove Selected</code>
+        button. 
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-ReorderRemove.png" alt="Help-ScreenShots-WatchListBuilder-ReorderRemove"/>
+    
+    <p>    
+    You can also reorder how points will display on a <code>Watch List</code> by <code>Dragging and Dropping</code> the 
+        <code>3 Dashes</code> icon up and down.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-EditMenu-ReorderIcon.png" alt="Help-ScreenShots-EditMenu-ReorderIcon"/>
+    
+    <br><br>
+    
+    <h2>Point Hierarchy Watch Lists</h2>
+    
+    <p>
+        The <code>Point Hierarchy</code> type of <code>Watch List</code> allow you to pick points from a hierarchical folder like structure regardless of their data source or device name.
+        The <a ui-sref="dashboard.settings.pointHierarchy">Point Hierarchy</a> page is used to define a meaningful hierarchy.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Tabs-Hierarchy.png" alt="Help-ScreenShots-WatchListBuilder-Tabs-Hierarchy"/>
+    
+    <p>
+        The <code>Point Hierarchy</code> setup for your system will display under the <code>Select Folders Tab</code>.
+        Clicking the <code>Checkbox</code> next to a folder name will include any <code>Data Points</code>
+        contained by those folders in your <code>Watch List</code>.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Hierarchy-SelectFolders.png" alt="Help-ScreenShots-WatchListBuilder-Hierarchy-SelectFolders"/>
+    
+    <br><br>
+    
+    <h2>Point Query Watch Lists</h2>
+    
+    <p>
+        A <code>Query</code> based <code>Watch List</code> can include <code>Parameters</code> and <code>RQL</code> logic allowing you to create dynamic
+        <code>Watch Lists</code> that will give a different set of <code>Data Points</code> depending on the state of your system
+        and can be updated from the <code>Watch List Page</code> view by changing <code>Parameter Values</code>.
+    </p>
+    
+    <img md-whiteframe="5" style="max-width: 100%" ng-src="/modules/dashboards/web/mdAdmin/views/help/images/Help-ScreenShots-WatchListBuilder-Tabs-Query.png" alt="Help-ScreenShots-WatchListBuilder-Tabs-Query"/>
+    
 </div>

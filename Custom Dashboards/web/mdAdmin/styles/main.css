@@ -36,6 +36,17 @@ body {
   margin-bottom: 10px;
 }
 
+.md-toolbar-tools div:not(.desktop) > .md-button {
+    height: 25px;
+	min-height: 25px;
+	max-height: 25px;
+    line-height: 25px;
+	font-size: 10px;
+    min-width: 30px;
+	padding: 0 5px;
+    margin: 6px 4px;
+}
+
 /* Dashboard pages */
 
 .dashboard-main-view {

@@ -68,6 +68,12 @@ var liveEditor = function($templateRequest, $sce) {
                 }
             });
             
+            $scope.$watch('theme', function(newValue) {
+                if (!newValue) return;
+                
+                editor.setTheme('ace/theme/' + newValue);
+            });
+            
             function aceChanged() {
                 $scope.text = currentText = editor.getValue();
             }
