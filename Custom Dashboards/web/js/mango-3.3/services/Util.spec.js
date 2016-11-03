@@ -9,27 +9,32 @@
 describe('Util service', function() {
     'use strict';
 
-    var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, Util;
+    var MochaUtils = require('../../../../web-test/mocha');
+    var mochaUtils = new MochaUtils();
+    var Util;
     
     before('Load maServices module', function(done) {
-        cleanupJsDom = mochaConfig.initEnvironment();
+        this.timeout(5000);
+        
         requirejs(['mango-3.3/maServices'], function(maServices) {
             done();
         });
+        
+        mochaUtils.initEnvironment();
     });
     
     after(function() {
-        cleanupJsDom();
+        mochaUtils.cleanupEnvironment();
     });
 
     beforeEach(function() {
-        injector = angular.injector(['ng', 'ngMock', 'maServices'], true);
+        var injector = angular.injector(['ng', 'ngMock', 'maServices'], true);
+        mochaUtils.setInjector(injector);
         Util = injector.get('Util');
     });
 
     afterEach(function() {
-        mochaConfig.cleanupInjector(injector);
+        mochaUtils.cleanupInjector();
     });
 
     describe('parseInternationalFloat()', function() {

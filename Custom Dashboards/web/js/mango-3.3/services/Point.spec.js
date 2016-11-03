@@ -9,29 +9,22 @@
 describe('Point service', function() {
     'use strict';
 
-    var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, Point, $q, $rootScope, user, query, PointHierarchy;
+    var MochaUtils = require('../../../../web-test/mocha');
+    var mochaUtils = new MochaUtils();
+    var pointValues, Util;
+    var runDigestAfter = mochaUtils.getRunDigestAfter();
     var voltagePointId;
     
-    // angular promises only resolve on digest, and http requests are only flushed on digest
-    // so we have to run the digest loop after each test
-    function runDigestAfter(fn) {
-        return function() {
-            var result = fn.apply(this, arguments);
-            if (!$rootScope.$$phase)
-                $rootScope.$digest();
-            return result;
-        };
-    };
+    var Point, $q, query, PointHierarchy;
 
     before('Load maServices module', function(done) {
-        cleanupJsDom = mochaConfig.initEnvironment(mochaConfig.config.url);
+        this.timeout(5000);
         
         requirejs(['mango-3.3/maServices', 'rql/query'], function(maServices, _query) {
             query = _query;
             
             angular.module('PointMockModule', ['maServices', 'ngMockE2E'])
-                .constant('mangoBaseUrl', mochaConfig.config.url)
+                .constant('mangoBaseUrl', mochaUtils.config.url)
                 .constant('mangoTimeout', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
                     $httpProvider.interceptors.push('mangoHttpInterceptor');
@@ -45,33 +38,25 @@ describe('Point service', function() {
                 }]);
             done();
         });
+        
+        mochaUtils.initEnvironment();
     });
 
     after('Clean up environment', function() {
-        cleanupJsDom();
+        mochaUtils.cleanupEnvironment();
     });
 
     beforeEach('Get injector and dependencies', runDigestAfter(function() {
-        injector = angular.injector(['ng', 'ngMock', 'PointMockModule'], true);
+        var injector = angular.injector(['ng', 'ngMock', 'PointMockModule'], true);
+        mochaUtils.setInjector(injector);
         Point = injector.get('Point');
         $q = injector.get('$q');
-        $rootScope = injector.get('$rootScope');
         PointHierarchy = injector.get('PointHierarchy');
-
-        if (!user) {
-            return injector.get('User').login({
-                username: mochaConfig.config.username,
-                password: mochaConfig.config.password
-            }).$promise.then(function(_user) {
-                user = _user;
-            }, function(error) {
-                throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
-            });
-        }
+        return mochaUtils.login();
     }));
     
     afterEach('Clean up injector', function() {
-        mochaConfig.cleanupInjector(injector);
+        mochaUtils.cleanupInjector();
     });
 
     it('Get point via XID', runDigestAfter(function() {
@@ -105,7 +90,6 @@ describe('Point service', function() {
             throw new Error('Shouldn\'t get a point for a random XID');
         }, function(response) {
             assert.equal(response.status, 404);
-            return $q.when();
         });
     }));
 
@@ -584,7 +568,6 @@ describe('Point service', function() {
             assert.isObject(error.data);
             assert.equal(error.data.message, 'No column found for: xyz');
             assert.isString(error.data.stackTrace);
-            return $q.when();
         });
     }));
     
@@ -597,7 +580,6 @@ describe('Point service', function() {
             assert.isObject(error.data);
             assert.equal(error.data.message, 'No column found for: xyz');
             assert.isString(error.data.stackTrace);
-            return $q.when();
         });
     }));
 
@@ -683,7 +665,6 @@ describe('Point service', function() {
         }, function(error) {
             if (error instanceof Error) return $q.reject(error);
             assert.equal(error.status, 404);
-            return $q.when();
         });
     }));
 

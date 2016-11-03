@@ -9,20 +9,19 @@
  * via "npm test"
  */
 
-module.exports = {};
-
+var config;
 try {
-    module.exports.config = require('./config.json');
+    config = require('./config.json');
 } catch (e) {
-    module.exports.config = {};
+    config = {};
 }
 
-if (module.exports.config.username == null)
-    module.exports.config.username = 'admin';
-if (module.exports.config.password == null)
-    module.exports.config.password = 'admin';
-if (module.exports.config.url == null)
-    module.exports.config.url = 'http://localhost:8080';
+if (config.username == null)
+    config.username = 'admin';
+if (config.password == null)
+    config.password = 'admin';
+if (config.url == null)
+    config.url = 'http://localhost:8080';
 
 // load requirejs as a global (node has a built in function called require)
 global.requirejs = require('requirejs');
@@ -56,30 +55,45 @@ global.sinon = require('sinon');
 
 var jsDomGlobal = require('jsdom-global');
 
-module.exports.initEnvironment = function initEnvironment(url) {
-  //sets up a virtual DOM and the window object
-  var cleanupJsDom = url ? jsDomGlobal(undefined, {url: 'http://localhost:8080'}) : jsDomGlobal();
+function MochaUtils() {
 
-  // load angular mocks
-  require('angular/angular');
-  // put angular on global so doing require('angular') doesnt fail
-  // angular/index.js tries to export angular not window.angular
-  if (!global.angular)
-      global.angular = window.angular;
-  require('angular-mocks');
-  
-  return cleanupJsDom;
+}
+
+MochaUtils.prototype.config = config;
+
+MochaUtils.prototype.initEnvironment = function initEnvironment(useConfigUrl) {
+    //sets up a virtual DOM and the window object
+    useConfigUrl = useConfigUrl || useConfigUrl == null;
+    this.cleanupJsDom = useConfigUrl ? jsDomGlobal(undefined, {url: this.config.url}) : jsDomGlobal();
+
+    // load angular mocks
+    require('angular/angular');
+    // put angular on global so doing require('angular') doesnt fail
+    // angular/index.js tries to export angular not window.angular
+    if (!global.angular)
+        global.angular = window.angular;
+    require('angular-mocks');
+};
+
+MochaUtils.prototype.cleanupEnvironment = function cleanupEnvironment() {
+    this.cleanupJsDom();
+};
+
+MochaUtils.prototype.setInjector = function setInjector(injector) {
+    this.injector = injector;
+    this.$rootScope = injector.get('$rootScope');
 };
 
 // see angular-mocks.js module.$$cleanup()
-module.exports.cleanupInjector = function cleanupInjector(injector) {
+MochaUtils.prototype.cleanupInjector = function cleanupInjector(injector) {
+    injector = injector || this.injector;
     var $rootElement = injector.get('$rootElement');
     var rootNode = $rootElement && $rootElement[0];
     if (rootNode) {
         angular.element.cleanData([rootNode]);
     }
     
-    var $rootScope = injector.get('$rootScope');
+    var $rootScope = this.$rootScope || injector.get('$rootScope');
     if ($rootScope && $rootScope.$destroy) $rootScope.$destroy();
     
     // clean up jquery's fragment cache
@@ -92,3 +106,38 @@ module.exports.cleanupInjector = function cleanupInjector(injector) {
     });
     angular.callbacks.$$counter = 0;
 };
+
+MochaUtils.prototype.login = function login(injector) {
+    if (!this.user) {
+        return this.injector.get('User').login({
+            username: this.config.username,
+            password: this.config.password
+        }).$promise.then(function(user) {
+            this.user = user;
+        }.bind(this), function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
+        });
+    }
+}
+
+MochaUtils.prototype.runDigest = function runDigest() {
+    if (this.$rootScope && !this.$rootScope.$$phase)
+        this.$rootScope.$digest();
+};
+
+// angular promises only resolve on digest, and http requests are only flushed on digest
+// so we have to run the digest loop after each test
+MochaUtils.prototype.runDigestAfter = function runDigestAfter(fn) {
+    var runDigest = this.runDigest.bind(this);
+    return function() {
+        var result = fn.apply(this, arguments);
+        setTimeout(runDigest, 0);
+        return result;
+    };
+};
+
+MochaUtils.prototype.getRunDigestAfter = function getRunDigestAfter() {
+    return this.runDigestAfter.bind(this);
+};
+
+module.exports = MochaUtils;

@@ -9,26 +9,17 @@
 describe('Point values service', function() {
     'use strict';
 
-    var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, $q, $rootScope, user, pointValues, Util;
-
-    // angular promises only resolve on digest, and http requests are only flushed on digest
-    // so we have to run the digest loop after each test
-    function runDigestAfter(fn) {
-        return function() {
-            var result = fn.apply(this, arguments);
-            if (!$rootScope.$$phase)
-                $rootScope.$digest();
-            return result;
-        };
-    };
+    var MochaUtils = require('../../../../web-test/mocha');
+    var mochaUtils = new MochaUtils();
+    var pointValues, Util;
+    var runDigestAfter = mochaUtils.getRunDigestAfter();
 
     before('Load maServices module', function(done) {
-        cleanupJsDom = mochaConfig.initEnvironment(mochaConfig.config.url);
+        this.timeout(5000);
         
         requirejs(['mango-3.3/maServices'], function(maServices) {
             angular.module('mochaTestModule', ['maServices', 'ngMockE2E'])
-                .constant('mangoBaseUrl', mochaConfig.config.url)
+                .constant('mangoBaseUrl', mochaUtils.config.url)
                 .constant('mangoTimeout', 0)
                 .config(['$httpProvider', '$exceptionHandlerProvider', function($httpProvider, $exceptionHandlerProvider) {
                     $httpProvider.interceptors.push('mangoHttpInterceptor');
@@ -42,33 +33,24 @@ describe('Point values service', function() {
                 }]);
             done();
         });
+        
+        mochaUtils.initEnvironment();
     });
 
     after('Clean up environment', function() {
-        cleanupJsDom();
+        mochaUtils.cleanupEnvironment();
     });
 
     beforeEach('Get injector and dependencies', runDigestAfter(function() {
-        injector = angular.injector(['ng', 'ngMock', 'mochaTestModule'], true);
-        $q = injector.get('$q');
-        $rootScope = injector.get('$rootScope');
+        var injector = angular.injector(['ng', 'ngMock', 'mochaTestModule'], true);
+        mochaUtils.setInjector(injector);
         pointValues = injector.get('pointValues');
         Util = injector.get('Util');
-
-        if (!user) {
-            return injector.get('User').login({
-                username: mochaConfig.config.username,
-                password: mochaConfig.config.password
-            }).$promise.then(function(_user) {
-                user = _user;
-            }, function(error) {
-                throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
-            });
-        }
+        return mochaUtils.login();
     }));
     
     afterEach('Clean up injector', function() {
-        mochaConfig.cleanupInjector(injector);
+        mochaUtils.cleanupInjector();
     });
 
     it('gets latest 1 point value', runDigestAfter(function() {
