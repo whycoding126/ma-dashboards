@@ -6,11 +6,11 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-describe.only('Point values service', function() {
+describe('Point values service', function() {
     'use strict';
 
     var mochaConfig = require('../../../../web-test/mocha');
-    var cleanupJsDom, injector, $q, $rootScope, user, pointValues;
+    var cleanupJsDom, injector, $q, $rootScope, user, pointValues, Util;
 
     // angular promises only resolve on digest, and http requests are only flushed on digest
     // so we have to run the digest loop after each test
@@ -53,6 +53,7 @@ describe.only('Point values service', function() {
         $q = injector.get('$q');
         $rootScope = injector.get('$rootScope');
         pointValues = injector.get('pointValues');
+        Util = injector.get('Util');
 
         if (!user) {
             return injector.get('User').login({
@@ -70,7 +71,7 @@ describe.only('Point values service', function() {
         mochaConfig.cleanupInjector(injector);
     });
 
-    it('Get latest 1 point value', runDigestAfter(function() {
+    it('gets latest 1 point value', runDigestAfter(function() {
         return pointValues.getPointValuesForXid('voltage', {latest: 1}).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 1);
@@ -81,9 +82,14 @@ describe.only('Point values service', function() {
             if (pointValues[0].annotation != null) {
                 assert.isString(pointValues[0].annotation);
             }
-        }, function(error) {
-            if (error instanceof Error) return $q.reject(error);
-            throw new Error(error.status + ' - ' + error.statusText);
+        }, Util.throwHttpError);
+    }));
+    
+    it('cancels requests successfully', runDigestAfter(function() {
+        var promise = pointValues.getPointValuesForXid('voltage', {latest: 1}).then(function(pointValues) {
+            throw new Error('Got response from server, request should have been cancelled');
         });
+        promise.cancel();
+        return promise;
     }));
 });

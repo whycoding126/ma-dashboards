@@ -76,13 +76,73 @@ maServices.constant('mangoDefaultDateFormat', 'll LTS');
 maServices.constant('mangoDefaultDateOnlyFormat', 'l');
 maServices.constant('mangoDefaultTimeFormat', 'LT');
 
-maServices.config(['localStorageServiceProvider', '$httpProvider', function(localStorageServiceProvider, $httpProvider) {
+maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
         .setPrefix('maServices')
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
         .setNotify(false, false);
     
     $httpProvider.defaults.paramSerializer = 'rqlParamSerializer';
+
+    $provide.decorator('$q', ['$delegate', function($delegate) {
+        function decoratePromise(promise) {
+            if (typeof promise.cancel === 'function') {
+                var then = promise.then;
+                promise.then = function() {
+                    var nextPromise = then.apply(this, arguments);
+                    nextPromise.cancel = promise.cancel;
+                    return decoratePromise(nextPromise);
+                };
+            }
+            
+            promise.setCancel = function setCancel(cancel) {
+                this.cancel = cancel;
+                return decoratePromise(this);
+            };
+            
+            return promise;
+        }
+
+        var defer = $delegate.defer;
+        var when = $delegate.when;
+        var reject = $delegate.reject;
+        var all = $delegate.all;
+        var race = $delegate.race;
+        
+        $delegate.defer = function() {
+            var deferred = defer.apply(this, arguments);
+            decoratePromise(deferred.promise);
+            return deferred;
+        };
+        $delegate.when = function() {
+            var p = when.apply(this, arguments);
+            return decoratePromise(p);
+        };
+        $delegate.reject = function() {
+            var p = reject.apply(this, arguments);
+            return decoratePromise(p);
+        };
+        $delegate.all = function() {
+            var p = all.apply(this, arguments);
+            p.cancel = cancelAll.apply(null, arguments);
+            return decoratePromise(p);
+        };
+        $delegate.race = function() {
+            var p = race.apply(this, arguments);
+            p.cancel = cancelAll.apply(null, arguments);
+            return decoratePromise(p);
+        };
+        
+        function cancelAll() {
+            for (var i = 0; i < arguments.length; i++) {
+                if (typeof arguments[i].cancel === 'function') {
+                    arguments[i].cancel();
+                }
+            }
+        }
+
+        return $delegate;
+    }]);
 }]);
 
 return maServices;

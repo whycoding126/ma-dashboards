@@ -32,7 +32,7 @@ function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
                 var to = Util.toMoment(options.to, now, options.dateFormat);
                 
                 if (from.valueOf() === to.valueOf()) {
-                    return Util.resolvedPromise([]);
+                    return $q.when([]).setCancel(angular.noop);
                 }
                 
                 params.push('from=' + encodeURIComponent(from.toISOString()));
@@ -88,7 +88,7 @@ function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
                 timeoutPromise = $timeout(null, timeout);
             }
             
-            var promise = $http.get(url, {
+            return $http.get(url, {
                 timeout: timeoutPromise ? $q.race(canceler.promise, timeoutPromise) : canceler.promise,
                 headers: {
                     'Accept': 'application/json'
@@ -101,11 +101,9 @@ function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
                 if (reverseData)
                     values.reverse();
                 return values;
-            });
-            promise.cancel = canceler.resolve;
-            return promise;
+            }).setCancel(canceler.resolve);
         } catch (error) {
-            return Util.rejectedPromise(error);
+            return $q.reject(error).setCancel(angular.noop);
         }
     };
 
