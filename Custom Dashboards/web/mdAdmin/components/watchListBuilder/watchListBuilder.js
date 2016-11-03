@@ -6,9 +6,11 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout, $scope) {
+var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout, $scope) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
+    
+    $ctrl.$mdMedia = $mdMedia;
     
     var defaultTotal = $ctrl.total = '\u2026';
     var defaultQuery ='sort(deviceName,name)&limit(200)';
@@ -452,7 +454,7 @@ var watchListBuilder = function watchListBuilder(Point, cssInjector, WatchList, 
     };
 };
 
-watchListBuilder.$inject = ['Point', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope'];
+watchListBuilder.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope'];
 
 return {
     controller: watchListBuilder,
