@@ -366,7 +366,7 @@ describe('Point service', function() {
         });
     }));
     
-    it.skip('Query for enabled points using true', runDigestAfter(function() {
+    it('Query for enabled points using true', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'DS_997094')
             .eq('enabled', true);
@@ -414,7 +414,7 @@ describe('Point service', function() {
         });
     }));
     
-    it.skip('Query for enabled points using false', runDigestAfter(function() {
+    it('Query for enabled points using false', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'DS_997094')
             .eq('enabled', false);
@@ -466,7 +466,52 @@ describe('Point service', function() {
         });
     }));
     
-    it('Sort by device name then point name', runDigestAfter(function() {
+    it('Sort all by device name then point name, limit 200', runDigestAfter(function() {
+        this.timeout(30000);
+        var q = new query.Query()
+            .sort('deviceName', 'name')
+            .limit(200);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+    
+    it('Sort all by descending device name then point name, limit 200', runDigestAfter(function() {
+        this.timeout(30000);
+        var q = new query.Query()
+            .sort('-deviceName', 'name')
+            .limit(200);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+
+    it('Sort all by xid then point name, limit 200', runDigestAfter(function() {
+        this.timeout(30000);
+        var q = new query.Query()
+            .sort('xid', 'name')
+            .limit(200);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
+        });
+    }));
+
+    it('Sort by device name then point name, where DS = vmeters', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'vmeters')
             .sort('deviceName', 'name');
@@ -486,7 +531,7 @@ describe('Point service', function() {
         });
     }));
     
-    it('Sort by descending device name then point name', runDigestAfter(function() {
+    it('Sort by descending device name then point name, where DS = vmeters', runDigestAfter(function() {
         var q = new query.Query()
             .eq('dataSourceXid', 'vmeters')
             .sort('-deviceName', 'name');
