@@ -16,26 +16,27 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
  * - Can be set to query for events within a specific date range.
  * - The table includes the ability to filter and sort by alarm level and timestamp.
  * - Events can be acknowledged one at a time or a button is shown to acknowledge all events matching the query.
+ * - <a ui-sref="dashboard.examples.utilities.eventsTable">View Demo</a>
  *
+ * @param {number} limit Set the initial limit of the pagination.
  * @param {string=} point-id Filter on the Id property of a point, use with `"single-point=true"`.
  * @param {boolean=} single-point Set to `"true"` and use with point-id attribute to return events related to just a single Data Point.
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
- * @param {string=} alarm-level Filter on Alarm Level. Possible values are: `"NONE"`, `"INFORMATION"`, `"URGENT"`, `"CRITICAL"`, `"LIFE_SAFETY"` or `"*"` for any.
- * @param {string=} event-type Filter on Event Type. Possible values are: `"DATA_POINT"`, `"DATA_SOURCE"`, `"SYSTEM"` or `"*"` for any.
- * @param {string=} acknowledged Filter on whether the event has been acknowledged. Possible values are: `"true"`, `"false"` or `"*"` for either.
- * @param {string=} active-status Filter on Active Status. Possible values are: `"active"`, `"noRtn"`, `"normal"` or `"*"` for any.
- * @param {number=} limit Set the initial limit of the pagination.
- * @param {string=} sort Set the initial sorting column of the table. Possible values are: `"alarmLevel"`, `"activeTimestamp"`, `"message"` or `"acknowledged"`. Precede value with a negative (eg. `"-activeTimestamp"`) to reverse sorting.
+ * @param {string=} alarm-level Filter on Alarm Level. Possible values are: `"'NONE'"`, `"'INFORMATION'"`, `"'URGENT'"`, `"'CRITICAL'"`, `"'LIFE_SAFETY'"` or `"'*'"` for any.
+ * @param {string=} event-type Filter on Event Type. Possible values are: `"'DATA_POINT'"`, `"'DATA_SOURCE'"`, `"'SYSTEM'"` or `"'*'"` for any.
+ * @param {string=} acknowledged Filter on whether the event has been acknowledged. Possible values are: `"'true'"`, `"'false'"` or `"'*'"` for either.
+ * @param {string=} active-status Filter on Active Status. Possible values are: `"'active'"`, `"'noRtn'"`, `"'normal'"` or `"'*'"` for any.
+ * @param {string=} sort Set the initial sorting column of the table. Possible values are: `"'alarmLevel'"`, `"'activeTimestamp'"`, `"'message'"` or `"'acknowledged'"`. Precede value with a negative (eg. `"'-activeTimestamp'"`) to reverse sorting.
  * @param {string=} from From time used for filtering by date range. Pass the value from a `<ma-date-picker>`.
  * @param {string=} to To time used for filtering by date range.
- * @param {boolean=} date-filter Turn on date filtering of events. Set value to true and use with from/to attribute. Defaults to off.
+ * @param {boolean=} date-filter Turn on date filtering of events. Set value to `"'true'"` and use with from/to attribute to use. Defaults to off.
 
  *
  * @usage
- * <!-- Example Using Controller to set Table Attributes -->
- * <ma-events-table event-type="$ctrl.eventType" alarm-level="$ctrl.alarmLevel" acknowledged="$ctrl.acknowledged" event-id="eventId" 
- * active-status="activeStatus" date-filter="true" from="fromTime" to="toTime" limit="50" 
- * sort="$ctrl.sort"></ma-events-table>
+ * <!-- Example Using filters on Table Attributes -->
+ * <ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'*'"
+ * active-status=""'active'"" date-filter="true" from="fromTime" to="toTime" limit="50" 
+ * sort="'-alarmLevel'"></ma-events-table>
  *
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
