@@ -109,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-events-table&gt;&lt;/ma-events-table&gt;",
-      "keywords": "alarm-level alarmlevel api attributes directive displays event-type events eventtype format initial limit list madashboards maeventstable pagination point-id pointid query set table"
+      "keywords": "$ctrl ability acknowledge acknowledged active active-status activestatus activetimestamp alarm alarm-level alarmlevel allows api attribute attributes button column controller critical data data_point data_source date-filter defaults directive displays event event-id event-type eventid events eventtype example explained false filter filtering format fromtime includes initial level life_safety limit list madashboards maeventstable matching message mypoint negative normal nortn pagination pass point point-id precede property query range restricting return reverse set single single-point sort sorting specific status system table time timestamp totime true turn type urgent values"
     },
     {
       "section": "api",
