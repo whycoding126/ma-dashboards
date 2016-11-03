@@ -6,7 +6,7 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-describe.only('Point values service', function() {
+describe('Point values service', function() {
     'use strict';
 
     var mochaConfig = require('../../../../web-test/mocha');
@@ -88,6 +88,8 @@ describe.only('Point values service', function() {
     it('cancels requests successfully', runDigestAfter(function() {
         var promise = pointValues.getPointValuesForXid('voltage', {latest: 1}).then(function(pointValues) {
             throw new Error('Got response from server, request should have been cancelled');
+        }, function(error) {
+            assert.equal(error.status, -1);
         });
         promise.cancel();
         return promise;
