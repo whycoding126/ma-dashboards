@@ -86,18 +86,18 @@ maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', f
 
     $provide.decorator('$q', ['$delegate', function($delegate) {
         function decoratePromise(promise) {
-            if (typeof promise.cancel === 'function') {
-                var then = promise.then;
-                promise.then = function() {
-                    var nextPromise = then.apply(this, arguments);
+            var then = promise.then;
+            promise.then = function() {
+                var nextPromise = then.apply(this, arguments);
+                if (typeof promise.cancel === 'function') {
                     nextPromise.cancel = promise.cancel;
-                    return decoratePromise(nextPromise);
-                };
-            }
+                }
+                return decoratePromise(nextPromise);
+            };
             
             promise.setCancel = function setCancel(cancel) {
                 this.cancel = cancel;
-                return decoratePromise(this);
+                return this;
             };
             
             return promise;
@@ -134,9 +134,12 @@ maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', f
         };
         
         function cancelAll() {
-            for (var i = 0; i < arguments.length; i++) {
-                if (typeof arguments[i].cancel === 'function') {
-                    arguments[i].cancel();
+            var promises = Array.prototype.slice.apply(arguments);
+            return function() {
+                for (var i = 0; i < promises.length; i++) {
+                    if (typeof promises[i].cancel === 'function') {
+                        promises[i].cancel.apply(promises[i], arguments);
+                    }
                 }
             }
         }
