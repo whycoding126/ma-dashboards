@@ -159,7 +159,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
-function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
+function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q, $timeout, mangoTimeout) {
 	function Util() {}
 
 	/**
@@ -206,14 +206,6 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
     		if (key.indexOf(start) === 0) count++;
     	}
     	return count;
-    };
-
-
-    Util.prototype.cancelAll = function cancelAll(cancelFns) {
-    	// remove all elements from cancelFns array so cancel fns are never called again
-    	cancelFns = cancelFns.splice(0, cancelFns.length);
-    	for (var i = 0; i < cancelFns.length; i++)
-    		cancelFns[i]();
     };
 
     Util.prototype.openSocket = function openSocket(path) {
@@ -545,6 +537,15 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q) {
         if (error.status < 0)
             throw new Error('$http request timeout or cancelled');
         throw new Error(error.status + ' - ' + error.statusText);
+    };
+    
+    Util.prototype.cancelOrTimeout = function cancelOrTimeout(cancelPromise, timeout) {
+        var timeout = isFinite(timeout) ? timeout : mangoTimeout;
+        if (timeout > 0) {
+            var timeoutPromise = $timeout(angular.noop, timeout);
+            return $q.race([cancelPromise, timeoutPromise]);
+        }
+        return cancelPromise;
     };
 
     return new Util();

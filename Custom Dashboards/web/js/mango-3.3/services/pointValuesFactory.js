@@ -6,8 +6,8 @@
 define(['require', 'angular'], function(require, angular) {
 'use strict';
 
-pointValuesFactory.$inject = ['$http', '$q', '$timeout', 'Util', 'mangoTimeout'];
-function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
+pointValuesFactory.$inject = ['$http', '$q', 'Util'];
+function pointValuesFactory($http, $q, Util) {
     var pointValuesUrl = '/rest/v1/point-values/';
 
     function PointValues() {
@@ -82,13 +82,7 @@ function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
             url += '?' + params.join('&');
             
             var canceler = $q.defer();
-            var timeoutPromise;
-            var timeout = isFinite(options.timeout) ? options.timeout : mangoTimeout;
-            if (timeout > 0) {
-                timeoutPromise = $timeout(angular.noop, timeout);
-            }
-
-            var cancelOrTimeout = timeoutPromise ? $q.race([canceler.promise, timeoutPromise]) : canceler.promise;
+            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
 
             return $http.get(url, {
                 timeout: cancelOrTimeout,

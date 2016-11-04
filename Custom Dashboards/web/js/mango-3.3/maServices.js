@@ -25,6 +25,7 @@ define(['./services/Point',
         './services/events',
         './services/DynamicItems',
         './services/pointValuesFactory',
+        './services/statisticsFactory',
         './services/qDecorator',
         'angular',
         'angular-resource',
@@ -32,7 +33,7 @@ define(['./services/Point',
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, qDecorator, angular) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -68,6 +69,7 @@ maServices.factory('eventsEventManager', eventsEventManagerFactory);
 maServices.factory('Events', events);
 maServices.factory('DynamicItems', DynamicItems);
 maServices.factory('pointValues', pointValuesFactory);
+maServices.factory('statistics', statisticsFactory);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);

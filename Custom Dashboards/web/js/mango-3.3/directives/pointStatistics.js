@@ -47,7 +47,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
  The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}
  *
  */
-function pointValues($http, Point, Util, $q, mangoTimeout) {
+pointValues.$inject = ['$http', 'Point', 'Util', '$q', 'statistics'];
+function pointValues($http, Point, Util, $q, statistics) {
     return {
         restrict: 'E',
         scope: {
@@ -59,7 +60,8 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
             to: '=?',
             dateFormat: '@',
             firstLast: '@',
-            timeout: '='
+            timeout: '=',
+            rendered: '='
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -109,27 +111,26 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
             	var points = $scope.points.slice(0);
 
             	var promises = [];
-            	var cancels = [];
-
+            	
             	// cancel existing requests if there are any
-            	if (pendingRequest) pendingRequest();
-            	pendingRequest = Util.cancelAll.bind(null, cancels);
+                if (pendingRequest) {
+                    pendingRequest.cancel();
+                    pendingRequest = null;
+                }
 
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-            		var query = doQuery(points[i]);
-            		promises.push(query.promise);
-            		cancels.push(query.cancel);
+            		var queryPromise = doQuery(points[i]);
+            		promises.push(queryPromise);
             	}
 
-            	$q.all(promises).then(function(results) {
-            		pendingRequest = null;
+            	pendingRequest = $q.all(promises).then(function(results) {
                 	if (!results.length) return;
             		var i;
 
             		for (i = 0; i < results.length; i++) {
-            			var point = results[i].point;
-            			var pointStats = results[i].stats;
+            			var point = points[i];
+            			var pointStats = results[i];
                         stats[point.xid] = pointStats;
             		}
 
@@ -142,89 +143,44 @@ function pointValues($http, Point, Util, $q, mangoTimeout) {
             			}
             			$scope.statistics = outputStats;
             		}
-            	}, function(reason) {
-            		if (cancels.length) {
-            			// cancel hasn't been called, single failure
-            			console.log(reason);
-            		} else {
-            			console.log('cancelled');
-            		}
-            	});
+            	}, function(error) {
+                    console.log(error);
+                }).then(function() {
+                    pendingRequest = null;
+                });
             }, true);
 
-        	// TODO use service to get statistics
             function doQuery(point) {
-                if (!point || !point.xid) return $q.reject('no point');
-
-                var url;
-                if ($scope.firstLast === 'true') {
-                	url = '/rest/v1/point-values/' + encodeURIComponent(point.xid) +
-                    '/first-last';
-                } else {
-                	url = '/rest/v1/point-values/' + encodeURIComponent(point.xid) +
-                    '/statistics';
+                try {
+                    var options = {
+                        firstLast: $scope.firstLast,
+                        dateFormat: $scope.dateFormat,
+                        from: $scope.from,
+                        to: $scope.to,
+                        timeout: $scope.timeout,
+                        rendered: $scope.rendered
+                    };
+                    
+                    return statistics.getStatisticsForXid(point.xid, options).then(function(data) {
+                        if (data.startsAndRuntimes) {
+                            for (i = 0; i < data.startsAndRuntimes.length; i++) {
+                                var statsObj = data.startsAndRuntimes[i];
+                                var valueRenderer = point.valueRenderer(statsObj.value);
+                                if (!valueRenderer) continue;
+                                statsObj.renderedValue = valueRenderer.text;
+                                statsObj.renderedColor = valueRenderer.colour;
+                            }
+                        }
+                        return data;
+                    });
+                } catch (error) {
+                    return $q.reject(error).setCancel(angular.noop);
                 }
-                var params = [];
-
-                var now = new Date();
-                var from = Util.toMoment($scope.from, now, $scope.dateFormat);
-                var to = Util.toMoment($scope.to, now, $scope.dateFormat);
-
-                var result = {
-                	point: point
-                };
-
-                if (from.valueOf() === to.valueOf()) {
-                	return {
-                		promise: $q.when(result),
-                		cancel: angular.noop
-                	};
-                }
-
-                params.push('from=' + encodeURIComponent(from.toISOString()));
-                params.push('to=' + encodeURIComponent(to.toISOString()));
-                params.push('useRendered=true');
-
-                for (var i = 0; i < params.length; i++) {
-                    url += (i === 0 ? '?' : '&') + params[i];
-                }
-
-                var cancelDefer = $q.defer();
-    			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, $scope.timeout || mangoTimeout);
-
-                var promise = $http.get(url, {
-                	timeout: cancelDefer.promise,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(function(response) {
-                	var data = response.data;
-
-                	if (data.startsAndRuntimes) {
-                		for (i = 0; i < data.startsAndRuntimes.length; i++) {
-                			var statsObj = data.startsAndRuntimes[i];
-                			var valueRenderer = point.valueRenderer(statsObj.value);
-                			if (!valueRenderer) continue;
-                			statsObj.renderedValue = valueRenderer.text;
-                			statsObj.renderedColor = valueRenderer.colour;
-                		}
-                	}
-
-                	result.stats = data;
-                	return result;
-                });
-
-                return {
-                	promise: promise,
-                	cancel: cancelFn
-                };
             }
         }
     };
 }
 
-pointValues.$inject = ['$http', 'Point', 'Util', '$q', 'mangoTimeout'];
 return pointValues;
 
 }); // define
