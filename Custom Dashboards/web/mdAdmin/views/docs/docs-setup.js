@@ -432,8 +432,8 @@ NG_DOCS={
       "shortName": "maServices.Events",
       "type": "service",
       "moduleName": "maServices",
-      "shortDescription": "Provides a service for retrieving and adding events",
-      "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint event events http madashboards maeventstable maservices matching method object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref"
+      "shortDescription": "Provides a service for retrieving, adding, and acknowledging events/alarms",
+      "keywords": "$resource acknowledge acknowledged acknowledges acknowledgeviarql acknowledging action actions active adding alarm api array build call class cooresponding count counts dashboard default delete docs endpoint equal event events find getactivesummary http list madashboards maeventstable maservices matching method number object objects objquery parameter passed passing post property provided query querying remove resource rest retrieving returns rql save service set single string successful type ui-sref values"
     },
     {
       "section": "api",

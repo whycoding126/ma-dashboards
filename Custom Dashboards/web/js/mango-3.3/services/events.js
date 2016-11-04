@@ -10,13 +10,12 @@ define(['angular'], function(angular) {
 * @name maServices.Events
 *
 * @description
-* Provides a service for retrieving and adding events
+* Provides a service for retrieving, adding, and acknowledging events/alarms
 * - Used by <a ui-sref="dashboard.docs.maDashboards.maEventsTable">`<ma-events-table>`</a> 
 *
 *
 *
 */
-
 
 /**
 * @ngdoc method
@@ -63,7 +62,6 @@ define(['angular'], function(angular) {
 *
 */
 
-
 /**
 * @ngdoc method
 * @methodOf maServices.Events
@@ -77,6 +75,53 @@ define(['angular'], function(angular) {
 */
 
 
+/**
+* @ngdoc method
+* @methodOf maServices.Events
+* @name Events#objQuery
+*
+* @description
+* Can be passed an object with an rql string or object with values to build query
+* @param {object} query Object for the query, can have a `query` property set to an RQL string or set to an object with keys and values.
+* @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Events
+* @name Events#getActiveSummary
+*
+* @description
+* Returns a list of counts for all active events by type and the most recent active alarm for each.
+
+* @returns {array} Returns an Array of counts for all active events by type and the most recent active alarm for each.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Events
+* @name Events#acknowledge
+*
+* @description
+* Acknowledges a single event by passing in an event id.
+* @param {object} id Passed in an object with an id property cooresponding to the event id.
+* @returns {object} Returns an event object with an id property if successful.
+*
+*/
+
+/**
+* @ngdoc method
+* @methodOf maServices.Events
+* @name Events#acknowledgeViaRql
+*
+* @description
+* Acknowledge many events using an RQL string as a parameter
+* @param {object} rql Object with an rql string property equal to the rql used to find all the events that you wish to acknowledge.
+* @returns {object} Returns an object with a count property equal to the number of events acknowledged.
+*
+*/
 
 function eventsFactory($resource, Util) {
     var events = $resource('/rest/v1/events', {
