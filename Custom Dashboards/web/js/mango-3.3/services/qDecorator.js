@@ -63,7 +63,7 @@ function qDecorator($delegate) {
             var cancelArgs = arguments;
             angular.forEach(promises, function(promise) {
                 if (typeof promise.cancel === 'function') {
-                    promise.cancel.apply(promises[i], cancelArgs);
+                    promise.cancel.apply(promise, cancelArgs);
                 }
             });
         }
