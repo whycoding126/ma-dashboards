@@ -16,8 +16,13 @@
 				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}" ></ma-filtering-point-list>
 				
 				<div layout="row" layout-wrap class="point-details">
-					<label flex="35">{{'dashboards.v3.app.value' | tr}}:</label> <div class="point-value" flex="65"><ma-point-value point="myPoint" value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value></div>
-					<label flex="35">XID:</label> <div flex="65" ng-bind="myPoint.xid"></div>
+					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout>
+                      <label flex="35">{{'dashboards.v3.app.value' | tr}}:</label>
+                      <div class="point-value" flex="65"><ma-point-value point="myPoint" value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value></div>
+                    </div>
+					<ma-point-value ng-if="myPoint.pointLocator.dataType == 'IMAGE'" flex="100"
+                      point="myPoint" value-updated="$ctrl.pointValueChanged(myPoint)"></ma-point-value>
+                    <label flex="35">XID:</label> <div flex="65" ng-bind="myPoint.xid"></div>
 					<label flex="35">{{'dashboards.v3.app.time' | tr}}:</label> <div class="point-time" flex="65" ng-bind="$ctrl.pointTime"></div>
 					<label flex="35">{{'dashboards.v3.app.path' | tr}}:</label>  <div flex="65"><span ng-repeat="folder in $ctrl.path">{{folder}} <span ng-if="!$last"> &gt; </span></span></div>
 					<label flex="35">{{'dashboards.v3.app.dataSource' | tr}}:</label> <div flex="65" ng-bind="myPoint.dataSourceName"></div>
@@ -26,7 +31,7 @@
 					</div>
 				</div>
 				<div layout="row">
-					<ma-set-point-value point="myPoint" flex="95"></ma-set-point-value>
+					<ma-set-point-value ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" point="myPoint" flex="95"></ma-set-point-value>
 					<md-button class="md-accent md-raised" ng-click="$ctrl.openEditPage('dashboard.settings.dataSources', myPoint.id)">{{'dashboards.v3.app.edit' | tr}}</md-button>
 				</div>
 			</md-card-content>
@@ -56,14 +61,16 @@
 					<tbody md-body ng-if="!$ctrl.realtimeMode">
 						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder">
 							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-							<td md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
 						</tr>
 					</tbody>
 					<tbody md-body ng-if="$ctrl.realtimeMode">
 						<ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
 						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
 							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
-							<td md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -90,7 +97,7 @@
     
 
 	
-	<md-card flex ng-hide="myPoint.pointLocator.dataType === 'ALPHANUMERIC'">
+	<md-card flex ng-if="myPoint.pointLocator.dataType !== 'ALPHANUMERIC' && myPoint.pointLocator.dataType !== 'IMAGE'">
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
 				<h2 flex>

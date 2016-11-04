@@ -55,7 +55,6 @@ function pointValue(mangoDefaultDateFormat) {
         replace: true,
         templateUrl: require.toUrl('./pointValue.html'),
         link: function ($scope, $element, attrs) {
-        	var displayType = $scope.displayType || 'rendered';
             var dateTimeFormat = $scope.dateTimeFormat || mangoDefaultDateFormat;
 
             $scope.valueStyle = {};
@@ -73,8 +72,11 @@ function pointValue(mangoDefaultDateFormat) {
 
                 var valueRenderer = point.valueRenderer(point.value);
                 var color = valueRenderer ? valueRenderer.color : null;
+                if (!$scope.displayType) {
+                    $scope.displayType = point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered';
+                }
 
-                switch(displayType) {
+                switch($scope.displayType) {
                 case 'converted':
                     $scope.displayValue = point.convertedValue;
                     break;

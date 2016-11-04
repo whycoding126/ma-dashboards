@@ -312,7 +312,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 	if (!payload.value) return;
 
                 	var value;
-                    if ($scope.rendered === 'true') {
+                	if ($scope.point.pointLocator.dataType === 'IMAGE') {
+                	    value = payload.value.value;
+                	} else if ($scope.rendered === 'true') {
                     	value = payload.renderedValue;
                     } else if (payload.convertedValue !== null && payload.convertedValue !== undefined) {
                     	value = payload.convertedValue;
