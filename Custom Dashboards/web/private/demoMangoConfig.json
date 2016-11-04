@@ -11,7 +11,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"SECONDS",
          "updatePeriods":5,
-         "editPermission":null,
+         "editPermission":"user",
          "purgeOverride":false,
          "purgePeriod":1
       },
@@ -26,7 +26,7 @@
          "purgeType":"YEARS",
          "updatePeriodType":"SECONDS",
          "updatePeriods":5,
-         "editPermission":"",
+         "editPermission":"user",
          "purgeOverride":false,
          "purgePeriod":1
       }
@@ -65,7 +65,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":"",
+         "readPermission":"user",
          "setPermission":"",
          "textRenderer":{
             "type":"PLAIN",
@@ -112,7 +112,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":null,
+         "readPermission":"user",
          "setPermission":null,
          "textRenderer":{
             "type":"PLAIN",
