@@ -71,8 +71,8 @@ maServices.factory('pointValues', pointValuesFactory);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
-maServices.constant('mangoWatchdogTimeout', 30000);
-maServices.constant('mangoReconnectDelay', 15000);
+maServices.constant('mangoWatchdogTimeout', 10000);
+maServices.constant('mangoReconnectDelay', 5000);
 maServices.constant('mangoDefaultDateFormat', 'll LTS');
 maServices.constant('mangoDefaultDateOnlyFormat', 'l');
 maServices.constant('mangoDefaultTimeFormat', 'LT');

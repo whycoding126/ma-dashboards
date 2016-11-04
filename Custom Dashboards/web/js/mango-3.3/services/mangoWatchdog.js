@@ -85,7 +85,8 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             url: '/rest/v1/users/current',
             timeout: this.interval / 2
         }).then(function(response) {
-            if (response.headers('Allow')) {
+            // cache control header is not present on startup
+            if (response.headers('Cache-Control')) {
                 return LOGGED_IN;
             }
             // mango returns standard startup page response to OPTIONS request when starting
