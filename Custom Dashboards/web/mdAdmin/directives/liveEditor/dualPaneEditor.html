@@ -3,22 +3,20 @@
   <li><a ui-sref="dashboard.settings.editPages({markup: text})" ma-tr="dashboards.v3.app.copyToNewPage"></a></li>
 </ul>
 
-<div layout="row" layout-wrap>
-    <div flex="100" flex-gt-md="50">
-        <md-card>
-            <md-card-title>
+<div layout="column" layout-gt-md="row">
+    <div flex="100" layout="column" style="min-width: 50%;">
+        <md-card flex layout="column">
+            <md-card-title flex="nogrow">
               <md-card-title-text>
                 <span class="md-headline" ma-tr="dashboards.v3.dox.markup"></span>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content layout="column">
-                <div flex>
-                    <div style="height:400px" live-editor="text" src="{{src}}"></div>
-                </div>
+            <md-card-content flex layout="column">
+                <div flex style="height:450px" live-editor="text" src="{{src}}"></div>
             </md-card-content>
         </md-card>
     </div>
-    <div flex="100" flex-gt-md="50">
+    <div flex="100" style="min-width: 50%;">
         <md-card>
             <md-card-title>
               <md-card-title-text>
