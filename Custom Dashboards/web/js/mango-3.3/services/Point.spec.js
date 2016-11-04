@@ -608,6 +608,21 @@ describe('Point service', function() {
             throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
     }));
+    
+    it('Search using like and wildcards on name and device name - used on data point details page', runDigestAfter(function() {
+        this.timeout(10000);
+        var queryString = 'or(name=like=*Meter%203*,deviceName=like=*Meter%203*)&sort(deviceName,name)&limit(150)';
+        return Point.query({rqlQuery: queryString}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 13);
+            assert.equal(result.$total, 13);
+            angular.forEach(result, function(point) {
+                checkPoint(point);
+            });
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + queryString);
+        });
+    }));
 
     it('Query on non-existing property', runDigestAfter(function() {
         var q = new query.Query({name: 'eq', args: ['xyz', 'blah']});
@@ -739,7 +754,9 @@ describe('Point service', function() {
         if (point.setPermission !== null) {
             assert.isString(point.setPermission);
         }
-        assert.isString(point.chartColour);
+        if (point.chartColour !== null) {
+            assert.isString(point.chartColour);
+        }
         assert.isBoolean(point.purgeOverride);
         assert.isString(point.plotType);
         assert.isObject(point.purgePeriod);
