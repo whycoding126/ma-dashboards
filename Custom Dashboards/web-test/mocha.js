@@ -115,7 +115,12 @@ MochaUtils.prototype.login = function login(injector) {
         }).$promise.then(function(user) {
             this.user = user;
         }.bind(this), function(error) {
-            throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
+            if (error.status < 0)
+                throw new Error('Can\'t connect to Mango API, is Mango running?');
+            else if (error.status === 403)
+                throw new Error(error.status + ' - ' + error.statusText + ' - Invalid credentials, couldn\'t log in');
+            else
+                throw new Error(error.status + ' - ' + error.statusText + ' - Error logging in');
         });
     }
 }
