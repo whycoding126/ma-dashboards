@@ -2047,7 +2047,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":"",
+         "readPermission":"user",
          "setPermission":"",
          "textRenderer":{
             "type":"ANALOG",
@@ -2112,7 +2112,7 @@
          "overrideIntervalLoggingSamples":false,
          "purgeOverride":false,
          "purgePeriod":1,
-         "readPermission":"",
+         "readPermission":"user",
          "setPermission":"",
          "textRenderer":{
             "type":"MULTISTATE",
