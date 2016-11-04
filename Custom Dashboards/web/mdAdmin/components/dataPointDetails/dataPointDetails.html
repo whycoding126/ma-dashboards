@@ -115,6 +115,17 @@
 		</ma-serial-chart>
 	</md-card>
 
+    <md-card flex ng-if="myPoint.pointLocator.dataType == 'IMAGE'">
+      <md-toolbar class="md-whiteframe-1dp md-hue-3">
+        <div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">
+          <h2 flex>
+              <span ma-tr="dashboards.v3.app.images"></span>
+          </h2>
+        </div>
+      </md-toolbar>
+      <ma-image-slider point-values="myPointValues"></ma-image-slider>
+    </md-card>
+
 	<md-card flex>
 		<md-toolbar class="md-whiteframe-1dp md-hue-3">
 			<div class="md-toolbar-tools" ng-class="{'mobile': $mdMedia('xs')}">

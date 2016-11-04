@@ -56,6 +56,7 @@ define(['./maServices',
         './components/pointHierarchyBrowser/pointHierarchyBrowser',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
         './components/watchListParameters/watchListParameters',
+        './components/imageSlider/imageSlider',
         './filters/trFilter',
         'angular',
         'require'
@@ -66,7 +67,7 @@ define(['./maServices',
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, queryBuilder, queryGroup,
-        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters,
+        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters, imageSlider,
         trFilter, angular, require) {
 'use strict';
 /**
@@ -132,6 +133,7 @@ maDashboards.component('maQueryPredicate', queryPredicate);
 maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
 maDashboards.component('maWatchListParameters', watchListParameters);
+maDashboards.component('maImageSlider', imageSlider);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
