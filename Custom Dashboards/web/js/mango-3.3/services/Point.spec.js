@@ -584,24 +584,29 @@ describe('Point service', function() {
         });
     }));
 
-    it('Query for points in "Demo" folder', runDigestAfter(function() {
+    var demoFolder;
+    it('Get "Demo" folder (not a point test but required for next test)', runDigestAfter(function() {
         this.timeout(10000);
         return PointHierarchy.byName({name: 'Demo'}).$promise.then(function(folder) {
-            var q = new query.Query()
-                .eq('pointFolderId', folder.id)
-                .limit(1);
-            return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
-                assert.isArray(result);
-                assert.equal(result.length, 1);
-                assert.equal(result.$total, 5);
-                checkPoint(result[0]);
-                assert.equal(result[0].pointFolderId, folder.id);
-            }, function(error) {
-                throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
-            });
+            demoFolder = folder;
         }, function(error) {
-            if (error instanceof Error) return $q.reject(error);
             throw new Error(error.status + ' - ' + error.statusText + ' - Error retrieving point hierarchy folder "Demo"');
+        });
+    }));
+    
+    it('Query for points in "Demo" folder', runDigestAfter(function() {
+        this.timeout(10000);
+        var q = new query.Query()
+            .eq('pointFolderId', demoFolder.id)
+            .limit(1);
+        return Point.query({rqlQuery: q.toString()}).$promise.then(function(result) {
+            assert.isArray(result);
+            assert.equal(result.length, 1);
+            assert.equal(result.$total, 5);
+            checkPoint(result[0]);
+            assert.equal(result[0].pointFolderId, demoFolder.id);
+        }, function(error) {
+            throw new Error(error.status + ' - ' + error.statusText + ' - ' + q.toString());
         });
     }));
 
