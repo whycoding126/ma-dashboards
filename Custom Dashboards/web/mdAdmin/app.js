@@ -88,7 +88,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 if (!MD_ADMIN_SETTINGS.user) {
                     throw 'No user';
                 }
-                return Translate.loadNamespaces(['dashboards', 'common']);
+                return Translate.loadNamespaces(['dashboards', 'common', 'login']);
             }],
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',

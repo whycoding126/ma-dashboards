@@ -47,7 +47,7 @@ myAdminApp.constant('MENU_ITEMS', [
                 }
                 // load any translation namespaces you want to use in your app up-front
                 // so they can be used by the 'tr' filter
-                return Translate.loadNamespaces(['dashboards', 'common']);
+                return Translate.loadNamespaces(['dashboards', 'common', 'login']);
             }]
         }
     },
