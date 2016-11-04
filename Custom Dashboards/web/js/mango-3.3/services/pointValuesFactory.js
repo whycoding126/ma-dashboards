@@ -85,11 +85,13 @@ function pointValuesFactory($http, $q, $timeout, Util, mangoTimeout) {
             var timeoutPromise;
             var timeout = isFinite(options.timeout) ? options.timeout : mangoTimeout;
             if (timeout > 0) {
-                timeoutPromise = $timeout(null, timeout);
+                timeoutPromise = $timeout(angular.noop, timeout);
             }
-            
+
+            var cancelOrTimeout = timeoutPromise ? $q.race([canceler.promise, timeoutPromise]) : canceler.promise;
+
             return $http.get(url, {
-                timeout: timeoutPromise ? $q.race(canceler.promise, timeoutPromise) : canceler.promise,
+                timeout: cancelOrTimeout,
                 headers: {
                     'Accept': 'application/json'
                 }

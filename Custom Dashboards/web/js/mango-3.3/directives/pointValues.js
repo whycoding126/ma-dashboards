@@ -61,7 +61,8 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 </ma-point-values>
  *
  */
-function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
+pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeout', 'Util', 'pointValues'];
+function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, pointValues) {
     return {
         scope: {
             point: '=?',
@@ -122,9 +123,6 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
                     autoRollupInterval: $scope.autoRollupInterval
             	};
             }, function(newValue, oldValue) {
-                
-                
-                
             	var changedXids = Util.arrayDiff(newValue.xids, oldValue.xids);
             	var i;
 
@@ -162,59 +160,49 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             	if (!$scope.points || !$scope.points.length) return;
             	var points = $scope.points.slice(0);
 
-            	var promises = [];
-            	var cancels = [];
-
-            	// cancel existing requests if there are any
-            	if (pendingRequest) pendingRequest();
-            	pendingRequest = Util.cancelAll.bind(null, cancels);
-                
                 // Calculate rollups automatically based on to/from/type (if turned on)
                 if ($scope.autoRollupInterval) {
                     $scope.actualRollupInterval = Util.rollupIntervalCalculator($scope.from, $scope.to, $scope.rollup);
-                }
-                else {
+                } else {
                     $scope.actualRollupInterval = $scope.rollupInterval;
                 }
                 
-                
+            	var promises = [];
 
+            	// cancel existing requests if there are any
+            	if (pendingRequest) {
+            	    pendingRequest.cancel();
+            	    pendingRequest = null;
+            	}
+                
             	for (i = 0; i < points.length; i++) {
             		if (!points[i] || !points[i].xid) continue;
-
+            		var queryPromise;
             		if (!points[i].pointLocator) {
-            		    var queryPromise = Point.get({xid: points[i].xid}).$promise
-            		        .then(chainedQuery);
-            		    promises.push(queryPromise);
+            		    queryPromise = Point.get({xid: points[i].xid}).$promise.then(function (point) {
+                            return doQuery(point);
+                        });
             		} else {
-            		    var query = doQuery(points[i]);
-                        promises.push(query.promise);
-                        cancels.push(query.cancel);
+            		    queryPromise = doQuery(points[i]);
             		}
+                    promises.push(queryPromise);
             	}
 
-            	function chainedQuery(point) {
-                    var query = doQuery(point);
-                    cancels.push(query.cancel);
-                    return query.promise;
-                }
-
-            	$q.all(promises).then(function(results) {
-            		pendingRequest = null;
+            	pendingRequest = $q.all(promises).then(function(results) {
                 	if (!results.length) return;
-
+                	
             		for (var i = 0; i < results.length; i++) {
-            			var point = results[i].point;
-            			var pointValues = results[i].values;
+            			var pointXid = points[i].xid;
+            			var pointValues = results[i];
 
-            			pointValues.concat(tempValues[point.xid]);
-                        delete tempValues[point.xid];
+            			pointValues.concat(tempValues[pointXid]);
+                        delete tempValues[pointXid];
 
                         if ($scope.latest) {
                         	limitValues(pointValues);
                         }
 
-                        values[point.xid] = pointValues;
+                        values[pointXid] = pointValues;
             		}
 
             		if (singlePoint) {
@@ -222,14 +210,12 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             		} else {
             			combineValues();
             		}
-            	}, function(reason) {
-            		if (cancels.length) {
-            			// cancel hasn't been called, single failure
-            			console.log(reason);
-            		} else {
-            			console.log('cancelled');
-            		}
+            	}, function(error) {
+            	    console.log(error);
+            	}).then(function() {
+            	    pendingRequest = null;
             	});
+            	
             }, true);
 
             if (singlePoint) {
@@ -372,108 +358,37 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util) {
             }
 
             function doQuery(point) {
-                if (!point || !point.xid) return $q.reject('no point');
-            	var now, from, to;
-
-            	if (!$scope.latest) {
-            		now = new Date();
-            		from = Util.toMoment($scope.from, now, $scope.dateFormat);
-            		to = Util.toMoment($scope.to, now, $scope.dateFormat);
-            	}
-
-                var url = '/rest/v1/point-values/'  + encodeURIComponent(point.xid);
-                var params = [];
-                var reverseData = false;
-                var dataType = point.pointLocator.dataType;
-                var result = {
-                	point: point
-                };
-
-                if ($scope.latest) {
-                    url += '/latest';
-                    params.push('limit=' + encodeURIComponent($scope.latest));
-                    reverseData = true;
-                } else {
-                    if (from.valueOf() === to.valueOf()) {
-                    	result.values = [];
-                    	return {
-                    		promise: $q.when(result),
-                    		cancel: angular.noop
-                    	};
-                    }
-
-                    params.push('from=' + encodeURIComponent(from.toISOString()));
-                    params.push('to=' + encodeURIComponent(to.toISOString()));
-
-                    if (!Util.isEmpty($scope.rollup) && $scope.rollup !== 'NONE') {
-                        params.push('rollup=' + encodeURIComponent($scope.rollup));
-
-                        var timePeriodType = 'DAYS';
-                        var timePeriods = 1;
-
-                        if (!Util.isEmpty($scope.actualRollupInterval)) {
-                        	var parts = $scope.actualRollupInterval.split(' ');
-                        	if (parts.length == 2 && !Util.isEmpty(parts[0]) && !Util.isEmpty(parts[1])) {
-                        		var intVal = parseInt(parts[0], 10);
-                        		timePeriods = intVal > 0 ? intVal : 1;
-                        		timePeriodType = parts[1].toUpperCase();
-                        	}
-                        }
-
-                        params.push('timePeriodType=' + encodeURIComponent(timePeriodType));
-                        params.push('timePeriods=' + encodeURIComponent(timePeriods));
-                    }
-                }
-
-                if (dataType === 'NUMERIC' || $scope.rendered === 'true') {
-                    // TODO unit conversion not working with rollups
-                    // use rendered and parse strings
-                    //params.push('unitConversion=true');
-                    params.push('useRendered=true');
-                }
-
-                for (var i = 0; i < params.length; i++) {
-                    url += (i === 0 ? '?' : '&') + params[i];
-                }
-
-    			var cancelDefer = $q.defer();
-    			var cancelFn = cancelDefer.resolve;
-    			setTimeout(cancelFn, $scope.timeout || mangoTimeout);
-
-                var promise = $http.get(url, {
-                	timeout: cancelDefer.promise,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(function(response) {
-                    var values = response.data;
-
-                    if (reverseData)
-                        values.reverse();
-
-                    // TODO remove when unit conversion fixed
-                    if (dataType === 'NUMERIC' && $scope.rendered !== 'true') {
-                        for (var i = 0; i < values.length; i++) {
-                            if (typeof values[i].value === 'string') {
-                                values[i].value = Util.parseInternationalFloat(values[i].value);
+                try {
+                    var dataType = point.pointLocator.dataType;
+                    var options = {
+                        latest: $scope.latest,
+                        dateFormat: $scope.dateFormat,
+                        from: $scope.from,
+                        to: $scope.to,
+                        rollup: $scope.rollup,
+                        rendered: $scope.rendered,
+                        rollupInterval: $scope.actualRollupInterval,
+                        timeout: $scope.timeout
+                    };
+                    
+                    return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
+                        if (dataType === 'NUMERIC' && $scope.rendered !== 'true') {
+                            for (var i = 0; i < values.length; i++) {
+                                if (typeof values[i].value === 'string') {
+                                    values[i].value = Util.parseInternationalFloat(values[i].value);
+                                }
                             }
                         }
-                    }
-
-                    result.values = values;
-                    return result;
-                });
-
-                return {
-                	promise: promise,
-                	cancel: cancelFn
-                };
+                        return values;
+                    });
+                } catch (error) {
+                    return $q.reject(error).setCancel(angular.noop);
+                }
             }
         } // End link funciton
     };
 }
 
-pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeout', 'Util'];
 return pointValues;
 
 }); // define

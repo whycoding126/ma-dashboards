@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define([], function() {
+define(['angular'], function(angular) {
 'use strict';
 
 qDecorator.$inject = ['$delegate'];
@@ -47,25 +47,25 @@ function qDecorator($delegate) {
         var p = reject.apply(this, arguments);
         return decoratePromise(p);
     };
-    $delegate.all = function() {
+    $delegate.all = function(promises) {
         var p = all.apply(this, arguments);
-        p.cancel = cancelAll.apply(null, arguments);
+        p.cancel = getCancelAll(promises);
         return decoratePromise(p);
     };
-    $delegate.race = function() {
+    $delegate.race = function(promises) {
         var p = race.apply(this, arguments);
-        p.cancel = cancelAll.apply(null, arguments);
+        p.cancel = getCancelAll(promises);
         return decoratePromise(p);
     };
     
-    function cancelAll() {
-        var promises = Array.prototype.slice.apply(arguments);
+    function getCancelAll(promises) {
         return function() {
-            for (var i = 0; i < promises.length; i++) {
-                if (typeof promises[i].cancel === 'function') {
-                    promises[i].cancel.apply(promises[i], arguments);
+            var cancelArgs = arguments;
+            angular.forEach(promises, function(promise) {
+                if (typeof promise.cancel === 'function') {
+                    promise.cancel.apply(promises[i], cancelArgs);
                 }
-            }
+            });
         }
     }
 

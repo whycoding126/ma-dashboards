@@ -6,7 +6,7 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-describe('Point values service', function() {
+describe.only('Point values service', function() {
     'use strict';
 
     var MochaUtils = require('../../../../web-test/mocha');
@@ -57,16 +57,20 @@ describe('Point values service', function() {
         return pointValues.getPointValuesForXid('voltage', {latest: 1}).then(function(pointValues) {
             assert.isArray(pointValues);
             assert.equal(pointValues.length, 1);
-            assert.equal(pointValues[0].dataType, 'NUMERIC');
-            assert.isNumber(pointValues[0].value);
-            assert.isNumber(pointValues[0].timestamp);
-            assert.property(pointValues[0], 'annotation');
-            if (pointValues[0].annotation != null) {
-                assert.isString(pointValues[0].annotation);
-            }
+            checkNumericPointValue(pointValues[0]);
         }, Util.throwHttpError);
     }));
     
+    it('gets latest 10 point values', runDigestAfter(function() {
+        return pointValues.getPointValuesForXid('voltage', {latest: 10}).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 10);
+            angular.forEach(pointValues, function(pointValue) {
+                checkNumericPointValue(pointValue);
+            });
+        }, Util.throwHttpError);
+    }));
+
     it('cancels requests successfully', runDigestAfter(function() {
         var promise = pointValues.getPointValuesForXid('voltage', {latest: 1}).then(function(pointValues) {
             throw new Error('Got response from server, request should have been cancelled');
@@ -76,4 +80,14 @@ describe('Point values service', function() {
         promise.cancel();
         return promise;
     }));
+    
+    function checkNumericPointValue(pointValue) {
+        assert.equal(pointValue.dataType, 'NUMERIC');
+        assert.isNumber(pointValue.value);
+        assert.isNumber(pointValue.timestamp);
+        assert.property(pointValue, 'annotation');
+        if (pointValue.annotation != null) {
+            assert.isString(pointValue.annotation);
+        }
+    }
 });
