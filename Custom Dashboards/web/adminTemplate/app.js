@@ -334,20 +334,20 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         
         switch(current.status) {
         case 'API_DOWN':
-            message = Translate.trSync('dashboards.v3.app.apiDown');
+            message = Translate.trSync('login.dashboards.v3.app.apiDown');
             ADMIN_SETTINGS.user = null;
             break;
         case 'STARTING_UP':
-            message = Translate.trSync('dashboards.v3.app.startingUp');
+            message = Translate.trSync('login.dashboards.v3.app.startingUp');
             ADMIN_SETTINGS.user = null;
             break;
         case 'API_ERROR':
-            message = Translate.trSync('dashboards.v3.app.returningErrors');
+            message = Translate.trSync('login.dashboards.v3.app.returningErrors');
             ADMIN_SETTINGS.user = null;
             break;
         case 'API_UP':
             if (previous.status && previous.status !== 'LOGGED_IN')
-                message = Translate.trSync('dashboards.v3.app.connectivityRestored');
+                message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
             hideDelay = 5000;
             ADMIN_SETTINGS.user = null;
 
@@ -365,7 +365,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         case 'LOGGED_IN':
             // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
             if (previous.status && previous.status !== 'API_UP')
-                message = Translate.trSync('dashboards.v3.app.connectivityRestored');
+                message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
             if (!ADMIN_SETTINGS.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
