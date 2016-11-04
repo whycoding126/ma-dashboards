@@ -595,7 +595,6 @@ describe('Point service', function() {
     }));
     
     it('Query for points in "Demo" folder', runDigestAfter(function() {
-        this.timeout(10000);
         var q = new query.Query()
             .eq('pointFolderId', demoFolder.id)
             .limit(1);
