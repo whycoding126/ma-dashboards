@@ -11,16 +11,16 @@
 
 <div layout="column" style="margin-top: 20px;">
   <md-input-container>
-    <label>Default URL</label>
+    <label ma-tr="dashboards.v3.app.defaultUrl"></label>
     <input ng-model="storeObject.jsonData.defaultUrl">
-    <div class="hint">User's home URL takes precedence, URL is relative to /dashboards</div>
+    <div class="hint" ma-tr="dashboards.v3.app.defaultUrlHint"></div>
   </md-input-container>
 </div>
 
 <md-card class="menu-editor-container">
   <md-toolbar class="md-whiteframe-z2 menu-editor-path md-hue-3">
     <div class="md-toolbar-tools">
-      <strong>Menu path:&nbsp;</strong>
+      <strong ma-tr="dashboards.v3.app.menuPath"></strong><strong>:&nbsp;</strong>
       <span ng-repeat="pathItem in path track by $index">
         <span ma-tr="{{pathItem.menuTr}}" ng-click="goToIndex($event, $index)">{{pathItem.menuText}}</span>
         <md-icon ng-if="!$last">chevron_right</md-icon>
@@ -34,9 +34,9 @@
           <tr>
               <th md-column></th>
               <th md-column ng-if="$mdMedia('gt-sm')"></th>
-              <th md-column ng-if="$mdMedia('gt-xs')">Menu text</th>
-              <th md-column>State name</th>
-              <th md-column ng-if="$mdMedia('gt-md')">URL</th>
+              <th md-column ng-if="$mdMedia('gt-xs')" ma-tr="dashboards.v3.app.menuText"></th>
+              <th md-column ma-tr="dashboards.v3.app.stateName"></th>
+              <th md-column ng-if="$mdMedia('gt-md')" ma-tr="dashboards.v3.app.url"></th>
               <th md-column flex></th>
             </tr>
         </thead>
