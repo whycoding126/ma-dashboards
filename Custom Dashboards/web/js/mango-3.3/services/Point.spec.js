@@ -512,6 +512,7 @@ describe('Point service', function() {
     }));
 
     it('Sort by device name then point name, where DS = vmeters', runDigestAfter(function() {
+        this.timeout(5000);
         var q = new query.Query()
             .eq('dataSourceXid', 'vmeters')
             .sort('deviceName', 'name');
