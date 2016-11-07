@@ -1,3 +1,6 @@
+*Version 3.2.4*
+* Fix connectivity tracking / auto-reconnect on standalone dashboards
+
 *Version 3.2.3*
 * Fix bug where states that are not descendants of dashboard would not load
 
