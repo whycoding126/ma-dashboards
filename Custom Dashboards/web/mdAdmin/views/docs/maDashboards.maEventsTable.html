@@ -11,13 +11,14 @@
 <li>Can be set to query for events within a specific date range.</li>
 <li>The table includes the ability to filter and sort by alarm level and timestamp.</li>
 <li>Events can be acknowledged one at a time or a button is shown to acknowledge all events matching the query.</li>
+<li>Note in usage examples below raw string literals are wrapped in single quotes where as variable names / numbers / booleans are not.</li>
 <li><a ui-sref="dashboard.examples.utilities.eventsTable">View Demo</a></li>
 </ul>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">&lt;!-- Example Using filters on Table Attributes --&gt;
 &lt;ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'*'"
-active-status=""'active'"" date-filter="true" from="fromTime" to="toTime" limit="50" 
+active-status="'active' date-filter="true" from="fromTime" to="toTime" limit="50" 
 sort="'-alarmLevel'"&gt;&lt;/ma-events-table&gt;
 
 &lt;!-- Example For Restricting Events to those Related to a Data Point --&gt;

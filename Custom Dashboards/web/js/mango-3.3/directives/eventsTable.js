@@ -16,6 +16,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
  * - Can be set to query for events within a specific date range.
  * - The table includes the ability to filter and sort by alarm level and timestamp.
  * - Events can be acknowledged one at a time or a button is shown to acknowledge all events matching the query.
+ * - Note in usage examples below raw string literals are wrapped in single quotes where as variable names / numbers / booleans are not.
  * - <a ui-sref="dashboard.examples.utilities.eventsTable">View Demo</a>
  *
  * @param {number} limit Set the initial limit of the pagination.
@@ -35,7 +36,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
  * @usage
  * <!-- Example Using filters on Table Attributes -->
  * <ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'*'"
- * active-status=""'active'"" date-filter="true" from="fromTime" to="toTime" limit="50" 
+ * active-status="'active' date-filter="true" from="fromTime" to="toTime" limit="50" 
  * sort="'-alarmLevel'"></ma-events-table>
  *
  * <!-- Example For Restricting Events to those Related to a Data Point -->

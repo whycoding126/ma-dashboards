@@ -109,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-events-table&gt;&lt;/ma-events-table&gt;",
-      "keywords": "ability acknowledge acknowledged active active-status activetimestamp alarm alarm-level alarmlevel allows api attribute attributes button column critical dashboard data data_point data_source date-filter defaults demo directive displays event event-id event-type events eventstable example examples explained false filter filtering filters format fromtime includes initial level life_safety limit list madashboards maeventstable matching message mypoint negative normal nortn pagination pass point point-id precede property query range restricting return reverse set single single-point sort sorting specific status system table time timestamp totime true turn type ui-sref urgent utilities values"
+      "keywords": "ability acknowledge acknowledged active active-status activetimestamp alarm alarm-level alarmlevel allows api attribute attributes booleans button column critical dashboard data data_point data_source date-filter defaults demo directive displays event event-id event-type events eventstable example examples explained false filter filtering filters format fromtime includes initial level life_safety limit list literals madashboards maeventstable matching message mypoint names negative normal nortn note numbers pagination pass point point-id precede property query quotes range raw restricting return reverse set single single-point sort sorting specific status string system table time timestamp totime true turn type ui-sref urgent usage utilities values variable wrapped"
     },
     {
       "section": "api",
