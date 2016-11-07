@@ -243,6 +243,11 @@ function PointFactory($resource, $http, $timeout, Util, User) {
 
     Point.objQuery = Util.objQuery;
     
+    Point.prototype.forceRead = function forceRead() {
+        var url = '/v1/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
+        return $http.put(url);
+    };
+    
     Point.prototype.setValue = function setValue(value, options) {
     	options = options || {};
         
