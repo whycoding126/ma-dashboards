@@ -60,6 +60,14 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 if (!menuItem.name) {
                     menuItem.name = menuItem.state;
                 }
+                
+                if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
+                    menuItem.resolve = {
+                        loginTranslations: ['Translate', function(Translate) {
+                            return Translate.loadNamespaces('login');
+                        }]
+                    }
+                }
 
                 try {
                     $stateProvider.state(menuItem);
