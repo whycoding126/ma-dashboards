@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'moment-timezone'], function(angular, moment) {
+define(['angular', 'moment-timezone', 'require'], function(angular, moment, require) {
 'use strict';
 /**
  * @ngdoc directive
@@ -378,6 +378,14 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                             for (var i = 0; i < values.length; i++) {
                                 if (typeof values[i].value === 'string') {
                                     values[i].value = Util.parseInternationalFloat(values[i].value);
+                                }
+                            }
+                        }
+                        if (dataType === 'IMAGE') {
+                            var imgUrl = require.toUrl('../img/noDataForPeriod.svg');
+                            for (var i = 0; i < values.length; i++) {
+                                if (values[i].annotation === 'No data for period') {
+                                    values[i].value = imgUrl;
                                 }
                             }
                         }
