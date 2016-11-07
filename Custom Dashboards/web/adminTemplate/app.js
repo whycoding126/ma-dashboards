@@ -180,6 +180,14 @@ function(MENU_ITEMS, $stateProvider, $urlRouterProvider, $httpProvider, $mdThemi
                     menuItem.name = menuItem.state;
                 }
                 
+                if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
+                    menuItem.resolve = {
+                        loginTranslations: ['Translate', function(Translate) {
+                            return Translate.loadNamespaces('login');
+                        }]
+                    }
+                }
+                
                 $stateProvider.state(menuItem);
             }
             
