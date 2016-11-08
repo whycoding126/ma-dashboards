@@ -254,7 +254,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'alarm',
         params: {
             dateBar: {
-                dateFilter: true
+                rollupControls: false
             },
             helpPage: 'dashboard.help.events'
         },

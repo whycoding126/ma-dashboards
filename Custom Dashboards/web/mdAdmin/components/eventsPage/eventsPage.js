@@ -71,6 +71,22 @@ function eventsPageController($scope, $mdMedia, $stateParams, $state, localStora
             }
         }
         
+        if ($stateParams.dateFilter) {
+            $ctrl.dateFilter = $stateParams.dateFilter;
+        }
+        else {
+            // Attempt load from local storage
+            var storedDateFilter = localStorageService.get('dateFilter');
+            
+            if (storedDateFilter) {
+                $ctrl.dateFilter = storedDateFilter;
+            }
+            else {
+                // Otherwise set to false
+                $ctrl.dateFilter = false;
+            }
+        }
+        
         $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
             
@@ -93,9 +109,17 @@ function eventsPageController($scope, $mdMedia, $stateParams, $state, localStora
         });
         
         $scope.$watch('$ctrl.dateFilter', function(newValue, oldValue) {
-            if (newValue === undefined || newValue === oldValue) return;
+            if (newValue === undefined) return;
             
+            $state.go('.', {dateFilter: newValue}, {location: 'replace', notify: false});
+            localStorageService.set('dateFilter', newValue);
             
+            if (newValue === false) {
+                $state.go('.', {dateBar: false}, {location: 'replace', notify: false});
+            }
+            else {
+                $state.go('.', {dateBar: {rollupControls: false}}, {location: 'replace', notify: false});
+            }
         });
         
     };

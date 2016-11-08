@@ -8,7 +8,7 @@
                   <h2 style="padding-right: 5px;" ng-if="$ctrl.$mdMedia('gt-xs')">
                         <span>{{'dashboards.v3.app.dateFilter' | tr}}: </span>
                   </h2>
-                  <md-switch ng-model="$ctrl.dateFilter" aria-label="{{'dashboards.v3.app.DateFilter' | tr}}" ng-init="$ctrl.dateFilter = true"></md-switch>
+                  <md-switch ng-model="$ctrl.dateFilter" aria-label="{{'dashboards.v3.app.DateFilter' | tr}}"></md-switch>
 
                   <div ng-class="{'desktop': $ctrl.$mdMedia('gt-sm')}">
                         <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.eventType === '*' }" ng-click="$ctrl.eventType='*'" ma-tr="dashboards.v3.app.all"></md-button>
