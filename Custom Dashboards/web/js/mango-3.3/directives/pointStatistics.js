@@ -163,7 +163,7 @@ function pointValues(Point, Util, $q, statistics) {
                     
                     return statistics.getStatisticsForXid(point.xid, options).then(function(data) {
                         if (data.startsAndRuntimes) {
-                            for (i = 0; i < data.startsAndRuntimes.length; i++) {
+                            for (var i = 0; i < data.startsAndRuntimes.length; i++) {
                                 var statsObj = data.startsAndRuntimes[i];
                                 var valueRenderer = point.valueRenderer(statsObj.value);
                                 if (!valueRenderer) continue;
