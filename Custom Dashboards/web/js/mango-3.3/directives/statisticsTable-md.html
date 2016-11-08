@@ -14,19 +14,19 @@
 	<tbody md-body ng-if="statistics.hasData">
 		<tr md-row ng-if="statistics.first" class="statistics-first">
 			<td md-cell ma-tr="common.stats.start"></td>
-			<td md-cell>{{statistics.first.value}} @ {{statistics.first.timestamp | moment:'format':'MMM, Do YY h:mm a'}}</td>
+			<td md-cell><span ng-bind="statistics.first.value"></span> @ <span ng-bind="formatTimestamp(statistics.first.timestamp)"></span></td>
 		</tr>
 		<tr md-row ng-if="statistics.last" class="statistics-last">
 			<td md-cell ma-tr="common.stats.end"></td>
-			<td md-cell>{{statistics.last.value}} @ {{statistics.last.timestamp | moment:'format':'MMM, Do YY h:mm a'}}</td>
+            <td md-cell><span ng-bind="statistics.last.value"></span> @ <span ng-bind="formatTimestamp(statistics.last.timestamp)"></span></td>
 		</tr>
 		<tr md-row ng-if="statistics.minimum" class="statistics-minimum">
 			<td md-cell ma-tr="common.stats.min"></td>
-			<td md-cell>{{statistics.minimum.value}} @ {{statistics.minimum.timestamp | moment:'format':'MMM, Do YY h:mm a'}}</td>
+            <td md-cell><span ng-bind="statistics.minimum.value"></span> @ <span ng-bind="formatTimestamp(statistics.minimum.timestamp)"></span></td>
 		</tr>
 		<tr md-row ng-if="statistics.maximum" class="statistics-maximum">
 			<td md-cell ma-tr="common.stats.max"></td>
-			<td md-cell>{{statistics.maximum.value}} @ {{statistics.maximum.timestamp | moment:'format':'MMM, Do YY h:mm a'}}</td>
+            <td md-cell><span ng-bind="statistics.maximum.value"></span> @ <span ng-bind="formatTimestamp(statistics.maximum.timestamp)"></span></td>
 		</tr>
 		<tr md-row ng-if="statistics.average" class="statistics-average">
 			<td md-cell ma-tr="common.stats.avg"></td>

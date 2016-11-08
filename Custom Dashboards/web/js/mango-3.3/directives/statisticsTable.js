@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'moment-timezone'], function(require, moment) {
 'use strict';
 /**
  * @ngdoc directive
@@ -23,11 +23,13 @@ define(['require'], function(require) {
 <ma-statistics-table statistics="statsObj"></ma-statistics-table>
  *
  */
-function statisticsTable($injector) {
+statisticsTable.$inject = ['$injector', 'mangoDateFormats'];
+function statisticsTable($injector, mangoDateFormats) {
     return {
         restrict: 'E',
         scope: {
             statistics: '=',
+            timezone: '@',
             hideStartsAndRuntimes: '@'
         },
         replace: true,
@@ -36,11 +38,18 @@ function statisticsTable($injector) {
                 return require.toUrl('./statisticsTable-md.html');
             }
             return require.toUrl('./statisticsTable.html');
+        },
+        link: function($scope, $element, $attrs) {
+            $scope.formatTimestamp = function(ts) {
+                var m = moment(ts);
+                if ($scope.timezone) {
+                    m.tz($scope.timezone);
+                }
+                return m.format(mangoDateFormats.dateTime);
+            }
         }
     };
 }
-
-statisticsTable.$inject = ['$injector'];
 
 return statisticsTable;
 
