@@ -57,8 +57,8 @@ define(['require', 'moment-timezone'], function(require, moment) {
                         // change rapidly and result in huge slow downs / heaps of digest loops
                         
                         var now = (new Date()).valueOf();
-                        var format = now - point.time > 86400 ? 'l LTS' : 'LTS';
-                        pointTimeCell.text(moment.tz(point.time, timezone).format(format));
+                        var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
+                        pointTimeCell.text(mdAdminSettings.user.formatDate(point.time, format));
 
                         pointTimeCell.addClass(FLASH_CLASS);
                         if (point.value !== lastValue) {

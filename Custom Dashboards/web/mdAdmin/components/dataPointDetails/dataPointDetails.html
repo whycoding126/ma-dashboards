@@ -60,7 +60,7 @@
 					</thead>
 					<tbody md-body ng-if="!$ctrl.realtimeMode">
 						<tr md-row ng-repeat="value in myPointValues | orderBy: myOrder">
-							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
+							<td md-cell ng-bind="$ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
 							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
 	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
 						</tr>
@@ -68,7 +68,7 @@
 					<tbody md-body ng-if="$ctrl.realtimeMode">
 						<ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
 						<tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
-							<td md-cell>{{value.timestamp | moment:'format':'l LTS'}}</td>
+							<td md-cell ng-bind="$ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
 							<td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
 	                        <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
 						</tr>

@@ -11,6 +11,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     
     var $ctrl = this;
     $ctrl.dateBar = DateBar;
+    $ctrl.mdAdminSettings = mdAdminSettings;
     var timezone = mdAdminSettings.user.getTimezone();
     var pointValueCell = angular.element('div.point-details').find('.point-value');
     var pointTimeCell = angular.element('div.point-details').find('.point-time');
@@ -24,10 +25,10 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     $ctrl.pointValueChanged = function pointValueChanged(point) {
         // manually add and remove classes rather than using ng-class as point values can
         // change rapidly and result in huge slow downs / heaps of digest loops
-        
+
         var now = (new Date()).valueOf();
-        var format = now - point.time > 86400 ? 'l LTS' : 'LTS';
-        $ctrl.pointTime = moment.tz(point.time, timezone).format(format);
+        var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
+        $ctrl.pointTime = mdAdminSettings.user.formatDate(point.time, format);
 
         pointTimeCell.addClass('flash-on-change');
         if (point.value !== lastValue) {
@@ -64,7 +65,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
         });
         
         var pointType = $scope.myPoint.pointLocator.dataType;
-        if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' ) {
+        if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' || pointType==='IMAGE') {
             $ctrl.dateBar.rollupTypesFilter = {nonNumeric: true};
             $ctrl.dateBar.rollupType = 'NONE';
         }
