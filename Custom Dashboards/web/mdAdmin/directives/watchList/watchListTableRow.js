@@ -52,12 +52,14 @@ define(['require', 'moment-timezone'], function(require, moment) {
                     var lastValue;
                     var timezone = mdAdminSettings.user.getTimezone();
                     
+                    var oneDayMs = moment.duration(1, 'day').asMilliseconds();
                     scope.pointValueChanged = function pointValueChanged(point) {
                         // manually add and remove classes rather than using ng-class as point values can
                         // change rapidly and result in huge slow downs / heaps of digest loops
                         
                         var now = (new Date()).valueOf();
-                        var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
+                        
+                        var format = (now - point.time) >= oneDayMs ? 'shortDateTimeSeconds' : 'timeSeconds';
                         pointTimeCell.text(mdAdminSettings.user.formatDate(point.time, format));
 
                         pointTimeCell.addClass(FLASH_CLASS);
