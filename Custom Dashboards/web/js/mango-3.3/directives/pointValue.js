@@ -50,6 +50,7 @@ function pointValue(mangoDateFormats) {
             pointXid: '@',
             displayType: '@',
             dateTimeFormat: '@',
+            timezone: '@',
             valueUpdated: '&?'
         },
         replace: true,
@@ -85,7 +86,11 @@ function pointValue(mangoDateFormats) {
                     $scope.valueStyle.color = color;
                     break;
                 case 'dateTime':
-                    $scope.displayValue = moment(point.time).format(dateTimeFormat);
+                    if ($scope.timezone) {
+                        $scope.displayValue = moment.tz(point.time, $scope.timezone).format(dateTimeFormat);
+                    } else {
+                        $scope.displayValue = moment(point.time).format(dateTimeFormat);
+                    }
                     break;
                 default:
                     $scope.displayValue = point.value;
