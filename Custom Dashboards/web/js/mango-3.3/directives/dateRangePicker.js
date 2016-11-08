@@ -91,8 +91,8 @@ function dateRangePicker($injector) {
 
             return '<select ng-options="p.type as p.label for p in $ctrl.presets" ng-model="$ctrl.preset" ng-change="$ctrl.inputChanged($event)"></select>';
         },
-        controller: ['$attrs', '$parse', '$scope', '$interval', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDefaultDateFormat',
-                     function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDefaultDateFormat) {
+        controller: ['$attrs', '$parse', '$scope', '$interval', 'Util', 'MA_DATE_RANGE_PRESETS', 'mangoDateFormats',
+                     function($attrs, $parse, $scope, $interval, Util, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
             
             var fromAssign = $parse($attrs.from).assign.bind(null, $scope.$parent);
             var toAssign = $parse($attrs.to).assign.bind(null, $scope.$parent);
@@ -128,7 +128,7 @@ function dateRangePicker($injector) {
 
             this.isSame = function isSame(m, check) {
                 if (typeof check === 'string') {
-                    return m.format(this.format || mangoDefaultDateFormat) === check;
+                    return m.format(this.format || mangoDateFormats.dateTimeSeconds) === check;
                 }
                 return m.isSame(check);
             };
@@ -187,7 +187,7 @@ function dateRangePicker($injector) {
                     fromAssign(from.toDate());
                     toAssign(to.toDate());
                 } else {
-                    var format = this.format || mangoDefaultDateFormat;
+                    var format = this.format || mangoDateFormats.dateTimeSeconds;
                     fromAssign(from.format(format));
                     toAssign(to.format(format));
                 }

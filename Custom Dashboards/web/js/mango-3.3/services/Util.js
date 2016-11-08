@@ -44,7 +44,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 * Converts an input to a momentjs object
 * @param {string} input If input = 'now', moment(now) will be returned
 * @param {string} now standard date timestamp for converting to moment
-* @param {string} format If input equals a formatted date/time string, specify what format it is in to return moment(input, format || mangoDefaultDateFormat);
+* @param {string} format If input equals a formatted date/time string, specify what format it is in to return moment(input, format || mangoDateFormats.dateTimeSeconds);
 * @returns {object}  Returns a moment js object.
 
 *
@@ -159,7 +159,7 @@ define(['angular', 'moment-timezone'], function(angular, moment) {
 *
 */
 
-function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q, $timeout, mangoTimeout) {
+function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout) {
 	function Util() {}
 
 	/**
@@ -185,7 +185,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q, $timeout, mangoTi
     Util.prototype.toMoment = function toMoment(input, now, format) {
         if (!input || input === 'now') return moment(now);
         if (typeof input === 'string') {
-        	return moment(input, format || mangoDefaultDateFormat);
+        	return moment(input, format || mangoDateFormats.dateTimeSeconds);
         }
         return moment(input);
     };
@@ -551,7 +551,7 @@ function UtilFactory(mangoBaseUrl, mangoDefaultDateFormat, $q, $timeout, mangoTi
     return new Util();
 }
 
-UtilFactory.$inject = ['mangoBaseUrl', 'mangoDefaultDateFormat', '$q'];
+UtilFactory.$inject = ['mangoBaseUrl', 'mangoDateFormats', '$q'];
 return UtilFactory;
 
 }); // define

@@ -27,7 +27,7 @@ define(['amcharts/gantt', 'jquery', 'moment'], function(AmCharts, $, moment) {
  </ma-state-chart>
  *
  */
-function stateChart(mangoDefaultDateFormat) {
+function stateChart(mangoDateFormats) {
 	var MAX_SERIES = 10;
 	var scope = {
 		options: '=?',
@@ -145,7 +145,9 @@ function stateChart(mangoDefaultDateFormat) {
                             var duration = endTime - val.timestamp;
                             var startMoment = moment(val.timestamp);
                             var startOfDay = moment(val.timestamp).startOf('day').valueOf();
-                            var startFormatted = startOfDay === prevStartOfDay ? startMoment.format('LTS') : startMoment.format(mangoDefaultDateFormat);
+                            var startFormatted = startOfDay === prevStartOfDay ?
+                                    startMoment.format(mangoDateFormats.timeSeconds) :
+                                    startMoment.format(mangoDateFormats.dateTimeSeconds);
                             prevStartOfDay = startOfDay;
                             
                             provider.push({
@@ -212,7 +214,7 @@ function defaultOptions() {
     };
 }
 
-stateChart.$inject = ['mangoDefaultDateFormat'];
+stateChart.$inject = ['mangoDateFormats'];
 
 return stateChart;
 

@@ -42,7 +42,7 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 </ma-point-value>
  *
  */
-function pointValue(mangoDefaultDateFormat) {
+function pointValue(mangoDateFormats) {
     return {
         restrict: 'E',
         scope: {
@@ -55,7 +55,7 @@ function pointValue(mangoDefaultDateFormat) {
         replace: true,
         templateUrl: require.toUrl('./pointValue.html'),
         link: function ($scope, $element, attrs) {
-            var dateTimeFormat = $scope.dateTimeFormat || mangoDefaultDateFormat;
+            var dateTimeFormat = $scope.dateTimeFormat || mangoDateFormats.dateTimeSeconds;
 
             $scope.valueStyle = {};
             $scope.classes = {
@@ -103,7 +103,7 @@ function pointValue(mangoDefaultDateFormat) {
     };
 }
 
-pointValue.$inject = ['mangoDefaultDateFormat'];
+pointValue.$inject = ['mangoDateFormats'];
 return pointValue;
 
 }); // define

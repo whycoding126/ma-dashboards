@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'jquery'], function(angular, $) {
+define(['angular', 'moment-timezone'], function(angular, moment) {
 'use strict';
 /**
 * @ngdoc service
@@ -138,11 +138,11 @@ User.logout();
 *
 */
 
-
 /*
  * Provides service for getting list of users and create, update, delete
  */
-function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q) {
+UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q', 'mangoDateFormats'];
+function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q, mangoDateFormats) {
     var User = $resource('/rest/v1/users/:username', {
             username: '@username'
     	}, {
@@ -277,7 +277,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
         for (i = 0; i < desiredPerms.length; i++) {
             var desiredPerm = desiredPerms[i].trim();
             if (!desiredPerm) continue;
-            if ($.inArray(desiredPerm, userPerms) > -1)
+            if (userPerms.indexOf(desiredPerm) >= 0)
             	return true;
         }
 
@@ -287,11 +287,19 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
     User.prototype.getTimezone = function() {
         return this.timezone || this.systemTimezone;
     };
+    
+    User.prototype.getMoment = function(date) {
+        return moment.tz(date, this.getTimezone());
+    };
+    
+    User.prototype.formatDate = function(date, format) {
+        var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
+        return this.getMoment(date).format(momentFormat);
+    };
 
     return User;
 }
 
-UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q'];
 return UserFactory;
 
 }); // define

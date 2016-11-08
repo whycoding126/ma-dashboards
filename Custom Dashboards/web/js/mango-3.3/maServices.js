@@ -75,9 +75,17 @@ maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
 maServices.constant('mangoWatchdogTimeout', 10000);
 maServices.constant('mangoReconnectDelay', 5000);
-maServices.constant('mangoDefaultDateFormat', 'll LTS');
-maServices.constant('mangoDefaultDateOnlyFormat', 'l');
-maServices.constant('mangoDefaultTimeFormat', 'LT');
+
+maServices.constant('mangoDateFormats', {
+    dateTime: 'll LT',
+    shortDateTime: 'l LT',
+    dateTimeSeconds: 'll LTS',
+    shortDateTimeSeconds: 'l LTS',
+    date: 'll',
+    shortDate: 'l',
+    time: 'LT',
+    timeSeconds: 'LTS'
+});
 
 maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
