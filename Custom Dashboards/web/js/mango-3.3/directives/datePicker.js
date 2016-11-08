@@ -32,6 +32,7 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
         restrict: 'E',
         scope: {
             format: '@',
+            timezone: '@',
             mode: '@',
             autoSwitchTime: '<?'
         },
@@ -74,10 +75,12 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
 
             // formatter converts from Date ($modelValue) into String ($viewValue)
             ngModel.$formatters.push(function(value) {
-                if (angular.isDate(value)) {
-                    return moment(value).format($scope.getFormat());
-                } else if (moment.isMoment(value)) {
-                    return value.format($scope.getFormat());
+                if (angular.isDate(value) || moment.isMoment(value)) {
+                    if ($scope.timezone) {
+                        return moment.tz(value, $scope.timezone).format($scope.getFormat());
+                    } else {
+                        return moment(value).format($scope.getFormat());
+                    }
                 }
             });
 
@@ -85,7 +88,12 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
             ngModel.$parsers.unshift(function(value) {
                 if (typeof value === 'string') {
                     var initialDate = moment(ngModel.$modelValue);
-                    var m = moment(value, $scope.getFormat(), true);
+                    var m;
+                    if ($scope.timezone) {
+                        m = moment.tz(value, $scope.getFormat(), true, $scope.timezone);
+                    } else {
+                        m = moment(value, $scope.getFormat(), true);
+                    }
                     
                     if ($scope.mode === 'date') {
                         m.hours(initialDate.hours());
@@ -105,7 +113,15 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
 
             $scope.showPicker = function showPicker(ev) {
                 var autoSwitchTime = angular.isUndefined($scope.autoSwitchTime) ? true : $scope.autoSwitchTime;
-                var initialDate = ngModel.$modelValue;
+                var initialDate, originalOffset;
+                if ($scope.timezone) {
+                    var browserUtcOffset = moment().utcOffset();
+                    var m = moment.tz(ngModel.$modelValue, $scope.timezone);
+                    originalOffset = m.utcOffset();
+                    initialDate = m.utcOffset(browserUtcOffset, true).toDate();
+                } else {
+                    initialDate = ngModel.$modelValue;
+                }
                 
                 var promise;
                 if (!$scope.mode || $scope.mode === 'both' || $scope.mode === 'date') {
@@ -126,7 +142,13 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
                 }
                 
                 promise.then(function(date) {
-                    var stringValue = moment(date).format($scope.getFormat());
+                    var m;
+                    if ($scope.timezone) {
+                        m = moment(date).utcOffset(originalOffset, true).tz($scope.timezone);
+                    } else {
+                        m = moment(date);
+                    }
+                    var stringValue = m.format($scope.getFormat());
                     ngModel.$setViewValue(stringValue, ev);
                     ngModel.$render();
                 });
