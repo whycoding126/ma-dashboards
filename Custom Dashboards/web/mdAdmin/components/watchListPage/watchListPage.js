@@ -206,14 +206,12 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.saveSettings = function saveSettings() {
         this.watchList.data = {};
         this.watchList.data.selectedPoints = this.selected;
-        console.log(this.watchList);
         
         if (this.watchList.isNew) {
             $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
         }
         else {
             this.watchList.$update();
-            console.log('Updated');
         }
     };
 }

@@ -43,12 +43,14 @@ function deviceNameScrollList($injector) {
             this.ngModelCtrl.$render = this.render;
             
             var localStorageDeviceName = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').deviceName : null;
-            
             var deviceName = $stateParams.deviceName || localStorageDeviceName;
-            if (deviceName) {
-                $timeout(function() {
-                    this.setViewValue(deviceName);
-                }.bind(this), 0);
+            
+            if (!($stateParams.watchListXid || $stateParams.dataSourceXid | $stateParams.hierarchyFolderId)) {
+                if (deviceName) {
+                    $timeout(function() {
+                        this.setViewValue(deviceName);
+                    }.bind(this), 0);
+                }
             }
             
             this.doQuery().then(function(items) {

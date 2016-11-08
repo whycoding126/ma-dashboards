@@ -40,16 +40,22 @@ function dataSourceScrollList($injector) {
         this.$onInit = function() {
             this.ngModelCtrl.$render = this.render;
             
-            var localStorageDataSourceXid = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').dataSourceXid : null;
             
+            
+            var localStorageDataSourceXid = localStorageService.get('watchListPage') ? localStorageService.get('watchListPage').dataSourceXid : null;
             var xid = $stateParams.dataSourceXid || localStorageDataSourceXid || this.selectXid;
-            if (xid) {
-                this.fetchingInitial = true;
-                DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
-                    this.fetchingInitial = false;
-                    this.setViewValue(item);
-                }.bind(this));
+            
+            if (!($stateParams.watchListXid || $stateParams.deviceName | $stateParams.hierarchyFolderId)) {
+                if (xid) {
+                    this.fetchingInitial = true;
+                    DataSource.get({xid: xid}).$promise.then(null, angular.noop).then(function(item) {
+                        this.fetchingInitial = false;
+                        this.setViewValue(item);
+                    }.bind(this));
+                }
             }
+            
+            
             
             this.doQuery().then(function(items) {
                 this.items = items;
