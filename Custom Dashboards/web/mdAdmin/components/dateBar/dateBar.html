@@ -9,18 +9,18 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
           <md-input-container  flex="40">
             <label ma-tr="dashboards.v3.app.updateIntervals"></label>
             <input name="updateIntervals" ng-model="$ctrl.params.updateIntervals" type="number" min="1" step="1"
-                ng-disabled="!$ctrl.params.autoUpdate || (!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)" ng-change="$ctrl.calcUpdateIntervalString()">
+                ng-disabled="!$ctrl.params.autoUpdate" ng-change="$ctrl.calcUpdateIntervalString()">
           </md-input-container>
           <md-input-container flex="40">
             <label ma-tr="dashboards.v3.app.updateUnit"></label>
             <md-select name="updateIntervalPeriod" ng-model="$ctrl.params.updateIntervalPeriod"
-                ng-disabled="!$ctrl.params.autoUpdate || (!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)" ng-change="$ctrl.calcUpdateIntervalString()">
+                ng-disabled="!$ctrl.params.autoUpdate" ng-change="$ctrl.calcUpdateIntervalString()">
               <md-option ng-repeat="t in $ctrl.timePeriodTypes track by t.type" ng-value="t.type" ng-bind="t.label"></md-option>
             </md-select>
           </md-input-container>
           <md-checkbox name="autoUpdate" flex="20" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.autoUpdate"
               ng-change="$ctrl.calcUpdateIntervalString()">
-            <span ma-tr="dashboards.v3.app.autoUpdate" ng-disabled="(!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)"></span>
+            <span ma-tr="dashboards.v3.app.autoUpdate"></span>
           </md-checkbox>
         </div>
         
@@ -52,44 +52,29 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
       </div>
       
 
-      <div layout flex-xs="100" flex-sm="35" flex-md="35" flex-lg="25" flex-gt-lg="15" layout-align="start" layout-align-gt-sm="end" layout-wrap flex-order="-5" flex-order-gt-xs="5">
+      <div layout flex-xs="100" flex-sm="35" flex-md="35" flex-lg="25" flex-gt-lg="15" layout-align="start start" layout-align-gt-sm="end start" layout-wrap flex-order="-5" flex-order-gt-xs="5">
         <div flex layout layout-align="start center" layout-wrap>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.fromDate"></label>
-            <ma-date-picker name="fromDate" ng-model="$ctrl.params.from" mode="date"
-              timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"
-              ng-disabled="(!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)"></ma-date-picker>
+            <ma-date-picker name="fromDate" ng-model="$ctrl.params.from" mode="date" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.fromTime"></label>
-            <ma-date-picker name="fromTime" ng-model="$ctrl.params.from" mode="time"
-              timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"
-              ng-disabled="(!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)"></ma-date-picker>
+            <ma-date-picker name="fromTime" ng-model="$ctrl.params.from" mode="time" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.toDate"></label>
-            <ma-date-picker name="toDate" ng-model="$ctrl.params.to" mode="date"
-              timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"
-              ng-disabled="(!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)"></ma-date-picker>
+            <ma-date-picker name="toDate" ng-model="$ctrl.params.to" mode="date" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.toTime"></label>
-            <ma-date-picker name="toTime" ng-model="$ctrl.params.to" mode="time"
-              timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"
-              ng-disabled="(!$ctrl.params.dateFilter && $ctrl.stateParams.dateBar.dateFilter)"></ma-date-picker>
+            <ma-date-picker name="toTime" ng-model="$ctrl.params.to" mode="time" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
           </md-input-container>
         </div>
         
-        <div flex="nogrow" layout="column" layout-align="space-between center">
-          <md-button class="md-icon-button" ng-click="$ctrl.onRefresh({'$event': $event})" aria-label="{{'common.refresh' | tr}}" ng-disabled="!$ctrl.params.preset || !$ctrl.params.dateFilter">
-            <md-icon>refresh</md-icon>
-          </md-button>
-          
-          <md-checkbox name="dateFilter" class="checkbox-top-label checkbox-centered" ng-model="$ctrl.params.dateFilter" 
-          ng-if="$ctrl.stateParams.dateBar.dateFilter">
-            <span ma-tr="">Date Filter</span>
-          </md-checkbox>
-        </div>
+        <md-button flex="nogrow" class="md-icon-button" ng-click="$ctrl.onRefresh({'$event': $event})" aria-label="{{'common.refresh' | tr}}" ng-disabled="!$ctrl.params.preset">
+          <md-icon>refresh</md-icon>
+        </md-button>
       </div>
       
     </div>
