@@ -25,7 +25,7 @@
                                     <ma-point-values point-xid="{{ctrl.parent.point.xid}}" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup">
                                     </ma-point-values>
 
-                                    <ma-serial-chart style="height: 300px; width: 100%" series-1-values="pointValues" series-1-point="ctrl.parent.point" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">
+                                    <ma-serial-chart style="height: 450px; width: 100%" series-1-values="pointValues" series-1-point="ctrl.parent.point" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
@@ -49,7 +49,7 @@
                                                 </tbody>
                                           </table>
                                     </md-table-container>
-                                    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 15]" md-page="myPage" md-total="{{pointValues.length}}"></md-table-pagination>
+                                    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 20, 25, 50]" md-page="myPage" md-total="{{pointValues.length}}"></md-table-pagination>
                               </md-content>
                         </md-tab>
                   </md-tabs>
