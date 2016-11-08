@@ -211,7 +211,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             			combineValues();
             		}
             	}, function(error) {
-            	    console.log(error);
+                    // consume error, most likely a cancel, timeouts will be captured by error interceptor
             	}).then(function() {
             	    pendingRequest = null;
             	});

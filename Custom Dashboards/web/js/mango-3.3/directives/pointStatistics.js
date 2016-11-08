@@ -144,7 +144,7 @@ function pointValues(Point, Util, $q, statistics) {
             			$scope.statistics = outputStats;
             		}
             	}, function(error) {
-                    console.log(error);
+            	    // consume error, most likely a cancel, timeouts will be captured by error interceptor
                 }).then(function() {
                     pendingRequest = null;
                 });
