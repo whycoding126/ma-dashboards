@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['amcharts/serial', 'jquery', 'moment', 'amcharts/plugins/export/export'], function(AmCharts, $, moment) {
+define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export/export'], function(AmCharts, $, moment) {
 'use strict';
 /**
  * @ngdoc directive
