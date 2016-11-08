@@ -106,9 +106,21 @@ var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, W
     };
     $ctrl.isLastStep = function() {
         if (!$ctrl.watchlist) return false;
-        return $ctrl.watchlist.type === 'static' && $ctrl.selectedTab === 3 ||
-            $ctrl.watchlist.type === 'query' && $ctrl.selectedTab === ($ctrl.watchlist.params.length ?  2 : 3) ||
-            $ctrl.watchlist.type === 'hierarchy' && $ctrl.selectedTab === 1;
+        switch($ctrl.watchlist.type) {
+        case 'static': return $ctrl.selectedTab === 3;
+        case 'query':
+            var lastTab = $ctrl.watchlist.params && $ctrl.watchlist.params.length ?  2 : 3;
+            return $ctrl.selectedTab === lastTab;
+        case 'hierarchy': return $ctrl.selectedTab === 1;
+        }
+        return true;
+    };
+    
+    $ctrl.addParam = function addParam() {
+        if (!$ctrl.watchlist.params) {
+            $ctrl.watchlist.params = [];
+        }
+        $ctrl.watchlist.params.push({type:'input'});
     };
     
     $ctrl.isError = function isError(name) {
