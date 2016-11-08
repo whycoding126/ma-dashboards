@@ -73,23 +73,29 @@ function eventsPageController($scope, $mdMedia, $stateParams, $state, localStora
         
         $scope.$watch('$ctrl.eventType', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
-            //console.log('New point selected:', newValue);
+            
             $state.go('.', {eventType: newValue}, {location: 'replace', notify: false});
             localStorageService.set('lastEventTypeItem', newValue);
         });
         
         $scope.$watch('$ctrl.alarmLevel', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
-            //console.log('New point selected:', newValue);
+            
             $state.go('.', {alarmLevel: newValue}, {location: 'replace', notify: false});
             localStorageService.set('lastAlarmLevelItem', newValue);
         });
         
         $scope.$watch('$ctrl.acknowledged', function(newValue, oldValue) {
             if (newValue === undefined || newValue === oldValue) return;
-            //console.log('New point selected:', newValue);
+            
             $state.go('.', {acknowledged: newValue}, {location: 'replace', notify: false});
             localStorageService.set('acknowledged', newValue);
+        });
+        
+        $scope.$watch('$ctrl.dateFilter', function(newValue, oldValue) {
+            if (newValue === undefined || newValue === oldValue) return;
+            
+            
         });
         
     };
