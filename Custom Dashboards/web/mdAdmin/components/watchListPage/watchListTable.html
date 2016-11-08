@@ -7,7 +7,7 @@
         <md-icon>edit</md-icon>
         <span ma-tr="common.edit"></span>
       </md-button>
-      <md-button class="md-primary md-raised" ui-sref="dashboard.settings.watchListBuilder({watchList: $ctrl.watchList})" ng-if="$ctrl.watchList.isNew">
+      <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()">
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
       </md-button>

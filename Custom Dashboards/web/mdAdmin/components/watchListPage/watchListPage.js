@@ -50,8 +50,18 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
 
     this.watchListChanged = function watchListChanged() {
         this.watchList = this.selectWatchList;
-        if (this.watchList)
+        if (this.watchList) {
             this.updateWatchListParameters();
+            
+            // clear checked points from table/chart or Load from watchList
+            if (this.watchList.data && this.watchList.data.selectedPoints.length > 0) {
+                this.selected = this.watchList.data.selectedPoints;
+            }
+            else {
+                this.selected = [];
+            }
+        }
+            
         
         // clear other selections
         this.dataSource = null;
@@ -62,8 +72,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         $stateParams.hierarchyFolderId = null;
         $state.go('.', $stateParams, {location: 'replace', notify: false});
         
-        // clear checked points from table/chart
-        this.selected = [];
+        
     };
     
     this.updateWatchListParameters = function updateWatchListParameters(parameters) {
@@ -192,6 +201,20 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         this.dataSourceQuery = rqlQuery.toString();
         rqlQuery.push(new query.Query({name: 'like', args: ['username', filterText]}));
         this.watchListQuery = rqlQuery.toString();
+    };
+    
+    this.saveSettings = function saveSettings() {
+        this.watchList.data = {};
+        this.watchList.data.selectedPoints = this.selected;
+        console.log(this.watchList);
+        
+        if (this.watchList.isNew) {
+            $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
+        }
+        else {
+            this.watchList.$update();
+            console.log('Updated');
+        }
     };
 }
 
