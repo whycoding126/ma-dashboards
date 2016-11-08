@@ -15,6 +15,7 @@ function imageSliderController($interval) {
         if (this.imageIndex >= this.pointValues.length) {
             this.imageIndex = 0;
         }
+        this.updateImage();
     }.bind(this), 1000);
     
     this.$onChanges = function(changes) {
