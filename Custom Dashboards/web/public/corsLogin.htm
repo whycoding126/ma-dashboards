@@ -16,8 +16,9 @@
                
         <script type="text/javascript">
         
-        var mangoRemoteHost = 'http://10.0.1.10:8080';
+        var mangoRemoteHost = 'http://10.0.1.201:8080';
         var socket;
+        var xsrfHeader = null;
         require(['jquery', 'mango/api', 'mango/autologin', 'domReady!'],
                 function($, MangoAPI, autologin) {
         	
