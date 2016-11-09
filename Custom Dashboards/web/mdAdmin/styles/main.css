@@ -931,24 +931,22 @@ md-select {
   stroke-width: 1.3;
 }
 
-.amcharts-axis-line {
-    fill: inherit;
-    stroke: inherit;
-}
-
 .amcharts-axis-label, .amcharts-axis-bottom-label {
   font-family: inherit;
-  fill: inherit;
   stroke-width: 0;
 }
 
-.amcharts-axis-tick, .amcharts-axis-tick-minor {
+.amchart:not(.amcharts-custom-color) .amcharts-axis-tick, .amchart:not(.amcharts-custom-color) .amcharts-axis-tick-minor, 
+.amchart:not(.amcharts-custom-color) .amcharts-axis-line, .amchart:not(.amcharts-custom-color) .amcharts-axis-label {
     fill: inherit;
     stroke: inherit;
 }
 
-.amcharts-axis-grid {
-	fill: inherit;
+.amcharts-category-axis .amcharts-axis-tick, .amcharts-category-axis .amcharts-axis-tick-minor, 
+.amcharts-category-axis .amcharts-axis-line, .amcharts-category-axis .amcharts-axis-label, 
+.amcharts-axis-grid,
+.amcharts-axis-bottom-label  {
+    fill: inherit;
     stroke: inherit;
 }
 

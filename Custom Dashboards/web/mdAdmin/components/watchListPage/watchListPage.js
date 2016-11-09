@@ -60,6 +60,24 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             else {
                 this.selected = [];
             }
+			
+			if (this.watchList.data && this.watchList.data.chartConfig) {
+                this.chartConfig = this.watchList.data.chartConfig;
+            }
+            else {
+                this.chartConfig = {
+                    graphOptions: [],
+                    selectedAxis: 'left',
+                    selectedColor: '#C2185B',
+                    assignColors: false,
+                    axisColors: { 
+                        left2AxisColor: "#FFFFFF",
+                        leftAxisColor: "#FFFFFF",
+                        right2AxisColor: "#FFFFFF",
+                        rightAxisColor: "#FFFFFF"
+                    }
+                };
+            }
         }
             
         
@@ -206,6 +224,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.saveSettings = function saveSettings() {
         this.watchList.data = {};
         this.watchList.data.selectedPoints = this.selected;
+        this.watchList.data.chartConfig = this.chartConfig;
         
         if (this.watchList.isNew) {
             $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});

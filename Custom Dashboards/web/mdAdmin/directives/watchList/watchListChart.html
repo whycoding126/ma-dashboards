@@ -3,7 +3,7 @@
         <h2 flex>
             <span>{{'dashboards.v3.app.chart' | tr}} &amp; {{'dashboards.v3.app.compare' | tr}}</span>        
         </h2>
-      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; graphOptions=[];" ma-tr="dashboards.v3.app.clear"></md-button>
+      <md-button class="md-raised" ng-click="points=[]; stats=[]; addChecked=[]; chartConfig.graphOptions=[];" ma-tr="dashboards.v3.app.clear"></md-button>
     </div>
 </md-toolbar>
 
@@ -31,19 +31,20 @@
         <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
         <div class="chart-content" ng-if="points.length">
-            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="graphOptions" options="{valueAxes:[{axisColor:axisColors.leftAxisColor, color:axisColors.leftAxisColor}, {axisColor:axisColors.rightAxisColor, color:axisColors.rightAxisColor}, {axisColor:axisColors.left2AxisColor, color:axisColors.left2AxisColor}, {axisColor:axisColors.right2AxisColor, color:axisColors.right2AxisColor}]}">
+            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions" >
+            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="graphOptions" >
+            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
         </div>
         <div layout="row" layout-wrap layout-align="space-between start">
             <md-input-container flex="70" flex-xs="100" layout="row" layout-padding>
-                <span>
-                    Next Axis: 
-                </span>
-                <md-radio-group ng-model="selectedAxis" layout="row" ng-change="updateColors()" layout-align="start center">
+                <span ma-tr="dashboards.v3.app.nextAxis"></span>
+                <md-radio-group ng-model="chartConfig.selectedAxis" layout="row" layout-align="start center">
                     <md-radio-button value="left">{{'dashboards.v3.app.left' | tr}}</md-radio-button>
                     <md-radio-button value="right">{{'dashboards.v3.app.right' | tr}}</md-radio-button>
                     <md-radio-button value="left-2">{{'dashboards.v3.app.farLeft' | tr}}</md-radio-button>
@@ -51,29 +52,29 @@
                 </md-radio-group>
             </md-input-container>
             <md-input-container flex="20" flex-xs="100" layout="row" layout-align="end" layout-align-xs="start" layout-padding>
-                <md-checkbox ng-model="assignColors" ng-change="updateColors()">{{'dashboards.v3.app.pickColors' | tr}}</md-checkbox>
+                <md-checkbox ng-model="chartConfig.assignColors">{{'dashboards.v3.app.pickColors' | tr}}</md-checkbox>
             </md-input-container>
         </div>
-        <div layout="row" layout-margin ng-show="assignColors">
+        <div layout="row" layout-margin ng-show="chartConfig.assignColors">
             <md-input-container flex >
                 <label ma-tr="dashboards.v3.app.nextLineColor"></label>
-                <input type="color" ng-model="selectedColor" ng-change="updateColors()" ng-disabled="!assignColors" >
+                <input type="color" ng-model="chartConfig.selectedColor" ng-disabled="!chartConfig.assignColors" >
             </md-input-container>
             <md-input-container flex >
                 <label ma-tr="dashboards.v3.app.leftAxis"></label>
-                <input type="color" ng-model="axisColors.leftAxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
+                <input type="color" ng-model="chartConfig.axisColors.leftAxisColor" ng-disabled="!chartConfig.assignColors">
             </md-input-container>
             <md-input-container flex >
                 <label ma-tr="dashboards.v3.app.rightAxis"></label>
-                <input type="color" ng-model="axisColors.rightAxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
+                <input type="color" ng-model="chartConfig.axisColors.rightAxisColor" ng-disabled="!chartConfig.assignColors">
             </md-input-container>
             <md-input-container flex >
                 <label ma-tr="dashboards.v3.app.outerLeftAxis"></label>
-                <input type="color" ng-model="axisColors.left2AxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
+                <input type="color" ng-model="chartConfig.axisColors.left2AxisColor" ng-disabled="!chartConfig.assignColors">
             </md-input-container>
             <md-input-container flex >
                 <label ma-tr="dashboards.v3.app.OuterRightAxis"></label>
-                <input type="color" ng-model="axisColors.right2AxisColor" ng-change="updateColors()" ng-disabled="!assignColors">
+                <input type="color" ng-model="chartConfig.axisColors.right2AxisColor" ng-disabled="!chartConfig.assignColors">
             </md-input-container>
         </div>
     </md-tab>

@@ -85,7 +85,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         restrict: 'E',
         replace: true,
         scope: scope,
-        template: '<div class="amchart"></div>',
+        template: '<div class="amchart" ng-class="{\'amcharts-custom-color\': customAxisColors}"></div>',
         compile: function() {
             if (maDashboardsInsertCss) {
                 cssInjector.injectLink(require.toUrl('amcharts/plugins/export/export.css'), 'amchartsExport');
@@ -130,6 +130,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	if (newValue === undefined) return;
         	$.extend(true, chart, newValue);
         	chart.validateNow();
+            checkForAxisColors();
         }, true);
 
         $scope.$watchGroup([
@@ -327,6 +328,18 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
             }
             $.extend(true, graph, opts);
+        }
+        
+        function checkForAxisColors() {
+              if ($scope.options && $scope.options.valueAxes) {
+                    $scope.options.valueAxes.some(function(axis, index, array) {
+                          if (axis.color) {
+                                // Turn on custom color mode
+                                $scope.customAxisColors = true;
+                                return true;
+                          }
+                    });
+              }
         }
 
         function sortGraphs() {

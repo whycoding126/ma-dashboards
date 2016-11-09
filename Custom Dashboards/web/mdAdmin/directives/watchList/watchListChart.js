@@ -6,53 +6,33 @@
 define(['require'], function(require) {
     'use strict';
 
-    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar', 'localStorageService'];
-    function watchListChart($mdMedia, $timeout, DateBar, localStorageService) {
+    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar'];
+    function watchListChart($mdMedia, $timeout, DateBar) {
         return {
             restrict: 'E',
             scope: {
-                addChecked: '='
+                addChecked: '=',
+                chartConfig: '='
             },
             templateUrl: 'directives/watchList/watchListChart.html',
             link: function link(scope, element, attrs) {
                 
                 scope.dateBar = DateBar;
-                
-                scope.graphOptions = [];
-                
                 scope.parseInt = parseInt; // Make parseInt available to scope
                 scope.parseFloat = parseFloat; // Make parseFloat available to scope
                 scope.stats = []; // Set up array for storing stats for stats tab
                 scope.points = []; // Set up array for storing charted points
                 scope.$mdMedia = $mdMedia; // Make $mdMedia service available to scope
                 
-                var watchlistChartColors = localStorageService.get('watchlistChartColors');
-                
-                if (watchlistChartColors != null) {
-                    scope.selectedAxis = watchlistChartColors.selectedAxis;
-                    scope.assignColors = watchlistChartColors.assignColors;
-                    scope.axisColors = watchlistChartColors.axisColors;
-                    scope.selectedColor = watchlistChartColors.selectedColor
-                }
-                else {
-                    scope.assignColors = false;
-                    scope.selectedAxis = 'left';
-                    scope.axisColors = { left2AxisColor: "#000000",
-                        leftAxisColor: "#000000",
-                        right2AxisColor: "#000000",
-                        rightAxisColor: "#000000"
-                    }
-                    scope.selectedColor = '#C2185B';
-                }
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
                     // console.log('addChecked Watcher:', newValues, oldValues);
                     
-                    // If cleared from selecting a new watchlist clear stats and graphOptions
+                    // If cleared from selecting a new watchlist clear stats and chartConfig.graphOptions
                     if (newValues.length === 0) {
                         scope.stats = [];
-                        scope.graphOptions = [];
+                        scope.chartConfig.graphOptions = [];
                     }
                     
                     // Clear Stats before new ones are generated
@@ -62,11 +42,11 @@ define(['require'], function(require) {
                     scope.points = newValues;
                     
                     if ( (oldValues === undefined && newValues.length >= 0) || (newValues.length > oldValues.length) ) {
-                        var graphOption = {valueAxis: scope.selectedAxis, xid: newValues[newValues.length-1].xid};
-                        if (scope.assignColors) {
-                            graphOption.lineColor = scope.selectedColor;
+                        var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
+                        if (scope.chartConfig.assignColors) {
+                            graphOption.lineColor = scope.chartConfig.selectedColor;
                         }
-                        scope.graphOptions.push(graphOption);
+                        scope.chartConfig.graphOptions.push(graphOption);
                         // console.log('Adding', newValues[newValues.length-1].xid);
                     }
                     else if (newValues.length < oldValues.length) {
@@ -74,18 +54,12 @@ define(['require'], function(require) {
                         var removedXid = arrayDiff[0].xid;
                         var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
                         
-                        scope.graphOptions.splice(removedIndex, 1);
+                        scope.chartConfig.graphOptions.splice(removedIndex, 1);
                         // console.log('Removed', removedXid, 'at index', removedIndex);
                     }
 
-                    // console.log('Graph Options', scope.graphOptions);
+                    // console.log('Graph Options', scope.chartConfig.graphOptions);
                 });
-                
-                scope.updateColors = function () {
-                    localStorageService.set('watchlistChartColors', {assignColors: scope.assignColors, selectedColor: scope.selectedColor, axisColors: scope.axisColors, selectedAxis: scope.selectedAxis});
-                    
-                    // console.log(localStorageService.get('watchlistChartColors'));
-                };
 
             } // End Link
         }; // End return
