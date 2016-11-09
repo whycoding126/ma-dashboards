@@ -87,11 +87,12 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
             // parser converts from String ($viewValue) into Date ($modelValue)
             ngModel.$parsers.unshift(function(value) {
                 if (typeof value === 'string') {
-                    var initialDate = moment(ngModel.$modelValue);
-                    var m;
+                    var initialDate, m;
                     if ($scope.timezone) {
+                        initialDate = moment.tz(ngModel.$modelValue, $scope.timezone);
                         m = moment.tz(value, $scope.getFormat(), true, $scope.timezone);
                     } else {
+                        initialDate = moment(ngModel.$modelValue);
                         m = moment(value, $scope.getFormat(), true);
                     }
                     
@@ -113,12 +114,11 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
 
             $scope.showPicker = function showPicker(ev) {
                 var autoSwitchTime = angular.isUndefined($scope.autoSwitchTime) ? true : $scope.autoSwitchTime;
-                var initialDate, originalOffset;
+                var initialDate;
                 if ($scope.timezone) {
-                    var browserUtcOffset = moment().utcOffset();
-                    var m = moment.tz(ngModel.$modelValue, $scope.timezone);
-                    originalOffset = m.utcOffset();
-                    initialDate = m.utcOffset(browserUtcOffset, true).toDate();
+                    var m = moment(ngModel.$modelValue);
+                    var browserUtcOffset = m.utcOffset();
+                    initialDate = m.tz($scope.timezone).utcOffset(browserUtcOffset, true).toDate();
                 } else {
                     initialDate = ngModel.$modelValue;
                 }
@@ -142,13 +142,7 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
                 }
                 
                 promise.then(function(date) {
-                    var m;
-                    if ($scope.timezone) {
-                        m = moment(date).utcOffset(originalOffset, true).tz($scope.timezone);
-                    } else {
-                        m = moment(date);
-                    }
-                    var stringValue = m.format($scope.getFormat());
+                    var stringValue = moment(date).format($scope.getFormat());
                     ngModel.$setViewValue(stringValue, ev);
                     ngModel.$render();
                 });

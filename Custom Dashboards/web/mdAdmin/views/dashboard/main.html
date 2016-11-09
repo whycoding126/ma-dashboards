@@ -61,7 +61,7 @@
               <md-input-container class="date-preset">
                 <ma-date-range-picker from="dateBar.from" to="dateBar.to" no-underline="true"
                   preset="{{dateBar.preset}}" update-interval="{{dateBar.updateIntervalString}}"
-                  refresh="dateBar.refresh" on-change="dateBar.preset = preset"></ma-date-range-picker>
+                  refresh="dateBar.refresh" on-change="dateBar.preset = preset" timezone="{{mdAdminSettings.user.getTimezone()}}"></ma-date-range-picker>
               </md-input-container>
               <md-button class="md-icon-button md-hue-2" ng-click="dateBar.expanded = !dateBar.expanded"
                 aria-label="{{'dashboards.v3.app.moreDateSettings' | tr}}"

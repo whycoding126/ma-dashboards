@@ -80,7 +80,8 @@ function dateRangePicker($injector) {
             updateInterval: '@',
             refresh: '<?',
             onChange: '&',
-            noUnderline: '<?'
+            noUnderline: '<?',
+            timezone: '@'
         },
         template: function(element, attrs) {
             if ($injector.has('$mdUtil')) {
@@ -127,6 +128,7 @@ function dateRangePicker($injector) {
             this.presets = MA_DATE_RANGE_PRESETS;
 
             this.isSame = function isSame(m, check) {
+                if (!m) return false;
                 if (typeof check === 'string') {
                     return m.format(this.format || mangoDateFormats.dateTimeSeconds) === check;
                 }
@@ -142,6 +144,11 @@ function dateRangePicker($injector) {
                 if (!this.preset) return;
                 var from = moment();
                 var to = moment();
+                if (this.timezone) {
+                    from.tz(this.timezone);
+                    to.tz(this.timezone);
+                }
+                
                 switch(this.preset) {
                 case 'LAST_5_MINUTES': from.subtract(5, 'minutes'); break;
                 case 'LAST_15_MINUTES': from.subtract(15, 'minutes'); break;
