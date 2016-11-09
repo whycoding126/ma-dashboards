@@ -48,7 +48,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-function serialChart(maDashboardsInsertCss, cssInjector) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -94,346 +95,348 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
     };
     
     function postLink($scope, $element, attrs) {
-            var options = defaultOptions();
+        var options = defaultOptions();
 
-            if ($scope.timeFormat) {
-                options.categoryAxis.parseDates = false;
-            }
+        if ($scope.timeFormat) {
+            options.categoryAxis.parseDates = false;
+        }
 
-            if ($scope.stackType) {
-                options.valueAxes[0].stackType = $scope.stackType;
+        if ($scope.stackType) {
+            options.valueAxes[0].stackType = $scope.stackType;
+        }
+        
+        if ($scope.legend) {
+            options.legend = {};
+        }
+        
+        if ($scope['export']) {
+            options['export'].enabled = true;
+        }
+        
+        if ($scope.balloon) {
+            options.chartCursor = {
+                categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
+                oneBalloonOnly: true
+            };
+        }
+
+        var valueArray = !!attrs.values;
+
+        $.extend(true, options, $scope.options);
+
+        var chart = AmCharts.makeChart($element[0], options);
+
+        $scope.$watch('options', function(newValue, oldValue) {
+        	if (newValue === undefined) return;
+        	$.extend(true, chart, newValue);
+        	chart.validateNow();
+        }, true);
+
+        $scope.$watchGroup([
+            'defaultType',
+            'defaultColor',
+            'defaultAxis',
+            'defaultBalloonText',
+            'defaultGraphOptions'
+        ], graphOptionsChanged.bind(null, null));
+
+        if (valueArray) {
+        	$scope.$watchCollection('values', watchValues);
+        	$scope.$watchCollection('points', watchPointsAndGraphs);
+            $scope.$watchCollection('graphOptions', watchPointsAndGraphs);
+        }
+        
+        for (var i = 1; i <= MAX_SERIES; i++) {
+            var seriesAttributes = [
+                'series' + i + 'Type',
+                'series' + i + 'Title',
+                'series' + i + 'Color',
+                'series' + i + 'Axis',
+                'series' + i + 'BalloonText',
+                'series' + i + 'GraphOptions'
+            ];
+            
+            if (!valueArray) {
+                seriesAttributes.push('series' + i + 'Values');
+                seriesAttributes.push('series' + i + 'Point');
             }
             
-            if ($scope.legend) {
-                options.legend = {};
+            var hasSeries = false;
+            for (var j = 0; j < seriesAttributes.length; j++) {
+                if (!angular.isUndefined(attrs[seriesAttributes[j]])) {
+                    hasSeries = true;
+                    break;
+                }
             }
             
-            if ($scope['export']) {
-                options['export'].enabled = true;
-            }
-            
-            if ($scope.balloon) {
-                options.chartCursor = {categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true};
-            }
-
-            var valueArray = !!attrs.values;
-
-            $.extend(true, options, $scope.options);
-
-            var chart = AmCharts.makeChart($element[0], options);
-
-            $scope.$watch('options', function(newValue, oldValue) {
-            	if (newValue === undefined) return;
-            	$.extend(true, chart, newValue);
-            	chart.validateNow();
-            }, true);
-
-            $scope.$watchGroup([
-                'defaultType',
-                'defaultColor',
-                'defaultAxis',
-                'defaultBalloonText',
-                'defaultGraphOptions'
-            ], graphOptionsChanged.bind(null, null));
-
-            if (valueArray) {
-            	$scope.$watchCollection('values', watchValues);
-            	$scope.$watchCollection('points', watchPointsAndGraphs);
-                $scope.$watchCollection('graphOptions', watchPointsAndGraphs);
-            }
-            
-            for (var i = 1; i <= MAX_SERIES; i++) {
-                var seriesAttributes = [
-                    'series' + i + 'Type',
-                    'series' + i + 'Title',
-                    'series' + i + 'Color',
-                    'series' + i + 'Axis',
-                    'series' + i + 'BalloonText',
-                    'series' + i + 'GraphOptions'
-                ];
-                
+            if (hasSeries) {
+                $scope.$watchGroup(seriesAttributes, graphOptionsChanged.bind(null, i));
                 if (!valueArray) {
-                    seriesAttributes.push('series' + i + 'Values');
-                    seriesAttributes.push('series' + i + 'Point');
-                }
-                
-                var hasSeries = false;
-                for (var j = 0; j < seriesAttributes.length; j++) {
-                    if (!angular.isUndefined(attrs[seriesAttributes[j]])) {
-                        hasSeries = true;
-                        break;
-                    }
-                }
-                
-                if (hasSeries) {
-                    $scope.$watchGroup(seriesAttributes, graphOptionsChanged.bind(null, i));
-                    if (!valueArray) {
-                        $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
-                    }
+                    $scope.$watchCollection('series' + i + 'Values', valuesChanged.bind(null, i));
                 }
             }
+        }
 
-            function watchValues(newValues) {
-                chart.dataProvider = newValues;
-                chart.validateData();
+        function watchValues(newValues) {
+            chart.dataProvider = newValues;
+            chart.validateData();
+        }
+
+        function watchPointsAndGraphs(newValues) {
+            if (!$scope.points && !$scope.graphOptions) {
+                chart.graphs = [];
             }
 
-            function watchPointsAndGraphs(newValues) {
-                if (!$scope.points && !$scope.graphOptions) {
-                    chart.graphs = [];
-                }
-
-            	if (newValues) {
-            	    var numGraphs = $scope.points && $scope.points.length || 0;
-            	    var graphOptionsLength = $scope.graphOptions && $scope.graphOptions.length || 0;
-            	    if (graphOptionsLength > numGraphs) {
-            	        numGraphs = graphOptionsLength;
-            	    }
-            	    while (chart.graphs.length > numGraphs) {
-            	        chart.graphs.pop();
-            	    }
-            	    
-	            	for (var i = 0; i < newValues.length; i++) {
-	            		var val = newValues[i];
-	            		if (!val) continue;
-	            		setupGraph(i + 1);
-	            	}
+        	if (newValues) {
+        	    var numGraphs = $scope.points && $scope.points.length || 0;
+        	    var graphOptionsLength = $scope.graphOptions && $scope.graphOptions.length || 0;
+        	    if (graphOptionsLength > numGraphs) {
+        	        numGraphs = graphOptionsLength;
+        	    }
+        	    while (chart.graphs.length > numGraphs) {
+        	        chart.graphs.pop();
+        	    }
+        	    
+            	for (var i = 0; i < newValues.length; i++) {
+            		var val = newValues[i];
+            		if (!val) continue;
+            		setupGraph(i + 1);
             	}
+        	}
 
-            	sortGraphs();
-                chart.validateData();
-            }
+        	sortGraphs();
+            chart.validateData();
+        }
 
-            function findGraph(propName, prop, removeGraph) {
-                for (var i = 0; i < chart.graphs.length; i++) {
-                    if (chart.graphs[i][propName] === prop) {
-                    	var graph = chart.graphs[i];
-                    	if (removeGraph) chart.graphs.splice(i, 1);
-                    	return graph;
-                    }
+        function findGraph(propName, prop, removeGraph) {
+            for (var i = 0; i < chart.graphs.length; i++) {
+                if (chart.graphs[i][propName] === prop) {
+                	var graph = chart.graphs[i];
+                	if (removeGraph) chart.graphs.splice(i, 1);
+                	return graph;
                 }
             }
+        }
 
-            function graphOptionsChanged(graphNum, values) {
-            	if (isAllUndefined(values)) return;
+        function graphOptionsChanged(graphNum, values) {
+        	if (isAllUndefined(values)) return;
 
-            	if (graphNum === null) {
-            	    // update all graphs
-            	    for (var i = 0; i < chart.graphs.length; i++) {
-            	        setupGraph(chart.graphs[i]);
-            	    }
-            	} else {
-            	    setupGraph(graphNum);
-            	}
+        	if (graphNum === null) {
+        	    // update all graphs
+        	    for (var i = 0; i < chart.graphs.length; i++) {
+        	        setupGraph(chart.graphs[i]);
+        	    }
+        	} else {
+        	    setupGraph(graphNum);
+        	}
 
+        	sortGraphs();
+        	chart.validateData();
+        }
+
+        function valuesChanged(graphNum, newValues, oldValues) {
+        	if (newValues === oldValues && newValues === undefined) return;
+
+        	if (!newValues) {
+        		findGraph('graphNum', graphNum, true);
+        	} else  {
+            	setupGraph(graphNum);
             	sortGraphs();
-            	chart.validateData();
             }
+            updateValues();
+        }
+        
+        function getPointForGraph(graphNum) {
+            var point = $scope['series' + graphNum + 'Point'];
+            if (!point && $scope.points) {
+                point = $scope.points[graphNum - 1];
+            }
+            return point;
+        }
 
-            function valuesChanged(graphNum, newValues, oldValues) {
-            	if (newValues === oldValues && newValues === undefined) return;
+        function setupGraph(graphNum, point) {
+            var graph;
 
-            	if (!newValues) {
-            		findGraph('graphNum', graphNum, true);
-            	} else  {
-                	setupGraph(graphNum);
-                	sortGraphs();
-                }
-                updateValues();
+            // first arg can be the graph itself
+            if (typeof graphNum === 'object') {
+                graph = graphNum;
+                graphNum = graph.graphNum;
+            } else {
+                graph = findGraph('graphNum', graphNum);
+            }
+            if (!graph) {
+                graph = {};
+                chart.graphs.push(graph);
             }
             
-            function getPointForGraph(graphNum) {
-                var point = $scope['series' + graphNum + 'Point'];
-                if (!point && $scope.points) {
-                    point = $scope.points[graphNum - 1];
+        	var hardDefaults = {
+        	    graphNum: graphNum,
+    	        id: 'series-' + graphNum,
+                valueField: 'value_' + graphNum,
+                title: 'Series ' + graphNum,
+                type: 'smoothedLine',
+                valueAxis: 'left',
+                balloonText: '[[value]]'
+        	};
+
+        	var pointDefaults;
+            point = point || getPointForGraph(graphNum);
+        	if (point) {
+        	    pointDefaults = {
+        	        xid: point.xid,
+        	        valueField: 'value_' + point.xid,
+        	        title: point.deviceName + ' - ' + point.name,
+        	        type: point.plotType && point.plotType.toLowerCase(),
+        	        lineColor: point.chartColour
+            	};
+        	    
+        	    // change mango plotType to amCharts graphType
+                // step and line are equivalent
+                if (pointDefaults.type === 'spline') {
+                    pointDefaults.type = 'smoothedLine';
                 }
-                return point;
+        	};
+
+            var defaultAttributes = {
+                type: $scope.defaultType,
+                lineColor: $scope.defaultColor,
+                valueAxis: $scope.defaultAxis,
+                balloonText: $scope.defaultBalloonText
+            };
+            
+        	var attributeOptions = {
+    	        title: $scope['series' + graphNum + 'Title'],
+    	        type: $scope['series' + graphNum + 'Type'],
+    	        lineColor: $scope['series' + graphNum + 'Color'],
+                valueAxis: $scope['series' + graphNum + 'Axis'],
+                balloonText: $scope['series' + graphNum + 'BalloonText']
+        	};
+        	
+        	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
+        	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
+
+            var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
+            if (angular.isUndefined(opts.fillAlphas)) {
+                opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
+                var firstAxis = options.valueAxes[0];
+                if (opts.valueAxis === 'left' && firstAxis && firstAxis.id === 'left' && firstAxis.stackType && firstAxis.stackType !== 'none') {
+                    opts.fillAlphas = 0.7;
+                }
             }
+            if (angular.isUndefined(opts.lineThickness)) {
+                opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
+            }
+            $.extend(true, graph, opts);
+        }
 
-            function setupGraph(graphNum, point) {
-                var graph;
+        function sortGraphs() {
+        	chart.graphs.sort(function(a, b) {
+                return a.graphNum - b.graphNum;
+            });
+        }
 
-                // first arg can be the graph itself
-                if (typeof graphNum === 'object') {
-                    graph = graphNum;
-                    graphNum = graph.graphNum;
+        function combine(output, newValues, valueField) {
+            if (!newValues) return;
+
+            for (var i = 0; i < newValues.length; i++) {
+                var value = newValues[i];
+                var timestamp;
+                if ($scope.timeFormat) {
+                    var m = $scope.timezone ? moment.tz(value.timestamp, $scope.timezone) : moment(value.timestamp);
+                    timestamp = m.format($scope.timeFormat);
                 } else {
-                    graph = findGraph('graphNum', graphNum);
+                    timestamp = value.timestamp;
                 }
-                if (!graph) {
-                    graph = {};
-                    chart.graphs.push(graph);
-                }
-                
-            	var hardDefaults = {
-            	    graphNum: graphNum,
-        	        id: 'series-' + graphNum,
-                    valueField: 'value_' + graphNum,
-                    title: 'Series ' + graphNum,
-                    type: 'smoothedLine',
-                    valueAxis: 'left',
-                    balloonText: '[[value]]'
-            	};
 
-            	var pointDefaults;
-                point = point || getPointForGraph(graphNum);
-            	if (point) {
-            	    pointDefaults = {
-            	        xid: point.xid,
-            	        valueField: 'value_' + point.xid,
-            	        title: point.deviceName + ' - ' + point.name,
-            	        type: point.plotType && point.plotType.toLowerCase(),
-            	        lineColor: point.chartColour
-                	};
-            	    
-            	    // change mango plotType to amCharts graphType
-                    // step and line are equivalent
-                    if (pointDefaults.type === 'spline') {
-                        pointDefaults.type = 'smoothedLine';
-                    }
-            	};
-
-                var defaultAttributes = {
-                    type: $scope.defaultType,
-                    lineColor: $scope.defaultColor,
-                    valueAxis: $scope.defaultAxis,
-                    balloonText: $scope.defaultBalloonText
-                };
-                
-            	var attributeOptions = {
-        	        title: $scope['series' + graphNum + 'Title'],
-        	        type: $scope['series' + graphNum + 'Type'],
-        	        lineColor: $scope['series' + graphNum + 'Color'],
-                    valueAxis: $scope['series' + graphNum + 'Axis'],
-                    balloonText: $scope['series' + graphNum + 'BalloonText']
-            	};
-            	
-            	var graphOptions = $scope['series' + graphNum + 'GraphOptions'] ||
-            	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
-
-                var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
-                if (angular.isUndefined(opts.fillAlphas)) {
-                    opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
-                    var firstAxis = options.valueAxes[0];
-                    if (opts.valueAxis === 'left' && firstAxis && firstAxis.id === 'left' && firstAxis.stackType && firstAxis.stackType !== 'none') {
-                        opts.fillAlphas = 0.7;
-                    }
+                if (!output[timestamp]) {
+                    output[timestamp] = {timestamp: timestamp};
                 }
-                if (angular.isUndefined(opts.lineThickness)) {
-                    opts.lineThickness = opts.type === 'column' ? 1.0 : 2.0;
-                }
-                $.extend(true, graph, opts);
+
+                output[timestamp][valueField] = value.value;
+            }
+        }
+
+        function updateValues() {
+        	var values = $scope.timeFormat ? {} : [];
+
+        	for (var i = 1; i <= MAX_SERIES; i++) {
+        		var seriesValues = $scope['series' + i + 'Values'];
+
+        		var point = getPointForGraph(i);
+        		var valueField = 'value_' + (point ? point.xid : i);
+        		
+        		combine(values, seriesValues, valueField);
+        	}
+
+            // normalize sparse array or object into dense array
+            var output = [];
+            for (var timestamp in values) {
+                output.push(values[timestamp]);
             }
 
-            function sortGraphs() {
-            	chart.graphs.sort(function(a, b) {
-                    return a.graphNum - b.graphNum;
+            // XXX sparse array to dense array doesnt result in sorted array
+            // manually sort here
+            if (output.length && typeof output[0].timestamp === 'number') {
+                output.sort(function(a,b) {
+                    return a.timestamp - b.timestamp;
                 });
             }
 
-            function combine(output, newValues, valueField) {
-                if (!newValues) return;
-
-                for (var i = 0; i < newValues.length; i++) {
-                    var value = newValues[i];
-                    var timestamp;
-                    if ($scope.timeFormat) {
-                        var m = $scope.timezone ? moment.tz(value.timestamp, $scope.timezone) : moment(value.timestamp);
-                        timestamp = m.format($scope.timeFormat);
-                    } else {
-                        timestamp = value.timestamp;
-                    }
-
-                    if (!output[timestamp]) {
-                        output[timestamp] = {timestamp: timestamp};
-                    }
-
-                    output[timestamp][valueField] = value.value;
-                }
-            }
-
-            function updateValues() {
-            	var values = $scope.timeFormat ? {} : [];
-
-            	for (var i = 1; i <= MAX_SERIES; i++) {
-            		var seriesValues = $scope['series' + i + 'Values'];
-
-            		var point = getPointForGraph(i);
-            		var valueField = 'value_' + (point ? point.xid : i);
-            		
-            		combine(values, seriesValues, valueField);
-            	}
-
-                // normalize sparse array or object into dense array
-                var output = [];
-                for (var timestamp in values) {
-                    output.push(values[timestamp]);
-                }
-
-                // XXX sparse array to dense array doesnt result in sorted array
-                // manually sort here
-                if (output.length && typeof output[0].timestamp === 'number') {
-                    output.sort(function(a,b) {
-                        return a.timestamp - b.timestamp;
-                    });
-                }
-
-                chart.dataProvider = output;
-                chart.validateData();
-            }
-
-            function isAllUndefined(a) {
-            	for (var i = 0; i < a.length; i++) {
-            		if (a[i] !== undefined) return false;
-            	}
-            	return true;
-            }
+            chart.dataProvider = output;
+            chart.validateData();
         }
-}
 
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector'];
-
-function defaultOptions() {
-    return {
-        type: "serial",
-        theme: "light",
-        addClassNames: true,
-        dataProvider: [],
-        synchronizeGrid: true,
-        valueAxes: [{
-        	id: "left",
-            position: "left",
-            axisThickness: 2
-        },{
-        	id: "right",
-            position: "right",
-            axisThickness: 2
-        },{
-        	id: "left-2",
-            position: "left",
-            offset: 50,
-            axisThickness: 2
-        },{
-        	id: "right-2",
-            position: "right",
-            offset: 50,
-            axisThickness: 2
-        }],
-        categoryAxis: {
-            parseDates: true,
-            minPeriod: 'fff',
-            equalSpacing: true,
-            axisThickness: 0
-        },
-        startDuration: 0,
-        graphs: [],
-        plotAreaFillAlphas: 0.0,
-        categoryField: "timestamp",
-        'export': {
-            enabled: false,
-            libs: {autoLoad: false}
+        function isAllUndefined(a) {
+        	for (var i = 0; i < a.length; i++) {
+        		if (a[i] !== undefined) return false;
+        	}
+        	return true;
         }
-    };
+    }
+
+    function defaultOptions() {
+        return {
+            type: "serial",
+            theme: "light",
+            addClassNames: true,
+            dataProvider: [],
+            synchronizeGrid: true,
+            valueAxes: [{
+                id: "left",
+                position: "left",
+                axisThickness: 2
+            },{
+                id: "right",
+                position: "right",
+                axisThickness: 2
+            },{
+                id: "left-2",
+                position: "left",
+                offset: 50,
+                axisThickness: 2
+            },{
+                id: "right-2",
+                position: "right",
+                offset: 50,
+                axisThickness: 2
+            }],
+            categoryAxis: {
+                parseDates: true,
+                minPeriod: 'fff',
+                equalSpacing: true,
+                axisThickness: 0,
+                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis
+            },
+            startDuration: 0,
+            graphs: [],
+            plotAreaFillAlphas: 0.0,
+            categoryField: "timestamp",
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false}
+            }
+        };
+    }
 }
 
 return serialChart;

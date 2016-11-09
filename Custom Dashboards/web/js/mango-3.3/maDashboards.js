@@ -59,7 +59,9 @@ define(['./maServices',
         './components/imageSlider/imageSlider',
         './filters/trFilter',
         'angular',
-        'require'
+        'require',
+        'amcharts/amcharts',
+        'moment-timezone'
 ], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr, trAriaLabel,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
@@ -68,7 +70,7 @@ define(['./maServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, queryBuilder, queryGroup,
         queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters, imageSlider,
-        trFilter, angular, require) {
+        trFilter, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -137,6 +139,7 @@ maDashboards.component('maImageSlider', imageSlider);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
+
 maDashboards.constant('MA_DATE_RANGE_PRESETS', [
    {type: "LAST_5_MINUTES", label: 'Last 5 minutes'},
    {type: "LAST_15_MINUTES", label: 'Last 15 minutes'},
@@ -162,6 +165,7 @@ maDashboards.constant('MA_DATE_RANGE_PRESETS', [
    {type: "PREVIOUS_MONTH", label: 'Previous month'},
    {type: "PREVIOUS_YEAR", label: 'Previous year'}
 ]);
+
 maDashboards.constant('MA_ROLLUP_TYPES', [
  {type: 'NONE', nonNumeric: true, label: 'None'},
  {type: 'AVERAGE', nonNumeric: false, label: 'Average'},
@@ -176,6 +180,7 @@ maDashboards.constant('MA_ROLLUP_TYPES', [
  {type: 'INTEGRAL', nonNumeric: false, label: 'Integral'}
  //{name: 'FFT', nonNumeric: false}
 ]);
+
 maDashboards.constant('MA_TIME_PERIOD_TYPES', [
  {type: 'SECONDS', label: 'Seconds'},
  {type: 'MINUTES', label: 'Minutes'},
@@ -185,12 +190,14 @@ maDashboards.constant('MA_TIME_PERIOD_TYPES', [
  {type: 'MONTHS', label: 'Months'},
  {type: 'YEARS', label: 'Years'}
 ]);
+
 maDashboards.constant('MA_CHART_TYPES', [
  {type: 'line', label: 'Line'},
  {type: 'smoothedLine', label: 'Smoothed'},
  {type: 'step', label: 'Step'},
  {type: 'column', label: 'Bar'}
 ]);
+
 maDashboards.constant('MA_RELATIVE_DATE_TYPES', [
  {type: "", label: 'Now'},
  {type: "moment:'subtract':5:'minutes'", label: '5 minutes ago'},
@@ -216,14 +223,40 @@ maDashboards.constant('MA_RELATIVE_DATE_TYPES', [
  {type: "moment:'subtract':1:'years'|moment:'startOf':'year'", label: 'Start of last year'},
  {type: "moment:'subtract':1:'years'", label: '1 year ago'}
 ]);
+
+maDashboards.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoDateFormats) {
+    return {
+        categoryAxis: [
+            {period: 'fff', format: mangoDateFormats.timeSeconds},
+            {period: 'ss', format: mangoDateFormats.timeSeconds},
+            {period: 'mm', format: mangoDateFormats.time},
+            {period: 'hh', format: mangoDateFormats.time},
+            {period: 'DD', format: mangoDateFormats.monthDay},
+            {period: 'WW', format: mangoDateFormats.monthDay},
+            {period: 'MM', format: mangoDateFormats.monthDay},
+            {period: 'YYYY', format: mangoDateFormats.year}
+        ],
+        categoryBalloon: mangoDateFormats.shortDateTimeSeconds
+    };
+}]);
+
 maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssInjector',
-                  'MA_ROLLUP_TYPES', 'MA_TIME_PERIOD_TYPES', 'MA_CHART_TYPES', 'MA_RELATIVE_DATE_TYPES', 'MA_DATE_RANGE_PRESETS',
-function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector,
-          MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES, MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS) {
+maDashboards.run([
+    '$rootScope',
+    'mangoWatchdog',
+    'maDashboardsInsertCss',
+    'cssInjector',
+    'MA_ROLLUP_TYPES',
+    'MA_TIME_PERIOD_TYPES',
+    'MA_CHART_TYPES',
+    'MA_RELATIVE_DATE_TYPES',
+    'MA_DATE_RANGE_PRESETS',
+    'mangoDateFormats',
+function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
+        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 
@@ -243,6 +276,10 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector,
     $rootScope.chartTypes = MA_CHART_TYPES;
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
+    
+    AmCharts.formatDate = function(date, format, chart) {
+        return moment(date).format(format);
+    };
 }]);
 
 return maDashboards;
