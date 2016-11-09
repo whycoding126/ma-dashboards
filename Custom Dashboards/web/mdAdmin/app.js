@@ -13,12 +13,14 @@ define([
     './services/mdAdminSettings',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
+    'amcharts/amcharts',
+    'moment-timezone',
     'angular-ui-router',
     'angular-ui-sortable',
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, DateBar, mdAdminSettings, pageView, livePreview, AmCharts, moment) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -30,6 +32,13 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'maAppComponents',
     'ngMessages'
 ]);
+
+loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings'];
+function loadLoginTranslations(Translate, mdAdminSettings) {
+    return Translate.loadNamespaces('login').then(function(data) {
+        moment.locale((mdAdminSettings.user && mdAdminSettings.user.locale) || data.locale || window.navigator.languages || window.navigator.language);
+    });
+}
 
 mdAdminApp.factory('Page', Page)
     .factory('DateBar', DateBar)
@@ -63,9 +72,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 
                 if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
                     menuItem.resolve = {
-                        loginTranslations: ['Translate', function(Translate) {
-                            return Translate.loadNamespaces('login');
-                        }]
+                        loginTranslations: loadLoginTranslations
                     }
                 }
 
@@ -102,8 +109,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                 if (!mdAdminSettings.user) {
                     throw 'No user';
                 }
-                return Translate.loadNamespaces(['dashboards', 'common', 'login']);
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }],
+            loginTranslations: loadLoginTranslations,
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
                            './services/MenuEditor',
@@ -166,9 +174,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                     $ocLazyLoad.inject('login');
                 });
             }],
-            loginTranslations: ['Translate', function(Translate) {
-                return Translate.loadNamespaces('login');
-            }]
+            loginTranslations: loadLoginTranslations
         }
     },
     {
@@ -1377,6 +1383,9 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
         }
     });
 
+    AmCharts.formatDate = function(date, format, chart) {
+       return moment.tz(date, mdAdminSettings.user.getTimezone()).format(format);
+    };
 }]);
 
 // Get an injector for the maServices app and use the JsonStore service to retrieve the

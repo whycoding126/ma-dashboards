@@ -104,7 +104,8 @@ function translateFactory($http, $q) {
 
 					request = $http.get(translationsUrl + encodeURIComponent(namespace), {
 						params: {
-							//language: 'XXX'
+							//language: 'XXX',
+						    server: true
 						}
 					});
 					request.then(null, removeFromLoaded.bind(null, namespace));
@@ -114,8 +115,10 @@ function translateFactory($http, $q) {
 			}
 			return $q.all(namespaceRequests);
 		}).then(function(result) {
+		    var allData = {};
 			for (var i = 0; i < result.length; i++) {
 				var data = result[i].data;
+				angular.merge(allData, data);
 				if (!data.loaded) {
 					Globalize.loadMessages(data.translations);
 					data.loaded = true;
@@ -125,6 +128,7 @@ function translateFactory($http, $q) {
 					Globalize.locale(data.locale);
 				}
 			}
+			return allData;
 		});
 	};
 

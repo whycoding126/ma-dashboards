@@ -276,6 +276,8 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
     $rootScope.chartTypes = MA_CHART_TYPES;
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
+
+    moment.locale(window.navigator.languages || window.navigator.language);
     
     AmCharts.formatDate = function(date, format, chart) {
         return moment(date).format(format);
