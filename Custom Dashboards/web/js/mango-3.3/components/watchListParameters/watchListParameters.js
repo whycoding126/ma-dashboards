@@ -8,7 +8,10 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 
 watchListParametersController.$inject = ['$parse', '$interpolate'];
 function watchListParametersController($parse, $interpolate) {
-    this.parameters = {};
+    
+    if (!this.parameters) {
+        this.parameters = {};
+    }
 
     this.inputChanged = function inputChanged() {
         this.parametersChanged({parameters: this.parameters});
@@ -53,7 +56,8 @@ return {
     templateUrl: require.toUrl('./watchListParameters.html'),
     bindings: {
         watchList: '<',
-        parametersChanged: '&'
+        parametersChanged: '&',
+        parameters: '<'
     }
 };
 
