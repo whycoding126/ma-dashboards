@@ -24,6 +24,24 @@ define(['require'], function(require) {
                 scope.points = []; // Set up array for storing charted points
                 scope.$mdMedia = $mdMedia; // Make $mdMedia service available to scope
                 
+                scope.clearChart = function() {
+                    scope.points=[]; 
+                    scope.stats=[]; 
+                    scope.addChecked=[]; 
+                    scope.chartConfig = {
+                        graphOptions: [],
+                        selectedAxis: 'left',
+                        selectedColor: '#C2185B',
+                        assignColors: false,
+                        axisColors: { 
+                            left2AxisColor: "#FFFFFF",
+                            leftAxisColor: "#FFFFFF",
+                            right2AxisColor: "#FFFFFF",
+                            rightAxisColor: "#FFFFFF"
+                        }
+                    };
+                };
+                
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
@@ -41,11 +59,16 @@ define(['require'], function(require) {
                     // assign the chart's points equal to the checked from table
                     scope.points = newValues;
                     
-                    if ( (oldValues === undefined && newValues.length >= 0) || (newValues.length > oldValues.length) ) {
+                    // Only add graph option if it isn't already in the chartConfig
+                    var xidExists = scope.chartConfig.graphOptions.some(function(obj){return obj.xid === newValues[newValues.length-1].xid});
+                    
+                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists) || (newValues.length > oldValues.length && !xidExists) ) {
                         var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
+                        
                         if (scope.chartConfig.assignColors) {
                             graphOption.lineColor = scope.chartConfig.selectedColor;
                         }
+                        
                         scope.chartConfig.graphOptions.push(graphOption);
                         // console.log('Adding', newValues[newValues.length-1].xid);
                     }
