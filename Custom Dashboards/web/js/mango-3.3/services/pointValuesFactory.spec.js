@@ -11,13 +11,14 @@ describe.only('Point values service', function() {
 
     var MochaUtils = require('../../../../web-test/mocha');
     var mochaUtils = new MochaUtils();
-    var pointValues, Util;
+    var pointValues, Util, moment;
     var runDigestAfter = mochaUtils.getRunDigestAfter();
 
     this.timeout(10000);
 
     before('Load maServices module', function(done) {
-        requirejs(['mango-3.3/maServices'], function(maServices) {
+        requirejs(['mango-3.3/maServices', 'moment-timezone'], function(maServices, _moment) {
+            moment = _moment;
             angular.module('mochaTestModule', ['maServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaUtils.config.url)
                 .constant('mangoTimeout', 0)
@@ -276,6 +277,79 @@ describe.only('Point values service', function() {
             angular.forEach(pointValues, function(pointValue) {
                 assert.isNumber(pointValue.timestamp);
                 assert.equal(pointValue.timestamp % 60000, 0);
+                angular.forEach(xids, function(xid) {
+                    assert.isNumber(pointValue[xid]);
+                });
+            });
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets numeric point values for yesterday, rollup to 1 hour averages', runDigestAfter(function() {
+        var to = moment().startOf('day');
+        var from = moment(to).subtract(1, 'day');
+        return pointValues.getPointValuesForXid('voltage', {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 hours'
+        }).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 24);
+            angular.forEach(pointValues, function(pointValue) {
+                checkNumericPointValue(pointValue);
+                var valueTime = moment(pointValue.timestamp);
+                assert.equal(valueTime.minutes(), 0);
+                assert.equal(valueTime.seconds(), 0);
+                assert.equal(valueTime.milliseconds(), 0);
+            });
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets numeric point values for yesterday for 3 points, rollup to 1 hour averages', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = moment().startOf('day');
+        var from = moment(to).subtract(1, 'day');
+        return pointValues.getPointValuesForXids(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 hours'
+        }).then(function(pointValuesByXid) {
+            assert.isObject(pointValuesByXid);
+            for (var i = 0; i < xids.length; i++) {
+                var xid = xids[i];
+                var pointValues = pointValuesByXid[xid];
+                assert.isArray(pointValues);
+                assert.equal(pointValues.length, 24);
+                angular.forEach(pointValues, function(pointValue) {
+                    checkNumericPointValue(pointValue);
+                    var valueTime = moment(pointValue.timestamp);
+                    assert.equal(valueTime.minutes(), 0);
+                    assert.equal(valueTime.seconds(), 0);
+                    assert.equal(valueTime.milliseconds(), 0);
+                });
+            }
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets numeric point values for yesterday for 3 points combined into single array, rollup to 1 hour averages', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = moment().startOf('day');
+        var from = moment(to).subtract(1, 'day');
+        return pointValues.getPointValuesForXidsCombined(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 hours'
+        }).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 24);
+            angular.forEach(pointValues, function(pointValue) {
+                assert.isNumber(pointValue.timestamp);
+                var valueTime = moment(pointValue.timestamp);
+                assert.equal(valueTime.minutes(), 0);
+                assert.equal(valueTime.seconds(), 0);
+                assert.equal(valueTime.milliseconds(), 0);
                 angular.forEach(xids, function(xid) {
                     assert.isNumber(pointValue[xid]);
                 });
