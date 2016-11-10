@@ -443,14 +443,15 @@ mdAdminApp.constant('MENU_ITEMS', [
                 permission: 'superadmin'
             },
             {
-                url: '/data-sources/{pointId}',
+                url: '/data-sources/{pointId}?dataSourceId',
                 name: 'dashboard.settings.dataSources',
-                template: '<iframe-view src="{{ \'/data_point_edit.shtm\' + pointId}}"></iframe-view>',
+                template: '<iframe-view ng-if="pointId" src="{{ \'/data_point_edit.shtm\' + pointId}}"></iframe-view><iframe-view ng-if="dataSourceId" src="{{ \'/data_source_edit.shtm\' + dataSourceId}}"></iframe-view>',
                 menuTr: 'header.dataSources',
                 menuIcon: 'device_hub',
                 permission: 'superadmin',
                 controller: ['$scope', '$stateParams', function ($scope, $stateParams) {
                     $scope.pointId = $stateParams.pointId ? '?dpid='+$stateParams.pointId : '';
+                    $scope.dataSourceId = $stateParams.dataSourceId ? '?dsid='+$stateParams.dataSourceId : '';
                 }]
             },
             {
