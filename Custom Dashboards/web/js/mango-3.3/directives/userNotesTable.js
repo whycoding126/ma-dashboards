@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'moment-timezone'], function(require, moment) {
 'use strict';
 /**
  * @ngdoc directive
@@ -14,31 +14,37 @@ define(['require'], function(require) {
  * - Displays a list of User Notes
  *
  * @param {string} reference-id Query via referenceId
+ * @param {string} timezone Timezone for displaying time stamps
  * @param {string} limit Set the initial limit of the pagination
  *
  * @usage
  * <ma-user-notes-table></ma-user-notes-table>`
  *
  */
-function userNotesTable(UserNotes, $injector) {
+userNotesTable.$inject = ['UserNotes', '$injector', 'mangoDateFormats'];
+function userNotesTable(UserNotes, $injector, mangoDateFormats) {
     return {
         restrict: 'E',
         replace: true,
         scope: {
-            referenceId: '=?'
+            referenceId: '=?',
+            timezone: '@'
         },
-        templateUrl: function() {
-            if ($injector.has('$mdUtil')) {
-                return require.toUrl('./userNotesTable.html');
-            }
-            return require.toUrl('./userNotesTable.html');
-        },
+        templateUrl: require.toUrl('./userNotesTable.html'),
         link: function ($scope, $element, attrs) {
             
             $scope.addNote = UserNotes.addNote;
             
             $scope.updateWithNewNote = function(data) {
                 $scope.userNotes.push(data);
+            };
+            
+            $scope.formatDate = function(date) {
+                var m = moment(date);
+                if ($scope.timezone) {
+                    m.tz($scope.timezone);
+                }
+                return m.format(mangoDateFormats.shortDateTime);
             };
             
             $scope.$watch('referenceId', function(newValue, oldValue) {
@@ -55,7 +61,6 @@ function userNotesTable(UserNotes, $injector) {
     };
 }
 
-userNotesTable.$inject = ['UserNotes', '$injector'];
 return userNotesTable;
 
 }); // define

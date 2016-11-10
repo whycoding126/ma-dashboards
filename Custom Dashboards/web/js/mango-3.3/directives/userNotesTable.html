@@ -25,9 +25,9 @@
                    </tbody>
                   <tbody md-body ng-show="userNotes.length > 0">
                         <tr md-row ng-repeat="note in userNotes | orderBy: myOrder">
-                              <td md-cell>{{note.timestamp | moment:'format':'l LT'}}</td>
-                              <td md-cell>{{note.comment}}</td>
-                              <td md-cell>{{note.username}}</td>
+                              <td md-cell ng-bind="formatDate(note.timestamp)"></td>
+                              <td md-cell ng-bind="note.comment"></td>
+                              <td md-cell ng-bind="note.username"></td>
                         </tr>
                   </tbody>
             </table>
