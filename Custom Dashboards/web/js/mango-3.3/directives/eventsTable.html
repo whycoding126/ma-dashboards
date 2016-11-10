@@ -33,9 +33,9 @@
                         <md-tooltip md-delay="250"  md-direction="right" md-autohide><span ma-tr="dashboards.v3.app.addUserNote"></span> - (<span ma-tr="dashboards.v3.app.eventId"></span>: {{event.id}})</md-tooltip>
                     </i>
                 </td>
-                <td md-cell class="medium-column">{{event.activeTimestamp | moment:'format':'l  h:mm:ss'}}</td>
+                <td md-cell class="medium-column" ng-bind="formatDate(event.activeTimestamp)"></td>
                 <td md-cell class="msg-column" ng-class="{'truncated' : !toggle}"><span  ng-click="toggle = !toggle" ng-bind-html="parseHTML(event.message)"></span></td>
-                <td md-cell><span ng-if="event.returnToNormalTimestamp != 0">{{event.returnToNormalTimestamp | moment:'format':'l h:mm:ss'}} -</span> {{event.status}} <span ng-if="event.active" md-colors="{'color': 'accent-hue-2'}" style="font-weight: bold;">Active</span></td>
+                <td md-cell><span ng-if="event.returnToNormalTimestamp != 0"><span ng-bind="formatDate(event.returnToNormalTimestamp)"></span> - </span>{{event.status}}<span ng-if="event.active" md-colors="{'color': 'accent-hue-2'}" style="font-weight: bold;"> Active</span></td>
                 <td md-cell ng-if="event.returnToNormalTimestamp === 0" class="medium-column">
                     <span ng-if="!event.active">N/A</span>
                     <span ng-if="event.active">

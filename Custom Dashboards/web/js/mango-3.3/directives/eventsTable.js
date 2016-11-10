@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'rql/query'], function(angular, require, query) {
+define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular, require, query, moment) {
 'use strict';
 /**
  * @ngdoc directive
@@ -31,6 +31,7 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
  * @param {string=} from From time used for filtering by date range. Pass the value from a `<ma-date-picker>`.
  * @param {string=} to To time used for filtering by date range.
  * @param {boolean=} date-filter Turn on date filtering of events. Set value to `"'true'"` and use with from/to attribute to use. Defaults to off.
+ * @param {string=} timezone Display the timestamps in this timezone
 
  *
  * @usage
@@ -42,7 +43,8 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
-function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce) {
+eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$mdMedia', '$injector', '$sce', 'mangoDateFormats'];
+function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
     return {
         restrict: 'E',
         scope: {
@@ -57,14 +59,10 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             sort: '=?',
             from: '=?',
             to: '=?',
-            dateFilter: '=?'
+            dateFilter: '=?',
+            timezone: '@'
         },
-        templateUrl: function() {
-            if ($injector.has('$mdUtil')) {
-                return require.toUrl('./eventsTable.html');
-            }
-            return require.toUrl('./eventsTable.html');
-        },
+        templateUrl: require.toUrl('./eventsTable.html'),
         link: function ($scope, $element, attrs) {
             
             $scope.$mdMedia = $mdMedia;
@@ -80,6 +78,14 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
             
             $scope.parseHTML = function(text) {
                 return $sce.trustAsHtml(text);
+            };
+            
+            $scope.formatDate = function formatDate(date) {
+                var m = moment(date);
+                if ($scope.timezone) {
+                    m.tz($scope.timezone);
+                }
+                return m.format(mangoDateFormats.shortDateTimeSeconds);
             };
             
             // Acknowledge single event
@@ -240,7 +246,6 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
     };
 }
 
-eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$mdMedia', '$injector', '$sce'];
 return eventsTable;
 
 }); // define
