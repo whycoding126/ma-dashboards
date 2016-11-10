@@ -284,6 +284,7 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
     moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
     moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
     
+    AmCharts._formatDate = AmCharts.formatDate;
     AmCharts.formatDate = function(date, format, chart) {
         return moment(date).format(format);
     };
