@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require'], function(angular, require) {
+define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
 mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate'];
@@ -121,6 +121,12 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));
             }
+        },
+        setUser: function(user) {
+            this.user = user;
+            if (user.locale)
+                moment.locale(user.locale);
+            moment.tz.setDefault(user.getTimezone());
         }
     };
     

@@ -58,71 +58,73 @@ function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjec
     };
 
     function link($scope, $element, attrs, ngModel) {
+        
+        $scope.getFormat = function getFormat() {
+            if ($scope.format) return $scope.format;
+            if ($scope.mode === 'date') {
+                return mangoDateFormats.date;
+            } else if ($scope.mode === 'time') {
+                return mangoDateFormats.time;
+            } else {
+                return mangoDateFormats.dateTimeSeconds;
+            }
+        };
+
+        // formatter converts from Date ($modelValue) into String ($viewValue)
+        ngModel.$formatters.push(function(value) {
+            if (angular.isDate(value) || moment.isMoment(value)) {
+                var m = moment(value);
+                if ($scope.timezone) {
+                    m.tz($scope.timezone);
+                }
+                return m.format($scope.getFormat());
+            }
+        });
+
+        // parser converts from String ($viewValue) into Date ($modelValue)
+        ngModel.$parsers.unshift(function(value) {
+            if (typeof value === 'string') {
+                var initialDate = moment(ngModel.$modelValue);
+                var m;
+                if ($scope.timezone) {
+                    initialDate.tz($scope.timezone);
+                    m = moment.tz(value, $scope.getFormat(), true, $scope.timezone);
+                } else {
+                    m = moment(value, $scope.getFormat(), true);
+                }
+                
+                if ($scope.mode === 'date') {
+                    m.hours(initialDate.hours());
+                    m.minutes(initialDate.minutes());
+                    m.seconds(initialDate.seconds());
+                    m.milliseconds(initialDate.milliseconds());
+                } else if ($scope.mode === 'time') {
+                    m.date(initialDate.date());
+                    m.month(initialDate.month());
+                    m.year(initialDate.year());
+                }
+                
+                if (m.isValid())
+                    return m.toDate();
+            }
+        });
+
         if ($injector.has('$mdpDatePicker')) {
             var $mdpDatePicker = $injector.get('$mdpDatePicker');
             var $mdpTimePicker = $injector.get('$mdpTimePicker');
 
-            $scope.getFormat = function getFormat() {
-                if ($scope.format) return $scope.format;
-                if ($scope.mode === 'date') {
-                    return mangoDateFormats.date;
-                } else if ($scope.mode === 'time') {
-                    return mangoDateFormats.time;
-                } else {
-                    return mangoDateFormats.dateTimeSeconds;
-                }
-            };
-
-            // formatter converts from Date ($modelValue) into String ($viewValue)
-            ngModel.$formatters.push(function(value) {
-                if (angular.isDate(value) || moment.isMoment(value)) {
-                    if ($scope.timezone) {
-                        return moment.tz(value, $scope.timezone).format($scope.getFormat());
-                    } else {
-                        return moment(value).format($scope.getFormat());
-                    }
-                }
-            });
-
-            // parser converts from String ($viewValue) into Date ($modelValue)
-            ngModel.$parsers.unshift(function(value) {
-                if (typeof value === 'string') {
-                    var initialDate, m;
-                    if ($scope.timezone) {
-                        initialDate = moment.tz(ngModel.$modelValue, $scope.timezone);
-                        m = moment.tz(value, $scope.getFormat(), true, $scope.timezone);
-                    } else {
-                        initialDate = moment(ngModel.$modelValue);
-                        m = moment(value, $scope.getFormat(), true);
-                    }
-                    
-                    if ($scope.mode === 'date') {
-                        m.hours(initialDate.hours());
-                        m.minutes(initialDate.minutes());
-                        m.seconds(initialDate.seconds());
-                        m.milliseconds(initialDate.milliseconds());
-                    } else if ($scope.mode === 'time') {
-                        m.date(initialDate.date());
-                        m.month(initialDate.month());
-                        m.year(initialDate.year());
-                    }
-                    
-                    if (m.isValid())
-                        return m.toDate();
-                }
-            });
-
             $scope.showPicker = function showPicker(ev) {
                 var autoSwitchTime = angular.isUndefined($scope.autoSwitchTime) ? true : $scope.autoSwitchTime;
                 var initialDate;
+                
                 if ($scope.timezone) {
                     var m = moment(ngModel.$modelValue);
-                    var browserUtcOffset = m.utcOffset();
-                    initialDate = m.tz($scope.timezone).utcOffset(browserUtcOffset, true).toDate();
+                    var defaultMomentOffset = m.utcOffset();
+                    initialDate = m.tz($scope.timezone).utcOffset(defaultMomentOffset, true).toDate();
                 } else {
                     initialDate = ngModel.$modelValue;
                 }
-                
+
                 var promise;
                 if (!$scope.mode || $scope.mode === 'both' || $scope.mode === 'date') {
                     promise = $mdpDatePicker(initialDate, {

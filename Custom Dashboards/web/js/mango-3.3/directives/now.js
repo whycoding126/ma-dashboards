@@ -15,6 +15,7 @@ define(['moment-timezone'], function(moment) {
  * - <a ui-sref="dashboard.examples.basics.clocksAndTimezones">View Demo</a>
  *
  * @param {object} output Variable to hold the output date.
+ * @param {object} browserTimezone set to the browsers timezone (guessed)
  * @param {string} update-interval The date will update on this given interval.
  * @param {string} time-zone The output date will have the given timezone.
  Format the interval duration as a string starting with a number followed by one of these units:
@@ -39,6 +40,7 @@ function now() {
     return {
         scope: {
             output: '=?',
+            browserTimezone: '=?',
             updateInterval: '@',
             timeZone: '@',
             onUpdate: '&'
@@ -47,7 +49,8 @@ function now() {
         controllerAs: '$ctrl',
         bindToController: true,
         controller: ['Util', '$interval', function nowController(Util, $interval) {
-
+            this.browserTimezone = moment.tz.guess();
+            
             this.$onChanges = function(changes) {
                 if (changes.updateInterval) {
                     this.startUpdateTimer();

@@ -240,6 +240,9 @@ maDashboards.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(m
     };
 }]);
 
+maDashboards.constant('MA_DEFAULT_TIMEZONE', '');
+maDashboards.constant('MA_DEFAULT_LOCALE', '');
+
 maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
@@ -254,9 +257,10 @@ maDashboards.run([
     'MA_CHART_TYPES',
     'MA_RELATIVE_DATE_TYPES',
     'MA_DATE_RANGE_PRESETS',
-    'mangoDateFormats',
+    'MA_DEFAULT_TIMEZONE',
+    'MA_DEFAULT_LOCALE',
 function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
-        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, mangoDateFormats) {
+        MA_CHART_TYPES, MA_RELATIVE_DATE_TYPES, MA_DATE_RANGE_PRESETS, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 
@@ -277,7 +281,8 @@ function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_ROLLU
     $rootScope.relativeDateTypes = MA_RELATIVE_DATE_TYPES;
     $rootScope.dateRangePresets = MA_DATE_RANGE_PRESETS;
 
-    moment.locale(window.navigator.languages || window.navigator.language);
+    moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
+    moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
     
     AmCharts.formatDate = function(date, format, chart) {
         return moment(date).format(format);

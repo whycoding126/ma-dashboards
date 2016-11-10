@@ -88,11 +88,11 @@
 				</div>
 			</md-toolbar>
 			<ma-point-statistics point="myPoint" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
-			<ma-statistics-table statistics="statsObj" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-statistics-table>
+			<ma-statistics-table statistics="statsObj"></ma-statistics-table>
 			<br />
 		</md-card>
 		
-		<ma-user-notes-table reference-id="myPoint.id" flex class="dpd-small-card" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-user-notes-table>	
+		<ma-user-notes-table reference-id="myPoint.id" flex class="dpd-small-card"></ma-user-notes-table>	
 	</div>
     
 
@@ -134,6 +134,6 @@
 				</h2>
 			</div>
 		</md-toolbar>
-		<ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-events-table>
+		<ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="$ctrl.dateBar.from" to="$ctrl.dateBar.to""></ma-events-table>
 	</md-card>
 </div>

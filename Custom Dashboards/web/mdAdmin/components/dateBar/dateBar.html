@@ -56,19 +56,19 @@ ng-class="{'three-rows': $ctrl.mdMedia('xs') && ($ctrl.params.preset || $ctrl.st
         <div flex layout layout-align="start center" layout-wrap>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.fromDate"></label>
-            <ma-date-picker name="fromDate" ng-model="$ctrl.params.from" mode="date" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
+            <ma-date-picker name="fromDate" ng-model="$ctrl.params.from" mode="date"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.fromTime"></label>
-            <ma-date-picker name="fromTime" ng-model="$ctrl.params.from" mode="time" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
+            <ma-date-picker name="fromTime" ng-model="$ctrl.params.from" mode="time"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.toDate"></label>
-            <ma-date-picker name="toDate" ng-model="$ctrl.params.to" mode="date" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
+            <ma-date-picker name="toDate" ng-model="$ctrl.params.to" mode="date"></ma-date-picker>
           </md-input-container>
           <md-input-container flex="50">
             <label ma-tr="dashboards.v3.app.toTime"></label>
-            <ma-date-picker name="toTime" ng-model="$ctrl.params.to" mode="time" timezone="{{$ctrl.mdAdminSettings.user.getTimezone()}}"></ma-date-picker>
+            <ma-date-picker name="toTime" ng-model="$ctrl.params.to" mode="time"></ma-date-picker>
           </md-input-container>
         </div>
         

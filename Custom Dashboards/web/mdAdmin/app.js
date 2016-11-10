@@ -37,6 +37,7 @@ loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings'];
 function loadLoginTranslations(Translate, mdAdminSettings) {
     return Translate.loadNamespaces('login').then(function(data) {
         moment.locale((mdAdminSettings.user && mdAdminSettings.user.locale) || data.locale || window.navigator.languages || window.navigator.language);
+        moment.tz.setDefault(mdAdminSettings.user ? mdAdminSettings.user.getTimezone() : moment.tz.guess());
     });
 }
 
@@ -1350,7 +1351,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    mdAdminSettings.user = user;
+                    mdAdminSettings.setUser(user);
                 }, function() {
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
@@ -1366,7 +1367,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
             if (!mdAdminSettings.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
-                    mdAdminSettings.user = user;
+                    mdAdminSettings.setUser(user);
                 });
             }
             break;
