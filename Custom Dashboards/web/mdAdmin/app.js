@@ -232,7 +232,7 @@ mdAdminApp.constant('MENU_ITEMS', [
     },
     {
         name: 'dashboard.dataPointDetails',
-        url: '/data-point-details/{pointXid}',
+        url: '/data-point-details/{pointXid}?pointId',
         template: '<ma-data-point-details></ma-data-point-details>',
         menuTr: 'dashboards.v3.app.dataPointDetails',
         menuIcon: 'timeline',

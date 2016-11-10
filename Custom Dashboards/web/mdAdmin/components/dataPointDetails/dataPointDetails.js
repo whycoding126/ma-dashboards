@@ -75,9 +75,14 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     });
     
     $ctrl.$onInit = function() {
+        
         if ($stateParams.pointXid) {
             // console.log($stateParams.pointXid);
             $ctrl.pointXid = $stateParams.pointXid;
+        }
+        else if ($stateParams.pointId) {
+            // console.log(($stateParams.pointId));
+            $ctrl.pointId = $stateParams.pointId;
         }
         else {
             // Attempt load pointXid from local storage

@@ -545,11 +545,15 @@ table.md-table td.md-cell.medium-column,
 table.md-table th.md-column.medium-column {
 	max-width: 110px;
 }
-
+/* Events Table */
 table.md-table td.md-cell.msg-column,
 table.md-table th.md-column.msg-column {
 	max-width: 380px;
 }
+
+/*table.md-table td.md-cell.msg-column a {
+    border: none;
+}*/
 
 table.md-table.mobile td.md-cell.msg-column,
 table.md-table.mobile th.md-column.msg-column {

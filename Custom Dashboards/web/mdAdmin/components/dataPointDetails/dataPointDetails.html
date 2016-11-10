@@ -13,7 +13,7 @@
 				</div>
 			</md-toolbar>
 			<md-card-content layout="column" layout-align="space-between" flex>
-				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}" ></ma-filtering-point-list>
+				<ma-filtering-point-list ng-model="myPoint" auto-init="true" point-xid="{{$ctrl.pointXid}}" point-id="{{$ctrl.pointId}}"></ma-filtering-point-list>
 				
 				<div layout="row" layout-wrap class="point-details">
 					<div ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" flex="100" layout>
