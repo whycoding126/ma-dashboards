@@ -6,7 +6,7 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-describe('Point values service', function() {
+describe.only('Point values service', function() {
     'use strict';
 
     var MochaUtils = require('../../../../web-test/mocha');
@@ -59,6 +59,36 @@ describe('Point values service', function() {
             assert.equal(pointValues.length, 10);
             angular.forEach(pointValues, function(pointValue) {
                 checkNumericPointValue(pointValue);
+            });
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets latest 10 numeric point values for 3 points', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        return pointValues.getPointValuesForXids(xids, {latest: 10}).then(function(pointValuesByXid) {
+            assert.isObject(pointValuesByXid);
+            for (var i = 0; i < xids.length; i++) {
+                var xid = xids[i];
+                var pointValues = pointValuesByXid[xid];
+                assert.isArray(pointValues);
+                assert.equal(pointValues.length, 10);
+                angular.forEach(pointValues, function(pointValue) {
+                    checkNumericPointValue(pointValue);
+                });
+            }
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets latest 10 numeric point values for 3 points combined into single array', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        return pointValues.getPointValuesForXidsCombined(xids, {latest: 10}).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 10);
+            angular.forEach(pointValues, function(pointValue) {
+                assert.isNumber(pointValue.timestamp);
+                angular.forEach(xids, function(xid) {
+                    assert.isNumber(pointValue[xid]);
+                });
             });
         }, Util.throwHttpError);
     }));
