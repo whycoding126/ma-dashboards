@@ -33,6 +33,7 @@ define(['require'], function(require) {
                         selectedAxis: 'left',
                         selectedColor: '#C2185B',
                         assignColors: false,
+                        chartType: 'smoothedLine',
                         axisColors: { 
                             left2AxisColor: "#FFFFFF",
                             leftAxisColor: "#FFFFFF",

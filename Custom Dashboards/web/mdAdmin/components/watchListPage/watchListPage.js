@@ -69,6 +69,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                     selectedAxis: 'left',
                     selectedColor: '#C2185B',
                     assignColors: false,
+                    chartType: 'smoothedLine',
                     axisColors: { 
                         left2AxisColor: "#FFFFFF",
                         leftAxisColor: "#FFFFFF",

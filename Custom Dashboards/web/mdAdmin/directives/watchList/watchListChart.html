@@ -15,7 +15,7 @@
     <span flex></span>
     <md-input-container  flex="15" flex-xs="30">
         <label ma-tr="dashboards.v3.app.chartType"></label>
-        <md-select ng-model="chartType" ng-init="chartType='smoothedLine'" aria-label="{{'dashboards.v3.app.chartType' | tr}}">
+        <md-select ng-model="chartConfig.chartType" aria-label="{{'dashboards.v3.app.chartType' | tr}}">
             <md-option value="smoothedLine" ma-tr="dashboards.v3.app.smooth"></md-option>
             <md-option value="line" ma-tr="dashboards.v3.app.line"></md-option>
             <md-option value="step" ma-tr="dashboards.v3.app.step"></md-option>
@@ -31,13 +31,13 @@
         <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
         <div class="chart-content" ng-if="points.length">
-            <ma-serial-chart ng-if="chartType!='stacked' && chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            <ma-serial-chart ng-if="chartConfig.chartType!='stacked' && chartConfig.chartType!='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="{{chartConfig.chartType}}" stack-type="none" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
             options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            <ma-serial-chart ng-if="chartConfig.chartType=='stacked'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="column" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
             options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
-            <ma-serial-chart ng-if="chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
+            <ma-serial-chart ng-if="chartConfig.chartType=='area'" default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" default-type="smoothedLine" stack-type="regular" legend="true" balloon="true" export="true" graph-options="chartConfig.graphOptions" 
             options="{valueAxes:[{axisColor:chartConfig.axisColors.leftAxisColor, color:chartConfig.axisColors.leftAxisColor}, {axisColor:chartConfig.axisColors.rightAxisColor, color:chartConfig.axisColors.rightAxisColor}, {axisColor:chartConfig.axisColors.left2AxisColor, color:chartConfig.axisColors.left2AxisColor}, {axisColor:chartConfig.axisColors.right2AxisColor, color:chartConfig.axisColors.right2AxisColor}]}">
             </ma-serial-chart>
         </div>
