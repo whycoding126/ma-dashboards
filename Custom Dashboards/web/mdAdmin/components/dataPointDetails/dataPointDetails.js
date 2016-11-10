@@ -12,7 +12,6 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     var $ctrl = this;
     $ctrl.dateBar = DateBar;
     $ctrl.mdAdminSettings = mdAdminSettings;
-    var timezone = mdAdminSettings.user.getTimezone();
     var pointValueCell = angular.element('div.point-details').find('.point-value');
     var pointTimeCell = angular.element('div.point-details').find('.point-time');
     var timeoutID;

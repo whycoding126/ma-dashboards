@@ -50,7 +50,6 @@ define(['require', 'moment-timezone'], function(require, moment) {
                     
                     var timeoutID;
                     var lastValue;
-                    var timezone = mdAdminSettings.user.getTimezone();
                     
                     var oneDayMs = moment.duration(1, 'day').asMilliseconds();
                     scope.pointValueChanged = function pointValueChanged(point) {

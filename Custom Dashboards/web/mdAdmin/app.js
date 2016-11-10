@@ -1383,10 +1383,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
             $mdToast.show(toast);
         }
     });
-
-    AmCharts.formatDate = function(date, format, chart) {
-       return moment.tz(date, mdAdminSettings.user.getTimezone()).format(format);
-    };
 }]);
 
 // Get an injector for the maServices app and use the JsonStore service to retrieve the
