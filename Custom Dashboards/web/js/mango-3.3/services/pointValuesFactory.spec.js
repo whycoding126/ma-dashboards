@@ -6,7 +6,7 @@
  * Mocha test spec, run "npm test" from the root directory to run test
  */
 
-describe.only('Point values service', function() {
+describe('Point values service', function() {
     'use strict';
 
     var MochaUtils = require('../../../../web-test/mocha');
