@@ -14,9 +14,9 @@ describe.only('Point values service', function() {
     var pointValues, Util;
     var runDigestAfter = mochaUtils.getRunDigestAfter();
 
+    this.timeout(10000);
+
     before('Load maServices module', function(done) {
-        this.timeout(5000);
-        
         requirejs(['mango-3.3/maServices'], function(maServices) {
             angular.module('mochaTestModule', ['maServices', 'ngMockE2E'])
                 .constant('mangoBaseUrl', mochaUtils.config.url)
@@ -108,6 +108,46 @@ describe.only('Point values service', function() {
         }, Util.throwHttpError);
     }));
     
+    it('gets last 5 minutes of numeric point values for 3 points', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXids(xids, {
+            from: from,
+            to: to
+        }).then(function(pointValuesByXid) {
+            assert.isObject(pointValuesByXid);
+            for (var i = 0; i < xids.length; i++) {
+                var xid = xids[i];
+                var pointValues = pointValuesByXid[xid];
+                assert.isArray(pointValues);
+                assert(pointValues.length >= 59 && pointValues.length <= 60, 'should return 59-60 point values'); // 5 second polling rate
+                angular.forEach(pointValues, function(pointValue) {
+                    checkNumericPointValue(pointValue);
+                });
+            }
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets last 5 minutes of numeric point values for 3 points combined into single array', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXidsCombined(xids, {
+            from: from,
+            to: to
+        }).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert(pointValues.length >= 59 && pointValues.length <= 60, 'should return 59-60 point values'); // 5 second polling rate
+            angular.forEach(pointValues, function(pointValue) {
+                assert.isNumber(pointValue.timestamp);
+                angular.forEach(xids, function(xid) {
+                    assert.isNumber(pointValue[xid]);
+                });
+            });
+        }, Util.throwHttpError);
+    }));
+    
     it('gets last 5 minutes of numeric point values, rollup to 1 minute averages', runDigestAfter(function() {
         var to = new Date();
         to = new Date(to.valueOf() - to.valueOf() % 60000 + 1);
@@ -123,6 +163,54 @@ describe.only('Point values service', function() {
             angular.forEach(pointValues, function(pointValue) {
                 checkNumericPointValue(pointValue);
                 assert.equal(pointValue.timestamp % 60000, 0);
+            });
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets last 5 minutes of numeric point values for 3 points, rollup to 1 minute averages', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        to = new Date(to.valueOf() - to.valueOf() % 60000 + 1);
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXids(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 minutes'
+        }).then(function(pointValuesByXid) {
+            assert.isObject(pointValuesByXid);
+            for (var i = 0; i < xids.length; i++) {
+                var xid = xids[i];
+                var pointValues = pointValuesByXid[xid];
+                assert.isArray(pointValues);
+                assert.equal(pointValues.length, 6);
+                angular.forEach(pointValues, function(pointValue) {
+                    checkNumericPointValue(pointValue);
+                    assert.equal(pointValue.timestamp % 60000, 0);
+                });
+            }
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets last 5 minutes of numeric point values for 3 points combined into single array, rollup to 1 minute averages', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        to = new Date(to.valueOf() - to.valueOf() % 60000 + 1);
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXidsCombined(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 minutes'
+        }).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 6);
+            angular.forEach(pointValues, function(pointValue) {
+                assert.isNumber(pointValue.timestamp);
+                assert.equal(pointValue.timestamp % 60000, 0);
+                angular.forEach(xids, function(xid) {
+                    assert.isNumber(pointValue[xid]);
+                });
             });
         }, Util.throwHttpError);
     }));
@@ -143,6 +231,54 @@ describe.only('Point values service', function() {
             angular.forEach(pointValues, function(pointValue) {
                 checkNumericPointValue(pointValue);
                 assert.equal(pointValue.timestamp % 60000, 0);
+            });
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets last 5 minutes of numeric point values for 3 points, rollup to 1 minute averages, exact minute boundaries', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        to = new Date(to.valueOf() - to.valueOf() % 60000);
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXids(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 minutes'
+        }).then(function(pointValuesByXid) {
+            assert.isObject(pointValuesByXid);
+            for (var i = 0; i < xids.length; i++) {
+                var xid = xids[i];
+                var pointValues = pointValuesByXid[xid];
+                assert.isArray(pointValues);
+                assert.equal(pointValues.length, 5);
+                angular.forEach(pointValues, function(pointValue) {
+                    checkNumericPointValue(pointValue);
+                    assert.equal(pointValue.timestamp % 60000, 0);
+                });
+            }
+        }, Util.throwHttpError);
+    }));
+    
+    it('gets last 5 minutes of numeric point values for 3 points combined into single array, rollup to 1 minute averages, exact minute boundaries', runDigestAfter(function() {
+        var xids = ['DP_355369', 'DP_368591', 'DP_241169'];
+        var to = new Date();
+        to = new Date(to.valueOf() - to.valueOf() % 60000);
+        var from = new Date(to.valueOf() - 5 * 60 * 1000);
+        return pointValues.getPointValuesForXidsCombined(xids, {
+            from: from,
+            to: to,
+            rollup: 'AVERAGE',
+            rollupInterval: '1 minutes'
+        }).then(function(pointValues) {
+            assert.isArray(pointValues);
+            assert.equal(pointValues.length, 5);
+            angular.forEach(pointValues, function(pointValue) {
+                assert.isNumber(pointValue.timestamp);
+                assert.equal(pointValue.timestamp % 60000, 0);
+                angular.forEach(xids, function(xid) {
+                    assert.isNumber(pointValue[xid]);
+                });
             });
         }, Util.throwHttpError);
     }));
