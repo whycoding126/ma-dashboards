@@ -156,6 +156,14 @@ var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, W
                 }
                 
                 $ctrl.resetForm();
+                
+				$mdDialog.show(
+				      $mdDialog.alert()
+				      .clickOutsideToClose(true)
+				      .title(Translate.trSync('dashboards.v3.app.watchListSaved'))
+				      .textContent(wl.name + ' ' + Translate.trSync('dashboards.v3.app.saved'))
+				      .ok(Translate.trSync('common.ok'))
+				);
             });
         }
     };

@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
-function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar) {
+watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
+function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -237,7 +237,15 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             $state.go('dashboard.settings.watchListBuilder', {watchList: this.watchList});
         }
         else {
-            this.watchList.$update();
+            this.watchList.$update().then(function(wl) {
+                $mdDialog.show(
+    				  $mdDialog.alert()
+    				  .clickOutsideToClose(true)
+    				  .title(Translate.trSync('dashboards.v3.app.watchListSaved'))
+    				  .textContent(wl.name + ' ' + Translate.trSync('dashboards.v3.app.saved'))
+    				  .ok(Translate.trSync('common.ok'))
+    			);
+            });
         }
     };
 }
