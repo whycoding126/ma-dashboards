@@ -1195,13 +1195,14 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
     User.cachedUser = mdAdminSettings.user;
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        event.preventDefault();
         if (error && (error === 'No user' || error.status === 401 || error.status === 403)) {
-            event.preventDefault();
             $state.loginRedirectUrl = $state.href(toState, toParams);
             $state.go('login');
+        } else if (error && error.status === 404 && error.config && error.config.url.indexOf('/rest/v1/translations/public/login') >= 0) {
+            $rootScope.noApi = true;
         } else {
             console.log(error);
-            //$state.go('dashboard.home');
         }
     });
 

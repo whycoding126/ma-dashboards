@@ -991,3 +991,10 @@ img.live-value {
   max-height: 300px;
   max-width: 300px;
 }
+
+.missing-module {
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
+  font-size: 1.5em;
+}
