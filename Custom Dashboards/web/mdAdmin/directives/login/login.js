@@ -11,7 +11,7 @@ var login = function($state, User, $rootScope, $window, mdAdminSettings) {
         templateUrl: require.toUrl('./login.html'),
         scope: {},
         link: function($scope, $element, attrs) {
-            $scope.currentUser = mdAdminSettings.user;
+            $scope.mdAdminSettings = mdAdminSettings;
             $scope.errors = {};
             
             $scope.$watchGroup(['username', 'password'], function() {

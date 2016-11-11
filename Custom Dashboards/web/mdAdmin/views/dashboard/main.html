@@ -2,7 +2,7 @@
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-print
         md-is-locked-open="navLockedOpen" md-swipe-left="closeMenu()" class="navigation-menu">
     <md-toolbar class="md-tall md-primary md-hue-1 dashboard-sidebar-header md-whiteframe-glow-z1">
-      <ma-now update-interval="1 MINUTES" output="currentTime" time-zone="{{mdAdminSettings.user.getTimezone()}}"></ma-now>
+      <ma-now update-interval="1 MINUTES" output="currentTime"></ma-now>
       <div flex layout="row">
         <img ng-src="{{mdAdminSettings.logoSrc}}" ma-tr="header.dashboards.v3.dox.heading">
         <div flex layout="column" layout-align="start end" class="dashboard-user-datetime">

@@ -85,30 +85,38 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             url: '/rest/v1/users/current',
             timeout: this.interval / 2
         }).then(function(response) {
-            // cache control header is not present on startup
-            if (response.headers('Cache-Control')) {
-                return LOGGED_IN;
+            var startupState = response.headers('Mango-Startup-State');
+            var startupProgress = response.headers('Mango-Startup-Progress');
+            
+            if (!startupState && !startupProgress) {
+                return {state: LOGGED_IN};
             }
-            // mango returns standard startup page response to OPTIONS request when starting
-            return STARTING_UP;
+            return {
+                state: STARTING_UP,
+                info: {
+                    startupState: startupState,
+                    startupProgress: startupProgress
+                }
+            };
         }, function(response) {
             if (response.status < 0) {
-                return API_DOWN;
+                return {state: API_DOWN};
             } else if (response.status === 403) {
-                return API_UP;
+                return {state: API_UP};
             } else {
-                return API_ERROR;
+                return {state: API_ERROR, info:{responseStatus: response.status}};
             }
         }).then(this.setStatus.bind(this));
     };
     
-    MangoWatchdog.prototype.setStatus = function(status) {
+    MangoWatchdog.prototype.setStatus = function setStatus(pingResult) {
         var previous = {
             status: this.status,
             apiUp: this.apiUp,
-            loggedIn: this.loggedIn
+            loggedIn: this.loggedIn,
+            info: this.info
         };
-        switch(status) {
+        switch(pingResult.state) {
         case STARTING_UP:
         case API_ERROR:
         case API_DOWN:
@@ -132,12 +140,14 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
             break;
         }
 
-        this.status = status;
+        this.status = pingResult.state;
+        this.info = pingResult.info;
         
         var current = {
             status: this.status,
             apiUp: this.apiUp,
-            loggedIn: this.loggedIn
+            loggedIn: this.loggedIn,
+            info: this.info
         };
         
         $rootScope.$broadcast('mangoWatchdog', current, previous);
