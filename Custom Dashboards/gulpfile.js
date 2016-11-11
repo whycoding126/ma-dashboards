@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var exists = require('path-exists').sync;
 var gulpIgnore = require('gulp-ignore');
+var concat = require('gulp-concat');
+var merge = require('merge-stream');
 
 var plugins = require("gulp-load-plugins")({
     pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
@@ -74,4 +76,45 @@ gulp.task('copy-docs', ['build-ngdocs'], function() {
 gulp.task('watchDocs', function() {
     // Watch .js files
     gulp.watch('web/js/mango-3.3/**/*.js', ['copy-docs']);
+});
+
+gulp.task('build-amcharts', function() {
+    var amchart = gulp.src([
+        'utils/Class.js',
+        'utils/Utils.js',
+        'axes/AxisBase.js',
+        'axes/ValueAxis.js',
+        'axes/RecAxis.js',
+        'axes/RecItem.js',
+        'axes/RecFill.js',
+        'chartClasses/AmChart.js',
+        'chartClasses/AmGraph.js',
+        'chartClasses/ChartCursor.js',
+        'chartClasses/SimpleChartScrollbar.js',
+        'chartClasses/ChartScrollbar.js',
+        'chartClasses/AmBalloon.js',
+        'chartClasses/AmCoordinateChart.js',
+        'chartClasses/TrendLine.js',
+        'chartClasses/Image.js',
+        'geom/Geom.js',
+        'geom/Bezier.js',
+        'drawingEngine/AmDraw.js',
+        'drawingEngine/AmDObject.js',
+        'drawingEngine/VMLRenderer.js',
+        'drawingEngine/SVGRenderer.js',
+        'AmLegend.js',
+        'utils/DateUtils.js'],
+        {cwd: 'bower_components/amcharts'})
+    .pipe(concat('amcharts.js'));
+    
+    var serial = gulp.src([
+        'chartClasses/AmRectangularChart.js',
+        'AmSerialChart.js',
+        'geom/Cuboid.js',
+        'axes/CategoryAxis.js'],
+        {cwd: 'bower_components/amcharts'})
+    .pipe(concat('serial.js'));
+    
+    return merge(amchart, serial)
+        .pipe(gulp.dest('web/vendor/amcharts'));
 });
