@@ -26,7 +26,7 @@ define(['amcharts/pie', 'jquery'], function(AmCharts, $) {
  * @param {object=} value-labels For use with the multi state data point render map. (see [multi-state pie chart demo](/modules/dashboards/web/mdAdmin/#/dashboard/examples/statistics/state-pie-chart))
  *
  * @usage
- * <ma-pie-chart style="height: 300px; width: 600px" values="[ { "value": 30, "text": "hot", "color": "#ff9300" }, { "value": 70, "text": "cold", "color": "#942192" } ]"
+ * <ma-pie-chart style="height: 300px; width: 600px" values="[ { value: 30, text: 'hot', color: '#ff9300' }, { value: 70, text: 'cold', color: '#942192' } ]"
  options="{depth3D:15,angle:30}"></ma-pie-chart>
  *
  */
