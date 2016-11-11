@@ -127,7 +127,8 @@ function PointHierarchyFactory($resource, Point) {
             url: '/rest/v1/hierarchy/full',
             isArray: false,
             withCredentials: true,
-            cache: true
+            cache: true,
+            timeout: 60000
     	},
         byPath: {
             method: 'GET',
