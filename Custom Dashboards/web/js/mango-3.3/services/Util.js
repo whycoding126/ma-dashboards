@@ -423,7 +423,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
                 result = {intervals: 1, units: 'WEEKS'};
 			}
 			else {
-                result = {intervals: 24, units: 'HOURS'};
+                result = {intervals: 1, units: 'DAYS'};
 			}
 		}
 		else if (duration > 15721200001 && duration <= 31622400001) {
@@ -432,7 +432,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
                 result = {intervals: 2, units: 'WEEKS'};
 			}
 			else {
-                result = {intervals: 48, units: 'HOURS'};
+                result = {intervals: 2, units: 'DAYS'};
 			}
 		}
 		else if (duration > 31622400001) {
@@ -441,10 +441,10 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
                 result = {intervals: 1, units: 'MONTHS'};
 			}
 			else {
-                result = {intervals: 96, units: 'HOURS'};
+                result = {intervals: 4, units: 'DAYS'};
 			}
 		}
-		// console.log(rollupInterval);
+		// console.log(result);
 		
 		if (asObject) {
 		    return result;
