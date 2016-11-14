@@ -10,7 +10,7 @@ var pageEditor = function(Page, jsonStoreEventManager, CUSTOM_USER_PAGES_XID, Us
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
-        scope: {},
+        scope: true,
         templateUrl: require.toUrl('./pageEditor.html'),
         link: function($scope, $element) {
             $scope.user = mdAdminSettings.user;

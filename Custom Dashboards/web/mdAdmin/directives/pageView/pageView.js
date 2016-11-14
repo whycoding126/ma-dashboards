@@ -11,19 +11,16 @@ function pageView (Page, jsonStoreEventManager, User, mdAdminSettings) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
-        scope: {
-            xid: '@'
-        },
+        scope: true,
         templateUrl: require.toUrl('./pageView.html'),
-        link: function($scope, $element) {
+        link: function($scope, $element, $attrs) {
             $scope.user = mdAdminSettings.user;
-            
-            Page.loadPage($scope.xid).then(function(page) {
+            Page.loadPage($attrs.xid).then(function(page) {
                 $scope.page = page;
                 $scope.markup = page.jsonData.markup;
             });
 
-            jsonStoreEventManager.smartSubscribe($scope, $scope.xid, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
+            jsonStoreEventManager.smartSubscribe($scope, $attrs.xid, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
                 $scope.markup = payload.object.jsonData.markup;
             });
         }
