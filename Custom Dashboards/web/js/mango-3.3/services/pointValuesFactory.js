@@ -167,6 +167,7 @@ function pointValuesFactory($http, $q, Util) {
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
+            params.push('timezone=' + encodeURIComponent(options.timezone || moment().tz()));
             
             if (angular.isString(options.rollup) && options.rollup !== 'NONE') {
                 params.push('rollup=' + encodeURIComponent(options.rollup));

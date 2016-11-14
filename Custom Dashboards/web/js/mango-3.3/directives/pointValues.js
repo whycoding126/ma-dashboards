@@ -78,7 +78,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             rendered: '@',
             dateFormat: '@',
             timeout: '=',
-            autoRollupInterval: '=?'
+            autoRollupInterval: '=?',
+            timezone: '@'
         },
         link: function ($scope, $element, attrs) {
             var pendingRequest = null;
@@ -370,7 +371,8 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         rollup: $scope.rollup,
                         rendered: $scope.rendered,
                         rollupInterval: $scope.actualRollupInterval,
-                        timeout: $scope.timeout
+                        timeout: $scope.timeout,
+                        timezone: $scope.timezone
                     };
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
