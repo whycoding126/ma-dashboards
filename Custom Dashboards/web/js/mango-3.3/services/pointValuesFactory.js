@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require', 'angular'], function(require, angular) {
+define(['require', 'angular', 'moment-timezone'], function(require, angular, moment) {
 'use strict';
 
 pointValuesFactory.$inject = ['$http', '$q', 'Util'];
@@ -167,7 +167,9 @@ function pointValuesFactory($http, $q, Util) {
 
             params.push('from=' + encodeURIComponent(from.toISOString()));
             params.push('to=' + encodeURIComponent(to.toISOString()));
-            params.push('timezone=' + encodeURIComponent(options.timezone || moment().tz()));
+            var timezone = options.timezone || moment().tz();
+            if (timezone)
+                params.push('timezone=' + encodeURIComponent());
             
             if (angular.isString(options.rollup) && options.rollup !== 'NONE') {
                 params.push('rollup=' + encodeURIComponent(options.rollup));
