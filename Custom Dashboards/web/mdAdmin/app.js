@@ -278,6 +278,20 @@ mdAdminApp.constant('MENU_ITEMS', [
 
     },
     {
+        url: '/reports',
+        name: 'dashboard.reports',
+        template: '<iframe-view src="/reports.shtm"></iframe-view>',
+        menuTr: 'header.reports',
+        menuIcon: 'book'
+    },
+    {
+        url: '/excel-reports',
+        name: 'dashboard.excelReports',
+        template: '<iframe-view src="/excel-reports.shtm"></iframe-view>',
+        menuTr: 'header.excelreports',
+        menuIcon: 'grid_on'
+    },
+    {
         name: 'dashboard.help',
         url: '/help',
         menuTr: 'header.help',
@@ -540,14 +554,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 template: '<iframe-view src="/point_hierarchy.shtm"></iframe-view>',
                 menuTr: 'header.pointHierarchy',
                 menuIcon: 'folder',
-                permission: 'superadmin'
-            },
-            {
-                url: '/reports',
-                name: 'dashboard.settings.reports',
-                template: '<iframe-view src="/reports.shtm"></iframe-view>',
-                menuTr: 'header.reports',
-                menuIcon: 'book',
                 permission: 'superadmin'
             },
             {

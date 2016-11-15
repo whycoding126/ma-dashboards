@@ -38,7 +38,7 @@ var iframeView = function() {
                     
                     if (link.host === window.location.host) {
                         link.removeAttribute('target');
-                        if (href) {
+                        if (href && href.indexOf('#') !== 0) {
                             link.setAttribute('href', addParams(href));
                         }
                     } else {
