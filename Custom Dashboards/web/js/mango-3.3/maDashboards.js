@@ -43,13 +43,15 @@ define(['./maServices',
         './directives/eventsTable',
         './filters/trFilter',
         'angular',
-        'require'
+        'require',
+        'amcharts/amcharts',
+        'moment-timezone'
 ], function(maServices, maFilters, pointList, filteringPointList, pointValue, pointValues, pointStatistics,
         tankLevel, gaugeChart, serialChart, pieChart, clock, stateChart, copyBlurred, tr,
         datePicker, dateRangePicker, statisticsTable, startsAndRuntimesTable, setPointValue, switchImg, calc,
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList, deviceNameList,
-        dataSourceQuery, deviceNameQuery, eventsTable, trFilter, angular, require) {
+        dataSourceQuery, deviceNameQuery, eventsTable, trFilter, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -103,12 +105,31 @@ maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
 
+maDashboards.factory('MA_AMCHARTS_DATE_FORMATS', ['mangoDateFormats', function(mangoDateFormats) {
+    return {
+        categoryAxis: [
+            {period: 'fff', format: mangoDateFormats.timeSeconds},
+            {period: 'ss', format: mangoDateFormats.timeSeconds},
+            {period: 'mm', format: mangoDateFormats.time},
+            {period: 'hh', format: mangoDateFormats.time},
+            {period: 'DD', format: mangoDateFormats.monthDay},
+            {period: 'WW', format: mangoDateFormats.monthDay},
+            {period: 'MM', format: mangoDateFormats.monthDay},
+            {period: 'YYYY', format: mangoDateFormats.year}
+        ],
+        categoryBalloon: mangoDateFormats.shortDateTimeSeconds
+    };
+}]);
+
+maDashboards.constant('MA_DEFAULT_TIMEZONE', '');
+maDashboards.constant('MA_DEFAULT_LOCALE', '');
+
 maDashboards.config(['$httpProvider', function($httpProvider) {
 	$httpProvider.interceptors.push('mangoHttpInterceptor');
 }]);
 
-maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssInjector',
-                  function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector) {
+maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssInjector', 'MA_DEFAULT_TIMEZONE', 'MA_DEFAULT_LOCALE',
+                  function($rootScope, mangoWatchdog, maDashboardsInsertCss, cssInjector, MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 	$rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
 
@@ -206,6 +227,57 @@ maDashboards.run(['$rootScope', 'mangoWatchdog', 'maDashboardsInsertCss', 'cssIn
         {type: "PREVIOUS_MONTH", label: 'Previous month'},
         {type: "PREVIOUS_YEAR", label: 'Previous year'}
     ];
+    
+    moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
+    moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
+    
+    AmCharts._formatDate = AmCharts.formatDate;
+    AmCharts.formatDate = function(date, format, chart) {
+        return moment(date).format(format);
+    };
+    
+    AmCharts._resetDateToMin = AmCharts.resetDateToMin;
+    AmCharts.resetDateToMin = function(date, period, count, firstDateOfWeek) {
+        var m = moment(date);
+        switch(period) {
+        case 'YYYY':
+            m.year(roundDownToNearestX(m.year(), count));
+            m.startOf('year');
+            break;
+        case 'MM':
+            m.month(roundDownToNearestX(m.month(), count));
+            m.startOf('month');
+            break;
+        case 'WW':
+            m.week(roundDownToNearestX(m.week(), count));
+            m.startOf('week');
+            break;
+        case 'DD':
+            //m.date(roundDownToNearestX(m.date(), count));
+            m.startOf('day');
+            break;
+        case 'hh':
+            m.hour(roundDownToNearestX(m.hour(), count));
+            m.startOf('hour');
+            break;
+        case 'mm':
+            m.minute(roundDownToNearestX(m.minute(), count));
+            m.startOf('minute');
+            break;
+        case 'ss':
+            m.second(roundDownToNearestX(m.second(), count));
+            m.startOf('second');
+            break;
+        case 'fff':
+            m.millisecond(roundDownToNearestX(m.millisecond(), count));
+            break;
+        }
+        return m.toDate();
+
+        function roundDownToNearestX(a,x) {
+            return a - a % x;
+        }
+    };
 }]);
 
 return maDashboards;

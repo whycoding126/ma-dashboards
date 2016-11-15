@@ -45,7 +45,8 @@ define(['amcharts/serial', 'jquery', 'moment', 'amcharts/plugins/export/export']
 </ma-serial-chart>`
  *
  */
-function serialChart(maDashboardsInsertCss, cssInjector) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -107,7 +108,10 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
             }
             
             if ($scope.balloon) {
-                options.chartCursor = {categoryBalloonDateFormat:'YYYY-MM-DD HH:NN', oneBalloonOnly: true};
+                options.chartCursor = {
+                    categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
+                    oneBalloonOnly: true
+                };
             }
 
             var valueArray = !!attrs.values;
@@ -331,61 +335,61 @@ function serialChart(maDashboardsInsertCss, cssInjector) {
             	return true;
             }
         }
-}
+    
+    function defaultLineGraph() {
+        return {
+            fillAlphas: 0,
+            lineAlpha: 0.8,
+            lineThickness: 2.0
+        };
+    }
 
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector'];
+    function defaultColumnGraph() {
+        return {
+            fillAlphas: 0.8,
+            lineAlpha: 0.9,
+            lineThickness: 1
+        };
+    }
 
-function defaultLineGraph() {
-    return {
-        fillAlphas: 0,
-        lineAlpha: 0.8,
-        lineThickness: 2.0
-    };
-}
+    function defaultOptions() {
+        return {
+            type: "serial",
+            theme: "light",
+            addClassNames: true,
+            dataProvider: [],
+            valueAxes: [{
+                id: "left",
+                position: "left"
+            },{
+                id: "right",
+                position: "right"
+            },{
+                id: "left-2",
+                position: "left",
+                offset: 50
+            },{
+                id: "right-2",
+                position: "right",
+                offset: 50
+            }],
+            categoryAxis: {
+                parseDates: true,
+                minPeriod: 'fff',
+                equalSpacing: true,
+                dateFormats: MA_AMCHARTS_DATE_FORMATS.categoryAxis
+            },
+            startDuration: 0,
+            graphs: [],
+            plotAreaFillAlphas: 0.0,
+            categoryField: "timestamp",
+            'export': {
+                enabled: false,
+                libs: {autoLoad: false}
+            }
+        };
+    }
 
-function defaultColumnGraph() {
-    return {
-        fillAlphas: 0.8,
-        lineAlpha: 0.9,
-        lineThickness: 1
-    };
-}
-
-function defaultOptions() {
-    return {
-        type: "serial",
-        theme: "light",
-        addClassNames: true,
-        dataProvider: [],
-        valueAxes: [{
-        	id: "left",
-            position: "left"
-        },{
-        	id: "right",
-            position: "right"
-        },{
-        	id: "left-2",
-            position: "left",
-            offset: 50
-        },{
-        	id: "right-2",
-            position: "right",
-            offset: 50
-        }],
-        categoryAxis: {
-            parseDates: true,
-            minPeriod: 'fff',
-            equalSpacing: true
-        },
-        startDuration: 0,
-        graphs: [],
-        plotAreaFillAlphas: 0.0,
-        categoryField: "timestamp",
-        'export': {
-            enabled: false,
-            libs: {autoLoad: false}
-        }
-    };
 }
 
 return serialChart;

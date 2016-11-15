@@ -11,11 +11,12 @@ define([
     './services/Page',
     './directives/pageView/pageView',
     './directives/liveEditor/livePreview',
+    'moment-timezone',
     'angular-ui-router',
     'oclazyload',
     'angular-loading-bar',
     './views/docs/docs-setup'
-], function(angular, maMaterialDashboards, maAppComponents, require, Page, pageView, livePreview) {
+], function(angular, maMaterialDashboards, maAppComponents, require, Page, pageView, livePreview, moment) {
 'use strict';
 
 var mdAdminApp = angular.module('mdAdminApp', [
@@ -26,6 +27,14 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'maAppComponents',
     'ngMessages'
 ]);
+
+loadLoginTranslations.$inject = ['Translate', 'MD_ADMIN_SETTINGS'];
+function loadLoginTranslations(Translate, MD_ADMIN_SETTINGS) {
+    return Translate.loadNamespaces('login').then(function(data) {
+        moment.locale((MD_ADMIN_SETTINGS.user && MD_ADMIN_SETTINGS.user.locale) || data.locale || window.navigator.languages || window.navigator.language);
+        moment.tz.setDefault(MD_ADMIN_SETTINGS.user ? MD_ADMIN_SETTINGS.user.getTimezone() : moment.tz.guess());
+    });
+}
 
 mdAdminApp.factory('Page', Page)
     .directive('pageView', pageView)
@@ -57,9 +66,7 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 
                 if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
                     menuItem.resolve = {
-                        loginTranslations: ['Translate', function(Translate) {
-                            return Translate.loadNamespaces('login');
-                        }]
+                        loginTranslations: loadLoginTranslations
                     }
                 }
 
@@ -96,8 +103,9 @@ mdAdminApp.constant('MENU_ITEMS', [
                 if (!MD_ADMIN_SETTINGS.user) {
                     throw 'No user';
                 }
-                return Translate.loadNamespaces(['dashboards', 'common', 'login']);
+                return Translate.loadNamespaces(['dashboards', 'common']);
             }],
+            loginTranslations: loadLoginTranslations,
             loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                 return rQ(['./services/Menu',
                            './services/MenuEditor',
@@ -155,9 +163,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                     $ocLazyLoad.inject('login');
                 });
             }],
-            loginTranslations: ['Translate', function(Translate) {
-                return Translate.loadNamespaces('login');
-            }]
+            loginTranslations: loadLoginTranslations
         }
     },
     {
