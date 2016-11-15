@@ -9,7 +9,7 @@ define([
     './directives/menu/menuLink',
     './directives/menu/menuToggle',
     './directives/login/login',
-    'mango-3.3/maMaterialDashboards', // load mango-3.2 angular modules
+    'mango-3.3/maMaterialDashboards', // load mango-3.3 angular modules
     'mango-3.3/maAppComponents',
     'angular-ui-router', // load external angular modules
     'angular-loading-bar'
@@ -360,7 +360,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    mdAdminSettings.setUser(user);
+                    MD_ADMIN_SETTINGS.user = user;
+                    if (user.locale)
+                        moment.locale(user.locale);
+                    moment.tz.setDefault(user.getTimezone());
                 }, function() {
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
@@ -378,7 +381,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             if (!mdAdminSettings.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
-                    mdAdminSettings.setUser(user);
+                    MD_ADMIN_SETTINGS.user = user;
+                    if (user.locale)
+                        moment.locale(user.locale);
+                    moment.tz.setDefault(user.getTimezone());
                 });
             }
             break;
