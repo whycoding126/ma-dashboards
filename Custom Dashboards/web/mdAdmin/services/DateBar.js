@@ -20,7 +20,8 @@ function DateBarFactory(localStorageService) {
         updateIntervalPeriod: 'MINUTES',
         autoUpdate: true,
         expanded: false,
-        rollupTypesFilter: {}
+        rollupTypesFilter: {},
+        rollupTypesFilterLast: {}
     };
     
     function DateBar() {
@@ -74,7 +75,19 @@ function DateBarFactory(localStorageService) {
             this.save();
         },
         set rollupTypesFilter(value) {
+            
+            // Track last known rollupTypesFilter and update rollupTypesFilter if it changes
+            if (!angular.equals(value, this.data.rollupTypesFilterLast)) {
+                if (value.nonNumeric) {
+                    this.data.rollupType = 'NONE';
+                }
+                else {
+                    this.data.rollupType = 'AVERAGE';
+                }
+            }
+            
             this.data.rollupTypesFilter = value;
+            this.data.rollupTypesFilterLast = value;
             this.save();
         },
         set from(value) {

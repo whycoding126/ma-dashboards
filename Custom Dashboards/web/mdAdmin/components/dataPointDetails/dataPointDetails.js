@@ -48,7 +48,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
     
     $scope.$watch('myPoint.xid', function(newValue, oldValue) {
         if (newValue === undefined || newValue === oldValue) return;
-        //console.log('New point selected:', newValue);
+        // console.log('New point selected:', newValue);
         $state.go('.', {pointXid: newValue}, {location: 'replace', notify: false});
         
         localStorageService.set('lastDataPointDetailsItem', {
@@ -66,11 +66,9 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
         var pointType = $scope.myPoint.pointLocator.dataType;
         if (pointType==='BINARY' || pointType==='MULTISTATE' || pointType==='ALPHANUMERIC' || pointType==='IMAGE') {
             $ctrl.dateBar.rollupTypesFilter = {nonNumeric: true};
-            $ctrl.dateBar.rollupType = 'NONE';
         }
         else {
             $ctrl.dateBar.rollupTypesFilter = {};
-            $ctrl.dateBar.rollupType = 'AVERAGE';
         }
     });
     
