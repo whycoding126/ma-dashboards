@@ -13,6 +13,14 @@
 * Add dashboard settings page where user can set theme colors and set logo.
 * Add help pages for the new pages
 
+*Version 3.3.0*
+* Release date 2016-11-15
+* Upgraded to work with core version 2.8.x
+
+*Version 3.2.4*
+* Release date 2016-11-07
+* Fix connectivity tracking / auto-reconnect on standalone dashboards
+
 *Version 3.2.3*
 * Release date 2016-10-10 (not released to store)
 * Fix bug where states that are not descendants of dashboard would not load
