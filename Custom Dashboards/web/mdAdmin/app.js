@@ -635,6 +635,12 @@ mdAdminApp.constant('MENU_ITEMS', [
                         templateUrl: 'views/examples/watchdog.html',
                         url: '/watchdog',
                         menuTr: 'dashboards.v3.dox.watchdog'
+                    },
+                    {
+                        name: 'dashboard.examples.utilities.eventsTable',
+                        templateUrl: 'views/examples/eventsTable.html',
+                        url: '/events-table',
+                        menuTr: 'dashboards.v3.dox.eventsTable'
                     }
                 ]
             }
