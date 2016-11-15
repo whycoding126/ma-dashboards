@@ -56,7 +56,8 @@ require.config({
         'jquery': vendor + '/jquery/jquery',
         'mdPickers': vendor + '/mdPickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
-        'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage'
+        'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
+        'rql': vendor + '/rql'
     },
     shim : {
         'angular-route' : {
@@ -106,16 +107,6 @@ require.config({
         },
         'angular-material-data-table': {
             deps: ['angular', 'angular-material']
-        },
-        'amcharts/plugins/export/export': {
-            deps: ['amcharts/amcharts',
-                   'amcharts/plugins/export/libs/blob.js/blob',
-                   'amcharts/plugins/export/libs/fabric.js/fabric.min',
-                   'amcharts/plugins/export/libs/FileSaver.js/FileSaver.min',
-                   'amcharts/plugins/export/libs/jszip/jszip.min',
-                   'amcharts/plugins/export/libs/pdfmake/pdfmake.min',
-                   'amcharts/plugins/export/libs/pdfmake/vfs_fonts',
-                   'amcharts/plugins/export/libs/xlsx/xlsx.min']
         }
     }
 });

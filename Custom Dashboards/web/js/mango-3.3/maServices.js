@@ -17,11 +17,15 @@ define(['./services/Point',
         './services/cssInjector',
         './services/DataSource',
         './services/DeviceName',
+        './services/UserNotes',
+        './services/eventsEventManagerFactory',
+        './services/events',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
-        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory, angular) {
+        JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
+        UserNotes, eventsEventManagerFactory, events, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -49,6 +53,9 @@ maServices.factory('EventManager', EventManager);
 maServices.factory('cssInjector', cssInjector);
 maServices.factory('DataSource', DataSourceFactory);
 maServices.factory('DeviceName', DeviceNameFactory);
+maServices.factory('UserNotes', UserNotes);
+maServices.factory('eventsEventManager', eventsEventManagerFactory);
+maServices.factory('Events', events);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);
