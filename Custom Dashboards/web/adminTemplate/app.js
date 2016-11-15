@@ -330,53 +330,59 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         var message;
         var hideDelay = 0; // dont auto hide message
 
-        if (current.status === previous.status)
+        if (current.status !== 'STARTING_UP' && current.status === previous.status)
             return;
-        
+
         switch(current.status) {
         case 'API_DOWN':
             message = Translate.trSync('login.dashboards.v3.app.apiDown');
-            ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
             break;
         case 'STARTING_UP':
-            message = Translate.trSync('login.dashboards.v3.app.startingUp');
-            ADMIN_SETTINGS.user = null;
+            if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress
+                    && current.info.startupState === previous.info.startupState) {
+                return;
+            }
+            message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
+            mdAdminSettings.user = null;
             break;
         case 'API_ERROR':
             message = Translate.trSync('login.dashboards.v3.app.returningErrors');
-            ADMIN_SETTINGS.user = null;
+            mdAdminSettings.user = null;
             break;
         case 'API_UP':
-            if (previous.status && previous.status !== 'LOGGED_IN')
+            if (previous.status && previous.status !== 'LOGGED_IN') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
-            hideDelay = 5000;
-            ADMIN_SETTINGS.user = null;
+                hideDelay = 5000;
+            }
+            mdAdminSettings.user = null;
 
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    ADMIN_SETTINGS.user = user;
-                    $rootScope.user = user;
+                    mdAdminSettings.setUser(user);
                 }, function() {
                     // redirect to the login page if auto-login fails
-                    window.location = $state.href('login');
+                    $state.loginRedirectUrl = '/dashboards' + $location.url();
+                    $state.go('login');
+                    //window.location = $state.href('login');
                 });
             }
             break;
         case 'LOGGED_IN':
             // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
-            if (previous.status && previous.status !== 'API_UP')
+            if (previous.status && previous.status !== 'API_UP') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
-            if (!ADMIN_SETTINGS.user) {
+                hideDelay = 5000;
+            }
+            if (!mdAdminSettings.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
-                    ADMIN_SETTINGS.user = user;
-                    $rootScope.user = user;
+                    mdAdminSettings.setUser(user);
                 });
             }
             break;
         }
-        $rootScope.user = ADMIN_SETTINGS.user;
 
         if (message) {
             var toast = $mdToast.simple()
@@ -388,8 +394,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
             $mdToast.show(toast);
         }
     });
-
-
 }]);
 
 // get an injector to retrieve the User service
