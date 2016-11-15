@@ -43,8 +43,8 @@ define(['angular', 'require', 'rql/query', 'moment-timezone'], function(angular,
  * <!-- Example For Restricting Events to those Related to a Data Point -->
  * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
  */
-eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$mdMedia', '$injector', '$sce', 'mangoDateFormats'];
-function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce, mangoDateFormats) {
+eventsTable.$inject = ['Events', 'eventsEventManager', 'UserNotes', '$mdMedia', '$injector', '$sce', 'mangoDefaultDateFormat'];
+function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector, $sce, mangoDefaultDateFormat) {
     return {
         restrict: 'E',
         scope: {
@@ -85,7 +85,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 if ($scope.timezone) {
                     m.tz($scope.timezone);
                 }
-                return m.format(mangoDateFormats.shortDateTimeSeconds);
+                return m.format(mangoDefaultDateFormat);
             };
             
             // Acknowledge single event

@@ -104,6 +104,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maDashboards.maEventsTable",
+      "shortName": "maDashboards.maEventsTable",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-events-table&gt;&lt;/ma-events-table&gt;",
+      "keywords": "ability acknowledge acknowledged active active-status activetimestamp alarm alarm-level alarmlevel allows api attribute attributes booleans button column critical dashboard data data_point data_source date-filter defaults demo directive display displays event event-id event-type events eventstable example examples explained false filter filtering filters format fromtime includes initial level life_safety limit list literals madashboards maeventstable matching message mypoint names negative normal nortn note numbers pagination pass point point-id precede property query quotes range raw restricting return reverse set single single-point sort sorting specific status string system table time timestamp timestamps timezone totime true turn type ui-sref urgent usage utilities values variable wrapped"
+    },
+    {
+      "section": "api",
       "id": "maDashboards.maFilteringPointList",
       "shortName": "maDashboards.maFilteringPointList",
       "type": "directive",
@@ -401,6 +410,24 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maServices.Events",
+      "shortName": "maServices.Events",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides a service for retrieving, adding, and acknowledging events/alarms",
+      "keywords": "$resource acknowledge acknowledged acknowledges acknowledgeviarql acknowledging action actions active adding alarm api array build call class cooresponding count counts dashboard default delete docs endpoint equal event events find getactivesummary http list madashboards maeventstable maservices matching method number object objects objquery parameter passed passing post property provided query querying remove resource rest retrieving returns rql save service set single string successful type ui-sref values"
+    },
+    {
+      "section": "api",
+      "id": "maServices.eventsEventManager",
+      "shortName": "maServices.eventsEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides an EventManager factory pointing to the events websocket at &#39;/rest/v1/websocket/events&#39;",
+      "keywords": "api dashboard docs eventmanager events eventseventmanager factory maservices methods pointing service ui-sref websocket"
+    },
+    {
+      "section": "api",
       "id": "maServices.JsonStore",
       "shortName": "maServices.JsonStore",
       "type": "service",
@@ -488,6 +515,15 @@ NG_DOCS={
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of users from the Mango system, as well as logging users in and out.",
       "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts availble call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
+    },
+    {
+      "section": "api",
+      "id": "maServices.UserNotes",
+      "shortName": "maServices.UserNotes",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides a service for retrieving and adding user notes",
+      "keywords": "$resource action actions adding api array call class dashboard default delete docs endpoint http madashboards maservices matching mausernotestable method note notes object objects post property provided query querying remove resource rest retrieving returns save service string ui-sref user usernotes"
     },
     {
       "section": "api",

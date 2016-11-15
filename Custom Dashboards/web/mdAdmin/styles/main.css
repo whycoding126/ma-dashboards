@@ -606,3 +606,27 @@ md-input-container .hint {
 .logged-out img.live-value {
 	background-color: rgba(255, 0, 0, 0.2);
 }
+
+
+/* Alarm Flags */
+.alarm-flag.ALL {
+    color: #000000;
+}
+.alarm-flag.NONE {
+    color: #9E9E9E;
+}
+.alarm-flag.INFORMATION {
+    color: #00BCD4;
+}
+.alarm-flag.URGENT {
+    color: #FDD835;
+}
+.alarm-flag.CRITICAL {
+    color: #FF9800;
+}
+.alarm-flag.LIFE_SAFETY {
+    color: #F44336;
+}
+.acknowledged-checkbox {
+    color: #8BC34A;
+}
