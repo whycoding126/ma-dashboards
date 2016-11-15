@@ -336,7 +336,7 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
         switch(current.status) {
         case 'API_DOWN':
             message = Translate.trSync('login.dashboards.v3.app.apiDown');
-            MD_ADMIN_SETTINGS.user = null;
+            ADMIN_SETTINGS.user = null;
             break;
         case 'STARTING_UP':
             if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress
@@ -344,23 +344,23 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                 return;
             }
             message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
-            MD_ADMIN_SETTINGS.user = null;
+            ADMIN_SETTINGS.user = null;
             break;
         case 'API_ERROR':
             message = Translate.trSync('login.dashboards.v3.app.returningErrors');
-            MD_ADMIN_SETTINGS.user = null;
+            ADMIN_SETTINGS.user = null;
             break;
         case 'API_UP':
             if (previous.status && previous.status !== 'LOGGED_IN') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
             }
-            MD_ADMIN_SETTINGS.user = null;
+            ADMIN_SETTINGS.user = null;
 
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
                 User.autoLogin().then(function(user) {
-                    MD_ADMIN_SETTINGS.user = user;
+                    ADMIN_SETTINGS.user = user;
                     if (user.locale)
                         moment.locale(user.locale);
                     moment.tz.setDefault(user.getTimezone());
@@ -378,10 +378,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia, $mdColo
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
             }
-            if (!MD_ADMIN_SETTINGS.user) {
+            if (!ADMIN_SETTINGS.user) {
                 // user logged in elsewhere
                 User.current().$promise.then(function(user) {
-                    MD_ADMIN_SETTINGS.user = user;
+                    ADMIN_SETTINGS.user = user;
                     if (user.locale)
                         moment.locale(user.locale);
                     moment.tz.setDefault(user.getTimezone());
