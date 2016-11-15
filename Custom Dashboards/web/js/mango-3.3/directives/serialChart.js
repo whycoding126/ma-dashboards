@@ -65,7 +65,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         defaultAxis: '@',
         defaultBalloonText: '@',
         defaultGraphOptions: '<?',
-        'export': '<?',
+        export: '<?',
         balloon: '<?',
         legend: '<?'
 	};
