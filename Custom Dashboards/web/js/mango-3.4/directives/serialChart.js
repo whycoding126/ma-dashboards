@@ -144,7 +144,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if (valueArray) {
         	$scope.$watchCollection('values', watchValues);
         	$scope.$watchCollection('points', watchPointsAndGraphs);
-            $scope.$watchCollection('graphOptions', watchPointsAndGraphs);
+            $scope.$watch('graphOptions', watchPointsAndGraphs, true);
         }
         
         for (var i = 1; i <= MAX_SERIES; i++) {

@@ -34,6 +34,13 @@ define(['require'], function(require) {
                         selectedColor: '#C2185B',
                         assignColors: false,
                         chartType: 'smoothedLine',
+                        stackType: {
+                            selected: 'none',
+                            left: 'none',
+                            right: 'none',
+                            'left-2': 'none',
+                            'right-2': 'none'
+                        },
                         axisColors: { 
                             left2AxisColor: "#FFFFFF",
                             leftAxisColor: "#FFFFFF",
@@ -43,6 +50,36 @@ define(['require'], function(require) {
                     };
                 };
                 
+                scope.$watch('chartConfig.stackType.selected', function(newValue, oldValue) {
+                    if (newValue === undefined || newValue === oldValue) return;
+                    // console.log('stackType Updated:', newValue, scope.chartConfig.selectedAxis);
+                    
+                    scope.chartConfig.stackType[scope.chartConfig.selectedAxis] = newValue;
+
+                    console.log(scope.chartConfig);
+                });
+
+                scope.$watch('chartConfig.chartType', function(newValue, oldValue) {
+                    if (newValue === undefined || newValue === oldValue) return;
+                    console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
+                    
+                    scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === scope.chartConfig.selectedAxis}).forEach(function(obj) {obj.type = newValue});
+
+                    console.log(scope.chartConfig);
+                });
+
+                scope.$watch('chartConfig.selectedAxis', function(newValue, oldValue) {
+                    if (newValue === undefined || newValue === oldValue) return;
+                    console.log('selectedAxis Updated:', newValue);
+                    
+                    // Set stackType control to that matching axis selected
+                    scope.chartConfig.stackType.selected = scope.chartConfig.stackType[newValue];
+
+                    // Set chartType control to that matching axis selected
+                    scope.chartConfig.chartType =  scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0].type;
+
+                    console.log(scope.chartConfig);
+                });
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
                     if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
@@ -66,6 +103,8 @@ define(['require'], function(require) {
                     if ( (oldValues === undefined && newValues.length >= 0 && !xidExists) || (newValues.length > oldValues.length && !xidExists) ) {
                         var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
                         
+                        graphOption.type = scope.chartConfig.chartType;
+
                         if (scope.chartConfig.assignColors) {
                             graphOption.lineColor = scope.chartConfig.selectedColor;
                         }
@@ -82,7 +121,7 @@ define(['require'], function(require) {
                         // console.log('Removed', removedXid, 'at index', removedIndex);
                     }
 
-                    // console.log('Graph Options', scope.chartConfig.graphOptions);
+                    console.log('Graph Options', scope.chartConfig.graphOptions);
                 });
 
             } // End Link
