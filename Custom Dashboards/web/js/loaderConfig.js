@@ -42,6 +42,7 @@ requirejs.config({
         'mango-3.1' : module + '/js/mango-3.1',
         'mango-3.2' : module + '/js/mango-3.2',
         'mango-3.3' : module + '/js/mango-3.3',
+        'mango-3.4' : module + '/js/mango-3.4',
         'mdAdmin' : module + '/mdAdmin',
         'angular' : vendor + '/angular/angular',
         'angular-route' : vendor + '/angular-route/angular-route',
