@@ -24,6 +24,7 @@ function pointHierarchySelect($injector) {
             points: '<?',
             subfolders: '<?',
             subfoldersOnly: '<?',
+            maxDepth: '<?',
             nameMatches: '@?',
             replaceName: '@?',
             uniqueNames: '<?',
@@ -40,8 +41,8 @@ function pointHierarchyController($attrs, PointHierarchy) {
     };
     
     this.doQuery = function doQuery() {
-        var subfoldersOnly = !!this.subfoldersOnly;
-        var subfolders = subfoldersOnly || (angular.isUndefined($attrs.subfolders) ? true : !!this.subfolders);
+        var subfoldersOnly = angular.isUndefined($attrs.subfoldersOnly) ? true : !!this.subfoldersOnly;
+        var subfolders = angular.isUndefined($attrs.subfolders) ? this.maxDepth == null || this.maxDepth > 0 : !!this.subfolders;
         var getPoints = angular.isUndefined($attrs.points) ? true : !!this.points;
         
         var path;
@@ -61,8 +62,8 @@ function pointHierarchyController($attrs, PointHierarchy) {
         this.displayProp = this.replaceName ? 'replacedName' : 'name';
         
         this.queryPromise = hierarchy.$promise.then(function(folder) {
-            PointHierarchy.walkHierarchy(folder, function(subFolder) {
-                if (subfoldersOnly && subFolder === folder) return;
+            PointHierarchy.walkHierarchy(folder, function(subFolder, parent, index, depth) {
+                if ((subfoldersOnly && subFolder === folder) || (this.maxDepth != null && depth > this.maxDepth)) return;
                 if (matcher) {
                     subFolder.matches = matcher.exec(subFolder.name);
                     if (this.replaceName && subFolder.matches) {

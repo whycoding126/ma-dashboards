@@ -175,11 +175,12 @@ function PointHierarchyFactory($resource, Point) {
         return Point.query({rqlQuery: ptQuery.toString()}).$promise;
     };
 
-    PointHierarchy.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
-        fn(folder, parent, index);
+    PointHierarchy.walkHierarchy = function walkHierarchy(folder, fn, parent, index, depth) {
+        depth = depth || 0;
+        fn(folder, parent, index, depth);
         if (folder.subfolders) {
             for (var i = 0; i < folder.subfolders.length; i++) {
-                this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+                this.walkHierarchy(folder.subfolders[i], fn, folder, i, depth + 1);
             }
         }
     };

@@ -129,6 +129,10 @@
         <md-checkbox ng-model="param.options.uniqueNames"><span ma-tr="dashboards.v3.app.uniqueNames"></span></md-checkbox>
         <md-checkbox ng-model="param.options.multiple"><span ma-tr="dashboards.v3.app.selectMultiple"></span></md-checkbox>
         <md-checkbox ng-model="param.options.subfoldersOnly"><span ma-tr="dashboards.v3.app.subFoldersOnly"></span></md-checkbox>
+        <md-input-container>
+          <label ma-tr="dashboards.v3.app.maxDepth"></label>
+          <input ng-model="param.options.maxDepth" type="number" min="0">
+        </md-input-container>
       </div>
     </div>
   </div>
