@@ -70,6 +70,13 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                     selectedColor: '#C2185B',
                     assignColors: false,
                     chartType: 'smoothedLine',
+                    stackType: {
+                        selected: 'none',
+                        left: 'none',
+                        right: 'none',
+                        'left-2': 'none',
+                        'right-2': 'none'
+                    },
                     axisColors: { 
                         left2AxisColor: "#FFFFFF",
                         leftAxisColor: "#FFFFFF",

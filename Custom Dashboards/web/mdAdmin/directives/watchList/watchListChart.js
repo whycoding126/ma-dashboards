@@ -56,29 +56,30 @@ define(['require'], function(require) {
                     
                     scope.chartConfig.stackType[scope.chartConfig.selectedAxis] = newValue;
 
-                    console.log(scope.chartConfig);
+                    // console.log(scope.chartConfig);
                 });
 
                 scope.$watch('chartConfig.chartType', function(newValue, oldValue) {
                     if (newValue === undefined || newValue === oldValue) return;
-                    console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
+                    // console.log('chartType Updated:', newValue, scope.chartConfig.selectedAxis);
                     
                     scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === scope.chartConfig.selectedAxis}).forEach(function(obj) {obj.type = newValue});
 
-                    console.log(scope.chartConfig);
+                    // console.log(scope.chartConfig);
                 });
 
                 scope.$watch('chartConfig.selectedAxis', function(newValue, oldValue) {
                     if (newValue === undefined || newValue === oldValue) return;
-                    console.log('selectedAxis Updated:', newValue);
+                    // console.log('selectedAxis Updated:', newValue);
                     
                     // Set stackType control to that matching axis selected
-                    scope.chartConfig.stackType.selected = scope.chartConfig.stackType[newValue];
+                    scope.chartConfig.stackType.selected = scope.chartConfig.stackType ? scope.chartConfig.stackType[newValue] : 'none';
 
                     // Set chartType control to that matching axis selected
-                    scope.chartConfig.chartType =  scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0].type;
+                    var selectedAxisGraphOption = scope.chartConfig.graphOptions.filter(function(obj) {return obj.valueAxis === newValue})[0];
+                    scope.chartConfig.chartType = selectedAxisGraphOption ? selectedAxisGraphOption.type : 'smoothedLine';
 
-                    console.log(scope.chartConfig);
+                    // console.log(scope.chartConfig);
                 });
 
                 scope.$watchCollection('addChecked', function(newValues, oldValues) {
@@ -121,7 +122,7 @@ define(['require'], function(require) {
                         // console.log('Removed', removedXid, 'at index', removedIndex);
                     }
 
-                    console.log('Graph Options', scope.chartConfig.graphOptions);
+                    // console.log('Graph Options', scope.chartConfig.graphOptions);
                 });
 
             } // End Link
