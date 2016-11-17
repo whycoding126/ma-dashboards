@@ -3,7 +3,7 @@
  * @author Jared Wiltshire
  */
 
-define(['require'], function(require) {
+define(['require', 'rql/query'], function(require, query) {
 'use strict';
 /**
  * @ngdoc directive
@@ -61,6 +61,11 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                 }
                 
             }
+            
+            $scope.clearClicked = function() {
+                $scope.selectedItem = null;
+                $element.find('input').focus();
+            };
 
             var change = $parse(attrs.ngChange);
             $scope.changed = function() {
@@ -74,21 +79,36 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                     $scope.ngModel = selectedItem;
                 }
             };
-            
-            $scope.validateText = function(searchText) {
-                // console.log(searchText);
-            };
 
-            $scope.querySearch = function(queryStr) {
-                //queryStr = queryStr || '';
-                var query = queryStr ? 'or(name=like=*' + queryStr +'*,deviceName=like=*' + queryStr + '*)&' : '';
-                if (attrs.query) {
-                    query += attrs.query;
-                } else {
-                    query += 'sort(deviceName,name)&limit(' + ($scope.limit || 150) +')';
+            $scope.querySearch = function(inputText) {
+                var rqlQuery, queryString;
+                
+                if (inputText) {
+                    rqlQuery = new query.Query();
+                    var nameLike = new query.Query({name: 'like', args: ['name', '*' + inputText + '*']});
+                    var deviceName = new query.Query({name: 'like', args: ['deviceName', '*' + inputText + '*']});
+                    rqlQuery.push(nameLike);
+                    rqlQuery.push(deviceName);
+                    rqlQuery.name = 'or';
                 }
+
+                if (attrs.query) {
+                    if (rqlQuery) {
+                        queryString = rqlQuery.toString()
+                    }
+                    queryString =+ attrs.query;
+                } else {
+                    var q = new query.Query();
+                    if (rqlQuery)
+                        q.push(rqlQuery);
+
+                    queryString = q.sort('deviceName', 'name')
+                        .limit($scope.limit || 150)
+                        .toString();
+                }
+                
                 return Point.rql({
-                    query: query
+                    rqlQuery: queryString
                 }).$promise.then(null, function() {
                     return [];
                 });
