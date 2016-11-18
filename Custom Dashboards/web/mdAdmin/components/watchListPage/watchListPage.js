@@ -120,6 +120,27 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                 .sort('name')
                 .limit(200);
 
+            this.chartConfig = {
+                    graphOptions: [],
+                    selectedAxis: 'left',
+                    selectedColor: '#C2185B',
+                    assignColors: false,
+                    chartType: 'smoothedLine',
+                    stackType: {
+                        selected: 'none',
+                        left: 'none',
+                        right: 'none',
+                        'left-2': 'none',
+                        'right-2': 'none'
+                    },
+                    axisColors: { 
+                        left2AxisColor: "#FFFFFF",
+                        leftAxisColor: "#FFFFFF",
+                        right2AxisColor: "#FFFFFF",
+                        rightAxisColor: "#FFFFFF"
+                    }
+                };
+
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
@@ -151,6 +172,27 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                 .sort('name')
                 .limit(200);
 
+            this.chartConfig = {
+                    graphOptions: [],
+                    selectedAxis: 'left',
+                    selectedColor: '#C2185B',
+                    assignColors: false,
+                    chartType: 'smoothedLine',
+                    stackType: {
+                        selected: 'none',
+                        left: 'none',
+                        right: 'none',
+                        'left-2': 'none',
+                        'right-2': 'none'
+                    },
+                    axisColors: { 
+                        left2AxisColor: "#FFFFFF",
+                        leftAxisColor: "#FFFFFF",
+                        right2AxisColor: "#FFFFFF",
+                        rightAxisColor: "#FFFFFF"
+                    }
+                };
+            
             var watchList = new WatchList();
             watchList.isNew = true;
             watchList.type = 'query';
@@ -185,6 +227,28 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             watchList.$getPoints();
             this.watchList = watchList;
             $stateParams.hierarchyFolderId = this.hierarchyFolders[0].id;
+
+            this.chartConfig = {
+                    graphOptions: [],
+                    selectedAxis: 'left',
+                    selectedColor: '#C2185B',
+                    assignColors: false,
+                    chartType: 'smoothedLine',
+                    stackType: {
+                        selected: 'none',
+                        left: 'none',
+                        right: 'none',
+                        'left-2': 'none',
+                        'right-2': 'none'
+                    },
+                    axisColors: { 
+                        left2AxisColor: "#FFFFFF",
+                        leftAxisColor: "#FFFFFF",
+                        right2AxisColor: "#FFFFFF",
+                        rightAxisColor: "#FFFFFF"
+                    }
+                };
+            
             
             if (this.hierarchyFolders[0].id != null) {
                 localStorageService.set('watchListPage', {
