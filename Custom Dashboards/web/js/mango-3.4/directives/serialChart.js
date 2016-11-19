@@ -131,6 +131,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	$.extend(true, chart, newValue);
         	chart.validateNow();
             checkForAxisColors();
+            watchPointsAndGraphs($scope.graphOptions);
         }, true);
 
         $scope.$watchGroup([
@@ -319,9 +320,13 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
             var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
             if (angular.isUndefined(opts.fillAlphas)) {
                 opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
-                var firstAxis = options.valueAxes[0];
-                if (opts.valueAxis === 'left' && firstAxis && firstAxis.id === 'left' && firstAxis.stackType && firstAxis.stackType !== 'none') {
-                    opts.fillAlphas = 0.7;
+
+                var isStacked = options.valueAxes.some(function(obj) {
+                    return obj.id === opts.valueAxis && obj.stackType !== 'none';
+                });
+
+                if(isStacked) {
+                    opts.fillAlphas = 0.7
                 }
             }
             if (angular.isUndefined(opts.lineThickness)) {
