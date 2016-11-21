@@ -273,13 +273,9 @@ ma-badge {
     font-weight: bold;
 }
 
-ma-filtering-point-list {
-  position: relative;
-}
-
-ma-filtering-point-list > .md-button.md-icon-button {
-  position: absolute;
-  bottom: 14px;
-  right: 0;
+md-autocomplete[md-floating-label] .md-button.md-icon-button {
   margin: 0;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
 }

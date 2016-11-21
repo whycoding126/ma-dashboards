@@ -9,7 +9,8 @@
   md-floating-label="{{'dashboards.v3.app.searchBy' | tr:'points':'name or device'}}"
   md-delay="500"
   md-select-on-focus="true"
-  md-escape-options="none">
+  md-escape-options="none"
+  ma-clearable>
 
     <md-item-template>
       <span md-highlight-text="searchText" md-highlight-flags="gi">{{pointLabel(item)}}</span>
@@ -20,5 +21,3 @@
     </md-not-found>
 
 </md-autocomplete>
-
-<md-button ng-if="searchText" class="md-icon-button" ng-click="clearClicked()" aria-label="{{'dashboards.v3.app.clear' | tr}}"><md-icon>clear</md-icon></md-button>

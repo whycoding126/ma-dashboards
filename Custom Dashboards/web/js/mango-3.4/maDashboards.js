@@ -50,6 +50,7 @@ define(['./maServices',
         './directives/emptyInput',
         './directives/watchListList',
         './directives/pointHierarchySelect',
+        './directives/clearable',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -68,9 +69,9 @@ define(['./maServices',
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
-        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, queryBuilder, queryGroup,
-        queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters, imageSlider,
-        trFilter, angular, require, AmCharts, moment) {
+        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
+        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters,
+        imageSlider, trFilter, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -129,6 +130,7 @@ maDashboards.directive('maEmptyInput', emptyInput);
 maDashboards.directive('maWatchListSelect', watchListSelect);
 maDashboards.directive('maWatchListList', watchListList);
 maDashboards.directive('maPointHierarchySelect', pointHierarchySelect);
+maDashboards.directive('maClearable', clearable);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);

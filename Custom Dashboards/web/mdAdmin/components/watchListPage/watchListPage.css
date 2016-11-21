@@ -48,8 +48,8 @@
   border: 0;
 }
 
-.watchlist-main .parameter-inputs md-input-container {
-  margin-bottom: 0;
+ma-watch-list-page ma-watch-list-parameters.md-padding {
+  padding-bottom: 0;
 }
 
 /* Chart Component */

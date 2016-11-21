@@ -61,11 +61,6 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
                 }
                 
             }
-            
-            $scope.clearClicked = function() {
-                $scope.selectedItem = null;
-                $element.find('input').focus();
-            };
 
             var change = $parse(attrs.ngChange);
             $scope.changed = function() {
