@@ -1,0 +1,23 @@
+<md-autocomplete
+  md-selected-item-change="onChange()"
+  md-selected-item="ngModel"
+  md-search-text="contains"
+  md-items="deviceName in queryDeviceNames()"
+  md-item-text="deviceName"
+  md-no-cache="true"
+  md-min-length="0"
+  md-floating-label="{{labelText}}"
+  md-delay="500"
+  md-select-on-focus="true"
+  md-escape-options="none"
+  ma-clearable>
+
+    <md-item-template>
+      <span md-highlight-text="contains" md-highlight-flags="gi">{{deviceName}}</span>
+    </md-item-template>
+
+    <md-not-found>
+      <span ma-tr="dashboards.v3.app.notFound"></span>
+    </md-not-found>
+
+</md-autocomplete>

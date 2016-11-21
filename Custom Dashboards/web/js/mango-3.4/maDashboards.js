@@ -51,6 +51,7 @@ define(['./maServices',
         './directives/watchListList',
         './directives/pointHierarchySelect',
         './directives/clearable',
+        './directives/filteringDeviceNameList',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -70,6 +71,7 @@ define(['./maServices',
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
+        filteringDeviceNameList,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters,
         imageSlider, trFilter, angular, require, AmCharts, moment) {
 'use strict';
@@ -131,6 +133,7 @@ maDashboards.directive('maWatchListSelect', watchListSelect);
 maDashboards.directive('maWatchListList', watchListList);
 maDashboards.directive('maPointHierarchySelect', pointHierarchySelect);
 maDashboards.directive('maClearable', clearable);
+maDashboards.directive('maFilteringDeviceNameList', filteringDeviceNameList);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);

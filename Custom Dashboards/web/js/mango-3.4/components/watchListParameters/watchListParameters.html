@@ -53,7 +53,7 @@
     <ma-date-picker ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
         mode="{{param.options.mode}}" format="{{param.options.format}}"></ma-date-picker>
   </md-input-container>
-  <md-input-container ng-if="param.type === 'deviceName'" flex>
+  <md-input-container ng-if="param.type === 'deviceName' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
@@ -62,6 +62,12 @@
         auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
         contains="$ctrl.interpolateOption(param.options.contains)" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
+  <ma-filtering-device-name-list ng-if="param.type === 'deviceName' && param.options.filtering" flex
+      ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+      auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
+      contains="$ctrl.interpolateOption(param.options.contains)"
+      label-text="param.label">
+  </ma-filtering-device-name-list>
   <md-input-container ng-if="param.type === 'dataSource'" flex>
     <label ng-bind="param.label"></label>
     <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"

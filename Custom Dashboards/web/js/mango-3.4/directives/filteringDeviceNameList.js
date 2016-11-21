@@ -33,38 +33,29 @@ define(['angular', 'require'], function(angular, require) {
     </md-input-container>
  *
  */
-deviceNameList.$inject = ['DeviceName', '$injector'];
-function deviceNameList(DeviceName, $injector) {
+filteringDeviceNameList.$inject = ['$injector', '$timeout', 'DeviceName'];
+function filteringDeviceNameList($injector, $timeout, DeviceName) {
     return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
             ngModel: '=',
+            ngModelOptions: '<?',
+            ngChange: '&?',
             // attributes that start with data- have the prefix stripped
             dataSourceId: '<?sourceId',
             dataSourceXid: '<?sourceXid',
-            contains: '<?',
             autoInit: '<?',
-            showClear: '<?'
+            labelText: '<'
         },
-        templateUrl: function(element, attrs) {
-          if ($injector.has('mdSelectDirective') || $injector.has('mdAutocompleteDirective')) {
-            return require.toUrl('./devicenameList-md.html');
-          }
-          return require.toUrl('./devicenameList.html');
-        },
-        replace: true,
-        link: function ($scope, $element, attrs) {
-            if (angular.isUndefined($scope.autoInit)) {
-                $scope.autoInit = true;
-            }
-
-            var promise;
-            $scope.onOpen = function onOpen() {
-                return promise;
-            }
-
-            $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
+        templateUrl: require.toUrl('./filteringDeviceNameList.html'),
+        replace: false,
+        link: function($scope, $element, $attrs) {
+            $scope.onChange = function() {
+                $timeout($scope.ngChange, 0);
+            };
+            
+            $scope.queryDeviceNames = function() {
                 var queryResult;
                 if (!angular.isUndefined($scope.dataSourceId)) {
                     queryResult = DeviceName.byDataSourceId({id: $scope.dataSourceId, contains: $scope.contains});
@@ -74,18 +65,19 @@ function deviceNameList(DeviceName, $injector) {
                     queryResult = DeviceName.query({contains: $scope.contains});
                 }
 
-                $scope.deviceNames = [];
-                promise = queryResult.$promise.then(function(deviceNames) {
-                    $scope.deviceNames = deviceNames;
+                return queryResult.$promise.then(function(deviceNames) {
                     if (!$scope.ngModel && $scope.autoInit && deviceNames.length) {
                         $scope.ngModel = deviceNames[0];
                     }
+                    return deviceNames;
                 });
-            });
+            };
+            
+            if ($scope.autoInit)
+                $scope.queryDeviceNames();
         }
     };
 }
-
-return deviceNameList;
+return filteringDeviceNameList;
 
 }); // define
