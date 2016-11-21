@@ -22,7 +22,7 @@
       md-selected-item-change="$ctrl.inputChanged()"
       md-selected-item="$ctrl.parameters[param.name]"
       md-search-text="searchText"
-      md-items="option in param.options.options"
+      md-items="option in param.options.options | filter:{'$': searchText}"
       md-item-text="option.label || option.value"
       md-no-cache="true"
       md-min-length="0"
