@@ -14,7 +14,7 @@ function clearable($compile) {
         scope: false,
         link: function ($scope, $element, $attrs, $mdAutocompleteCtrl) {
             var wrapElement = $element.find('md-autocomplete-wrap');
-            var template = '<md-button ng-if="(maClearable || maClearable==undefined) && $mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.isDisabled" class="md-icon-button" ng-click="$mdAutocompleteCtrl.clear($event)" aria-label="{{\'dashboards.v3.app.clear\' | tr}}"><md-icon>clear</md-icon></md-button>';
+            var template = '<button ng-if="(maClearable || maClearable==undefined) && $mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.isDisabled" ng-click="$mdAutocompleteCtrl.clear($event)" aria-label="{{\'dashboards.v3.app.clear\' | tr}}"><md-icon>clear</md-icon></button>';
             
             var buttonScope = $scope.$new(false);
             buttonScope.$mdAutocompleteCtrl = $mdAutocompleteCtrl;

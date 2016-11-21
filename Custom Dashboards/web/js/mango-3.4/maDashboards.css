@@ -273,9 +273,10 @@ ma-badge {
     font-weight: bold;
 }
 
-md-autocomplete[md-floating-label] .md-button.md-icon-button {
+md-autocomplete[md-floating-label][ma-clearable] button {
   margin: 0;
-  top: 50%;
+  position: absolute;
+  top: 19px;
   bottom: auto;
-  transform: translateY(-50%);
+  right: 0;
 }
