@@ -22,7 +22,7 @@ function clearable($compile, $timeout) {
                 $element.find('input').focus();
                 $timeout(function() {
                     $mdAutocompleteCtrl.scope.searchText = '';
-                },0)
+                }, 0);
             }
             
             var buttonElement = $compile(template)(buttonScope);

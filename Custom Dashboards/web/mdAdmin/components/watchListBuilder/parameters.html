@@ -100,7 +100,7 @@
         </md-input-container>
         <md-input-container>
           <label ma-tr="dashboards.v3.app.nameContains"></label>
-          <input ng-model="param.options.contains">
+          <input ng-model="param.options.contains" ng-disabled="param.options.filtering">
         </md-input-container>
         <md-checkbox ng-model="param.options.filtering"><span ma-tr="dashboards.v3.app.filteringSelect"></span></md-checkbox>
         <md-checkbox ng-model="param.options.multiple"><span ma-tr="dashboards.v3.app.selectMultiple"></span></md-checkbox>
@@ -114,6 +114,7 @@
           <label ma-tr="dashboards.v3.app.nameIsLike"></label>
           <input ng-model="param.options.nameIsLike">
         </md-input-container>
+        <md-checkbox ng-model="param.options.filtering"><span ma-tr="dashboards.v3.app.filteringSelect"></span></md-checkbox>
       </div>
       <div ng-if="param.type === 'pointHierarchy'" layout="row" layout-align="end center">
         <md-input-container>

@@ -64,17 +64,21 @@
   </md-input-container>
   <ma-filtering-device-name-list ng-if="param.type === 'deviceName' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false" show-clear="true" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
-      contains="$ctrl.interpolateOption(param.options.contains)"
+      auto-init="false" data-source-xid="$ctrl.interpolateOption(param.options.dataSourceXid)"
       label-text="param.label">
   </ma-filtering-device-name-list>
-  <md-input-container ng-if="param.type === 'dataSource'" flex>
+  <md-input-container ng-if="param.type === 'dataSource' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         auto-init="false" show-clear="true"
         query="$ctrl.createDsQuery(param.options)">
     </ma-data-source-list>
   </md-input-container>
+  <ma-filtering-data-source-list ng-if="param.type === 'dataSource' && param.options.filtering" flex
+      ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+      auto-init="false" query="$ctrl.createDsQuery(param.options)"
+      label-text="param.label">
+  </ma-filtering-data-source-list>
   <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
     <label ng-bind="param.label"></label>
     <ma-point-hierarchy-select ng-if="!param.options.multiple" show-clear="true"

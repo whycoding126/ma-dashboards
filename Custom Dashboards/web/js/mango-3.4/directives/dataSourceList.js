@@ -39,11 +39,11 @@ function dataSourceList(DataSource, $injector) {
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            autoInit: '=?',
-            query: '=',
-            start: '=',
-            limit: '=',
-            sort: '=',
+            autoInit: '<?',
+            query: '<?',
+            start: '<?',
+            limit: '<?',
+            sort: '<?',
             showClear: '<?'
         },
         template: function(element, attrs) {
@@ -81,7 +81,7 @@ function dataSourceList(DataSource, $injector) {
                 promise.then(function(dataSources) {
                     $scope.dataSources = dataSources;
 
-                    if (!$scope.ngModel && $scope.autoInit && !$scope.ngModel && $scope.dataSources.length) {
+                    if (!$scope.ngModel && $scope.autoInit && $scope.dataSources.length) {
                         $scope.ngModel = $scope.dataSources[0];
                     }
                 });

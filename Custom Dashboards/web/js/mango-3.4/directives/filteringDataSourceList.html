@@ -2,8 +2,8 @@
   md-selected-item-change="onChange()"
   md-selected-item="ngModel"
   md-search-text="searchText"
-  md-items="deviceName in queryDeviceNames()"
-  md-item-text="deviceName"
+  md-items="dataSource in queryDataSources()"
+  md-item-text="dataSource.name"
   md-no-cache="true"
   md-min-length="0"
   md-floating-label="{{labelText}}"
@@ -13,7 +13,7 @@
   ma-clearable>
 
     <md-item-template>
-      <span md-highlight-text="searchText" md-highlight-flags="gi">{{deviceName}}</span>
+      <span md-highlight-text="searchText" md-highlight-flags="gi">{{dataSource.name}}</span>
     </md-item-template>
 
     <md-not-found>

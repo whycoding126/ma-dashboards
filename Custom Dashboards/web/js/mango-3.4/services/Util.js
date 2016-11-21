@@ -312,7 +312,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
                 return cacheItem.output;
             }
 
-            var result = fn.apply(null, args);
+            var result = fn.apply(this, args);
 
             cache.unshift({input: args, output: result});
             cache.pop();
@@ -459,6 +459,8 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
         var params = [];
         if (typeof options.query === 'string' && options.query) {
             params.push(options.query);
+        } else if (options.query && typeof options.query.walk === 'function') { // RQL query object
+            params.push(options.query.toString());
         } else if (options.query) {
             var and = !!options.query.$and;
             var exact = !!options.query.$exact;

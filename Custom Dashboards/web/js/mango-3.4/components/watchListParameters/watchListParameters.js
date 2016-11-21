@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListParametersController.$inject = ['$parse', '$interpolate'];
-function watchListParametersController($parse, $interpolate) {
+watchListParametersController.$inject = ['$parse', '$interpolate', 'Util'];
+function watchListParametersController($parse, $interpolate, Util) {
     
     if (!this.parameters) {
         this.parameters = {};
@@ -17,7 +17,7 @@ function watchListParametersController($parse, $interpolate) {
         this.parametersChanged({parameters: this.parameters});
     };
     
-    this.createDsQuery = function createDsQuery(options) {
+    this.createDsQuery = Util.memoize(function createDsQuery(options) {
         if (!(options.nameIsLike || options.xidIsLike)) {
             return;
         }
@@ -34,8 +34,8 @@ function watchListParametersController($parse, $interpolate) {
                 args: ['xid', this.interpolateOption(options.xidIsLike)]
             }));
         }
-        return q.toString();
-    };
+        return q;
+    });
     
     this.interpolateOption = function interpolateOption(option) {
         if (typeof option !== 'string' || option.indexOf('{{') < 0)
