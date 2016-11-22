@@ -39,9 +39,14 @@ function pointValuesFactory($http, $q, Util) {
             return $http.get(url, {
                 timeout: cancelOrTimeout,
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    'Accept': options.mimeType || 'application/json'
+                },
+                responseType: options.responseType
             }).then(function(response) {
+                if (options.responseType) {
+                    return response.data;
+                }
+                
                 if (!response || !angular.isArray(response.data)) {
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
@@ -88,12 +93,18 @@ function pointValuesFactory($http, $q, Util) {
             return $http.get(url, {
                 timeout: cancelOrTimeout,
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    'Accept': options.mimeType || 'application/json'
+                },
+                responseType: options.responseType
             }).then(function(response) {
+                if (options.responseType) {
+                    return response.data;
+                }
+                
                 if (!response || !angular.isObject(response.data)) {
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
+                
                 var dataByXid = response.data;
                 if (reverseData) {
                     for (var xid in dataByXid) {
@@ -138,9 +149,14 @@ function pointValuesFactory($http, $q, Util) {
             return $http.get(url, {
                 timeout: cancelOrTimeout,
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    'Accept': options.mimeType || 'application/json'
+                },
+                responseType: options.responseType
             }).then(function(response) {
+                if (options.responseType) {
+                    return response.data;
+                }
+                
                 if (!response || !angular.isArray(response.data)) {
                     throw new Error('Incorrect response from REST end point ' + url);
                 }
