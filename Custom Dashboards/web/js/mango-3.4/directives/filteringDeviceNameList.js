@@ -13,7 +13,6 @@ function filteringDeviceNameList($injector, $timeout, DeviceName) {
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            ngModelOptions: '<?',
             ngChange: '&?',
             // attributes that start with data- have the prefix stripped
             dataSourceId: '<?sourceId',

@@ -79,7 +79,7 @@
       auto-init="false" query="$ctrl.createDsQuery(param.options)"
       label-text="param.label">
   </ma-filtering-data-source-list>
-  <md-input-container ng-if="param.type === 'pointHierarchy'" flex>
+  <md-input-container ng-if="param.type === 'pointHierarchy' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-point-hierarchy-select ng-if="!param.options.multiple" show-clear="true"
         ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
@@ -100,4 +100,16 @@
         replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
         unique-names="param.options.uniqueNames"></ma-point-hierarchy-select>
   </md-input-container>
+  <ma-filtering-point-hierarchy-select ng-if="param.type === 'pointHierarchy' && param.options.filtering" flex
+      ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
+      auto-init="false"
+      path="$ctrl.interpolateOption(param.options.path)"
+      subfolders-only="param.options.subfoldersOnly"
+      max-depth="param.options.maxDepth"
+      points="false"
+      name-matches="{{$ctrl.interpolateOption(param.options.nameMatches)}}"
+      replace-name="{{$ctrl.interpolateOption(param.options.replaceName)}}"
+      unique-names="param.options.uniqueNames"
+      label-text="param.label">
+  </ma-filtering-point-hierarchy-select>
 </div>

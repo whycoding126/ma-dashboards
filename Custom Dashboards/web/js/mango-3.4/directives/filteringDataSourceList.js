@@ -15,7 +15,6 @@ function filteringDataSourceList($injector, $timeout, DataSource) {
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            ngModelOptions: '<?',
             ngChange: '&?',
             autoInit: '<?',
             query: '<?',
