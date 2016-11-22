@@ -3,6 +3,7 @@
       <md-button class="watch-list-back md-icon-button" ng-click="$ctrl.clear()" ng-if="!$ctrl.$mdMedia('gt-md')"><md-icon>arrow_back</md-icon></md-button>
       <h2><span ng-bind="$ctrl.watchList.name"></span></h2>
       <div flex></div>
+
       <md-button class="md-primary md-raised" ui-sref="dashboard.settings.watchListBuilder({watchListXid: $ctrl.watchList.xid})" ng-if="!$ctrl.watchList.isNew">
         <md-icon>edit</md-icon>
         <span ma-tr="common.edit"></span>
@@ -10,6 +11,10 @@
       <md-button class="md-primary md-raised" ng-click="$ctrl.saveSettings()">
         <md-icon>save</md-icon>
         <span ma-tr="common.save"></span>
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="$ctrl.showDownloadDialog($event)">
+        <md-icon>file_download</md-icon>
+        <span ma-tr="common.download"></span>
       </md-button>
     </div>
 </md-toolbar>

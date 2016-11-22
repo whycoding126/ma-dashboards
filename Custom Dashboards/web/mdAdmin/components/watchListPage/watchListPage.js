@@ -6,8 +6,8 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar'];
-function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar) {
+watchListPageController.$inject = ['$mdMedia', 'WatchList', 'Translate', '$stateParams', 'localStorageService', '$state', 'PointHierarchy', 'mdAdminSettings', 'DateBar', '$mdDialog'];
+function watchListPageController($mdMedia, WatchList, Translate, $stateParams, localStorageService, $state, PointHierarchy, mdAdminSettings, DateBar, $mdDialog) {
     this.baseUrl = require.toUrl('.');
     this.watchList = null;
     this.selectWatchList = null;
@@ -310,6 +310,68 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         else {
             this.watchList.$update();
         }
+    };
+    
+    this.showDownloadDialog = function showDownloadDialog($event) {
+        $mdDialog.show({
+            controller: ['DateBar', 'pointValues', function(DateBar, pointValues) {
+                this.downloadData = function downloadData(downloadType, all) {
+                    var points = all ? this.watchList.points : this.selected;
+                    var xids = points.map(function(pt) {
+                        return pt.xid;
+                    });
+                    
+                    var functionName = downloadType.indexOf('COMBINED') > 0 ? 'getPointValuesForXidsCombined' : 'getPointValuesForXids';
+                    var mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
+                    var extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
+                    var fileName = this.watchList.name + '_' + DateBar.from.toISOString() + '_' + DateBar.to.toISOString() + '.' + extension;
+                    
+                    pointValues[functionName](xids, {
+                        mimeType: mimeType,
+                        responseType: 'blob',
+                        from: DateBar.from,
+                        to: DateBar.to,
+                        rollup: DateBar.rollupType,
+                        rollupInterval: DateBar.rollupIntervals,
+                        rollupIntervalType: DateBar.rollupIntervalPeriod
+                    }).then(function(response) {
+                        if (typeof window.navigator.msSaveBlob === 'function') {
+                            window.navigator.msSaveBlob(response, fileName);
+                        } else {
+                            var url = URL.createObjectURL(response);
+                            try {
+                                var a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = fileName;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                            } finally {
+                                URL.revokeObjectURL(url);
+                            }
+                        }
+                    }, function(response) {
+                        console.log(response);
+                    });
+                };
+                
+                this.cancel = function cancel() {
+                    $mdDialog.cancel();
+                };
+            }],
+            templateUrl: require.toUrl('./downloadDialog.html'),
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: true,
+            fullscreen: $mdMedia('xs') || $mdMedia('sm'),
+            bindToController: true,
+            controllerAs: '$ctrl',
+            locals: {
+                watchList: this.watchList,
+                selected: this.selected
+            }
+        });
     };
 }
 
