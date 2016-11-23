@@ -184,7 +184,7 @@ ma-watch-list-page md-card md-toolbar.watchlist-picker {
 }
 
 ma-watch-list-page md-card md-toolbar.watchlist-picker md-radio-button {
-  margin-bottom: 0px;
+  margin: 0px;
   font-size: 18px;
-  padding:3px;
+  padding: 3px;
 }

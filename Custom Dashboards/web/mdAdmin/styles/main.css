@@ -924,6 +924,11 @@ md-select {
 	/*min-width: 200px;*/
 }
 
+md-radio-group md-radio-button {
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
 /* AmCharts styles */
 
 .amcharts-gauge-axis, .amcharts-value-axis, .amcharts-category-axis {

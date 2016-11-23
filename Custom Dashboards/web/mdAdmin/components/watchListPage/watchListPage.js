@@ -316,7 +316,10 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['DateBar', 'pointValues', function(DateBar, pointValues) {
+            controller: ['DateBar', 'pointValues', 'mdAdminSettings', function(DateBar, pointValues, mdAdminSettings) {
+                this.dateBar = DateBar;
+                this.mdAdminSettings = mdAdminSettings;
+                
                 this.downloadData = function downloadData(downloadType, all) {
                     var points = all ? this.watchList.points : this.selected;
                     var xids = points.map(function(pt) {

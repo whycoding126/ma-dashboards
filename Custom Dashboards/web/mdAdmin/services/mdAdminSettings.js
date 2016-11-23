@@ -6,8 +6,8 @@
 define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
-mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate'];
-function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate) {
+mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
+function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
     var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
     var NOT_SETTINGS_PROPERTIES = ['user', 'defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
     var themeId = 0;
@@ -127,6 +127,10 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
             if (user.locale)
                 moment.locale(user.locale);
             moment.tz.setDefault(user.getTimezone());
+        },
+        formatDate: function formatDate(date, format) {
+            var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
+            return moment(date).format(momentFormat);
         }
     };
     
