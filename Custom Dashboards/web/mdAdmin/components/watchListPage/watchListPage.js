@@ -312,6 +312,8 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
         }
     };
     
+    this.downloadStatus = {};
+    
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
             controller: ['DateBar', 'pointValues', function(DateBar, pointValues) {
@@ -325,8 +327,11 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                     var mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
                     var extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
                     var fileName = this.watchList.name + '_' + DateBar.from.toISOString() + '_' + DateBar.to.toISOString() + '.' + extension;
+
+                    this.downloadStatus.error = null;
+                    this.downloadStatus.downloading = true;
                     
-                    pointValues[functionName](xids, {
+                    this.downloadStatus.queryPromise = pointValues[functionName](xids, {
                         mimeType: mimeType,
                         responseType: 'blob',
                         from: DateBar.from,
@@ -335,6 +340,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                         rollupInterval: DateBar.rollupIntervals,
                         rollupIntervalType: DateBar.rollupIntervalPeriod
                     }).then(function(response) {
+                        this.downloadStatus.downloading = false;
                         if (typeof window.navigator.msSaveBlob === 'function') {
                             window.navigator.msSaveBlob(response, fileName);
                         } else {
@@ -351,9 +357,15 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                                 URL.revokeObjectURL(url);
                             }
                         }
-                    }, function(response) {
+                    }.bind(this), function(response) {
+                        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? Translate.trSync('dashboards.v3.app.cancelledOrNoResponse') : response.toString());
+                        this.downloadStatus.downloading = false;
                         console.log(response);
-                    });
+                    }.bind(this));
+                };
+                
+                this.cancelDownload = function cancelDownload() {
+                    this.downloadStatus.queryPromise.cancel();
                 };
                 
                 this.cancel = function cancel() {
@@ -369,7 +381,8 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             controllerAs: '$ctrl',
             locals: {
                 watchList: this.watchList,
-                selected: this.selected
+                selected: this.selected,
+                downloadStatus: this.downloadStatus
             }
         });
     };

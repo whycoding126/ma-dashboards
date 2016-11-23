@@ -14,15 +14,26 @@
       <md-radio-button ng-value="true"><span ma-tr="dashboards.v3.app.downloadDataForAllPoints"></span></md-radio-button>
     </md-radio-group>
     
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV', allPoints)"><md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csv"></span></md-button>
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV_COMBINED', allPoints)"><md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csvCombined"></span></md-button>
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON', allPoints)"><md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.json"></span></md-button>
-    <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON_COMBINED', allPoints)"><md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.jsonCombined"></span></md-button>
-  </md-dialog-content>
-  <md-dialog-actions>
-    <div flex></div>
-    <md-button ng-click="$ctrl.cancel()">
-      <md-icon>close</md-icon> <span ma-tr="common.close"></span>
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csv"></span>
     </md-button>
-  </md-dialog-actions>
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('CSV_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.csvCombined"></span>
+    </md-button>
+      <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+    <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.json"></span>
+    </md-button>
+    <md-button class="md-raised" ng-click="$ctrl.downloadData('JSON_COMBINED', allPoints)" ng-disabled="$ctrl.downloadStatus.downloading">
+      <md-icon>file_download</md-icon> <span ma-tr="dashboards.v3.app.jsonCombined"></span>
+    </md-button>
+    
+    <div ng-if="$ctrl.downloadStatus.downloading" layout="column">
+      <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+      <md-button class="md-raised md-warn" ng-click="$ctrl.cancelDownload()">
+        <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
+      </md-button>
+    </div>
+    
+    <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="dashboards.v3.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
+  </md-dialog-content>
 </md-dialog>
