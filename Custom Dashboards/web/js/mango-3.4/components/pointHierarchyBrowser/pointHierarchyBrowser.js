@@ -38,12 +38,13 @@ function pointHierarchyBrowserController(PointHierarchy) {
         
         var selectedFoldersById = {};
         for (var i = 0; i < selectedFolders.length; i++) {
-            var folder = value[i];
+            var folder = selectedFolders[i];
             selectedFoldersById[folder.id] = folder;
         }
         
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
-            folder.checked = !!selectedFoldersById[folder.id] || (parent && parent.checked && this.selectSubfolders);
+            //folder.checked = !!selectedFoldersById[folder.id] || (parent && parent.checked && this.selectSubfolders);
+            folder.checked = !!selectedFoldersById[folder.id];
         }.bind(this));
     }.bind(this);
 
@@ -70,7 +71,8 @@ function pointHierarchyBrowserController(PointHierarchy) {
                 }
             }
             
-            if (folder.checked && !(this.selectOneFolder && selectedFolders.length)) {
+            //if (folder.checked && !(this.selectOneFolder && selectedFolders.length)) {
+            if (folder.checked) {
                 selectedFolders.push(folder);
             }
         }.bind(this));
