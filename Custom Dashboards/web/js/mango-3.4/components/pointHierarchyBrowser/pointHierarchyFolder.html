@@ -1,5 +1,5 @@
 <md-checkbox ng-model="$ctrl.folder.checked" ng-change="$ctrl.folderCheckChanged()"
-  ng-disabled="$ctrl.browserCtrl.selectSubfolders && $ctrl.browserCtrl.selectOneFolder && $ctrl.parent.checked" ng-class="{'md-indeterminate': !!$ctrl.folder.partialPoints}">
+  ng-disabled="$ctrl.browserCtrl.selectSubfolders && $ctrl.browserCtrl.selectOneFolder && $ctrl.parent.checked" ng-class="{'md-indeterminate': $ctrl.folder.partial}">
 </md-checkbox>
 
 <span ng-click="$ctrl.folderClicked($event)">

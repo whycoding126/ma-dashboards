@@ -58,6 +58,7 @@ define(['./maServices',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
         './components/pointHierarchyBrowser/pointHierarchyBrowser',
+        './components/pointHierarchyBrowser/pointHierarchyPointSelector',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
         './components/watchListParameters/watchListParameters',
         './components/imageSlider/imageSlider',
@@ -74,7 +75,7 @@ define(['./maServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect,
-        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyFolder, watchListParameters,
+        queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, trFilter, angular, require, AmCharts, moment) {
 'use strict';
 /**
@@ -142,6 +143,7 @@ maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
 maDashboards.component('maPointHierarchyBrowser', pointHierarchyBrowser);
+maDashboards.component('maPointHierarchyPointSelector', pointHierarchyPointSelector);
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
 maDashboards.component('maWatchListParameters', watchListParameters);
 maDashboards.component('maImageSlider', imageSlider);

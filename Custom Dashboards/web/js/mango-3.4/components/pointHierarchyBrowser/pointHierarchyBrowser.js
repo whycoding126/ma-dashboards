@@ -30,7 +30,7 @@ function pointHierarchyBrowserController(PointHierarchy) {
     this.render = function render() {
         if (!this.hierarchy) return;
         
-        // $viewValue is an array of folders/points
+        // $viewValue is an array of folders
         var selectedFolders = this.ngModelCtrl.$viewValue;
         if (angular.isUndefined(selectedFolders)) {
             selectedFolders = [];
