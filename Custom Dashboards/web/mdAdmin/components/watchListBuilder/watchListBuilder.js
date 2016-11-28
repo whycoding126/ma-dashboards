@@ -6,7 +6,10 @@
 define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
-var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings, $stateParams, $state, $mdDialog, Translate, $timeout, $scope) {
+watchListBuilderController.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings',
+    '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope', '$mdToast'];
+function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings,
+        $stateParams, $state, $mdDialog, Translate, $timeout, $scope, $mdToast) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
@@ -155,7 +158,26 @@ var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, W
                     $ctrl.watchlists.push(wl);
                 }
                 
+                var toast = $mdToast.simple()
+                    .textContent(Translate.trSync('dashboards.v3.app.watchListSaved'))
+                    .action(Translate.trSync('common.ok'))
+                    .highlightAction(true)
+                    .position('bottom center')
+                    .hideDelay(2000);
+                $mdToast.show(toast);
+    
                 $ctrl.resetForm();
+            }, function(response) {
+                // error saving
+                var toast = $mdToast.simple()
+                    .textContent(Translate.trSync('dashboards.v3.app.errorSavingWatchlist', response.statusText))
+                    .action(Translate.trSync('common.ok'))
+                    .highlightAction(true)
+                    .highlightClass('md-warn')
+                    .position('bottom center')
+                    .hideDelay(5000);
+                $mdToast.show(toast);
+                console.log(response);
             });
         }
     };
@@ -466,10 +488,8 @@ var watchListBuilder = function watchListBuilder(Point, $mdMedia, cssInjector, W
     };
 };
 
-watchListBuilder.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings', '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope'];
-
 return {
-    controller: watchListBuilder,
+    controller: watchListBuilderController,
     templateUrl: require.toUrl('./watchListBuilder.html')
 };
 
