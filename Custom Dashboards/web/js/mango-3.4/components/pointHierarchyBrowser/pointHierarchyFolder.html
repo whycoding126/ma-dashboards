@@ -1,14 +1,20 @@
-<md-checkbox ng-model="$ctrl.folder.checked" ng-change="$ctrl.checkboxChanged()"
+<md-checkbox ng-model="$ctrl.folder.checked" ng-change="$ctrl.folderCheckChanged()"
   ng-disabled="$ctrl.browserCtrl.selectSubfolders && $ctrl.browserCtrl.selectOneFolder && $ctrl.parent.checked" ng-class="{'md-indeterminate': !!$ctrl.folder.partialPoints}">
 </md-checkbox>
 
 <span ng-click="$ctrl.folderClicked($event)">
+  <md-icon>folder</md-icon>
   <strong>{{$ctrl.folder.name}}</strong>&nbsp;<em>({{$ctrl.folder.points.length}} points)</em>
-  <md-icon ng-show="$ctrl.folder.subfolders.length">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
+  <md-icon ng-show="$ctrl.folder.subfolders.length || ($ctrl.selectPoints && $ctrl.folder.points.length)">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 </span>
 
-<ul ng-show="$ctrl.open">
-  <li ng-repeat="subfolder in $ctrl.folder.subfolders">
-    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1"></ma-point-hierarchy-folder>
+<ul ng-if="$ctrl.open">
+  <li ng-repeat="subfolder in $ctrl.folder.subfolders track by subfolder.id">
+    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1" select-points="$ctrl.selectPoints">
+    </ma-point-hierarchy-folder>
+  </li>
+  <li ng-repeat="point in $ctrl.folder.points | limitTo:($ctrl.selectPoints ? 500 : 0) track by point.xid">
+    <md-checkbox ng-model="point.checked" ng-change="$ctrl.pointCheckChanged(point)"></md-checkbox>
+    <span ng-bind="point.name"></span>
   </li>
 </ul>

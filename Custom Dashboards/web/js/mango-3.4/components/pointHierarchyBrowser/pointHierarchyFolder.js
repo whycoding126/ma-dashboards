@@ -8,16 +8,21 @@ define(['angular', 'require'], function(angular, require) {
 
 var pointHierarchyFolder = function pointHierarchyFolder() {
     this.$onInit = function() {
-        this.open = isFinite(this.browserCtrl.expanded) ? this.depth < this.browserCtrl.expanded : !!this.browserCtrl.expanded;
+        this.parentController = this.browserCtrl || this.pointSelectorCtrl;
+        var expanded = this.parentController.expanded;
+        this.open = isFinite(expanded) ? this.depth < expanded : !!expanded;
     };
     
     this.folderClicked = function folderClicked($event) {
         this.open = !this.open;
     };
     
-    this.checkboxChanged = function checkboxChanged() {
-        delete this.folder.partialPoints;
-        this.browserCtrl.folderCheckChanged(this.folder);
+    this.folderCheckChanged = function folderCheckChanged() {
+        this.parentController.folderCheckChanged(this.folder);
+    };
+    
+    this.pointCheckChanged = function pointCheckChanged(point) {
+        this.parentController.pointCheckChanged(this.folder, point);
     };
 };
 
@@ -29,10 +34,12 @@ return {
     bindings: {
         folder: '<',
         parent: '<',
+        selectPoints: '<',
         depth: '<'
     },
     require: {
-        browserCtrl: '^^maPointHierarchyBrowser'
+        browserCtrl: '^^?maPointHierarchyBrowser',
+        pointSelectorCtrl: '^^?maPointHierarchyPointSelector',
     }
 };
 

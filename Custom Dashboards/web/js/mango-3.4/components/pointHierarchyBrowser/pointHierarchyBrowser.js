@@ -6,9 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-pointHierarchyBrowserController.$inject = ['PointHierarchy', 'Point'];
-function pointHierarchyBrowserController(PointHierarchy, Point) {
-
+pointHierarchyBrowserController.$inject = ['PointHierarchy'];
+function pointHierarchyBrowserController(PointHierarchy) {
     this.$onInit = function() {
         this.ngModelCtrl.$render = this.render;
     };
@@ -32,83 +31,60 @@ function pointHierarchyBrowserController(PointHierarchy, Point) {
         if (!this.hierarchy) return;
         
         // $viewValue is an array of folders/points
-        var viewArray = this.ngModelCtrl.$viewValue;
-        if (angular.isUndefined(viewArray)) {
-            return;
+        var selectedFolders = this.ngModelCtrl.$viewValue;
+        if (angular.isUndefined(selectedFolders)) {
+            selectedFolders = [];
         }
         
-        var selectedMap = {};
-        var idProp = this.selectPoints ? 'xid' : 'id';
-        for (var i = 0; i < viewArray.length; i++) {
-            selectedMap[viewArray[i][idProp]] = viewArray[i];
+        var selectedFoldersById = {};
+        for (var i = 0; i < selectedFolders.length; i++) {
+            var folder = value[i];
+            selectedFoldersById[folder.id] = folder;
         }
         
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
-            if (this.selectPoints) {
-                var selectedPointsInThisFolder = [];
-                for (i = 0; i < folder.points.length; i++) {
-                    var pt = folder.points[i];
-                    var isSelected = !!selectedMap[pt.xid];
-                    if (isSelected) {
-                        selectedPointsInThisFolder.push(pt);
-                    }
-                }
-                if (selectedPointsInThisFolder.length === 0) {
-                    folder.checked = false;
-                    delete folder.partialPoints;
-                } else if (selectedPointsInThisFolder.length === folder.points.length) {
-                    folder.checked = true;
-                    delete folder.partialPoints;
-                } else {
-                    folder.checked = true;
-                    folder.partialPoints = selectedPointsInThisFolder;
-                }
-            } else {
-                folder.checked = !!selectedMap[folder.id];
-            }
+            folder.checked = !!selectedFoldersById[folder.id] || (parent && parent.checked && this.selectSubfolders);
         }.bind(this));
     }.bind(this);
 
     /**
-     * Triggered when an checkbox changes and the $viewValue should be updated, and hence the $modelValue via the parser
+     * Triggered when a checkbox changes and the $viewValue should be updated, and hence the $modelValue
      */
     this.folderCheckChanged = function folderCheckChanged(changedFolder) {
-        var viewArray = [];
-        // TODO track and re-add points in $modelValue which are not in any folder
-        
-        var changedFolderChildren = {};
-        if (this.selectSubfolders) {
-            this.walkHierarchy(changedFolder, function(folder, parent, index) {
-                folder.checked = changedFolder.checked;
-                changedFolderChildren[folder.id] = true;
-            }.bind(this));
-        }
+        var selectedFolders = [];
+
+        var changedFolders = {};
+        this.walkHierarchy(changedFolder, function(folder, parent, index) {
+            folder.checked = changedFolder.checked;
+            changedFolders[folder.id] = folder;
+            if (!this.selectSubfolders) {
+                return true;
+            }
+        }.bind(this));
         
         this.walkHierarchy(this.hierarchy, function(folder, parent, index) {
             if (this.selectOneFolder) {
-                if (!changedFolderChildren[folder.id]) {
+                // reset all other folders to unchecked
+                if (!changedFolders[folder.id]) {
                     folder.checked = false;
                 }
             }
             
-            if (this.selectPoints) {
-                if (folder.partialPoints && folder.partialPoints.length) {
-                    Array.prototype.splice.apply(viewArray, [viewArray.length, 0].concat(folder.partialPoints));
-                } else if (folder.checked && folder.points.length) {
-                    Array.prototype.splice.apply(viewArray, [viewArray.length, 0].concat(folder.points));
-                }
-            } else if (folder.checked) {
-                viewArray.push(folder);
+            if (folder.checked && !(this.selectOneFolder && selectedFolders.length)) {
+                selectedFolders.push(folder);
             }
         }.bind(this));
 
-        this.ngModelCtrl.$setViewValue(viewArray);
+        this.ngModelCtrl.$setViewValue(selectedFolders);
     };
-    
+
     this.walkHierarchy = function walkHierarchy(folder, fn, parent, index) {
-        fn(folder, parent, index);
+        var result = fn(folder, parent, index);
+        if (result) return result;
+        
         for (var i = 0; i < folder.subfolders.length; i++) {
-            this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+            result = this.walkHierarchy(folder.subfolders[i], fn, folder, i);
+            if (result) return result;
         }
     }.bind(this);
 };
@@ -122,7 +98,6 @@ return {
     bindings: {
         path: '<',
         expanded: '<',
-        selectPoints: '<',
         selectSubfolders: '<',
         selectOneFolder: '<'
     }
