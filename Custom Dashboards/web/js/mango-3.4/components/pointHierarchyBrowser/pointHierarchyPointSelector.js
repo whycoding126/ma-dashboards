@@ -140,7 +140,8 @@ return {
     bindings: {
         path: '<',
         expanded: '<',
-        selectSubfolders: '<'
+        selectSubfolders: '<',
+        showDeviceNames: '<'
     }
 };
 

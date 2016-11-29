@@ -8,13 +8,22 @@
   <md-icon ng-show="$ctrl.folder.subfolders.length || ($ctrl.selectPoints && $ctrl.folder.points.length)">{{$ctrl.open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
 </span>
 
-<ul ng-if="$ctrl.open">
+<ul ng-if="$ctrl.open && !$ctrl.selectPoints">
   <li ng-repeat="subfolder in $ctrl.folder.subfolders track by subfolder.id">
-    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1" select-points="$ctrl.selectPoints">
+    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1">
     </ma-point-hierarchy-folder>
   </li>
-  <li ng-repeat="point in $ctrl.folder.points | limitTo:($ctrl.selectPoints ? 500 : 0) track by point.xid">
+</ul>
+
+<ul ng-if="$ctrl.open && $ctrl.selectPoints">
+  <li ng-repeat="subfolder in $ctrl.folder.subfolders track by subfolder.id">
+    <ma-point-hierarchy-folder folder="subfolder" parent="$ctrl.folder" depth="$ctrl.depth + 1"
+      select-points="$ctrl.selectPoints" show-device-names="$ctrl.showDeviceNames">
+    </ma-point-hierarchy-folder>
+  </li>
+  <li ng-repeat="point in $ctrl.folder.points | orderBy:['deviceName', 'name'] | limitTo:500 track by point.xid">
     <md-checkbox ng-model="point.checked" ng-change="$ctrl.pointCheckChanged(point)"></md-checkbox>
-    <span ng-bind="point.name"></span>
+    <span ng-if="!$ctrl.showDeviceNames" ng-bind="point.name"></span>
+    <span ng-if="$ctrl.showDeviceNames"><span ng-bind="point.deviceName"></span> - <span ng-bind="point.name"></span></span>
   </li>
 </ul>

@@ -35,7 +35,8 @@ return {
         folder: '<',
         parent: '<',
         selectPoints: '<',
-        depth: '<'
+        depth: '<',
+        showDeviceNames: '<'
     },
     require: {
         browserCtrl: '^^?maPointHierarchyBrowser',
