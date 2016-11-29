@@ -22,22 +22,7 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maSerialChart"
     </md-input-container>
 </div>
 
-<div layout="row" layout-xs="column" >
-    <md-input-container flex>
-       <label>Date preset</label>
-       <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
-    </md-input-container>
-    <md-input-container flex>
-       <label>From date</label>
-       <ma-date-picker ng-model="from"></ma-date-picker>
-    </md-input-container>
-    <md-input-container flex>
-        <label>To date</label>
-        <ma-date-picker ng-model="to"></ma-date-picker>
-    </md-input-container>
-</div>
-
-<ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="AVERAGE" auto-rollup-interval="true">
+<ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
 </ma-point-values>
 
 <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" legend="true" balloon="true" export="true">

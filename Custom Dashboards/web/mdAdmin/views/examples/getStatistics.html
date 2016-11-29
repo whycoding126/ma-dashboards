@@ -20,22 +20,7 @@ See API Documentation for <a ui-sref="dashboard.docs.maDashboards.maPointStatist
     </md-input-container>
 </div>
 
-<div layout="row" layout-xs="column" >
-    <md-input-container flex>
-       <label>Date preset</label>
-       <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="1 minutes"></ma-date-range-picker>
-    </md-input-container>
-    <md-input-container flex>
-       <label>From date</label>
-       <ma-date-picker ng-model="from"></ma-date-picker>
-    </md-input-container>
-    <md-input-container flex>
-        <label>To date</label>
-        <ma-date-picker ng-model="to"></ma-date-picker>
-    </md-input-container>
-</div>
-
-<ma-point-statistics point="myPoint" from="from" to="to" statistics="statsObj"></ma-point-statistics>
+<ma-point-statistics point="myPoint" from="dateBar.from" to="dateBar.to" statistics="statsObj"></ma-point-statistics>
 
 <div>The average for the period is {{ statsObj.average.value }} at {{ statsObj.average.timestamp | moment:'format':'lll' }}<br>
      The max value for the period is {{ statsObj.maximum.value }}

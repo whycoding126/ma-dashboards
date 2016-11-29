@@ -25,7 +25,8 @@ define(['require', 'rql/query'], function(require, query) {
  * @usage
  * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
  */
-function pointList(Point, $filter, $injector, $parse, $timeout) {
+pointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout', 'Translate'];
+function pointList(Point, $filter, $injector, $parse, $timeout, Translate) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -35,11 +36,14 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
             limit: '=?',
             autoInit: '=?',
             pointXid: '@',
-            pointId: '@'
-            
+            pointId: '@',
+            label: '@'
         },
         templateUrl: require.toUrl('./filteringPointList.html'),
         link: function ($scope, $element, attrs) {
+            if (!$scope.label)
+                $scope.label = Translate.trSync('dashboards.v3.app.searchBy', 'points', 'name or device');
+            
             if ($scope.autoInit) {
                 if (!$scope.pointXid && !$scope.pointId) {
                     Point.rql({query: 'limit(1)'}).$promise.then(function(item) {
@@ -116,7 +120,6 @@ function pointList(Point, $filter, $injector, $parse, $timeout) {
     };
 }
 
-pointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout'];
 return pointList;
 
 }); // define

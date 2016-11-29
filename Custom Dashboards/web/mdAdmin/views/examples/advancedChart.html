@@ -24,14 +24,8 @@
 <dual-pane-editor>
 
     <div layout="row">
-        <md-input-container flex="50">
-            <label>Point 1</label>
-            <ma-point-list limit="200" ng-model="point1"></ma-point-list>
-        </md-input-container>
-        <md-input-container flex="50">
-            <label>Point 2</label>
-            <ma-point-list limit="200" ng-model="point2"></ma-point-list>
-        </md-input-container>
+        <ma-filtering-point-list flex="50" label="Point 1" ng-model="point1"></ma-filtering-point-list>
+        <ma-filtering-point-list flex="50" label="Point 2" ng-model="point2"></ma-filtering-point-list>
     </div>
 
     <div layout="row">
@@ -60,59 +54,9 @@
         </md-input-container>
     </div>
 
-    <div layout="row">
-        <md-input-container flex="">
-            <label>Update interval</label>
-            <input type="number" step="1" min="1" ng-model="updateInterval" ng-init="updateInterval=1">
-        </md-input-container>
-        <md-input-container>
-            <label>Interval type</label>
-            <ma-interval-type-picker ng-model="updateIntervalType" ng-init="updateIntervalType='MINUTES'"></ma-interval-type-picker>
-        </md-input-container>
-        <md-input-container flex="50">
-            <label>Date range preset</label>
-            <ma-date-range-picker from="from" to="to" preset="LAST_30_MINUTES" update-interval="{{updateInterval}} {{updateIntervalType}}"></ma-date-range-picker>
-        </md-input-container>
-    </div>
-
-    <div layout="row">
-        <md-input-container flex="50">
-            <label>From date</label>
-            <ma-date-picker ng-model="from"></ma-date-picker>
-        </md-input-container>
-        <md-input-container flex="50">
-            <label>To date</label>
-            <ma-date-picker ng-model="to"></ma-date-picker>
-        </md-input-container>
-    </div>
-
-    <div layout="row">
-        <md-input-container flex="25">
-            <md-checkbox ng-model="autoRollup" ng-init="autoRollup = true">Auto-Rollup</md-checkbox>
-        </md-input-container>
-
-        <md-input-container flex="15">
-            <label>Rollup interval</label>
-            <input type="number" step="1" min="1" ng-model="rollupInterval" ng-init="rollupInterval=1" ng-disabled="rollupType=='NONE' || autoRollup">
-        </md-input-container>
-        <md-input-container flex>
-            <label>Interval type</label>
-            <ma-interval-type-picker ng-model="rollupIntervalType" ng-init="rollupIntervalType='MINUTES'" ng-disabled="rollupType=='NONE' || autoRollup"></ma-interval-type-picker>
-        </md-input-container>
-        <md-input-container flex ng-init="rollupType='AVERAGE'">
-            <label>Rollup type</label>
-            <md-select ng-model="rollupType">
-                <md-option ng-value="t.type" ng-repeat="t in rollupTypes">{{t.label}}</md-option>
-            </md-select>
-        </md-input-container>
-
-
-    </div>
-
-    <ma-point-values point="point1" values="point1Values" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupInterval}} {{rollupIntervalType}}" auto-rollup-interval="autoRollup">
+    <ma-point-values point="point1" values="point1Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
     </ma-point-values>
-
-    <ma-point-values point="point2" values="point2Values" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupInterval}} {{rollupIntervalType}}" auto-rollup-interval="autoRollup">
+    <ma-point-values point="point2" values="point2Values" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
     </ma-point-values>
 
     <ma-serial-chart style="height: 300px; width: 100%" series-1-values="point1Values" series-1-point="point1" series-1-type="{{point1ChartType}}" series-1-color="{{point1Color}}" series-2-values="point2Values" series-2-point="point2" series-2-type="{{point2ChartType}}"

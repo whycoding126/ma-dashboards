@@ -76,6 +76,13 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                         loginTranslations: loadLoginTranslations
                     }
                 }
+                
+                if (menuItem.name.indexOf('dashboard.examples.') === 0) {
+                    if (!menuItem.params) menuItem.params = {};
+                    menuItem.params.dateBar = {
+                        rollupControls: true
+                    };
+                }
 
                 try {
                     $stateProvider.state(menuItem);

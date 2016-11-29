@@ -12,21 +12,6 @@ and <a ui-sref="dashboard.docs.maDashboards.maCalc"><code>&lt;ma-calc&gt;</code>
 <dual-pane-editor>
 
 <div layout="row">
-  <md-input-container>
-    <label>Preset</label>
-    <ma-date-range-picker from="from" to="to" preset="LAST_1_DAYS" update-interval="15 minutes"></ma-date-range-picker>
-  </md-input-container>
-  <md-input-container flex>
-    <label>From date</label>
-    <ma-date-picker ng-model="from"></ma-date-picker>
-  </md-input-container>
-  <md-input-container flex>
-    <label>To date</label>
-    <ma-date-picker ng-model="to"></ma-date-picker>
-  </md-input-container>
-</div>
-
-<div layout="row">
     <md-input-container flex>
         <label>Choose a device</label>
         <md-select ng-model="deviceName" ng-init="deviceName='Meter 1'">
@@ -99,8 +84,8 @@ and <a ui-sref="dashboard.docs.maDashboards.maCalc"><code>&lt;ma-calc&gt;</code>
 	</div>
 </div>
 
-<ma-point-values point="energy" values="energyValues" from="from" to="to"
-    rollup="DELTA" rollup-interval="1 hours"
+<ma-point-values point="energy" values="energyValues" from="dateBar.from" to="dateBar.to"
+     rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}"
 ></ma-point-values>
 
 <h2>Energy</h2>

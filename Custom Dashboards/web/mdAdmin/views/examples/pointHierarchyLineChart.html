@@ -13,13 +13,6 @@ a <code>|</code> character.
 
 <dual-pane-editor>
 
-<div layout="row">
-    <md-input-container flex="">
-        <label>Time period</label>
-        <ma-date-range-picker from="from" to="to" preset="LAST_5_MINUTES" update-interval="15 minutes"></ma-date-range-picker>
-    </md-input-container>
-</div>
-
 <h3>Build path</h3>
 <div layout="row" ng-init="segments=['Demo', '*', 'Meter 1|Meter 2']">
     <md-input-container flex>
@@ -54,7 +47,7 @@ a <code>|</code> character.
     <em ng-if="points.length > 20" md-colors="{color:'warn'}">Chart will only show for 20 points or less.</em>
     
     <div ng-if="points.length <= 20">
-        <ma-point-values points="points" values="combined" from="from" to="to" rollup="AVERAGE" rollup-interval="1 minutes">
+        <ma-point-values points="points" values="combined" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
         </ma-point-values>
         
         <ma-serial-chart style="height: 500px; width: 100%" values="combined" points="points" legend="true">
