@@ -6,8 +6,8 @@
 define(['require'], function(require) {
     'use strict';
 
-    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar'];
-    function watchListChart($mdMedia, $timeout, DateBar) {
+    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar', 'mdAdminSettings'];
+    function watchListChart($mdMedia, $timeout, DateBar, mdAdminSettings) {
         return {
             restrict: 'E',
             scope: {
@@ -16,6 +16,28 @@ define(['require'], function(require) {
             },
             templateUrl: 'directives/watchList/watchListChart.html',
             link: function link(scope, element, attrs) {
+
+                var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
+                var defaultChartConfig = {
+                    graphOptions: [],
+                    selectedAxis: 'left',
+                    selectedColor: '#C2185B',
+                    assignColors: false,
+                    chartType: 'smoothedLine',
+                    stackType: {
+                        selected: 'none',
+                        left: 'none',
+                        right: 'none',
+                        'left-2': 'none',
+                        'right-2': 'none'
+                    },
+                    axisColors: { 
+                        left2AxisColor: defaultAxisColor,
+                        leftAxisColor: defaultAxisColor,
+                        right2AxisColor: defaultAxisColor,
+                        rightAxisColor: defaultAxisColor
+                    }
+                };
                 
                 scope.dateBar = DateBar;
                 scope.parseInt = parseInt; // Make parseInt available to scope
@@ -28,26 +50,7 @@ define(['require'], function(require) {
                     scope.points=[]; 
                     scope.stats=[]; 
                     scope.addChecked=[]; 
-                    scope.chartConfig = {
-                        graphOptions: [],
-                        selectedAxis: 'left',
-                        selectedColor: '#C2185B',
-                        assignColors: false,
-                        chartType: 'smoothedLine',
-                        stackType: {
-                            selected: 'none',
-                            left: 'none',
-                            right: 'none',
-                            'left-2': 'none',
-                            'right-2': 'none'
-                        },
-                        axisColors: { 
-                            left2AxisColor: "#FFFFFF",
-                            leftAxisColor: "#FFFFFF",
-                            right2AxisColor: "#FFFFFF",
-                            rightAxisColor: "#FFFFFF"
-                        }
-                    };
+                    scope.chartConfig = defaultChartConfig;
                 };
                 
                 scope.$watch('chartConfig.stackType.selected', function(newValue, oldValue) {

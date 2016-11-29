@@ -17,6 +17,28 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     this.settings = mdAdminSettings;
     this.dateBar = DateBar;
 
+    var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
+    var defaultChartConfig = {
+        graphOptions: [],
+        selectedAxis: 'left',
+        selectedColor: '#C2185B',
+        assignColors: false,
+        chartType: 'smoothedLine',
+        stackType: {
+            selected: 'none',
+            left: 'none',
+            right: 'none',
+            'left-2': 'none',
+            'right-2': 'none'
+        },
+        axisColors: { 
+            left2AxisColor: defaultAxisColor,
+            leftAxisColor: defaultAxisColor,
+            right2AxisColor: defaultAxisColor,
+            rightAxisColor: defaultAxisColor
+        }
+    };
+
     this.selectFirstWatchList = false;
     this.localStorage = localStorageService.get('watchListPage');
     
@@ -64,26 +86,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                 this.chartConfig = this.watchList.data.chartConfig;
             }
             else {
-                this.chartConfig = {
-                    graphOptions: [],
-                    selectedAxis: 'left',
-                    selectedColor: '#C2185B',
-                    assignColors: false,
-                    chartType: 'smoothedLine',
-                    stackType: {
-                        selected: 'none',
-                        left: 'none',
-                        right: 'none',
-                        'left-2': 'none',
-                        'right-2': 'none'
-                    },
-                    axisColors: { 
-                        left2AxisColor: "#FFFFFF",
-                        leftAxisColor: "#FFFFFF",
-                        right2AxisColor: "#FFFFFF",
-                        rightAxisColor: "#FFFFFF"
-                    }
-                };
+                this.chartConfig = defaultChartConfig;
             }
             
             if (this.watchList.data && this.watchList.data.paramValues) {
@@ -120,26 +123,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                 .sort('name')
                 .limit(200);
 
-            this.chartConfig = {
-                    graphOptions: [],
-                    selectedAxis: 'left',
-                    selectedColor: '#C2185B',
-                    assignColors: false,
-                    chartType: 'smoothedLine',
-                    stackType: {
-                        selected: 'none',
-                        left: 'none',
-                        right: 'none',
-                        'left-2': 'none',
-                        'right-2': 'none'
-                    },
-                    axisColors: { 
-                        left2AxisColor: "#FFFFFF",
-                        leftAxisColor: "#FFFFFF",
-                        right2AxisColor: "#FFFFFF",
-                        rightAxisColor: "#FFFFFF"
-                    }
-                };
+            this.chartConfig = defaultChartConfig;
 
             var watchList = new WatchList();
             watchList.isNew = true;
@@ -172,26 +156,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                 .sort('name')
                 .limit(200);
 
-            this.chartConfig = {
-                    graphOptions: [],
-                    selectedAxis: 'left',
-                    selectedColor: '#C2185B',
-                    assignColors: false,
-                    chartType: 'smoothedLine',
-                    stackType: {
-                        selected: 'none',
-                        left: 'none',
-                        right: 'none',
-                        'left-2': 'none',
-                        'right-2': 'none'
-                    },
-                    axisColors: { 
-                        left2AxisColor: "#FFFFFF",
-                        leftAxisColor: "#FFFFFF",
-                        right2AxisColor: "#FFFFFF",
-                        rightAxisColor: "#FFFFFF"
-                    }
-                };
+            this.chartConfig = defaultChartConfig;
             
             var watchList = new WatchList();
             watchList.isNew = true;
@@ -228,26 +193,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
             this.watchList = watchList;
             $stateParams.hierarchyFolderId = this.hierarchyFolders[0].id;
 
-            this.chartConfig = {
-                    graphOptions: [],
-                    selectedAxis: 'left',
-                    selectedColor: '#C2185B',
-                    assignColors: false,
-                    chartType: 'smoothedLine',
-                    stackType: {
-                        selected: 'none',
-                        left: 'none',
-                        right: 'none',
-                        'left-2': 'none',
-                        'right-2': 'none'
-                    },
-                    axisColors: { 
-                        left2AxisColor: "#FFFFFF",
-                        leftAxisColor: "#FFFFFF",
-                        right2AxisColor: "#FFFFFF",
-                        rightAxisColor: "#FFFFFF"
-                    }
-                };
+            this.chartConfig = defaultChartConfig;
             
             
             if (this.hierarchyFolders[0].id != null) {
