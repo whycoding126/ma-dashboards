@@ -46,7 +46,7 @@ function statisticsTable($injector, mangoDateFormats) {
                     m.tz($scope.timezone);
                 }
                 return m.format(mangoDateFormats.dateTime);
-            }
+            };
         }
     };
 }

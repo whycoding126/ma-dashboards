@@ -70,7 +70,7 @@ function watchListSelect($injector) {
             
             this.onOpen = function() {
                 return this.queryPromise;
-            }
+            };
 
             this.setWatchList = function(watchList) {
                 if (this.watchList) {

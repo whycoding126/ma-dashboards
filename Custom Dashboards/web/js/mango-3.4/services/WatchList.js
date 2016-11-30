@@ -72,7 +72,7 @@ function WatchListFactory($resource, Util, $http, Point, PointHierarchy, $q, $in
                     this.setPoints(response.data);
                 }
                 return this;
-            }.bind(this))
+            }.bind(this));
         } else if (this.type === 'query') {
             var ptQuery = this.interpolateQuery(params);
             this.pointsPromise = Point.query({rqlQuery: ptQuery}).$promise.then(function(items) {

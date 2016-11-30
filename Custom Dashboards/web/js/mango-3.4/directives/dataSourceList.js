@@ -65,7 +65,7 @@ function dataSourceList(DataSource, $injector) {
             var promise;
             $scope.onOpen = function onOpen() {
                 return promise;
-            }
+            };
 
             $scope.$watch(function() {
                 return {

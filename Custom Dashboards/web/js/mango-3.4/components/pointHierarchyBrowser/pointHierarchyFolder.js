@@ -40,7 +40,7 @@ return {
     },
     require: {
         browserCtrl: '^^?maPointHierarchyBrowser',
-        pointSelectorCtrl: '^^?maPointHierarchyPointSelector',
+        pointSelectorCtrl: '^^?maPointHierarchyPointSelector'
     }
 };
 

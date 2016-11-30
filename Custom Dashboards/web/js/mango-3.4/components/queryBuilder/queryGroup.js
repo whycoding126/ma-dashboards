@@ -37,7 +37,7 @@ var queryGroup = function queryGroup() {
     this.deleteChild = function deleteChild(index, node) {
         this.node.args.splice(index, 1);
         this.builderCtrl.updateModel();
-    }
+    };
     
     function newGroup(name) {
         var node = new query.Query();

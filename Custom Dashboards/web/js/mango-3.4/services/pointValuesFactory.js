@@ -229,7 +229,7 @@ function pointValuesFactory($http, $q, Util) {
         }
         
         return params;
-    };
+    }
 
     return new PointValues();
 }

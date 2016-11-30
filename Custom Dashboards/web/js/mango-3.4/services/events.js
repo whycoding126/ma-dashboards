@@ -125,7 +125,7 @@ define(['angular'], function(angular) {
 
 function eventsFactory($resource, Util) {
     var events = $resource('/rest/v1/events', {
-        id: '@id',
+        id: '@id'
     }, {
         query: {
             method: 'GET',
@@ -201,7 +201,7 @@ function eventsFactory($resource, Util) {
         }
         
         return params.length ? this.rql({query: params.join('&')}) : this.query();
-    }
+    };
 
     return events;
 }

@@ -25,12 +25,12 @@ function imageSliderController($interval) {
     
     this.sliderChanged = function sliderChanged() {
         this.updateImage();
-    }
+    };
     
     this.updateImage = function updateImage() {
         this.currentValue = this.pointValues[this.imageIndex];
     };
-};
+}
 
 return {
     bindings: {

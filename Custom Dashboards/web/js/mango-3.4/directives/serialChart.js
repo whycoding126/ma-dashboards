@@ -297,7 +297,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 if (pointDefaults.type === 'spline') {
                     pointDefaults.type = 'smoothedLine';
                 }
-        	};
+        	}
 
             var defaultAttributes = {
                 type: $scope.defaultType,
@@ -325,8 +325,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     return obj.id === opts.valueAxis && obj.stackType !== 'none';
                 });
 
-                if(isStacked) {
-                    opts.fillAlphas = 0.7
+                if (isStacked) {
+                    opts.fillAlphas = 0.7;
                 }
             }
             if (angular.isUndefined(opts.lineThickness)) {

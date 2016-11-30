@@ -66,7 +66,7 @@ function qDecorator($delegate) {
                     promise.cancel.apply(promise, cancelArgs);
                 }
             });
-        }
+        };
     }
 
     return $delegate;

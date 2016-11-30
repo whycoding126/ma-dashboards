@@ -215,7 +215,7 @@ function dateRangePicker($injector) {
                 if (millis === 0) return;
 
                 this.timerPromise = $interval(this.doUpdate, millis);
-            }
+            };
         }]
     };
 }

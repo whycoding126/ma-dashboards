@@ -49,7 +49,7 @@ function watchListParametersController($parse, $interpolate, Util) {
         }
         return option;
     };
-};
+}
 
 return {
     controller: watchListParametersController,

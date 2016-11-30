@@ -20,7 +20,7 @@ function pointHierarchyBrowserController(PointHierarchy) {
             resourceObj.$promise.then(function(hierarchy) {
                 this.hierarchy = hierarchy;
                 this.render();
-            }.bind(this))
+            }.bind(this));
         }
     };
 
@@ -89,7 +89,7 @@ function pointHierarchyBrowserController(PointHierarchy) {
             if (result) return result;
         }
     }.bind(this);
-};
+}
 
 return {
     controller: pointHierarchyBrowserController,

@@ -93,7 +93,7 @@ function pointList(Point, $filter, $injector, $parse, $timeout, Translate) {
 
                 if (attrs.query) {
                     if (rqlQuery) {
-                        queryString = rqlQuery.toString()
+                        queryString = rqlQuery.toString();
                     }
                     queryString =+ attrs.query;
                 } else {

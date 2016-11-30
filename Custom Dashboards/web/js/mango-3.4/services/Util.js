@@ -327,7 +327,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
             random = Math.random() * 16 | 0;
 
             if (i == 8 || i == 12 || i == 16 || i == 20) {
-                uuid += "-"
+                uuid += "-";
             }
             uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
         }
@@ -542,7 +542,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
     };
     
     Util.prototype.cancelOrTimeout = function cancelOrTimeout(cancelPromise, timeout) {
-        var timeout = isFinite(timeout) ? timeout : mangoTimeout;
+        timeout = isFinite(timeout) ? timeout : mangoTimeout;
         if (timeout > 0) {
             var timeoutPromise = $timeout(angular.noop, timeout);
             return $q.race([cancelPromise, timeoutPromise]);

@@ -239,7 +239,7 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             username: username,
             password: password
         });
-    }
+    };
     
     User.storedUsername = function autoLogin() {
         var credentials = localStorageService.get('storedCredentials');

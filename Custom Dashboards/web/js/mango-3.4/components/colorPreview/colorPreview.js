@@ -33,7 +33,7 @@ function colorPreviewController($mdColors) {
             });
         }
         return colors;
-    }
+    };
     
     this.toHex = function toHex(rgbaString) {
         var matches = /^rgba\((.+?)\)$/.exec(rgbaString);
@@ -48,7 +48,7 @@ function colorPreviewController($mdColors) {
         }
         return rgbaString;
     };
-};
+}
 
 return {
     bindings: {

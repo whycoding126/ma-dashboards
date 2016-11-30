@@ -376,8 +376,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     };
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
+                        var i;
                         if (dataType === 'NUMERIC' && $scope.rendered !== 'true') {
-                            for (var i = 0; i < values.length; i++) {
+                            for (i = 0; i < values.length; i++) {
                                 if (typeof values[i].value === 'string') {
                                     values[i].value = Util.parseInternationalFloat(values[i].value);
                                 }
@@ -385,7 +386,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                         }
                         if (dataType === 'IMAGE') {
                             var imgUrl = require.toUrl('../img/noDataForPeriod.svg');
-                            for (var i = 0; i < values.length; i++) {
+                            for (i = 0; i < values.length; i++) {
                                 if (values[i].annotation === 'No data for period') {
                                     values[i].value = imgUrl;
                                 }

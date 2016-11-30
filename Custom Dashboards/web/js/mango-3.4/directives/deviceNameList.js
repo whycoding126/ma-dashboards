@@ -62,7 +62,7 @@ function deviceNameList(DeviceName, $injector) {
             var promise;
             $scope.onOpen = function onOpen() {
                 return promise;
-            }
+            };
 
             $scope.$watchGroup(['dataSourceId', 'dataSourceXid', 'contains'], function(value) {
                 var queryResult;

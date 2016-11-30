@@ -240,7 +240,7 @@ function eventsTable(Events, eventsEventManager, UserNotes, $mdMedia, $injector,
                 }
 
                 return {RQLforAcknowldege: RQLforAcknowldege, RQLforDisplay: RQLforDisplay}; 
-            }
+            };
             
         }
     };
