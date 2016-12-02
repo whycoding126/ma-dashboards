@@ -29,4 +29,5 @@
         </plugin>
     </plugins>
 </build>
+    <description>Provides an AngularJS dashboards interface, including the ability to create custom pages</description>
 </project>
