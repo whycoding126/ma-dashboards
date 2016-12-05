@@ -17,6 +17,7 @@
     "gulp-ngdocs": "^0.2.13",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.4",
+    "gulp-watch": "^4.3.11",
     "jsdom": "^9.8.3",
     "jsdom-global": "^2.1.0",
     "main-bower-files": "^2.13.1",

@@ -3,6 +3,8 @@ var exists = require('path-exists').sync;
 var gulpIgnore = require('gulp-ignore');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
+var watch = require('gulp-watch');
+var MA_HOME = process.env.MA_HOME;
 
 var plugins = require("gulp-load-plugins")({
     pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
@@ -76,6 +78,12 @@ gulp.task('copy-docs', ['build-ngdocs'], function() {
 gulp.task('watchDocs', function() {
     // Watch .js files
     gulp.watch('web/js/mango-3.3/**/*.js', ['copy-docs']);
+});
+
+gulp.task('watch-web', function() {
+    return gulp.src('web/**')
+        .pipe(watch('web/**', {ignoreInitial: false, verbose: true}))
+        .pipe(gulp.dest(MA_HOME + '/web/modules/dashboards/web'));
 });
 
 gulp.task('build-amcharts', function() {

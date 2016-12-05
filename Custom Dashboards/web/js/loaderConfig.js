@@ -34,6 +34,7 @@ requirejs.config({
     // set the base url to the old base prefixed by the mango server base url
     baseUrl: mangoUrl + requirejs.toUrl(''),
     paths : {
+        'modules': '/modules',
         'dashboards' : module,
         // The mango-3.0 folder contains the actual 3.0 code, however when 3.1 was released the updated
         // directives and services were placed in the 3.0 folder.
