@@ -391,6 +391,22 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.adminTools',
         children: [
             {
+                name: 'dashboard.settings.dashboardDesigner',
+                url: '/dashboard-designer',
+                templateUrl: require.toUrl('modules/dashboardDesigner/web/dashboardDesigner.html'),
+                menuTr: 'dashboardDesigner.menuText',
+                menuIcon: 'mode_edit',
+                resolve: {
+                    dashboardDesignerModule: ['rQ', '$ocLazyLoad', 'Translate', '$q', function(rQ, $ocLazyLoad, Translate, $q) {
+                        var dashboardDesginerModule = rQ(['modules/dashboardDesigner/web/dashboardDesigner'], function (dashboardDesginer) {
+                            $ocLazyLoad.inject('maDashboardDesigner');
+                        });
+                        var dashboardDesginerTranslations = Translate.loadNamespaces('dashboardDesigner');
+                        return $q.all([dashboardDesginerModule, dashboardDesginerTranslations]);
+                    }]
+                }
+            },
+            {
                 url: '/edit-pages/{pageXid}',
                 name: 'dashboard.settings.editPages',
                 templateUrl: 'views/dashboard/editPages.html',
