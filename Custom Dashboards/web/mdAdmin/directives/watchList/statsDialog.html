@@ -1,11 +1,16 @@
-<md-dialog aria-label="{{ctrl.parent.point.name}} Statistics" class="stats-dialog" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}">
+<ma-get-point-value point-xid="{{ctrl.parent.point.xid}}" point="myPoint"></ma-get-point-value>
+<md-dialog aria-label="{{myPoint.name}} Statistics" class="stats-dialog" ng-class="{'mobile': ctrl.parent.$mdMedia('xs')}">
       <form>
             <md-toolbar>
                   <div class="md-toolbar-tools">
-                        <h2>{{ctrl.parent.point.deviceName}} - {{ctrl.parent.point.name}}'s {{ 'dashboards.v3.app.history' | tr }} 
-                              <span class="nowrap" ma-tr="dashboards.v3.app.overTimeRange" ma-tr-args="[ctrl.timeRange]"></span>
+                        <h2>{{myPoint.deviceName}} - {{myPoint.name}}'s {{ 'dashboards.v3.app.history' | tr }} 
+                              <span ma-tr="dashboards.v3.app.overTimeRange" ma-tr-args="[ctrl.timeRange]"></span>
                         </h2>
                         <span flex></span>
+                        <h2 style="padding-right: 5px;">
+                              <span>{{'dashboards.v3.app.realtime' | tr}}: </span>
+                        </h2>
+                        <md-switch ng-model="ctrl.realtimeMode" aria-label="Realtime Mode" ng-init="ctrl.realtimeMode = true"></md-switch>
                         <md-button class="md-icon-button" ng-click="ctrl.cancel()">
                               <md-icon>close</md-icon>
                         </md-button>
@@ -15,41 +20,49 @@
                   <md-tabs md-dynamic-height md-border-bottom md-no-pagination md-stretch-tabs="always">
                         <md-tab label="{{'dashboards.v3.app.stats' | tr}}">
                               <md-content class="md-padding">
-                                    <ma-point-statistics point="ctrl.parent.point" from="ctrl.dateBar.from" to="ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
-
+                                    <ma-point-statistics point="myPoint" from="ctrl.dateBar.from" to="ctrl.dateBar.to" statistics="statsObj"></ma-point-statistics>
                                     <ma-statistics-table statistics="statsObj"></ma-statistics-table>
                               </md-content>
                         </md-tab>
                         <md-tab label="{{'dashboards.v3.app.chart' | tr}}">
-                              <md-content class="md-padding">
-                                    <ma-point-values point-xid="{{ctrl.parent.point.xid}}" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup">
+                              <md-content class="md-padding" ng-show="!ctrl.realtimeMode">
+                                    <ma-point-values point="myPoint" values="pointValues" from="ctrl.dateBar.from" to="ctrl.dateBar.to" rollup="{{ctrl.dateBar.rollupType}}" rollup-interval="{{ctrl.dateBar.rollupIntervals}} {{ctrl.dateBar.rollupIntervalPeriod}}" auto-rollup-interval="ctrl.dateBar.autoRollup" rendered="true">
                                     </ma-point-values>
-
-                                    <ma-serial-chart style="height: 450px; width: 100%" series-1-values="pointValues" series-1-point="ctrl.parent.point" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">
+                                    <ma-serial-chart style="height: 450px; width: 100%" series-1-values="pointValues" series-1-point="myPoint" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">
+                                    </ma-serial-chart>
+                              </md-content>
+                              <md-content class="md-padding" ng-show="ctrl.realtimeMode">
+                                    <ma-point-values point="myPoint" values="realtimePointValues" realtime="true" rendered="true" latest="100"></ma-point-values>
+                                    <ma-serial-chart style="height: 450px; width: 100%" series-1-values="realtimePointValues" series-1-point="myPoint" series-1-color="rgb(0,173,239)" stack-type="none" legend="true" export="true" balloon="true">
                                     </ma-serial-chart>
                               </md-content>
                         </md-tab>
                         <md-tab label="{{'dashboards.v3.app.values' | tr}}">
                               <md-content class="md-padding">
-                                    <!-- <ma-point-values point-xid="{{point.xid}}" values="pointValuesLatest" latest="10" realtime rendered="true">
-                                    </ma-point-values> -->
-                                    <md-table-container ng-init="myLimit=10; myPage=1; myOrder='-timestamp'">
+                                    <md-table-container ng-init="myOrder='-timestamp'">
                                           <table md-table>
                                                 <thead md-head md-order="myOrder">
                                                       <tr md-row>
-                                                            <th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.timestamp"></th>
+                                                            <th md-column md-order-by="timestamp" ma-tr="dashboards.v3.app.time"></th>
                                                             <th md-column md-order-by="value" ma-tr="dashboards.v3.app.pointValue"></th>
                                                       </tr>
                                                 </thead>
-                                                <tbody md-body>
-                                                      <tr ng-repeat="value in pointValues | orderBy: myOrder | limitTo: myLimit: (myPage - 1) * myLimit">
-                                                            <td md-cell>{{value.timestamp | moment:'format':'ll LTS'}}</td>
-                                                            <td md-cell>{{value.value}}</td>
+                                                <tbody md-body ng-if="!ctrl.realtimeMode">
+                                                      <tr md-row ng-repeat="value in pointValues | orderBy: myOrder">
+                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
+                                                            <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+                                                            <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
+                                                      </tr>
+                                                </tbody>
+                                                <tbody md-body ng-if="ctrl.realtimeMode">
+                                                      <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
+                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
+                                                            <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
+                                                <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                                                       </tr>
                                                 </tbody>
                                           </table>
                                     </md-table-container>
-                                    <md-table-pagination md-limit="myLimit" md-limit-options="[5, 10, 20, 25, 50]" md-page="myPage" md-total="{{pointValues.length}}"></md-table-pagination>
                               </md-content>
                         </md-tab>
                   </md-tabs>
