@@ -392,7 +392,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         children: [
             {
                 name: 'dashboard.settings.dashboardDesigner',
-                url: '/dashboard-designer',
+                url: '/dashboard-designer/{pageXid}',
                 templateUrl: require.toUrl('modules/dashboardDesigner/web/dashboardDesigner.html'),
                 menuTr: 'dashboardDesigner.menuText',
                 menuIcon: 'mode_edit',
@@ -404,6 +404,10 @@ mdAdminApp.constant('MENU_ITEMS', [
                         var dashboardDesginerTranslations = Translate.loadNamespaces('dashboardDesigner');
                         return $q.all([dashboardDesginerModule, dashboardDesginerTranslations]);
                     }]
+                },
+                params: {
+                    markup: null,
+                    templateUrl: null
                 }
             },
             {
