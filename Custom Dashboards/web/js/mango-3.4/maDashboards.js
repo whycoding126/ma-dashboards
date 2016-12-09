@@ -62,6 +62,8 @@ define(['./maServices',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
         './components/watchListParameters/watchListParameters',
         './components/imageSlider/imageSlider',
+        './components/maMap/maMap',
+        'ng-map',
         './filters/trFilter',
         'angular',
         'require',
@@ -76,7 +78,7 @@ define(['./maServices',
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, trFilter, angular, require, AmCharts, moment) {
+        imageSlider, maMap, ngMap, trFilter, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -88,7 +90,7 @@ define(['./maServices',
  *
  *
 **/
-var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters']);
+var maDashboards = angular.module('maDashboards', ['maServices', 'maFilters', 'ngMap']);
 
 maDashboards.directive('maFilteringPointList', filteringPointList);
 maDashboards.directive('maPointList', pointList);
@@ -147,6 +149,7 @@ maDashboards.component('maPointHierarchyPointSelector', pointHierarchyPointSelec
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
 maDashboards.component('maWatchListParameters', watchListParameters);
 maDashboards.component('maImageSlider', imageSlider);
+maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
 
 maDashboards.constant('maDashboardsInsertCss', true);
