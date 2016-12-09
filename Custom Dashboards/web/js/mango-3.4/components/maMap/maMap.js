@@ -9,19 +9,19 @@ define(['angular', 'require'], function(angular, require) {
 function maMapController() {
     
     this.$onChanges = function(changes) {
-        console.log(changes);
+        // console.log(changes);
     };
     
 }
 
 return {
     bindings: {
-        apiKey: '@',
-        zoom: '@',
+        zoom: '<',
         center: '@'
     },
     controller: maMapController,
-    templateUrl: require.toUrl('./maMap.html')
+    templateUrl: require.toUrl('./maMap.html'),
+    transclude: true
 };
 
 }); // define
