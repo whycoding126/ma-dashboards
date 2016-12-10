@@ -40,15 +40,16 @@ define([], function() {
 
 function rqFactory($q, require) {
     function rQ(deps, success, fail, fail2) {
+        var localRequire = require;
         if (typeof deps === 'function') {
-            require = deps;
+            localRequire = deps;
             deps = success;
             success = fail;
             fail = fail2;
         }
         
         var defer = $q.defer();
-        require(deps, function() {
+        localRequire(deps, function() {
             var result = typeof success === 'function' ? success.apply(null, arguments) : success;
             defer.resolve(result);
         }, function() {
