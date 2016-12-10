@@ -1436,14 +1436,36 @@ var dashboardSettingsPromise = $http({
 }).then(function(data) {
     return data.data;
 }, angular.noop);
+
 var customDashboardSettingsPromise = JsonStore.getPublic({xid: 'dashboard-settings'}).$promise.then(null, angular.noop);
 
-$q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSettingsPromise]).then(function(data) {
+var angularModulesPromise = $http({
+    method: 'GET',
+    url: '/rest/v1/modules/angularjs-modules/public'
+}).then(function (response) {
+    if (!response.data.urls || !response.data.urls.length) return;
+    var deferred = $q.defer();
+    for (var i = 0; i < response.data.urls.length; i++) {
+        response.data.urls[i] = response.data.urls[i].replace(/^\/modules\/(.*?).js$/, 'modules/$1');
+    }
+    require(response.data.urls, function () {
+        deferred.resolve(Array.prototype.slice.apply(arguments));
+    }, function() {
+        deferred.reject();
+    });
+    return deferred.promise;
+}, function() {
+    console.log(arguments);
+    console.log('Error loading AngularJS modules from Mango modules');
+});
+
+$q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSettingsPromise, angularModulesPromise]).then(function(data) {
     var mdAdminSettings = {};
     mdAdminSettings.user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
     var defaultSettings = data[1];
     var customSettingsStore = data[2];
+    var angularModules = data[3] || [];
     
     if (defaultSettings) {
         mdAdminSettings.defaultSettings = defaultSettings;
@@ -1458,10 +1480,16 @@ $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSet
         mdAdminSettings.defaultUrl = userMenuStore.jsonData.defaultUrl;
     }
     
+    var angularJsModuleNames = ['mdAdminApp'];
+    for (var i = 0; i < angularModules.length; i++) {
+        var angularModule = angularModules[i];
+        angularJsModuleNames.push(angularModule.name);
+    }
+    
     servicesInjector.get('$rootScope').$destroy();
     mdAdminApp.constant('MD_ADMIN_SETTINGS', mdAdminSettings);
     angular.element(document).ready(function() {
-        angular.bootstrap(document.documentElement, ['mdAdminApp'], {strictDi: true});
+        angular.bootstrap(document.documentElement, angularJsModuleNames, {strictDi: true});
     });
 });
 
