@@ -39,7 +39,14 @@ define([], function() {
 */
 
 function rqFactory($q, require) {
-    function rQ(deps, success, fail) {
+    function rQ(deps, success, fail, fail2) {
+        if (typeof deps === 'function') {
+            require = deps;
+            deps = success;
+            success = fail;
+            fail = fail2;
+        }
+        
         var defer = $q.defer();
         require(deps, function() {
             var result = typeof success === 'function' ? success.apply(null, arguments) : success;
