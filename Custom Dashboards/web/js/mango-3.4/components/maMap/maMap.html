@@ -1,3 +1,22 @@
-<ng-map center="{{$ctrl.center}}" default-style="true" zoom="{{$ctrl.zoom}}">
+<style ng-if="$ctrl.infoWindowTheme === 'dark'">
+  .ng-map-info-window {
+    background-color: rgb(66,66,66);
+    color: #fff;
+  }
+  
+  .ng-map-info-window div:first-child > div:nth-child(1) {
+    border-top-color: rgb(66,66,66) !important;
+  }
+  
+  .ng-map-info-window div:first-child > div:nth-child(3) div {
+    background-color: transparent !important;
+  }
+  
+  .ng-map-info-window div:first-child > div:nth-child(4) {
+    background-color: transparent !important;
+  }
+</style>
+
+<ng-map ng-if="$ctrl.render" center="{{$ctrl.center}}" default-style="true" trigger-resize="true" zoom="{{$ctrl.zoom}}" map-type-id="{{$ctrl.mapType}}">
   <ng-transclude></ng-transclude>
 </ng-map>
