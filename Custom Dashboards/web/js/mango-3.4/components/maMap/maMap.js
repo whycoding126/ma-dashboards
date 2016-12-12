@@ -31,7 +31,10 @@ define(['angular', 'require'], function (angular, require) {
         }.bind(this);
 
         this.$onChanges = function (changes) {
-            // console.log(changes);
+            console.log(changes);
+            if (!this.height) {
+                this.height = "400px";
+            }
         };
     }
 
