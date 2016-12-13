@@ -3,42 +3,45 @@
  * @author Will Geller
  */
 
-define(['angular', 'require'], function (angular, require) {
+define(['angular', 'require'], function(angular, require) {
     'use strict';
 
     maMapController.$inject = ['$scope', 'NgMap', 'MD_ADMIN_SETTINGS'];
     function maMapController($scope, NgMap, MD_ADMIN_SETTINGS) {
         var $ctrl = this;
-        
+        $ctrl.render = false;
+        $ctrl.infoWindowCache = {};
+
         require(['https://maps.google.com/maps/api/js?key=' + MD_ADMIN_SETTINGS.googleMapsApiKey], function() {
             $scope.$applyAsync(function() {
                 $ctrl.render = true;
             });
         });
 
-        this.render = false;
-        this.infoWindowCache = {};
-
-        NgMap.getMap().then(function (map) {
-            this.map = map;
-        }.bind(this));
-
-        this.toggleInfoWindow = function(e, windowId, markerId) {
+        $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
             // console.log(e, windowId, markerId);
-            if (!this.infoWindowCache[windowId]) {
-                this.map.showInfoWindow(windowId, markerId);
-                this.infoWindowCache[windowId] = true;
+            if (!$ctrl.infoWindowCache[windowId]) {
+                $ctrl.map.showInfoWindow(windowId, markerId);
+                $ctrl.infoWindowCache[windowId] = true;
             }
             else {
-                this.map.hideInfoWindow(windowId);
-                this.infoWindowCache[windowId] = false;
+                $ctrl.map.hideInfoWindow(windowId);
+                $ctrl.infoWindowCache[windowId] = false;
             }
-        }.bind(this);
+        };
 
-        this.$onChanges = function (changes) {
-            console.log(changes);
-            if (!this.height) {
-                this.height = "400px";
+        $ctrl.onMapLoaded = function() {
+            NgMap.getMap().then(function(map) {
+                $ctrl.map = map;
+                google.maps.event.trigger($ctrl.map, 'resize');
+            });
+        };
+
+
+        $ctrl.$onChanges = function(changes) {
+            // console.log(changes);
+            if (!$ctrl.height) {
+                $ctrl.height = "400px";
             }
         };
     }

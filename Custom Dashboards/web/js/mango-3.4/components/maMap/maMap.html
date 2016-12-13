@@ -17,6 +17,6 @@
   }
 </style>
 
-<ng-map ng-if="$ctrl.render" center="{{$ctrl.center}}" style="display:block; height: {{$ctrl.height}}" trigger-resize="true" zoom="{{$ctrl.zoom}}" map-type-id="{{$ctrl.mapType}}">
+<ng-map ng-if="$ctrl.render" center="{{$ctrl.center}}" style="display:block; height: {{$ctrl.height}}" trigger-resize="true" map-initialized="$ctrl.onMapLoaded()" zoom="{{$ctrl.zoom}}" map-type-id="{{$ctrl.mapType}}">
   <ng-transclude></ng-transclude>
 </ng-map>
