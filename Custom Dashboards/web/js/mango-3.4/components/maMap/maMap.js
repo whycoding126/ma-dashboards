@@ -5,14 +5,19 @@
 
 define(['angular', 'require'], function (angular, require) {
     'use strict';
-    maMapController.$inject = ['$timeout', 'NgMap'];
-    function maMapController($timeout, NgMap) {
+
+    maMapController.$inject = ['$scope', 'NgMap', 'MA_GOOGLE_MAPS_API_KEY'];
+    function maMapController($scope, NgMap, MA_GOOGLE_MAPS_API_KEY) {
+        var $ctrl = this;
+        
+        require(['https://maps.google.com/maps/api/js?key=' + MA_GOOGLE_MAPS_API_KEY], function() {
+            $scope.$applyAsync(function() {
+                $ctrl.render = true;
+            });
+        });
+
         this.render = false;
         this.infoWindowCache = {};
-
-        $timeout(function () {
-            this.render = true;
-        }.bind(this), 100);
 
         NgMap.getMap().then(function (map) {
             this.map = map;
