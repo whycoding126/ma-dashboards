@@ -10,13 +10,18 @@ define(['angular', 'require'], function(angular, require) {
     function maMapController($scope, NgMap, MD_ADMIN_SETTINGS) {
         var $ctrl = this;
         $ctrl.render = false;
+        $ctrl.apiKeySet = false;
         $ctrl.infoWindowCache = {};
 
-        require(['https://maps.google.com/maps/api/js?key=' + MD_ADMIN_SETTINGS.googleMapsApiKey], function() {
-            $scope.$applyAsync(function() {
-                $ctrl.render = true;
+        if (MD_ADMIN_SETTINGS.googleMapsApiKey) {
+            $ctrl.apiKeySet = true;
+            require(['https://maps.google.com/maps/api/js?key=' + MD_ADMIN_SETTINGS.googleMapsApiKey], function() {
+                $scope.$applyAsync(function() {
+                    $ctrl.render = true;
+                });
             });
-        });
+        }
+        
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
             // console.log(e, windowId, markerId);
