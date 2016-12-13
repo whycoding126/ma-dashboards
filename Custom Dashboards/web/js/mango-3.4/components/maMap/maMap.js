@@ -6,11 +6,11 @@
 define(['angular', 'require'], function (angular, require) {
     'use strict';
 
-    maMapController.$inject = ['$scope', 'NgMap', 'MA_GOOGLE_MAPS_API_KEY'];
-    function maMapController($scope, NgMap, MA_GOOGLE_MAPS_API_KEY) {
+    maMapController.$inject = ['$scope', 'NgMap', 'MD_ADMIN_SETTINGS'];
+    function maMapController($scope, NgMap, MD_ADMIN_SETTINGS) {
         var $ctrl = this;
         
-        require(['https://maps.google.com/maps/api/js?key=' + MA_GOOGLE_MAPS_API_KEY], function() {
+        require(['https://maps.google.com/maps/api/js?key=' + MD_ADMIN_SETTINGS.googleMapsApiKey], function() {
             $scope.$applyAsync(function() {
                 $ctrl.render = true;
             });
