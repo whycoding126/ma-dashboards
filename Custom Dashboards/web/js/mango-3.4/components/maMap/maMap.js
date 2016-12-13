@@ -22,6 +22,10 @@ define(['angular', 'require'], function(angular, require) {
             });
         }
         
+        $ctrl.setOutputData = function(e, data) {
+            $ctrl.outputData = data;
+            // console.log('setData called', e, data);
+        }
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
             // console.log(e, windowId, markerId);
@@ -57,7 +61,8 @@ define(['angular', 'require'], function(angular, require) {
             center: '@',
             mapType: '@',
             infoWindowTheme: '@',
-            height: '@'
+            height: '@',
+            outputData: '='
         },
         controller: maMapController,
         templateUrl: require.toUrl('./maMap.html'),
