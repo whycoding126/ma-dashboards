@@ -67,7 +67,7 @@ requirejs.config({
         'jquery-ui-touch-punch': vendor + '/jqueryui-touch-punch/jquery.ui.touch-punch',
         'mdPickers': vendor + '/mdPickers/mdPickers',
         'angular-material-data-table': vendor + '/angular-material-data-table/md-data-table',
-        'ng-map': vendor + '/ng-map/ng-map.min',
+        'ng-map': vendor + '/ngmap/ng-map',
         'angular-local-storage' : vendor + '/angular-local-storage/angular-local-storage',
         'rql': vendor + '/rql',
         'amcharts' : vendor + '/amcharts',
