@@ -81,5 +81,9 @@
 	    "backgroundPalette": "grey",
 	    "dark": false
     }
+  },
+  "fonts": {
+  	"default": "'Roboto Condensed'",
+  	"code": "'Roboto Mono'"
   }
 }

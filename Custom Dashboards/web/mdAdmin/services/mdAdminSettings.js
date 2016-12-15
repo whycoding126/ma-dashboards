@@ -116,7 +116,8 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                     var result = $interpolate(text)({
                         getThemeColor: function(colorString) {
                             return $mdColors.getThemeColor(this.activeTheme + '-' + colorString);
-                        }.bind(this)
+                        }.bind(this),
+                        mdAdminSettings: this
                     });
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));

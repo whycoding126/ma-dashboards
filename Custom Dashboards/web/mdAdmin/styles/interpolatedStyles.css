@@ -29,6 +29,18 @@ mdp-calendar .md-button.md-raised:not(.md-accent) {
     color: {{getThemeColor('primary-hue-2-1.0')}} !important;
 }
 
+code {
+  background: {{getThemeColor('background-500-0.15')}};
+}
+
+button, html, input, select, textarea {
+  font-family: {{mdAdminSettings.fonts.default}}, sans-serif;
+}
+
+pre, code {
+  font-family: {{mdAdminSettings.fonts.code}}, monospace;
+}
+
 /* AmCharts */
 
 .amcharts-gauge-arrow, .amcharts-gauge-arrow-nail {

@@ -173,7 +173,7 @@ md-option.user-menu md-icon {
   text-transform: none;
   white-space: normal;
   width: 100%;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: normal;
 }
 
@@ -376,10 +376,8 @@ pre > code.highlight {
 pre, code {
   margin: 0;
   padding: 0;
-  font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
   overflow-wrap: break-word;
 }
-
 
 pre > code.highlight {
   background-color: transparent;
@@ -389,7 +387,6 @@ pre > code.highlight {
 
 code {
   font-size: 1.4rem;
-  background: rgba(0, 0, 0, 0.065);
 }
 
 code.highlight {
@@ -480,6 +477,7 @@ code:not(.highlight) {
 
 .dashboard-menu .md-button.menu-link a {
 	color: currentColor;
+	font-weight: inherit;
 }
 
 .dashboard-menu .md-button.menu-link.menu-active {
@@ -494,8 +492,6 @@ code:not(.highlight) {
 .dashboard-menu .md-button.menu-link.menu-active .menu-icon {
 	color: rgba(255,255,255,0.87);
 }
-
-
 
 md-card md-toolbar, md-card md-toolbar .md-toolbar-tools {
     height: 42px;
