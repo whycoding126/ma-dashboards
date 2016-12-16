@@ -52,10 +52,15 @@ mdAdminApp.factory('Page', Page)
     .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
-    this.addStates = function(menuItems, parent) {
-        angular.forEach(menuItems, function(menuItem, parent) {
+    var addedStates = {};
+    
+    this.addStates = function(menuItems, parent, removeResolve) {
+        angular.forEach(menuItems, function(menuItem, index) {
             if (menuItem.name || menuItem.state) {
-                //menuItem.parent = parent;
+                if (removeResolve && menuItem.resolve) {
+                    menuItem.resolve.__REPLACE_ME = [];
+                }
+                
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '" flex layout="column"></page-view>';
@@ -86,12 +91,18 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
 
                 try {
                     $stateProvider.state(menuItem);
+                    addedStates[menuItem.name] = menuItem;
                 } catch (error) {
                     // state already exists
+                    var existingMenuItem = addedStates[menuItem.name];
+                    if (existingMenuItem.resolve && existingMenuItem.resolve.__REPLACE_ME && menuItem.resolve) {
+                        delete existingMenuItem.resolve.__REPLACE_ME;
+                        angular.extend(existingMenuItem.resolve, menuItem.resolve);
+                    }
                 }
             }
 
-            this.addStates(menuItem.children, menuItem);
+            this.addStates(menuItem.children, menuItem, removeResolve);
         }.bind(this));
     };
 
@@ -1172,7 +1183,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     mangoStateProvider.addStates(MENU_ITEMS);
     if (MD_ADMIN_SETTINGS.customMenuItems)
-        mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems);
+        mangoStateProvider.addStates(MD_ADMIN_SETTINGS.customMenuItems, null, true);
     
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
