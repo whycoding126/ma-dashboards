@@ -7,7 +7,7 @@
     </parent>
     <artifactId>dashboards</artifactId>
     <name>Dashboards</name>
-    <version>3.4.1-SNAPSHOT</version>
+    <version>3.5.0-SNAPSHOT</version>
     <build>
     <plugins>
         <plugin>
