@@ -52,15 +52,11 @@ mdAdminApp.factory('Page', Page)
     .constant('DASHBOARDS_NG_DOCS', NG_DOCS);
 
 mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider($stateProvider) {
-    var addedStates = {};
+    var resolveObjects = {};
     
-    this.addStates = function(menuItems, parent, removeResolve) {
+    this.addStates = function(menuItems, parent, fromJsonStore) {
         angular.forEach(menuItems, function(menuItem, index) {
             if (menuItem.name || menuItem.state) {
-                if (removeResolve && menuItem.resolve) {
-                    menuItem.resolve.__REPLACE_ME = [];
-                }
-                
                 if (menuItem.linkToPage) {
                     delete menuItem.templateUrl;
                     menuItem.template = '<page-view xid="' + menuItem.pageXid + '" flex layout="column"></page-view>';
@@ -76,9 +72,12 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                     menuItem.name = menuItem.state;
                 }
                 
-                if (!menuItem.resolve && menuItem.name.indexOf('.') < 0) {
-                    menuItem.resolve = {
-                        loginTranslations: loadLoginTranslations
+                if (!menuItem.resolve) {
+                    menuItem.resolve = {};
+                }
+                if (menuItem.name.indexOf('dashboard.') !== 0) {
+                    if (!menuItem.resolve.loginTranslations) {
+                        menuItem.resolve.loginTranslations = loadLoginTranslations;
                     }
                 }
                 
@@ -91,18 +90,19 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
 
                 try {
                     $stateProvider.state(menuItem);
-                    addedStates[menuItem.name] = menuItem;
+                    resolveObjects[menuItem.name] = menuItem.resolve;
                 } catch (error) {
                     // state already exists
-                    var existingMenuItem = addedStates[menuItem.name];
-                    if (existingMenuItem.resolve && existingMenuItem.resolve.__REPLACE_ME && menuItem.resolve) {
-                        delete existingMenuItem.resolve.__REPLACE_ME;
-                        angular.extend(existingMenuItem.resolve, menuItem.resolve);
+                    if (!fromJsonStore) {
+                        var existingResolve = resolveObjects[menuItem.name];
+                        if (existingResolve) {
+                            angular.extend(existingResolve, menuItem.resolve);
+                        }
                     }
                 }
             }
 
-            this.addStates(menuItem.children, menuItem, removeResolve);
+            this.addStates(menuItem.children, menuItem, fromJsonStore);
         }.bind(this));
     };
 
