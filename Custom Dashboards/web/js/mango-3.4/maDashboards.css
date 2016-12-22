@@ -280,3 +280,18 @@ md-autocomplete[md-floating-label][ma-clearable] button {
   bottom: auto;
   right: 0;
 }
+
+ma-accordion-section {
+  overflow: hidden;
+  display: block;
+}
+
+.ma-slide-up-parent-enter,
+.ma-slide-up-parent-leave {
+  transition: max-height 0.3s linear;
+}
+
+.ma-slide-up.ng-enter,
+.ma-slide-up.ng-leave {
+  transition: transform 0.3s linear;
+}

@@ -13,7 +13,7 @@ function accordionSection() {
         transclude: true,
         require: '?^^maAccordion',
         scope: {},
-        template: '<div ng-if="accordionController.section[id]" ng-transclude></div>',
+        template: '<div class="ma-slide-up" ng-if="accordionController.section[id]" ng-transclude></div>',
         link: function($scope, $element, $attrs, accordionController) {
             var id = $attrs.id;
             
