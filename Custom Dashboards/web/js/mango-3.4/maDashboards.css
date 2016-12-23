@@ -295,3 +295,14 @@ ma-accordion-section {
 .ma-slide-up.ng-leave {
   transition: transform 0.3s linear;
 }
+
+.ma-input-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.ma-input-button.md-icon-button,
+.ma-input-button .md-icon-button {
+  margin: 0;
+}

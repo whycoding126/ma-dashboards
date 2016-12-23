@@ -53,7 +53,6 @@ function pointValue(mangoDateFormats) {
             timezone: '@',
             valueUpdated: '&?'
         },
-        replace: true,
         templateUrl: require.toUrl('./pointValue.html'),
         link: function ($scope, $element, attrs) {
             var dateTimeFormat = $scope.dateTimeFormat || mangoDateFormats.dateTimeSeconds;

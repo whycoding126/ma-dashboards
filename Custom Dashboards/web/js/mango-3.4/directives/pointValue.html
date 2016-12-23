@@ -1,6 +1,4 @@
-<span class="point-value">
-	<ma-get-point-value point="point" point-xid="{{pointXid || point.xid}}" value-updated="onValueUpdated()"></ma-get-point-value>
-	<span ng-if="displayType !== 'image'" ng-style="valueStyle" ng-class="classes" class="value">{{displayValue}}</span>
-    <img ng-if="displayType == 'image'" ng-style="valueStyle" ng-class="classes" class="value" ng-src="{{point.value}}" alt="{{}}">
-	<span ng-if="point && !point.enabled" class="disabled-text" ma-tr="common.disabled"></span>
-</span>
+<ma-get-point-value point="point" point-xid="{{pointXid || point.xid}}" value-updated="onValueUpdated()"></ma-get-point-value>
+<span ng-if="displayType !== 'image'" ng-style="valueStyle" ng-class="classes" class="value">{{displayValue}}</span>
+<img ng-if="displayType == 'image'" ng-style="valueStyle" ng-class="classes" class="value" ng-src="{{point.value}}" alt="{{}}">
+<span ng-if="point && !point.enabled" class="disabled-text" ma-tr="common.disabled"></span>

@@ -25,14 +25,14 @@ define(['require', 'rql/query'], function(require, query) {
  * @usage
  * <ma-filtering-point-list ng-model="myPoint"></ma-filtering-point-list>
  */
-pointList.$inject = ['Point', '$filter', '$injector', '$parse', '$timeout', 'Translate'];
-function pointList(Point, $filter, $injector, $parse, $timeout, Translate) {
+pointList.$inject = ['Point', '$filter', '$injector', 'Translate', '$timeout'];
+function pointList(Point, $filter, $injector, Translate, $timeout) {
     return {
         restrict: 'E',
         require: 'ngModel',
         scope: {
             ngModel: '=',
-            ngChange: '@',
+            ngChange: '&?',
             limit: '=?',
             autoInit: '=?',
             pointXid: '@',
@@ -66,16 +66,15 @@ function pointList(Point, $filter, $injector, $parse, $timeout, Translate) {
                 
             }
 
-            var change = $parse(attrs.ngChange);
-            $scope.changed = function() {
-                $timeout(function() {
-                    change($scope.$parent);
-                }, 0);
-            };
-            
             $scope.storeItem = function(selectedItem) {
-                if (selectedItem && selectedItem!=null) {
+                // jshint eqnull:true
+                if (selectedItem && selectedItem != null) {
                     $scope.ngModel = selectedItem;
+                    if ($scope.ngChange) {
+                        $timeout(function() {
+                            $scope.ngChange();
+                        }, 0);
+                    }
                 }
             };
 
