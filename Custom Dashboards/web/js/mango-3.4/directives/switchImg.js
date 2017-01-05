@@ -51,7 +51,6 @@ define([], function() {
 function switchImg() {
     return {
         restrict: 'E',
-        replace: true,
         scope: {
         	point: '=',
         	srcMap: '=?',

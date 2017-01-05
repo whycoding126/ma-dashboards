@@ -985,14 +985,6 @@ div.help-doc-container {
 	max-width: 1200px;
 }
 
-img.imageValue,
-img.live-value {
-  width: auto;
-  height: auto;
-  max-height: 300px;
-  max-width: 300px;
-}
-
 .missing-module {
   width: 100%;
   text-align: center;
