@@ -75,7 +75,9 @@ requirejs.config({
         //'amcharts/plugins/export/export': vendor + '/amcharts/plugins/export/export.min',
         'amcharts/plugins/responsive/responsive': vendor + '/amcharts/plugins/responsive/responsive.min',
         'amcharts/plugins/dataloader/dataloader': vendor + '/amcharts/plugins/dataloader/dataloader.min',
-        'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min'
+        'amcharts/plugins/animate/animate': vendor + '/amcharts/plugins/animate/animate.min',
+        'tinycolor' : vendor + '/tinycolor/tinycolor',
+        'md-color-picker' : vendor + '/md-color-picker'
     },
     shim : {
         'angular': {
@@ -140,6 +142,9 @@ requirejs.config({
         },
         'jquery-ui-touch-punch': {
             'deps' : ['jquery-ui']
+        },
+        'md-color-picker/mdColorPicker': {
+            deps: ['tinycolor', 'angular', 'angular-material']
         }
     }
 });
