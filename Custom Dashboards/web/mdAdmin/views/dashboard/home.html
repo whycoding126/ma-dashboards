@@ -1,7 +1,18 @@
 <style>
+    .home-page md-card md-card-content {
+        padding: 8px;
+    }
     .home-page md-icon {
-        font-size: 55px;
+        font-size: 50px;
         color: currentColor;
+    }
+    .home-page md-icon.badge {
+        font-size: 23px;
+        padding: 0 0 40px 0;
+        margin-left: -5px;
+    }
+    .home-page md-icon.badged {
+        padding-left: 23px;
     }
     .home-page a {
         color: currentColor;
@@ -40,6 +51,50 @@
                 </a>
             </md-card>
             <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">56</strong>
+                        <md-icon>graphic_eq</md-icon>
+                        <h3 flex="100">Meta Data Points</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+        </div>
+
+        <div layout layout-fill>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">45</strong>
+                        <md-icon>share</md-icon>
+                        <h3 flex="100">Point Links</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">3</strong>
+                        <md-icon>swap_calls</md-icon>
+                        <h3 flex="100">Scripts</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.watchList" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">9</strong>
+                        <md-icon>remove_red_eye</md-icon>
+                        <h3 flex="100">Watch Lists</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+        </div>
+    </div>
+
+    <div flex layout="row" layout-xs="column" layout-align="start center">
+        <div layout layout-fill>
+            <md-card flex layout="column">
                 <a ui-sref="dashboard.settings.users" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
                         <strong flex="100">3</strong>
@@ -48,9 +103,36 @@
                     </md-card-content>
                 </a>
             </md-card>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.users" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">2</strong>
+                        <md-icon>face</md-icon>
+                        <h3 flex="100">Active Sessions</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.reports" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">62</strong>
+                        <md-icon>book</md-icon>
+                        <h3 flex="100">Reports</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
         </div>
 
         <div layout layout-fill>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.excelReports" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">8</strong>
+                        <md-icon>grid_on</md-icon>
+                        <h3 flex="100">Excel reports</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
             <md-card flex layout="column">
                 <a ui-sref="dashboard.settings.publishers" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
@@ -60,6 +142,20 @@
                     </md-card-content>
                 </a>
             </md-card>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.importExport" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">&nbsp;</strong>
+                        <md-icon>import_export</md-icon>
+                        <h3 flex="100">Utilities</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
+        </div>
+    </div>
+
+    <div flex layout="row" layout-xs="column" layout-align="start center">
+        <div layout layout-fill>
             <md-card flex layout="column">
                 <a ui-sref="dashboard.settings.scheduledEvents" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
@@ -78,35 +174,15 @@
                     </md-card-content>
                 </a>
             </md-card>
-        </div>
-    </div>
-
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
             <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">45</strong>
-                        <md-icon>share</md-icon>
-                        <h3 flex="100">Point Links</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">56</strong>
-                        <md-icon>graphic_eq</md-icon>
-                        <h3 flex="100">Meta Data Points</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.dataSources" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">3</strong>
-                        <md-icon>swap_calls</md-icon>
-                        <h3 flex="100">Scripts</h3>
+                <a ui-sref="dashboard.events({eventType: 'DATA_POINT'})" flex layout="column">
+                    <md-card-content flex layout="row" layout-align="center" layout-wrap>
+                        <strong flex="100">15</strong>
+                        <div layout>
+                            <md-icon>timeline</md-icon>
+                            <md-icon class="badge">alarm</md-icon>
+                        </div>
+                        <h3 flex="100">Data Point Events</h3>
                     </md-card-content>
                 </a>
             </md-card>
@@ -114,20 +190,14 @@
 
         <div layout layout-fill>
             <md-card flex layout="column">
-                <a ui-sref="dashboard.watchList" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">9</strong>
-                        <md-icon>remove_red_eye</md-icon>
-                        <h3 flex="100">Watch Lists</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.editPages" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">6</strong>
-                        <md-icon>dashboard</md-icon>
-                        <h3 flex="100">Custom Pages</h3>
+                <a ui-sref="dashboard.events({eventType: 'SYSTEM'})" flex layout="column">
+                    <md-card-content flex layout="row" layout-align="center" layout-wrap>
+                        <strong flex="100">65</strong>
+                        <div layout>
+                            <md-icon class="badged">computer</md-icon>
+                            <md-icon class="badge">alarm</md-icon>
+                        </div>
+                        <h3 flex="100">System Events</h3>
                     </md-card-content>
                 </a>
             </md-card>
@@ -135,22 +205,8 @@
                 <a ui-sref="dashboard.settings.scheduledEvents" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
                         <strong flex="100">5</strong>
-                        <md-icon>list</md-icon>
-                        <h3 flex="100">Schedules</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-        </div>
-    </div>
-
-    <div flex layout="row" layout-xs="column" layout-align="start center">
-        <div layout layout-fill>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.modules" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">15</strong>
-                        <md-icon>extension</md-icon>
-                        <h3 flex="100">Modules</h3>
+                        <md-icon>alarm</md-icon>
+                        <h3 flex="100">Scheduled Events</h3>
                     </md-card-content>
                 </a>
             </md-card>
@@ -163,42 +219,35 @@
                     </md-card-content>
                 </a>
             </md-card>
+        </div>
+    </div>
+
+    <div flex layout="row" layout-xs="column" layout-align="start center">
+        <div layout layout-fill>
             <md-card flex layout="column">
-                <a ui-sref="dashboard.settings.importExport" flex layout="column">
+                <a ui-sref="dashboard.settings.editPages" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">&nbsp;</strong>
-                        <md-icon>import_export</md-icon>
-                        <h3 flex="100">Utilities</h3>
+                        <strong flex="100">6</strong>
+                        <md-icon>dashboard</md-icon>
+                        <h3 flex="100">Custom Pages</h3>
                     </md-card-content>
                 </a>
             </md-card>
-        </div>
-
-        <div layout layout-fill>
+            <md-card flex layout="column">
+                <a ui-sref="dashboard.settings.modules" flex layout="column">
+                    <md-card-content flex layout="row" layout-wrap>
+                        <strong flex="100">15</strong>
+                        <md-icon>extension</md-icon>
+                        <h3 flex="100">Modules</h3>
+                    </md-card-content>
+                </a>
+            </md-card>
             <md-card flex layout="column">
                 <a ui-sref="dashboard.settings.systemSettings" flex layout="column">
                     <md-card-content flex layout="row" layout-wrap>
                         <strong flex="100">&nbsp;</strong>
                         <md-icon>settings</md-icon>
                         <h3 flex="100">System Settings</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.reports" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">62</strong>
-                        <md-icon>book</md-icon>
-                        <h3 flex="100">Reports</h3>
-                    </md-card-content>
-                </a>
-            </md-card>
-            <md-card flex layout="column">
-                <a ui-sref="dashboard.events" flex layout="column">
-                    <md-card-content flex layout="row" layout-wrap>
-                        <strong flex="100">445</strong>
-                        <md-icon>alarm</md-icon>
-                        <h3 flex="100">Events</h3>
                     </md-card-content>
                 </a>
             </md-card>
