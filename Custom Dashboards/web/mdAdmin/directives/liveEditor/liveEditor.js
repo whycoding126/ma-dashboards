@@ -19,7 +19,8 @@ var liveEditor = function($templateRequest, $sce) {
             src: '@',
             text: '=liveEditor',
             mode: '@',
-            theme: '@'
+            theme: '@',
+            onEdit: '&?'
         },
         controller: ['$scope', '$element', 'mdAdminSettings', function($scope, $element, mdAdminSettings) {
             
@@ -75,7 +76,13 @@ var liveEditor = function($templateRequest, $sce) {
             });
             
             function aceChanged() {
-                $scope.text = currentText = editor.getValue();
+                currentText = editor.getValue();
+                if ($scope.text !== currentText) {
+                    $scope.text = currentText;
+                    if ($scope.onEdit) {
+                        $scope.onEdit({$text: currentText});
+                    }
+                }
             }
 
             function setText(text) {
