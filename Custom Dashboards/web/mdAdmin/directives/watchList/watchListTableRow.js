@@ -82,6 +82,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
                         $mdDialog.show({
                                 controller: function() {
                                     this.dateBar = DateBar;
+                                    this.mdAdminSettings = mdAdminSettings;
                                     
                                     this.parent = scope;
                                     this.timeRange = moment.duration(moment(this.dateBar.to).diff(moment(this.dateBar.from))).humanize();
