@@ -68,8 +68,13 @@ function gaugeChart() {
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.gaugeChart',
+            icon: 'donut_large',
+            category: 'pointValue'
+        },
         scope: {
-          value: '=',
+          value: '=?',
           point: '=',
           options: '=?',
           start: '@',

@@ -45,6 +45,11 @@ Time: <ma-point-value point="myPoint1" display-type="dateTime" date-time-format=
 function pointValue(mangoDateFormats) {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.pointValue',
+            icon: 'label',
+            category: 'pointValue'
+        },
         scope: {
             point: '=?',
             pointXid: '@',

@@ -51,6 +51,15 @@ define([], function() {
 function switchImg() {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.switchImg',
+            icon: 'image',
+            category: 'pointValue',
+            attributes: {
+                srcTrue: {type: 'string', optional: true},
+                srcFalse: {type: 'string', optional: true}
+            }
+        },
         scope: {
         	point: '=',
         	srcMap: '=?',
