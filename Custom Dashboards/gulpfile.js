@@ -26,7 +26,7 @@ gulp.task('default', function() {
         })
         .pipe(plugins.rename(function(path) {
             path.dirname = path.dirname.replace(/^ace-builds(\\|\/)src-min-noconflict/g, 'ace');
-            path.dirname = path.dirname.replace(/(\\|\/)(min|dist|build|builds|lib|release)$/g, '');
+            path.dirname = path.dirname.replace(/(\\|\/)(min|dist|build|builds|lib|release|build(\\|\/)scripts)$/g, '');
             path.basename = path.basename.replace(/\.min$/g, '');
         }))
         //.pipe(plugins.filter('**/*.js'))

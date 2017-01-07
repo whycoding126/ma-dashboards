@@ -32,7 +32,8 @@
     "rql": "~0.3.3",
     "angular-ui-sortable": "~0.14.3",
     "jqueryui-touch-punch": "master",
-    "md-color-picker": "~0.2.6"
+    "md-color-picker": "~0.2.6",
+    "ngmap": "~1.17.7"
   },
   "overrides": {
     "ace-builds": {
