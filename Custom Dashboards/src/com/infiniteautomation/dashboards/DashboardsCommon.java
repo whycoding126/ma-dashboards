@@ -30,7 +30,7 @@ public class DashboardsCommon{
 	public static final String DEFAULT_DASHBOARDS_PRIVATE_FILES_LOCATION = "/web/private/";
 	public static final String DEFAULT_DASHBOARDS_ICON_DESTINATION = "/dashboards/";
 	public static final String DEFAULT_DASHBOARDS_ICON_LOCATION = "web/img/dashboards.png";
-	public static final String DEFAULT_DASHBOARDS_LOGIN_PAGE = "";
+	public static final String DEFAULT_DASHBOARDS_LOGIN_PAGE = "/dashboards/login";
     public static final String DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE = "";
     public static final String DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE = "";
     public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE = "";
