@@ -33,6 +33,18 @@ img.point-disabled {
  *	Horizontal and vertical bar displays
  */
 
+ma-bar-display {
+  display: block;
+  position: relative;
+}
+
+ma-bar-display .bar-display-fill {
+    height: 100%;
+    width: 100%;
+    background-color: currentColor;
+    position: absolute;
+}
+
 .bar-display {
     border: 1px solid #aaa;
     position: relative;
@@ -48,7 +60,7 @@ img.point-disabled {
     height: 200px;
 }
 
-.bar-display-fill {
+.bar-display .bar-display-fill {
     border-radius: 3px;
     height: 100%;
     background-color: lightGreen;
@@ -57,14 +69,14 @@ img.point-disabled {
     top: 0;
 }
 
-.bar-display-vertical .bar-display-fill {
+.bar-display.bar-display-vertical .bar-display-fill {
     height: auto;
     width: 100%;
     top: auto;
     bottom: 0;
 }
 
-.bar-display-text {
+.bar-display .bar-display-text {
     position: absolute;
     font-weight: bold;
     left: 50%;
@@ -72,7 +84,7 @@ img.point-disabled {
     transform: translate(-50%, -50%);
 }
 
-.bar-display-vertical .bar-display-text {
+.bar-display.bar-display-vertical .bar-display-text {
     transform-origin: top left;
     transform: rotate(-90deg) translate(-50%, -50%);
 }

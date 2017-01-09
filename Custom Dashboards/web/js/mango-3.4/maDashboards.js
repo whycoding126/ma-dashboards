@@ -58,6 +58,7 @@ define(['./maServices',
         './directives/accordionSection',
         './directives/draggable',
         './directives/dropzone',
+        './directives/barDisplay',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -81,7 +82,7 @@ define(['./maServices',
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
-        filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable, dropzone,
+        filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable, dropzone, barDisplay,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
@@ -150,6 +151,7 @@ maDashboards.directive('maAccordion', accordion);
 maDashboards.directive('maAccordionSection', accordionSection);
 maDashboards.directive('maDraggable', draggable);
 maDashboards.directive('maDropzone', dropzone);
+maDashboards.directive('maBarDisplay', barDisplay);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
