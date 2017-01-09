@@ -550,6 +550,26 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
         return cancelPromise;
     };
 
+    var SNAKE_CASE_REGEXP = /[A-Z]/g;
+    Util.prototype.snakeCase = function(name, separator) {
+        separator = separator || '-';
+        return name.replace(SNAKE_CASE_REGEXP, function(letter, pos) {
+          return (pos ? separator : '') + letter.toLowerCase();
+        });
+    };
+    
+    var PREFIX_REGEXP = /^((?:x|data)[:\-_])/i;
+    var SPECIAL_CHARS_REGEXP = /[:\-_]+(.)/g;
+    Util.prototype.camelCase = function(name) {
+        return name
+            .replace(PREFIX_REGEXP, '')
+            .replace(SPECIAL_CHARS_REGEXP, fnCamelCaseReplace);
+        
+        function fnCamelCaseReplace(all, letter) {
+            return letter.toUpperCase();
+        }
+    };
+
     return new Util();
 }
 

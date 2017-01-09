@@ -83,7 +83,11 @@ function barDisplay() {
             translation: 'dashboards.v3.components.barDisplay',
             icon: 'trending_flat',
             category: 'pointValue',
-            
+            attributes: {
+                direction: {
+                    options: ['left-to-right', 'bottom-to-top', 'right-to-left', 'top-to-bottom']
+                }
+            }
         },
         bindToController: {
             direction: '@?',
