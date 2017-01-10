@@ -27,6 +27,11 @@ statisticsTable.$inject = ['$injector', 'mangoDateFormats'];
 function statisticsTable($injector, mangoDateFormats) {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.statisticsTable',
+            icon: 'grid_on',
+            category: 'statistics'
+        },
         scope: {
             statistics: '=',
             timezone: '@',

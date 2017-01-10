@@ -34,6 +34,11 @@ function clock() {
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.clock',
+            icon: 'access_time',
+            category: 'timeAndDate'
+        },
         scope: {
           options: '=?',
           text: '@',

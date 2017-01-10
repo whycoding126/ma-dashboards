@@ -38,6 +38,11 @@ function deviceNameList(DeviceName, $injector) {
     return {
         restrict: 'E',
         require: 'ngModel',
+        designerInfo: {
+            translation: 'dashboards.v3.components.deviceNameList',
+            icon: 'view_list',
+            category: 'dropDowns'
+        },
         scope: {
             ngModel: '=',
             // attributes that start with data- have the prefix stripped

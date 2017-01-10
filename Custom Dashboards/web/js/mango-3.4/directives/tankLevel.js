@@ -33,6 +33,14 @@ function tankLevel(maDashboardsInsertCss, cssInjector) {
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.tankLevel',
+            icon: 'battery_full',
+            category: 'pointValue',
+            attributes: {
+                color: {type: 'color'}
+            }
+        },
         scope: {
           value: '=',
           point: '=',

@@ -37,6 +37,11 @@ function dataSourceList(DataSource, $injector) {
     return {
         restrict: 'E',
         require: 'ngModel',
+        designerInfo: {
+            translation: 'dashboards.v3.components.dataSourceList',
+            icon: 'view_list',
+            category: 'dropDowns'
+        },
         scope: {
             ngModel: '=',
             autoInit: '<?',

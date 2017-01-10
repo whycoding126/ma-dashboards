@@ -64,6 +64,14 @@ define(['angular', 'moment-timezone', 'require'], function(angular, moment, requ
 pointValues.$inject = ['$http', 'pointEventManager', 'Point', '$q', 'mangoTimeout', 'Util', 'pointValues'];
 function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, pointValues) {
     return {
+        designerInfo: {
+            translation: 'dashboards.v3.components.pointValues',
+            icon: 'list',
+            category: 'pointValuesAndCharts',
+            attributes: {
+                rollup: {options: ['NONE', 'AVERAGE', 'DELTA', 'MINIMUM', 'MAXIMUM', 'ACCUMULATOR', 'SUM', 'FIRST', 'LAST', 'COUNT', 'INTEGRAL']}
+            }
+        },
         scope: {
             point: '=?',
             points: '=?',

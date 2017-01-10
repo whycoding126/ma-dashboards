@@ -40,6 +40,11 @@ define([], function() {
  */
 function getPointValue(pointEventManager, Point, Util) {
     return {
+        designerInfo: {
+            translation: 'dashboards.v3.components.getPointValue',
+            icon: 'label_outline',
+            category: 'pointValue'
+        },
         scope: {
         	points: '=?',
             point: '=?',

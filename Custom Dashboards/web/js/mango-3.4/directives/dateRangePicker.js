@@ -72,6 +72,16 @@ function dateRangePicker($injector) {
         restrict: 'E',
         controllerAs: '$ctrl',
         bindToController: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.dateRangePicker',
+            icon: 'date_range',
+            category: 'timeAndDate',
+            attributes: {
+                preset: {options: ['LAST_5_MINUTES','LAST_15_MINUTES','LAST_30_MINUTES','LAST_1_HOURS','LAST_3_HOURS','LAST_6_HOURS','LAST_12_HOURS','LAST_1_DAYS',
+                    'LAST_1_WEEKS','LAST_2_WEEKS','LAST_1_MONTHS','LAST_3_MONTHS','LAST_6_MONTHS','LAST_1_YEARS','LAST_2_YEARS','DAY_SO_FAR','WEEK_SO_FAR',
+                    'MONTH_SO_FAR','YEAR_SO_FAR','PREVIOUS_DAY','PREVIOUS_WEEK','PREVIOUS_MONTH','PREVIOUS_YEAR']}
+            }
+        },
         scope: {
             preset: '@',
             from: '<',

@@ -33,6 +33,11 @@ function pointList(Point, $injector) {
     return {
         restrict: 'E',
         require: 'ngModel',
+        designerInfo: {
+            translation: 'dashboards.v3.components.pointList',
+            icon: 'view_list',
+            category: 'dropDowns'
+        },
         scope: {
             ngModel: '=',
             initPoint: '=?',

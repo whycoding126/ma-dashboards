@@ -30,6 +30,11 @@ define(['require', 'angular'], function(require, angular) {
 function setPointValue(Translate, $q, $injector) {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.setPointValue',
+            icon: 'touch_app',
+            category: 'pointValue'
+        },
         scope: {
             point: '=',
             showButton: '=?',

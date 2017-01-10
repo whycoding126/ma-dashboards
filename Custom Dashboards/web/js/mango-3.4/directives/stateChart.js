@@ -42,6 +42,11 @@ function stateChart(mangoDateFormats) {
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.stateChart',
+            icon: 'insert_chart',
+            category: 'pointValuesAndCharts'
+        },
         scope: scope,
         template: '<div class="amchart"></div>',
         link: function ($scope, $element, attributes) {

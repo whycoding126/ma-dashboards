@@ -30,6 +30,14 @@ define(['angular', 'moment'], function(angular, moment) {
 function datePicker($injector, mangoDateFormats, maDashboardsInsertCss, cssInjector, $q) {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.datePicker',
+            icon: 'access_time',
+            category: 'timeAndDate',
+            attributes: {
+                mode: {options: ['date', 'time', 'datetime']}
+            }
+        },
         scope: {
             format: '@',
             timezone: '@',

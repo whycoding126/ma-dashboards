@@ -34,6 +34,11 @@ function pieChart($http) {
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.pieChart',
+            icon: 'pie_chart',
+            category: 'pointValuesAndCharts'
+        },
         scope: {
           values: '=',
           valueLabels: '=?',

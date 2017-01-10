@@ -84,6 +84,24 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
     return {
         restrict: 'E',
         replace: true,
+        designerInfo: {
+            translation: 'dashboards.v3.components.serialChart',
+            icon: 'show_chart',
+            category: 'pointValuesAndCharts',
+            attributes: {
+                defaultColor: {type: 'color'},
+                series1Color: {type: 'color'},
+                series2Color: {type: 'color'},
+                series3Color: {type: 'color'},
+                series4Color: {type: 'color'},
+                series5Color: {type: 'color'},
+                series6Color: {type: 'color'},
+                series7Color: {type: 'color'},
+                series8Color: {type: 'color'},
+                series9Color: {type: 'color'},
+                series10Color: {type: 'color'}
+            }
+        },
         scope: scope,
         template: '<div class="amchart" ng-class="{\'amcharts-custom-color\': customAxisColors}"></div>',
         compile: function() {

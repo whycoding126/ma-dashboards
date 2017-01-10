@@ -30,6 +30,11 @@ function pointList(Point, $filter, $injector, Translate, $timeout) {
     return {
         restrict: 'E',
         require: 'ngModel',
+        designerInfo: {
+            translation: 'dashboards.v3.components.filteringPointList',
+            icon: 'filter_list',
+            category: 'dropDowns'
+        },
         scope: {
             ngModel: '=',
             ngChange: '&?',

@@ -51,6 +51,11 @@ pointValues.$inject = ['Point', 'Util', '$q', 'statistics'];
 function pointValues(Point, Util, $q, statistics) {
     return {
         restrict: 'E',
+        designerInfo: {
+            translation: 'dashboards.v3.components.pointStatistics',
+            icon: 'format_list_numbered',
+            category: 'statistics'
+        },
         scope: {
             point: '=?',
             points: '=?',
