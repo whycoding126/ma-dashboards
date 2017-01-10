@@ -12,16 +12,17 @@ function accordionSection() {
         restrict: 'E',
         transclude: true,
         require: '?^^maAccordion',
-        scope: {},
+        scope: {
+            maAccordionOpen: '<?'
+        },
         template: '<div class="ma-slide-up" ng-if="accordionController.section[id]" ng-transclude></div>',
         link: function($scope, $element, $attrs, accordionController) {
             var id = $attrs.id;
             
             $scope.accordionController = accordionController;
             $scope.id = id;
-            
-            // jshint eqnull:true
-            if ($attrs.maAccordionOpen != null) {
+
+            if ($scope.maAccordionOpen) {
                 accordionController.open(id);
             }
         }
