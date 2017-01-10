@@ -46,6 +46,8 @@ BarDisplayController.prototype.updateBar = function() {
         value = this.value;
     } else if (this.point && this.point.convertedValue != null) {
         value = this.point.convertedValue;
+    } else if (this.point && this.point.value != null) {
+        value = this.point.value;
     }
     
     var maximum = this.maximum || 100;
