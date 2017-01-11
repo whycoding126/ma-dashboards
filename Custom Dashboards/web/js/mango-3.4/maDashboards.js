@@ -68,6 +68,8 @@ define(['./maServices',
         './components/pointHierarchyBrowser/pointHierarchyFolder',
         './components/watchListParameters/watchListParameters',
         './components/imageSlider/imageSlider',
+        './components/userEditor/userEditor',
+        './components/userSelect/userSelect',
         './components/maMap/maMap',
         'ng-map',
         './filters/trFilter',
@@ -85,7 +87,7 @@ define(['./maServices',
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable, dropzone, barDisplay, indicator,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
+        imageSlider, userEditor, userSelect, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -162,6 +164,8 @@ maDashboards.component('maPointHierarchyPointSelector', pointHierarchyPointSelec
 maDashboards.component('maPointHierarchyFolder', pointHierarchyFolder);
 maDashboards.component('maWatchListParameters', watchListParameters);
 maDashboards.component('maImageSlider', imageSlider);
+maDashboards.component('maUserEditor', userEditor);
+maDashboards.component('maUserSelect', userSelect);
 maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
 maDashboards.animation('.ma-slide-up', slideUp);

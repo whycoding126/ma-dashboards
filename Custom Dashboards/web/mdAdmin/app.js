@@ -300,7 +300,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 });
             }]
         }
-
     },
     {
         url: '/reports',
@@ -456,6 +455,26 @@ mdAdminApp.constant('MENU_ITEMS', [
                 permission: 'superadmin',
                 params: {
                     helpPage: 'dashboard.help.dashboardSettings'
+                }
+            },
+            {
+                name: 'dashboard.settings.users',
+                url: '/users/{username}',
+                template: '<users-page><users-page>',
+                menuTr: 'header.users',
+                menuIcon: 'group',
+                params: {
+                    helpPage: 'dashboard.help.users'
+                },
+                resolve: {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                        return rQ(['./components/usersPage/usersPage'], function (usersPage) {
+                            angular.module('usersPage', [])
+                                .component('usersPage', usersPage);
+                            $ocLazyLoad.inject('usersPage');
+                            cssInjector.injectLink(require.toUrl('./components/usersPage/usersPage.css'), 'usersPage' ,'link[href="styles/main.css"]');
+                        });
+                    }]
                 }
             },
             {

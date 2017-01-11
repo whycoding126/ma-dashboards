@@ -1,0 +1,3 @@
+<div ng-repeat="user in $ctrl.users track by user.username">
+  <div ng-bind="user.username" ng-click="$ctrl.selectUser(user, $event)"></div>
+</div>
