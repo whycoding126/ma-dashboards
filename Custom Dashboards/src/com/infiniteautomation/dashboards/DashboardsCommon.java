@@ -31,9 +31,9 @@ public class DashboardsCommon{
 	public static final String DEFAULT_DASHBOARDS_ICON_DESTINATION = "/dashboards/";
 	public static final String DEFAULT_DASHBOARDS_ICON_LOCATION = "web/img/dashboards.png";
 	public static final String DEFAULT_DASHBOARDS_LOGIN_PAGE = "/dashboards/login";
-    public static final String DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE = "";
-    public static final String DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE = "";
-    public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE = "";
-    public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "";
+    public static final String DEFAULT_DASHBOARDS_FIRST_USER_LOGIN_PAGE = "/dashboards/help/getting-started";
+    public static final String DEFAULT_DASHBOARDS_FIRST_LOGIN_PAGE = "/dashboards/help/getting-started";
+    public static final String DEFAULT_DASHBOARDS_LOGGED_IN_PAGE = "/dashboards/home";
+    public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "/dashboards/unauthorized";
 
 }

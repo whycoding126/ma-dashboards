@@ -85,6 +85,8 @@
   },
   "fonts": {
   	"default": "'Roboto Condensed'",
+  	"heading": "Roboto",
+  	"paragraph": "Roboto",
   	"code": "'Roboto Mono'"
   }
 }

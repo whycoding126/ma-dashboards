@@ -179,6 +179,13 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.app.pageNotFound'
     },
     {
+        name: 'dashboard.unauthorized',
+        url: '/unauthorized?path',
+        templateUrl: 'views/dashboard/unauthorized.html',
+        menuHidden: true,
+        menuTr: 'dashboards.v3.app.unauthorized'
+    },
+    {
         name: 'login',
         url: '/login',
         templateUrl: 'views/login.html',
@@ -320,6 +327,13 @@ mdAdminApp.constant('MENU_ITEMS', [
                 name: 'dashboard.help.gettingStarted',
                 templateUrl: 'views/help/gettingStarted.html',
                 menuTr: 'dashboards.v3.dox.gettingStarted'
+            },
+            {
+                name: 'dashboard.help.legacy',
+                url: '/legacy',
+                templateUrl: 'views/help/legacy.html',
+                menuHidden: true,
+                menuTr: 'dashboards.v3.dox.legacyHelp'
             },
             {
                 url: '/watch-list',

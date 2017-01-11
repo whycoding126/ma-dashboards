@@ -279,32 +279,26 @@ a.md-button, .md-button a {
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   margin-top: 1rem;
+  font-weight: 500;
 }
 h1 {
   font-size: 3.400rem;
-  font-weight: 400;
   line-height: 4rem;
 }
 h2 {
   font-size: 2.400rem;
-  font-weight: 400;
   line-height: 3.2rem;
 }
 h3 {
   font-size: 2.000rem;
-  font-weight: 500;
-  letter-spacing: 0.005em;
 }
 h4 {
   font-size: 1.600rem;
-  font-weight: 400;
-  letter-spacing: 0.010em;
   line-height: 2.4rem;
 }
 p {
   font-size: 1.6rem;
   font-weight: 400;
-  letter-spacing: 0.010em;
   line-height: 1.6em;
   margin: 1.6rem 0;
 }
@@ -349,7 +343,7 @@ ul li {
   margin-left: 16px;
   padding: 0;
   margin-top: 3px;
-  list-style-position: inside;
+  /* list-style-position: inside; */
 }
 ul li:first-child {
   margin-top: 0;
@@ -934,6 +928,18 @@ md-radio-group md-radio-button {
 
 .amcharts-axis-line {
   stroke-width: 1.3;
+}
+
+.amcharts-balloon-div * {
+  font-family: inherit !important;
+}
+
+.amcharts-zoom-out-image {
+  /* cant change color of image inside svg? */
+}
+
+.amcharts-zoom-out-label {
+  fill: currentColor;
 }
 
 .amcharts-axis-label, .amcharts-axis-bottom-label, .amcharts-axis-title {
