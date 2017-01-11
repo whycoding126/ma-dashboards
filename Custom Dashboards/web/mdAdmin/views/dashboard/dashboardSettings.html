@@ -58,7 +58,7 @@
 
 <div layout layout-align="start end" layout-wrap>
   <md-button flex="nogrow" class="md-raised md-primary" ng-click="mdAdminSettings.save()"><md-icon>save</md-icon> <span ma-tr="common.save"></span></md-button>
-  <md-button flex="nogrow" class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.dox.revert"></span></md-button>
+  <md-button flex="nogrow" class="md-raised" ng-click="mdAdminSettings.reset(); mdAdminSettings.generateTheme()"><md-icon>undo</md-icon> <span ma-tr="dashboards.v3.app.revert"></span></md-button>
 
   <md-checkbox flex ng-model="mdAdminSettings.themes[mdAdminSettings.defaultTheme].dark"
       ng-disabled="mdAdminSettings.defaultTheme !== 'userTheme'" ng-change="mdAdminSettings.generateTheme()">

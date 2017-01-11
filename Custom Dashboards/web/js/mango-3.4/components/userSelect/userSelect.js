@@ -12,11 +12,15 @@ function UserSelectController(User) {
 }
 
 UserSelectController.prototype.$onInit = function() {
+    var $ctrl = this;
+    this.ngModelCtrl.$render = function() {
+        $ctrl.selectedUser = this.$viewValue;
+    };
     this.users = this.User.query();
 };
 
-UserSelectController.prototype.selectUser = function(user, $event) {
-    this.ngModelCtrl.$setViewValue(user, $event);
+UserSelectController.prototype.selectUser = function(user) {
+    this.ngModelCtrl.$setViewValue(user);
 };
 
 return {
@@ -25,7 +29,9 @@ return {
     require: {
         'ngModelCtrl': 'ngModel'
     },
-    bindings: {
+    bindings: {},
+    transclude: {
+        label: '?maLabel'
     }
 };
 

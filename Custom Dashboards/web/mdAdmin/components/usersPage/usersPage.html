@@ -1,4 +1,23 @@
 <h1 ma-tr="header.users"></h1>
 
-<ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.userChanged()"></ma-user-select>
-<ma-user-editor user="$ctrl.user"></ma-user-editor>
+<ma-user-select ng-model="$ctrl.user" ng-change="$ctrl.updateUrl()">
+  <ma-label ma-tr="users.selectUserToEdit"></ma-label>
+</ma-user-select>
+
+<md-button class="md-raised md-primary" ng-click="$ctrl.addUser($event)">
+  <md-icon>person_add</md-icon> <span ma-tr="users.add"></span>
+</md-button>
+
+<md-card>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">
+        <span ng-if="!$ctrl.user.isNew" ma-tr="users.editUser"></span>
+        <span ng-if="$ctrl.user.isNew" ma-tr="users.add"></span>
+      </span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <ma-user-editor user="$ctrl.user" on-delete="$ctrl.userDeleted($user)" on-save="$ctrl.userSaved($user, $previous)"></ma-user-editor>
+  </md-card-content>
+</md-card>

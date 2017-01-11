@@ -462,7 +462,8 @@ mdAdminApp.constant('MENU_ITEMS', [
                 url: '/users/{username}',
                 template: '<users-page><users-page>',
                 menuTr: 'header.users',
-                menuIcon: 'group',
+                menuIcon: 'people',
+                permission: 'superadmin',
                 params: {
                     helpPage: 'dashboard.help.users'
                 },
@@ -519,6 +520,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                     $scope.dataSourceId = $stateParams.dataSourceId ? '?dsid='+$stateParams.dataSourceId : '';
                 }]
             },
+            /*
             {
                 url: '/users',
                 name: 'dashboard.settings.users',
@@ -526,8 +528,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuTr: 'header.users',
                 menuIcon: 'people',
                 permission: 'superadmin'
-            },
-            /*{
+            },{
                 url: '/events',
                 name: 'dashboard.settings.events',
                 template: '<iframe-view src="/events.shtm"></iframe-view>',

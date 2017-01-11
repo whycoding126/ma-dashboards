@@ -219,6 +219,13 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
             interceptor: {
                 response: logoutInterceptor
             }
+        },
+        save: {
+            method: 'POST',
+            url: '/rest/v1/users/'
+        },
+        update: {
+            method: 'PUT'
         }
     });
     
@@ -295,6 +302,22 @@ function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdo
     User.prototype.formatDate = function(date, format) {
         var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
         return this.getMoment(date).format(momentFormat);
+    };
+    
+    User.prototype.saveOrUpdate = function() {
+        var method = '$save';
+        var args = Array.prototype.slice.apply(arguments);
+        if (!this.isNew) {
+            method = '$update';
+            if (!args.length) {
+                args.push({});
+            }
+            var params = args[0];
+            if (!params.username) {
+                params.username = this.username;
+            }
+        }
+        return this[method].apply(this, args);
     };
 
     return User;
