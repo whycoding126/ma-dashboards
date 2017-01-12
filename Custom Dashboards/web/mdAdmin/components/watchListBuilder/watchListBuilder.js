@@ -7,9 +7,9 @@ define(['angular', 'require', 'rql/query'], function(angular, require, query) {
 'use strict';
 
 watchListBuilderController.$inject = ['Point', '$mdMedia', 'cssInjector', 'WatchList', 'Util', 'mdAdminSettings',
-    '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope', '$mdToast'];
+    '$stateParams', '$state', '$mdDialog', 'Translate', '$timeout', '$scope', '$mdToast', 'User'];
 function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Util, mdAdminSettings,
-        $stateParams, $state, $mdDialog, Translate, $timeout, $scope, $mdToast) {
+        $stateParams, $state, $mdDialog, Translate, $timeout, $scope, $mdToast, User) {
     var $ctrl = this;
     $ctrl.baseUrl = require.toUrl('.');
     
@@ -78,10 +78,10 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
         watchlist.name = name;
         watchlist.xid = '';
         watchlist.points = [];
-        watchlist.username = mdAdminSettings.user.username;
+        watchlist.username = User.current.username;
         watchlist.type = 'static';
         watchlist.readPermission = 'user';
-        watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+        watchlist.editPermission = User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
         $ctrl.editWatchlist(watchlist);
         $ctrl.resetForm();
     };
@@ -214,9 +214,9 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
             var watchlist = $stateParams.watchList;
             if (!watchlist.xid)
                 watchlist.xid = Util.uuid();
-            watchlist.username = mdAdminSettings.user.username;
+            watchlist.username = User.current.username;
             watchlist.readPermission = 'user';
-            watchlist.editPermission = mdAdminSettings.user.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
+            watchlist.editPermission = User.current.hasPermission('edit-watchlists') ? 'edit-watchlists' : '';
             $ctrl.editWatchlist(watchlist);
             $ctrl.resetForm();
         } else {
@@ -226,7 +226,7 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     
     $ctrl.getWatchlist = function getWatchlist(xid) {
         WatchList.get({xid: xid}).$promise.then(function(wl) {
-            var user = mdAdminSettings.user;
+            var user = User.current;
             if (wl.username !== user.username && !user.hasPermission(wl.editPermission)) {
                 throw 'no edit permission';
             }
@@ -240,7 +240,7 @@ function watchListBuilderController(Point, $mdMedia, cssInjector, WatchList, Uti
     $ctrl.refreshWatchlists = function refreshWatchlists() {
         WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(function(watchlists) {
             var filtered = [];
-            var user = mdAdminSettings.user;
+            var user = User.current;
             for (var i = 0; i < watchlists.length; i++) {
                 var wl = watchlists[i];
                 if (wl.username === user.username || user.hasPermission(wl.editPermission)) {

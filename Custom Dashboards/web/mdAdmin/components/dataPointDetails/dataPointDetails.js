@@ -27,7 +27,7 @@ function dataPointDetailsController($scope, $stateParams, $state, localStorageSe
 
         var now = (new Date()).valueOf();
         var format = now - point.time > 86400 ? 'shortDateTimeSeconds' : 'timeSeconds';
-        $ctrl.pointTime = mdAdminSettings.user.formatDate(point.time, format);
+        $ctrl.pointTime = mdAdminSettings.formatDate(point.time, format);
 
         pointTimeCell.addClass('flash-on-change');
         if (point.value !== lastValue) {

@@ -48,7 +48,7 @@
       <span ma-tr="common.delete"></span>
     </md-button>
     <md-button ng-click="editMenuItem($event)" class="md-raised md-accent"
-      ng-disabled="selectedPage.isNew || !user.hasPermission('edit-menus')">
+      ng-disabled="selectedPage.isNew || !User.current.hasPermission('edit-menus')">
       <md-icon>edit</md-icon>
       <span ma-tr="dashboards.v3.app.addEditMenuItem"></span>
     </md-button>

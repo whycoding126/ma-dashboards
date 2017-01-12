@@ -30,7 +30,7 @@ define(['./services/Point',
         'angular',
         'angular-resource',
         'angular-local-storage'
-], function(Point, PointHierarchy, User, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
+], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
         DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, angular) {
@@ -49,7 +49,7 @@ var maServices = angular.module('maServices', ['ngResource', 'LocalStorageModule
 
 maServices.factory('Point', Point);
 maServices.factory('PointHierarchy', PointHierarchy);
-maServices.factory('User', User);
+maServices.provider('User', UserProvider);
 maServices.factory('pointEventManager', PointEventManagerFactory);
 maServices.factory('Translate', Translate);
 maServices.factory('mangoHttpInterceptor', mangoHttpInterceptor);

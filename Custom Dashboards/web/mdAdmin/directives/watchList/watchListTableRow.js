@@ -59,7 +59,7 @@ define(['require', 'moment-timezone'], function(require, moment) {
                         var now = (new Date()).valueOf();
                         
                         var format = (now - point.time) >= oneDayMs ? 'shortDateTimeSeconds' : 'timeSeconds';
-                        pointTimeCell.text(mdAdminSettings.user.formatDate(point.time, format));
+                        pointTimeCell.text(mdAdminSettings.formatDate(point.time, format));
 
                         pointTimeCell.addClass(FLASH_CLASS);
                         if (point.value !== lastValue) {

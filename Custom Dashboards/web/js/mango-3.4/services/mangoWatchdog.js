@@ -56,6 +56,7 @@ define(['angular'], function(angular) {
 *
 */
 
+mangoWatchdog.$inject = ['mangoWatchdogTimeout', 'mangoReconnectDelay', '$rootScope', '$http', '$interval'];
 function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $http, $interval) {
 
     var API_DOWN = 'API_DOWN';
@@ -78,7 +79,7 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
 		if (this.enabled)
 		    this.setInterval(this.timeout);
 	}
-	
+
 	MangoWatchdog.prototype.doPing = function() {
 	    $http({
             method: 'OPTIONS',
@@ -128,12 +129,18 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
                 this.setInterval(this.reconnectDelay);
             }
             break;
-        case LOGGED_IN:
-            this.loggedIn = true;
-            // fall through
         case API_UP:
+            this.loggedIn = false;
             this.apiUp = true;
             // consider API up but not logged in as a failure but stop the faster retry
+            if (this.interval !== this.timeout) {
+                this.setInterval(this.timeout);
+            }
+            break;
+        case LOGGED_IN:
+            this.loggedIn = true;
+            this.apiUp = true;
+            // stop the faster retry
             if (this.interval !== this.timeout) {
                 this.setInterval(this.timeout);
             }
@@ -179,8 +186,6 @@ function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $h
 
 	return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
 }
-
-mangoWatchdog.$inject = ['mangoWatchdogTimeout', 'mangoReconnectDelay', '$rootScope', '$http', '$interval'];
 
 return mangoWatchdog;
 

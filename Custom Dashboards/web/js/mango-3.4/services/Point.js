@@ -264,7 +264,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     		value = {
     		    value: value,
     		    dataType: dataType,
-                annotation: 'Set from web by user: ' + User.cachedUser.username
+                annotation: 'Set from web by user: ' + User.current.username
     		};
     	}
 

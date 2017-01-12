@@ -49,14 +49,14 @@
                                                 </thead>
                                                 <tbody md-body ng-if="!ctrl.realtimeMode">
                                                       <tr md-row ng-repeat="value in pointValues | orderBy: myOrder">
-                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
+                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
                                                             <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
                                                             <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                                                       </tr>
                                                 </tbody>
                                                 <tbody md-body ng-if="ctrl.realtimeMode">
                                                       <tr md-row ng-repeat="value in realtimePointValues | orderBy: myOrder">
-                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.user.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
+                                                            <td md-cell ng-bind="ctrl.mdAdminSettings.formatDate(value.timestamp, 'shortDateTimeSeconds')"></td>
                                                             <td ng-if="myPoint.pointLocator.dataType !== 'IMAGE'" md-cell>{{value.value}} <strong ng-if="value.annotation"><em>({{value.annotation}})</em></strong></td>
                                                 <td ng-if="myPoint.pointLocator.dataType == 'IMAGE'" md-cell><img ng-src="{{value.value}}" alt="{{value.annotation||''}}" class="imageValue"></td>
                                                       </tr>

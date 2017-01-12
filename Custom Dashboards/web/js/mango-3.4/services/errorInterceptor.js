@@ -49,7 +49,8 @@ define([], function() {
 * @returns {array} Array of error objects
 */
 
-function errorInterceptorProvider($q, $rootScope) {
+ErrorInterceptorProvider.$inject = [];
+function ErrorInterceptorProvider() {
     this.ignore = function() {
         return false;
     };
@@ -82,8 +83,6 @@ function errorInterceptorProvider($q, $rootScope) {
     }.bind(this)];
 }
 
-errorInterceptorProvider.$inject = [];
-
-return errorInterceptorProvider;
+return ErrorInterceptorProvider;
 
 }); // define

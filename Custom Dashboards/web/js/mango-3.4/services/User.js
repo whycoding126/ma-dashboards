@@ -108,7 +108,7 @@ User.logout();
 /**
 * @ngdoc method
 * @methodOf maServices.User
-* @name User#current
+* @name User#getCurrent
 *
 * @description
 * Query the REST endpoint `/rest/v1/users/current` with the `GET` method to return the currently logged in user.
@@ -138,191 +138,212 @@ User.logout();
 *
 */
 
-/*
- * Provides service for getting list of users and create, update, delete
- */
-UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q', 'mangoDateFormats'];
-function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q, mangoDateFormats) {
-    var User = $resource('/rest/v1/users/:username', {
-            username: '@username'
-    	}, {
-        query: {
-            method: 'GET',
-            isArray: true,
-            transformResponse: function(data, fn, code) {
-                if (code < 300) {
-                    return angular.fromJson(data).items;
-                }
-                return [];
-            },
-            withCredentials: true,
-            cache: true
-        },
-        rql: {
-        	url: '/rest/v1/users?:query',
-            method: 'GET',
-            isArray: true,
-            transformResponse: function(data, fn, code) {
-                if (code < 300) {
-                    return angular.fromJson(data).items;
-                }
-                return [];
-            },
-            withCredentials: true,
-            cache: true
-        },
-        getById: {
-            url: '/rest/v1/users/by-id/:id',
-            method: 'GET',
-            isArray: false,
-            withCredentials: true,
-            cache: true
-        },
-        current: {
-            url: '/rest/v1/users/current',
-            method: 'GET',
-            isArray: false,
-            withCredentials: true,
-            cache: false,
-            interceptor: {
-                response: loginInterceptor
-            }
-        },
-        login: {
-            url: '/rest/v1/login/:username',
-            method: 'GET',
-            headers: {
-            	password: function(config) {
-            		var password = config.params.password;
-            		delete config.params.password;
-                    return password;
+UserProvider.$inject = [];
+function UserProvider() {
+    var cachedUser = null;
+    this.setUser = setUser;
+    this.getUser = getUser;
+    
+    function setUser(user) {
+        cachedUser = user;
+        if (user) {
+            if (user.locale)
+                moment.locale(user.locale);
+            moment.tz.setDefault(user.getTimezone());
+        } else {
+            // reset moment to initial settings?
+            // probably not what we want if API goes down temporarily
+        }
+    }
+    
+    function getUser() {
+        return cachedUser;
+    }
+    
+    this.$get = UserFactory;
+    
+    /*
+     * Provides service for getting list of users and create, update, delete
+     */
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', 'mangoWatchdog', '$q'];
+    function UserFactory($resource, $cacheFactory, localStorageService, mangoWatchdog, $q) {
+        var User = $resource('/rest/v1/users/:username', {
+                username: '@username'
+            }, {
+            query: {
+                method: 'GET',
+                isArray: true,
+                transformResponse: function(data, fn, code) {
+                    if (code < 300) {
+                        return angular.fromJson(data).items;
+                    }
+                    return [];
                 },
-                logout: function(config) {
-            		var logout = config.params.logout;
-            		delete config.params.logout;
-                    return !!logout;
+                withCredentials: true,
+                cache: true
+            },
+            rql: {
+                url: '/rest/v1/users?:query',
+                method: 'GET',
+                isArray: true,
+                transformResponse: function(data, fn, code) {
+                    if (code < 300) {
+                        return angular.fromJson(data).items;
+                    }
+                    return [];
+                },
+                withCredentials: true,
+                cache: true
+            },
+            getById: {
+                url: '/rest/v1/users/by-id/:id',
+                method: 'GET',
+                isArray: false,
+                withCredentials: true,
+                cache: true
+            },
+            getCurrent: {
+                url: '/rest/v1/users/current',
+                method: 'GET',
+                isArray: false,
+                withCredentials: true,
+                cache: false,
+                interceptor: {
+                    response: loginInterceptor
                 }
             },
-            isArray: false,
-            withCredentials: true,
-            cache: false,
-            interceptor: {
-                response: loginInterceptor
+            login: {
+                url: '/rest/v1/login/:username',
+                method: 'GET',
+                headers: {
+                    password: function(config) {
+                        var password = config.params.password;
+                        delete config.params.password;
+                        return password;
+                    },
+                    logout: function(config) {
+                        var logout = config.params.logout;
+                        delete config.params.logout;
+                        return !!logout;
+                    }
+                },
+                isArray: false,
+                withCredentials: true,
+                cache: false,
+                interceptor: {
+                    response: loginInterceptor
+                }
+            },
+            logout: {
+                url: '/rest/v1/logout',
+                method: 'GET',
+                isArray: false,
+                withCredentials: true,
+                cache: false,
+                interceptor: {
+                    response: logoutInterceptor
+                }
+            },
+            save: {
+                method: 'POST',
+                url: '/rest/v1/users/'
+            },
+            update: {
+                method: 'PUT'
             }
-        },
-        logout: {
-            url: '/rest/v1/logout',
-            method: 'GET',
-            isArray: false,
-            withCredentials: true,
-            cache: false,
-            interceptor: {
-                response: logoutInterceptor
-            }
-        },
-        save: {
-            method: 'POST',
-            url: '/rest/v1/users/'
-        },
-        update: {
-            method: 'PUT'
-        }
-    });
-    
-    function loginInterceptor(data) {
-        User.cachedUser = data.resource;
-        mangoWatchdog.setStatus('LOGGED_IN');
-        return data.resource;
-    }
-    
-    function logoutInterceptor(data) {
-        User.cachedUser = null;
-        mangoWatchdog.setStatus('API_UP');
-        return data.resource;
-    }
-
-    User.storeCredentials = function storeCredentials(username, password) {
-        localStorageService.set('storedCredentials', {
-            username: username,
-            password: password
         });
-    };
-    
-    User.storedUsername = function autoLogin() {
-        var credentials = localStorageService.get('storedCredentials');
-        return credentials ? credentials.username : null;
-    };
-    
-    User.autoLogin = function autoLogin() {
-        var credentials = localStorageService.get('storedCredentials');
-        if (!credentials) return $q.reject('No stored credentials');
-        return this.login.call(this, credentials).$promise;
-    };
-    
-    User.clearStoredCredentials = function clearStoredCredentials() {
-        localStorageService.remove('storedCredentials');
-    };
 
-    User.prototype.hasPermission = function(desiredPerms) {
-        if (this.admin) return true;
-        if (!this.permissions || !desiredPerms) return false;
+        Object.defineProperty(User, 'current', {
+            get: getUser,
+            set: setUser
+        });
 
-        if (typeof desiredPerms === 'string') {
-            desiredPerms = desiredPerms.split(',');
+        function loginInterceptor(data) {
+            User.current = data.resource;
+            mangoWatchdog.setStatus('LOGGED_IN');
+            return data.resource;
+        }
+        
+        function logoutInterceptor(data) {
+            User.current = null;
+            mangoWatchdog.setStatus('API_UP');
+            return data.resource;
         }
 
-        var userPerms = this.permissions.split(',');
-        for (var i = userPerms.length - 1; i >= 0; i--) {
-            var userPerm = userPerms[i].trim();
-            if (userPerm) {
-                userPerms[i] = userPerm;
-            } else {
-                userPerms.splice(i, 1);
+        User.storeCredentials = function storeCredentials(username, password) {
+            localStorageService.set('storedCredentials', {
+                username: username,
+                password: password
+            });
+        };
+        
+        User.storedUsername = function autoLogin() {
+            var credentials = localStorageService.get('storedCredentials');
+            return credentials ? credentials.username : null;
+        };
+        
+        User.autoLogin = function autoLogin() {
+            var credentials = localStorageService.get('storedCredentials');
+            if (!credentials) return $q.reject('No stored credentials');
+            return this.login.call(this, credentials).$promise;
+        };
+        
+        User.clearStoredCredentials = function clearStoredCredentials() {
+            localStorageService.remove('storedCredentials');
+        };
+
+        User.prototype.hasPermission = function(desiredPerms) {
+            if (this.admin) return true;
+            if (!this.permissions || !desiredPerms) return false;
+
+            if (typeof desiredPerms === 'string') {
+                desiredPerms = desiredPerms.split(',');
             }
-        }
 
-        for (i = 0; i < desiredPerms.length; i++) {
-            var desiredPerm = desiredPerms[i].trim();
-            if (!desiredPerm) continue;
-            if (userPerms.indexOf(desiredPerm) >= 0)
-            	return true;
-        }
-
-        return false;
-    };
-
-    User.prototype.getTimezone = function() {
-        return this.timezone || this.systemTimezone;
-    };
-    
-    User.prototype.getMoment = function(date) {
-        return moment.tz(date, this.getTimezone());
-    };
-    
-    User.prototype.formatDate = function(date, format) {
-        var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;
-        return this.getMoment(date).format(momentFormat);
-    };
-    
-    User.prototype.saveOrUpdate = function() {
-        var method = '$save';
-        var args = Array.prototype.slice.apply(arguments);
-        if (!this.isNew) {
-            method = '$update';
-            if (!args.length) {
-                args.push({});
+            var userPerms = this.permissions.split(',');
+            for (var i = userPerms.length - 1; i >= 0; i--) {
+                var userPerm = userPerms[i].trim();
+                if (userPerm) {
+                    userPerms[i] = userPerm;
+                } else {
+                    userPerms.splice(i, 1);
+                }
             }
-            var params = args[0];
-            if (!params.username) {
-                params.username = this.username;
-            }
-        }
-        return this[method].apply(this, args);
-    };
 
-    return User;
+            for (i = 0; i < desiredPerms.length; i++) {
+                var desiredPerm = desiredPerms[i].trim();
+                if (!desiredPerm) continue;
+                if (userPerms.indexOf(desiredPerm) >= 0)
+                    return true;
+            }
+
+            return false;
+        };
+
+        User.prototype.getTimezone = function() {
+            return this.timezone || this.systemTimezone;
+        };
+
+        User.prototype.saveOrUpdate = function() {
+            var method = '$save';
+            var args = Array.prototype.slice.apply(arguments);
+            if (!this.isNew) {
+                method = '$update';
+                if (!args.length) {
+                    args.push({});
+                }
+                var params = args[0];
+                if (!params.username) {
+                    params.username = this.originalUsername || this.username;
+                }
+            }
+            return this[method].apply(this, args);
+        };
+
+        return User;
+    }
 }
 
-return UserFactory;
+return UserProvider;
 
 }); // define

@@ -33,11 +33,12 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'ngMessages'
 ]);
 
-loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings'];
-function loadLoginTranslations(Translate, mdAdminSettings) {
+loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings', 'User'];
+function loadLoginTranslations(Translate, mdAdminSettings, User) {
     return Translate.loadNamespaces('login').then(function(data) {
-        moment.locale((mdAdminSettings.user && mdAdminSettings.user.locale) || data.locale || window.navigator.languages || window.navigator.language);
-        moment.tz.setDefault(mdAdminSettings.user ? mdAdminSettings.user.getTimezone() : moment.tz.guess());
+        var user = User.current;
+        moment.locale((user && user.locale) || data.locale || window.navigator.languages || window.navigator.language);
+        moment.tz.setDefault(user ? user.getTimezone() : moment.tz.guess());
     });
 }
 
@@ -124,8 +125,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         abstract: true,
         menuHidden: true,
         resolve: {
-            auth: ['Translate', 'mdAdminSettings', function(Translate, mdAdminSettings) {
-                if (!mdAdminSettings.user) {
+            auth: ['Translate', 'User', function(Translate, User) {
+                if (!User.current) {
                     throw 'No user';
                 }
                 return Translate.loadNamespaces(['dashboards', 'common']);
@@ -1116,8 +1117,9 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
 
     $urlRouterProvider.otherwise(function($injector, $location) {
         var mdAdminSettings = $injector.get('mdAdminSettings');
+        var User = $injector.get('User');
         var $state = $injector.get('$state');
-        var user = mdAdminSettings.user;
+        var user = User.current;
         
         var path = '/dashboards/';
         if ($location.path()) {
@@ -1244,13 +1246,11 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
     $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = DateBar;
     $rootScope.mdAdminSettings = mdAdminSettings;
+    $rootScope.User = User;
     $rootScope.menuItems = MENU_ITEMS;
     $rootScope.Math = Math;
     $rootScope.$mdMedia = $mdMedia;
     $rootScope.$state = $state;
-    
-    // store pre-bootstrap user back to User service
-    User.cachedUser = mdAdminSettings.user;
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         event.preventDefault();
@@ -1318,7 +1318,6 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
             User.logout().$promise.then(null, function() {
                 // consume error
             }).then(function() {
-                mdAdminSettings.user = null;
                 $state.go('login');
             });
         }
@@ -1391,33 +1390,30 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
 
         switch(current.status) {
         case 'API_DOWN':
+            CurrentUser.set(null);
             message = Translate.trSync('login.dashboards.v3.app.apiDown');
-            mdAdminSettings.user = null;
             break;
         case 'STARTING_UP':
+            CurrentUser.set(null);
             if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress
                     && current.info.startupState === previous.info.startupState) {
                 return;
             }
             message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
-            mdAdminSettings.user = null;
             break;
         case 'API_ERROR':
+            CurrentUser.set(null);
             message = Translate.trSync('login.dashboards.v3.app.returningErrors');
-            mdAdminSettings.user = null;
             break;
         case 'API_UP':
             if (previous.status && previous.status !== 'LOGGED_IN') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
             }
-            mdAdminSettings.user = null;
 
             // do automatic re-login if we are not on the login page
             if (!$state.includes('login')) {
-                User.autoLogin().then(function(user) {
-                    mdAdminSettings.setUser(user);
-                }, function() {
+                User.autoLogin().then(null, function() {
                     // redirect to the login page if auto-login fails
                     $state.loginRedirectUrl = '/dashboards' + $location.url();
                     $state.go('login');
@@ -1431,11 +1427,10 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
             }
-            if (!mdAdminSettings.user) {
-                // user logged in elsewhere
-                User.current().$promise.then(function(user) {
-                    mdAdminSettings.setUser(user);
-                });
+            if (!User.current) {
+                // user logged in elsewhere (another window/tab), fetch the current user from the REST API
+                // so it is cached inside User
+                User.getCurrent();
             }
             break;
         }
@@ -1463,7 +1458,7 @@ var JsonStore = servicesInjector.get('JsonStore');
 var $q = servicesInjector.get('$q');
 var $http = servicesInjector.get('$http');
 
-var userAndUserSettingsPromise = User.current().$promise.then(null, function() {
+var userAndUserSettingsPromise = User.getCurrent().$promise.then(null, function() {
     return User.autoLogin();
 }).then(function(user) {
     var userMenuPromise = JsonStore.get({xid: 'custom-user-menu'}).$promise.then(null, angular.noop);
@@ -1505,36 +1500,44 @@ var angularModulesPromise = $http({
 });
 
 $q.all([userAndUserSettingsPromise, dashboardSettingsPromise, customDashboardSettingsPromise, angularModulesPromise]).then(function(data) {
-    var mdAdminSettings = {};
-    mdAdminSettings.user = data[0].user;
+    // destroy the services injector
+    servicesInjector.get('$rootScope').$destroy();
+    
+    var MD_ADMIN_SETTINGS = {};
+    var user = data[0].user;
     var userMenuStore = data[0].userMenuStore;
     var defaultSettings = data[1];
     var customSettingsStore = data[2];
     var angularModules = data[3] || [];
     
     if (defaultSettings) {
-        mdAdminSettings.defaultSettings = defaultSettings;
-        angular.merge(mdAdminSettings, defaultSettings);
+        MD_ADMIN_SETTINGS.defaultSettings = defaultSettings;
+        angular.merge(MD_ADMIN_SETTINGS, defaultSettings);
     }
     if (customSettingsStore) {
-        mdAdminSettings.initialSettings = customSettingsStore.jsonData;
-        angular.merge(mdAdminSettings, customSettingsStore.jsonData);
+        MD_ADMIN_SETTINGS.initialSettings = customSettingsStore.jsonData;
+        angular.merge(MD_ADMIN_SETTINGS, customSettingsStore.jsonData);
     }
     if (userMenuStore) {
-        mdAdminSettings.customMenuItems = userMenuStore.jsonData.menuItems;
-        mdAdminSettings.defaultUrl = userMenuStore.jsonData.defaultUrl;
+        MD_ADMIN_SETTINGS.customMenuItems = userMenuStore.jsonData.menuItems;
+        MD_ADMIN_SETTINGS.defaultUrl = userMenuStore.jsonData.defaultUrl;
     }
-    
+
     var angularJsModuleNames = ['mdAdminApp'];
     for (var i = 0; i < angularModules.length; i++) {
         var angularModule = angularModules[i];
         angularJsModuleNames.push(angularModule.name);
     }
     
-    servicesInjector.get('$rootScope').$destroy();
-    mdAdminApp.constant('MD_ADMIN_SETTINGS', mdAdminSettings);
+    mdAdminApp.constant('MD_ADMIN_SETTINGS', MD_ADMIN_SETTINGS);
+
+    angular.module('mdAdminBootstrap', angularJsModuleNames).config(['UserProvider', function(UserProvider) {
+        // store pre-bootstrap user into the User service
+        UserProvider.setUser(user);
+    }]);
+
     angular.element(document).ready(function() {
-        angular.bootstrap(document.documentElement, angularJsModuleNames, {strictDi: true});
+        angular.bootstrap(document.documentElement, ['mdAdminBootstrap'], {strictDi: true});
     });
 });
 

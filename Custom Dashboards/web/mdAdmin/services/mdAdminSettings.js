@@ -3,13 +3,13 @@
  * @author Jared Wiltshire
  */
 
-define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
+define(['angular', 'require'], function(angular, require) {
 'use strict';
 
 mdAdminSettingsFactory.$inject = ['MD_ADMIN_SETTINGS', 'JsonStore', '$mdTheming', '$MD_THEME_CSS', '$mdColors', 'cssInjector', '$templateRequest', '$interpolate', 'mangoDateFormats'];
 function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_THEME_CSS, $mdColors, cssInjector, $templateRequest, $interpolate, mangoDateFormats) {
     var DASHBOARD_SETTINGS_XID = 'dashboard-settings';
-    var NOT_SETTINGS_PROPERTIES = ['user', 'defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
+    var NOT_SETTINGS_PROPERTIES = ['defaultSettings', 'userSettingsStore', 'theming', 'themingProvider', 'activeTheme', 'customMenuItems'];
     var themeId = 0;
     var userThemeGenerated = false;
     
@@ -45,11 +45,11 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                 return store;
             }.bind(this));
         },
-        reset: function() {
+        reset: function reset() {
             angular.merge(this, this.defaultSettings);
             angular.merge(this, this.userSettingsStore.jsonData);
         },
-        'delete': function reset() {
+        'delete': function deleteSettings() {
             return this.userSettingsStore.$delete();
         },
         generateTheme: function generateTheme() {
@@ -122,12 +122,6 @@ function mdAdminSettingsFactory(MD_ADMIN_SETTINGS, JsonStore, $mdTheming, $MD_TH
                     cssInjector.injectStyle(result, 'interpolatedStyles', '[href="styles/main.css"]', false, true);
                 }.bind(this));
             }
-        },
-        setUser: function(user) {
-            this.user = user;
-            if (user.locale)
-                moment.locale(user.locale);
-            moment.tz.setDefault(user.getTimezone());
         },
         formatDate: function formatDate(date, format) {
             var momentFormat = mangoDateFormats[format] || format || mangoDateFormats.dateTime;

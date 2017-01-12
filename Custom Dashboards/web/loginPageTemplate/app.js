@@ -46,7 +46,7 @@ function($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider
             auth: ['$rootScope', 'User', function($rootScope, User) {
                 // retrieves the current user when we navigate to a dashboard page
                 // if an error occurs the $stateChangeError listener redirects to the login page
-                $rootScope.user = User.current();
+                $rootScope.user = User.getCurrent();
                 return $rootScope.user.$promise;
             }]
         }

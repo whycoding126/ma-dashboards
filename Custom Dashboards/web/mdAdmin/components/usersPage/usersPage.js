@@ -6,12 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UsersPageController.$inject = ['$stateParams', 'User', '$state', 'mdAdminSettings'];
-function UsersPageController($stateParams, User, $state, mdAdminSettings) {
+UsersPageController.$inject = ['$stateParams', 'User', '$state'];
+function UsersPageController($stateParams, User, $state) {
     this.$stateParams = $stateParams;
     this.User = User;
     this.$state = $state;
-    this.mdAdminSettings = mdAdminSettings;
 }
 
 UsersPageController.prototype.$onInit = function() {
@@ -21,11 +20,11 @@ UsersPageController.prototype.$onInit = function() {
             // causes a stack overflow when we try and deep merge this object later
             delete user.$promise;
         }, function() {
-            this.user = this.mdAdminSettings.user;
+            this.user = this.User.current;
             this.updateUrl();
         }.bind(this));
     } else {
-        this.user = this.mdAdminSettings.user;
+        this.user = this.User.current;
         this.updateUrl();
     }
 };
@@ -40,8 +39,8 @@ UsersPageController.prototype.userDeleted = function(user) {
 };
 
 UsersPageController.prototype.userSaved = function(user, prevUser) {
-    if (prevUser.username === this.mdAdminSettings.user.username) {
-        this.mdAdminSettings.setUser(user);
+    if (prevUser.username === this.User.current.username) {
+        this.User.current = user;
     }
     // username might have been updated
     this.updateUrl();
