@@ -1390,11 +1390,11 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
 
         switch(current.status) {
         case 'API_DOWN':
-            CurrentUser.set(null);
+            User.current = null;
             message = Translate.trSync('login.dashboards.v3.app.apiDown');
             break;
         case 'STARTING_UP':
-            CurrentUser.set(null);
+            User.current = null;
             if (current.status === previous.status && current.info.startupProgress === previous.info.startupProgress
                     && current.info.startupState === previous.info.startupState) {
                 return;
@@ -1402,10 +1402,11 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
             message = Translate.trSync('login.dashboards.v3.app.startingUp', [current.info.startupProgress, current.info.startupState]);
             break;
         case 'API_ERROR':
-            CurrentUser.set(null);
+            User.current = null;
             message = Translate.trSync('login.dashboards.v3.app.returningErrors');
             break;
         case 'API_UP':
+            User.current = null;
             if (previous.status && previous.status !== 'LOGGED_IN') {
                 message = Translate.trSync('login.dashboards.v3.app.connectivityRestored');
                 hideDelay = 5000;
