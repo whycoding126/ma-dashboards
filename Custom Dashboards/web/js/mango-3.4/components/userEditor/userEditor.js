@@ -6,10 +6,9 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['User', 'mdAdminSettings'];
-function UserEditorController(User, mdAdminSettings) {
+UserEditorController.$inject = ['User'];
+function UserEditorController(User) {
     this.User = User;
-    this.mdAdminSettings = mdAdminSettings;
 }
 
 UserEditorController.prototype.$onChanges = function(changes) {
@@ -71,6 +70,10 @@ UserEditorController.prototype.remove = function() {
         console.log(response);
         // handle validation errors
     });
+};
+
+UserEditorController.prototype.showMessages = function(field) {
+    return this.userForm[field].$invalid && (this.userForm[field].$touched || this.userForm.$submitted);
 };
 
 UserEditorController.prototype.sendTestEmail = function() {

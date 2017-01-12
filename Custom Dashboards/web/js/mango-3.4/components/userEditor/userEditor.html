@@ -6,11 +6,22 @@
       <md-icon>person</md-icon>
       <label ma-tr="users.username"></label>
       <input name="username" ng-model="$ctrl.user.username" required>
+      <div ng-show="$ctrl.showMessages('username')">
+        <div ng-messages="$ctrl.userForm.username.$error">
+          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="33">
       <md-icon>email</md-icon>
       <label ma-tr="users.email"></label>
       <input type="email" name="email" ng-model="$ctrl.user.email" required>
+      <div ng-show="$ctrl.showMessages('email')">
+        <div ng-messages="$ctrl.userForm.email.$error">
+          <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
+          <div ng-message="email" ma-tr="dashboards.v3.app.invalidEmail"></div>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="33">
       <md-icon>phone</md-icon>
@@ -69,7 +80,7 @@
       <md-checkbox name="muted" ng-model="$ctrl.user.muted">
         <span ma-tr="users.muted"></span>
       </md-checkbox>
-      <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.mdAdminSettings.user.username === $ctrl.originalUser.username">
+      <md-checkbox name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username">
         <span ma-tr="common.disabled"></span>
       </md-checkbox>
       <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents">
@@ -87,7 +98,7 @@
       <md-button class="md-raised md-accent" ng-click="$ctrl.sendTestEmail($event)">
         <md-icon>email</md-icon> <span ma-tr="common.sendTestEmail"></span>
       </md-button>
-      <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew || $ctrl.mdAdminSettings.user.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
+      <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
         <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
       </md-button>
     </div>
