@@ -50,6 +50,7 @@ UsersPageController.prototype.addUser = function($event) {
     this.user = new this.User();
     this.user.isNew = true;
     this.user.username = '';
+    this.user.name = '';
     this.user.email = '';
     this.user.phone = '';
     this.user.homeURL = '';
