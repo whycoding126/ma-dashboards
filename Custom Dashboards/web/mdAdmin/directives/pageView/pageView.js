@@ -11,7 +11,9 @@ function pageView (Page, jsonStoreEventManager, User) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
 
     return {
-        scope: true,
+        scope: {
+            nonEditMode: '@'
+        },
         templateUrl: require.toUrl('./pageView.html'),
         link: function($scope, $element, $attrs) {
             $scope.User = User;
