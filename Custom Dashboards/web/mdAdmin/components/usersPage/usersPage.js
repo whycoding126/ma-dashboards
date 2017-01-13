@@ -39,9 +39,6 @@ UsersPageController.prototype.userDeleted = function(user) {
 };
 
 UsersPageController.prototype.userSaved = function(user, prevUser) {
-    if (prevUser.username === this.User.current.username) {
-        this.User.current = user;
-    }
     // username might have been updated
     this.updateUrl();
 };
@@ -53,7 +50,7 @@ UsersPageController.prototype.addUser = function($event) {
     this.user.name = '';
     this.user.email = '';
     this.user.phone = '';
-    this.user.homeURL = '';
+    this.user.homeUrl = '';
     this.user.locale = '';
     this.user.systemLocale = '';
     this.user.timezone = '';

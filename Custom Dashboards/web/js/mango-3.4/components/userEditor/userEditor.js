@@ -9,6 +9,7 @@ define(['angular', 'require'], function(angular, require) {
 UserEditorController.$inject = ['User', '$http'];
 function UserEditorController(User, $http) {
     this.User = User;
+    this.$http = $http;
     this.timezones = moment.tz.names();
     
     $http.get(require.toUrl('dashboards/vendor/localeList.json')).then(function(response) {
@@ -27,12 +28,6 @@ UserEditorController.prototype.$onChanges = function(changes) {
 UserEditorController.prototype.hashRegExp = /^\{(.*?)\}(.*)$/;
 
 UserEditorController.prototype.prepareUser = function(user) {
-    if (user.password) {
-        var matches = this.hashRegExp.exec(user.password);
-        if (!matches || matches[1] !== 'BCRYPT') {
-            user.insecureHash = true;
-        }
-    }
     user.password = '';
     user.confirmPassword = '';
 };
@@ -50,6 +45,12 @@ UserEditorController.prototype.save = function() {
             var previous = angular.copy(this.originalUser);
             delete this.originalUser.isNew;
             angular.merge(this.originalUser, user);
+            
+            // update the cached user if we are modifying our own user
+            if (previous.username === this.User.current.username) {
+                this.User.current = this.originalUser;
+            }
+            
             this.onSave({$user: this.originalUser, $previous: previous});
             this.prepareUser(user);
             this.resetForm();
@@ -83,6 +84,16 @@ UserEditorController.prototype.showMessages = function(field) {
 };
 
 UserEditorController.prototype.sendTestEmail = function() {
+    this.$http({
+        url:'/rest/v1/server/email/test',
+        params: {
+            username: this.user.username,
+            email: this.user.email
+        },
+        method: 'PUT',
+        data: null,
+        accept: 'application/json'
+    });
 };
 
 UserEditorController.prototype.regExpEscape = function(s) {
