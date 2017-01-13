@@ -85,7 +85,6 @@ function translateFactory($http, $q) {
 
 	Translate.loadedNamespaces = {};
 
-	// TODO allow setting language, for now we just use whatever the server returns
 	Translate.loadNamespaces = function(namespaces) {
 		if (!angular.isArray(namespaces)) {
 			namespaces = Array.prototype.slice.call(arguments);
@@ -104,8 +103,9 @@ function translateFactory($http, $q) {
 
 					request = $http.get(translationsUrl + encodeURIComponent(namespace), {
 						params: {
-							//language: 'XXX',
-						    server: true
+							//language: 'en-US',
+						    //server: true,
+						    //browser: true
 						}
 					});
 					request.then(null, removeFromLoaded.bind(null, namespace));
