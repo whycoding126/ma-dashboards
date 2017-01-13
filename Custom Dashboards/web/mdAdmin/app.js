@@ -11,7 +11,7 @@ define([
     './services/Page',
     './services/DateBar',
     './services/mdAdminSettings',
-    './directives/pageView/pageView',
+    './components/pageView/pageView',
     './directives/liveEditor/livePreview',
     'amcharts/amcharts',
     'moment-timezone',
@@ -45,7 +45,7 @@ function loadLoginTranslations(Translate, mdAdminSettings, User) {
 mdAdminApp.factory('Page', Page)
     .factory('DateBar', DateBar)
     .factory('mdAdminSettings', mdAdminSettings)
-    .directive('pageView', pageView)
+    .component('pageView', pageView)
     .directive('livePreview', livePreview)
     .constant('require', require)
     .constant('CUSTOM_USER_MENU_XID', 'custom-user-menu')

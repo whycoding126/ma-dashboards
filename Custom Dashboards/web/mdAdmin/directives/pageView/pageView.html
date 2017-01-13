@@ -1,8 +1,0 @@
-<md-button class="md-fab md-fab-bottom-right edit-page-button"
-  style="position:fixed !important;"
-  ng-if="page && User.current.hasPermission(page.editPermission) && !nonEditMode"
-  ui-sref="dashboard.settings.editPages({pageXid: page.xid})"
-  ma-tr="dashboards.v3.app.editPage">
-  <md-icon>edit</md-icon>
-</md-button>
-<div live-preview="markup" flex layout="column"></div>
