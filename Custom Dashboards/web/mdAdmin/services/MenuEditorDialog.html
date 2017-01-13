@@ -52,7 +52,7 @@
             <div class="hint" ng-hide="menuItemEditForm.url.$invalid && (menuItemEditForm.url.$touched || menuItemEditForm.$submitted)" ma-tr="dashboards.v3.app.stateUrlHint"></div>
             <div ng-messages="menuItemEditForm.url.$error">
               <div ng-message="required" ma-tr="dashboards.v3.app.required"></div>
-              <div ng-message="pattern" ma-tr="dashboards.v3.app.urlPattern"></div>
+              <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidUrl"></div>
             </div>
         </md-input-container>
       </div>

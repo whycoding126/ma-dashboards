@@ -26,7 +26,12 @@
     <md-input-container flex="100" flex-gt-md="33">
       <md-icon>phone</md-icon>
       <label ma-tr="users.phone"></label>
-      <input type="tel" name="phone" ng-model="$ctrl.user.phone">
+      <input type="tel" name="phone" ng-model="$ctrl.user.phone" pattern="^(?:\+?[0-9]{1,3}[ -]?)?(?:\([0-9 ]+\)[ -]?)?[0-9]+(?:[ -][0-9]+)*$">
+      <div ng-show="$ctrl.showMessages('phone')">
+        <div ng-messages="$ctrl.userForm.phone.$error">
+          <div ng-message="pattern" ma-tr="dashboards.v3.app.invalidPhone"></div>
+        </div>
+      </div>
     </md-input-container>
     
     <div layout="column" flex="100" flex-gt-md="33">
@@ -75,10 +80,10 @@
     <md-input-container flex="100" flex-gt-md="33">
       <md-icon>home</md-icon>
       <label ma-tr="users.homeURL"></label>
-      <input type="url" name="homeUrl" ng-model="$ctrl.user.homeUrl">
+      <input name="homeUrl" ng-model="$ctrl.user.homeUrl" pattern="^\/(?!\/).*">
       <div ng-show="$ctrl.showMessages('homeUrl')">
         <div ng-messages="$ctrl.userForm.homeUrl.$error">
-          <div ng-message="pattern" ma-tr="dashboards.v3.app.urlPattern"></div>
+          <div ng-message="pattern" ma-tr="dashboards.v3.app.mustBeAbsolutePath"></div>
         </div>
       </div>
     </md-input-container>
