@@ -6,9 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['User'];
-function UserEditorController(User) {
+UserEditorController.$inject = ['User', '$http'];
+function UserEditorController(User, $http) {
     this.User = User;
+    this.timezones = moment.tz.names();
+    
+    $http.get(require.toUrl('dashboards/vendor/localeList.json')).then(function(response) {
+        this.locales = response.data;
+    }.bind(this));
 }
 
 UserEditorController.prototype.$onChanges = function(changes) {
@@ -28,7 +33,8 @@ UserEditorController.prototype.prepareUser = function(user) {
             user.insecureHash = true;
         }
     }
-    delete user.password;
+    user.password = '';
+    user.confirmPassword = '';
 };
 
 UserEditorController.prototype.resetForm = function() {
