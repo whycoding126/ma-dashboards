@@ -234,6 +234,16 @@ function UserProvider() {
                     response: loginInterceptor
                 }
             },
+            switchUser: {
+                url: '/rest/v1/login/su/:username',
+                method: 'GET',
+                isArray: false,
+                withCredentials: true,
+                cache: false,
+                interceptor: {
+                    response: loginInterceptor
+                }
+            },
             logout: {
                 url: '/rest/v1/logout',
                 method: 'GET',

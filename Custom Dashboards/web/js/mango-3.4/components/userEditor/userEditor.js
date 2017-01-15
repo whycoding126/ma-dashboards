@@ -162,6 +162,30 @@ UserEditorController.prototype.sendTestEmail = function() {
     });
 };
 
+UserEditorController.prototype.switchUser = function(event) {
+    var $ctrl = this;
+    var username = this.user.username;
+    
+    this.User.switchUser({username: username}).$promise.then(function(response) {
+        var toast = $ctrl.$mdToast.simple()
+            .textContent($ctrl.Translate.trSync('dashboards.v3.components.switchedUser', username))
+            .action($ctrl.Translate.trSync('common.ok'))
+            .highlightAction(true)
+            .position('bottom center')
+            .hideDelay(10000);
+        $ctrl.$mdToast.show(toast);
+    }, function(response) {
+        var toast = $ctrl.$mdToast.simple()
+            .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorSwitchingUser', username))
+            .action($ctrl.Translate.trSync('common.ok'))
+            .highlightAction(true)
+            .highlightClass('md-warn')
+            .position('bottom center')
+            .hideDelay(10000);
+        $ctrl.$mdToast.show(toast);
+    });
+};
+
 UserEditorController.prototype.regExpEscape = function(s) {
     return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 };

@@ -173,6 +173,9 @@
       <md-button class="md-raised md-warn" ng-disabled="$ctrl.user.isNew || $ctrl.User.current.username === $ctrl.originalUser.username" ng-click="$ctrl.remove($event)">
         <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
       </md-button>
+      <md-button class="md-raised md-accent" ng-if="!$ctrl.user.isNew && $ctrl.User.current.username !== $ctrl.originalUser.username" ng-click="$ctrl.switchUser($event)">
+        <md-icon>swap_horiz</md-icon> <span ma-tr="users.su"></span>
+      </md-button>
     </div>
   </div>
 </form>
