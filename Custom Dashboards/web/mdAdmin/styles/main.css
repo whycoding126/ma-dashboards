@@ -1014,3 +1014,31 @@ ma-point-hierarchy-folder md-checkbox[role=checkbox] {
 ma-point-hierarchy-folder .point-hierarchy-item {
   margin-bottom: 6px;
 }
+
+/* Home page */
+.home-page md-card md-card-content {
+    padding: 8px;
+}
+.home-page md-icon {
+    font-size: 50px;
+    color: currentColor;
+}
+.home-page md-icon.badge {
+    font-size: 23px;
+    padding: 0 0 40px 0;
+    margin-left: -5px;
+}
+.home-page md-icon.badged {
+    padding-left: 23px;
+}
+.home-page a:not(.md-button) {
+    color: inherit;
+}
+.home-page h3 {
+    font-size: 14px;
+    text-align: center;
+}
+.home-page strong {
+    font-size: 18px;
+    text-align: right;
+}
