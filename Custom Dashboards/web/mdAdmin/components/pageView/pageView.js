@@ -6,28 +6,37 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-var pageViewController = function pageViewController($scope, Page, jsonStoreEventManager, User) {
+PageViewController.$inject = ['$scope', 'Page', 'jsonStoreEventManager'];
+function PageViewController($scope, Page, jsonStoreEventManager) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
     
     var $ctrl = this;
-    $ctrl.User = User;
 
-    $ctrl.$onChanges = function(changes) {
-        Page.loadPage($ctrl.xid).then(function(page) {
-            $ctrl.page = page;
-            $ctrl.markup = page.jsonData.markup;
-        });
-
-        jsonStoreEventManager.smartSubscribe($scope, $ctrl.xid, SUBSCRIPTION_TYPES, function updateHandler(event, payload) {
-            $ctrl.markup = payload.object.jsonData.markup;
-        });
+    this.$onChanges = function(changes) {
+        if (changes.xid) {
+            if ($ctrl.page) {
+                jsonStoreEventManager.unsubscribe($ctrl.page.xid, SUBSCRIPTION_TYPES, this.updateHandler);
+            }
+            
+            delete $ctrl.page;
+            delete $ctrl.markup;
+            
+            Page.loadPage($ctrl.xid).then(function(page) {
+                $ctrl.page = page;
+                $ctrl.markup = page.jsonData.markup;
+            });
+    
+            jsonStoreEventManager.smartSubscribe($scope, $ctrl.xid, SUBSCRIPTION_TYPES, this.updateHandler);
+        }
     };
-};
-
-pageViewController.$inject = ['$scope', 'Page', 'jsonStoreEventManager', 'User'];
+    
+    this.updateHandler = function updateHandler(event, payload) {
+        $ctrl.markup = payload.object.jsonData.markup;
+    };
+}
 
 return {
-    controller: pageViewController,
+    controller: PageViewController,
     bindings: {
         xid: '@'
     },
