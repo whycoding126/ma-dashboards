@@ -6,13 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['User', '$http', '$mdDialog', 'Translate'];
-function UserEditorController(User, $http, $mdDialog, Translate) {
+UserEditorController.$inject = ['User', '$http', '$mdDialog', 'Translate', '$mdToast'];
+function UserEditorController(User, $http, $mdDialog, Translate, $mdToast) {
     this.User = User;
     this.$http = $http;
     this.timezones = moment.tz.names();
     this.$mdDialog = $mdDialog;
     this.Translate = Translate;
+    this.$mdToast = $mdToast;
     
     $http.get(require.toUrl('dashboards/vendor/localeList.json')).then(function(response) {
         this.locales = response.data;
@@ -53,13 +54,29 @@ UserEditorController.prototype.save = function() {
                 this.User.current = this.originalUser;
             }
             
+            var toast = this.$mdToast.simple()
+                .textContent(this.Translate.trSync('dashboards.v3.components.userSaved', user.username))
+                .action(this.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .position('bottom center')
+                .hideDelay(10000);
+            this.$mdToast.show(toast);
+            
             this.onSave({$user: this.originalUser, $previous: previous});
             this.prepareUser(user);
             this.resetForm();
         }.bind(this), function(response) {
-            console.log(response);
-            // handle validation errors
-        });
+            this.validationMessages = response.data.validationMessages;
+            
+            var toast = this.$mdToast.simple()
+                .textContent(this.Translate.trSync('dashboards.v3.components.errorSavingUser', this.user.username))
+                .action(this.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .highlightClass('md-warn')
+                .position('bottom center')
+                .hideDelay(10000);
+            this.$mdToast.show(toast);
+        }.bind(this));
     }
 };
 
@@ -81,14 +98,29 @@ UserEditorController.prototype.remove = function(event) {
         .cancel(this.Translate.trSync('common.cancel'));
 
     this.$mdDialog.show(confirm).then(function() {
+        var username = $ctrl.originalUser;
         $ctrl.originalUser.$delete().then(function(user) {
             $ctrl.user = null;
             $ctrl.originalUser = null;
             $ctrl.resetForm();
             $ctrl.onDelete({$user: user});
+            
+            var toast = $ctrl.$mdToast.simple()
+                .textContent($ctrl.Translate.trSync('dashboards.v3.components.userDeleted', username))
+                .action($ctrl.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .position('bottom center')
+                .hideDelay(10000);
+            $ctrl.$mdToast.show(toast);
         }, function(response) {
-            console.log(response);
-            // handle validation errors
+            var toast = $ctrl.$mdToast.simple()
+                .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorDeletingUser', username))
+                .action($ctrl.Translate.trSync('common.ok'))
+                .highlightAction(true)
+                .highlightClass('md-warn')
+                .position('bottom center')
+                .hideDelay(10000);
+            $ctrl.$mdToast.show(toast);
         });
     });
 };
@@ -98,15 +130,35 @@ UserEditorController.prototype.showMessages = function(field) {
 };
 
 UserEditorController.prototype.sendTestEmail = function() {
+    var $ctrl = this;
+    var emailAddress = this.user.email;
+    
     this.$http({
-        url:'/rest/v1/server/email/test',
+        url: '/rest/v1/server/email/test',
         params: {
             username: this.user.username,
-            email: this.user.email
+            email: emailAddress
         },
         method: 'PUT',
         data: null,
         accept: 'application/json'
+    }).then(function(response) {
+        var toast = $ctrl.$mdToast.simple()
+            .textContent(response.data)
+            .action($ctrl.Translate.trSync('common.ok'))
+            .highlightAction(true)
+            .position('bottom center')
+            .hideDelay(10000);
+        $ctrl.$mdToast.show(toast);
+    }, function(response) {
+        var toast = $ctrl.$mdToast.simple()
+            .textContent($ctrl.Translate.trSync('dashboards.v3.components.errorSendingEmail', emailAddress))
+            .action($ctrl.Translate.trSync('common.ok'))
+            .highlightAction(true)
+            .highlightClass('md-warn')
+            .position('bottom center')
+            .hideDelay(10000);
+        $ctrl.$mdToast.show(toast);
     });
 };
 
