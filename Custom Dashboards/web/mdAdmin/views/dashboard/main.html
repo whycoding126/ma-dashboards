@@ -16,7 +16,7 @@
           <div layout="row" layout-align="start center">
             <md-icon>person</md-icon>
             <div flex layout="column">
-              <span ng-bind="User.current.username"></span>
+              <span><span ng-bind="User.current.username"></span> <em ng-if="User.current.name" ng-bind="'(' + User.current.name + ')'"></em></span>
               <span class="email" ng-bind="User.current.email"></span>
             </div>
           </div>
