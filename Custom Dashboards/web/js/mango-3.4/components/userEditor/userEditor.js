@@ -6,11 +6,13 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-UserEditorController.$inject = ['User', '$http'];
-function UserEditorController(User, $http) {
+UserEditorController.$inject = ['User', '$http', '$mdDialog', 'Translate'];
+function UserEditorController(User, $http, $mdDialog, Translate) {
     this.User = User;
     this.$http = $http;
     this.timezones = moment.tz.names();
+    this.$mdDialog = $mdDialog;
+    this.Translate = Translate;
     
     $http.get(require.toUrl('dashboards/vendor/localeList.json')).then(function(response) {
         this.locales = response.data;
@@ -67,15 +69,27 @@ UserEditorController.prototype.revert = function() {
     this.resetForm();
 };
 
-UserEditorController.prototype.remove = function() {
-    this.originalUser.$delete().then(function(user) {
-        this.user = null;
-        this.originalUser = null;
-        this.resetForm();
-        this.onDelete({$user: user});
-    }.bind(this), function(response) {
-        console.log(response);
-        // handle validation errors
+UserEditorController.prototype.remove = function(event) {
+    var $ctrl = this;
+    
+    var confirm = this.$mdDialog.confirm()
+        .title(this.Translate.trSync('dashboards.v3.app.areYouSure'))
+        .textContent(this.Translate.trSync('dashboards.v3.components.confirmDeleteUser'))
+        .ariaLabel(this.Translate.trSync('dashboards.v3.app.areYouSure'))
+        .targetEvent(event)
+        .ok(this.Translate.trSync('common.ok'))
+        .cancel(this.Translate.trSync('common.cancel'));
+
+    this.$mdDialog.show(confirm).then(function() {
+        $ctrl.originalUser.$delete().then(function(user) {
+            $ctrl.user = null;
+            $ctrl.originalUser = null;
+            $ctrl.resetForm();
+            $ctrl.onDelete({$user: user});
+        }, function(response) {
+            console.log(response);
+            // handle validation errors
+        });
     });
 };
 
