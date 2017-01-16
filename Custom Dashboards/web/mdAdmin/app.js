@@ -469,12 +469,31 @@ mdAdminApp.constant('MENU_ITEMS', [
                     helpPage: 'dashboard.help.users'
                 },
                 resolve: {
-                    loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
                         return rQ(['./components/usersPage/usersPage'], function (usersPage) {
                             angular.module('usersPage', [])
                                 .component('usersPage', usersPage);
                             $ocLazyLoad.inject('usersPage');
-                            cssInjector.injectLink(require.toUrl('./components/usersPage/usersPage.css'), 'usersPage' ,'link[href="styles/main.css"]');
+                        });
+                    }]
+                }
+            },
+            {
+                name: 'dashboard.settings.system',
+                url: '/system',
+                template: '<system-settings-page><system-settings-page>',
+                menuTr: 'header.systemSettings',
+                menuIcon: 'settings',
+                permission: 'superadmin',
+                params: {
+                    helpPage: 'dashboard.help.systemSettings'
+                },
+                resolve: {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                        return rQ(['./components/systemSettingsPage/systemSettingsPage'], function (systemSettingsPage) {
+                            angular.module('systemSettingsPage', [])
+                                .component('systemSettingsPage', systemSettingsPage);
+                            $ocLazyLoad.inject('systemSettingsPage');
                         });
                     }]
                 }
@@ -501,6 +520,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                     }]
                 }
             },
+            /*
             {
                 url: '/system-settings',
                 name: 'dashboard.settings.systemSettings',
@@ -509,6 +529,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuIcon: 'settings',
                 permission: 'superadmin'
             },
+            */
             {
                 url: '/data-sources/{pointId}?dataSourceId',
                 name: 'dashboard.settings.dataSources',
@@ -1026,9 +1047,10 @@ mdAdminApp.config([
     '$mdAriaProvider',
     'errorInterceptorProvider',
     'cfpLoadingBarProvider',
+    'SystemSettingsProvider',
 function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider,
         $httpProvider, $mdThemingProvider, $injector, $compileProvider, mangoStateProvider, $locationProvider, $mdAriaProvider,
-        errorInterceptorProvider, cfpLoadingBarProvider) {
+        errorInterceptorProvider, cfpLoadingBarProvider, SystemSettingsProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $mdAriaProvider.disableWarnings();
@@ -1223,6 +1245,11 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
     
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    
+    SystemSettingsProvider.addSection({
+        titleTr: 'dashboards.settings',
+        template: require.toUrl('dashboards/settings.html')
+    });
 }]);
 
 mdAdminApp.run([

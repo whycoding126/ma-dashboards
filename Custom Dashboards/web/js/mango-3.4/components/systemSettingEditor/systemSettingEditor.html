@@ -1,0 +1,4 @@
+<md-input-container>
+  <label ma-tr="{{$ctrl.labelTr}}"></label>
+  <input ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.systemSetting.setValue()" ng-model-options="{debounce: 1000}">
+</md-input-container>

@@ -71,6 +71,7 @@ define(['./maServices',
         './components/imageSlider/imageSlider',
         './components/userEditor/userEditor',
         './components/userSelect/userSelect',
+        './components/systemSettingEditor/systemSettingEditor',
         './components/maMap/maMap',
         'ng-map',
         './filters/trFilter',
@@ -89,7 +90,7 @@ define(['./maServices',
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, userEditor, userSelect, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
+        imageSlider, userEditor, userSelect, systemSettingEditor, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -169,6 +170,7 @@ maDashboards.component('maWatchListParameters', watchListParameters);
 maDashboards.component('maImageSlider', imageSlider);
 maDashboards.component('maUserEditor', userEditor);
 maDashboards.component('maUserSelect', userSelect);
+maDashboards.component('maSystemSettingEditor', systemSettingEditor);
 maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
 maDashboards.animation('.ma-slide-up', slideUp);

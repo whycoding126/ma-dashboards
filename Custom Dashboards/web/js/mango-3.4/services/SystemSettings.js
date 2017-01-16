@@ -72,7 +72,7 @@ function SystemSettingsFactory(sections, $http) {
     
     SystemSettings.prototype.setValue = function setSystemSetting(value) {
         var $this = this;
-        value = angular.toJson(value);
+        value = angular.toJson(value || this.value);
         return $http({
             method: 'PUT',
             url: systemSettingsUrl + '/' + this.key,
@@ -85,7 +85,7 @@ function SystemSettingsFactory(sections, $http) {
             return $this.value;
         });
     };
-    
+
     return SystemSettings;
 }
 
