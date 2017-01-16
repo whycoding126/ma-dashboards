@@ -6,95 +6,122 @@
 define(['require', 'angular-ui-ace'], function(require) {
 'use strict';
 
-var liveEditor = function($templateRequest, $sce) {
+LiveEditorController.$inject = ['$element', 'mdAdminSettings', '$templateRequest', '$sce', '$scope'];
+function LiveEditorController($element, mdAdminSettings, $templateRequest, $sce, $scope) {
+    this.initialText = $element.data('htmlContent');
+    $element.removeData('htmlContent');
+    
+    var $ctrl = this;
+    if (MutationObserver) {
+        var observer = new MutationObserver(function() {
+            if ($ctrl.editor) {
+                $ctrl.editor.resize();
+            }
+        });
+        observer.observe($element[0], {
+            attributes: true,
+            attributeFilter: ['style']
+        });
+        $scope.$on('$destroy', function() {
+            observer.disconnect();
+        });
+    }
+    
+    this.mdAdminSettings = mdAdminSettings;
+    this.$templateRequest = $templateRequest;
+    this.$sce = $sce;
+}
+
+LiveEditorController.prototype.$onInit = function() {
+    var $ctrl = this;
+    
+    this.ngModelCtrl.$render = function() {
+        $ctrl.setEditorText(this.$viewValue || '');
+    };
+    
+    this.aceConfig = {
+        useWrapMode : true,
+        showGutter: false,
+        showPrintMargin: false,
+        theme: this.theme || this.mdAdminSettings.codeTheme,
+        fontSize: '13px',
+        mode: this.mode || 'html',
+        onLoad: this.aceLoaded.bind(this),
+        onChange: this.aceChanged.bind(this)
+    };
+}
+
+LiveEditorController.prototype.$onChanges = function(changes) {
+    if (changes.src) {
+        this.loadFromSrc();
+    }
+    if (changes.theme) {
+        this.setTheme();
+    }
+};
+
+LiveEditorController.prototype.aceLoaded = function aceLoaded(editor) {
+    this.editor = editor;
+    editor.$blockScrolling = Infinity;
+    if (this.initialText) {
+        this.setEditorText(this.initialText);
+    }
+};
+
+LiveEditorController.prototype.aceChanged = function aceChanged() {
+    var text = this.editor.getValue();
+    this.ngModelCtrl.$setViewValue(text);
+};
+
+LiveEditorController.prototype.setEditorText = function(text) {
+    if (this.editor) {
+        this.editor.setValue(text, -1);
+    } else {
+        this.initialText = text;
+    }
+}
+
+LiveEditorController.prototype.loadFromSrc = function loadFromSrc() {
+    if (!this.src) return;
+    var $ctrl = this;
+
+    var url = this.$sce.getTrustedResourceUrl(this.src);
+    this.$templateRequest(url).then(function(text) {
+        $ctrl.setEditorText(text);
+    });
+};
+
+LiveEditorController.prototype.setTheme = function setTheme() {
+    if (this.editor && this.theme) {
+        this.editor.setTheme('ace/theme/' + this.theme);
+    }
+}
+
+LiveEditor.$inject = [];
+function LiveEditor() {
     return {
+        restrict: 'E',
         template: function($element, attrs) {
             var htmlContent = $element.html().trim();
             $element.empty();
             if (htmlContent)
                 $element.data('htmlContent', htmlContent);
-            return '<div ui-ace="aceConfig"></div>';
+            return '<div ui-ace="$ctrl.aceConfig"></div>';
         },
-        scope: {
+        require: {
+            'ngModelCtrl': 'ngModel'
+        },
+        scope: {},
+        controllerAs: '$ctrl',
+        bindToController: {
             src: '@',
-            text: '=liveEditor',
             mode: '@',
-            theme: '@',
-            onEdit: '&?'
+            theme: '@'
         },
-        controller: ['$scope', '$element', 'mdAdminSettings', function($scope, $element, mdAdminSettings) {
-            
-            var initialText = $element.data('htmlContent');
-            $element.removeData('htmlContent');
-            
-            var editor;
-            var currentText;
-            var programaticChange = false;
-
-            this.setText = setText;
-
-            $scope.aceConfig = {
-                    useWrapMode : true,
-                    showGutter: false,
-					showPrintMargin: false,
-                    theme: $scope.theme || mdAdminSettings.codeTheme,
-                    fontSize: '13px',
-                    mode: $scope.mode || 'html',
-                    onLoad: function(editor_) {
-                        editor = editor_;
-                        editor.$blockScrolling = Infinity;
-                        if (initialText) {
-                            setText(initialText);
-                        }
-                    },
-                    onChange: aceChanged
-            };
-
-            $scope.$watch('src', function(newValue) {
-                if (!newValue) return;
-
-                var url = $sce.getTrustedResourceUrl(newValue);
-                $templateRequest(url).then(function(text_) {
-                    editor.setValue(text_, -1);
-                });
-            });
-            
-            $scope.$watch('text', function(newValue) {
-                if (newValue !== undefined && newValue !== currentText) {
-                    if (editor) {
-                        setText(newValue);
-                    } else {
-                        initialText = initialText || newValue;
-                    }
-                }
-            });
-            
-            $scope.$watch('theme', function(newValue) {
-                if (!newValue) return;
-                
-                editor.setTheme('ace/theme/' + newValue);
-            });
-            
-            function aceChanged() {
-                currentText = editor.getValue();
-                if ($scope.text !== currentText) {
-                    $scope.text = currentText;
-                    if ($scope.onEdit) {
-                        $scope.onEdit({$text: currentText});
-                    }
-                }
-            }
-
-            function setText(text) {
-                programaticChange = true;
-                editor.setValue(text, -1);
-            };
-        }]
+        controller: LiveEditorController
     };
 };
 
-liveEditor.$inject = ['$templateRequest', '$sce'];
-
-return liveEditor;
+return LiveEditor;
 
 }); // define

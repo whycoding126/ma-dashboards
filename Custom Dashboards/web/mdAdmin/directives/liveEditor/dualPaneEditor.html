@@ -12,7 +12,7 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content flex layout="column">
-                <div flex style="height:450px" live-editor="text" src="{{src}}"></div>
+                <live-editor flex style="height:450px" ng-model="text" ng-model-options="{debounce: 1000}"></live-editor>
             </md-card-content>
         </md-card>
     </div>

@@ -18,11 +18,7 @@ var dualPaneEditor = function() {
         link: function($scope, $element, $attrs) {
             var content = $element.data('htmlContent');
             $element.removeData('htmlContent');
-            if (content) {
-                var editor = $element.find('div[live-editor]')[0];
-                var editorCtrl = angular.element(editor).controller('liveEditor');
-                editorCtrl.setText(content);
-            }
+            $scope.text = content;
         }
     };
 };

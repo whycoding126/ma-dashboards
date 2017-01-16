@@ -416,14 +416,15 @@ code:not(.highlight) {
 	height: 200px;
 }
 
-[live-editor] {
+live-editor {
 	resize: vertical;
-	overflow: auto;
+	overflow-y: auto;
 	padding-bottom: 10px;
 	min-height: 400px;
+	display: block;
 }
 
-[live-editor] [ui-ace] {
+live-editor [ui-ace] {  
 	height: 100%;
 }
 
