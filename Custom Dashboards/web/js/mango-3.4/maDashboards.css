@@ -334,3 +334,26 @@ ma-user-select {
   -webkit-flex-direction: column;
   flex-direction: column;
 }
+
+[ng-include] > svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes spin-clockwise {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-counterclockwise {
+  100% { transform: rotate(-360deg); }
+}
+
+.ma-spin-clockwise {
+  transform-origin: 50% 50%;
+  animation: spin-clockwise 1s linear infinite;
+}
+
+.ma-spin-counterclockwise {
+  transform-origin: 50% 50%;
+  animation: spin-counterclockwise 1s linear infinite;
+}
