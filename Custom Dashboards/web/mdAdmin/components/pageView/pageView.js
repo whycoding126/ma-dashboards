@@ -11,11 +11,12 @@ function PageViewController($scope, Page, jsonStoreEventManager) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
     
     var $ctrl = this;
+    var unsubscribe;
 
     this.$onChanges = function(changes) {
         if (changes.xid) {
-            if ($ctrl.page) {
-                jsonStoreEventManager.unsubscribe($ctrl.page.xid, SUBSCRIPTION_TYPES, this.updateHandler);
+            if (unsubscribe) {
+                unsubscribe();
             }
             
             delete $ctrl.page;
@@ -26,7 +27,7 @@ function PageViewController($scope, Page, jsonStoreEventManager) {
                 $ctrl.markup = page.jsonData.markup;
             });
     
-            jsonStoreEventManager.smartSubscribe($scope, $ctrl.xid, SUBSCRIPTION_TYPES, this.updateHandler);
+            unsubscribe = jsonStoreEventManager.smartSubscribe($scope, $ctrl.xid, SUBSCRIPTION_TYPES, this.updateHandler);
         }
     };
     

@@ -71,10 +71,12 @@ function watchListSelect($injector) {
             this.onOpen = function() {
                 return this.queryPromise;
             };
-
+            
+            var unsubscribe;
             this.setWatchList = function(watchList) {
-                if (this.watchList) {
-                    WatchListEventManager.unsubscribe(this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                if (unsubscribe) {
+                    unsubscribe();
+                    unsubscribe = null;
                 }
                 
                 if (!watchList) return;
@@ -86,7 +88,8 @@ function watchListSelect($injector) {
                 
                 watchList.$getPoints().then(function(watchList) {
                     this.points = watchList.points;
-                    WatchListEventManager.smartSubscribe($scope, this.watchList.xid, UPDATE_TYPES, this.updateHandler);
+                    unsubscribe = WatchListEventManager.smartSubscribe($scope, this.watchList.xid,
+                            UPDATE_TYPES, this.updateHandler);
                 }.bind(this));
             };
             

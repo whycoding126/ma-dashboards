@@ -299,9 +299,17 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, mangoTimeout) {
 	EventManager.prototype.smartSubscribe = function($scope, xid, eventTypes, eventHandler) {
 	    var appliedHandler = scopeApply.bind(null, $scope, eventHandler);
 	    this.subscribe(xid, eventTypes, appliedHandler);
-        $scope.$on('$destroy', function() {
-            this.unsubscribe(xid, eventTypes, appliedHandler);
-        }.bind(this));
+	    
+	    var $this = this;
+	    var unsubscribe = function() {
+	        $this.unsubscribe(xid, eventTypes, appliedHandler);
+        };
+        var deregister = $scope.$on('$destroy', unsubscribe);
+        var manualUnsubscribe = function() {
+            deregister();
+            unsubscribe();
+        };
+        return manualUnsubscribe;
 
         function scopeApply($scope, fn) {
             var args = Array.prototype.slice.call(arguments, 2);
