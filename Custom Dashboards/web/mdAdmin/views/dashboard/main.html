@@ -85,12 +85,7 @@
 
     <md-content md-scroll-y layout="column" flex class="main-content">
       <div ui-view flex="noshrink" layout="column" class="dashboard-main-view" ng-class="{'mobile': !$mdMedia('gt-sm'), 'phone': $mdMedia('xs')}" role="main"></div>
-      
-      <div class="dashboard-footer" layout>
-        <div>Powered by Mango Automation. &copy;2017 <a href="http://infiniteautomation.com/" target="_blank">Infinite Automation Systems Inc</a>. <span ma-tr="footer.rightsReserved"></span>.</div>
-        <div flex></div>
-        <div>Dashboards v3.5.0 (beta)</div>
-      </div>
+      <ma-footer aria-role="contentinfo" layout></ma-footer>
     </md-content>
   </div>
 </div>

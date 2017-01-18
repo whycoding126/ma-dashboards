@@ -94,6 +94,14 @@ maServices.constant('mangoDateFormats', {
     year: 'YYYY'
 });
 
+maServices.constant('MA_PRODUCT_INFO', {
+    productName: 'Mango Automation',
+    distributor: 'Infinite Automation Systems Inc.',
+    distributorUrl: 'http://infiniteautomation.com/',
+    moduleName: 'Dashboards',
+    moduleVersion: 'v3.5.0 beta'
+});
+
 maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
     localStorageServiceProvider
         .setPrefix('maServices')
