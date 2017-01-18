@@ -49,6 +49,14 @@ code {
   background: {{getThemeColor('background-500-0.15')}};
 }
 
+md-input-container:not(.md-input-invalid).md-input-focused md-icon.md-accent {
+  color: {{getThemeColor('accent')}};
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused md-icon.md-warn {
+  color: {{getThemeColor('warn')}};
+}
+
 /* AmCharts */
 
 .amcharts-gauge-arrow, .amcharts-gauge-arrow-nail {
