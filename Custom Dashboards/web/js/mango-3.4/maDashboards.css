@@ -344,8 +344,12 @@ md-card.ma-accordion md-card-content {
   margin: 0;
 }
 
+md-input-container.md-icon-left.md-icon-right.ma-icon-inside {
+  padding: 2px 2px 2px 36px;
+}
+
 md-input-container.md-icon-right.ma-icon-inside {
-    padding: 2px;
+  padding: 2px;
 }
 
 md-input-container.md-icon-right.ma-icon-inside > md-icon:last-of-type {
