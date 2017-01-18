@@ -293,9 +293,32 @@ md-autocomplete[md-floating-label][ma-clearable] button {
   right: 0;
 }
 
+/* Accordions */
+
 ma-accordion-section {
   overflow: hidden;
   display: block;
+}
+
+
+md-card.ma-accordion md-card-title:focus {
+  outline: none;
+}
+
+md-card.ma-accordion .md-headline md-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+md-card.ma-accordion .md-headline.ma-accordion-expanded md-icon {
+  transform: rotate(180deg);
+}
+
+md-card.ma-accordion md-card-title:not(.ma-small-padding) {
+  padding: 16px;
+}
+
+md-card.ma-accordion md-card-content {
+  padding: 0;
 }
 
 .ma-slide-up-parent-enter,
@@ -308,6 +331,7 @@ ma-accordion-section {
   transition: transform 0.3s linear;
 }
 
+/* Buttons for inputs */
 .ma-input-button {
   position: absolute;
   top: 0;
@@ -319,12 +343,14 @@ ma-accordion-section {
   margin: 0;
 }
 
+/* Component styles */
+
 ma-switch-img img {
   width: 100%;
   height: 100%;
 }
 
-ma-user-select {
+ma-user-select, ma-system-setting-editor {
   box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;
@@ -334,6 +360,8 @@ ma-user-select {
   -webkit-flex-direction: column;
   flex-direction: column;
 }
+
+/* SVG and animations */
 
 [ng-include] > svg {
   width: 100%;
@@ -356,4 +384,10 @@ ma-user-select {
 .ma-spin-counterclockwise {
   transform-origin: 50% 50%;
   animation: spin-counterclockwise 1s linear infinite;
+}
+
+/* Utility classes */
+
+.ma-small-padding {
+  padding: 8px;
 }
