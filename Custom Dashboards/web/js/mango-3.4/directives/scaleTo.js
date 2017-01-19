@@ -6,22 +6,22 @@
 define(['angular'], function(angular) {
 'use strict';
 
-ScaleToWindow.$inject = [];
-function ScaleToWindow() {
+ScaleTo.$inject = [];
+function ScaleTo() {
     return {
         restrict: 'A',
         scope: false,
         bindToController: {
-            scaleToWindow: '<?maScaleToWindow',
-            maintainRatio: '<?maMaintainRatio',
+            scaleTo: '@?maScaleTo',
+            maintainRatio: '@?maMaintainRatio',
             center: '<?maCenter'
         },
-        controller: ScaleToWindowController
+        controller: ScaleToController
     };
 }
 
-ScaleToWindowController.$inject = ['$scope', '$element', '$window', '$timeout'];
-function ScaleToWindowController($scope, $element, $window, $timeout) {
+ScaleToController.$inject = ['$scope', '$element', '$window', '$timeout'];
+function ScaleToController($scope, $element, $window, $timeout) {
     this.$scope = $scope;
     this.$element = $element;
     this.$window = angular.element($window);
@@ -31,17 +31,18 @@ function ScaleToWindowController($scope, $element, $window, $timeout) {
     this.resizeHandler = this.scaleElement.bind(this);
 }
 
-ScaleToWindowController.prototype.$onInit = function() {
+ScaleToController.prototype.$onInit = function() {
+    // jshint eqnull:true
     var $ctrl = this;
-
-    if (this.scaleToWindow == null)
-        this.scaleToWindow = true;
-    if (this.maintainRatio == null)
-        this.maintainRatio = true;
-    if (this.center == null)
-        this.center = true;
     
-    if (this.scaleToWindow) {
+    if (this.maintainRatio == null || this.maintainRatio === '')
+        this.maintainRatio = 'letterbox';
+    if (this.center == null)
+        this.center = false;
+    
+    this.$scaleToElement = this.scaleTo === 'window' ? this.$window : angular.element(this.scaleTo);
+    
+    if (this.scaleTo) {
         this.bindHandler();
         this.scaleElement();
     }
@@ -51,9 +52,10 @@ ScaleToWindowController.prototype.$onInit = function() {
     });
 };
 
-ScaleToWindowController.prototype.$onChanges = function(changes) {
-    if (changes.scaleToWindow) {
-        if (this.scaleToWindow) {
+ScaleToController.prototype.$onChanges = function(changes) {
+    if (changes.scaleTo) {
+        if (this.scaleTo) {
+            this.$scaleToElement = this.scaleTo === 'window' ? this.$window : angular.element(this.scaleTo);
             this.bindHandler();
             this.scaleElement();
         } else {
@@ -62,43 +64,44 @@ ScaleToWindowController.prototype.$onChanges = function(changes) {
         }
     }
     if (changes.maintainRatio || changes.center) {
-        if (this.scaleToWindow) {
+        if (this.scaleTo) {
             this.scaleElement();
         }
     }
 };
 
-ScaleToWindowController.prototype.bindHandler = function bindHandler() {
+ScaleToController.prototype.bindHandler = function bindHandler() {
     if (!this.handlerAttached) {
         this.$window.on('resize', this.resizeHandler);
         this.handlerAttached = true;
     }
 };
 
-ScaleToWindowController.prototype.unbindHandler = function unbindHandler() {
+ScaleToController.prototype.unbindHandler = function unbindHandler() {
     if (this.handlerAttached) {
         this.$window.off('resize', this.resizeHandler);
         this.handlerAttached = false;
     }
 };
 
-ScaleToWindowController.prototype.removeScaling = function removeScaling() {
+ScaleToController.prototype.removeScaling = function removeScaling() {
     this.$element.css('transform', '');
     this.$element.css('transform-origin', '');
     this.$element.css('position', '');
     if (this.center) {
+        this.$element.css('position', '');
         this.$element.css('left', '');
         this.$element.css('top', '');
     }
 };
 
-ScaleToWindowController.prototype.scaleElement = function scaleElement($event, isNextDigest) {
+ScaleToController.prototype.scaleElement = function scaleElement($event) {
     if (this.$element.hasClass('ma-designer-element')) return;
 
     var elementWidth = parseInt(this.$element[0].style.width, 10);
     var elementHeight = parseInt(this.$element[0].style.height, 10);
-    var windowWidth = this.$window.width();
-    var windowHeight = this.$window.height();
+    var windowWidth = this.$scaleToElement.width();
+    var windowHeight = this.$scaleToElement.height();
 
     var widthRatio = windowWidth / elementWidth;
     var heightRatio = windowHeight / elementHeight;
@@ -106,12 +109,22 @@ ScaleToWindowController.prototype.scaleElement = function scaleElement($event, i
     //console.log('element('+elementWidth+','+elementHeight+') window('+windowWidth+','+windowHeight+')');
     //console.log('heightRatio:' + heightRatio + ' widthRatio:'+widthRatio);
 
-    if (this.maintainRatio) {
+    if (this.maintainRatio === 'clip') {
+        if (heightRatio < widthRatio) {
+            heightRatio = widthRatio;
+        } else {
+            widthRatio = heightRatio;
+        }
+    } else if (this.maintainRatio === 'letterbox') {
         if (heightRatio < widthRatio) {
             widthRatio = heightRatio;
         } else {
             heightRatio = widthRatio;
         }
+    } else if (this.maintainRatio === 'to-height') {
+        widthRatio = heightRatio;
+    } else if (this.maintainRatio === 'to-width') {
+        heightRatio = widthRatio;
     }
 
     var widthRemainder = windowWidth - elementWidth * widthRatio;
@@ -119,23 +132,25 @@ ScaleToWindowController.prototype.scaleElement = function scaleElement($event, i
     
     this.$element.css('transform', 'scale(' + widthRatio + ',' + heightRatio + ')');
     this.$element.css('transform-origin', '0 0');
-    this.$element.css('position', 'absolute');
     if (this.center) {
+        this.$element.css('position', 'absolute');
         this.$element.css('left', widthRemainder/2 + 'px');
         this.$element.css('top', heightRemainder/2 + 'px');
     } else {
+        this.$element.css('position', '');
         this.$element.css('left', '');
         this.$element.css('top', '');
     }
     
-    // run again on next digest, re-calc height/width after scrollbars are removed
-    if (!isNextDigest) {
+    // run again on next digest if scaleElement was triggered by a resize event
+    // re-calc height/width after scrollbars are removed
+    if ($event) {
         this.$timeout(function() {
-            this.scaleElement(null, true);
+            this.scaleElement();
         }.bind(this), 0);
     }
 };
 
-return ScaleToWindow;
+return ScaleTo;
 
 }); // define
