@@ -11,13 +11,13 @@ function SystemSettingEditorController(SystemSettings, $timeout, $q) {
     this.SystemSettings = SystemSettings;
     this.$timeout = $timeout;
     this.$q = $q;
-    
+
     this.messages = {};
 }
 
 SystemSettingEditorController.prototype.$onChanges = function(changes) {
-    if (changes.key) {
-        this.systemSetting = new this.SystemSettings(this.key);
+    if (changes.key || changes.type) {
+        this.systemSetting = new this.SystemSettings(this.key, this.type);
         this.systemSetting.getValue();
     }
 };
@@ -55,7 +55,15 @@ return {
     templateUrl: require.toUrl('./systemSettingEditor.html'),
     bindings: {
         key: '@',
-        labelTr: '@'
+        labelTr: '@',
+        type: '@?',
+        select: '<?',
+        min: '<?',
+        max: '<?',
+        step: '<?',
+    },
+    transclude: {
+        options: '?mdOption'
     }
 };
 

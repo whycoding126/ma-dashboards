@@ -22,8 +22,9 @@ SystemSettingsFactory.$inject = ['$http'];
 function SystemSettingsFactory(sections, $http) {
     var systemSettingsUrl = '/rest/v1/system-settings';
     
-    function SystemSettings(key) {
+    function SystemSettings(key, type) {
         this.key = key;
+        this.type = type;
     }
     
     SystemSettings.getSections = function() {
@@ -56,11 +57,15 @@ function SystemSettingsFactory(sections, $http) {
         });
     };
 
-    SystemSettings.prototype.getValue = function getSystemSetting() {
+    SystemSettings.prototype.getValue = function getSystemSetting(type) {
         var $this = this;
+
         return $http({
             method: 'GET',
             url: systemSettingsUrl + '/' + this.key,
+            params: {
+                type: type || this.type
+            },
             headers: {
                 'Accept': 'application/json'
             }
@@ -70,12 +75,15 @@ function SystemSettingsFactory(sections, $http) {
         });
     };
     
-    SystemSettings.prototype.setValue = function setSystemSetting(value) {
+    SystemSettings.prototype.setValue = function setSystemSetting(value, type) {
         var $this = this;
         value = angular.toJson(value || this.value);
         return $http({
             method: 'PUT',
             url: systemSettingsUrl + '/' + this.key,
+            params: {
+                type: type || this.type
+            },
             headers: {
                 'Accept': 'application/json'
             },
