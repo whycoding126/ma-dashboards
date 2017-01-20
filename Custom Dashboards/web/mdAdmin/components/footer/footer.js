@@ -6,22 +6,20 @@
 define(['angular', 'require', 'moment-timezone'], function(angular, require, moment) {
 'use strict';
 
-FooterController.$inject = ['MA_PRODUCT_INFO'];
-function FooterController(MA_PRODUCT_INFO) {
-    // TODO
-    // get module version and license status from API and display in footer
+FooterController.$inject = ['Modules'];
+function FooterController(Modules) {
+    this.Modules = Modules;
     this.year = moment().year();
-    this.productName = MA_PRODUCT_INFO.productName;
-    this.distributor = MA_PRODUCT_INFO.distributor;
-    this.distributorUrl = MA_PRODUCT_INFO.distributorUrl;
-    this.moduleName = MA_PRODUCT_INFO.moduleName;
-    this.moduleVersion = MA_PRODUCT_INFO.moduleVersion;
+    this.productName = 'Mango Automation';
 }
 
 FooterController.prototype.$onChanges = function(changes) {
 };
 
 FooterController.prototype.$onInit = function() {
+    this.Modules.getCore().then(function(coreModule) {
+        this.coreModule = coreModule;
+    }.bind(this));
 };
 
 return {

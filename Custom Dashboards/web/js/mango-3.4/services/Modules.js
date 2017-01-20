@@ -19,7 +19,8 @@ function ModulesFactory($http) {
             url: modulesUrl + '/list',
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            cache: true
         }).then(function(response) {
             return response.data;
         });
@@ -31,7 +32,8 @@ function ModulesFactory($http) {
             url: modulesUrl + '/core',
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            cache: true
         }).then(function(response) {
             return response.data;
         });
