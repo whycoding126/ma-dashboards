@@ -568,13 +568,33 @@ mdAdminApp.constant('MENU_ITEMS', [
                 menuIcon: 'import_export',
                 permission: 'superadmin'
             },
-            {
+            /*{
                 url: '/modules',
                 name: 'dashboard.settings.modules',
                 template: '<iframe-view src="/modules.shtm"></iframe-view>',
                 menuTr: 'header.modules',
                 menuIcon: 'extension',
                 permission: 'superadmin'
+            },*/
+            {
+                name: 'dashboard.settings.modules',
+                url: '/modules',
+                template: '<modules-page><modules-page>',
+                menuTr: 'header.modules',
+                menuIcon: 'extension',
+                permission: 'superadmin',
+                params: {
+                    helpPage: 'dashboard.help.modules'
+                },
+                resolve: {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                        return rQ(['./components/modulesPage/modulesPage'], function (modulesPage) {
+                            angular.module('modulesPage', [])
+                                .component('modulesPage', modulesPage);
+                            $ocLazyLoad.inject('modulesPage');
+                        });
+                    }]
+                }
             },
             {
                 url: '/sql-console',

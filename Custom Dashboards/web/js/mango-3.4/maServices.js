@@ -28,6 +28,8 @@ define(['./services/Point',
         './services/statisticsFactory',
         './services/qDecorator',
         './services/UserEventManager',
+        './services/Modules',
+        './services/Permissions',
         './services/SystemSettings',
         'angular',
         'angular-resource',
@@ -35,7 +37,7 @@ define(['./services/Point',
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, SystemSettingsProvider, angular) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -73,6 +75,8 @@ maServices.factory('DynamicItems', DynamicItems);
 maServices.factory('pointValues', pointValuesFactory);
 maServices.factory('statistics', statisticsFactory);
 maServices.factory('UserEventManager', UserEventManager);
+maServices.factory('Modules', ModulesFactory);
+maServices.factory('Permissions', PermissionsFactory);
 maServices.provider('SystemSettings', SystemSettingsProvider);
 
 maServices.constant('mangoBaseUrl', '');
