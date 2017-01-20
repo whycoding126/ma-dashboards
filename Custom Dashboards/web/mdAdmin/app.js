@@ -597,14 +597,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                 }
             },
             {
-                url: '/sql-console',
-                name: 'dashboard.settings.sqlConsole',
-                template: '<iframe-view src="/sqlConsole.shtm"></iframe-view>',
-                menuTr: 'header.sql',
-                menuIcon: 'storage',
-                permission: 'superadmin'
-            },
-            {
                 url: '/no-sql',
                 name: 'dashboard.settings.noSql',
                 template: '<iframe-view src="/mango_no_sql.shtm"></iframe-view>',
