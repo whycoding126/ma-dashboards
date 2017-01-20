@@ -99,7 +99,7 @@ maServices.constant('MA_PRODUCT_INFO', {
     distributor: 'Infinite Automation Systems Inc.',
     distributorUrl: 'http://infiniteautomation.com/',
     moduleName: 'Dashboards',
-    moduleVersion: 'v3.5.0 beta'
+    moduleVersion: 'v3.5.0-beta1'
 });
 
 maServices.config(['localStorageServiceProvider', '$httpProvider', '$provide', function(localStorageServiceProvider, $httpProvider, $provide) {
