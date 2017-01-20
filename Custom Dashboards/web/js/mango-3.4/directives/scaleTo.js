@@ -89,7 +89,7 @@ ScaleToController.prototype.removeScaling = function removeScaling() {
     this.$element.css('transform-origin', '');
     this.$element.css('position', '');
     if (this.center) {
-        this.$element.css('position', '');
+        //this.$element.css('position', '');
         this.$element.css('left', '');
         this.$element.css('top', '');
     }
@@ -137,7 +137,7 @@ ScaleToController.prototype.scaleElement = function scaleElement($event) {
         this.$element.css('left', widthRemainder/2 + 'px');
         this.$element.css('top', heightRemainder/2 + 'px');
     } else {
-        this.$element.css('position', '');
+        //this.$element.css('position', '');
         this.$element.css('left', '');
         this.$element.css('top', '');
     }
