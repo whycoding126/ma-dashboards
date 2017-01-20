@@ -102,6 +102,52 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 			return null;
 		}
 	}	
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getNotFoundPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public String getNotFoundPageUri(HttpServletRequest request, HttpServletResponse response) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_NOT_FOUND_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_NOT_FOUND_PAGE);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getErrorPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public String getErrorPageUri(HttpServletRequest request, HttpServletResponse response) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_ERROR_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_ERROR_PAGE);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.module.DefaultPagesDefinition#getStartupPageUri(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public String getStartupPageUri(HttpServletRequest request, HttpServletResponse response) {
+		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_STARTUP_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_STARTUP_PAGE);
+		
+		if(!StringUtils.isEmpty(page)){
+			return page;
+		}else{
+			return null;
+		}
+
+	}
+	
 }
 
 
