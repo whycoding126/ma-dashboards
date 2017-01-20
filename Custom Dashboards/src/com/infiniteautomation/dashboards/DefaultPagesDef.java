@@ -111,7 +111,8 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_NOT_FOUND_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_NOT_FOUND_PAGE);
 		
 		if(!StringUtils.isEmpty(page)){
-			return page;
+			String requested = request.getRequestURI();
+			return page + "?path=" + requested;
 		}else{
 			return null;
 		}

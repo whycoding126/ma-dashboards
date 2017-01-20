@@ -49,7 +49,10 @@ public class DashboardsSystemSettingsDefinition extends SystemSettingsDefinition
 		defaults.put(DashboardsCommon.DASHBOARDS_PUBLIC_FILES_LOCATION, DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION);
 		defaults.put(DashboardsCommon.DASHBOARDS_PUBLIC_URL_PREFIX, DashboardsCommon.DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX);
 		defaults.put(DashboardsCommon.DASHBOARDS_UNAUTHORIZED_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE);
-			
+		defaults.put(DashboardsCommon.DASHBOARDS_NOT_FOUND_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_NOT_FOUND_PAGE);
+		defaults.put(DashboardsCommon.DASHBOARDS_ERROR_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_ERROR_PAGE);
+		defaults.put(DashboardsCommon.DASHBOARDS_STARTUP_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_STARTUP_PAGE);
+		
 		return defaults;
 	}
 
