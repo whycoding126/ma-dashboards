@@ -344,6 +344,10 @@ md-card.ma-accordion md-card-content {
   margin: 0;
 }
 
+md-menu.ma-input-button > .md-button.md-icon-button {
+  margin: 0 -7px 0 0;
+}
+
 md-input-container.md-icon-left.md-icon-right.ma-icon-inside {
   padding: 2px 2px 2px 36px;
 }
@@ -411,4 +415,18 @@ ma-user-select, ma-system-setting-editor {
 
 .ma-small-padding {
   padding: 8px;
+}
+
+/* permissions menu */
+
+.ma-permissions-menu {
+  padding: 0;
+}
+
+.ma-permissions-menu md-checkbox {
+  margin: 0;
+}
+
+md-menu-content md-checkbox:not(.md-checked) .md-container .md-icon {
+    border-color: rgba(0,0,0,0.54);
 }
