@@ -250,8 +250,7 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     
     Point.prototype.setValue = function setValue(value, options) {
     	options = options || {};
-        
-
+    	
     	var dataType = this.pointLocator.dataType;
     	if (!value.value) {
     		if (dataType === 'NUMERIC') {
@@ -308,6 +307,11 @@ function PointFactory($resource, $http, $timeout, Util, User) {
     	if (setValue === undefined) return this.value;
     	this.setValue(setValue);
     };
+    
+    Object.defineProperty(Point.prototype, 'valueGetterSetter', {
+        get: Point.prototype.valueFn,
+        set: Point.prototype.valueFn
+    });
 
     Point.prototype.rendererMap = function() {
     	if (this._rendererMap) return this._rendererMap;
