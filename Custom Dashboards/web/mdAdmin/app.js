@@ -421,6 +421,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         name: 'dashboard.settings',
         menuIcon: 'build',
         menuTr: 'dashboards.v3.app.adminTools',
+        weight: 1999,
         children: [
             {
                 url: '/edit-pages/{pageXid}',
