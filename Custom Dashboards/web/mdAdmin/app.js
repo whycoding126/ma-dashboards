@@ -326,6 +326,8 @@ mdAdminApp.constant('MENU_ITEMS', [
         url: '/help',
         menuTr: 'header.help',
         menuIcon: 'help',
+        submenu: true,
+        weight: 2000,
         children: [
             {
                 url: '/getting-started',
@@ -415,7 +417,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         }]
     },
     {
-        url: '/settings',
+        url: '/administration',
         name: 'dashboard.settings',
         menuIcon: 'build',
         menuTr: 'dashboards.v3.app.adminTools',
@@ -671,6 +673,7 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuTr: 'dashboards.v3.dox.examples',
         menuIcon: 'info',
         submenu: true,
+        weight: 2001,
         children: [
             {
                 url: '/play-area',
@@ -1190,6 +1193,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         menuText: 'API Docs',
         menuIcon: 'book',
         submenu: true,
+        weight: 2002,
         children: [],
         resolve: {
             prettyprint: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
