@@ -72,6 +72,9 @@ mdAdminApp.provider('mangoState', ['$stateProvider', function mangoStateProvider
                 if (!menuItem.name) {
                     menuItem.name = menuItem.state;
                 }
+                if (!menuItem.weight) {
+                    menuItem.weight = 1000;
+                }
                 
                 if (!menuItem.resolve) {
                     menuItem.resolve = {};
