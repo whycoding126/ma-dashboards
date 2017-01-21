@@ -40,7 +40,6 @@ function setPointValue(Translate, $q, $injector) {
             showButton: '=?',
             setOnChange: '='
         },
-        replace: true,
         templateUrl: function() {
             if ($injector.has('$mdUtil')) {
                 return require.toUrl('./setPointValue-md.html');
