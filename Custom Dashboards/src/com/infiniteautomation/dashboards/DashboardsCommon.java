@@ -40,6 +40,6 @@ public class DashboardsCommon{
     public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "/dashboards/unauthorized";
 	public static final String DEFAULT_DASHBOARDS_NOT_FOUND_PAGE = "/dashboards/not-found";
 	public static final String DEFAULT_DASHBOARDS_ERROR_PAGE = "/dashboards/error";
-	public static final String DEFAULT_DASHBOARDS_STARTUP_PAGE = "/dashboards/startup";
+	public static final String DEFAULT_DASHBOARDS_STARTUP_PAGE = ""; //TODO Un-comment when "/dashboards/startup";
 
 }
