@@ -139,14 +139,7 @@ public class DefaultPagesDef extends DefaultPagesDefinition {
 	 */
 	@Override
 	public String getStartupPageUri(HttpServletRequest request, HttpServletResponse response) {
-		String page = SystemSettingsDao.getValue(DashboardsCommon.DASHBOARDS_STARTUP_PAGE, DashboardsCommon.DEFAULT_DASHBOARDS_STARTUP_PAGE);
-		
-		if(!StringUtils.isEmpty(page)){
-			return page;
-		}else{
-			return null;
-		}
-
+		return null; //TODO Configure this as a hard URL when ready.  This cannot get info from the DB since the DB will not be ready yet
 	}
 	
 }

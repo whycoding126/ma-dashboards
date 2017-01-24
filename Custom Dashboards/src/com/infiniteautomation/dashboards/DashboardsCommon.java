@@ -25,7 +25,6 @@ public class DashboardsCommon{
 	public static final String DASHBOARDS_UNAUTHORIZED_PAGE = "dashboards.unauthorized.page";
 	public static final String DASHBOARDS_NOT_FOUND_PAGE = "dashboards.notFound.page";
 	public static final String DASHBOARDS_ERROR_PAGE = "dashboards.error.page";
-	public static final String DASHBOARDS_STARTUP_PAGE = "dashboards.startup.page";
 
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_URL_PREFIX = "/public-dashboards/";
 	public static final String DEFAULT_DASHBOARDS_PUBLIC_FILES_LOCATION = "/web/public/";
@@ -40,6 +39,5 @@ public class DashboardsCommon{
     public static final String DEFAULT_DASHBOARDS_UNAUTHORIZED_PAGE = "/dashboards/unauthorized";
 	public static final String DEFAULT_DASHBOARDS_NOT_FOUND_PAGE = "/dashboards/not-found";
 	public static final String DEFAULT_DASHBOARDS_ERROR_PAGE = "/dashboards/error";
-	public static final String DEFAULT_DASHBOARDS_STARTUP_PAGE = ""; //TODO Un-comment when "/dashboards/startup";
 
 }
