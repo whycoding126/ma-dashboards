@@ -225,7 +225,12 @@ mdAdminApp.constant('MENU_ITEMS', [
         menuIcon: 'home',
         params: {
             helpPage: 'dashboard.help.gettingStarted'
-        }
+        },
+        controller: ['$scope', 'Page', function ($scope, Page) {
+            Page.getPages().then(function(store) {
+                $scope.pageCount = store.jsonData.pages.length;
+            });
+        }]
     },
     {
         name: 'dashboard.watchList',
