@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
     'use strict';
 
-    maMapController.$inject = ['$scope', 'NgMap', 'MD_ADMIN_SETTINGS'];
-    function maMapController($scope, NgMap, MD_ADMIN_SETTINGS) {
+    maMapController.$inject = ['$scope', '$mdMedia', 'NgMap', 'MD_ADMIN_SETTINGS'];
+    function maMapController($scope, $mdMedia, NgMap, MD_ADMIN_SETTINGS) {
         var $ctrl = this;
         $ctrl.render = false;
         $ctrl.apiKeySet = false;
@@ -49,10 +49,18 @@ define(['angular', 'require'], function(angular, require) {
 
         $ctrl.$onChanges = function(changes) {
             // console.log(changes);
-            if (!$ctrl.height) {
-                $ctrl.height = "400px";
+            if (!$ctrl.desktopHeight) {
+                $ctrl.height = "500px";
+            }
+            if (!$mdMedia('gt-md') && $ctrl.mobileHeight) {
+                $ctrl.height = $ctrl.mobileHeight;
             }
         };
+
+        $scope.$watch(function() { return $mdMedia('gt-md'); }, function(gtMd) {
+            // console.log(gtMd);
+            $ctrl.height = gtMd ? $ctrl.desktopHeight : $ctrl.mobileHeight;
+        });
     }
 
     return {
@@ -61,7 +69,8 @@ define(['angular', 'require'], function(angular, require) {
             center: '@',
             mapType: '@',
             infoWindowTheme: '@',
-            height: '@',
+            desktopHeight: '@',
+            mobileHeight: '@',
             outputData: '='
         },
         controller: maMapController,
