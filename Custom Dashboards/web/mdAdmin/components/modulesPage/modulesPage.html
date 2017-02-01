@@ -14,8 +14,8 @@
         <span flex="50" ma-tr="modules.version"></span>
         <span flex="50" ng-bind="module.version"></span>
       </div>
-      <div layout="row" ng-if="module.buildNumber">
-        <span flex="50" ma-tr="modules.builderNumber"></span>
+      <div layout="row" ng-if="module.buildNumber > 0">
+        <span flex="50" ma-tr="modules.buildNumber"></span>
         <span flex="50" ng-bind="module.buildNumber"></span>
       </div>
       <div layout="row">
