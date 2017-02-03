@@ -19,7 +19,7 @@ define([], function() {
  * @param {number} radius Radius of the circle
  *
  * @usage
- * <ma-svg-circle></ma-svg-circle>
+ * <ma-svg-circle radius="myPoint.value"></ma-svg-circle>
  */
 function svgCircle() {
     return {

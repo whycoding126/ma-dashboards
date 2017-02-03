@@ -20,7 +20,7 @@ define([], function() {
  * @param {number} rectWidth Width of the rectangle
  *
  * @usage
- * <ma-svg-rect></ma-svg-rect>
+ * <ma-svg-rect rect-height="100" rect-width="myPoint.value"></ma-svg-rect>
  */
 function svgRect() {
     return {
