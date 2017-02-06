@@ -10,15 +10,13 @@
 <li>Note, you will need to set a your google map api key on the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.</li>
 <li>A google map api key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.</li>
 <li><code>&lt;ma-map&gt;</code> utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use <code>&lt;marker&gt;</code> and <code>&lt;info window&gt;</code> components.</li>
-<li><a ui-sref="dashboard.examples.basics.mapsAndTimezones">View Demo</a></li>
+<li><a ui-sref="dashboard.examples.utilities.googleMaps">View Demo</a></li>
 </ul>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">&lt;ma-map zoom="10" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="950px" mobile-height="450px"&gt;
-  &lt;marker centered="true" position="-12.95, -38.45" 
-  on-click="$parent.$ctrl.setOutputData('Demo 01-outsidetemp')"&gt;&lt;/marker&gt;
-  &lt;marker position="40, -105" 
-  on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"&gt;&lt;/marker&gt;
+<div class="usage"><pre class="prettyprint linenums">&lt;ma-map zoom="11" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="400px" mobile-height="250px"&gt;
+    &lt;marker centered="true" position="-12.95, -38.45" on-click="$parent.$ctrl.setOutputData('Demo 01-outsidetemp')"&gt;&lt;/marker&gt;
+    &lt;marker position="-12.99, -38.49" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"&gt;&lt;/marker&gt;
 &lt;/ma-map&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>zoom</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="madashboards-mamap-page"><p>Sets the zoom level of the map.</p>
 </div></td></tr><tr><td>center <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-numbers">numbers</a></td><td><div class="madashboards-mamap-page"><p>Sets the lat/long coordinates of the center of the map. Set as two comma seperated values. Eg. <code>-12.95, -38.45</code>. <br> Not necessary if <code>&lt;ma-map&gt;</code> contains a <code>&lt;marker&gt;</code> component with a <code>position</code> property set and <code>centered=&quot;true&quot;</code>.</p>

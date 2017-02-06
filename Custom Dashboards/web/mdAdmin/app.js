@@ -1050,6 +1050,12 @@ mdAdminApp.constant('MENU_ITEMS', [
                         templateUrl: 'views/examples/eventsTable.html',
                         url: '/events-table',
                         menuTr: 'dashboards.v3.app.eventsTable'
+                    },
+                    {
+                        name: 'dashboard.examples.utilities.googleMaps',
+                        templateUrl: 'views/examples/googleMaps.html',
+                        url: '/google-maps',
+                        menuText: 'Google Maps'
                     }
                 ]
             }

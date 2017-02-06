@@ -15,7 +15,7 @@ define(['angular', 'require'], function(angular, require) {
   * - Note, you will need to set a your google map api key on the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.
   * - A google map api key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.
   * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use `<marker>` and `<info window>` components.
-  * - <a ui-sref="dashboard.examples.basics.mapsAndTimezones">View Demo</a>
+  * - <a ui-sref="dashboard.examples.utilities.googleMaps">View Demo</a>
   *
   * @param {number} zoom Sets the zoom level of the map.
   * @param {numbers=} center Sets the lat/long coordinates of the center of the map. Set as two comma seperated values. Eg. `-12.95, -38.45`. <br> Not necessary if `<ma-map>` contains a `<marker>` component with a `position` property set and `centered="true"`.
@@ -31,11 +31,9 @@ define(['angular', 'require'], function(angular, require) {
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
   *
   * @usage
-  * <ma-map zoom="10" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="950px" mobile-height="450px">
-      <marker centered="true" position="-12.95, -38.45" 
-      on-click="$parent.$ctrl.setOutputData('Demo 01-outsidetemp')"></marker>
-      <marker position="40, -105" 
-      on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"></marker>
+  * <ma-map zoom="11" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="400px" mobile-height="250px">
+        <marker centered="true" position="-12.95, -38.45" on-click="$parent.$ctrl.setOutputData('Demo 01-outsidetemp')"></marker>
+        <marker position="-12.99, -38.49" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"></marker>
     </ma-map>
   *
   */
