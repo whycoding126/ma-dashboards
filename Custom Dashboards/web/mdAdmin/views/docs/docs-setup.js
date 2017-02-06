@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-now update-interval=&quot;1 SECONDS&quot; output=&quot;time&quot;&gt;&lt;/ma-now&gt;",
-      "keywords": "api basics browser clocksandtimezones current dashboard demo directive duration examples format height hold interval js madashboards manow moment number object output seconds starting string style text time time-zone time1 timezone ui-sref units update update-interval variable width"
+      "keywords": "api basics browser browsers browsertimezone clocksandtimezones current dashboard demo directive duration examples format height hold interval js madashboards manow moment number object output seconds set starting string style text time time-zone time1 timezone ui-sref units update update-interval variable width"
     },
     {
       "section": "api",
@@ -532,7 +532,16 @@ NG_DOCS={
       "type": "service",
       "moduleName": "maServices",
       "shortDescription": "Provides a service for getting list of users from the Mango system, as well as logging users in and out.",
-      "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts call class current currently default delete endpoint getbyid href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
+      "keywords": "$delete $get $remove $resource $save $scope _blank action actions angularjs api array attempts call class current currently default delete endpoint getbyid getcurrent href http https javascript list logged logging login logout mango maservices method methods object objects org passed password post prettyprint-mode property provided query remove resource rest return returns rql save service string system target usage user username users var xid"
+    },
+    {
+      "section": "api",
+      "id": "maServices.UserEventManager",
+      "shortName": "maServices.UserEventManager",
+      "type": "service",
+      "moduleName": "maServices",
+      "shortDescription": "Provides an EventManager factory pointing to the websocket endpoint at &#39;/rest/v1/websocket/users&#39;",
+      "keywords": "api dashboard docs endpoint eventmanager factory javascript maservices methods pointing prettyprint-mode service subscribe subscription_types ui-sref usage usereventmanager websocket websockethandler"
     },
     {
       "section": "api",

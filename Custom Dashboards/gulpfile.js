@@ -62,22 +62,22 @@ gulp.task('build-ngdocs', [], function() {
     }
 
     
-    return gulp.src('web/js/mango-3.3/**/*.js')
+    return gulp.src('web/js/mango-3.4/**/*.js')
         .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('docs/mango-3.3'));
+        .pipe(gulp.dest('docs/mango-3.4'));
 });
 
 gulp.task('copy-docs', ['build-ngdocs'], function() {
 
     console.log('Copying Doc Partials');
     
-    return gulp.src(['docs/mango-3.3/partials/api/*.html','docs/mango-3.3/js/docs-setup.js'])
+    return gulp.src(['docs/mango-3.4/partials/api/*.html','docs/mango-3.4/js/docs-setup.js'])
         .pipe(gulp.dest('web/mdAdmin/views/docs'));
 });
 
 gulp.task('watchDocs', function() {
     // Watch .js files
-    gulp.watch('web/js/mango-3.3/**/*.js', ['copy-docs']);
+    gulp.watch('web/js/mango-3.4/**/*.js', ['copy-docs']);
 });
 
 gulp.task('watch-web', function() {
