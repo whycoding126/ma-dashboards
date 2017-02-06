@@ -1,6 +1,6 @@
 <md-button class="md-fab md-fab-bottom-right edit-page-button"
   style="position:fixed !important;"
-  ng-if="$ctrl.page && $ctrl.User.current.hasPermission(page.editPermission) && !$ctrl.nonEditMode"
+  ng-if="$ctrl.page && $ctrl.user.current.hasPermission($ctrl.page.editPermission) && !$ctrl.nonEditMode"
   ui-sref="dashboard.settings.editPages({pageXid: $ctrl.page.xid})"
   ma-tr="dashboards.v3.app.editPage">
   <md-icon>edit</md-icon>

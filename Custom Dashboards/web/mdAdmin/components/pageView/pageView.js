@@ -6,11 +6,12 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-PageViewController.$inject = ['$scope', 'Page', 'jsonStoreEventManager'];
-function PageViewController($scope, Page, jsonStoreEventManager) {
+PageViewController.$inject = ['$scope', 'Page', 'User', 'jsonStoreEventManager'];
+function PageViewController($scope, Page, User, jsonStoreEventManager) {
     var SUBSCRIPTION_TYPES = ['add', 'update'];
     
     var $ctrl = this;
+    $ctrl.user = User;
     var unsubscribe;
 
     this.$onChanges = function(changes) {
@@ -39,7 +40,8 @@ function PageViewController($scope, Page, jsonStoreEventManager) {
 return {
     controller: PageViewController,
     bindings: {
-        xid: '@'
+        xid: '@',
+        nonEditMode: '='
     },
     templateUrl: require.toUrl('./pageView.html')
 };
