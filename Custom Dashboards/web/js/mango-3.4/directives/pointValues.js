@@ -83,9 +83,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
             realtime: '=?',
             rollup: '@',
             rollupInterval: '@',
-            rendered: '@',
+            rendered: '=?',
             dateFormat: '@',
-            timeout: '=',
+            timeout: '=?',
             autoRollupInterval: '=?',
             timezone: '@'
         },
@@ -323,7 +323,7 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                 	var value;
                 	if ($scope.point.pointLocator.dataType === 'IMAGE') {
                 	    value = payload.value.value;
-                	} else if ($scope.rendered === 'true') {
+                	} else if ($scope.rendered) {
                     	value = payload.renderedValue;
                     } else if (payload.convertedValue !== null && payload.convertedValue !== undefined) {
                     	value = payload.convertedValue;
@@ -384,17 +384,9 @@ function pointValues($http, pointEventManager, Point, $q, mangoTimeout, Util, po
                     };
                     
                     return pointValues.getPointValuesForXid(point.xid, options).then(function(values) {
-                        var i;
-                        if (dataType === 'NUMERIC' && $scope.rendered !== 'true') {
-                            for (i = 0; i < values.length; i++) {
-                                if (typeof values[i].value === 'string') {
-                                    values[i].value = Util.parseInternationalFloat(values[i].value);
-                                }
-                            }
-                        }
                         if (dataType === 'IMAGE') {
                             var imgUrl = require.toUrl('../img/noDataForPeriod.svg');
-                            for (i = 0; i < values.length; i++) {
+                            for (var i = 0; i < values.length; i++) {
                                 if (values[i].annotation === 'No data for period') {
                                     values[i].value = imgUrl;
                                 }

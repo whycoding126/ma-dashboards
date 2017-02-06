@@ -48,8 +48,8 @@ define(['amcharts/serial', 'jquery', 'moment-timezone', 'amcharts/plugins/export
 </ma-serial-chart>`
  *
  */
-serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS'];
-function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS) {
+serialChart.$inject = ['maDashboardsInsertCss', 'cssInjector', 'MA_AMCHARTS_DATE_FORMATS', 'Util'];
+function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMATS, Util) {
 	var MAX_SERIES = 10;
 
 	var scope = {
@@ -124,7 +124,16 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         }
         
         if ($scope.legend) {
-            options.legend = {};
+            options.legend = {
+                valueWidth: 100,
+                valueFunction: function(dataItem, valueString) {
+                    if (dataItem.dataContext) {
+                        var graph = dataItem.graph;
+                        return (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+                    }
+                    return '';
+                }
+            };
         }
         
         if ($scope['export']) {
@@ -134,7 +143,7 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         if ($scope.balloon) {
             options.chartCursor = {
                 categoryBalloonDateFormat: MA_AMCHARTS_DATE_FORMATS.categoryBalloon,
-                oneBalloonOnly: true
+                oneBalloonOnly: false
             };
         }
 
@@ -296,7 +305,9 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                 title: 'Series ' + graphNum,
                 type: 'smoothedLine',
                 valueAxis: 'left',
-                balloonText: '[[value]]'
+                balloonFunction: function(dataItem, graph) {
+                    return (dataItem.dataContext[graph.valueField + '_rendered'] || dataItem.dataContext[graph.valueField]).toString();
+                }
         	};
 
         	var pointDefaults;
@@ -336,6 +347,8 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
         	    ($scope.graphOptions && $scope.graphOptions[graphNum - 1]);
 
             var opts = $.extend(true, {}, hardDefaults, pointDefaults, $scope.defaultGraphOptions, defaultAttributes, attributeOptions, graphOptions);
+            if (opts.balloonText)
+                delete opts.balloonFunction;
             if (angular.isUndefined(opts.fillAlphas)) {
                 opts.fillAlphas = opts.type === 'column' ? 0.7 : 0;
 
@@ -388,7 +401,12 @@ function serialChart(maDashboardsInsertCss, cssInjector, MA_AMCHARTS_DATE_FORMAT
                     output[timestamp] = {timestamp: timestamp};
                 }
 
-                output[timestamp][valueField] = value.value;
+                if (typeof value.value === 'string') {
+                    output[timestamp][valueField] = Util.parseInternationalFloat(value.value);
+                    output[timestamp][valueField + '_rendered'] = value.value;
+                } else {
+                    output[timestamp][valueField] = value.value;
+                }
             }
         }
 
