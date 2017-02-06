@@ -176,6 +176,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maDashboards.maMap",
+      "shortName": "maDashboards.maMap",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-map zoom=&quot;10&quot; map-type=&quot;roadmap&quot; center=&quot;-12.95, -38.45&quot; desktop-height=&quot;950px&quot; mobile-height=&quot;450px&quot;&gt;&lt;/ma-map&gt;",
+      "keywords": "$ctrl $parent _blank api aquired background based basics center centered comma component components coordinates custom dark dashboard dashboardsettings default defaults demo desktop desktop-height directive display displays earth examples flex github google height href html https hybrid images info-window-theme io key lat level library madashboards mamap map map-type mapsandtimezones mixture mobile mobile-height normal note on-click optionally options output-data physical pointxid position property px road roadmap satellite seperated set setoutputdata sets settings target terrain theme true type ui-sref utilizes values view views white width window zoom"
+    },
+    {
+      "section": "api",
       "id": "maDashboards.maNow",
       "shortName": "maDashboards.maNow",
       "type": "directive",

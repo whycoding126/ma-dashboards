@@ -1227,7 +1227,7 @@ function(MENU_ITEMS, MD_ADMIN_SETTINGS, DASHBOARDS_NG_DOCS, $stateProvider, $url
         var dashCaseUrl = item.replace(/[A-Z]/g, function(c) { return '-' + c.toLowerCase(); });
 
         var menuText = item;
-        if (item==='maDashboards') { menuText = 'Directives' }
+        if (item==='maDashboards') { menuText = 'Components' }
         else if (item==='maFilters') { menuText = 'Filters' }
         else if (item==='maServices') { menuText = 'Services' }
 
