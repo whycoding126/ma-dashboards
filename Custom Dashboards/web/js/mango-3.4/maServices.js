@@ -31,13 +31,14 @@ define(['./services/Point',
         './services/Modules',
         './services/Permissions',
         './services/SystemSettings',
+        './services/ImportExport',
         'angular',
         'angular-resource',
         'angular-local-storage'
 ], function(Point, PointHierarchy, UserProvider, PointEventManagerFactory, Translate, mangoHttpInterceptor, JsonStore,
         JsonStoreEventManagerFactory, Util, mangoWatchdog, EventManager, cssInjector, DataSourceFactory, DeviceNameFactory,
         WatchListFactory, WatchListEventManagerFactory, rqlParamSerializer, UserNotes, eventsEventManagerFactory, events,
-        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, angular) {
+        DynamicItems, pointValuesFactory, statisticsFactory, qDecorator, UserEventManager, ModulesFactory, PermissionsFactory, SystemSettingsProvider, ImportExportFactory, angular) {
 'use strict';
 /**
  * @ngdoc overview
@@ -78,6 +79,7 @@ maServices.factory('UserEventManager', UserEventManager);
 maServices.factory('Modules', ModulesFactory);
 maServices.factory('Permissions', PermissionsFactory);
 maServices.provider('SystemSettings', SystemSettingsProvider);
+maServices.factory('ImportExport', ImportExportFactory);
 
 maServices.constant('mangoBaseUrl', '');
 maServices.constant('mangoTimeout', 30000);

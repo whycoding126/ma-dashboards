@@ -1,0 +1,51 @@
+<h1 ma-tr="header.emport"></h1>
+
+<div layout="row" layout-align="start start">
+  <md-card flex="100" flex-gt-sm="50">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline" ma-tr="emport.export"></span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <p ma-tr="emport.select"></p>
+      <md-checkbox ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()" md-indeterminate="$ctrl.selectAllIndeterminate"><span ma-tr="emport.selectAll"></span></md-checkbox>
+      <div layout layout-wrap>
+        <md-checkbox style="margin:0" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="sectionName in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[sectionName]" ng-change="$ctrl.checkIndeterminate()"><span ng-bind="sectionName"></span></md-checkbox>
+      </div>
+      <md-input-container>
+        <label ma-tr="emport.indent"></label>
+        <input ng-model="$ctrl.indent" ng-change="$ctrl.writeIndentedJson()" type="number" min="0" max="10">
+      </md-input-container>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class="md-raised md-primary" ng-click="$ctrl.doExport()"><md-icon>file_download</md-icon> <span ma-tr="emport.export"></span></md-button>
+    </md-card-actions>
+  </md-card>
+  
+  <md-card flex="100" flex-gt-sm="50">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline" ma-tr="emport.import"></span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="column">
+      <div ng-repeat="msg in $ctrl.importStatus.genericMessages" ng-bind="msg"></div>
+      <md-progress-linear md-mode="determinate" value="{{$ctrl.importStatus.progress}}" ng-if="$ctrl.importStatus && $ctrl.importStatus.progress !== 100""></md-progress-linear>
+      <p ma-tr="emport.importInstruction"></p>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="start center">
+      <md-button class="md-raised md-primary" ng-click="$ctrl.doImport()"><md-icon>file_upload</md-icon> <span ma-tr="emport.import"></span></md-button>
+      <md-button class="md-raised md-warn" ng-click="$ctrl.cancelImport()" ng-disabled="!$ctrl.importStatus || $ctrl.importStatus.progress === 100"><md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span></md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+
+<md-button class="md-raised" ng-click="$ctrl.clear()"><md-icon>clear</md-icon> <span ma-tr="dashboards.v3.app.clear"></span></md-button>
+<md-button class="md-raised" ng-click="$ctrl.copyToClipboard()" ng-disabled="true"><md-icon>content_copy</md-icon> <span ma-tr="dashboards.v3.app.copyToClipboard"></span></md-button>
+
+<!-- 
+<textarea ng-model="$ctrl.jsonString" class="ma-code-font"></textarea>
+-->
+
+<live-editor style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" mode="json" copy-to-clipboard="$ctrl.doCopy"></live-editor>

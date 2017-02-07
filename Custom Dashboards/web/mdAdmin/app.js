@@ -525,16 +525,6 @@ mdAdminApp.constant('MENU_ITEMS', [
                     }]
                 }
             },
-            /*
-            {
-                url: '/system-settings',
-                name: 'dashboard.settings.systemSettings',
-                template: '<iframe-view src="/system_settings.shtm"></iframe-view>',
-                menuTr: 'header.systemSettings',
-                menuIcon: 'settings',
-                permission: 'superadmin'
-            },
-            */
             {
                 url: '/data-sources/{pointId}?dataSourceId',
                 name: 'dashboard.settings.dataSources',
@@ -547,38 +537,26 @@ mdAdminApp.constant('MENU_ITEMS', [
                     $scope.dataSourceId = $stateParams.dataSourceId ? '?dsid='+$stateParams.dataSourceId : '';
                 }]
             },
-            /*
             {
-                url: '/users',
-                name: 'dashboard.settings.users',
-                template: '<iframe-view src="/users.shtm"></iframe-view>',
-                menuTr: 'header.users',
-                menuIcon: 'people',
-                permission: 'superadmin'
-            },{
-                url: '/events',
-                name: 'dashboard.settings.events',
-                template: '<iframe-view src="/events.shtm"></iframe-view>',
-                menuTr: 'header.alarms',
-                menuIcon: 'alarm',
-                permission: 'superadmin'
-            },*/
-            {
-                url: '/import-export',
                 name: 'dashboard.settings.importExport',
-                template: '<iframe-view src="/emport.shtm"></iframe-view>',
+                url: '/import-export',
+                template: '<import-export-page><import-export-page>',
                 menuTr: 'header.emport',
                 menuIcon: 'import_export',
-                permission: 'superadmin'
+                permission: 'superadmin',
+                params: {
+                    helpPage: 'dashboard.help.importExport'
+                },
+                resolve: {
+                    loadMyDirectives: ['rQ', '$ocLazyLoad', function(rQ, $ocLazyLoad) {
+                        return rQ(['./components/importExportPage/importExportPage'], function (importExportPage) {
+                            angular.module('importExportPage', [])
+                                .component('importExportPage', importExportPage);
+                            $ocLazyLoad.inject('importExportPage');
+                        });
+                    }]
+                }
             },
-            /*{
-                url: '/modules',
-                name: 'dashboard.settings.modules',
-                template: '<iframe-view src="/modules.shtm"></iframe-view>',
-                menuTr: 'header.modules',
-                menuIcon: 'extension',
-                permission: 'superadmin'
-            },*/
             {
                 name: 'dashboard.settings.modules',
                 url: '/modules',
