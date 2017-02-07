@@ -247,13 +247,11 @@ mdAdminApp.constant('MENU_ITEMS', [
         resolve: {
             loadMyDirectives: ['rQ', '$ocLazyLoad', 'cssInjector', function(rQ, $ocLazyLoad, cssInjector) {
                 return rQ(['./components/watchListPage/watchListPage',
-                            './directives/watchList/watchListTableRow',
-                            './directives/watchList/watchListChart'], 
-                function (WatchlistPage, watchListTableRow, watchListChart) {
+                            './directives/watchList/watchListTableRow'], 
+                function (WatchlistPage, watchListTableRow) {
                     angular.module('watchListPage', [])
                         .component('maWatchListPage', WatchlistPage)
                         .directive('watchListTableRow', watchListTableRow)
-                        .directive('watchListChart', watchListChart)
                         .filter('noNaN', function () {
                                 return function (input, suffix) {
                                       if (isNaN(input)) { return '...'; }

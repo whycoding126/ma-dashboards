@@ -49,6 +49,7 @@ define(['./maServices',
         './directives/arrayInput',
         './directives/emptyInput',
         './directives/watchListList',
+        './directives/watchListChart',
         './directives/pointHierarchySelect',
         './directives/clearable',
         './directives/filteringDeviceNameList',
@@ -88,7 +89,7 @@ define(['./maServices',
         intervalPicker, intervalTypePicker, pointQuery, getPointValue,
         jsonStore, focusOn, enter, now, fn, pointHierarchy, pagingPointList, dataSourceList,
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
-        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, pointHierarchySelect, clearable,
+        eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect, clearable,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages, scaleTo,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
@@ -150,6 +151,7 @@ maDashboards.directive('maArrayInput', arrayInput);
 maDashboards.directive('maEmptyInput', emptyInput);
 maDashboards.directive('maWatchListSelect', watchListSelect);
 maDashboards.directive('maWatchListList', watchListList);
+maDashboards.directive('maWatchListChart', watchListChart);
 maDashboards.directive('maPointHierarchySelect', pointHierarchySelect);
 maDashboards.directive('maClearable', clearable);
 maDashboards.directive('maFilteringDeviceNameList', filteringDeviceNameList);
