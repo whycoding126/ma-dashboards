@@ -19,7 +19,7 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
         <h2 flex>
             <span>{{'dashboards.v3.app.chart' | tr}} &amp; {{'dashboards.v3.app.compare' | tr}}</span>        
         </h2>
-      <md-button class="md-raised" ng-click="clearChart()" ma-tr="dashboards.v3.app.clear"></md-button>
+      <md-button class="md-raised" ng-click="clearChart()" ng-if="editMode" ma-tr="dashboards.v3.app.clear"></md-button>
     </div>
 </md-toolbar>
 
@@ -52,7 +52,7 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
 
 <md-tabs md-dynamic-height md-swipe-content md-selected="currentTab" class="noTabPanel">
     <md-tab label="Chart">
-        <ma-point-values points="points" values="chartValues" from="dateBar.from" to="dateBar.to" rollup="{{dateBar.rollupType}}" rollup-interval="{{dateBar.rollupIntervals}} {{dateBar.rollupIntervalPeriod}}">
+        <ma-point-values points="points" values="chartValues" from="from" to="to" rollup="{{rollupType}}" rollup-interval="{{rollupIntervalNumber}} {{rollupIntervalPeriod}}">
         </ma-point-values>
         <div class="chart-content" ng-if="points.length">
             <ma-serial-chart default-balloon-text="[[title]]: [[value]]" style="width: 100%; height:100%;" points="points" values="chartValues" legend="true" 
@@ -106,7 +106,7 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
             <div ng-repeat="point in points" style="display:none;">
                 <ma-get-point-value point-xid="{{point.xid}}" point="liveValue">
                 </ma-get-point-value>
-                <ma-point-statistics point="point" from="dateBar.from" to="dateBar.to" statistics="stats"></ma-point-statistics>
+                <ma-point-statistics point="point" from="from" to="to" statistics="stats"></ma-point-statistics>
                 {{ $parent.stats[$index].name = point.name }} 
                 {{ $parent.stats[$index].device = point.deviceName }} 
                 {{ $parent.stats[$index].suffix = liveValue.textRenderer.suffix }}

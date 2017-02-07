@@ -6,13 +6,19 @@
 define(['require'], function(require) {
     'use strict';
 
-    watchListChart.$inject = ['$mdMedia', '$timeout', 'DateBar', 'mdAdminSettings'];
-    function watchListChart($mdMedia, $timeout, DateBar, mdAdminSettings) {
+    watchListChart.$inject = ['$mdMedia', '$timeout','mdAdminSettings'];
+    function watchListChart($mdMedia, $timeout, mdAdminSettings) {
         return {
             restrict: 'E',
             scope: {
                 addChecked: '=',
-                chartConfig: '='
+                chartConfig: '=',
+                editMode: '=',
+                to: '=',
+                from: '=',
+                rollupType: '=',
+                rollupIntervalNumber: '=',
+                rollupIntervalPeriod: '='
             },
             templateUrl: require.toUrl('./watchListChart.html'),
             link: function link(scope, element, attrs) {
@@ -39,7 +45,6 @@ define(['require'], function(require) {
                     }
                 };
                 
-                scope.dateBar = DateBar;
                 scope.parseInt = parseInt; // Make parseInt available to scope
                 scope.parseFloat = parseFloat; // Make parseFloat available to scope
                 scope.stats = []; // Set up array for storing stats for stats tab
