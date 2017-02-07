@@ -43,9 +43,13 @@
 
 <md-button class="md-raised" ng-click="$ctrl.clear()"><md-icon>clear</md-icon> <span ma-tr="dashboards.v3.app.clear"></span></md-button>
 <md-button class="md-raised" ng-click="$ctrl.copyToClipboard()" ng-disabled="true"><md-icon>content_copy</md-icon> <span ma-tr="dashboards.v3.app.copyToClipboard"></span></md-button>
+<md-button class="md-raised" ng-click="$ctrl.saveFile()" ng-disabled="true"><md-icon>file_download</md-icon> <span ma-tr="common.download"></span></md-button>
 
-<!-- 
-<textarea ng-model="$ctrl.jsonString" class="ma-code-font"></textarea>
--->
+<md-checkbox ng-model="$ctrl.usePlainEditor">Use plain text area?</md-checkbox>
 
-<live-editor style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" mode="json" copy-to-clipboard="$ctrl.doCopy"></live-editor>
+<div layout>
+  <textarea flex ng-if="$ctrl.usePlainEditor" style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" class="ma-code-font"></textarea>
+  <div flex ng-if="!$ctrl.usePlainEditor">
+    <live-editor style="height: 600px;" ng-model="$ctrl.jsonString" ng-change="$ctrl.editorChanged()" mode="json" copy-to-clipboard="$ctrl.doCopy"></live-editor>
+  </div>
+</div>
