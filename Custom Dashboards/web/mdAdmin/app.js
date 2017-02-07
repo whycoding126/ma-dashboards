@@ -251,13 +251,7 @@ mdAdminApp.constant('MENU_ITEMS', [
                 function (WatchlistPage, watchListTableRow) {
                     angular.module('watchListPage', [])
                         .component('maWatchListPage', WatchlistPage)
-                        .directive('watchListTableRow', watchListTableRow)
-                        .filter('noNaN', function () {
-                                return function (input, suffix) {
-                                      if (isNaN(input)) { return '...'; }
-                                      else { return input.toFixed(1) + suffix; }
-                                }
-                          });
+                        .directive('watchListTableRow', watchListTableRow);
                     $ocLazyLoad.inject('watchListPage');
                     cssInjector.injectLink(require.toUrl('./components/watchListPage/watchListPage.css'),'watchlistPageStyles','link[href="styles/main.css"]');
                 });

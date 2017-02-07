@@ -179,6 +179,12 @@ maDashboards.component('maSystemSettingEditor', systemSettingEditor);
 maDashboards.component('maPermissionsMenu', permissionsMenu);
 maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
+maDashboards.filter('noNaN', function () {
+                                return function (input, suffix) {
+                                      if (isNaN(input)) { return '...'; }
+                                      else { return input.toFixed(1) + suffix; }
+                                }
+                          })
 maDashboards.animation('.ma-slide-up', slideUp);
 
 maDashboards.constant('maDashboardsInsertCss', true);
