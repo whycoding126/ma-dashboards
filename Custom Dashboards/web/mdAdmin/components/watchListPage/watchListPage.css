@@ -57,20 +57,6 @@ ma-watch-list-page ma-watch-list-parameters.md-padding {
 .watchlist-main .chart-content {
     height: 380px;
 }
-.watchlist-main path.amcharts-graph-stroke {
-    stroke-width: 2.5px;
-    stroke-opacity: .7;
-}
-.watchlist-main path.amcharts-graph-fill {
-    fill-opacity: 0.5;
-}
-.watchlist-main md-tabs.noTabPanel md-tabs-wrapper {
-    display: none;
-}
-
-watch-list-chart md-input-container, watch-list-chart md-checkbox {
-  margin: 0;
-}
 
 /* Stats Dialog */
 

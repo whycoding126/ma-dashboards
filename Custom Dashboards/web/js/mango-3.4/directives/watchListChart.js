@@ -14,7 +14,7 @@ define(['require'], function(require) {
                 addChecked: '=',
                 chartConfig: '='
             },
-            templateUrl: 'directives/watchList/watchListChart.html',
+            templateUrl: require.toUrl('./watchListChart.html'),
             link: function link(scope, element, attrs) {
 
                 var defaultAxisColor = mdAdminSettings.theming.THEMES[mdAdminSettings.activeTheme].isDark ? '#FFFFFF' : '#000000';
