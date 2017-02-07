@@ -3,21 +3,14 @@
       class="select-watch-list" ng-show="!$ctrl.watchList || $ctrl.$mdMedia('gt-md')">
     <md-toolbar class="md-whiteframe-1dp md-hue-3 watchlist-picker">
       <div flex layout="row">
-        <!-- <md-select ng-model="$ctrl.listType" flex class="md-no-underline">
-          <md-option value="watchLists" ma-tr="dashboards.v3.app.watchLists"></md-option>
-          <md-option value="hierarchy" ma-tr="dashboards.v3.app.pointHierarchy"></md-option>
-          <md-option value="deviceNames" ma-tr="dashboards.v3.app.deviceNames"></md-option>
-          <md-option value="dataSources" ma-tr="dashboards.v3.app.dataSources"></md-option>
-        </md-select> -->
-        
         <md-radio-group ng-model="$ctrl.listType">
           <div class="row">
-                <div flex layout='row' layout-padding layout-align="center start" layout-wrap>
-                      <md-radio-button flex="45" value="watchLists" class="md-primary">Lists</md-radio-button>
-                      <md-radio-button flex="45" value="hierarchy" class="md-primary">Hierarchy</md-radio-button>
-                      <md-radio-button flex="45" value="deviceNames" class="md-primary">Devices</md-radio-button>
-                      <md-radio-button flex="45" value="dataSources" class="md-primary">Sources</md-radio-button>
-                </div>
+              <div flex layout='row' layout-padding layout-align="center start" layout-wrap>
+                  <md-radio-button flex="45" value="watchLists" class="md-primary">Lists</md-radio-button>
+                  <md-radio-button flex="45" value="hierarchy" class="md-primary">Hierarchy</md-radio-button>
+                  <md-radio-button flex="45" value="deviceNames" class="md-primary">Devices</md-radio-button>
+                  <md-radio-button flex="45" value="dataSources" class="md-primary">Sources</md-radio-button>
+              </div>
           </div>
         </md-radio-group>
       </div>
