@@ -184,7 +184,7 @@ maDashboards.filter('noNaN', function () {
                                       if (isNaN(input)) { return '...'; }
                                       else { return input.toFixed(1) + suffix; }
                                 }
-                          })
+                          });
 maDashboards.animation('.ma-slide-up', slideUp);
 
 maDashboards.constant('maDashboardsInsertCss', true);
