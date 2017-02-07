@@ -11,10 +11,10 @@ define(['angular', 'require'], function(angular, require) {
   * @restrict E
   * @description
   * `<ma-map zoom="10" map-type="roadmap" center="-12.95, -38.45" desktop-height="950px" mobile-height="450px"></ma-map>`
-  * - This component will display a google map that can be used within your custom dashboard pages.
-  * - Note, you will need to set a your google map api key on the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.
-  * - A google map api key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.
-  * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use `<marker>` and `<info window>` components.
+  * - This component will display a Google Map that can be used within your custom dashboard pages.
+  * - Note, you will need to set your Google Map Api Key on the <a ui-sref="dashboard.settings.dashboardSettings">Dashboard Settings</a> page.
+  * - A Google Map Api Key can be aquired <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">here</a>.
+  * - `<ma-map>` utilizes the <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library and therefore can use nested `<marker>` and `<info window>` components.
   * - <a ui-sref="dashboard.examples.utilities.googleMaps">View Demo</a>
   *
   * @param {number} zoom Sets the zoom level of the map.
@@ -29,6 +29,7 @@ define(['angular', 'require'], function(angular, require) {
   * @param {string=} info-window-theme Can optionally be set to `dark` to use a dark theme on all `<info-window>` components. Defaults to a white background theme.
   * @param {string=} desktop-height Sets the height of the map at a desktop width (>1280px). Set with px. Eg `800px`. Defaults to `500px`.
   * @param {string=} mobile-height Sets the height of the map at a mobile/tablet width (<1280px). Set with px. Eg `400px`.
+  * @param {string=} output-data Defines the name of a variable used to hold output data to be passed to other components on the page. From a marker you should the following syntax to set output-data: `on-click="$parent.$ctrl.setOutputData('newValue')"`.
   *
   * @usage
   * <ma-map zoom="11" map-type="roadmap" flex="100" output-data="pointXID" desktop-height="400px" mobile-height="250px">

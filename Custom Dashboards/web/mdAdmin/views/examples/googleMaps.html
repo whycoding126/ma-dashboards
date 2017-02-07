@@ -2,8 +2,8 @@
 
 <p>
     Google maps can be added to your custom pages using the <code>&lt;ma-map&gt;</code> component. Under the hood <code>&lt;ma-map&gt;</code> uses the
-    <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library which allows you to include <code>&lt;marker&gt;</code> and <code>&lt;info-window&gt;</code> components within the <code>&lt;ma-map&gt;</code> markup.
-    The example shown here demonstrates how you can use markers to toggle info-windows that contain other components, change marker icons, set initial marker and map location (lat/long), 
+    <a href="https://ngmap.github.io/#/!infowindow_ng_click.html" target="_blank">ng-map</a> library which allows you to nest <code>&lt;marker&gt;</code> and <code>&lt;info-window&gt;</code> components inside <code>&lt;ma-map&gt;</code>.
+    The example shown here demonstrates how you can use markers to toggle Info Windows that contain other Mango Components, change marker icons, set initial marker and map location (lat/long), 
     make markers draggable, and use a marker to set <code>output-data</code> that can update other parts of your page. 
 </p>
 
@@ -22,13 +22,16 @@
 <ma-point-values point="myPoint3" values="chart1Vals" latest="50"></ma-point-values> 
 
 <ul>
-    <li>First Marker: Info window sets a binary point's value to {{myPoint1.value}} and uses it's value to switch it's icon.</li>
-    <li>Yellow Marker: Sets output-data variable to {{myOutputData}}</li>
-    <li>Green Marker: Info window sets a numeric point's value to {{myPoint2.value}}</li>
-    <li>Red Marker: Info window displays a small chart</li>
+    <li><strong>First Marker:</strong> Clicking toggles an info window which sets a binary point's value to "{{myPoint1.value}}" and uses its value to switch its icon.</li>
+    <li><strong>Green Marker:</strong> Clicking toggles an info window which sets a numeric point's value to {{myPoint2.value}}.</li>
+    <li><strong>Red Marker:</strong> Clicking toggles an info window which displays a small chart of latest 50 values.</li>
+    <li><strong>Yellow Marker:</strong> Sets output-data variable to "{{myOutputData}}".</li>
 </ul>
 
-<ma-map center="-12.95, -38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px" ng-init="myMarkers={
+<br><br>
+
+<ma-map center="-12.95, -38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px" 
+ng-init="myMarkers={
         true: 'img/map-markers/purple-dot.png',
         false: 'img/map-markers/orange-dot.png'}" output-data="myOutputData">
     
@@ -36,6 +39,7 @@
     <marker id="marker2" position="-12.95, -38.43" draggable="true" icon="{url: 'img/map-markers/green-dot.png'}" on-click="$parent.$ctrl.toggleInfoWindow('setPoint2', 'marker2')"></marker>
     <marker id="marker3" position="-12.99, -38.47" draggable="true" on-click="$parent.$ctrl.toggleInfoWindow('chart1', 'marker3')"></marker>
     <marker id="marker4" position="-12.92, -38.42" draggable="true" icon="{url: 'img/map-markers/yellow-dot.png'}" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"></marker>
+    
     <info-window id="setPoint2">    
         <div>
             <ma-set-point-value point="myPoint2"></ma-set-point-value>
@@ -47,7 +51,7 @@
         </div>
     </info-window>
     <info-window id="chart1">
-        <div layout layout-padding>
+        <div layout="row" layout-padding>
             <ma-serial-chart style="height: 150px; width: 250px" series-1-point="myPoint3" series-1-values="chart1Vals"></ma-serial-chart>
         </div>
     </info-window>
