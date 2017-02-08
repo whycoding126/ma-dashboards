@@ -6,10 +6,11 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ImportExportPageController.$inject = ['ImportExport', '$timeout'];
-function ImportExportPageController(ImportExport, $timeout) {
+ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util'];
+function ImportExportPageController(ImportExport, $timeout, Util) {
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;
+    this.Util = Util;
     
     this.sectionsForExport = {};
     this.selectAllIndeterminate = false;
@@ -43,16 +44,26 @@ ImportExportPageController.prototype.checkIndeterminate = function() {
     this.selectAll = anyChecked;
 };
 
-ImportExportPageController.prototype.doExport = function() {
+ImportExportPageController.prototype.doExport = function(download) {
     var sectionNames = [];
     for (var sectionName in this.sectionsForExport) {
         if (this.sectionsForExport[sectionName]) {
             sectionNames.push(sectionName);
         }
     }
-    this.ImportExport.exportSections(sectionNames).then(function(exportedData) {
-        this.exportedData = exportedData;
-        this.writeIndentedJson();
+    
+    var options = {};
+    if (download) {
+        options.responseType = 'blob';
+    }
+    
+    this.ImportExport.exportSections(sectionNames, options).then(function(exportedData) {
+        if (download) {
+            this.Util.downloadBlob(exportedData, 'export.json');
+        } else {
+            this.exportedData = exportedData;
+            this.writeIndentedJson();
+        }
     }.bind(this));
 };
 

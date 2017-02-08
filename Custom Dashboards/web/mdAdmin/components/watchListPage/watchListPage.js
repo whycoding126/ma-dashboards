@@ -262,7 +262,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
     
     this.showDownloadDialog = function showDownloadDialog($event) {
         $mdDialog.show({
-            controller: ['DateBar', 'pointValues', 'mdAdminSettings', function(DateBar, pointValues, mdAdminSettings) {
+            controller: ['DateBar', 'pointValues', 'mdAdminSettings', 'Util', function(DateBar, pointValues, mdAdminSettings, Util) {
                 this.dateBar = DateBar;
                 this.mdAdminSettings = mdAdminSettings;
                 
@@ -290,22 +290,7 @@ function watchListPageController($mdMedia, WatchList, Translate, $stateParams, l
                         rollupIntervalType: DateBar.rollupIntervalPeriod
                     }).then(function(response) {
                         this.downloadStatus.downloading = false;
-                        if (typeof window.navigator.msSaveBlob === 'function') {
-                            window.navigator.msSaveBlob(response, fileName);
-                        } else {
-                            var url = URL.createObjectURL(response);
-                            try {
-                                var a = document.createElement('a');
-                                a.style.display = 'none';
-                                a.href = url;
-                                a.download = fileName;
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                            } finally {
-                                URL.revokeObjectURL(url);
-                            }
-                        }
+                        Util.downloadBlob(response, fileName);
                     }.bind(this), function(response) {
                         this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? Translate.trSync('dashboards.v3.app.cancelledOrNoResponse') : response.toString());
                         this.downloadStatus.downloading = false;

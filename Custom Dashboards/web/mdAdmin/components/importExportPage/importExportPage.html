@@ -20,6 +20,7 @@
     </md-card-content>
     <md-card-actions layout="row" layout-align="start center">
       <md-button class="md-raised md-primary" ng-click="$ctrl.doExport()"><md-icon>file_download</md-icon> <span ma-tr="emport.export"></span></md-button>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.doExport(true)"><md-icon>file_download</md-icon> <span ma-tr="common.download"></span></md-button>
     </md-card-actions>
   </md-card>
   
@@ -43,7 +44,6 @@
 
 <md-button class="md-raised" ng-click="$ctrl.clear()"><md-icon>clear</md-icon> <span ma-tr="dashboards.v3.app.clear"></span></md-button>
 <md-button class="md-raised" ng-click="$ctrl.copyToClipboard()" ng-disabled="true"><md-icon>content_copy</md-icon> <span ma-tr="dashboards.v3.app.copyToClipboard"></span></md-button>
-<md-button class="md-raised" ng-click="$ctrl.saveFile()" ng-disabled="true"><md-icon>file_download</md-icon> <span ma-tr="common.download"></span></md-button>
 
 <md-checkbox ng-model="$ctrl.usePlainEditor">Use plain text area?</md-checkbox>
 

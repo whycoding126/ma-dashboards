@@ -569,6 +569,25 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, mangoTimeout)
             return letter.toUpperCase();
         }
     };
+    
+    Util.prototype.downloadBlob = function(blob, filename) {
+        if (typeof window.navigator.msSaveBlob === 'function') {
+            window.navigator.msSaveBlob(blob, filename);
+        } else {
+            var url = URL.createObjectURL(blob);
+            try {
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                URL.revokeObjectURL(url);
+            }
+        }
+    };
 
     return new Util();
 }
