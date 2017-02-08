@@ -95,34 +95,39 @@ define(['require'], function(require) {
                     if (newValues === undefined || newValues === oldValues || (oldValues === undefined && newValues.length === 0)) return;
                     // console.log('addChecked Watcher:', newValues, oldValues);
                     
-                    // If cleared from selecting a new watchlist clear stats and chartConfig.graphOptions
-                    if (newValues.length === 0) {
-                        scope.stats = [];
-                        scope.chartConfig.graphOptions = [];
-                    }
-                    
                     // Clear Stats before new ones are generated
                     scope.stats = [];
                     
                     // assign the chart's points equal to the checked from table
                     scope.points = newValues;
+
+                    // If cleared clear chartConfig.graphOptions
+                    if (newValues.length === 0) {
+                        scope.chartConfig.graphOptions = [];
+                    }
                     
-                    // Only add graph option if it isn't already in the chartConfig
+                    // Only add graph option if it isn't already in the chartConfig, compare to last item of newValues
                     var xidExists = scope.chartConfig.graphOptions.some(function(obj){return obj.xid === newValues[newValues.length-1].xid});
-                    
-                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists) || (newValues.length > oldValues.length && !xidExists) ) {
+
+                    // Check if adding or removing before updating graphOptions array
+                    if ( (oldValues === undefined && newValues.length >= 0 && !xidExists) || (oldValues !== undefined && newValues.length > oldValues.length && !xidExists) ) {
+
+                        // Set graphOption with current selcted Axis and newest added xid
                         var graphOption = {valueAxis: scope.chartConfig.selectedAxis, xid: newValues[newValues.length-1].xid};
                         
+                        // Set type to selected chartType
                         graphOption.type = scope.chartConfig.chartType;
 
+                        // If assignColors checkbox is turned on use next line color option
                         if (scope.chartConfig.assignColors) {
                             graphOption.lineColor = scope.chartConfig.selectedColor;
                         }
                         
+                        // push it to the chartConfig.graphOptions array
                         scope.chartConfig.graphOptions.push(graphOption);
                         // console.log('Adding', newValues[newValues.length-1].xid);
                     }
-                    else if (newValues.length < oldValues.length) {
+                    else if (oldValues !== undefined && newValues.length < oldValues.length) {
                         var arrayDiff = oldValues.filter(function(x) { return newValues.indexOf(x) < 0 });
                         var removedXid = arrayDiff[0].xid;
                         var removedIndex = oldValues.map(function(x) {return x.xid; }).indexOf(removedXid);
@@ -130,7 +135,6 @@ define(['require'], function(require) {
                         scope.chartConfig.graphOptions.splice(removedIndex, 1);
                         // console.log('Removed', removedXid, 'at index', removedIndex);
                     }
-
                     // console.log('Graph Options', scope.chartConfig.graphOptions);
                 });
 
