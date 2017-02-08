@@ -52,12 +52,6 @@ ma-watch-list-page ma-watch-list-parameters.md-padding {
   padding-bottom: 0;
 }
 
-/* Chart Component */
-
-.watchlist-main .chart-content {
-    height: 380px;
-}
-
 /* Stats Dialog */
 
 .stats-dialog {

@@ -18,7 +18,8 @@ define(['require'], function(require) {
                 from: '=',
                 rollupType: '=',
                 rollupIntervalNumber: '=',
-                rollupIntervalPeriod: '='
+                rollupIntervalPeriod: '=',
+                chartHeight: '@'
             },
             templateUrl: require.toUrl('./watchListChart.html'),
             link: function link(scope, element, attrs) {
