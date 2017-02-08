@@ -63,6 +63,14 @@ function watchListSelect($injector) {
                     this.setWatchList(watchList);
                 }.bind(this));
             }
+
+            this.$onChanges = function(changes) {
+                if (changes.watchListXid) {
+                    WatchList.get({xid: this.watchListXid}).$promise.then(function(watchList) {
+                        this.setWatchList(watchList);
+                    }.bind(this));
+                }
+            }
             
             this.onChange = function() {
                 this.setWatchList(this.watchList);
