@@ -1039,3 +1039,9 @@ ma-point-hierarchy-folder .point-hierarchy-item {
 md-checkbox.ma-export-section {
   margin: 2px 0;
 }
+
+/* Utility classes */
+.no-padding,
+md-card md-card-content.no-padding {
+  padding: 0;
+}
