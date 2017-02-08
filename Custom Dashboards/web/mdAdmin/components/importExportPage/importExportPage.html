@@ -1,7 +1,7 @@
 <h1 ma-tr="header.emport"></h1>
 
 <div layout="row" layout-align="start start">
-  <md-card flex="100" flex-gt-sm="50">
+  <md-card flex="100" flex-gt-sm="50" class="ma-export">
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline" ma-tr="emport.export"></span>
@@ -10,8 +10,8 @@
     <md-card-content>
       <p ma-tr="emport.select"></p>
       <md-checkbox ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()" md-indeterminate="$ctrl.selectAllIndeterminate"><span ma-tr="emport.selectAll"></span></md-checkbox>
-      <div layout layout-wrap>
-        <md-checkbox style="margin:0" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="sectionName in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[sectionName]" ng-change="$ctrl.checkIndeterminate()"><span ng-bind="sectionName"></span></md-checkbox>
+      <div layout layout-wrap class="md-padding">
+        <md-checkbox class="ma-export-section" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="sectionName in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[sectionName]" ng-change="$ctrl.checkIndeterminate()"><span ng-bind="sectionName"></span></md-checkbox>
       </div>
       <md-input-container>
         <label ma-tr="emport.indent"></label>
@@ -24,7 +24,7 @@
     </md-card-actions>
   </md-card>
   
-  <md-card flex="100" flex-gt-sm="50">
+  <md-card flex="100" flex-gt-sm="50" class="ma-import">
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline" ma-tr="emport.import"></span>

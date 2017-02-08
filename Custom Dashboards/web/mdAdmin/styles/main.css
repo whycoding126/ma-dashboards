@@ -1034,3 +1034,8 @@ ma-point-hierarchy-folder .point-hierarchy-item {
     font-size: 18px;
     text-align: right;
 }
+
+/* import/export page */
+md-checkbox.ma-export-section {
+  margin: 2px 0;
+}
