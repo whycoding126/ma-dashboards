@@ -37,13 +37,17 @@ function PageViewController($scope, Page, User, jsonStoreEventManager) {
     };
 }
 
-return {
-    controller: PageViewController,
-    bindings: {
-        xid: '@',
-        nonEditMode: '='
-    },
-    templateUrl: require.toUrl('./pageView.html')
-};
+return function pageView() {
+    return {
+        scope: true, // child scope
+        controller: PageViewController,
+        controllerAs: '$ctrl', // put controller on scope
+        bindToController: {
+            xid: '@',
+            nonEditMode: '='
+        },
+        templateUrl: require.toUrl('./pageView.html')
+    }
+}
 
 }); // define
