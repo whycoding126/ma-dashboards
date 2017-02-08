@@ -347,6 +347,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "maDashboards.maWatchListSelect",
+      "shortName": "maDashboards.maWatchListSelect",
+      "type": "directive",
+      "moduleName": "maDashboards",
+      "shortDescription": "&lt;ma-watch-list-select watch-list=&quot;myWatchlist&quot;&gt;&lt;/ma-watch-list-select&gt;",
+      "keywords": "api array auto availble bind chart combined component contained custom data designed directive display dropdown dynamic false hide holds list load loading madashboards mawatchlistselect mywatchlist no-select object objects point points select select-first set string switching true variable watch watch-list watch-list-xid watchlist xid"
+    },
+    {
+      "section": "api",
       "id": "maFilters",
       "shortName": "maFilters",
       "type": "overview",

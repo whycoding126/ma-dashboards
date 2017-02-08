@@ -3,6 +3,28 @@
  * @author Jared Wiltshire
  */
 
+
+ /**
+  * @ngdoc directive
+  * @name maDashboards.maWatchListSelect
+  * @restrict E
+  * @description
+  * `<ma-watch-list-select watch-list="myWatchlist"></ma-watch-list-select>`
+  * - The `<ma-watch-list-select>` component can be used to load watch list data onto a custom page.
+  * - Can be combined with `<ma-watch-list-chart>` to display the watch list's custom chart designed on the watch list page.
+  *
+  * @param {object} watch-list Variable holds the resulting watch list object.
+  * @param {string=} watch-list-xid Set to the XID of a watch list to auto load or bind a string for dynamic switching (as shown above).
+  * @param {boolean=} no-select Set to `true` to hide the dropdown select from the page, but still availble for loading watchlist data. (Defaults to `false`)
+  * @param {array=} points Array of point objects contained in the watch list object.
+  * @param {boolean=} select-first Set to `false` to not auto select a the first watch list. (Defaults to `true`)
+  * 
+  * @usage
+  * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" watch-list="myWatchlist"></ma-watch-list-select>
+  *
+  */
+
+
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
