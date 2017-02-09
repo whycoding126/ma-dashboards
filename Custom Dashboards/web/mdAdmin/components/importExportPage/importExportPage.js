@@ -6,12 +6,14 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util'];
-function ImportExportPageController(ImportExport, $timeout, Util) {
+ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util', 'Translate'];
+function ImportExportPageController(ImportExport, $timeout, Util, Translate) {
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;
     this.Util = Util;
+    this.Translate = Translate;
     
+    this.downloadStatus = {};
     this.sectionsForExport = {};
     this.selectAllIndeterminate = false;
     this.indent = 3;
@@ -57,14 +59,28 @@ ImportExportPageController.prototype.doExport = function(download) {
         options.responseType = 'blob';
     }
     
-    this.ImportExport.exportSections(sectionNames, options).then(function(exportedData) {
+    this.downloadStatus.error = null;
+    this.downloadStatus.downloading = download ? 'download' : 'export';
+    
+    this.downloadStatus.queryPromise = this.ImportExport.exportSections(sectionNames, options).then(function(exportedData) {
+        this.downloadStatus.downloading = false;
         if (download) {
             this.Util.downloadBlob(exportedData, 'export.json');
         } else {
             this.exportedData = exportedData;
             this.writeIndentedJson();
         }
+    }.bind(this), function(response) {
+        this.downloadStatus.error = response.statusText || response.message || (response.status === -1 ? this.Translate.trSync('dashboards.v3.app.cancelledOrNoResponse') : response.toString());
+        this.downloadStatus.downloading = false;
+        console.log(response);
     }.bind(this));
+};
+
+ImportExportPageController.prototype.cancelExport = function() {
+    if (this.downloadStatus.queryPromise) {
+        this.downloadStatus.queryPromise.cancel();
+    }
 };
 
 ImportExportPageController.prototype.doImport = function() {

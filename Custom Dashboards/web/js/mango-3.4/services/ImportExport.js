@@ -65,10 +65,8 @@ function ImportExportFactory($http, $q, $timeout, Util) {
 
             var canceler = $q.defer();
             var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
-            
-            return $http({
-                method: 'GET',
-                url: importExportUrl,
+
+            return $http.get(importExportUrl, {
                 timeout: cancelOrTimeout,
                 params: {
                     exportElements: sections
@@ -80,7 +78,7 @@ function ImportExportFactory($http, $q, $timeout, Util) {
                 responseType: options.responseType
             }).then(function(response) {
                 return response.data;
-            });
+            }).setCancel(canceler.resolve);
         } catch (error) {
             return $q.reject(error).setCancel(angular.noop);
         }
