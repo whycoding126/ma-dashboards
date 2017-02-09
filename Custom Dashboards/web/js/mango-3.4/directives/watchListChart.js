@@ -3,6 +3,31 @@
  * @author Will Geller
  */
 
+
+ /**
+  * @ngdoc directive
+  * @name maDashboards.maWatchListChart
+  * @restrict E
+  * @description
+  * `<ma-watch-list-chart></ma-watch-list-chart>`
+  * - Use `<ma-watch-list-chart>` to display the watch list's custom chart on a custom page.
+  * - Use with `<ma-watch-list-select>` and pass in data from a watch list object.
+  *
+  * @param {array} add-checked Array of points to add to the chart (`myWatchlist.data.selectedPoints`).
+  * @param {object} chart-config Chart config object from the watchlist object (`myWatchlist.data.chartConfig`).
+  * @param {string} to Timestamp to start charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {string} from Timestamp to end charting. Can be from `dateBar` or `<ma-date-range-picker>`.
+  * @param {string} rollup-type Rollup type.
+  * @param {string} rollup-interval-number Rollup inteval number.
+  * @param {number} rollup-interval-period Rollup interval unit.
+  * @param {string} chart-height Height of the chart. Specify with px or % (`400px`). 
+  * 
+  * @usage
+  * <ma-watch-list-select no-select="true" watch-list-xid="WatchList323" watch-list="myWatchlist"></ma-watch-list-select>
+  * <ma-watch-list-chart flex add-checked="myWatchlist.data.selectedPoints" chart-config="myWatchlist.data.chartConfig" to="dateBar.to" from="dateBar.from" rollup-type="dateBar.rollupType" rollup-interval-number="dateBar.rollupIntervals" rollup-interval-period="dateBar.rollupIntervalPeriod" chart-height="450px"></watch-list-chart>
+  *
+  */
+
 define(['require'], function(require) {
     'use strict';
 
