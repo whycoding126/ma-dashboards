@@ -1,75 +1,8 @@
 <h1 ma-tr="header.emport"></h1>
 
 <div layout="row" layout-align="start start">
-  <md-card flex="100" flex-gt-sm="50" class="ma-export">
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline" ma-tr="emport.export"></span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-      <p ma-tr="emport.select"></p>
-      <md-checkbox ng-model="$ctrl.selectAll" ng-change="$ctrl.selectAllChanged()" md-indeterminate="$ctrl.selectAllIndeterminate"><span ma-tr="emport.selectAll"></span></md-checkbox>
-      <div layout layout-wrap class="md-padding">
-        <md-checkbox class="ma-export-section" flex="100" flex-gt-sm="50" flex-gt-md="33" flex-gt-lg="25" ng-repeat="sectionName in $ctrl.sectionList" ng-model="$ctrl.sectionsForExport[sectionName]" ng-change="$ctrl.checkIndeterminate()"><span ng-bind="sectionName"></span></md-checkbox>
-      </div>
-      <md-input-container>
-        <label ma-tr="emport.indent"></label>
-        <input ng-model="$ctrl.indent" ng-change="$ctrl.writeIndentedJson()" type="number" min="0" max="10">
-      </md-input-container>
-      <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="dashboards.v3.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
-    </md-card-content>
-    <md-card-actions layout="row" layout-align="start center">
-      <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.downloadStatus.downloading">
-        <div layout layout-align="start center">
-          <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'export'">file_download</md-icon>
-          <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'export'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
-          <span ma-tr="emport.export"></span>
-        </div>
-      </md-button>
-      <md-button class="md-raised md-primary ma-progress-button" ng-click="$ctrl.doExport(true)" ng-disabled="$ctrl.downloadStatus.downloading">
-        <div layout layout-align="start center">
-          <md-icon ng-hide="$ctrl.downloadStatus.downloading === 'download'">file_download</md-icon>
-          <md-progress-circular ng-show="$ctrl.downloadStatus.downloading === 'download'" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
-          <span ma-tr="dashboards.v3.app.downloadJsonFile"></span>
-        </div>
-      </md-button>
-      <md-button class="md-raised md-warn" ng-click="$ctrl.cancelExport()" ng-if="$ctrl.downloadStatus.downloading">
-        <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
-      </md-button>
-    </md-card-actions>
-  </md-card>
-  
-  <md-card flex="100" flex-gt-sm="50" class="ma-import">
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline" ma-tr="emport.import"></span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content layout="column">
-      <div ng-repeat="msg in $ctrl.importStatus.genericMessages" ng-bind="msg"></div>
-      <md-progress-linear md-mode="determinate" value="{{$ctrl.importStatus.progress}}" ng-if="$ctrl.importStatus && $ctrl.importStatus.progress !== 100"></md-progress-linear>
-      <p ma-tr="emport.importInstruction"></p>
-      
-      <div ng-if="!$ctrl.importStatus || $ctrl.importStatus.progress === 100" class="ma-import-dropzone" ma-dropzone ng-style="{'border-color': dragOver && $ctrl.accentColor}"
-          ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)" layout layout-align="center center">
-        <span ma-tr="dashboards.v3.app.dropJsonFileHere"></span>
-      </div>
-    </md-card-content>
-    <md-card-actions layout="row" layout-align="start center">
-      <md-button class="md-raised md-primary" ng-click="$ctrl.doImport()" ng-disabled="$ctrl.importStatus && $ctrl.importStatus.progress !== 100">
-        <md-icon>file_upload</md-icon> <span ma-tr="emport.import"></span>
-      </md-button>
-      <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch" ng-disabled="$ctrl.importStatus && $ctrl.importStatus.progress !== 100">
-        <label for="json-file-upload" flex><md-icon>file_upload</md-icon> <span ma-tr="dashboards.v3.app.uploadJsonFile"></span></label>
-      </md-button>
-      <input id="json-file-upload" type="file" accept=".json,text/*" ma-change="$ctrl.fileSelected($event)" style="display:none">
-      <pre ng-bind="fileUpload | json"></pre>
-      <md-button class="md-raised md-warn" ng-click="$ctrl.cancelImport()" ng-disabled="!$ctrl.importStatus || $ctrl.importStatus.progress === 100">
-        <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
-      </md-button>
-    </md-card-actions>
-  </md-card>
+  <ma-config-export on-export="$ctrl.jsonString = $json" flex="100" flex-gt-sm="50"></ma-config-export>
+  <ma-config-import json-string="$ctrl.jsonString" flex="100" flex-gt-sm="50"></ma-config-import>
 </div>
 
 <md-button class="md-raised" ng-click="$ctrl.clear()"><md-icon>clear</md-icon> <span ma-tr="dashboards.v3.app.clear"></span></md-button>

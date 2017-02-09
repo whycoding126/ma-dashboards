@@ -1034,20 +1034,3 @@ ma-point-hierarchy-folder .point-hierarchy-item {
     font-size: 18px;
     text-align: right;
 }
-
-/* import/export page */
-md-checkbox.ma-export-section {
-  margin: 2px 0;
-}
-
-.ma-import-dropzone {
-  height: 150px;
-  border: 1px dashed currentColor;
-  border-radius: 2px;
-}
-
-/* Utility classes */
-.no-padding,
-md-card md-card-content.no-padding {
-  padding: 0;
-}

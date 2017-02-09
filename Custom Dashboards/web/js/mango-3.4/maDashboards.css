@@ -413,8 +413,14 @@ ma-user-select, ma-system-setting-editor {
 
 /* Utility classes */
 
-.ma-small-padding {
+.ma-small-padding,
+md-card md-card-content.ma-small-padding {
   padding: 8px;
+}
+
+.ma-no-padding,
+md-card md-card-content.ma-no-padding {
+  padding: 0;
 }
 
 .ma-progress-button div > span {
@@ -442,4 +448,15 @@ ma-user-select, ma-system-setting-editor {
 
 md-menu-content md-checkbox:not(.md-checked) .md-container .md-icon {
     border-color: rgba(0,0,0,0.54);
+}
+
+/* import/export config components */
+ma-config-export md-checkbox.ma-export-section {
+  margin: 2px 0;
+}
+
+ma-config-import .ma-import-dropzone {
+  height: 150px;
+  border: 1px dashed currentColor;
+  border-radius: 2px;
 }

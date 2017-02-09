@@ -76,6 +76,8 @@ define(['./maServices',
         './components/userSelect/userSelect',
         './components/systemSettingEditor/systemSettingEditor',
         './components/permissionsMenu/permissionsMenu',
+        './components/configExport/configExport',
+        './components/configImport/configImport',
         './components/maMap/maMap',
         'ng-map',
         './filters/trFilter',
@@ -94,7 +96,8 @@ define(['./maServices',
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
+        imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport,
+        maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -179,6 +182,8 @@ maDashboards.component('maUserEditor', userEditor);
 maDashboards.component('maUserSelect', userSelect);
 maDashboards.component('maSystemSettingEditor', systemSettingEditor);
 maDashboards.component('maPermissionsMenu', permissionsMenu);
+maDashboards.component('maConfigExport', configExport);
+maDashboards.component('maConfigImport', configImport);
 maDashboards.component('maMap', maMap);
 maDashboards.filter('tr', trFilter);
 maDashboards.filter('noNaN', function () {
