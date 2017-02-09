@@ -6,8 +6,8 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util', 'Translate'];
-function ImportExportPageController(ImportExport, $timeout, Util, Translate) {
+ImportExportPageController.$inject = ['ImportExport', '$timeout', 'Util', 'Translate', '$mdColors'];
+function ImportExportPageController(ImportExport, $timeout, Util, Translate, $mdColors) {
     this.ImportExport = ImportExport;
     this.$timeout = $timeout;
     this.Util = Util;
@@ -17,6 +17,7 @@ function ImportExportPageController(ImportExport, $timeout, Util, Translate) {
     this.sectionsForExport = {};
     this.selectAllIndeterminate = false;
     this.indent = 3;
+    this.accentColor = $mdColors.getThemeColor('accent');
 }
 
 ImportExportPageController.prototype.$onInit = function() {
@@ -83,12 +84,56 @@ ImportExportPageController.prototype.cancelExport = function() {
     }
 };
 
+ImportExportPageController.prototype.fileDropped = function(data) {
+    var types = data.getDataTransferTypes();
+    if (types.length && types[0] === 'Files') {
+        var transfer = data.getDataTransfer();
+        if (transfer.length) {
+            var file = transfer[0];
+            if (!file.type || file.type === 'application/json' || file.type.indexOf('text/') === 0) {
+                this.importFile(file);
+            }
+        }
+    }
+};
+
+ImportExportPageController.prototype.fileSelected = function($event) {
+    var fileInput = $event.target;
+    if (fileInput.files && fileInput.files.length) {
+        this.importFile(fileInput.files[0]);
+        fileInput.value = null;
+    }
+};
+
+ImportExportPageController.prototype.importFile = function(file) {
+    var $ctrl = this;
+
+    delete this.importStatus;
+    
+    /*
+    if (!FileReader) return;
+    var reader = new FileReader();
+    reader.onload = function() {
+        $ctrl.jsonString = this.result;
+        $ctrl.doImport();
+    };
+    reader.readAsText(file);
+    */
+    
+    this.ImportExport.importData(file).then(function(importStatus) {
+        this.importStatus = importStatus;
+        this.getImportStatus();
+    }.bind(this));
+};
+
 ImportExportPageController.prototype.doImport = function() {
     var data = angular.fromJson(this.jsonString);
     delete this.importStatus;
     this.ImportExport.importData(data).then(function(importStatus) {
         this.importStatus = importStatus;
         this.getImportStatus();
+    }.bind(this), function(response) {
+        console.log('error importing file');
     }.bind(this));
 };
 

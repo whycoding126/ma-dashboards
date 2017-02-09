@@ -33,11 +33,11 @@ var mdAdminApp = angular.module('mdAdminApp', [
     'ngMessages'
 ]);
 
-loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings', 'User'];
-function loadLoginTranslations(Translate, mdAdminSettings, User) {
+loadLoginTranslations.$inject = ['Translate', 'mdAdminSettings', 'User', '$window'];
+function loadLoginTranslations(Translate, mdAdminSettings, User, $window) {
     return Translate.loadNamespaces('login').then(function(data) {
         var user = User.current;
-        moment.locale((user && user.locale) || data.locale || window.navigator.languages || window.navigator.language);
+        moment.locale((user && user.locale) || data.locale || $window.navigator.languages || $window.navigator.language);
         moment.tz.setDefault(user ? user.getTimezone() : moment.tz.guess());
     });
 }
@@ -1269,8 +1269,9 @@ mdAdminApp.run([
     '$location',
     '$stateParams',
     'DateBar',
+    '$document',
 function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
-        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar) {
+        $mdToast, User, mdAdminSettings, Translate, $location, $stateParams, DateBar, $document) {
 
     mdAdminSettings.generateTheme();
     $rootScope.stateParams = $stateParams;
@@ -1475,6 +1476,11 @@ function(MENU_ITEMS, $rootScope, $state, $timeout, $mdSidenav, $mdMedia,
                 .hideDelay(hideDelay);
             $mdToast.show(toast);
         }
+    });
+    
+    // stops window to navigating to a file when dropped on root document
+    $document.on('dragover drop', function($event) {
+        return false;
     });
 }]);
 

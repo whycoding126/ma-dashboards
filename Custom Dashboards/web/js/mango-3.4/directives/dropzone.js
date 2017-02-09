@@ -35,9 +35,10 @@ DropzoneController.prototype.$onInit = function() {
     $element.on('dragenter', function($event) {
         $event.preventDefault();
         $event.stopPropagation();
+        $ctrl.currentTarget = $event.target;
         if ($ctrl.dragEnter) {
             $scope.$apply(function() {
-                $ctrl.dragEnter({$event: $event, $data: $ctrl.getData($event), $coordinates: $ctrl.getCoordinates($event)});
+                $ctrl.dragEnter({$event: $event, $data: new DragInfo($event, $element)});
             });
         }
     });
@@ -46,16 +47,20 @@ DropzoneController.prototype.$onInit = function() {
         $event.stopPropagation();
         if ($ctrl.dragOver) {
             $scope.$apply(function() {
-                $ctrl.dragOver({$event: $event, $coordinates: $ctrl.getCoordinates($event)});
+                $ctrl.dragOver({$event: $event, $data: new DragInfo($event, $element)});
             });
         }
     });
     $element.on('dragleave', function($event) {
         $event.preventDefault();
         $event.stopPropagation();
+        if ($ctrl.currentTarget !== $event.target) {
+            // we are still dragging over a child of this element
+            return;
+        }
         if ($ctrl.dragLeave) {
             $scope.$apply(function() {
-                $ctrl.dragLeave({$event: $event, $data: $ctrl.getData($event), $coordinates: $ctrl.getCoordinates($event)});
+                $ctrl.dragLeave({$event: $event, $data: new DragInfo($event, $element)});
             });
         }
     });
@@ -64,28 +69,43 @@ DropzoneController.prototype.$onInit = function() {
         $event.stopPropagation();
         if ($ctrl.drop) {
             $scope.$apply(function() {
-                $ctrl.drop({$event: $event, $data: $ctrl.getData($event), $coordinates: $ctrl.getCoordinates($event)});
+                $ctrl.drop({$event: $event, $data: new DragInfo($event, $element)});
             });
         }
     });
 };
 
-DropzoneController.prototype.getData = function getData($event) {
-    var event = $event.originalEvent || $event;
-    var json = event.dataTransfer.getData('application/json');
+function DragInfo($event, $element) {
+    this.$event = $event;
+    this.$element = $element;
+}
+
+DragInfo.prototype.getDataTransferTypes = function() {
+    var event = this.$event.originalEvent || this.$event;
+    var dataTransfer = event.dataTransfer;
+    return dataTransfer.types;
+};
+
+DragInfo.prototype.getDataTransfer = function() {
+    var event = this.$event.originalEvent || this.$event;
+    var dataTransfer = event.dataTransfer;
+    if (dataTransfer.files && dataTransfer.files.length) {
+        return dataTransfer.files;
+    }
+    var json = dataTransfer.getData('application/json');
     if (json) {
         try {
             return angular.fromJson(json);
         } catch (e) {
         }
     }
-    return event.dataTransfer.getData('text/plain');
+    return dataTransfer.getData('text/plain');
 };
 
-DropzoneController.prototype.getCoordinates = function getCoordinates($event) {
+DragInfo.prototype.getCoordinates = function getCoordinates() {
     return {
-        left: Math.round($event.pageX - this.$element.offset().left),
-        top: Math.round($event.pageY - this.$element.offset().top)
+        left: Math.round(this.$event.pageX - this.$element.offset().left),
+        top: Math.round(this.$event.pageY - this.$element.offset().top)
     };
 };
 

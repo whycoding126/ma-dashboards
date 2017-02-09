@@ -61,6 +61,7 @@ function ImportExportFactory($http, $q, $timeout, Util) {
     
     ImportExport.exportSections = function(sections, options) {
         try {
+            if (!options) options = {};
             if (!angular.isArray(sections)) throw new Error('Requires sections parameter');
 
             var canceler = $q.defer();
@@ -84,18 +85,29 @@ function ImportExportFactory($http, $q, $timeout, Util) {
         }
     };
 
-    ImportExport.importData = function(data) {
-        return $http({
-            method: 'POST',
-            url: importExportUrl,
-            data: data,
-            headers: {
-                'Accept': 'application/json'
-            },
-            cache: true
-        }).then(function(response) {
-            return new ImportStatus(response.headers('Location'));
-        });
+    ImportExport.importData = function(data, options) {
+        try {
+            if (!options) options = {};
+            
+            var canceler = $q.defer();
+            var cancelOrTimeout = Util.cancelOrTimeout(canceler.promise, options.timeout);
+        
+            return $http({
+                method: 'POST',
+                url: importExportUrl,
+                timeout: cancelOrTimeout,
+                data: data,
+                headers: {
+                    'Accept': 'application/json'
+                },
+                cache: false,
+                responseType: options.responseType
+            }).then(function(response) {
+                return new ImportStatus(response.headers('Location'));
+            }).setCancel(canceler.resolve);
+        } catch (error) {
+            return $q.reject(error).setCancel(angular.noop);
+        }
     };
 
     return ImportExport;

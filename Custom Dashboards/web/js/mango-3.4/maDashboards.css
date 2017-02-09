@@ -421,6 +421,15 @@ ma-user-select, ma-system-setting-editor {
   margin-left: 8px;
 }
 
+.md-button.ma-label-button {
+  padding: 0;
+}
+
+.md-button.ma-label-button label {
+  padding: 0 6px;
+  cursor: pointer;
+}
+
 /* permissions menu */
 
 .ma-permissions-menu {

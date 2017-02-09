@@ -63,6 +63,7 @@ define(['./maServices',
         './directives/indicator',
         './directives/validationMessages',
         './directives/scaleTo',
+        './directives/change',
         './components/queryBuilder/queryBuilder',
         './components/queryBuilder/queryGroup',
         './components/queryBuilder/queryPredicate',
@@ -91,7 +92,7 @@ define(['./maServices',
         dataSourceScrollList, deviceNameList, deviceNameScrollList, dataSourceQuery, deviceNameQuery, userNotesTable,
         eventsTable, watchListSelect, arrayInput, emptyInput, watchListList, watchListChart, pointHierarchySelect, clearable,
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
-        dropzone, barDisplay, indicator, validationMessages, scaleTo,
+        dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
@@ -165,6 +166,7 @@ maDashboards.directive('maBarDisplay', barDisplay);
 maDashboards.directive('maIndicator', indicator);
 maDashboards.directive('maValidationMessages', validationMessages);
 maDashboards.directive('maScaleTo', scaleTo);
+maDashboards.directive('maChange', change);
 maDashboards.component('maQueryBuilder', queryBuilder);
 maDashboards.component('maQueryGroup', queryGroup);
 maDashboards.component('maQueryPredicate', queryPredicate);
@@ -183,7 +185,7 @@ maDashboards.filter('noNaN', function () {
                                 return function (input, suffix) {
                                       if (isNaN(input)) { return '...'; }
                                       else { return input.toFixed(1) + suffix; }
-                                }
+                                };
                           });
 maDashboards.animation('.ma-slide-up', slideUp);
 
