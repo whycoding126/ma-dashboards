@@ -12,7 +12,7 @@
     </div>
     <md-input-container>
       <label ma-tr="emport.indent"></label>
-      <input ng-model="$ctrl.indent" ng-change="$ctrl.writeIndentedJson()" type="number" min="0" max="10">
+      <input ng-model="$ctrl.indent" type="number" min="0" max="10">
     </md-input-container>
     <p md-colors="::{color: 'warn'}" ng-if="$ctrl.downloadStatus.error" ma-tr="dashboards.v3.app.errorDownloadingFile" ma-tr-args="[$ctrl.downloadStatus.error]"></p>
   </md-card-content>

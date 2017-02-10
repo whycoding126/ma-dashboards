@@ -78,6 +78,7 @@ define(['./maServices',
         './components/permissionsMenu/permissionsMenu',
         './components/configExport/configExport',
         './components/configImport/configImport',
+        './components/configImportDialog/configImportDialog',
         './components/maMap/maMap',
         './components/markerStore/markerStore',
         'ng-map',
@@ -97,7 +98,7 @@ define(['./maServices',
         filteringDeviceNameList, filteringDataSourceList, filteringPointHierarchySelect, accordion, accordionSection, draggable,
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
-        imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport,
+        imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport, configImportDialog,
         maMap, maMarkerStore, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
@@ -185,6 +186,7 @@ maDashboards.component('maSystemSettingEditor', systemSettingEditor);
 maDashboards.component('maPermissionsMenu', permissionsMenu);
 maDashboards.component('maConfigExport', configExport);
 maDashboards.component('maConfigImport', configImport);
+maDashboards.component('maConfigImportDialog', configImportDialog);
 maDashboards.component('maMap', maMap);
 maDashboards.component('maMarkerStore', maMarkerStore);
 maDashboards.filter('tr', trFilter);

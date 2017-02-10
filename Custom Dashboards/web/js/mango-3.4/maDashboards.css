@@ -460,3 +460,12 @@ ma-config-import .ma-import-dropzone {
   border: 1px dashed currentColor;
   border-radius: 2px;
 }
+
+.ma-config-import-dialog {
+  height: 90%;
+}
+
+.ma-config-import-messages {
+  margin-top: 8px;
+  overflow-y: scroll;
+}

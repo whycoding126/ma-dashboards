@@ -5,26 +5,21 @@
     </md-card-title-text>
   </md-card-title>
   <md-card-content layout="column">
-    <div ng-repeat="msg in $ctrl.importStatus.genericMessages" ng-bind="msg"></div>
-    <md-progress-linear md-mode="determinate" value="{{$ctrl.importStatus.progress}}" ng-if="$ctrl.importStatus && $ctrl.importStatus.progress !== 100"></md-progress-linear>
     <p ma-tr="emport.importInstruction"></p>
     
-    <div ng-if="!$ctrl.importStatus || $ctrl.importStatus.progress === 100" class="ma-import-dropzone" ma-dropzone ng-style="{'border-color': dragOver && $ctrl.accentColor}"
+    <div class="ma-import-dropzone" ma-dropzone ng-style="{'border-color': dragOver && $ctrl.accentColor}"
         ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)" layout layout-align="center center">
       <span ma-tr="dashboards.v3.app.dropJsonFileHere"></span>
     </div>
   </md-card-content>
   <md-card-actions layout="row" layout-align="start center">
-    <md-button class="md-raised md-primary" ng-click="$ctrl.doImport()" ng-disabled="$ctrl.importStatus && $ctrl.importStatus.progress !== 100">
+    <md-button class="md-raised md-primary" ng-click="$ctrl.doImport($event)">
       <md-icon>file_upload</md-icon> <span ma-tr="emport.import"></span>
     </md-button>
-    <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch" ng-disabled="$ctrl.importStatus && $ctrl.importStatus.progress !== 100">
+    <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch">
       <label for="json-file-upload" flex><md-icon>file_upload</md-icon> <span ma-tr="dashboards.v3.app.uploadJsonFile"></span></label>
     </md-button>
     <input id="json-file-upload" type="file" accept=".json,text/*" ma-change="$ctrl.fileSelected($event)" style="display:none">
     <pre ng-bind="fileUpload | json"></pre>
-    <md-button class="md-raised md-warn" ng-click="$ctrl.cancelImport()" ng-disabled="!$ctrl.importStatus || $ctrl.importStatus.progress === 100">
-      <md-icon>cancel</md-icon> <span ma-tr="common.cancel"></span>
-    </md-button>
   </md-card-actions>
 </md-card>

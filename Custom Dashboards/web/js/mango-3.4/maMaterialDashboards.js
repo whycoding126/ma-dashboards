@@ -6,13 +6,15 @@
 define(['angular',
         './maDashboards',
         './components/colorPreview/colorPreview',
+        './services/dialogHelper',
         'angular-material',
         'mdPickers',
-        'angular-material-data-table'], function(angular, maDashboards, colorPreview) {
+        'angular-material-data-table'], function(angular, maDashboards, colorPreview, dialogHelperFactory) {
 'use strict';
 
 var maMaterialDashboards = angular.module('maMaterialDashboards', ['maDashboards', 'ngMaterial', 'mdPickers', 'md.data.table']);
-maDashboards.component('maColorPreview', colorPreview);
+maMaterialDashboards.component('maColorPreview', colorPreview);
+maMaterialDashboards.factory('maDialogHelper', dialogHelperFactory);
 return maMaterialDashboards;
 
 }); // define

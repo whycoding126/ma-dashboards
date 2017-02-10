@@ -6,11 +6,10 @@
 define(['angular', 'require'], function(angular, require) {
 'use strict';
 
-ConfigImportController.$inject = ['ImportExport', '$timeout', '$mdColors'];
-function ConfigImportController(ImportExport, $timeout, $mdColors) {
-    this.ImportExport = ImportExport;
-    this.$timeout = $timeout;
-
+ConfigImportController.$inject = ['maDialogHelper', '$mdColors'];
+function ConfigImportController(maDialogHelper, $mdColors) {
+    this.maDialogHelper = maDialogHelper;
+    
     this.accentColor = $mdColors.getThemeColor('accent');
 }
 
@@ -24,7 +23,7 @@ ConfigImportController.prototype.fileDropped = function(data) {
         if (transfer.length) {
             var file = transfer[0];
             if (!file.type || file.type === 'application/json' || file.type.indexOf('text/') === 0) {
-                this.importFile(file);
+                this.maDialogHelper.showConfigImportDialog(file);
             }
         }
     }
@@ -33,60 +32,14 @@ ConfigImportController.prototype.fileDropped = function(data) {
 ConfigImportController.prototype.fileSelected = function($event) {
     var fileInput = $event.target;
     if (fileInput.files && fileInput.files.length) {
-        this.importFile(fileInput.files[0]);
-        fileInput.value = null;
+        this.maDialogHelper.showConfigImportDialog(fileInput.files[0], $event);
+        fileInput.value = '';
     }
 };
 
-ConfigImportController.prototype.importFile = function(file) {
-    var $ctrl = this;
-
-    delete this.importStatus;
-    
-    /*
-    if (!FileReader) return;
-    var reader = new FileReader();
-    reader.onload = function() {
-        $ctrl.jsonString = this.result;
-        $ctrl.doImport();
-    };
-    reader.readAsText(file);
-    */
-    
-    this.ImportExport.importData(file).then(function(importStatus) {
-        this.importStatus = importStatus;
-        this.getImportStatus();
-    }.bind(this));
-};
-
-ConfigImportController.prototype.doImport = function() {
+ConfigImportController.prototype.doImport = function($event) {
     var data = angular.fromJson(this.jsonString);
-    delete this.importStatus;
-    this.ImportExport.importData(data).then(function(importStatus) {
-        this.importStatus = importStatus;
-        this.getImportStatus();
-    }.bind(this), function(response) {
-        console.log('error importing file');
-    }.bind(this));
-};
-
-ConfigImportController.prototype.getImportStatus = function() {
-    var $ctrl = this;
-    if (this.importStatus) {
-        this.importStatus.getStatus().then(function(status) {
-            if ((status.state !== 'COMPLETED' || status.state !== 'CANCELLED') && status.progress !== 100) {
-                $ctrl.$timeout(function() {
-                    $ctrl.getImportStatus();
-                }, 1000);
-            }
-        });
-    }
-};
-
-ConfigImportController.prototype.cancelImport = function() {
-    if (this.importStatus) {
-        this.importStatus.cancel();
-    }
+    this.maDialogHelper.showConfigImportDialog(data, $event);
 };
 
 return {

@@ -88,6 +88,7 @@ ConfigExportController.prototype.writeIndentedJson = function() {
         if (this.onExport) {
             this.onExport({$json: this.jsonString});
         }
+        delete this.exportedData;
     }
 };
 
