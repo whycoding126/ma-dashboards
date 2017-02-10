@@ -61,7 +61,7 @@ define(['angular', 'require'], function(angular, require) {
         }
 
         $ctrl.toggleInfoWindow = function(e, windowId, markerId) {
-            // console.log(e, windowId, markerId);
+            // console.log('toggle called',e, windowId, markerId);
             if (!$ctrl.infoWindowCache[windowId]) {
                 $ctrl.map.showInfoWindow(windowId, markerId);
                 $ctrl.infoWindowCache[windowId] = true;

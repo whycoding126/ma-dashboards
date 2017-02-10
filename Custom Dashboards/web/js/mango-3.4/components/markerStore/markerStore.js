@@ -7,12 +7,22 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    markerStoreController.$inject = [];
+    // markerStoreController.$inject = [];
+
     function markerStoreController() {
         var $ctrl = this;
 
-        $ctrl.$onChanges = function(changes) {
-            // console.log(changes);
+        $ctrl.deleteMarker = function() {
+            $ctrl.markerList.markers = $ctrl.markerList.markers.filter(function(marker) {
+                return marker.name !== $ctrl.selectedMarker.name;
+            });
+
+            $ctrl.selectedMarker = $ctrl.markerList.markers[0];
+        };
+
+        $ctrl.addMarker = function() {
+            $ctrl.markerList.markers.push({});
+            $ctrl.selectedMarker = $ctrl.markerList.markers[$ctrl.markerList.markers.length-1];
         };
     }
 
