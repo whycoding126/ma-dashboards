@@ -1,18 +1,18 @@
-<!--<ma-json-store xid="{{$ctrl.dashboardId}}" item="markerStoreItem" value="$ctrl.markerStore"></ma-json-store>-->
+<ma-json-store xid="{{$ctrl.dashboardId}}" item="markerStoreItem" value="$ctrl.markerList"></ma-json-store>
 
 <div layout="row" layout-wrap ng-init="$ctrl.markerList.markers=[]; $ctrl.markerList.id = $ctrl.dashboardId">
     <div layout="row" flex="100" layout-align="start center">
         <md-input-container flex>
             <label>Name</label>
-            <input ng-required="true" ng-model="nextMarker.name">
+            <input ng-model="nextMarker.name">
         </md-input-container>
         <md-input-container flex>
             <label>Latitude</label>
-            <input ng-required="true" type="number" ng-model="nextMarker.lat">
+            <input type="number" ng-model="nextMarker.lat">
         </md-input-container>
         <md-input-container flex>
             <label>Longitude</label>
-            <input ng-required="true" type="number" ng-model="nextMarker.long">
+            <input type="number" ng-model="nextMarker.long">
         </md-input-container>
         <ma-watch-list-select watch-list="addWatchList"></ma-watch-list-select>
         <md-button class="md-raised md-primary md-hue-3" ng-disabled="!nextMarker.name || !nextMarker.lat || !nextMarker.long || !addWatchList.xid" 
