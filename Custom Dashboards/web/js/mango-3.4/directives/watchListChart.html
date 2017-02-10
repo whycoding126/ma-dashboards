@@ -32,11 +32,11 @@ ma-watch-list-chart md-input-container, watch-list-chart md-checkbox {
         </md-select>
     </md-input-container>
     <md-input-container flex="15" flex-xs="30" ng-if="editMode">
-        <label>Stack Type</label>
+        <label ma-tr="dashboards.v3.app.stackType"></label>
         <md-select ng-model="chartConfig.stackType.selected">
-            <md-option value="none">None</md-option>
-            <md-option value="regular">Stacked</md-option>
-            <md-option value="100%">100% Stack</md-option>
+            <md-option value="none" ma-tr="dashboards.v3.app.none"></md-option>
+            <md-option value="regular" ma-tr="dashboards.v3.app.stacked"></md-option>
+            <md-option value="100%">100% <span ma-tr="dashboards.v3.app.stacked"></span></md-option>
         </md-select>
     </md-input-container>
 </div>
