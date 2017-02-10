@@ -10,15 +10,15 @@
         </md-input-container>
         <md-input-container flex>
             <label>Name</label>
-            <input ng-disabled="!$ctrl.markerList.markers.length" ng-model="$ctrl.selectedMarker.name" md-autofocus>
+            <input ng-disabled="!$ctrl.markerList.markers.length" ng-model="$ctrl.selectedMarker.name" md-select-on-focus>
         </md-input-container>
         <md-input-container flex>
             <label>Latitude</label>
-            <input ng-disabled="!$ctrl.markerList.markers.length" type="number" ng-model="$ctrl.selectedMarker.lat">
+            <input ng-disabled="!$ctrl.markerList.markers.length" type="number" ng-model="$ctrl.selectedMarker.lat" md-select-on-focus>
         </md-input-container>
         <md-input-container flex>
             <label>Longitude</label>
-            <input ng-disabled="!$ctrl.markerList.markers.length" type="number" ng-model="$ctrl.selectedMarker.long">
+            <input ng-disabled="!$ctrl.markerList.markers.length" type="number" ng-model="$ctrl.selectedMarker.long" md-select-on-focus>
         </md-input-container>
         <md-input-container flex>
             <label>Select a Marker Icon</label>
@@ -26,14 +26,14 @@
                 <md-option ng-repeat="markerIcon in $ctrl.markerIcons" ng-value="markerIcon.image" ng-bind="markerIcon.name"></md-option>
             </md-select>
         </md-input-container>
-        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedMarker.xid}}" watch-list="addWatchList" select-first="false"></ma-watch-list-select>
-        <md-button class="md-raised md-primary md-hue-3" ng-disabled="!$ctrl.selectedMarker.name || !$ctrl.selectedMarker.lat || !$ctrl.selectedMarker.long 
+        <ma-watch-list-select flex layout="row" watch-list-xid="{{$ctrl.selectedMarker.xid}}" watch-list="addWatchList" select-first="false" disabled="!$ctrl.markerList.markers.length"></ma-watch-list-select>
+        <md-button class="md-raised md-primary md-hue-1" ng-disabled="!$ctrl.selectedMarker.name || !$ctrl.selectedMarker.lat || !$ctrl.selectedMarker.long 
         || !$ctrl.selectedMarker.markerIcon || !addWatchList.xid || !$ctrl.markerList.markers.length" 
-        ng-click="$ctrl.selectedMarker.xid = addWatchList.xid; markerStoreItem.$save()"><md-icon>save</md-icon> Save</md-button>
+        ng-click="$ctrl.selectedMarker.xid = addWatchList.xid; $ctrl.selectedMarker.watchlistName = addWatchList.name; markerStoreItem.$save()"><md-icon>save</md-icon> Save</md-button>
         <md-button class="md-raised md-warn" ng-disabled="!$ctrl.selectedMarker" ng-click="$ctrl.deleteMarker(); markerStoreItem.$save()"><md-icon>delete</md-icon> Delete</md-button>
-        <md-button class="md-raised md-primary md-hue-3" ng-click="$ctrl.addMarker()">
+        <md-button class="md-raised md-accent" ng-click="$ctrl.addMarker()">
             <md-icon>add</md-icon>
-            <span>Add Marker</span>
+            <span>New Marker</span>
         </md-button>
     </div>
 </div>

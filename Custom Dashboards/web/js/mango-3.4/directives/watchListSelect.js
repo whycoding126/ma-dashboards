@@ -18,6 +18,7 @@
   * @param {boolean=} no-select Set to `true` to hide the dropdown select from the page, but still availble for loading watchlist data. (Defaults to `false`)
   * @param {array=} points Array of point objects contained in the watch list object.
   * @param {boolean=} select-first Set to `false` to not auto select a the first watch list. (Defaults to `true`)
+  * @param {boolean=} disabled Set to `true` to disable the dropdown input. (Defaults to `false`)
   * 
   * @usage
   * <ma-watch-list-select no-select="true" watch-list-xid="{{watchlistXID}}" watch-list="myWatchlist"></ma-watch-list-select>
@@ -49,7 +50,8 @@ function watchListSelect($injector) {
             watchList: '=?',
             watchListXid: '@',
             noSelect: '=?',
-            selectFirst: '=?'
+            selectFirst: '=?',
+            disabled: '=?'
         },
         controller: ['$scope', '$element', '$attrs', 'WatchList', '$stateParams', '$state', 'Point', 'WatchListEventManager',
                      function ($scope, $element, $attrs, WatchList, $stateParams, $state, Point, WatchListEventManager) {
