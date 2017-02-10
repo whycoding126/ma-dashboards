@@ -79,6 +79,7 @@ define(['./maServices',
         './components/configExport/configExport',
         './components/configImport/configImport',
         './components/maMap/maMap',
+        './components/markerStore/markerStore',
         'ng-map',
         './filters/trFilter',
         './animations/slideUp',
@@ -97,7 +98,7 @@ define(['./maServices',
         dropzone, barDisplay, indicator, validationMessages, scaleTo, change,
         queryBuilder, queryGroup, queryPredicate, pointHierarchyBrowser, pointHierarchyPointSelector, pointHierarchyFolder, watchListParameters,
         imageSlider, userEditor, userSelect, systemSettingEditor, permissionsMenu, configExport, configImport,
-        maMap, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
+        maMap, maMarkerStore, ngMap, trFilter, slideUp, angular, require, AmCharts, moment) {
 'use strict';
 /**
  * @ngdoc overview
@@ -185,6 +186,7 @@ maDashboards.component('maPermissionsMenu', permissionsMenu);
 maDashboards.component('maConfigExport', configExport);
 maDashboards.component('maConfigImport', configImport);
 maDashboards.component('maMap', maMap);
+maDashboards.component('maMarkerStore', maMarkerStore);
 maDashboards.filter('tr', trFilter);
 maDashboards.filter('noNaN', function () {
                                 return function (input, suffix) {
