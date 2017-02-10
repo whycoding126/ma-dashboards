@@ -44,7 +44,6 @@ LiveEditorController.prototype.$onInit = function() {
         showGutter: false,
         showPrintMargin: false,
         theme: this.theme || this.mdAdminSettings.codeTheme,
-        fontSize: '13px',
         mode: this.mode || 'html',
         onLoad: this.aceLoaded.bind(this),
         onChange: this.aceChanged.bind(this)

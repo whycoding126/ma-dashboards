@@ -41,7 +41,7 @@ h1, h2, h3, h4, h5, h6, .ma-heading-font {
   font-family: {{mdAdminSettings.fonts.heading}}, sans-serif;
 }
 
-pre, code, .ma-code-font {
+pre, code, div.ace_editor, .ma-code-font {
   font-family: {{mdAdminSettings.fonts.code}}, monospace;
 }
 

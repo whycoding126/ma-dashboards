@@ -407,6 +407,10 @@ code:not(.highlight) {
 	height: 200px;
 }
 
+div.ace_editor {
+  font-size: 14px;
+}
+
 live-editor {
 	resize: vertical;
 	overflow-y: auto;
