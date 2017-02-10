@@ -87,7 +87,7 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.markerList.markers.push({});
             $ctrl.selectedMarker = $ctrl.markerList.markers[$ctrl.markerList.markers.length-1];
 
-
+            angular.element(document.querySelector('#name-input')).focus();
         };
 
         $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
