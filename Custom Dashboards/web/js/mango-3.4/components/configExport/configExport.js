@@ -26,7 +26,7 @@ ConfigExportController.prototype.$onInit = function() {
 
 ConfigExportController.prototype.selectAllChanged = function() {
     for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i];
+        var sectionName = this.sectionList[i].value;
         this.sectionsForExport[sectionName] = this.selectAll;
     }
     this.selectAllIndeterminate = false;
@@ -36,7 +36,7 @@ ConfigExportController.prototype.checkIndeterminate = function() {
     var allChecked = true;
     var anyChecked = false;
     for (var i = 0; i < this.sectionList.length; i++) {
-        var sectionName = this.sectionList[i];
+        var sectionName = this.sectionList[i].value;
         var sectionSelected = !!this.sectionsForExport[sectionName];
         allChecked = allChecked && sectionSelected;
         anyChecked = anyChecked || sectionSelected;
