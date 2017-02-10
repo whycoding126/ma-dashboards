@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    markerStoreController.$inject = [];
+    markerStoreController.$inject = ['$scope'];
 
-    function markerStoreController() {
+    function markerStoreController($scope) {
         var $ctrl = this;
 
         $ctrl.markerIcons = [
@@ -89,6 +89,13 @@ define(['angular', 'require'], function(angular, require) {
 
 
         };
+
+        $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
+            // console.log('watch markerList.markers', newValue, oldValue);
+            if (newValue.length && !oldValue.length) {
+                $ctrl.selectedMarker = $ctrl.markerList.markers[0];
+            }
+        });
     }
 
     return {
