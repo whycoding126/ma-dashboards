@@ -25,11 +25,7 @@
       </div>
       <div layout="row" ng-if="module.vendor">
         <span flex="50" ma-tr="modules.vendor"></span>
-        <span flex="50" ng-bind="module.vendor"></span>
-      </div>
-      <div layout="row" ng-if="module.vendorUrl">
-        <span flex="50" ma-tr="modules.vendorUrl"></span>
-        <span flex="50"><a ng-bind="module.vendorUrl" ng-href="{{module.vendorUrl}}"></a></span>
+        <span flex="50"><a ng-bind="module.vendor" ng-href="{{module.vendorUrl}}"></a></span>
       </div>
       <div layout="row" ng-if="module.dependencies">
         <span flex="50" ma-tr="modules.dependencies"></span>
