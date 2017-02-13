@@ -21,6 +21,9 @@
   * @param {string} rollup-interval-number Rollup inteval number.
   * @param {number} rollup-interval-period Rollup interval unit.
   * @param {string} chart-height Height of the chart. Specify with px or % (`400px`). 
+  * @param {boolean} edit-mode Set to `true` to display chart customization controls. Defaults to `false`. 
+  * @param {boolean} stats-tab Set to `true` to display stats tab. Defaults to `false`. 
+  * @param {boolean} export Set to `true` to display chart export and annotation options. Defaults to `false`. 
   * 
   * @usage
   * <ma-watch-list-select no-select="true" watch-list-xid="WatchList323" watch-list="myWatchlist"></ma-watch-list-select>
@@ -39,6 +42,8 @@ define(['require'], function(require) {
                 addChecked: '=',
                 chartConfig: '=',
                 editMode: '=',
+                statsTab: '=',
+                export: '=',
                 to: '=',
                 from: '=',
                 rollupType: '=',

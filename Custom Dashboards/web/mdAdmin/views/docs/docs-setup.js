@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "maDashboards",
       "shortDescription": "&lt;ma-watch-list-chart&gt;&lt;/ma-watch-list-chart&gt;",
-      "keywords": "add add-checked api array chart chart-config chart-height chartconfig charting config custom data datebar directive display flex height interval inteval list madashboards mawatchlistchart mywatchlist no-select number object pass points px rollup rollup-interval-number rollup-interval-period rollup-type rollupintervalperiod rollupintervals rolluptype selectedpoints start timestamp true type unit watch watch-list watch-list-xid watchlist watchlist323"
+      "keywords": "add add-checked annotation api array chart chart-config chart-height chartconfig charting config controls custom customization data datebar defaults directive display edit-mode export false flex height interval inteval list madashboards mawatchlistchart mywatchlist no-select number object options pass points px rollup rollup-interval-number rollup-interval-period rollup-type rollupintervalperiod rollupintervals rolluptype selectedpoints set start stats stats-tab tab timestamp true type unit watch watch-list watch-list-xid watchlist watchlist323"
     },
     {
       "section": "api",

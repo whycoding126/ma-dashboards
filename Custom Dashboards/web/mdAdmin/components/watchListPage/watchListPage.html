@@ -56,7 +56,7 @@
                     <md-button class="md-raised" ng-click="clearChart()" ng-if="editMode" ma-tr="dashboards.v3.app.clear"></md-button>
                 </div>
             </md-toolbar>
-            <ma-watch-list-chart edit-mode="true" add-checked="$ctrl.selected" chart-config="$ctrl.chartConfig" to="$ctrl.dateBar.to"
+            <ma-watch-list-chart edit-mode="true" stats-tab="true" export="true" add-checked="$ctrl.selected" chart-config="$ctrl.chartConfig" to="$ctrl.dateBar.to"
                 from="$ctrl.dateBar.from" rollup-type="$ctrl.dateBar.rollupType" rollup-interval-number="$ctrl.dateBar.rollupIntervals"
                 rollup-interval-period="$ctrl.dateBar.rollupIntervalPeriod" chart-height="400px">
                 </watch-list-chart>
