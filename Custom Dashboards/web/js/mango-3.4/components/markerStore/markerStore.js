@@ -7,9 +7,9 @@ define(['angular', 'require'], function(angular, require) {
     'use strict';
 
   
-    markerStoreController.$inject = ['$scope'];
+    markerStoreController.$inject = ['$scope', '$timeout'];
 
-    function markerStoreController($scope) {
+    function markerStoreController($scope, $timeout) {
         var $ctrl = this;
 
         $ctrl.markerIcons = [
@@ -87,7 +87,9 @@ define(['angular', 'require'], function(angular, require) {
             $ctrl.markerList.markers.push({});
             $ctrl.selectedMarker = $ctrl.markerList.markers[$ctrl.markerList.markers.length-1];
 
-            angular.element(document.querySelector('#name-input')).focus();
+            $timeout(function() {
+                angular.element(document.querySelector('#name-input')).focus();
+            }, 500);
         };
 
         $scope.$watch('$ctrl.markerList.markers', function(newValue, oldValue) {
